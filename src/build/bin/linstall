@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Path;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::File;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/build/bin", $ARGV[0]);
+}
+
+
+use constant DEBUG => 0;
+
+if ( scalar(@ARGV) != 4 ) {
+    usage();
+}
+
+my $trtarget = shift;
+DEBUG and print "TRTARGET = $trtarget\n";
+my @translations = split(/\s+/, shift);
+DEBUG and print "TRANSLATIONS = ".join(" ", @translations)."\n";
+my $instprefix = shift;
+DEBUG and print "INSTPREFIX = $instprefix\n";
+my $srcdir = shift;
+DEBUG and print "SRCDIR = $srcdir\n";
+
+
+chdir $srcdir;
+LANG: for my $lang ( @translations ) {
+    my @tsfiles;
+    for my $target ( $trtarget ) {
+        DEBUG and print "$target-$lang.ts\n";
+        if ( -f "$target-$lang.ts" ) {
+            push(@tsfiles, "$target-$lang.ts");
+        }
+    }
+    if ( @tsfiles ) {
+        my $destfile = "$instprefix/$lang/$trtarget.qm";
+        if ( ! -d dirname($destfile) ) {
+            mkpath(dirname($destfile));
+        }
+        my $copy = 0;
+        for my $tsfile ( @tsfiles ) {
+            if ( needCopy($tsfile, $destfile) ) {
+                $copy = 1;
+                last;
+            }
+        }
+        if ( $copy ) {
+            my $cmd = "$HOST_QT_BINS/lrelease -silent -compress -nounfinished -removeidentical ".
+                      join(" ", @tsfiles)." -qm $destfile";
+            print "$cmd\n";
+            system($cmd);
+        }
+    } else {
+        warn "WARNING: Missing $trtarget-$lang.ts.\n".
+             "Please run qbuild lupdate in $srcdir.\n";
+        next LANG;
+    }
+}
+
+exit 0;
+
+sub usage
+{
+    print "Usage:  ".script_name($0)." trtarget \"translations\" instprefix srcdir\n";
+    exit 2;
+}
+

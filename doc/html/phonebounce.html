@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>phonebounce</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">phonebounce<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>The <tt>phonebounce</tt> command-line tool can be used to convert a handset into a modem for access from an instance of Qt Extended running on a desktop system.</p>
+<p>This tool is primarily used for development and testing when getting a new handset to work. The desktop Qt Extended can be built with debug symbols and instrumented with additional debugging code, making it easier to find problems with Qt Extended before it is actually transferred onto a device.</p>
+<p>The tool also allows parallel development, with some developers focusing on getting Qt Extended to build for the handset environment, and other developers focusing on <a href="syscust-gsm.html">GSM Modem Integration</a> and user interface customization.</p>
+<p>The <tt>phonebounce</tt> tool runs on the handset, opens the modem serial device, and then redirects it to a socket on the handset. The desktop instance of Qt Extended then connects to this socket as though it was using the modem directly. It is important that a Qt Extended instance is not running on the handset and using the modem while <tt>phonebounce</tt> is in use.</p>
+<p>The <tt>phonebounce</tt> tool is launched as follows:</p>
+<pre>    phonebounce [device[:baudrate] [port]]</pre>
+<p>The <tt>device[:baudrate]</tt> parameter specifies the name of the modem serial device to use. It defaults to the value of the <tt>QTOPIA_PHONE_DEVICE</tt> environment variable. The <tt>port</tt> parameter specifies the port to bind to to accept incoming socket connections. The default value for <tt>port</tt> is 12345, which is the same as the <a href="modem-simulator.html">Modem Simulator</a> port. For example:</p>
+<pre>    phonebounce /dev/ttyS0:115200 12345</pre>
+<p>This will connect to the modem on <tt>/dev/ttyS0</tt> at 115200 baud, and export the modem to the desktop machine on port 12345.</p>
+<p>On the desktop side, the desktop's <tt>QTOPIA_PHONE_DEVICE</tt> environment variable should be set to <tt>sim:ipaddress</tt> where <tt>ipaddress</tt> is the IP address of the handset connected to the desktop (usually via USB). It is also a good idea to set the <tt>QTOPIA_PHONE_VENDOR</tt> environment variable to the name of the modem vendor plugin to use for the handset's modem. Qt Extended can then be launched on the desktop in the usual fashion.</p>
+<p>Because <tt>phonebounce</tt> connects via TCP/IP, it will be necessary to bring up USB networking on the handset and the desktop sides of the connection before using <tt>phonebounce</tt>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

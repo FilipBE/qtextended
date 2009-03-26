@@ -1,0 +1,117 @@
+diff -Nur diff/Ilib-1.1.9/clients/ifont2h/Makefile Ilib-1.1.9/clients/ifont2h/Makefile
+--- diff/Ilib-1.1.9/clients/ifont2h/Makefile	2004-10-26 07:27:52.000000000 +1000
++++ Ilib-1.1.9/clients/ifont2h/Makefile	2007-03-22 07:59:00.000000000 +1000
+@@ -30,22 +30,18 @@
+ INSTALL_SCRIPT  = install -o bin -g bin -m 00755
+ # __END_ILIB_SITE_SETTINGS__
+ 
+-INCLIB          = -L../../lib -lIlib
+-ILIB            = ../../lib/libIlib.a
+-SILIB           = ../../lib/libIlib.so.${SOVERSION}
+-
+ all: ifont2h
+ 
+ ifont2h: ifont2h.o
+ 
+ .c.o:
+-	$(CC) $(CFLAGS) $(INCLUDE) -c $*.c -o $@
++	$(HOSTCC) $(CFLAGS) $(INCLUDE) -c $*.c -o $@
+ 
+ static:	${SILIB}
+-	 $(CC) ${CFLAGS} ${LIBS} ${INCLIB} ifont2h.o -o ifont2h
++	 $(HOSTCC) ${CFLAGS} ifont2h.o -o ifont2h
+ 
+ dynamic: ${ILIB}
+-	$(CC) ${CFLAGS} ${LIBS} ${INCLIB} ifont2h.o -o ifont2h
++	$(HOSTCC) ${CFLAGS} ifont2h.o -o ifont2h
+ 	
+ 
+ ifont2h: ifont2h.o
+diff -Nur diff/Ilib-1.1.9/lib/Makefile Ilib-1.1.9/lib/Makefile
+--- diff/Ilib-1.1.9/lib/Makefile	2004-10-26 07:26:47.000000000 +1000
++++ Ilib-1.1.9/lib/Makefile	2007-06-04 15:48:40.000000000 +1000
+@@ -76,7 +80,7 @@
+ 	  $(RANLIB) $(ILIB);
+ 
+ ${SILIB}: ${ILIBSOBJS} ${HTML}
+-	  ld ${ILIBSOBJS} -Bshareable -o $@;
++	  $(LD) ${ILIBSOBJS} -Bshareable -o $@;
+ 
+ $(HTML): Ilib.h h2html.pl
+ 	perl h2html.pl Ilib.h > $@
+diff -Nur diff/Ilib-1.1.9/Makefile Ilib-1.1.9/Makefile
+--- diff/Ilib-1.1.9/Makefile	2004-10-26 07:30:46.000000000 +1000
++++ Ilib-1.1.9/Makefile	2007-03-22 07:59:00.000000000 +1000
+@@ -28,7 +28,7 @@
+ 
+ 
+ #   Lib path may need correction depending upon platform
+-LIBS = -L/usr/local/lib -lgif -lpng -ljpeg 
++LIBS = -L../../libungif-4.1.4/lib/.libs -lungif -lm
+ 
+ 
+ #   -DHAVE_GIFLIB  if using -lgif above
+@@ -36,12 +36,12 @@
+ #   -DHAVE_JPEGLIB if using -ljpeg above
+ #   -DHAVE_TCL     if using -ltcl{vv}
+ #   -DHAVE_TK      if usint -ltk{xx}
+-DEFINES = -DHAVE_GIFLIB -DHAVE_PNGLIB -DHAVE_JPEGLIB
++DEFINES = -DHAVE_GIFLIB
+ 
+ 
+ #   Include path may need modification depending upon platform
+ #   (Use only absolute paths here)
+-INCLUDES = -I/usr/local/include -I/usr/local/include/giflib
++INCLUDES = -I../libungif-4.1.4/lib
+ 
+ #  INSTALL CONFIG
+ 
+@@ -49,7 +49,7 @@
+ COMPRESS = gzip -9v
+ 
+ #   Install Locations
+-PREFIX = /usr/local
++PREFIX = /usr
+ BINDIR = ${PREFIX}/bin
+ LIBDIR = ${PREFIX}/lib
+ MANDIR = ${PREFIX}/man
+@@ -73,10 +73,17 @@
+ POST_INSTALL = echo
+ #POST_INSTALL = ldconfig -m ${LIBDIR}
+ 
+-# Definitions for your compiler and make (do you have system defined CFLAGS?)
+-CC = cc
++# Definitions for your CROSS compiler and make (do you have system defined CFLAGS?)
++CC = arm-linux-gcc
+ CFLAGS = -g -Wall $(DEFINES) $(INCLUDES)
+-RANLIB = ranlib
++RANLIB = arm-linux-ranlib
++LD = arm-linux-ld
++
++# Definitions for your HOST compiler and make (do you have system defined CFLAGS?)
++HOSTCC = gcc
++CFLAGS = -g -Wall $(DEFINES) $(INCLUDES)
++HOSTRANLIB = ranlib
++HOSTLD = ld
+ 
+ ######################################################################
+ MAJVERSION = 1
+@@ -138,6 +145,7 @@
+ 	echo "# -- Do not edit these parameters here." > $$temp; \
+ 	echo "# -- Edit the toplevel makefile and then 'make makefiles'" >> $$temp; \
+ 	echo "CC              = $(CC)" >> $$temp; \
++	echo "LD              = $(LD)" >> $$temp; \
+ 	echo "CFLAGS          = $(CFLAGS)" >> $$temp; \
+ 	echo "RANLIB          = $(RANLIB)" >> $$temp; \
+ 	echo "STATIC          = $(STATIC)" >> $$temp; \
+@@ -148,6 +156,10 @@
+ 	echo "PATCHLEVEL      = $(PATCHLEVEL)" >> $$temp; \
+ 	echo "VERSION         = $(VERSION)" >> $$temp; \
+ 	echo "SOVERSION       = $(SOVERSION)" >> $$temp; \
++	echo "# Host tools" >> $$temp; \
++	echo "HOSTCC          = $(HOSTCC)" >> $$temp; \
++	echo "HOSTLD          = $(HOSTLD)" >> $$temp; \
++	echo "HOSTRANLIB      = $(HOSTRANLIB)" >> $$temp; \
+ 	echo "# Install locations" >> $$temp; \
+ 	echo "PREFIX          = $(PREFIX)" >> $$temp; \
+ 	echo "BINDIR          = $(BINDIR)" >> $$temp; \

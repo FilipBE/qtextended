@@ -1,0 +1,12 @@
+diff -ur bootchart-0.9/script/bootchartd bootchart-0.9_modified/script/bootchartd
+--- bootchart-0.9/script/bootchartd	2005-11-14 03:40:01.000000000 +1000
++++ bootchart-0.9_modified/script/bootchartd	2007-08-17 14:21:53.000000000 +1000
+@@ -101,7 +101,7 @@
+ 		# Write the time (in jiffies).
+ 		read uptime < /proc/uptime
+ 		uptime=${uptime%% [0-9]*}
+-		uptime=${uptime/./}
++		uptime=$(echo $uptime | sed -r -e 's|\.||')
+ 		echo $uptime
+ 
+ 		# Log the command output

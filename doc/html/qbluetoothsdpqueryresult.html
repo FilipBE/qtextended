@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothSdpQueryResult Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothSdpQueryResult Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothSdpQueryResult class encapsulates a result of an SDAP query. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothSdpQueryResult&gt;</pre><ul>
+<li><a href="qbluetoothsdpqueryresult-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothsdpqueryresult.html#QBluetoothSdpQueryResult">QBluetoothSdpQueryResult</a></b> ()</li>
+<li><div class="fn"/><b><a href="qbluetoothsdpqueryresult.html#QBluetoothSdpQueryResult-2">QBluetoothSdpQueryResult</a></b> ( const QBluetoothSdpQueryResult &amp; <i>other</i> )</li>
+<li><div class="fn"/>void <b><a href="qbluetoothsdpqueryresult.html#addService">addService</a></b> ( const QBluetoothSdpRecord &amp; <i>service</i> )</li>
+<li><div class="fn"/>QString <b><a href="qbluetoothsdpqueryresult.html#error">error</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothsdpqueryresult.html#isValid">isValid</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qbluetoothsdpqueryresult.html#reset">reset</a></b> ()</li>
+<li><div class="fn"/>const QList&lt;QBluetoothSdpRecord&gt; &amp; <b><a href="qbluetoothsdpqueryresult.html#services">services</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qbluetoothsdpqueryresult.html#setError">setError</a></b> ( const QString &amp; <i>error</i> )</li>
+<li><div class="fn"/>QBluetoothSdpQueryResult &amp; <b><a href="qbluetoothsdpqueryresult.html#operator-eq">operator=</a></b> ( const QBluetoothSdpQueryResult &amp; <i>other</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothSdpQueryResult class encapsulates a result of an SDAP query.</p>
+<p>This object is returned by the <a href="qbluetoothsdpquery.html">QBluetoothSdpQuery</a> object in the <a href="qbluetoothsdpquery.html#searchComplete">QBluetoothSdpQuery::searchComplete</a>() signal. It represents the result of the service discovery query of a remote device. If the query failed, then the object is invalid. Otherwise, it contains a list of <a href="qbluetoothsdprecord.html">QBluetoothSdpRecord</a> objects that matched the parameters. The result could be valid and empty, in the case that no records were found with the required search attributes.</p>
+<p>See also <a href="qbluetoothsdpquery.html">QBluetoothSdpQuery</a> and <a href="qbluetoothsdprecord.html">QBluetoothSdpRecord</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothSdpQueryResult"></a>QBluetoothSdpQueryResult::QBluetoothSdpQueryResult ()</h3>
+<p>Constructs a valid, empty <a href="qbluetoothsdpqueryresult.html">QBluetoothSdpQueryResult</a> object.</p>
+<p>See also <a href="qbluetoothsdpqueryresult.html#isValid">isValid</a>().</p>
+<h3 class="fn"><a name="QBluetoothSdpQueryResult-2"></a>QBluetoothSdpQueryResult::QBluetoothSdpQueryResult ( const QBluetoothSdpQueryResult &amp; <i>other</i> )</h3>
+<p>Construct a <a href="qbluetoothsdpqueryresult.html">QBluetoothSdpQueryResult</a>, copying contents from <i>other</i>.</p>
+<h3 class="fn"><a name="addService"></a>void QBluetoothSdpQueryResult::addService ( const <a href="qbluetoothsdprecord.html">QBluetoothSdpRecord</a> &amp; <i>service</i> )</h3>
+<p>Adds a <i>service</i> to the search result.</p>
+<h3 class="fn"><a name="error"></a><a href="qstring.html">QString</a> QBluetoothSdpQueryResult::error () const</h3>
+<p>Returns the error string, if any.</p>
+<p>See also <a href="qbluetoothsdpqueryresult.html#isValid">isValid</a>() and <a href="qbluetoothsdpqueryresult.html#setError">setError</a>().</p>
+<h3 class="fn"><a name="isValid"></a>bool QBluetoothSdpQueryResult::isValid () const</h3>
+<p>Returns whether the search result is valid (no error occurred during the search).</p>
+<p>See also <a href="qbluetoothsdpqueryresult.html#error">error</a>().</p>
+<h3 class="fn"><a name="reset"></a>void QBluetoothSdpQueryResult::reset ()</h3>
+<p>Resets the results object. This clears the service list, resets the valid flag and clears the error message.</p>
+<h3 class="fn"><a name="services"></a>const <a href="qlist.html">QList</a>&lt;<a href="qbluetoothsdprecord.html">QBluetoothSdpRecord</a>&gt; &amp; QBluetoothSdpQueryResult::services () const</h3>
+<p>Returns a list of services found during an SDAP query.</p>
+<h3 class="fn"><a name="setError"></a>void QBluetoothSdpQueryResult::setError ( const <a href="qstring.html">QString</a> &amp; <i>error</i> )</h3>
+<p>Flags that an error occurred during an SDAP query and sets the error string to <i>error</i>.</p>
+<p>See also <a href="qbluetoothsdpqueryresult.html#error">error</a>().</p>
+<h3 class="fn"><a name="operator-eq"></a>QBluetoothSdpQueryResult &amp; QBluetoothSdpQueryResult::operator= ( const QBluetoothSdpQueryResult &amp; <i>other</i> )</h3>
+<p>Assign the contents of <i>other</i> to the current <a href="qbluetoothsdpqueryresult.html">QBluetoothSdpQueryResult</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPowerSourceProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPowerSourceProvider Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QPowerSourceProvider class provides an interface for power sources to integrate into Qtopia. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPowerSourceProvider&gt;</pre><p>Inherits <a href="qpowersource.html">QPowerSource</a>.</p>
+<p>Inherited by <a href="defaultbattery.html">DefaultBattery</a>.</p>
+<ul>
+<li><a href="qpowersourceprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qpowersourceprovider.html#QPowerSourceProvider">QPowerSourceProvider</a></b> ( Type <i>type</i>, const QString &amp; <i>id</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qpowersourceprovider.html#dtor.QPowerSourceProvider">~QPowerSourceProvider</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>6 public functions inherited from <a href="qpowersource.html#public-functions">QPowerSource</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qpowersourceprovider.html#setAvailability">setAvailability</a></b> ( QPowerSource::Availability <i>availability</i> )</li>
+<li><div class="fn"/>void <b><a href="qpowersourceprovider.html#setCapacity">setCapacity</a></b> ( int <i>capacity</i> )</li>
+<li><div class="fn"/>void <b><a href="qpowersourceprovider.html#setCharge">setCharge</a></b> ( int <i>charge</i> )</li>
+<li><div class="fn"/>void <b><a href="qpowersourceprovider.html#setCharging">setCharging</a></b> ( bool <i>charging</i> )</li>
+<li><div class="fn"/>void <b><a href="qpowersourceprovider.html#setTimeRemaining">setTimeRemaining</a></b> ( int <i>remaining</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>5 signals inherited from <a href="qpowersource.html#signals">QPowerSource</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPowerSourceProvider class provides an interface for power sources to integrate into Qtopia.</p>
+<p>Power sources are components, either external or internal, such as batteries or wall sockets that provide power to a Qt Extended device. The QPowerSourceProvider API allows the addition of information about new power sources into Qtopia.</p>
+<p>By deriving from the QPowerSourceProvider (or just creating an instance), an application or system component can provide information about a power source that can then be accessed through the <a href="qpowersource.html">QPowerSource</a> API. For example,</p>
+<pre>    QPowerSourceProvider *battery = new QPowerSourceProvider(QPowerSource::Battery, &quot;My Pretend Battery&quot;);
+    battery-&gt;setAvailability(QPowerSource::NotAvailable);
+    battery-&gt;setCharging(true);</pre>
+<p>See also <a href="qpowersource.html">QPowerSource</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPowerSourceProvider"></a>QPowerSourceProvider::QPowerSourceProvider ( <a href="qpowersource.html#Type-enum">Type</a> <i>type</i>, const <a href="qstring.html">QString</a> &amp; <i>id</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Create a new <a href="qpowersourceprovider.html">QPowerSourceProvider</a> of the given <i>type</i> and with the specified <i>id</i> and <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QPowerSourceProvider"></a>QPowerSourceProvider::~QPowerSourceProvider ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroy the <a href="qpowersourceprovider.html">QPowerSourceProvider</a> instance and remove information about the power source from Qtopia.</p>
+<h3 class="fn"><a name="setAvailability"></a>void QPowerSourceProvider::setAvailability ( <a href="qpowersource.html#Availability-enum">QPowerSource::Availability</a> <i>availability</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the <i>availability</i> of the power source.</p>
+<h3 class="fn"><a name="setCapacity"></a>void QPowerSourceProvider::setCapacity ( int <i>capacity</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the <i>capacity</i>, in milliamp-hourse, of the power source.</p>
+<h3 class="fn"><a name="setCharge"></a>void QPowerSourceProvider::setCharge ( int <i>charge</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the current <i>charge</i> of the power source.</p>
+<h3 class="fn"><a name="setCharging"></a>void QPowerSourceProvider::setCharging ( bool <i>charging</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the <i>charging</i> status of the power source.</p>
+<h3 class="fn"><a name="setTimeRemaining"></a>void QPowerSourceProvider::setTimeRemaining ( int <i>remaining</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the time <i>remaining</i>, in minutes, for the power source.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

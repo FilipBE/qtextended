@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Application checklist</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Application checklist<br /><span class="subtitle"></span>
+</h1>
+<p>For an application to run correctly on an sxe-enabled device the following requirements should be observed. These apply to both pre-installed and downloaded applications.</p>
+<a name="sxe-requirements"></a><a name="requirements"></a>
+<h2>Requirements</h2>
+<a name="source-code-requirements"></a>
+<h3>Source Code Requirements</h3>
+<ul>
+<li>To correctly key an application, a couple of SXE related macros need to be used. The simplest and preferred way to do this is to use the <a href="qtopiaapplication.html#QTOPIA_MAIN">QTOPIA_MAIN</a> macro which implicitly calls the SXE macros:<pre>    QTOPIA_ADD_APPLICATION(QTOPIA_TARGET,Example)
+    QTOPIA_MAIN</pre>
+<p>otherwise an application can explicitly use the <a href="sxeprograminfo.html#QSXE_APP_KEY">QSXE_APP_KEY</a> and <a href="sxeprograminfo.html#QSXE_SET_APP_KEY">QSXE_SET_APP_KEY</a>() macros as shown below:</p>
+<pre><span class="comment">    // make will fail without this</span>!
+    QSXE_APP_KEY
+
+    int MAIN_FUNC( int argc, char **argv )
+    {
+        <span class="comment">// This is required to load the SXE key into memory</span>
+        QSXE_SET_APP_KEY(argv[0]);
+
+        QtopiaApplication a( argc, argv );
+        ...</pre>
+<p>(MAIN_FUNC resolves to main, the code snippet comes from examples/manual_main/main.cpp)</p>
+</li>
+</ul>
+<a name="project-file-qbuild-pro-requirements"></a>
+<h3>Project file(qbuild.pro) Requirements</h3>
+<ul>
+<li>An application should typically declare itself a Qt Extended application in the project file<pre>    # This is an application
+    TEMPLATE=app
+
+    # The binary name
+    TARGET=example</pre>
+</li>
+<li>The application needs to declare which <a href="sxe-pkgmgr-profiles.html#sxe-domains">domain</a> it will be using in the project file:<pre>    # SXE information
+    target [
+        hint=sxe
+        domain=untrusted
+    ]</pre>
+</li>
+</ul>
+<p>The above requirements refer specifically to Qt Extended applications which communicate with the qpe server and make requests. Binaries which do not communicate with the server do not need to do these steps. They still need to declare a domain however and are bound by the MAC rules that domain imposes.</p>
+<p>Note: SXE does not support running pure Qt/Embedded applications with Qt Extended.</p>
+<a name="qpk-packages-and-sxe"></a>
+<h2>Qpk packages and SXE</h2>
+<p>There are a number of caveats to be aware of when installing qpk packages on an SXE configured Qt Extended.</p>
+<ul>
+<li>SXE is only supports the download and running of games, packages are limited to the set of functionality outlined in <a href="sxe-requirements.html">SXE - Aims and Limitations</a>.</li>
+<li>Packages have write access to their own sandbox directory and read-only access to system libraries and other miscellaneous files. An exception to this is the bin directory inside the sandbox which is read-only from the package's point of view. Packages do not have access to the /tmp directory therefore any data or temporary files should be created using <a href="qtopia.html#sandboxDir">Qtopia::sandboxDir</a>() which returns the package's sandbox directory. There may be issues when using classes like QUniqueID and QUniqueIDGenerator which implicitly uses files outside the sandbox. Likewise using it is advised that <a href="qtemporaryfile.html">QTemporaryFile</a> not be used.</li>
+<li>Settings files will automatically be created for a package in it's own directory, see <a href="sxe-qpk.html#qpk-settings">Qpk Packages</a> for details.</li>
+<li>Packages are not allowed to run scripts.</li>
+<li>Packages created by both non-SXE and SXE configured builds of Qt Extended can be installed onto an SXE enabled device, provided the aforementioned <a href="#sxe-requirements">requirements</a> are met.</li>
+</ul>
+<a name="understanding-security-violations"></a>
+<h2>Understanding security violations</h2>
+<p>For untrusted applications, as long as functionality is limited to that described in <a href="sxe-requirements.html">SXE - Aims and Limitations</a>, a developer generally should not run into any issues with SXE. However, on occasion code may be written which causes an application to violate policy. When an application breaches security policy, the <a href="sxe-sxemonitor.html">SxeMonitor</a> will act to kill the errant process and send a synthetic SMS to the user (provided security logging has been correctly configured).</p>
+<p>The synthetic SMS will contain the violation. Application level violations are of the form:</p>
+<pre>    Violation: Request for foo was denied</pre>
+<p>where <i>foo</i> is the denied request string.</p>
+<p>Another way of determining the violation is to lookup the console/Qtopia log output where the request denial will be of the form</p>
+<pre>    foo - denied: for Program Id 2 [PID 3476]</pre>
+<p>This method can be used even even if security logging has not been correctly setup. These kinds of violations occur if a <a href="sxe-alp.html#service-request">service request</a> has been made that is not allowed in the application's declared domain. <tt>sxe.profiles</tt> contains the definitive list of requests allowed in a given domain.</p>
+<p>OS level violations can vary but the most common type is</p>
+<pre>    Violation: Attempt to open foo for writing</pre>
+<p>The corresponding log entry is of the form:</p>
+<pre>    LIDS: bar (dev 100:32 inode 4119) pid 6027 ppid 1112 uid/gid (0/0) on (null tty) : Attempt to open foo for writing</pre>
+<p>where <i>foo</i> is the path to a protected file and <i>bar</i> is an executable breaching policy. Security logging must be setup in order to see LIDS violations.</p>
+<p>Once the violation has been identified, it may be used to help identify what the offending code is. For downloaded applications the script <tt>sxe_sandbox</tt> and the scripts under <tt>sxe_domains</tt> are the definitive guide for the OS level access granted to a domain. Applications pre-installed in the Qt Extended image should never receive LIDS violations.</p>
+<a name="faq"></a>
+<h2>FAQ</h2>
+<p><b>Q</b>: I'm working with Qt Extended on a desktop environment, I have used the SXE macros and when I run my binary it gives me the error: SXE key has not been set.</p>
+<p><b>A</b>: Ensure that the binary you are running is from the Qt Extended image directory, as this is where the keyed binaries are placed after a <tt>qbuild image</tt></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSerialSocketServer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSerialSocketServer Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSerialSocketServer class provides a server to handle incoming serial-over-sockets connections. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSerialSocketServer&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qserialsocketserver-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qserialsocketserver.html#QSerialSocketServer">QSerialSocketServer</a></b> ( quint16 <i>port</i>, bool <i>localHostOnly</i> = true, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qserialsocketserver.html#dtor.QSerialSocketServer">~QSerialSocketServer</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qserialsocketserver.html#isListening">isListening</a></b> () const</li>
+<li><div class="fn"/>quint16 <b><a href="qserialsocketserver.html#port">port</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qserialsocketserver.html#incoming">incoming</a></b> ( QSerialSocket * <i>socket</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSerialSocketServer class provides a server to handle incoming serial-over-sockets connections.</p>
+<p>As each connection arrives, the <a href="qserialsocketserver.html#incoming">incoming</a>() signal is emitted with a <a href="qserialsocket.html">QSerialSocket</a> instance as its argument.</p>
+<p>See also <a href="qserialsocket.html">QSerialSocket</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSerialSocketServer"></a>QSerialSocketServer::QSerialSocketServer ( <a href="qtglobal.html#quint16-typedef">quint16</a> <i>port</i>, bool <i>localHostOnly</i> = true, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a new serial-over-sockets server, bound to <i>port</i>, and attach it to <i>parent</i>. If <i>localHostOnly</i> is true (the default), then the socket will only be accessible from applications on the same host.</p>
+<h3 class="fn"><a name="dtor.QSerialSocketServer"></a>QSerialSocketServer::~QSerialSocketServer ()</h3>
+<p>Destroy this serial-over-sockets server.</p>
+<h3 class="fn"><a name="incoming"></a>void QSerialSocketServer::incoming ( <a href="qserialsocket.html">QSerialSocket</a> * <i>socket</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when an incoming connection is detected. The session is represented by <i>socket</i>.</p>
+<h3 class="fn"><a name="isListening"></a>bool QSerialSocketServer::isListening () const</h3>
+<p>Returns true if this server was able to listen on the specified port number when it was constructed; otherwise returns false.</p>
+<h3 class="fn"><a name="port"></a><a href="qtglobal.html#quint16-typedef">quint16</a> QSerialSocketServer::port () const</h3>
+<p>Returns the port number that this serial-over-sockets server is bound to.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

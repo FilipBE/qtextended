@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDPluginFactory Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDPluginFactory Class Reference</h1>
+<p>The QDPluginFactory class lets multiple plugins exist in a single file. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDPluginFactory&gt;</pre><p>Inherits <a href="foo/../../qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qdpluginfactory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdpluginfactory.html#QDPluginFactory">QDPluginFactory</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qdpluginfactory.html#dtor.QDPluginFactory">~QDPluginFactory</a></b> ()</li>
+<li><div class="fn"/>virtual QDPlugin * <b><a href="qdpluginfactory.html#create">create</a></b> ( const QString &amp; <i>key</i> ) = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qdpluginfactory.html#executableName">executableName</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QStringList <b><a href="qdpluginfactory.html#keys">keys</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="foo/../../qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="foo/../../qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="foo/../../qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="foo/../../qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="foo/../../qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="foo/../../qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="foo/../../qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="foo/../../qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDPluginFactory class lets multiple plugins exist in a single file.</p>
+<p>Use of the QDPluginFactory should be automatic. You should not use this direcly but instead use the <a href="qdplugindefs-h.html#QD_REGISTER_PLUGIN">QD_REGISTER_PLUGIN</a>() macro which will append your plugin to the list available from the current file.</p>
+<p>See <a href="qdautoplugin-cpp.html">qdautoplugin.cpp</a> for the implementation used by the build system.</p>
+<p>See also <a href="qdplugin.html">QDPlugin</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDPluginFactory"></a>QDPluginFactory::QDPluginFactory ( <a href="foo/../../qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a <a href="qdpluginfactory.html">QDPluginFactory</a> with <i>parent</i> as the owning <a href="foo/../../qobject.html">QObject</a>.</p>
+<h3 class="fn"><a name="dtor.QDPluginFactory"></a>QDPluginFactory::~QDPluginFactory ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="create"></a><a href="qdplugin.html">QDPlugin</a> * QDPluginFactory::create ( const <a href="foo/../../qstring.html">QString</a> &amp; <i>key</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Create a plugin instance based on the <i>key</i>.</p>
+<h3 class="fn"><a name="executableName"></a><a href="foo/../../qstring.html">QString</a> QDPluginFactory::executableName () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the executable name of the plugin file. This is typically supplied by the build system in the QTOPIA_TARGET macro.</p>
+<h3 class="fn"><a name="keys"></a><a href="foo/../../qstringlist.html">QStringList</a> QDPluginFactory::keys () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return a list of identifiers that can be passed to the create function.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

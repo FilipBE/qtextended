@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Enablers: Interprocess Communication (IPC): Data Sharing</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Enablers: Interprocess Communication (IPC): Data Sharing<br><small>Functional Description</small></h1><p>Qt Extended Data Sharing (QDS) provides an API to efficiently share and process data between applications, and provides mechanisms for finding and interacting with applications which provide desired QDS services.  
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-414">Data Sharing</a>
+</ul><h3><a name=QTOPIA-414>Data Sharing</a></h3>
+<p>Qt Extended Data Sharing (QDS) provides an API to efficiently share and process data between applications, and provides mechanisms for finding and interacting with applications which provide desired QDS services. For example an application may want to display a street map for a location, instead of doing the conversion itself the application can search for a QDS service which takes a street address and returns an image of the street map.
+
+<p>QDS is a form of remote procedure call, layered on top of Qt Extended services, which is optimized for data processing and sharing. QDS encapsulates data into a typed data object (QDSData) which is provided with the request, the response or both. QDS models the procedure call as an action. Actions are invoked in applications to request a service from an application which provides a QDS service. The provider then handles the action request and responds with any data.</p>
+
+<p>QDS allows applications to share data in an efficient manner. Although it is similar to QDL, it differs in that the data is not application specific, and can therefore be rendered by any application efficiently.</p>
+
+<p>The elements of QDS are as follows:</p>
+
+<ul>
+	<li><b>Client Application</b> - application which wishes to share data from, or modify data in, another application.</li>
+	<li><b>Source Application</b> - application which provides one or more QDS services.</li>
+	<li><b>QDS Database</b> - The central repository for shared data. For the <b>core phase</b> the database stores the data alongside a MIME type using a QUid as the key. In the <b>extended phase</b> a reference count is included for each entry.</li>
+</ul>
+
+
+<p>QDS operates in a manner similar to QDL, in that it uses QCop messages to request and receive shared data. The difference is that the client application receives a key which locates the data in the QDS database instead of an exact copy of the data. This mechanism is more efficient as storing the data in a central location reduces duplication and allows the data to be easily updated and managed.</p>
+
+<p>It is impossible for QDS to impose certain behavior as it is application specific, this includes:</p>
+
+<ul>
+	<li><b>How the client selects the source application</b> - In some cases, the source application to choose is obvious, e.g. user wishes to add a photo to a contact, but in other scenarios it is less obvious. It is up to the client application to decide how this is done.</li>
+	<li><b>How the source application allows the user to select the data source</b> - Typically the source application will decide how to present the available data to the user based off the <tt>mimetype</tt> in the <tt>requestData</tt> message.</li>
+	<li><b>How the source application stores the QUids of shared data</b> - Ideally a source application associates the <span class="nobr"><a href="quniqueid.html">QUniqueId<sup></sup></a></span> with the data source, then if another request is made for the same data, only one entry is needed in the QDS database for the data item.</li>
+	<li><b>How the client application stores the QUids of shared data</b> - There are no requirements on how the client stores the <span class="nobr"><a href="quniqueid.html">QUniqueId<sup></sup></a></span>.</li>
+	<li><b>How the client application renders the data</b></li>
+</ul>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

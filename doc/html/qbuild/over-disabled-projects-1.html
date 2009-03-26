@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Disabled Projects</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Disabled Projects<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#project-types">Project Types</a></li>
+<ul><li><a href="#subdirs">Subdirs</a></li>
+<li><a href="#enabled-projects">Enabled Projects</a></li>
+<li><a href="#soft-disabled-projects">Soft-disabled Projects</a></li>
+<li><a href="#disabled-projects">Disabled Projects</a></li>
+</ul>
+<li><a href="#dependencies">Dependencies</a></li>
+<ul><li><a href="#depending-on-an-enabled-project">Depending on an enabled project</a></li>
+<li><a href="#depending-on-a-soft-disabled-project">Depending on a soft-disabled project</a></li>
+<li><a href="#depending-on-a-disabled-project">Depending on a disabled project</a></li>
+</ul>
+</ul>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>There are 2 types of disabled projects and the logic surrounding them can be confusing. This document attempts to make this clear by showing how the rules in related projects are connected.</p>
+<a name="project-types"></a>
+<h3>Project Types</h3>
+<a name="subdirs"></a>
+<h4>Subdirs</h4>
+<p>To accomodate subdirectories there are 2 derived rule names. There is <i>sub_&lt;rule&gt;</i>, which is used in a project and connects to the <i>&lt;rule&gt;_sub</i> rule in every subdirectory project. All of these are handled in the same way but for clarity this document will focus on the default rule.</p>
+<p>This image shows how the project's <i>default</i> rule is connected to the <i>sub_default</i> rule which is connected to the <i>default_sub</i> rule in Project 2. The image also demonstrates how the <i>image</i> rule uses the same logic.</p>
+<p align="center"><img src="images/dp_subdirs.png" /></p><a name="enabled-projects"></a>
+<h4>Enabled Projects</h4>
+<p>Eabled projects can be built directly and via subdirs.</p>
+<p align="center"><img src="images/dp_enabled.png" /></p><p>In this case, it does not matter if the project is built manually or via subdirs because the <i>default_sub</i> rule is connected to the <i>default</i> rule.</p>
+<p>This project also demonstrates the <i>check_enabled</i> rule, which comes into play when a dependency exists.</p>
+<a name="soft-disabled-projects"></a>
+<h4>Soft-disabled Projects</h4>
+<p>A project can be soft-disabled. That is, it does not build automatically but can still be built manually. The most common way to become soft-disabled is to have no entry in the PROJECTS variable.</p>
+<p align="center"><img src="images/dp_soft_disabled.png" /></p><p>As can be seen, this is virtually the same as an enabled project. The difference is that the <i>default_sub</i> rule does not cause the project to be built. By default it does nothing at all but if you pass <tt>-disabled</tt> it will print a message explaining why the project has been disabled. The <i>check_enabled</i> rule will also print a message explaining that the project is normally disabled so that if you build it manally or via dependency you will still be able to see that this is not an explicitly requested project.</p>
+<a name="disabled-projects"></a>
+<h4>Disabled Projects</h4>
+<p>A disabled project cannot be built. A project that depends on a disabled project will also be disabled.</p>
+<p align="center"><img src="images/dp_disabled.png" /></p><p>As with a soft-disabled project, the <i>default_sub</i> rule does not cause an error. However the <i>default</i> and <i>check_enabled</i> rules both cause an error.</p>
+<a name="dependencies"></a>
+<h3>Dependencies</h3>
+<p>The <i>check_enabled</i> rule ensures that the project has not been disabled.</p>
+<a name="depending-on-an-enabled-project"></a>
+<h4>Depending on an enabled project</h4>
+<p align="center"><img src="images/dp_dep_enabled.png" /></p><p>The green, dashed lines show how the projects' rules are caused to run.</p>
+<p>Not shown here are the dependencies between the rules in the two projects. These dependencies are created by the build system to ensure that jobs are performed in the correct order (eg. you need to link a library before you can link an application to it).</p>
+<a name="depending-on-a-soft-disabled-project"></a>
+<h4>Depending on a soft-disabled project</h4>
+<p align="center"><img src="images/dp_dep_soft_disabled.png" /></p><p>The subdirs project does not see project 2 but because project 1 depends on it, the build system has added a dependency so that it can be built.</p>
+<a name="depending-on-a-disabled-project"></a>
+<h4>Depending on a disabled project</h4>
+<p align="center"><img src="images/dp_dep_disabled.png" /></p><p>Project 1 was disabled for depending on project 2. However it's not clear from this image how that came to be so the following image is also useful. It shows the state when the build system discovers the disabled project.</p>
+<p align="center"><img src="images/dp_dep_disabled2.png" /></p><p>As with a soft-disabled project, the subdirs project does not see project 2. Project 1 depends on project 2 but the <i>check_enabled</i> rule will cause an error. This is why the first project is also disabled.</p>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>notesdemo.cpp Example File (content/notesdemo/notesdemo.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">notesdemo.cpp Example File<br /><span class="small-subtitle">content/notesdemo/notesdemo.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;notesdemo.h&quot;
+    #include &lt;QStackedLayout&gt;
+    #include &lt;QDocumentSelector&gt;
+    #include &lt;QTextEdit&gt;
+    #include &lt;QTextDocument&gt;
+    #include &lt;QTimeString&gt;
+    #include &lt;QtDebug&gt;
+
+<span class="comment">    /*!
+        \class NotesDemo
+        \brief The NotesDemo application is a simple text editor demonstrating the use of a QDocumentSelector.
+
+        It is comprised of a QDocumentSelector and a QTextEdit in a dialog with a stacked layout so only
+        one widget is visible at a time.  The document selector is initially visible and selecting a document
+        or creating a new document will display the document in the text editor.  Accepting or canceling the
+        editor will return to the document selector, saving the document if it was accepted, and accepting or
+        canceling the document selector will exit the application.
+    */</span>
+
+<span class="comment">    /*!
+        Constructs a NotesDemo dialog which is a child of \a parent and has the given window
+        \a flags.
+     */</span>
+    NotesDemo::NotesDemo( QWidget *parent, Qt::WindowFlags flags )
+        : QDialog( parent, flags )
+    {
+        <span class="comment">// Create a new document selector which lists documents with the MIME type text/plain</span>
+        <span class="comment">// sorted so the most recently edited documents appear first.</span>
+        documentSelector = new QDocumentSelector;
+
+        documentSelector-&gt;setFilter( QContentFilter::mimeType( &quot;text/plain&quot; ) );
+        documentSelector-&gt;setSortMode( QDocumentSelector::ReverseChronological );
+
+        <span class="comment">// Enable the new document option so a 'New' document selection appears at the start of the</span>
+        <span class="comment">// documents list and in the context menu.</span>
+        documentSelector-&gt;enableOptions( QDocumentSelector::NewDocument );
+
+        <span class="comment">// Connect to the newSelected() and documentSelected() signal so we're notified when the user</span>
+        <span class="comment">// selects a document.</span>
+        connect( documentSelector, SIGNAL(newSelected()),
+                 this, SLOT(newDocument()) );
+        connect( documentSelector, SIGNAL(documentSelected(QContent)),
+                 this, SLOT(openDocument(QContent)) );
+
+        <span class="comment">// Construct the text editor widget.</span>
+        editor = new QTextEdit;
+
+        <span class="comment">// Create a new stacked layout and add the document selector and text editor widgets to it.</span>
+        <span class="comment">// As the layout is given the dialog as a parent it is automatically set as the layout for</span>
+        <span class="comment">// the dialog, and the widgets added to it are re-parented to the dialog.  The document</span>
+        <span class="comment">// will be the initial widget shown as it was added to the layout first.</span>
+        layout = new QStackedLayout( this );
+
+        layout-&gt;addWidget( documentSelector );
+        layout-&gt;addWidget( editor );
+    }
+
+<span class="comment">    /*!
+        Creates a new text document and displays the text editor.
+    */</span>
+    void NotesDemo::newDocument()
+    {
+        <span class="comment">// Set the current document to a new QContent, and set it's name and type.</span>
+        <span class="comment">// We're just using the time and date for the name but another application</span>
+        <span class="comment">// may want to prompt the user for a name, or use the first bit of text in</span>
+        <span class="comment">// the document.</span>
+        currentDocument = QContent();
+
+        currentDocument.setName( &quot;Note &quot; + QTimeString::localYMDHMS( QDateTime::currentDateTime() ) );
+        currentDocument.setType( &quot;text/plain&quot; );
+
+        <span class="comment">// Display the editor.</span>
+        layout-&gt;setCurrentWidget( editor );
+    }
+
+<span class="comment">    /*!
+        Opens a text \a document selected from the QDocumentSelector and displays the text editor.
+    */</span>
+    void NotesDemo::openDocument( const QContent &amp;document )
+    {
+        <span class="comment">// Sets the current document to the one selected.</span>
+        currentDocument = document;
+
+        <span class="comment">// Read in the text from the document, if the read is successful display the text editor.</span>
+        if ( readContent( editor-&gt;document(), &amp;currentDocument ) ) {
+            layout-&gt;setCurrentWidget( editor );
+        }
+    }
+
+<span class="comment">    /*!
+        Closes the currently displayed widget.  If that is editor widget and the \a result
+        is QDialog::Accepted the changes made in the editor will be saved.
+
+        Closing the editor widget will return the document selector to the display, and closing
+        the document selector will close the application.
+    */</span>
+    void NotesDemo::done( int result )
+    {
+        if ( layout-&gt;currentWidget() == editor ) {
+            <span class="comment">// The current widget is the editor so finish editing the document and return to</span>
+            <span class="comment">// the document selector. If the dialog was accepted write the changes to the</span>
+            <span class="comment">// document, and commit the document QContent.</span>
+            if ( result == QDialog::Accepted ) {
+                if ( !writeContent(editor-&gt;document(), &amp;currentDocument ) ) {
+                    qWarning() &lt;&lt; &quot;Writing the content failed&quot;;
+                } else if ( !currentDocument.commit() ) {
+                    qWarning() &lt;&lt; &quot;Committing the new content failed&quot;;
+                }
+            }
+
+            editor-&gt;document()-&gt;clear();
+
+            layout-&gt;setCurrentWidget( documentSelector );
+        } else {
+            <span class="comment">// The current widget is the document selector, so close the dialog and the application.</span>
+            QDialog::done( result );
+        }
+    }
+
+<span class="comment">    /*!
+        Reads the contents of the text document \a content into \a document.
+
+        Returns true if the read was successful and false otherwise.
+    */</span>
+    bool NotesDemo::readContent( QTextDocument *document, QContent *content )
+    {
+        <span class="comment">// Attempt to open the content in read-only mode.  If the open succeeds QContent</span>
+        <span class="comment">// will construct a new I/O device and return a pointer to it, the caller takes</span>
+        <span class="comment">// ownership of the I/O device and is responsible for deleting it.</span>
+        QIODevice *ioDevice = content-&gt;open( QIODevice::ReadOnly );
+        if ( !ioDevice ) {
+            qWarning() &lt;&lt; &quot;Could not open the new content object to read from!!&quot;;
+            return false;
+        }
+        QByteArray bytes = ioDevice-&gt;readAll();
+
+        <span class="comment">// Convert the string from an 8-bit ASCII byte array and set it as the plain text</span>
+        <span class="comment">// content of the document.</span>
+        document-&gt;setPlainText( QString::fromAscii( bytes ) );
+
+        <span class="comment">// Close the I/O device and destroy it.</span>
+        ioDevice-&gt;close();
+        delete ioDevice;
+
+        return true;
+    }
+
+<span class="comment">    /*!
+        Writes the contents of \a document to the text document \a content.  It is left up to the
+        calling code to \l {QContent::commit()}{commit} the changes in \a content to the document
+        system.
+
+        Returns true if the write was successful and false otherwise.
+    */</span>
+    bool NotesDemo::writeContent( QTextDocument *document, QContent *content )
+    {
+        <span class="comment">// Attempt to open the content in write-only mode.  If the open succeeds QContent</span>
+        <span class="comment">// will construct a new I/O device and return a pointer to it, the caller takes</span>
+        <span class="comment">// ownership of the I/O device and is responsible for deleting it.</span>
+        QIODevice *ioDevice = content-&gt;open( QIODevice::WriteOnly );
+        if ( !ioDevice ) {
+            qWarning() &lt;&lt; &quot;Could not open the new content object to write to!!&quot;;
+            return false;
+        }
+
+        <span class="comment">// Gets the plain text content of the text document and converts it to an 8-bit</span>
+        <span class="comment">// ASCII byte array before writing it to the I/O device.</span>
+        <span class="comment">// (This assumes that the notes are short enough to fit into memory. For longer</span>
+        <span class="comment">// documents, use QTextDocument::begin(), QTextDocument::end() and QTextDocument::findBlock(int).)</span>
+        int bytesWritten = ioDevice-&gt;write( document-&gt;toPlainText().toAscii() );
+
+        <span class="comment">// Close the I/O device and delete it.</span>
+        ioDevice-&gt;close();
+        delete ioDevice;
+
+        if ( bytesWritten &lt; 0 ) {
+            qWarning() &lt;&lt; &quot;Error while trying to create a new notes object!!&quot;;
+            return false;
+        } else {
+            return true;
+        }
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

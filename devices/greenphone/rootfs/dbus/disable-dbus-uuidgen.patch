@@ -1,0 +1,35 @@
+--- dbus-1.0.2/tools/Makefile.am	2006-12-12 05:21:26.000000000 +1000
++++ dbus-1.0.2-greenphone/tools/Makefile.am	2008-10-21 10:36:28.000000000 +1000
+@@ -2,7 +2,7 @@
+ 
+ INCLUDES=-I$(top_srcdir) $(DBUS_CLIENT_CFLAGS) $(DBUS_X_CFLAGS) -DDBUS_LOCALEDIR=\"@EXPANDED_DATADIR@/locale\" -DDBUS_COMPILATION -DDBUS_DAEMONDIR=\"@DBUS_DAEMONDIR@\" -DDBUS_MACHINE_UUID_FILE=\""$(localstatedir)/lib/dbus/machine-id"\"
+ 
+-bin_PROGRAMS=dbus-send dbus-monitor dbus-launch dbus-cleanup-sockets dbus-uuidgen
++bin_PROGRAMS=dbus-send dbus-monitor dbus-launch dbus-cleanup-sockets
+ 
+ dbus_send_SOURCES=				\
+ 	dbus-print-message.c			\
+@@ -22,22 +22,16 @@
+ dbus_cleanup_sockets_SOURCES=			\
+ 	dbus-cleanup-sockets.c
+ 
+-dbus_uuidgen_SOURCES=				\
+-	dbus-uuidgen.c
+-
+ dbus_send_LDADD= $(top_builddir)/dbus/libdbus-1.la $(DBUS_CLIENT_LIBS)
+ dbus_send_LDFLAGS=@R_DYNAMIC_LDFLAG@
+ 
+ dbus_monitor_LDADD= $(top_builddir)/dbus/libdbus-1.la $(DBUS_CLIENT_LIBS)
+ dbus_monitor_LDFLAGS=@R_DYNAMIC_LDFLAG@
+ 
+-dbus_uuidgen_LDADD= $(top_builddir)/dbus/libdbus-1.la $(DBUS_CLIENT_LIBS)
+-dbus_uuidgen_LDFLAGS=@R_DYNAMIC_LDFLAG@
+-
+ dbus_launch_LDADD= $(DBUS_X_LIBS) $(DBUS_CLIENT_LIBS)
+ dbus_launch_LDFLAGS=@R_DYNAMIC_LDFLAG@
+ 
+-man_MANS = dbus-send.1 dbus-monitor.1 dbus-launch.1 dbus-cleanup-sockets.1 dbus-uuidgen.1
++man_MANS = dbus-send.1 dbus-monitor.1 dbus-launch.1 dbus-cleanup-sockets.1
+ EXTRA_DIST = $(man_MANS) run-with-tmp-session-bus.sh
+ CLEANFILES = 				\
+ 	run-with-tmp-session-bus.conf

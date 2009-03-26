@@ -1,0 +1,178 @@
+diff -Nur diff/Ilib-1.1.9/lib/IFileType.c Ilib-1.1.9/lib/IFileType.c
+--- diff/Ilib-1.1.9/lib/IFileType.c	2004-10-25 03:34:52.000000000 +1000
++++ Ilib-1.1.9/lib/IFileType.c	2007-06-08 11:27:49.000000000 +1000
+@@ -71,7 +71,9 @@
+       *format_return = IFORMAT_BMP;
+     else
+       ret = IInvalidFormat;
+-  } else
++  } else if ( strncmp ( file, "/dev/fb", 7) == 0 ) {
++      *format_return = IFORMAT_LFB;
++  } else  
+     ret = IInvalidFormat;
+ 
+   free ( tmp );
+diff -Nur diff/Ilib-1.1.9/lib/ILFB.c Ilib-1.1.9/lib/ILFB.c
+--- diff/Ilib-1.1.9/lib/ILFB.c	1970-01-01 10:00:00.000000000 +1000
++++ Ilib-1.1.9/lib/ILFB.c	2007-06-08 11:48:44.000000000 +1000
+@@ -0,0 +1,89 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <ctype.h>
++#include <memory.h>
++#include <unistd.h>
++
++#define PROGRAM_NAME	"Ilib"
++
++#include "Ilib.h"
++#include "IlibP.h"
++
++# define FB_WIDTH 240
++#define FB_HEIGHT 320
++
++IError _IReadLFB ( fp, options, image_return )
++FILE *fp;
++IOptions options;
++IImageP **image_return;
++{
++    int framebuffer = fileno(fp);
++
++    unsigned short *fbdata = (unsigned short *)malloc( FB_WIDTH * FB_HEIGHT * sizeof(unsigned short) );
++    lseek(framebuffer, 0, SEEK_SET);
++    read(framebuffer, fbdata, FB_WIDTH * FB_HEIGHT * sizeof(unsigned short));
++
++    IImageP *image = (IImageP *)ICreateImage(FB_WIDTH, FB_HEIGHT, IOPTION_NONE);
++
++    int h, w;
++    for (h = 0; h < FB_HEIGHT; h++) {
++        for (w = 0; w < FB_WIDTH; w++) {
++            unsigned short pixel = fbdata[h*FB_WIDTH + w];
++
++            int r = (pixel >> 8) & 0x00f8;
++            int g = (pixel >> 3) & 0x00fc;
++            int b = (pixel << 3) & 0x00f8;
++
++            _ISetPointRGB(image, w, h, r, g, b);
++        }
++    }
++    
++    free(fbdata);
++
++    *image_return = image;
++
++    return INoError;
++}
++
++IError _IWriteLFB ( fp, image, options )
++FILE *fp;
++IImageP *image;
++IOptions options;
++{
++    int size = image->width * image->height;
++
++    unsigned short *fbdata = (unsigned short *)malloc( size * sizeof(unsigned short) );
++    memset( fbdata, '\0', size * sizeof(unsigned short) );
++
++    IColorP colour;
++    int h, w;
++    for ( h = 0; h < image->height; h++ ) {
++        for ( w = 0; w < image->width; w++ ) {
++            _IGetPointColor( image, w, h, colour );
++
++            unsigned short pixel = 0;
++            pixel |= (colour.red & 0x00f8) << 8;
++            pixel |= (colour.green & 0x00fc) << 3;
++            pixel |= (colour.blue & 0x00f8) >> 3;
++
++            fbdata[h*image->width + w] = pixel;
++        }
++    }
++
++    int framebuffer = fileno(fp);
++
++    if (image->height == FB_HEIGHT && image->width == FB_WIDTH) {
++        lseek(framebuffer, 0, SEEK_SET);
++        write(framebuffer, fbdata, size * sizeof(unsigned short));
++    } else {
++        for(h = 0; h < image->height; h++) {
++            lseek(framebuffer, ((h+image->top)*FB_WIDTH + image->left) * sizeof(unsigned short), SEEK_SET);
++            write(fileno(fp), fbdata + h * image->width, image->width * sizeof(unsigned short));
++        }
++    }
++
++    free(fbdata);
++
++    return INoError;
++}
++
+diff -Nur diff/Ilib-1.1.9/lib/Ilib.h Ilib-1.1.9/lib/Ilib.h
+--- diff/Ilib-1.1.9/lib/Ilib.h	2004-10-26 07:20:38.000000000 +1000
++++ Ilib-1.1.9/lib/Ilib.h	2007-06-05 12:46:39.000000000 +1000
+@@ -98,9 +98,10 @@
+   IFORMAT_XBM = 5,
+   IFORMAT_PNG = 6,
+   IFORMAT_JPEG = 7,
+-  IFORMAT_BMP = 8
++  IFORMAT_BMP = 8,
++  IFORMAT_LFB = 9
+ } IFileFormat;
+-#define INUM_FORMATS	9
++#define INUM_FORMATS	10
+ 
+ /*
+ ** Line drawing styles.
+diff -Nur diff/Ilib-1.1.9/lib/IlibP.h Ilib-1.1.9/lib/IlibP.h
+--- diff/Ilib-1.1.9/lib/IlibP.h	2004-10-26 06:51:08.000000000 +1000
++++ Ilib-1.1.9/lib/IlibP.h	2007-06-05 08:56:41.000000000 +1000
+@@ -206,6 +206,22 @@
+ #endif
+ );
+ 
++IError _IReadLFB (
++#ifndef _NO_PROTO
++  FILE *fp,
++  IOptions options,
++  IImageP **image_return
++#endif
++);
++
++IError _IWriteLFB (
++#ifndef _NO_PROTO
++  FILE *fp,
++  IImageP *image,
++  IOptions options
++#endif
++);
++
+ typedef struct {
+   char *name;
+   IError (*read_func) (
+@@ -244,6 +260,7 @@
+   { /* IFORMAT_JPEG */ "JPEG", NULL, NULL, 24, 0 },
+ #endif
+   { /* IFORMAT_BMP */ "BMP", _IReadBMP, NULL, 24, 0 },
++  { /* IFORMAT_LFB */ "LFB", _IReadLFB, _IWriteLFB, 24, 0 },
+ };
+ #endif /* IIncludeFileFormats */
+ 
+diff -Nur diff/Ilib-1.1.9/lib/Makefile Ilib-1.1.9/lib/Makefile
+--- diff/Ilib-1.1.9/lib/Makefile	2004-10-26 07:26:47.000000000 +1000
++++ Ilib-1.1.9/lib/Makefile	2007-06-04 15:48:40.000000000 +1000
+@@ -60,7 +65,7 @@
+ 	IErrorStr.o IFileType.o IFlood.o \
+ 	IFillPol.o IFillArc.o IFillCir.o IFillEll.o IFillRec.o \
+ 	IFont.o IFontBDF.o \
+-	IGC.o IBMP.o IGIF.o IImage.o IJPEG.o IPNG.o IPGM.o IPPM.o ITextDim.o IXPM.o
++	IGC.o IBMP.o IGIF.o IImage.o IJPEG.o IPNG.o IPGM.o IPPM.o ITextDim.o IXPM.o ILFB.o
+ 
+ ILIBSOBJS = \
+ 	IArcProp.O IColor.O ICopyImg.O IDrawLin.O \
+@@ -69,7 +74,7 @@
+ 	IErrorStr.O IFileType.O IFlood.O \
+ 	IFillPol.O IFillArc.O IFillCir.O IFillEll.O IFillRec.O \
+ 	IFont.O IFontBDF.O \
+-	IGC.O IBMP.o IGIF.O IImage.O IJPEG.O IPNG.O IPGM.O IPPM.O ITextDim.O IXPM.O
++	IGC.O IBMP.o IGIF.O IImage.O IJPEG.O IPNG.O IPGM.O IPPM.O ITextDim.O IXPM.O ILFB.O
+ 
+ $(ILIB): $(ILIBOBJS) ${HTML}
+ 	  ar -rc $@ $(ILIBOBJS);

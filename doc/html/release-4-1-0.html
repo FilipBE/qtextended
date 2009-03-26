@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.1&#x2e;0 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.1&#x2e;0 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.1&#x2e;0 release is the first exciting release of Qtopia that is based on Qt 4 technology. The main task for this first release has been to port Qtopia 2.x code to work with the new Qt 4 API.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>802.11 Wireless IP support</b><p>The existing functionality has been completely rewritten and new features have been added- in particular support for roaming and rule-based network selection.</p>
+</li>
+<li><b>Appearance</b><p>Usability has been improved, that is:</p>
+<ul>
+<li>currently selected items are highlighted</li>
+<li>the user can choose a display style from the menu bar</li>
+<li>selection is effective immediately so the user receives visual feedback about the choice.</li>
+</ul>
+</li>
+<li><b>Bidirectionality</b><p>Qtopia 4 is able to provide user interfaces that work for right-to-left (RTL) languages, such as Arabic and Hebrew. All user interface elements including text and widgets will support bidirectional layouts.</p>
+</li>
+<li><b>Bluetooth</b><ul>
+<li>Support for GAP, SDAP and OPP profiles.</li>
+<li>GAP support includes authentication and pairing functionality.</li>
+<li>OBEX Object PUSH client implementation.</li>
+<li>OBEX Object Push server implementation.</li>
+<li>Support of Bluetooth Obex VCard send/receive in the <tt>addressbook</tt> application.</li>
+</ul>
+</li>
+<li><b>Calculator</b><p>A separate calculator library has been integrated into the application for simplicity.</p>
+</li>
+<li><b>Call Forwarding</b><p>Improved usability includes:</p>
+<ol type="1">
+<li>allow user to select the type of the call first and then forwarding conditions</li>
+<li>cache forwarding information to reduce waiting time for the user</li>
+<li>suggest a previously used number before displaying <tt>Contacts</tt></li>
+<li>allow user to type number as well as selecting a number from <tt>Contacts</tt></li>
+<li>provide feedback when a provided phone number is not valid.</li>
+</ol>
+</li>
+<li><b>Digital Rights Management</b><p>OMA DRM v1 Forward Lock (FL) compliance is enabled by means of a 3rd-party DRM solution. Files and content subject to Digital Rights Management are able to be transparently (to the user) browsed, launched, moved, deleted and examined for their properties in the same way as other files. File operations for example copy, move, rename will be handled via the <tt>QContentMetaInfo</tt> API and will follow OMA DRM standards for DRM controlled files.</p>
+</li>
+<li><b>Document Management</b><p>The Documents API has been completely rewritten and provides a more sophisticated media management such as playlists, supporting MP3 ID3 tags, EXIF tags in JPEG photos etc.</p>
+</li>
+<li><b>GPRS</b><p>The existing functionality has been largely rewritten and now provides a much better structure and easier debugging facilities.</p>
+</li>
+<li><b>Helix</b><p>An initial integration of Helix has been implemented.</p>
+<p><b>Note:</b></p>
+<ul>
+<li>When Helix is enabled at configure, the Qtopia media player acts as a media server and all sounds are played through it.</li>
+<li>If Helix is not enabled at configure the Qtopia media player will not be present and sounds are played using the Qtopia Core sound server (QSS).</li>
+</ul>
+</li>
+<li><b>Internationalization</b><p>Two new languages have been added, Arabic (ar) and Korean (ko).</p>
+</li>
+<li><b>Internet</b><p>Added routing support, that is, the user can have several internet connections at the same time.</p>
+</li>
+<li><b>Launcher</b><p>Improved modularity by loosening the cohesion between <tt>HomeScreen</tt>, <tt>PhoneLauncher</tt> and <tt>PhoneManager</tt>.</p>
+</li>
+<li><b>Multitasking</b><p>A phone-centric user interface for multitasking is provided. The user is now able to:</p>
+<ol type="1">
+<li>launch another application by pressing the <tt>Home</tt> key to return to home screen without terminating current application.</li>
+<li>switch between previously launched applications by multi-pressing the <tt>Home</tt> key to cycle between all applications and the home screen.</li>
+<li>terminate current application by the normal use of the <tt>Back</tt> button.</li>
+</ol>
+</li>
+<li><b>Music/Videos</b><p>Multimedia applications have been redesigned to use Helix DNA as the basic foundation and to provide playlist support. Improved support and performance can be expected for the following formats:</p>
+<ol type="1">
+<li>AAC and aacPlus</li>
+<li>AMR-NB and AMR-WB</li>
+<li>H.263</li>
+<li>MP3</li>
+<li>MPEG4</li>
+<li>RealAudio and RealVideo</li>
+</ol>
+<p>In addition support for the following streamed formats are expected:</p>
+<ol type="1">
+<li>AAC and aacPlus</li>
+<li>MP3</li>
+<li>RealAudio and RealVideo</li>
+</ol>
+</li>
+<li><b>PIM</b><p>All PIM application now make use of an SQL database for all content.</p>
+</li>
+<li><b>Pictures</b><p>The user can create photo playlists for slideshows and play background music while viewing the slideshow.</p>
+</li>
+<li><b>Plug-ins</b><p>Plug-ins have been redesigned to suit the new Qt plug-in mechanism.</p>
+</li>
+<li><b>Profiles</b><p>Improved support for profiles, that is, selecting, viewing, editing and deleting profiles.</p>
+</li>
+<li><b>Rich Text</b><p>Rich Text support is now available for all user interface strings (labels, etc) and for message (e.g&#x2e; HTML formatted email).</p>
+</li>
+<li><b>SIMToolkit</b><p>Now passes <tt>LAUNCH BROWSER</tt> requests onto the <tt>WebAccess</tt> service.</p>
+</li>
+<li><b>SQL Database</b><p>An SQL database is used for Qtopia features involving permanent storage of data that can be represented as a table of information. This includes the PIM applications, <tt>Categories</tt> and Document system. Using an SQL database improves performance and flexibility of classes requiring permanent storage.</p>
+</li>
+<li><b>Telephony</b><p>Split serial port, AT chat handling, and multiplexing to a separate library.</p>
+</li>
+<li><b>Time</b><p>Date and time formats support localized formats.</p>
+</li>
+<li><b>Device Driver support</b><ul>
+<li>Drivers are now implemented as plug-ins for various reference boards. These can be built as plug-ins or into the QPE static binary in single execution mode.</li>
+<li>All device specific code is now contained in its own directory tree and support for new devices can be add without patching the Qtopia source code.</li>
+<li>Interfaces for <tt>keypad</tt> and <tt>touchscreen</tt> are clearly defined.</li>
+<li>Customers are able to copy their device specific code cleanly and quickly from one package version to the next.</li>
+</ul>
+</li>
+<li><b>Volume control</b><p>More fine-grained control, the user can set different volume levels for ring tones and other sounds.</p>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><tt>Appearance</tt>:<ul>
+<li>Call Screen is not displayed correctly when title bar is not rectangular</li>
+<li>Application missing some images</li>
+</ul>
+</li>
+<li><tt>Calendar</tt>:<ul>
+<li>Cannot edit an event twice in succession.</li>
+<li><tt>Repeat On</tt> group-box shows incorrect radio buttons</li>
+<li>Incorrect default presented in <tt>Repeat</tt> dialog</li>
+<li><tt>Time</tt> entry for an event is prevented</li>
+<li>allows invalid times</li>
+<li><tt>Repeat-Other</tt> dialog displays wrong options</li>
+</ul>
+</li>
+<li><tt>Contacts</tt>:<ul>
+<li>not respecting font size change</li>
+<li><tt>Contact</tt> filtering does not function properly.</li>
+</ul>
+</li>
+<li><tt>Messages</tt>:<ul>
+<li>Sometimes crashes when playing an MMS, when receiving messages or large attachments.</li>
+<li>Deleting messages is too slow</li>
+<li>Fails if a large attachment is downloaded</li>
+<li>User is not notified when an MMS message is received</li>
+</ul>
+</li>
+<li><tt>Tasks</tt>:<ul>
+<li>New Task dialog does not display correctly on <tt>Touchscreen</tt> phone</li>
+<li><tt>Notes</tt> needs to be tapped, or information lost</li>
+</ul>
+</li>
+<li><tt>Touchscreen</tt>:<ul>
+<li><tt>Notes</tt> needs to be tapped, or information lost</li>
+<li>Cannot access some controls on <tt>Touchscreen</tt> Phone</li>
+<li>Can become trapped in <tt>Calendar</tt> in <tt>touchscreen</tt> mode.</li>
+<li>Options widget remains after use</li>
+</ul>
+</li>
+<li><tt>Home/Work</tt>:<ul>
+<li>sub-icons inconsistent</li>
+</ul>
+</li>
+<li><tt>Help Browser</tt>:<ul>
+<li>executes when not commanded to do so</li>
+</ul>
+</li>
+<li><tt>Qtmail</tt>:<ul>
+<li>shows extra folder list window when called to send contact via SMS</li>
+</ul>
+</li>
+<li><tt>libqtopia</tt>:<ul>
+<li>Scrollbars should be turned on for menus.</li>
+</ul>
+</li>
+<li><tt>Words</tt>:<ul>
+<li>Input widgets do not emit <tt>textChanged</tt> messages in response to changes in composing text</li>
+</ul>
+</li>
+<li><tt>Call Options</tt>:<ul>
+<li>Cell broadcast behavior incorrect</li>
+</ul>
+</li>
+<li>IPC:<ul>
+<li>QPE/System channel contains too many messages and makes it hard to define <tt>sxe</tt> domains correctly</li>
+</ul>
+</li>
+<li><tt>DocAPI</tt>:<ul>
+<li>Server asserts if a directory that the <tt>DocAPI</tt> is scanning is removed</li>
+</ul>
+</li>
+<li><tt>Pictures</tt>:<ul>
+<li>Cannot use context menu options in list</li>
+</ul>
+</li>
+<li><tt>Speed</tt> Dial:<ul>
+<li>No feedback on unset <tt>speeddial</tt> key</li>
+</ul>
+</li>
+<li><tt>Add/remove software</tt>:<ul>
+<li>Selecting the package info panel twice crashes Package Manager</li>
+</ul>
+</li>
+<li><tt>Call Options</tt>:<ul>
+<li>Call Waiting settings don't stick</li>
+</ul>
+</li>
+<li><tt>Image Viewer</tt>:<ul>
+<li>Incorrect behavior after a Full Screen action and close</li>
+</ul>
+</li>
+<li><tt>Ring profiles</tt>:<ul>
+<li>Cannot browse available ring tones in ring profiles</li>
+</ul>
+</li>
+<li><tt>Full screen handwriting</tt>:<ul>
+<li>Impossible to click-and-drag through IM on some hardware</li>
+</ul>
+</li>
+<li><tt>pngscale</tt>:<ul>
+<li>doesn't handle some images correctly</li>
+</ul>
+</li>
+<li><tt>QVFb</tt>:<ul>
+<li>crashes when running on Centos 3.6 and Redhat 9</li>
+</ul>
+</li>
+<li><tt>VCards</tt>:<ul>
+<li>cannot be sent correctly via SMS</li>
+</ul>
+</li>
+<li><tt>Helixplayer</tt>:<ul>
+<li>incorrectly pops up at startup in <tt>Single</tt> <tt>Exec</tt> mode</li>
+</ul>
+</li>
+<li>Incorrect focus on recipient line edit</li>
+<li>Cannot playback GSM-encoded <tt>.wav</tt> files</li>
+<li>Composed text is not cleared when <tt>cleared</tt> called</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

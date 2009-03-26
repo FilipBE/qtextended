@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ExeApplicationLauncher Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ExeApplicationLauncher Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The ExeApplicationLauncher class simplifies implementing <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> for process based applications. <a href="#details">More...</a></p>
+<pre>    #include &lt;ExeApplicationLauncher&gt;</pre><p>Inherits <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> and <a href="applicationipcrouter-routedestination.html">ApplicationIpcRouter::RouteDestination</a>.</p>
+<p>Inherited by <a href="quickexeapplicationlauncher.html">QuickExeApplicationLauncher</a> and <a href="simpleexeapplicationlauncher.html">SimpleExeApplicationLauncher</a>.</p>
+<ul>
+<li><a href="exeapplicationlauncher-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="exeapplicationlauncher.html#ExeApplicationLauncher">ExeApplicationLauncher</a></b> ()</li>
+<li><div class="fn"/>virtual <b><a href="exeapplicationlauncher.html#dtor.ExeApplicationLauncher">~ExeApplicationLauncher</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>5 public functions inherited from <a href="applicationtypelauncher.html#public-functions">ApplicationTypeLauncher</a></li>
+<li><div class="fn"/>1 public function inherited from <a href="applicationipcrouter-routedestination.html#public-functions">ApplicationIpcRouter::RouteDestination</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="exeapplicationlauncher.html#addStartingApplication">addStartingApplication</a></b> ( const QString &amp; <i>app</i>, QProcess * <i>proc</i> )</li>
+<li><div class="fn"/>bool <b><a href="exeapplicationlauncher.html#isRunning">isRunning</a></b> ( const QString &amp; <i>app</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>3 signals inherited from <a href="applicationtypelauncher.html#signals">ApplicationTypeLauncher</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ExeApplicationLauncher class simplifies implementing <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> for process based applications.</p>
+<p>The ExeApplicationLauncher is helpful for writing <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> implementations that are slight variations on the simple executable process model.</p>
+<p><b>Note:</b> This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>Many application types are just different ways of starting a <a href="qtopiaapplication.html">QtopiaApplication</a> application. For example, the <a href="simpleexeapplicationlauncher.html">SimpleExeApplicationLauncher</a> and the <a href="quickexeapplicationlauncher.html">QuickExeApplicationLauncher</a> types both start external processes that instantiate a <a href="qtopiaapplication.html">QtopiaApplication</a> instance. The ExeApplicationLauncher encapsulates the commonality between these types of application launchers.</p>
+<p>It is the responsibility of derived classes to respond to the <a href="applicationtypelauncher.html#canLaunch">canLaunch</a>() and <a href="applicationtypelauncher.html#launch">launch</a>() methods of the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> interface. Once the derived class has brung a process to the state where it is launching, it should call <a href="exeapplicationlauncher.html#addStartingApplication">addStartingApplication</a>() to pass ownership of the process to the ExeApplicationLauncher. The ExeApplicationLauncher class operates under the following assumptions:</p>
+<p><i>The</i> application will send an <tt>available(QString,int)</tt> message to the <tt>QPE/QtopiaApplication</tt> channel when it has completed startup. <i>The</i> process, and thus the <a href="qprocess.html">QProcess</a> instance, will terminate normally when it is done.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="ExeApplicationLauncher"></a>ExeApplicationLauncher::ExeApplicationLauncher ()</h3>
+<p>Construct a new <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a> instance.</p>
+<h3 class="fn"><a name="dtor.ExeApplicationLauncher"></a>ExeApplicationLauncher::~ExeApplicationLauncher ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroy the <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a> instance.</p>
+<h3 class="fn"><a name="addStartingApplication"></a>void ExeApplicationLauncher::addStartingApplication ( const <a href="qstring.html">QString</a> &amp; <i>app</i>, <a href="qprocess.html">QProcess</a> * <i>proc</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Add a new process, <i>proc</i>, for the applications <i>app</i> to the <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a>. The <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a> will take ownership of the process.</p>
+<h3 class="fn"><a name="isRunning"></a>bool ExeApplicationLauncher::isRunning ( const <a href="qstring.html">QString</a> &amp; <i>app</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Returns true if <i>app</i> is already being managed by the <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a> (that is, <a href="exeapplicationlauncher.html#addStartingApplication">addStartingApplication</a>() has been called), otherwise returns false.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

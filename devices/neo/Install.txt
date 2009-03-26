@@ -1,0 +1,90 @@
+Building Qt Extended for the Neo
+
+1. Downloading Qt Extended
+
+Download the Qt Extended open source package (e.g. qt-extended-opensource-src-4.4.1.tar.gz).
+
+	tar xvfz qt-extended-opensource-src-4.4.1.tar.gz
+	cd qt-extended-4.4.1
+	export QPEDIR=$PWD
+
+The device specific information can be found in $QPEDIR/devices/neo.
+
+2. Build instructions
+
+In order to build Qt Extended for the Neo various tools and file systems
+provided by OpenEmbedded are needed. For more information about OpenEmbedded
+refer to http://www.openembedded.org . There are two ways to create a flash
+image for the Neo.
+
+2.1 Building from scratch using OpenEmbedded
+
+This option should be used to build the required rootfs, toolchains and Qt
+Extended using the OpenEmbedded build system. It will build the entire
+distribution from scratch.  To simplify the process $QPEDIR/devices/neo/oe/
+contains a local overlay for OpenEmbedded. It will download, setup and build
+OpenEmbedded and Qt Extended, depending on changes to OpenEmbedded itself.
+For more details on how to use overlays refer to the OpenEmbedded webpage.
+
+2.2 Building Qt Extended only
+
+A root file system and toolchain that have already been prepared for  Qt
+Extended can be downloaded from Qtextended.org.  Choosing this option will 
+significantly reduce the amount of work necessary. However this step also
+assumes that the device has a working kernel already. 
+
+The first step is to unpack the toolchain into /opt/toolchains/arm920t-eabi. 
+Qt Extended's build system will automatically pick it up and use it for cross
+compilation. If the toolchain is located in a different directora,y the script
+$QPEDIR/devices/neo/environment must be edited to reflect the new path.
+
+Configure Qt Extended, confirm license and build Qt Extended for the Neo via
+the following steps:
+
+	cd $QPEDIR
+	./configure -device neo
+	bin/qbuild
+	bin/qbuild image
+
+The result of the build process can be found in $QPEDIR/image.
+
+Unpack the downloaded rootfs:
+
+	cd $QPEDIR
+	mkdir rootfs
+	sudo tar -C rootfs -xvpzf ../neo-baserootfs-gnueabi.tgz
+
+Add the Qt Extended build to the rootfs:
+
+	sudo cp -a ~/build/fic/image/* rootfs/opt/Trolltech/Qtopia
+
+and finally, create the jffs2 file system:
+
+	sudo mkfs.jffs2 --pad=0x700000 -v -o neo-qt-extended-rootfs.jffs2 -e 0x4000 -n -drootfs
+
+
+3. Flashing the device
+
+Flashing the Neo requires the dfu-tool utility. More information about this tool can be 
+found under http://wiki.openmoko.org/wiki/Dfu-util.
+
+
+Detailed instructions on how to flash the device can be found on the Openmoko Wiki 
+(http://wiki.openmoko.org/wiki/Flashing_openmoko#Actually_flashing_things_into_the_device).
+
+
+Hold the AUX button and power on to get to the boot menu (hold power button for a good 
+long 5 seconds) and then plug in the USB.
+
+You might also need to do:
+
+	minicom /dev/ttyACM0
+ 	nand erase rootfs
+
+To flash a kernel: 
+
+	sudo dfu-util -a 3 -R -D <image>
+
+To flash the rootfs such as the one created in step 2.2 (see above): 
+
+ 	sudo dfu-util -a 5 -R -D neo-qt-extended-rootfs.jffs2

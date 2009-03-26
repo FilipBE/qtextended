@@ -1,0 +1,45 @@
+#!/bin/sh
+NEWTYPE=$1
+EXT=$2
+QTOPIA_INSTALL_PREFIX=/opt/Qtopia # set to the -prefix location at install time
+
+if [ -z "$NEWTYPE" -o -z "$EXT" ]
+then
+    echo >&2 "Usage: $0 <mimetype> <extension>"
+    echo >&2 "   eg. $0 application/foobar foo"
+    exit 1
+fi
+
+# Can ash do this? If not, use sed.
+T=${NEWTYPE%/*}
+S=${NEWTYPE#*/}
+
+grep -w '[[:space:]]'$EXT'\>' $QTOPIA_INSTALL_PREFIX/etc/mime.types |
+(
+    read TYPE EXTS
+    if [ -z "$TYPE" ]
+    then
+	if grep -q "^$NEWTYPE[ 	]" $QTOPIA_INSTALL_PREFIX/etc/mime.types || grep -q "^$NEWTYPE$" $QTOPIA_INSTALL_PREFIX/etc/mime.types
+	then
+	    if sed -e '/^'$T"\\/"$S'[ 	]/ s/$/ '$EXT'/' <$QTOPIA_INSTALL_PREFIX/etc/mime.types >$QTOPIA_INSTALL_PREFIX/etc/mime.types.new ||
+	       sed -e '/^'$T"\\/"$S'$/ s/$/		'$EXT'/' <$QTOPIA_INSTALL_PREFIX/etc/mime.types >$QTOPIA_INSTALL_PREFIX/etc/mime.types.new
+	    then
+		mv $QTOPIA_INSTALL_PREFIX/etc/mime.types.new $QTOPIA_INSTALL_PREFIX/etc/mime.types
+		exit 0
+	    else
+		echo >&2 "Internal MIME type update error" 
+		exit 1
+	    fi
+	else
+	    echo "$NEWTYPE		$EXT" >>$QTOPIA_INSTALL_PREFIX/etc/mime.types
+	    exit 0
+	fi
+    elif [ "$TYPE" = "$NEWTYPE" ]
+    then
+	#echo "Already done"
+	exit 0
+    else
+	echo >&2 "$EXT already assigned to $TYPE"
+	exit 1
+    fi
+)

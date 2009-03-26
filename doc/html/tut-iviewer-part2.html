@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Image Viewer Tutorial: Part 2</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Image Viewer Tutorial: Part 2<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="ui-specification"></a>
+<h2>UI Specification</h2>
+<a name="adding-content"></a>
+<h3>Adding Content</h3>
+<a name="creating-the-list-screen"></a>
+<h4>Creating the list screen</h4>
+<p>Before content can be added to the list screen, the first thing to do is to create it in iviewer.</p>
+<p>For every screen added, a function has to be created in the iviewer class for lazy creation.</p>
+<p>File: iviewer.cpp</p>
+<pre>    IViewer::IViewer(QWidget *parent, Qt::WFlags <span class="comment">/*f*/</span>)
+    : QStackedWidget(parent)
+    {
+        _listScreen  = 0;
+        _imageScreen = 0;
+        setWindowTitle(&quot;Image Viewer&quot;);
+    }</pre>
+<p>Don't forget that the _listScreen member must be initialized with 0 in the constructor and added as private to the header file. Now calling the following function in the constructor will set the list screen as the current widget</p>
+<p>File: iviewer.cpp</p>
+<pre>    IViewer::IViewer(QWidget *parent, Qt::WFlags <span class="comment">/*f*/</span>)
+    : QStackedWidget(parent)
+    {
+        ...
+        setCurrentWidget(listScreen());
+        ...
+    }</pre>
+<a name="setup-the-model"></a>
+<h4>Setup the model</h4>
+<p>For the content, the <a href="docsys-overview.html">Qt Extended document system</a>, which provides a very handy way to retrieve our content, should be used.</p>
+<p>File: listscreen.cpp</p>
+<pre>    void ListScreen::setupContent()
+    {
+        _cs  = new QContentSet(QContentFilter::MimeType, &quot;image/png&quot;, this);
+        _csm = new QContentSetModel(_cs, this);
+    }</pre>
+<p>The <a href="qcontentset.html">QContentSet</a> represents a set of <a href="qcontent.html">QContent</a> defined over the mime type &quot;image/png&quot;. The content model is a <a href="qabstractlistmodel.html">QAbstractListModel</a> which could be set directly to the <a href="qlistwidget.html">QListWidget</a>, if the setModel(..&#x2e;) method were not private in <a href="qlistwidget.html">QListWidget</a>. This is done, because the <a href="qlistwidget.html">QListWidget</a> shall only be used with the <a href="qlistwidgetitem.html">QListWidgetItem</a> class. The corresponding view class has to be used in order to use a model. See <a href="model-view-programming.html">model-view programming</a>.</p>
+<p><b>Testing the View class</b> To test, the <a href="qlistwidget.html">QListWidget</a> must be replaced with a <a href="qlistview.html">QListView</a> class everywhere and setModel(_csm) must be added to the ListScreen::setupContent() method. As long as some png files are present in the $HOME/Documents folder, it should show the list of files and their mime type icons. In an imageviewer, thumbnails should be shown rather than mimetype icons. The model will be tweaked later. For now, it is fine to just use the model as a list of Content objects, from which necessary information can be retrieved.</p>
+<a name="populating-the-list"></a>
+<h4>Populating the list</h4>
+<p>To populate the list, the list is first cleared and then filled with data from the content set items. For each content, a <a href="qlistwidgetitem.html">QListWidgetItem</a> is created. The icon for the list item is set based on the content file information. The text of the item is taken from the content name. It provides the image name, without the extension.</p>
+<pre>    void ListScreen::populate()
+    {
+        clear();
+        foreach (QContent c, _cs-&gt;items()) {
+            QListWidgetItem *i = new QListWidgetItem(this);
+            QIcon icon(c.file());
+            i-&gt;setText(c.name());
+            i-&gt;setIcon(icon);
+        }
+        if (count() &gt; 0) {
+            QListWidgetItem *i = item(0);
+            setCurrentItem(i);
+        }
+    }</pre>
+<p>If at least one item populates the list, the first item is set as the current item. The list has a concept of current item and selected items. To ensure that the current item is also the selected item, the selection mode <tt>setSelectionMode(QAbstractItemView::SingleSelection)</tt> is set in a separate setupUi() method, which is called from the constructor. (See <a href="qabstractitemview.html">QAbstractItemView</a>).</p>
+<pre>    void ListScreen::setupUi()
+    {
+        setSelectionMode(QAbstractItemView::SingleSelection);
+        setIconSize(QSize(32,32));
+        connect(this, SIGNAL(activated(QModelIndex)),
+                this, SLOT(onImageActivated(QModelIndex)));
+        createActions();
+        createMenu();
+    }</pre>
+<p>Now it is time for another try. The application should be rebuilt and launched. All png files in the $HOME/Documents folder should appear in the list with a small icon in front. To make the icons larger, <tt>setIconSize(QSize(32,32));</tt>, in the setupUi() method, can be changed to provide icons with a different size.</p>
+<p>The next part will handle some actions..&#x2e;</p>
+<a name="providing-actions-to-the-list-screen"></a>
+<h3>Providing Actions to the list screen</h3>
+<p>From the specification, the list screen shall contain several actions (see <a href="qaction.html">QAction</a>). To add the actions, they first have to be created and then added to the menu (see <a href="qmenu.html">QMenu</a>). The first action will be &quot;Open&quot;. This action needs to be connected to a slot, called &quot;onOpenImage()&quot;, then the slot has to be added to the header file. It is necessary to add <a href="qobject.html#Q_OBJECT">Q_OBJECT</a> to the class for meta object creation.</p>
+<p>File: listscreen.cpp</p>
+<pre>    void ListScreen::createActions()
+    {
+        _openAction = new QAction(&quot;Open&quot;, this);
+        connect(_openAction, SIGNAL(triggered()), this, SLOT(onOpenImage()));
+        _renameAction = new QAction(&quot;Rename&quot;, this);
+        connect(_renameAction, SIGNAL(triggered()), this, SLOT(onRenameImage()));
+        _deleteAction = new QAction(&quot;Delete&quot;, this);
+        connect(_deleteAction, SIGNAL(triggered()), this, SLOT(onDeleteImage()));
+        _showInfoAction = new QAction(&quot;Show Info&quot;, this);
+        connect(_showInfoAction, SIGNAL(triggered()), this, SLOT(onShowInfo()));
+    }</pre>
+<p>In the create menu method, the menu for this screen is retrieved and the created actions are added to this menu. The menu will be the options menu on the screen whenever this screen or any child of this screen has focus. (See <a href="qsoftmenubar.html">QSoftMenuBar</a>).</p>
+<p>File: listscreen.cpp</p>
+<pre>    void ListScreen::createMenu()
+    {
+        QMenu* menu = QSoftMenuBar::menuFor(this);
+        menu-&gt;addAction(_openAction);
+        menu-&gt;addAction(_renameAction);
+        menu-&gt;addAction(_deleteAction);
+        menu-&gt;addAction(_showInfoAction);
+        QSoftMenuBar::setLabel(this, Qt::Key_Back, &quot;&quot;, &quot;Exit&quot;, QSoftMenuBar::AnyFocus);
+    }</pre>
+<p>In the openImage function, we want to open the image that is currently selected. Since there is a mapping between the content model and the list, the current row can be retrieved from the list and used to lookup the row from the model.</p>
+<p>File: listscreen.cpp</p>
+<pre>    void ListScreen::onOpenImage()
+    {
+        openImage(currentIndex().row());
+    }</pre>
+<p>Later, this will be the place where the image screen is opened and the image set.</p>
+<p>The application already has a &quot;Back&quot; softkey, which will exit the application. The title of this soft key can be changed to &quot;Exit&quot; by adding the following line at the end of the <tt>createMenu()</tt> method.</p>
+<pre>        QSoftMenuBar::setLabel(this, Qt::Key_Back, &quot;&quot;, &quot;Exit&quot;, QSoftMenuBar::AnyFocus);</pre>
+<a name="adding-key-select-default-behaviour"></a>
+<h3>Adding Key Select default behaviour</h3>
+<p>In this list screen, it would be nice to open the image directly when the &quot;Select&quot; key (usually the center button on the direction pad) is pressed. There are two options here.</p>
+<ul>
+<li>1. connect to signal <tt>activated(const QModelIndex &amp;)</tt> of the list widget</li>
+<li>2. override the <tt>keyPressed(QKeyEvent *event)</tt> method to intercept the <a href="qt.html#Key-enum">Qt::Key_Select</a> key.</li>
+</ul>
+<p>Both will be described.</p>
+<a name="opening-image-using-signals-and-slots"></a>
+<h3>Opening image using signals and slots</h3>
+<p>In the setupUI method the following line is added:</p>
+<pre>        connect(this, SIGNAL(activated(QModelIndex)),
+                this, SLOT(onImageActivated(QModelIndex)));</pre>
+<p>The signal is emitted, when the select button is pressed. It provides a model index. From the index, the row can be looked up again. So the <tt>onItemActivated(...)</tt> slot method is similar as the <tt>onOpenImage(...)</tt> method.</p>
+<pre>    void ListScreen::onImageActivated(const QModelIndex&amp; index)
+    {
+        openImage(currentIndex().row());
+    }</pre>
+<a name="opening-image-using-key-events"></a>
+<h3>Opening image using key Events</h3>
+<p>As seen previously, the <tt>keyPressed(QKeyEvent)</tt> method has to be override to handle the <a href="qt.html#Key-enum">Qt::Key_Select</a> key. The keyPressed method is defined in the <a href="qwidget.html">QWidget</a> class. There is also the partner method keyReleased. Both take a <a href="qkeyevent.html">QKeyEvent</a> as parameter.</p>
+<pre>    void ListScreen::keyPressEvent(QKeyEvent* event)
+    {
+        switch (event-&gt;key()) {
+        case Qt::Key_Select:
+            onOpenImage();
+            break;
+        default:
+            QListWidget::keyPressEvent(event);
+            break;
+        }
+    }</pre>
+<p>It is important to forward the keyevent to the base class for the other keys, as the <a href="qlistwidget.html">QListWidget</a> needs them.</p>
+<a name="summary"></a>
+<h3>Summary</h3>
+<p>Now, the Image Viewer is a small application, which lists all png files from the content store. It shows the files in a list with their thumbnails. The image can also be identified when &quot;open image&quot; is selected from the menu or via the select key.</p>
+<p>The next step will be the image screen creation. This Image Screen displays the selected image and comes back to the list screen.</p>
+<p><a href="tut-iviewer-part1.html">Prev</a>|<a href="#top">Top</a>|<a href="tut-iviewer-part1.html">Start Page</a>|<a href="tut-iviewer-part3.html">Next</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

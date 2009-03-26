@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>foldermodel.cpp Example File (messagenavigator/foldermodel.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">foldermodel.cpp Example File<br /><span class="small-subtitle">messagenavigator/foldermodel.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;foldermodel.h&quot;
+    #include &lt;QIcon&gt;
+    #include &lt;QMailStore&gt;
+    #include &lt;QMailAccountMessageSet&gt;
+
+    FolderModel::FolderModel(QObject *parent)
+        : QMailMessageSetModel(parent)
+    {
+        <span class="comment">// Add an entry for each account, that will maintain its own tree of folders</span>
+        foreach (const QMailAccountId &amp;id, QMailStore::instance()-&gt;queryAccounts())
+            append(new QMailAccountMessageSet(this, id, true));
+    }
+
+    FolderModel::~FolderModel()
+    {
+    }
+
+    QVariant FolderModel::data(QMailMessageSet* item, int role, int column) const
+    {
+        if (role == Qt::DecorationRole) {
+            if (qobject_cast&lt;QMailAccountMessageSet*&gt;(item)) {
+                <span class="comment">// This item is an account message set</span>
+                return QIcon(&quot;:icon/qtmail/account&quot;);
+            } else {
+                <span class="comment">// This item is a folder message set</span>
+                return QIcon(&quot;:icon/folder&quot;);
+            }
+        } else {
+            return QMailMessageSetModel::data(item, role, column);
+        }
+    }
+<span class="comment">    // end-data</span></pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

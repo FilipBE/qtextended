@@ -1,0 +1,22 @@
+#!/bin/sh
+
+FN=""
+if [ "-f" = "$1" ]; then
+  shift
+  FN=$1
+  shift
+fi
+
+if [ -z "$1" ]; then echo "No date specified"; exit 1; fi
+if WHEN=`date -d "$1" +%s`; then
+  AT=/var/spool/at/$WHEN.$$
+  echo '#!/bin/sh' >$AT.new
+  # reproduce the 'at' execution environment here?
+  /bin/cat $FN >>$AT.new
+  echo 'rm -f $0' >>$AT.new
+  /bin/chmod 755 $AT.new
+  /bin/mv $AT.new $AT
+  echo >/var/spool/at/trigger
+else
+  exit $?
+fi

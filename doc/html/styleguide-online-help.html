@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Style Guide: Online Help</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Style Guide: Online Help<br /><span class="subtitle"></span>
+</h1>
+<a name="purpose"></a>
+<h2>Purpose</h2>
+<p>The purpose of this document is to set out what information the online help for Qt Extended should contain and how that information is to be formatted. This includes the positioning of tags, use of headings and images, and the rules governing when such hyperlinks as <i>See Also</i> should be used.</p>
+<a name="content"></a>
+<h2>Content</h2>
+<p>The Qt Extended help pages are written in a subset of the HTML language.</p>
+<p>The Qt Extended online help system provides the capability to provide context-sensitive help for any screen displayed by the Qt Extended server or by a Qt Extended application. The <tt>QObject::setObjectName()</tt> function should be called when constructing each screen in order to set the name that the Help Browser will use to find the correct help page.</p>
+<p>Each help page should describe the purpose of the corresponding screen and what actions the user can perform on that screen, including the meaning of each menu option. Due to the restricted screen space on most devices, help descriptions should be brief and concise. The main help page for an application will generally also provide links to the pages describing the main screens provided by that application.</p>
+<p>Help pages should be written to be applicable in all cases. If there is something dynamic that would change the documentation, there are a number of ways to use the <a href="help-preprocessor.html">Help Browser Preprocessor</a> to present the correct content. The preprocessor can handle both device-specific content and content that depends on certain boolean properties of a running Qt Extended system.</p>
+<a name="headings"></a>
+<h2>Headings</h2>
+<p>Each help page should include a <tt>title</tt> tag. This title will be displayed in the Qt Extended title bar when the page is being viewed in the Help Browser. As the page title will therefore always be visible to the user, there is no need to include the title in the body of the page.</p>
+<p>Long pages may contain sub-headings, though overly long pages should be divided into smaller pages referenced by hyperlinks from the main topic page.</p>
+<a name="images-and-icons"></a>
+<h2>Images and Icons</h2>
+<p>Images and icons may be used freely in help pages, but each page should generally reference only the following images and icons: &lt;ul&gt; &lt;li&gt;the set of images and icons that belong to that application (i.e&#x2e; those installed by the application's project file at build time),&lt;/li&gt; &lt;li&gt;the set of images and icons that are shared by all applications (i.e&#x2e; those installed by the Qt Extended server's project file at build time), and&gt;/li&gt; &lt;li&gt;the icons provided by the help browser itself (such as the icon for the directional keypad).&lt;/li&gt; &lt;/ul&gt;</p>
+<p>Images and icons are referenced using the same naming scheme that is used in Qt Extended source code. This naming scheme is aware of internationalization. For example:</p>
+<pre>    &lt;img src=&quot;:icon/options&quot;&gt; &lt;/img&gt; Options menu icon
+    &lt;img src=&quot;:icon/i18n/back&quot;&gt; &lt;/img&gt; Back icon used in context bar.  Differs for left-to-right and right-to-left languages.
+    &lt;img src=&quot;:icon/help/dpad&quot;&gt; &lt;/img&gt; Icon for the directional keypad.
+    &lt;img src=&quot;:image/qtopia&quot;&gt; &lt;/img&gt; Qt Extended logo.</pre>
+<p>When writing help text, it is important to remember that the Qt Extended soft-menu bar can display either text labels or icons. Therefore, when referring to the soft-menu bar, help text should include both the text and the icon of the soft-menu item, as shown below.</p>
+<pre>    To abandon the message completely, press &lt;img src=&quot;:icon/options&quot;&gt;&lt;b&gt;Options&lt;/b&gt; and select &lt;b&gt;Cancel&lt;/b&gt;.</pre>
+<p>In some cases, a help author will want to place a space after an image in the help text. To make this work, you must include the whitespace within the image tag, as shown below.</p>
+<pre>    &lt;img src=&quot;:icon/datebook/audible&quot;&gt; &lt;/img&gt; shows that a task has an audible reminder.</pre>
+<a name="layout"></a>
+<h2>Layout</h2>
+<p>This section explains when different terms, methods of sectioning, and images should be used.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Term</th><th>Usage</th></tr></thead>
+<tr valign="top" class="odd"><td>Index</td><td>Applied to a topic page that lists subordinate pages</td></tr>
+<tr valign="top" class="even"><td>See Also</td><td>Used when a topic outside the current one is of direct relevance and does not have an in-text link (in-text links are preferred).</td></tr>
+<tr valign="top" class="odd"><td>Fullstops in lists</td><td>Use a fullstop if the list item is a complete sentence or a significant sentence fragment.</td></tr>
+<tr valign="top" class="even"><td>Hyphenate</td><td>Always hyphenate the following: pop-up, check-box, combo-box,</td></tr>
+<tr valign="top" class="odd"><td>Do not hyphenate</td><td>Do not hyphenate the following: email</td></tr>
+<tr valign="top" class="even"><td>Bold</td><td>Use bold tags for the following: menu options, screen names, key / button names, and fields,</td></tr>
+<tr valign="top" class="odd"><td>Screen or Dialog</td><td>Use the term dialog when referring to a message directed at the user that requires a response (a dialog between device and user) all others are screens (even though they collect input in fields etc).</td></tr>
+<tr valign="top" class="even"><td>Window</td><td>Do not use this term. Instead use the term screen or dialog (see above for clarification).</td></tr>
+</table></p>
+<a name="rules-on-hyperlinks"></a>
+<h2>Rules on Hyperlinks</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Item</th><th>Rule</th></tr></thead>
+<tr valign="top" class="odd"><td>See Also</td><td>This should only be used if the link cannot be placed neatly within the text.</td></tr>
+<tr valign="top" class="even"><td>Back/parent links</td><td>Should not be used since the Qt Extended Help Browser has a <tt>Back</tt> function and since most pages can be reached in a variety of ways (resulting in an unclear return path).</td></tr>
+<tr valign="top" class="odd"><td>Go to</td><td>Avoid using this if possible. Used for main topic pages that can be reached via more than one parent. This does not include links from child pages belonging to another main topic.</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

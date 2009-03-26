@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Node Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Node Class Reference<br /><span class="small-subtitle">(QAtResultParser::Node)<br />[<a href="qtbasemodule.html">QtBaseModule</a>, <a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The Node class provides access to a generic value parsed from an AT command list. <a href="#details">More...</a></p>
+<pre>    #include &lt;<a href="qatresultparser.html">QAtResultParser</a>&gt;</pre><ul>
+<li><a href="qatresultparser-node-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qatresultparser-node.html#Node">Node</a></b> ( const Node &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qatresultparser-node.html#dtor.Node">~Node</a></b> ()</li>
+<li><div class="fn"/>uint <b><a href="qatresultparser-node.html#asFirst">asFirst</a></b> () const</li>
+<li><div class="fn"/>uint <b><a href="qatresultparser-node.html#asLast">asLast</a></b> () const</li>
+<li><div class="fn"/>QList&lt;QAtResultParser::Node&gt; <b><a href="qatresultparser-node.html#asList">asList</a></b> () const</li>
+<li><div class="fn"/>uint <b><a href="qatresultparser-node.html#asNumber">asNumber</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qatresultparser-node.html#asString">asString</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qatresultparser-node.html#isList">isList</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qatresultparser-node.html#isNumber">isNumber</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qatresultparser-node.html#isRange">isRange</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qatresultparser-node.html#isString">isString</a></b> () const</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The Node class provides access to a generic value parsed from an AT command list.</p>
+<p>Instances of this class are returned from the <a href="qatresultparser.html#readList">QAtResultParser::readList</a>() function.</p>
+<p>See also <a href="qatresultparser.html#readList">QAtResultParser::readList</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="Node"></a>Node::Node ( const Node &amp; <i>other</i> )</h3>
+<p>Create a new result list node from <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.Node"></a>Node::~Node ()</h3>
+<p>Destruct this node.</p>
+<h3 class="fn"><a name="asFirst"></a><a href="qtglobal.html#uint-typedef">uint</a> Node::asFirst () const</h3>
+<p>Returns the first number in a range that is contained within this node; otherwise returns zero if not a range.</p>
+<p>See also <a href="qatresultparser-node.html#isRange">isRange</a>() and <a href="qatresultparser-node.html#asLast">asLast</a>().</p>
+<h3 class="fn"><a name="asLast"></a><a href="qtglobal.html#uint-typedef">uint</a> Node::asLast () const</h3>
+<p>Returns the last number in a range that is contained within this node; otherwise returns zero if not a range.</p>
+<p>See also <a href="qatresultparser-node.html#isRange">isRange</a>() and <a href="qatresultparser-node.html#asFirst">asFirst</a>().</p>
+<h3 class="fn"><a name="asList"></a><a href="qlist.html">QList</a>&lt;QAtResultParser::Node&gt; Node::asList () const</h3>
+<p>Returns the list contained within this node, or returns an empty list if this node does not contain a list.</p>
+<p>See also <a href="qatresultparser-node.html#isList">isList</a>().</p>
+<h3 class="fn"><a name="asNumber"></a><a href="qtglobal.html#uint-typedef">uint</a> Node::asNumber () const</h3>
+<p>Returns the number contained within this node, or return zero if node not a number.</p>
+<p>See also <a href="qatresultparser-node.html#isNumber">isNumber</a>().</p>
+<h3 class="fn"><a name="asString"></a><a href="qstring.html">QString</a> Node::asString () const</h3>
+<p>Returns the string contained within this node; otherwise returns null if not a string.</p>
+<p>See also <a href="qatresultparser-node.html#isString">isString</a>().</p>
+<h3 class="fn"><a name="isList"></a>bool Node::isList () const</h3>
+<p>Returns true if this node contains a list; otherwise returns false.</p>
+<p>See also <a href="qatresultparser-node.html#asList">asList</a>().</p>
+<h3 class="fn"><a name="isNumber"></a>bool Node::isNumber () const</h3>
+<p>Returns true of if this node contains a number; otherwise returns false.</p>
+<p>See also <a href="qatresultparser-node.html#asNumber">asNumber</a>().</p>
+<h3 class="fn"><a name="isRange"></a>bool Node::isRange () const</h3>
+<p>Returns true if this node contains a range; otherwise returns false.</p>
+<p>See also <a href="qatresultparser-node.html#asFirst">asFirst</a>() and <a href="qatresultparser-node.html#asLast">asLast</a>().</p>
+<h3 class="fn"><a name="isString"></a>bool Node::isString () const</h3>
+<p>Returns true if this node contains a string; otherwise returns false.</p>
+<p>See also <a href="qatresultparser-node.html#asString">asString</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

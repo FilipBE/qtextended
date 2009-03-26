@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="home" base="themes/home_wvga">
+  <group name="background">
+    <plugin name="background-plugin"/>
+    <plugin name="homescreen-image-plugin"/>
+  </group>
+  <image rect="0,0,0x10%" src="title_bg" scale="yes" tile="yes">
+      <layout rect="2,0,16x0" align="vcenter">
+          <rect rect="0,0,16x16" name="presence" interactive="yes">
+            <exclusive>
+              <image src="presence-none" active="expr:@/Telephony/Status/Jabber/Presence/Local/Presence == 0"/>
+              <image src="presence-offline" active="expr:@/Telephony/Status/Jabber/Presence/Local/Presence == 1"/>
+              <image src="presence-online" active="expr:@/Telephony/Status/Jabber/Presence/Local/Presence == 2"/>
+              <image src="presence-away" active="expr:@/Telephony/Status/Jabber/Presence/Local/Presence >= 3"/>
+            </exclusive>
+          </rect>
+      </layout>
+      <text rect="22,2,48%x0" name="caption" interactive="yes" size="9" bold="yes" color="#000000" align="left,vcenter" transient="yes" elided="right">
+        expr:@/Telephony/Status/Jabber/Presence/Local/DisplayName
+      </text>
+      <image rect="58%,3,14x14" src="voicemail.svg" transient="yes" active="expr:@/Communications/Messages/VoiceMail/UnreadMessagesWaiting" />
+      <text rect="61%,2,39%x0" name="date" size="9" bold="yes" color="#000000" align="hcenter,vcenter" transient="yes" elided="right">
+        expr:@/UI/DisplayTime/Date ."  ". @/UI/DisplayTime/Time . " "
+      </text>
+  </image>
+  <rect name="infobox" rect="20%,30%,60%x40%" color="#FFFFFF" brush="Background" alpha="150" transient="yes" active="no">
+    <image name="infobox-image" rect="0,0,40x100%"/>
+    <text name="infobox-text" rect="40,0,-3,-1" size="6" bold="yes" color="#FFFFFF" align="hcenter,vcenter"/>
+  </rect>
+</page>

@@ -1,0 +1,23 @@
+#!/bin/bash
+
+. /opt/Qtopia/SDK/scripts/devel-x86.sh
+
+qw_display=0
+
+PHONESKINNAME=`ls -d /opt/Qtopia/SDK/${QPEVER}/${DEVICE}/qtopiacore/qt/tools/qvfb/*.skin`
+
+echo "Using qvfb skin $PHONESKINNAME"
+
+start_qvfb()
+{
+    if [ ! -e /tmp/.qtvfb_keyboard-$1 ]; then
+        echo "Starting qvfb... "
+        echo "$QTDIR/bin/qvfb :$1 -skin $PHONESKINNAME"
+        killall qvfb
+        cd /opt/Qtopia/SDK/$QPEVER/${DEVICE}/qtopiacore/qt/tools/qvfb
+        /opt/Qtopia/SDK/$QPEVER/x86/qtopiacore/host/bin/qvfb -zoom .50 -qwsdisplay :$1 -skin $PHONESKINNAME &
+    fi
+}
+
+start_qvfb $qw_display
+

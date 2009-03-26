@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>DefaultObexPushService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">DefaultObexPushService Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>, <a href="qtinfraredmodule.html">QtInfraredModule</a>]</span>
+</h1>
+<p>The DefaultObexPushService class provides an OBEX Push server. <a href="#details">More...</a></p>
+<pre>    #include &lt;DefaultObexPushService&gt;</pre><p>Inherits <a href="qobexpushservice.html">QObexPushService</a>.</p>
+<ul>
+<li><a href="defaultobexpushservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="defaultobexpushservice.html#DefaultObexPushService">DefaultObexPushService</a></b> ( QIODevice * <i>socket</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="defaultobexpushservice.html#dtor.DefaultObexPushService">~DefaultObexPushService</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="defaultobexpushservice.html#cleanUpRequest">cleanUpRequest</a></b> ()</li>
+<li><div class="fn"/>QContentId <b><a href="defaultobexpushservice.html#currentContentId">currentContentId</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="defaultobexpushservice.html#finalizeDataTransfer">finalizeDataTransfer</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>6 public functions inherited from <a href="qobexpushservice.html#public-functions">QObexPushService</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobexpushservice.html#public-slots">QObexPushService</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>6 signals inherited from <a href="qobexpushservice.html#signals">QObexPushService</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qobexpushservice.html#protected-functions">QObexPushService</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The DefaultObexPushService class provides an OBEX Push server.</p>
+<p>The DefaultObexPushService provides a default implementation of an OBEX Push server. It handles Put requests in the following manner:</p>
+<ul>
+<li>If a vCard or vCalendar file is received, the file will automatically be accepted. When <a href="defaultobexpushservice.html#finalizeDataTransfer">finalizeDataTransfer</a>() is called, the file will be sent to the appropriate Qt Extended application.</li>
+<li>If any other type of file is received, the user will be prompted to confirm whether the file should be accepted. If the file is accepted, once <a href="defaultobexpushservice.html#finalizeDataTransfer">finalizeDataTransfer</a>() is called, the file will be saved into the Document System.</li>
+</ul>
+<p>If the server receives a Get request for the owner's business card, the server will respond with the contents of <a href="qcontactmodel.html#personalDetails">QContactModel::personalDetails</a>().</p>
+<p>This class enables the <a href="bluetoothobexpushservice.html">BluetoothObexPushService</a> and the <a href="irobexpushservice.html">IrObexPushService</a>.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="DefaultObexPushService"></a>DefaultObexPushService::DefaultObexPushService ( <a href="qiodevice.html">QIODevice</a> * <i>socket</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a Push server that will run on the specified <i>socket</i> and parent object <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.DefaultObexPushService"></a>DefaultObexPushService::~DefaultObexPushService ()</h3>
+<p>Destroys the service.</p>
+<h3 class="fn"><a name="cleanUpRequest"></a>void DefaultObexPushService::cleanUpRequest ()</h3>
+<p>Performs clean-up for the last received request. This will automatically be done when a new request is received, but you can call this function to ensure it is done even if the service does not receive another request.</p>
+<p>If this is called, calling <a href="defaultobexpushservice.html#currentContentId">currentContentId</a>() will return <a href="qcontent.html#InvalidId-var">QContent::InvalidId</a> until the next request is received.</p>
+<h3 class="fn"><a name="currentContentId"></a><a href="qcontent.html#QContentId-typedef">QContentId</a> DefaultObexPushService::currentContentId () const</h3>
+<p>If the current request is a Put request that does not contain a vCard or vCalendar, and <a href="defaultobexpushservice.html#finalizeDataTransfer">finalizeDataTransfer</a>() has been called, this returns the <a href="qcontent.html#QContentId-typedef">QContentId</a> for the <a href="qcontent.html">QContent</a> resource into which the received document has been saved. Otherwise, returns <a href="qcontent.html#InvalidId-var">QContent::InvalidId</a>.</p>
+<p>Returns <a href="qcontent.html#InvalidId-var">QContent::InvalidId</a> if <a href="defaultobexpushservice.html#cleanUpRequest">cleanUpRequest</a>() has been called.</p>
+<h3 class="fn"><a name="finalizeDataTransfer"></a>bool DefaultObexPushService::finalizeDataTransfer ()</h3>
+<p>Completes the processing of the transferred data. If a vCard or vCalendar was received, the file will be sent to the appropriate Qt Extended application. If any other type of file was received, the file will be saved into the Document System.</p>
+<p>This should be called if the <a href="qobexpushservice.html#requestFinished">requestFinished</a>() signal is emitted with <tt>error</tt> and and <tt>aborted</tt> both set to <tt>false</tt> (as there is no point in saving or passing on the file if it was not successfully received).</p>
+<p>Returns <tt>true</tt> if the data was processed successfully. (The current implementation always returns <tt>true</tt> for business card requests.)</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.2&#x2e;1 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.2&#x2e;1 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#optimizations">Optimizations</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.2&#x2e;1 release is a maintenance release of Qtopia that is based on Qt 4.2 technology. This release provides a number of bug fixes and performance improvements, both general and Greenphone-specific.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Bluetooth</b> Bluetooth support is provided in this release only as a technology preview. When building Qtopia, Bluetooth is disabled by default, but may be enabled by specifying the -bluetooth configure switch.<ul>
+<li>Bluetooth audio now functions on the Greenphone.</li>
+</ul>
+</li>
+<li><b>Calendar</b><ul>
+<li>Google Calendar data can be synced to Qtopia.</li>
+<li>Calendar can now be set to show either month or day view by default.</li>
+<li>Calendar can now filter events by category.</li>
+</ul>
+</li>
+<li><b>Clock</b><ul>
+<li>Date and Time can now be set from the <tt>Clock</tt> application.</li>
+</ul>
+</li>
+<li><b>Look and Feel</b><ul>
+<li>A number of widgets have been enhanced to provide a clearer indication of whether the widget is in navigation mode or editing mode. In some cases, transitioning between these modes has also been streamlined.</li>
+</ul>
+</li>
+<li><b>Server</b><ul>
+<li>Server Widgets for the Home Screen and Launcher may be replaced with custom widgets. In a standard Qtopia build, a demonstration of this feature can be accessed via the Settings-&gt;Server Widgets application.</li>
+<li>Server Tasks provide a more extensible mechanism to control what and how the Qtopia server process starts. System integrators can register blocks of functionality - &quot;tasks&quot; - that the Qtopia server will automatically manage and run.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>The level of GCF compliance has been significantly improved.</li>
+</ul>
+</li>
+</ol>
+<a name="optimizations"></a>
+<h2>Optimizations</h2>
+<ol type="1">
+<li><b>Build System</b>: Reduced installed Qtopia footprint by avoiding installation of non-scalable images when scalable versions are available.</li>
+<li><b>Contacts</b>: Improved performance of importing from SIM card.</li>
+<li><b>Data Linking</b>: Don't use (relatively expensive) rich text when not necessary.</li>
+<li><b>Data Linking</b>: Improved performance of link verification.</li>
+<li><b>Launching</b>: <tt>configure</tt> now provides a <tt>-force-quicklaunch</tt> switch to make all applications use the quicklauncher. This option improves launch speed for some applications at the cost of larger binary size.</li>
+<li><b>Painting</b>: Improved performance on 16bpp displays by not using 32bpp background brushes and pixmaps.</li>
+<li><b>Painting</b>: Improved performance by eliminating several instances of unnecessary painting.</li>
+<li><b>PIM</b>: Improved performance of SQL access by moving database initialization to the quicklauncher and caching the most common queries.</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Appearance</b><ul>
+<li>BUG 142124: Using the Clear Image option would prevent the user from setting another wallpaper without restarting the application.</li>
+<li>BUG 142125: Allow an image on removable storage to be set as the system wallpaper.</li>
+<li>BUG 142157: Appearance changes were not discarded when application was cancelled.</li>
+<li>BUG 142574: If the theme selection was changed, the original theme could not be reselected without restarting the Appearance application.</li>
+</ul>
+</li>
+<li><b>Beaming</b><ul>
+<li>BUG 112713: Warn the user when trying to receive a file larger than the available storage space.</li>
+<li>BUG 124376: Buttons on the IrDA receive screen were painted offscreen.</li>
+</ul>
+</li>
+<li><b>Bluetooth</b><ul>
+<li>BUG 138489: Device's supported services list was duplicated every time it was viewed.</li>
+<li>BUG 139461: Remote devices were not shown if their names could not be retrieved.</li>
+<li>BUG 139828: Bluetooth settings application was not displayed correctly in right-to-left languages.</li>
+<li>BUG 143667: Setting security options was failing.</li>
+<li>BUG 146899: Fix crash in Accept File dialog when underlying comms connection is lost.</li>
+<li>BUG 146916: Do not ask for PIN for services that are not authenticated/encrpyted.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 140686: Top-level 'make install' is now the same as 'make cleaninstall' - any previous image directory is deleted first to avoid stale files appearing in the build image.</li>
+<li>BUG 142763: Bluetooth was silently dropped from singleexec builds.</li>
+<li>BUG 142925: Bluetooth was silently dropped from the build if -dbus configure switch was omitted. This flag is now automatically specified if -bluetooth is specified.</li>
+</ul>
+</li>
+<li><b>Calendar</b><ul>
+<li>BUG 112431: Repetition data was omitted from display of event details.</li>
+<li>BUG 134223: Select key now creates a new event if there is none selected.</li>
+<li>BUG 142418: Day names were not displayed correctly when creating links to calendar events.</li>
+<li>BUG 142942: Alarms were not being raised.</li>
+</ul>
+</li>
+<li><b>Call Options</b><ul>
+<li>BUG 138101: Language could not be set for cell broadcasts.</li>
+</ul>
+</li>
+<li><b>Camera</b><ul>
+<li>BUG 123577: Move To Contacts function showed SIM card contacts (which cannot have an associated image).</li>
+</ul>
+</li>
+<li><b>Categories</b><ul>
+<li>BUG 126526: Categories were being marked global after editing.</li>
+<li>BUG 142119: Hangup key was ignored in Select Category dialog.</li>
+<li>BUG 142120: Select Category dialog would not scroll when controlled by keypad.</li>
+</ul>
+</li>
+<li><b>Clock</b><ul>
+<li>BUG 138752: Stopwatch could not be reset via keypad.</li>
+<li>BUG 139495: Activating Help in Alarm Clock or Stopwatch mode switched back to Clock mode.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 123692: Keypad could not be used to scroll to the end of a long contact details listing.</li>
+<li>BUG 139020: After editing a contact, the notes field (including any data links) was not shown on the Contact Details screen.</li>
+</ul>
+</li>
+<li><b>Data Linking</b><ul>
+<li>BUG 122381: Could not view links to contacts stored on SIM card.</li>
+</ul>
+</li>
+<li><b>Dialer</b><ul>
+<li>BUG 113103: While keylocked, any string of digits belonging to emergency numbers could be dialed, rather than just the specific emergency numbers.</li>
+<li>BUG 142618: Pressing the hangup key while a call was in progress would not hangup the call if the soft menu was visible.</li>
+</ul>
+</li>
+<li><b>Greenphone</b><ul>
+<li>BUG 133190: Device did not charge when powered off.</li>
+<li>BUG 135381: Updatedevice program no longer erases the user's documents.</li>
+<li>BUG 141729: Touchscreen backlight would activate if screen was touched while locked.</li>
+<li>BUG 142112: Verify that the flash image is readable and will fit on the device prior to attempting to flash an image from the miniSD card.</li>
+<li>BUG 142943: Auto keylock function was not working.</li>
+<li>BUG 144707: Improve handwriting recognition by using rolling average filter in touchscreen driver.</li>
+<li>BUG 147431: Device would immediately suspend after every second wakeup.</li>
+<li>BUG 148411: Shutdown application was launched when the hangup key was used to wake device from suspend mode.</li>
+<li>BUG 148445: Fixed server crash on some occasions when miniSD card is inserted.</li>
+<li>BUG 149029: Bluetooth settings were not preserved over a reboot.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 123403: Input from the last key pressed was being ignored after changing input modes.</li>
+<li>BUG 123700: Cursor was being hidden on backspace in predictive mode.</li>
+<li>BUG 136916: Changing dictionaries after entering words didn't do anything.</li>
+</ul>
+</li>
+<li><b>Internet</b><ul>
+<li>BUG 112311: Prevent duplicated names for network interfaces of the same type.</li>
+<li>BUG 138298: Error dialog for missing dial-up number was shown on wrong screen.</li>
+</ul>
+</li>
+<li><b>Look and Feel</b><ul>
+<li>BUG 143220: Text was not wrapped correctly in message boxes.</li>
+<li>BUG 144539: Activating the soft menu no longer affects edit focus.</li>
+<li>BUG 147558: Correct some problems with positioning of message boxes.</li>
+</ul>
+</li>
+<li><b>Media Player</b><ul>
+<li>BUG 123846: Media Player was not disabling &quot;Back to Homescreen&quot; feature while playing video.</li>
+<li>BUG 142126: Touchscreen &quot;throttle&quot; control could appear unresponsive.</li>
+<li>BUG 142755: If video playback was paused due to an incoming call, playback would not resume after the call ended.</li>
+<li>BUG 143218: Playlists were not executed automatically after creation.</li>
+<li>BUG 144221: Track order in playlist was incorrect when queueing from any sub-menu other than the track listing.</li>
+</ul>
+</li>
+<li><b>Messages</b><ul>
+<li>BUG 127696: In touchscreen mode, exiting a folder view would exit the Messages application also.</li>
+<li>BUG 127900: User was not being notified when messages were saved to drafts due to destination not having been entered.</li>
+<li>BUG 138077: If &quot;read later&quot; was selected for a received MMS message, no read report was sent when the message was eventually read.</li>
+<li>BUG 139841: Font was too large when viewing email messages as plain-text.</li>
+<li>BUG 139928: UTF-8 characters were shown as Latin1 when displaying SMS messages.</li>
+<li>BUG 140807: The user was notified twice when a new MMS message was received.</li>
+<li>BUG 141705: Long messages were intermittently cropped when displayed.</li>
+<li>BUG 142357, 142553: The wrong message would occasionally be shown when a new SMS was received and the SIM was almost full.</li>
+<li>BUG 142760: If the currently viewed message was deleted, the soft menu would not activate without backing out to the folder view.</li>
+<li>BUG 147721: Some messages were downloaded from IMAP accounts more than once.</li>
+</ul>
+</li>
+<li><b>Ringtones</b><ul>
+<li>BUG 141559: Vibration would not stop at end of ringtone when set to Ring Once.</li>
+</ul>
+</li>
+<li><b>Server</b><ul>
+<li>BUG 134404: Screenlock functionality was incorrectly disabled when PrimaryInput=Touchscreen.</li>
+<li>BUG 136295: Hangup key would not return to Home Screen when a drop-down list had focus in an application.</li>
+<li>BUG 141054: Console applications were sometimes marked as crashed due to race conditions.</li>
+<li>BUG 141542: Sliding effect in launcher grid did not show icon when sliding from left to middle column.</li>
+<li>BUG 141729: On combined keypad/touchscreen devices, suspend/resume touchscreen input when locking/unlocking the device.</li>
+<li>BUG 142618: Ensure that when a window is closed, any visible soft menu is also closed.</li>
+<li>BUG 143210: Applications menu icon was lost after installing any packages.</li>
+<li>BUG 147285: Eliminate memory leak in evaluation of battery charger status that could eventually lead to performance degradation.</li>
+<li>BUG 148960: Eliminate segment fault on server shutdown.</li>
+</ul>
+</li>
+<li><b>SIM Toolkit</b><ul>
+<li>BUG 139938: UTF-8 characters were shown as Latin1 when displaying application names.</li>
+</ul>
+</li>
+<li><b>Software Packages</b><ul>
+<li>BUG 112821: Temporary directory used during package installation was not being deleted afterwards.</li>
+<li>BUG 142559: Software Packages application would crash if the right-arrow key was pressed when no package was selected.</li>
+</ul>
+</li>
+<li><b>Tasks</b><ul>
+<li>BUG 112503: Closing the task priority drop-down list without changing the value would change it to 1.</li>
+<li>BUG 119596: Completed task could not be changed to In Progress via the summary list.</li>
+<li>BUG 138087, 140061: Retain the current selection when editing a task, and show correct soft-menubar options.</li>
+<li>BUG 138754: Category drop-down list was completely transparent, making it very difficult to read.</li>
+</ul>
+</li>
+<li><b>Themes</b><ul>
+<li>BUG 142573: Some fonts were too big in the Crisp theme.</li>
+</ul>
+</li>
+<li><b>VoIP</b><ul>
+<li>BUG 112887: Display contact name when explicit VoIP URI is entered in dialer.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Call Options</b>:<ul>
+<li>BUG 138102: Phone numbers cannot be added to the Fixed Dialing list.</li>
+</ul>
+</li>
+<li><b>Contacts</b>:<ul>
+<li>BUG 124220: Contacts does not prevent the same vCard being imported more than once.</li>
+</ul>
+</li>
+<li><b>Greenphone</b>:<ul>
+<li>BUG 141228: Media Player doesn't respond to volume adjustment.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 141498: Media Player takes too long to resume playing video when foregrounded after being backgrounded.</li>
+<li>BUG 141499: Media Player does not disable power management while playing video.</li>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+<li>BUG 149521: Seek function is not sufficiently responsive when playing video on devices.</li>
+</ul>
+</li>
+<li><b>Messages</b>:<ul>
+<li>BUG 120160: Messages doesn't start/stop network when fetching mail.</li>
+<li>BUG 123694: Outgoing messages are saved in Drafts instead of Outbox in Airplane Safe Mode.</li>
+<li>BUG 139837: Messages refuses to process attachments larger than 2Mb.</li>
+<li>BUG 140806: The user is not audibly notified when an MMS message is received.</li>
+<li>BUG 142744: MMS audio doesn't play to completion if the audio track is longer than the slideshow.</li>
+<li>BUG 148423: MMS messages saved to drafts cannot be subsequently edited.</li>
+</ul>
+</li>
+<li><b>Pictures</b>:<ul>
+<li>BUG 142355: Pictures crashes if launched from Documents with a large image file.</li>
+</ul>
+</li>
+<li><b>Rotation</b>:<ul>
+<li>BUG 147437: Application windows receive unrotated geometry when using transformed driver.</li>
+</ul>
+</li>
+<li><b>Server</b>:<ul>
+<li>BUG 123850: Files with Chinese names are only presented (and used) properly if the LANG environment variable is set prior to starting Qtopia Server to any language ending with .UTF8, for example: 'export LANG=&lt;yourlanguage&gt;.UTF8'.</li>
+<li>BUG 135563: Softkey Menu does not become scrollable when too big for the screen.</li>
+<li>BUG 113144: Qtopia Server asserts if a directory that the <tt>DocAPI</tt> is scanning is removed.</li>
+</ul>
+</li>
+<li><b>Touchscreen</b>:<ul>
+<li>Cannot access some controls on <tt>Touchscreen</tt> Phone</li>
+</ul>
+</li>
+<li><b>Words</b>:<ul>
+<li>Input widgets do not emit <tt>textChanged</tt> messages in response to changes in composing text.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

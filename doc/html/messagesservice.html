@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>MessagesService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">MessagesService Class Reference</h1>
+<p>Provides the Qt Extended Messages viewing service. <a href="#details">More...</a></p>
+<pre>    #include &lt;MessagesService&gt;</pre><p>Inherits <a href="qtopiaabstractservice.html">QtopiaAbstractService</a>.</p>
+<ul>
+<li><a href="messagesservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="messagesservice.html#composeMessage">composeMessage</a></b> ( QMailMessage::MessageType <i>type</i>, QMailAddressList <i>to</i>, QString <i>subject</i>, QString <i>text</i> )</li>
+<li><div class="fn"/>void <b><a href="messagesservice.html#composeMessage-2">composeMessage</a></b> ( QMailMessage::MessageType <i>type</i>, QMailAddressList <i>to</i>, QString <i>subject</i>, QString <i>text</i>, QContentList <i>attachments</i>, QMailMessage::AttachmentsAction <i>action</i> )</li>
+<li><div class="fn"/>void <b><a href="messagesservice.html#composeMessage-3">composeMessage</a></b> ( QMailMessage <i>message</i> )</li>
+<li><div class="fn"/>void <b><a href="messagesservice.html#replyToMessage">replyToMessage</a></b> ( QMailMessageId <i>id</i> )</li>
+<li><div class="fn"/>void <b><a href="messagesservice.html#viewMessage">viewMessage</a></b> ( QMailMessageId <i>id</i> )</li>
+<li><div class="fn"/>void <b><a href="messagesservice.html#viewMessages">viewMessages</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="messagesservice.html#viewNewMessages">viewNewMessages</a></b> ( bool <i>userRequest</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qtopiaabstractservice.html#protected-functions">QtopiaAbstractService</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>Provides the Qt Extended Messages viewing service.</p>
+<p>The <i>Messages</i> service enables applications to request the display of messages of various types.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="composeMessage"></a>void MessagesService::composeMessage ( <a href="qmailmessagemetadata.html#MessageType-enum">QMailMessage::MessageType</a> <i>type</i>, QMailAddressList <i>to</i>, <a href="qstring.html">QString</a> <i>subject</i>, <a href="qstring.html">QString</a> <i>text</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Compose a message of type <i>type</i>, with the supplied properties. If <i>type</i> is <tt>QMailMessage::AnyType</tt>, the type will be determined by inspecting the types of the addresses in <i>to</i>. The message will be addressed to each of the recipients in <i>to</i>, the subject will be preset to <i>subject</i>, and the message text will be preset to <i>text</i>.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::composeMessage(QMailMessage::MessageType, QMailAddressList, QString, QString)</tt>.</p>
+<h3 class="fn"><a name="composeMessage-2"></a>void MessagesService::composeMessage ( <a href="qmailmessagemetadata.html#MessageType-enum">QMailMessage::MessageType</a> <i>type</i>, QMailAddressList <i>to</i>, <a href="qstring.html">QString</a> <i>subject</i>, <a href="qstring.html">QString</a> <i>text</i>, <a href="qcontentset.html#QContentList-typedef">QContentList</a> <i>attachments</i>, <a href="qmailmessage.html#AttachmentsAction-enum">QMailMessage::AttachmentsAction</a> <i>action</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Compose a message of type <i>type</i>, with the supplied properties. If <i>type</i> is <tt>QMailMessage::AnyType</tt>, the type will be determined by inspecting the types of the addresses in <i>to</i>, and by the existence of attachments. The message will be addressed to each of the recipients in <i>to</i>, the message subject will be set to <i>subject</i>, and the message text will be preset to <i>text</i>. All the documents listed in <i>attachments</i> will be added to the message as attachments. If <i>action</i> is <tt>MessagesService::LinkToAttachments</tt>, the attachments will be created as links to the source document; otherwise, the data of the documents will be stored directly in the message parts. If <i>action</i> is <tt>MessagesService::CopyAndDeleteAttachments</tt>, the source document will be deleted after the data is copied.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::composeMessage(QMailMessage::MessageType, QMailAddressList, QString, QString, QContentList, QMailMessage::AttachmentsAction)</tt>.</p>
+<h3 class="fn"><a name="composeMessage-3"></a>void MessagesService::composeMessage ( <a href="qmailmessage.html">QMailMessage</a> <i>message</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Compose a message in the appropriate composer, where all composer fields are preset with the data from the matching field of <i>message</i>.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::composeMessage(QMailMessage)</tt>.</p>
+<h3 class="fn"><a name="replyToMessage"></a>void MessagesService::replyToMessage ( <a href="qmailmessageid.html">QMailMessageId</a> <i>id</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Reply to the message with the supplied <i>id</i>.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::replyToMessage(QMailMessageId)</tt>.</p>
+<h3 class="fn"><a name="viewMessage"></a>void MessagesService::viewMessage ( <a href="qmailmessageid.html">QMailMessageId</a> <i>id</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Show the message with the supplied <i>id</i>.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::viewMessage(QMailMessageId)</tt>.</p>
+<h3 class="fn"><a name="viewMessages"></a>void MessagesService::viewMessages ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Show the default selection of messages, equivalent to that displayed when the Messages application is started by a direct user action.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::viewMessages()</tt>.</p>
+<h3 class="fn"><a name="viewNewMessages"></a>void MessagesService::viewNewMessages ( bool <i>userRequest</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Show the newly arrived messages. If <i>userRequest</i> is true, the request will be treated as if arising from a direct user action; otherwise, the user will be requested to confirm the action before proceeding.</p>
+<p>This slot corresponds to the QCop service message <tt>Messages::viewNewMessages()</tt>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

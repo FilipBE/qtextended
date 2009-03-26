@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBuild Rule Engine</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBuild Rule Engine<br /><span class="subtitle"></span>
+</h1>
+<a name="the-big-picture"></a>
+<h3>The big picture</h3>
+<p align="center"><img src="images/re_overview.png" /></p><p>Currently there can only be 1 rule engine.</p>
+<p>The engine has a single scheduler.</p>
+<p>The scheduler manages multiple threads.</p>
+<p>There is a queue for rules that are ready to run. Idle threads request rules to run from the scheduler.</p>
+<p>There is a queue for rules that are waiting on prerequisites. Rules are reclassified as ready to run when the prerequisites complete.</p>
+<p>The scheduler creates SchedulerRules (value-based) to track project rules. <a href="schedulerrule.html">SchedulerRule</a> is just a wrapper class around <a href="ruleenginestate.html">RuleEngineState</a>.</p>
+<p>Each <a href="ruleenginestate.html">RuleEngineState</a> tracks an individual rule's progress. The class can exist with just a rule name. It has the executestate. It lists the prerequisite rules that are being waited on. It lists the input files (cached from the Rule?). It records the error state and description, plus the rule that caused the error (if it's a chain). Finally it holds the rule and the rule's name (another cache?).</p>
+<a name="locking"></a>
+<h3>Locking</h3>
+<p>Tools like Helgrind will complain about the locking process.</p>
+<p>Rules are &quot;owned&quot; by either the scheduler (in which case they're protected by its lock) or by a thread (in which case they're protected by the thread's lock).</p>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

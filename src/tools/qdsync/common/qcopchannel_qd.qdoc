@@ -1,0 +1,25 @@
+/*!
+  \class QCopChannel
+  \inpublicgroup QtPimModule
+  \brief The QCopChannel class is used to send and receive messages between
+  components that otherwise cannot communicate.
+
+  QCopChannel should be used to receiving messages but QCopEnvelope should be used to sending them.
+
+  You generally create a QCopChannel in your constructor and connect it's received() signal to a slot on your object.
+
+  \code
+    QCopChannel *chan = new QCopChannel("QD/Connection", this);
+    connect(chan, SIGNAL(received(QString,QByteArray)), this, SLOT(messageReceived(QString,QByteArray)));
+  \endcode
+
+  You can also listen to channels with wildcards.
+
+  \code
+    QCopChannel *chan = new QCopChannel("QPE/*", this);
+    connect(chan, SIGNAL(received(QString,QByteArray)), this, SLOT(messageReceived(QString,QByteArray)));
+  \endcode
+
+  Note that messages sent to you will be wrapped up into the message forwardedMessage(QString,QString,QByteArray)
+  with the channel, message and data as the arguments.
+*/

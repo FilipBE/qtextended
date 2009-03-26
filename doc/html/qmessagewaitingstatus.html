@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMessageWaitingStatus Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMessageWaitingStatus Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QMessageWaitingStatus class provides status information about waiting messages for a particular call class and/or telephone number. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMessageWaitingStatus&gt;</pre><ul>
+<li><a href="qmessagewaitingstatus-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmessagewaitingstatus.html#QMessageWaitingStatus">QMessageWaitingStatus</a></b> ()</li>
+<li><div class="fn"/><b><a href="qmessagewaitingstatus.html#QMessageWaitingStatus-2">QMessageWaitingStatus</a></b> ( const QMessageWaitingStatus &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qmessagewaitingstatus.html#dtor.QMessageWaitingStatus">~QMessageWaitingStatus</a></b> ()</li>
+<li><div class="fn"/>QTelephony::CallClass <b><a href="qmessagewaitingstatus.html#callClass">callClass</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmessagewaitingstatus.html#number">number</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qmessagewaitingstatus.html#readCount">readCount</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setCallClass">setCallClass</a></b> ( QTelephony::CallClass <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setNumber">setNumber</a></b> ( const QString &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setReadCount">setReadCount</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setUnreadCount">setUnreadCount</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setUnreadMessagesWaiting">setUnreadMessagesWaiting</a></b> ( bool <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setUrgentReadCount">setUrgentReadCount</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmessagewaitingstatus.html#setUrgentUnreadCount">setUrgentUnreadCount</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>int <b><a href="qmessagewaitingstatus.html#unreadCount">unreadCount</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmessagewaitingstatus.html#unreadMessagesWaiting">unreadMessagesWaiting</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qmessagewaitingstatus.html#urgentReadCount">urgentReadCount</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qmessagewaitingstatus.html#urgentUnreadCount">urgentUnreadCount</a></b> () const</li>
+<li><div class="fn"/>QMessageWaitingStatus &amp; <b><a href="qmessagewaitingstatus.html#operator-eq">operator=</a></b> ( const QMessageWaitingStatus &amp; <i>other</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMessageWaitingStatus class provides status information about waiting messages for a particular call class and/or telephone number.</p>
+<p>The <a href="qmessagewaitingstatus.html#unreadMessagesWaiting">unreadMessagesWaiting</a>() method provides a simple boolean indication of whether or not there are unread messages. This is typically used to update a simple indicator light on the device. For some telephony services, this is the only information they can provide about waiting messages: the other values should be -1.</p>
+<p>Further details on the message waiting status indication is provided by <a href="qmessagewaitingstatus.html#unreadCount">unreadCount</a>(), <a href="qmessagewaitingstatus.html#readCount">readCount</a>(), <a href="qmessagewaitingstatus.html#urgentUnreadCount">urgentUnreadCount</a>(), and <a href="qmessagewaitingstatus.html#urgentReadCount">urgentReadCount</a>(). The <a href="qmessagewaitingstatus.html#unreadMessagesWaiting">unreadMessagesWaiting</a>() state should be set to true if <a href="qmessagewaitingstatus.html#unreadCount">unreadCount</a>() or <a href="qmessagewaitingstatus.html#urgentUnreadCount">urgentUnreadCount</a>() are greater than zero to support simple client applications that do not need the full message waiting status information.</p>
+<p>See also <a href="qmessagewaiting.html">QMessageWaiting</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMessageWaitingStatus"></a>QMessageWaitingStatus::QMessageWaitingStatus ()</h3>
+<p>Constructs an empty message waiting status indication object.</p>
+<h3 class="fn"><a name="QMessageWaitingStatus-2"></a>QMessageWaitingStatus::QMessageWaitingStatus ( const QMessageWaitingStatus &amp; <i>other</i> )</h3>
+<p>Constructs a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QMessageWaitingStatus"></a>QMessageWaitingStatus::~QMessageWaitingStatus ()</h3>
+<p>Destroys this message waiting status indication object.</p>
+<h3 class="fn"><a name="callClass"></a><a href="qtelephony.html#CallClass-enum">QTelephony::CallClass</a> QMessageWaitingStatus::callClass () const</h3>
+<p>Returns the call class for this message waiting status indication. The default value is <a href="qtelephony.html#CallClass-enum">QTelephony::CallClassVoice</a>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setCallClass">setCallClass</a>() and <a href="qmessagewaitingstatus.html#number">number</a>().</p>
+<h3 class="fn"><a name="number"></a><a href="qstring.html">QString</a> QMessageWaitingStatus::number () const</h3>
+<p>Returns the telephone number that applies to this message waiting status indication. The default value is an empty string.</p>
+<p>If the telephony service uses URI's to identify users, then this will return the URI. Telephone numbers and URI's may be distinguished by the presence of a colon (:) character.</p>
+<p>If the number is empty, then it indicates the user's default number for calls of the <a href="qmessagewaitingstatus.html#callClass">callClass</a>(). Thus, it is possible for a telephony service to indicate the number of waiting voice, data, and fax messages, even if the user's number cannot be determined.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setNumber">setNumber</a>() and <a href="qmessagewaitingstatus.html#callClass">callClass</a>().</p>
+<h3 class="fn"><a name="readCount"></a>int QMessageWaitingStatus::readCount () const</h3>
+<p>Returns the number of messages that have been read but are not yet deleted. The default value is -1, indicating that the value cannot be detected on this type of telephony service. The value will be zero if the value can be detected but there are no messages at present.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setReadCount">setReadCount</a>().</p>
+<h3 class="fn"><a name="setCallClass"></a>void QMessageWaitingStatus::setCallClass ( <a href="qtelephony.html#CallClass-enum">QTelephony::CallClass</a> <i>value</i> )</h3>
+<p>Sets the call class for this message waiting status indication to <i>value</i>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#callClass">callClass</a>() and <a href="qmessagewaitingstatus.html#number">number</a>().</p>
+<h3 class="fn"><a name="setNumber"></a>void QMessageWaitingStatus::setNumber ( const <a href="qstring.html">QString</a> &amp; <i>value</i> )</h3>
+<p>Sets the telephone number that applies to this message waiting status indication to <i>value</i>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#number">number</a>() and <a href="qmessagewaitingstatus.html#callClass">callClass</a>().</p>
+<h3 class="fn"><a name="setReadCount"></a>void QMessageWaitingStatus::setReadCount ( int <i>value</i> )</h3>
+<p>Sets the number of messages that have been read but are not yet deleted to <i>value</i>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#readCount">readCount</a>().</p>
+<h3 class="fn"><a name="setUnreadCount"></a>void QMessageWaitingStatus::setUnreadCount ( int <i>value</i> )</h3>
+<p>Sets the number of messages that have not been read yet to <i>value</i>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#unreadCount">unreadCount</a>().</p>
+<h3 class="fn"><a name="setUnreadMessagesWaiting"></a>void QMessageWaitingStatus::setUnreadMessagesWaiting ( bool <i>value</i> )</h3>
+<p>Sets the unread messages flag to <i>value</i>. This value is suitable for controlling a simple message waiting light on the device.</p>
+<p>See also <a href="qmessagewaitingstatus.html#unreadMessagesWaiting">unreadMessagesWaiting</a>().</p>
+<h3 class="fn"><a name="setUrgentReadCount"></a>void QMessageWaitingStatus::setUrgentReadCount ( int <i>value</i> )</h3>
+<p>Sets the number of urgent messages that have been read but not yet deleted to <i>value</i>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#urgentReadCount">urgentReadCount</a>().</p>
+<h3 class="fn"><a name="setUrgentUnreadCount"></a>void QMessageWaitingStatus::setUrgentUnreadCount ( int <i>value</i> )</h3>
+<p>Sets the number of urgent messages that have not been read yet to <i>value</i>.</p>
+<p>See also <a href="qmessagewaitingstatus.html#urgentUnreadCount">urgentUnreadCount</a>().</p>
+<h3 class="fn"><a name="unreadCount"></a>int QMessageWaitingStatus::unreadCount () const</h3>
+<p>Returns the number of messages that have not been read yet. The default value is -1, indicating that the value cannot be detected on this type of telephony service. The value will be zero if the value can be detected but there are no messages at present.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setUnreadCount">setUnreadCount</a>().</p>
+<h3 class="fn"><a name="unreadMessagesWaiting"></a>bool QMessageWaitingStatus::unreadMessagesWaiting () const</h3>
+<p>Returns true if there are unread messages waiting on this telephony service for the specified <a href="qmessagewaitingstatus.html#callClass">callClass</a>() and <a href="qmessagewaitingstatus.html#number">number</a>(). This value is suitable for controlling a simple message waiting light on the device. The default value is false.</p>
+<p>The <a href="qmessagewaitingstatus.html#unreadCount">unreadCount</a>(), <a href="qmessagewaitingstatus.html#readCount">readCount</a>(), <a href="qmessagewaitingstatus.html#urgentUnreadCount">urgentUnreadCount</a>() and <a href="qmessagewaitingstatus.html#urgentReadCount">urgentReadCount</a>() methods provide more detailed information for telephony services that can detect the actual number of messages waiting.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setUnreadMessagesWaiting">setUnreadMessagesWaiting</a>(), <a href="qmessagewaitingstatus.html#callClass">callClass</a>(), <a href="qmessagewaitingstatus.html#number">number</a>(), <a href="qmessagewaitingstatus.html#unreadCount">unreadCount</a>(), <a href="qmessagewaitingstatus.html#readCount">readCount</a>(), <a href="qmessagewaitingstatus.html#urgentUnreadCount">urgentUnreadCount</a>(), and <a href="qmessagewaitingstatus.html#urgentReadCount">urgentReadCount</a>().</p>
+<h3 class="fn"><a name="urgentReadCount"></a>int QMessageWaitingStatus::urgentReadCount () const</h3>
+<p>Returns the number of urgent messages that have been read but not yet deleted. The default value is -1, indicating that the value cannot be detected on this type of telephony service. The value will be zero if the value can be detected but there are no messages at present.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setUrgentReadCount">setUrgentReadCount</a>().</p>
+<h3 class="fn"><a name="urgentUnreadCount"></a>int QMessageWaitingStatus::urgentUnreadCount () const</h3>
+<p>Returns the number of urgent messages that have not been read yet. The default value is zero.</p>
+<p>See also <a href="qmessagewaitingstatus.html#setUrgentUnreadCount">setUrgentUnreadCount</a>().</p>
+<h3 class="fn"><a name="operator-eq"></a>QMessageWaitingStatus &amp; QMessageWaitingStatus::operator= ( const QMessageWaitingStatus &amp; <i>other</i> )</h3>
+<p>Copies <i>other</i> into this object.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

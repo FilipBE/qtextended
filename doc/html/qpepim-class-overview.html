@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PIM Library: Class Overview</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PIM Library: Class Overview<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#record-classes">Record Classes</a></li>
+<li><a href="#model-classes">Model Classes</a></li>
+<li><a href="#gui-classes">GUI Classes</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>There are three categories of classes in the Qt Extended PIM library:</p>
+<ol type="1">
+<li>Record classes</li>
+<li>Model classes</li>
+<li>GUI classes.</li>
+</ol>
+<p>Each type of PIM data will have one or more of each of these classes. For detailed class information refer to: <a href="pim.html">PIM Classes</a>.</p>
+<a name="record-classes"></a>
+<h3>Record Classes</h3>
+<p>The Record class is the class used to pass around data for the particular kind of PIM data. For example the <a href="qappointment.html">QAppointment</a> class is used to get the description of an appointment, and determine when the appointment will next occur. This class is also used to pass data between applications. Changes to the PIM data will not be reflected in Record classes already constructed, and to get updated records they must be retrieved again from the appropriate Model class.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Application</th><th>Class</th></tr></thead>
+<tr valign="top" class="odd"><td>Appointments</td><td><a href="qappointment.html">QAppointment</a> and <a href="qoccurrence.html">QOccurrence</a></td></tr>
+<tr valign="top" class="even"><td>Contacts</td><td><a href="qcontact.html">QContact</a></td></tr>
+<tr valign="top" class="odd"><td>Tasks</td><td><a href="qtask.html">QTask</a></td></tr>
+</table></p>
+<a name="model-classes"></a>
+<h3>Model Classes</h3>
+<p>The Model class is used to access the PIM data. The Model classes are subclasses of <a href="qabstractitemmodel.html">QAbstractItemModel</a> and are used in <a href="qlistview.html">QListView</a> and <a href="qtableview.html">QTableView</a>. Any change made by the application or another process using the Qt Extended PIM library will be reflected in the Model class. The model class will also signal changes made by the applications or other processes so the application and its views can be updated.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Application</th><th>Class</th></tr></thead>
+<tr valign="top" class="odd"><td>Appointments</td><td><a href="qappointmentmodel.html">QAppointmentModel</a> and <a href="qoccurrencemodel.html">QOccurrenceModel</a></td></tr>
+<tr valign="top" class="even"><td>Contacts</td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td>Tasks</td><td><a href="qtaskmodel.html">QTaskModel</a></td></tr>
+</table></p>
+<a name="gui-classes"></a>
+<h3>GUI Classes</h3>
+<p>GUI classes are provided to create a consistent look and feel between applications. It is not necessary to use them when accessing the PIM data, however they do make development simpler and ensure consistency with Qt Extended.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Application</th><th>Class</th></tr></thead>
+<tr valign="top" class="odd"><td>Appointments</td><td><a href="qappointmentdelegate.html">QAppointmentDelegate</a></td></tr>
+<tr valign="top" class="even"><td>Contacts</td><td><ul>
+<li><a href="qcontactlistview.html">QContactListView</a></li>
+<li><a href="qcontactselector.html">QContactSelector</a></li>
+<li><a href="qphonetypeselector.html">QPhoneTypeSelector</a></li>
+<li><a href="qcontactdelegate.html">QContactDelegate</a></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Tasks</td><td><ul>
+<li><a href="qtasklistview.html">QTaskListView</a></li>
+<li><a href="qtaskselector.html">QTaskSelector</a></li>
+<li><a href="qtaskdelegate.html">QTaskDelegate</a></li>
+</ul>
+</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

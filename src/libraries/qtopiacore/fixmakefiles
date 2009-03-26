@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Find;
+use File::Basename;
+use File::stat;
+use File::Copy;
+
+my $dir = shift(@ARGV) or usage();
+
+find( sub{
+    my $file = $File::Find::name;
+    if ( $_ eq "Makefile" ) {
+        open IN, $file or die "Can't read $file";
+        my @data = <IN>;
+        close IN;
+	my $s = stat($file);
+	my $now = $s->mtime;
+        for ( @data ) {
+            s/^\tcd/\t\@cd/;
+        }
+        open OUT, ">$file.new" or die "Can't write $file.new";
+        print OUT @data;
+        close OUT;
+	utime $now, $now, "$file.new";
+	move("$file.new", "$file");
+    }
+}, $dir );
+
+exit 0;
+
+sub usage
+{
+    print "Usage:  fixmakefiles dir\n";
+    exit 2;
+}
+

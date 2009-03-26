@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Nokia N810 Performance Test Results</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Nokia N810 Performance Test Results<br /><span class="subtitle"></span>
+</h1>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This page contains performance statistics for Qt Extended, measured using the <tt>n810</tt> device profile. All figures are measured with respect to the default configuration.</p>
+<a name="device-specs"></a>
+<h2>Device specs</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Type</th><th>Value</th></tr></thead>
+<tr valign="top" class="odd"><td><b>Model</b></td><td>Nokia N810</td></tr>
+<tr valign="top" class="even"><td><b>Kernel</b></td><td>Linux Nokia-N810-2.6&#x2e;21-omap1</td></tr>
+<tr valign="top" class="odd"><td><b>CPU</b></td><td>Texas Instruments OMAP 2420 (ARMv6), 400 MHz</td></tr>
+<tr valign="top" class="even"><td><b>Baseband</b></td><td>None</td></tr>
+<tr valign="top" class="odd"><td><b>Memory</b></td><td>128MB RAM &amp; (256MB + 2GB) flash</td></tr>
+<tr valign="top" class="even"><td><b>Display</b></td><td>800x480 LCD color screen</td></tr>
+<tr valign="top" class="odd"><td><b>Input</b></td><td>Touch-screen and keypad</td></tr>
+<tr valign="top" class="even"><td><b>Features</b></td><td>802.11b/g, Bluetooth(R), Mini-SD(TM), GPS</td></tr>
+</table></p>
+<p>Testing takes place under the following conditions:</p>
+<ul>
+<li>The device is operating on a fully charged battery.</li>
+<li>The device's keyboard is exposed (meaning Qt Extended is running in landscape mode).</li>
+</ul>
+<a name="test-results"></a>
+<h2>Test Results</h2>
+<a name="linux-qt-extended-startup-time"></a>
+<h3>Linux + Qt Extended Startup Time</h3>
+<p>The <i>Linux + Qt Extended startup time</i> refers to the amount of time taken for a device to reach the Qt Extended homescreen and accept user input from the time the power button is pressed.</p>
+<p><table width="60%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Version</th><th>Time (seconds)</th></tr></thead>
+<tr valign="top" class="odd"><td>4.4&#x2e;1</td><td>107</td></tr>
+<tr valign="top" class="even"><td>4.4&#x2e;3</td><td>115</td></tr>
+</table></p>
+<p>The N810 root filesystem contains many services which are not used for Qt Extended. Therefore the total time to launch Qt Extended on the N810 is considerably longer than it would be if the root filesystem were optimized for Qt Extended.</p>
+<a name="application-startup"></a>
+<h3>Application Startup</h3>
+<p>The <i>application startup time</i> refers to the amount of time taken for an application to appear on the screen and respond to user input, after the user requests the application to launch.</p>
+<p><i>warm startup time</i> indicates that the application has been started at least once since the device has last been booted.</p>
+<p>The below table shows the average warm startup times for each application or group of applications. Please note that small changes may be due to natural variance in the data. Figures are rounded.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>4.4&#x2e;1</th><th>4.4&#x2e;3</th></tr></thead>
+<tr valign="top" class="odd"><td><b>addressbook</b></td><td>1.53</td><td>1.55</td></tr>
+<tr valign="top" class="even"><td><b>calculator</b></td><td>1.00</td><td>0.95</td></tr>
+<tr valign="top" class="odd"><td><b>clock</b></td><td>1.17</td><td>1.03</td></tr>
+<tr valign="top" class="even"><td><b>datebook</b></td><td>1.25</td><td>1.32</td></tr>
+<tr valign="top" class="odd"><td><b>qtmail</b></td><td>1.88</td><td>1.85</td></tr>
+<tr valign="top" class="even"><td><b>todolist</b></td><td>0.88</td><td>0.73</td></tr>
+</table></p>
+<a name="ram-usage"></a>
+<h3>RAM usage</h3>
+<p>The below table shows the effective memory usage of Qt Extended. All sizes are in kilobytes. &quot;6 apps&quot; refers to having six core applications running simultaneously using the Qt Extended multitasking feature. These figures are taken after Qt Extended and the applications have actively been used.</p>
+<p>Effective memory usage refers to the total physical memory usage minus the portion of memory used by Linux for buffers and cache.</p>
+<p>The <b>All six</b> test refers to having all six tested applications running simultaneously using the Qt Extended multitasking mechanism.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>4.4&#x2e;1</th><th>4.4&#x2e;3</th></tr></thead>
+<tr valign="top" class="odd"><td><b>All six</b></td><td>62552</td><td>65464</td></tr>
+<tr valign="top" class="even"><td><b>addressbook</b></td><td>50364</td><td>52488</td></tr>
+<tr valign="top" class="odd"><td><b>calculator</b></td><td>49960</td><td>51696</td></tr>
+<tr valign="top" class="even"><td><b>clock</b></td><td>49312</td><td>50540</td></tr>
+<tr valign="top" class="odd"><td><b>datebook</b></td><td>49300</td><td>51516</td></tr>
+<tr valign="top" class="even"><td><b>homescreen</b></td><td>48280</td><td>49056</td></tr>
+<tr valign="top" class="odd"><td><b>qtmail</b></td><td>50276</td><td>52488</td></tr>
+<tr valign="top" class="even"><td><b>todolist</b></td><td>48968</td><td>51092</td></tr>
+</table></p>
+<p>The N810 root filesystem launches many system services which are not used by Qt Extended. Therefore the RAM usage is considerably higher than if the root filesystem were optimized for Qt Extended.</p>
+<a name="binary-sizes"></a>
+<h3>Binary Sizes</h3>
+<p>The below table shows the disk usage of Qt Extended filesystem images using the default filesystem for this device profile.</p>
+<p>The size includes only the space used by Qt Extended. The size of the root filesystem is not included in these figures.</p>
+<p><i>No data is currently available.</i></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

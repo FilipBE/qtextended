@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- /home/test1/tmp/mksrcpackage_20873/qt-extended-4.4.3/src/qtopiadesktop/doc/src/build.qdocpp -->
+<head>
+  <title>Building Qt Extended Sync Agent</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Building Qt Extended Sync Agent<br /><span class="subtitle"></span>
+</h1>
+<p>These instructions tell you how to build the Qt Extended Sync Agent, how to run a build and how to deploy the Qt Extended Sync Agent.</p>
+<a name="requirements"></a>
+<h3>Requirements</h3>
+<p>The Qt Extended Sync Agent is known to build with Microsoft Visual C++ 6 (VC6), Microsoft Visual Studio .NET 2003 Standard Edition (VC7) and Microsoft Visual C++ Express 2005 (VC8).</p>
+<p>The Qt Extended Sync Agent is known to build with the <a href="http://www.microsoft.com/downloads/details.aspx?FamilyId=0BAF2B35-C656-4969-ACE8-E4C0C0716ADB">Platform SDK</a> and the newer <a href="http://www.microsoft.com/downloads/details.aspx?familyid=4377F86D-C913-4B5C-B87E-EF72E5B4E065">Windows SDK</a>.</p>
+<p>You must have Outlook installed to build a fully-functional Qt Extended Sync Agent. If you would like to target a different version of Outlook to the one you have installed you can place the files <tt>MSO.DLL</tt> and <tt>MSOUTL.OLB</tt> from the other version of Outlook into <tt>src/qtopiadesktop/dist</tt>.</p>
+<p>Note that Outlook 2007's COM interfaces do not compile with older toolchains and/or SDKs. This seems to cause problems with all of the currently-supported toolchain/SDK combinations. You should obtain older Outlook files if you have Outlook 2007 installed.</p>
+<p>The Qt Extended Sync Agent requires perl. You should install <a href="foo/../../http-www-activestate-com-products-activeperl-index-mhtml.html">ActivePerl</a> to satisfy this dependency. <a href="foo/../../http-www-activestate-com-products-activeperl-index-mhtml.html">ActivePerl</a> can be obtained for free from <a href="http://www.activestate.com/ActivePerl">http://www.activestate.com/ActivePerl</a>.</p>
+<a name="setup"></a>
+<h3>Setup</h3>
+<p>Ensure that the prerequisites are met and any required environment variables are set. For each compiler a script will setup the environment. For example, VC8 installed to the default location has the script <tt>C:\Program Files\Microsoft Visual Studio 8\VC\bin\vcvars32.bat</tt>.</p>
+<p>You should set QMAKESPEC to a suitable value.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Compiler</th><th>QMAKESPEC</th></tr></thead>
+<tr valign="top" class="odd"><td>VC6</td><td>win32-msvc</td></tr>
+<tr valign="top" class="even"><td>VC7</td><td>win32-msvc.net</td></tr>
+<tr valign="top" class="odd"><td>VC8</td><td>win32-msvc2005</td></tr>
+</table></p>
+<a name="build"></a>
+<h3>Build</h3>
+<p>Change to the directory that holds your unpacked Qt Extended source package and build.</p>
+<pre>    cd qt-extended-&lt;version&gt;
+    configure
+    nmake
+    nmake install</pre>
+<a name="execute-unit-tests"></a>
+<h3>Execute Unit Tests</h3>
+<p>There is only minimal test coverage at this time, mostly aimed at the Outlook interface.</p>
+<pre>    cd src\qtopiadesktop
+    nmake
+    nmake test</pre>
+<a name="running"></a>
+<h3>Running</h3>
+<pre>    dimage\qtopiasyncagent.exe</pre>
+<a name="deployment"></a>
+<h3>Deployment</h3>
+<p>You can build an installer for the Qt Extended Sync Agent. Please see src/qtopiadesktop/dist/README for details.</p>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

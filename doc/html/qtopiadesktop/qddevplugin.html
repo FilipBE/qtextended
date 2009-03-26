@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDDevPlugin Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDDevPlugin Class Reference</h1>
+<p>The QDDevPlugin class is responsible for communications with a device. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDDevPlugin&gt;</pre><p>Inherits <a href="qdplugin.html">QDPlugin</a>.</p>
+<ul>
+<li><a href="qddevplugin-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qddevplugin.html#QDDevPlugin">QDDevPlugin</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qddevplugin.html#dtor.QDDevPlugin">~QDDevPlugin</a></b> ()</li>
+<li><div class="fn"/>virtual QDConPlugin * <b><a href="qddevplugin.html#connection">connection</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qddevplugin.html#disassociate">disassociate</a></b> ( QDConPlugin * <i>con</i> ) = 0</li>
+<li><div class="fn"/>virtual QPixmap <b><a href="qddevplugin.html#icon">icon</a></b> () = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qddevplugin.html#model">model</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qddevplugin.html#probe">probe</a></b> ( QDConPlugin * <i>con</i> ) = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qddevplugin.html#system">system</a></b> () = 0</li>
+<li><div class="fn"/>virtual quint32 <b><a href="qddevplugin.html#version">version</a></b> () = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qddevplugin.html#versionString">versionString</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 public functions inherited from <a href="qdplugin.html#public-functions">QDPlugin</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="foo/../../qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="foo/../../qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="foo/../../qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="foo/../../qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="foo/../../qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="foo/../../qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="foo/../../qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="foo/../../qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDDevPlugin class is responsible for communications with a device.</p>
+<p>This plugin needs to work with a <a href="qdconplugin.html">QDConPlugin</a> in order to talk to a device.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDDevPlugin"></a>QDDevPlugin::QDDevPlugin ( <a href="foo/../../qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a <a href="qddevplugin.html">QDDevPlugin</a> with <i>parent</i> as the owning <a href="foo/../../qobject.html">QObject</a>.</p>
+<h3 class="fn"><a name="dtor.QDDevPlugin"></a>QDDevPlugin::~QDDevPlugin ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="connection"></a><a href="qdconplugin.html">QDConPlugin</a> * QDDevPlugin::connection ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the connection that the device is connected to.</p>
+<h3 class="fn"><a name="disassociate"></a>void QDDevPlugin::disassociate ( <a href="qdconplugin.html">QDConPlugin</a> * <i>con</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Remove the association between this device and connection <i>con</i>. This will trigger the connection to report that it is no longer connected.</p>
+<h3 class="fn"><a name="icon"></a><a href="foo/../../qpixmap.html">QPixmap</a> QDDevPlugin::icon ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return an image that can be used as an icon for the device. This is used so the user can see what they have connected to Qt Extended Sync Agent.</p>
+<h3 class="fn"><a name="model"></a><a href="foo/../../qstring.html">QString</a> QDDevPlugin::model ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the model name of the device. For example, &quot;Greenphone&quot;.</p>
+<h3 class="fn"><a name="probe"></a>void QDDevPlugin::probe ( <a href="qdconplugin.html">QDConPlugin</a> * <i>con</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Probe the connection <i>con</i> to see if a device of this type can be reached via that connection.</p>
+<h3 class="fn"><a name="system"></a><a href="foo/../../qstring.html">QString</a> QDDevPlugin::system ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the system that runs on the device. This is typically &quot;Qtopia&quot; but a fork could use their own name (eg. OPIE).</p>
+<h3 class="fn"><a name="version"></a><a href="foo/../../qtglobal.html#quint32-typedef">quint32</a> QDDevPlugin::version ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the version of the device in a hexidecimal format. For example, 0x040300 would be used for a version 4.3&#x2e;0 device.</p>
+<h3 class="fn"><a name="versionString"></a><a href="foo/../../qstring.html">QString</a> QDDevPlugin::versionString ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the version of the device as a string that can be displayed to the user.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Installer/Package Manager Overview</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Installer/Package Manager Overview<br /><span class="subtitle"></span>
+</h1>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides a simplified software installation system in a system binary called <tt>packagemanager</tt>.</p>
+<p><b>Note that earlier versions of Qtopia for PDAs provided a utility to install packages utilizing the ipkg system. There is no such facility currently in Qt Extended. The SXE PackageManager is not a general purpose package installation system</b></p>
+<p>The following features are provided:</p>
+<ul>
+<li>connect to remote server via HTTP to retrieve a packages list</li>
+<li>browse through the list and display basic package information</li>
+<li>choose a package install a package by:<ul>
+<li>downloading the <tt>qpk</tt> over HTTP</li>
+<li><tt>ungzip</tt>, <tt>untar</tt> and install of <a href="sxe-qpk.html"><tt>qpk</tt> packages </a> into a sandboxed file structure.</li>
+<li>record the package details in the SXE registry files</li>
+<li>applying MAC rules to package files</li>
+<li>installation of run-time keys into binaries</li>
+</ul>
+</li>
+<li>provide uninstall functionality.</li>
+<li>re-enable disabled packages</li>
+</ul>
+<a name="packagemanager-conf"></a><a name="configuration"></a>
+<h2>Configuration</h2>
+<p>Package Manager can be configured with a file called <tt>PackageManager.conf</tt> located in the &lt;qt-extended-root-dir&gt;/devices/etc/default/Trolltech directory. The file has the following format:</p>
+<pre>    [server foo]
+    URL=http:<span class="comment">//path/to/foo's/package/feed</span>
+
+    [server bar]
+    URL=http:<span class="comment">//path/to/bar's/package/feed</span>
+
+    [Configuration]
+    MaxPackagesList=50
+    MaxPackagesListSize=50000
+    MaxDescriptorSize=4096
+    DefaultDomain=untrusted
+    SensitiveDomains=none
+    RestrictedOrganizations=Trolltech</pre>
+<p>In the above example &quot;server foo&quot; an &quot;server bar&quot; are the two default servers provided by the packagemanager. Simply add another similar entry for more defaults. At runtime if the user changes the existing servers, a file called <tt>ServersList.conf</tt> is created in Package Manager's application directory. <tt>Serverslist.conf</tt> then becomes the definitive source for server details used by Package Manager.</p>
+<p>The Configuration group is contains settings values.</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th></tr></thead>
+<tr valign="top" class="odd"><td>MaxPackagesList</td><td>Maximum number of packages that will be downloaded from a packages.list</td></tr>
+<tr valign="top" class="even"><td>MaxPackagesListSize</td><td>Maximum size in bytes that will be downloaded for a packages.list.</td></tr>
+<tr valign="top" class="odd"><td>MaxDescriptorSize</td><td>Maximum size in bytes that will be downloaded for a qpd descriptor file.</td></tr>
+<tr valign="top" class="even"><td>DefaultDomain</td><td>Default domain that will be applied to packages that do not specify a recognized domain.</td></tr>
+<tr valign="top" class="odd"><td>SensitiveDomain</td><td>Packages requesting access to sensitive/restricted domains will not be allowed to install. If there are no sensitive domains set this value to: none.</td></tr>
+<tr valign="top" class="even"><td>RestrictedOrganization</td><td>Defines organizations for settings files which downloaded applications should not use.</td></tr>
+</table></p>
+<p>The limitations on the packages.list and descriptor are intended to limit the cost to the user if he/she connects to a server whose packages.list is excessively large.</p>
+<p>Settings files for applications typically specify an organization ( see <a href="qsettings.html">QSettings</a>). Organizations which are already in use should be specified in the RestrictedOrganizations field. Packages that contain settings files which correspond to this organization won't be able to be installed. This is to more so prevent 3rd party developers accidentally using an in-use organization rather than for security reasons.</p>
+<p>For developmental purposes downloaded applications can be trusted or untrusted. To prevent installation of trusted applications, the Sensitive domain needs to be set.</p>
+<p>The file <a href="syscust-docstorage.html#package-storage-conf">Storage.conf</a> can be used to specify which directory that all packages are installed to.</p>
+<a name="package-compatibility"></a>
+<h2>Package Compatibility</h2>
+<p>Package Manager will not present for download or install any packages that are incompatible with the build of Qt Extended on the device. There are two measures of compatibility, version compatibility and device compatibility.</p>
+<p>The macro <a href="version-h.html#QTOPIA_COMPATIBLE_VERSIONS">QTOPIA_COMPATIBLE_VERSIONS</a> in <tt>version.h</tt> specifies what versions of Qtopia/Qt Extended are considered binary compatible. This is used during package creation so that a package can declare what versions of Qtopia/Qt Extended it is known to be compatible with. It is also used during package download so that Package Manager will accept packages it finds that it is compatible with. The macro can be defined as range of versions eg &quot;4.2&#x2e;0-4.2&#x2e;3,4.2&#x2e;5&quot;. As long as there is overlap between the versions specified by the package and the those specified by Qt Extended, the package will be allowed to install.</p>
+<p>In a similar manner <a href="custom-h.html#QTOPIA_COMPATIBLE_DEVICES">QTOPIA_COMPATIBLE_DEVICES</a> in <tt>custom.h</tt> specifies a set of devices. Packages built for other devices which should run on this device should be listed in this macro. As long as there is overlap between the set of compatible devices declared by a package and that of Qt Extended on the device, the package will be allowed to install.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

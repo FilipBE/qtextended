@@ -1,0 +1,10 @@
+CREATE TABLE contactaddresses (
+    recid INTEGER NOT NULL,
+    addresstype INTEGER NOT NULL,
+    street NVARCHAR(100) COLLATE NOCASE,
+    city NVARCHAR(100) COLLATE NOCASE,
+    state NVARCHAR(100) COLLATE NOCASE,
+    zip NVARCHAR(100) COLLATE NOCASE,
+    country NVARCHAR(100) COLLATE NOCASE,
+    FOREIGN KEY(recid) REFERENCES contacts(recid)
+);

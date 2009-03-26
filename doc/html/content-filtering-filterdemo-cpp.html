@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>filterdemo.cpp Example File (content/filtering/filterdemo.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">filterdemo.cpp Example File<br /><span class="small-subtitle">content/filtering/filterdemo.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;filterdemo.h&quot;
+    #include &lt;QSoftMenuBar&gt;
+    #include &lt;QKeyEvent&gt;
+
+<span class="comment">    /*!
+        Constructs a FilterDemo widget which is a child of \a parent and has the given window
+        \a flags.
+     */</span>
+    FilterDemo::FilterDemo( QWidget *parent, Qt::WindowFlags flags )
+        : QListView( parent )
+        , index( 0 )
+    {
+        setWindowFlags( flags );
+        setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+
+        setModel( new QContentSetModel( &amp;contentSet, this ) );
+
+        QSoftMenuBar::menuFor( this );
+        QSoftMenuBar::setLabel( this, Qt::Key_Select, QSoftMenuBar::NoLabel );
+        QSoftMenuBar::setLabel( this, Qt::Key_Back, QSoftMenuBar::Next );
+
+        nextFilter();
+    }
+
+<span class="comment">    /*!
+        Responds to a key press \a event.
+
+        If the key pressed is the back key move to the next filter and accept the event. If it's
+        another key, or the last filter has been displayed delegate the key handling to QListView.
+    */</span>
+    void FilterDemo::keyPressEvent( QKeyEvent *event )
+    {
+        if ( event-&gt;key() == Qt::Key_Back &amp;&amp; nextFilter() ) {
+            event-&gt;accept();
+        } else {
+            QListView::keyPressEvent( event );
+        }
+    }
+
+<span class="comment">    /*!
+        Apply the next set of filters.  If a filter has been applied returns true, otherwise if there
+        are no filters remaining returns false.
+    */</span>
+    bool FilterDemo::nextFilter()
+    {
+        switch( index++ )
+        {
+            <span class="comment">// Filter for all applications.</span>
+        case 0:
+            contentSet.setCriteria( QContentFilter( QContent::Application ) );
+            return true;
+            <span class="comment">// Restrict the existing filter to only display content in the 'Games' category.</span>
+        case 1:
+            contentSet.addCriteria( QContentFilter::Category, &quot;Games&quot;, QContentFilter::And );
+            return true;
+            <span class="comment">// Filter for documents with the 'image/jpeg' or 'image/png' MIME type.</span>
+        case 2:
+            contentSet.setCriteria( QContentFilter::MimeType, &quot;image/jpeg&quot; );
+            contentSet.addCriteria( QContentFilter::mimeType( &quot;image/png&quot; ), QContentFilter::Or );
+            contentSet.addCriteria( QContentFilter( QContent::Document ), QContentFilter::And );
+            return true;
+            <span class="comment">// Extend the existing filter to also include applications in the 'Games' category.</span>
+        case 3:
+            contentSet.addCriteria( QContentFilter( QContent::Application )
+                                  &amp; QContentFilter::category( &quot;Games&quot; )
+                                  , QContentFilter::Or );
+
+            QSoftMenuBar::setLabel( this, Qt::Key_Back, QSoftMenuBar::Back );
+
+            return true;
+        default:
+            return false;
+        }
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

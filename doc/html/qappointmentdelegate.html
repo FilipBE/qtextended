@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAppointmentDelegate Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAppointmentDelegate Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>, <a href="qttelephonymodule.html">QtTelephonyModule</a>, <a href="qtuimodule.html">QtUiModule</a>]</span>
+</h1>
+<p>The QAppointmentDelegate class provides drawing of <a href="qappointmentmodel.html">QAppointmentModel</a> items (<a href="qappointment.html">QAppointments</a>). <a href="#details">More...</a></p>
+<pre>    #include &lt;QAppointmentDelegate&gt;</pre><p>Inherits <a href="qabstractitemdelegate.html">QAbstractItemDelegate</a>.</p>
+<ul>
+<li><a href="qappointmentdelegate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qappointmentdelegate.html#QAppointmentDelegate">QAppointmentDelegate</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qappointmentdelegate.html#dtor.QAppointmentDelegate">~QAppointmentDelegate</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 public functions inherited from <a href="qabstractitemdelegate.html#public-functions">QAbstractItemDelegate</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qabstractitemdelegate.html#public-slots">QAbstractItemDelegate</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>3 signals inherited from <a href="qabstractitemdelegate.html#signals">QAbstractItemDelegate</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAppointmentDelegate class provides drawing of <a href="qappointmentmodel.html">QAppointmentModel</a> items (<a href="qappointment.html">QAppointments</a>).</p>
+<p>By using QAppointmentDelegate, applications dealing with QAppointments can achieve a consistent look and feel.</p>
+<p>QAppointments are drawn with two sections per item. There are optional icons on the right side of the rendered item, and text on the left. The text and icons are rendered vertically centred within the item if there is enough space. The icons are rendered starting at the top right, in a top-to-bottom, right-to-left fashion.</p>
+<p>The following image illustrates a collection of <a href="qappointment.html">QAppointments</a> being displayed by an application.</p>
+<p align="center"><img src="images/qappointmentdelegate.png" alt="&quot;View of QAppointments&quot;" /></p><p>It is assumed that the model is a <a href="qappointmentmodel.html">QAppointmentModel</a>. The roles used to draw the items include:</p>
+<p><table width="80 %" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Role</th><th>Data Type</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qt.html#ItemDataRole-enum">Qt::DisplayRole</a></td><td><a href="qstring.html">QString</a></td><td>Plain unformatted text drawn on the left of the icon, wrapped to any icons.</td></tr>
+<tr valign="top" class="even"><td><a href="qt.html#ItemDataRole-enum">Qt::DecorationRole</a></td><td><a href="qlist.html">QList</a>&lt;<a href="qicon.html">QIcon</a>&gt;</td><td>Optional. Drawn on the right side of the item, top-to-bottom, right-to-left</td></tr>
+</table></p>
+<p>The four appointments shown in the picture above have the following data in the model:</p>
+<p><table width="80 %" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>DisplayRole</th><th>DecorationRole</th></tr></thead>
+<tr valign="top" class="odd"><td>Status meeting</td><td>List with a single icon for recurrence</td></tr>
+<tr valign="top" class="even"><td>Lunch at Moe's</td><td>List with a single icon for a reminder</td></tr>
+<tr valign="top" class="odd"><td>School play</td><td>&lt;empty list&gt;</td></tr>
+<tr valign="top" class="even"><td>Oslo conf.</td><td>List with two icons:<ul>
+<li>a recurrence icon</li>
+<li>a timezone icon</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Selected appointments are rendered with the current palette's <tt>Highlight</tt> color), while unselected appointments are rendered with the <tt>Button</tt> color.</p>
+<p>See also <a href="qappointment.html">QAppointment</a>, <a href="qappointmentmodel.html">QAppointmentModel</a>, and <a href="qpim-library.html">Pim Library</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAppointmentDelegate"></a>QAppointmentDelegate::QAppointmentDelegate ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qappointmentdelegate.html">QAppointmentDelegate</a> with the given <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QAppointmentDelegate"></a>QAppointmentDelegate::~QAppointmentDelegate ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys a <a href="qappointmentdelegate.html">QAppointmentDelegate</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

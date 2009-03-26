@@ -1,0 +1,11 @@
+#!/bin/sh
+export BAR=$PWD/bar
+rm -rf foo
+cat template.in | perl -pe 's/\$PWD/$ENV{PWD}/g' >template
+qbuild -script image IMAGE=$PWD >output
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output template
+    result=$?
+fi
+exit $result

@@ -1,0 +1,48 @@
+<?xml version = '1.0'?>
+<page xmlns="http://www.trolltech.com" schemaLocation="http://www.trolltech.com themedview.xsd" base="themes/qtopia" rect="0,0,0x9.5%" name="title" >
+  <image xmlns="http://www.trolltech.com" rect="0,0,0x100%" active="!expr:@/Communications/Calls/ActiveCalls" alpha="150" transient="yes" color="#000000" src="titlebar-gradient.png" tile="yes" />
+  <image xmlns="http://www.trolltech.com" rect="0,0,0x100%" active="expr:@/Communications/Calls/ActiveCalls > 0" alpha="150" transient="yes" color="#50D914" src="titlebar-gradient.png" tile="yes" />
+  <level xmlns="http://www.trolltech.com" rect="1.5%,5%,10%x90%" scale="yes" active="expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength" count="6" min="0" name="signal" max="100" src="signal.svg" >
+    expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength
+  </level>
+  <level xmlns="http://www.trolltech.com" play="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charging == true" rect="-8%,6%,6%x80%" scale="yes" loop="0" count="6" min="0" delay="1000" name="battery" max="100" src="battery.svg" >
+    expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge
+  </level>
+  <rect xmlns="http://www.trolltech.com" rect="11.5%,5%,-9%,38%" >
+    <rect xmlns="http://www.trolltech.com" rect="0,0,74%x88%" >
+      <exclusive xmlns="http://www.trolltech.com">
+        <status xmlns="http://www.trolltech.com" rect="1.33%,0,9%x0" active="expr:@/Network/GPRSEnabled" name="gprs-enabled" imageon="gprs-enabled.svg" on="expr:@/Network/GPRSEnabled" />
+        <status xmlns="http://www.trolltech.com" rect="1.33%,0,9%x0" active="expr:@/Network/GPRSConnected" name="gprs-enabled" imageon="gprs-connected.svg" on="expr:@/Network/GPRSConnected" />
+        <status xmlns="http://www.trolltech.com" rect="1.33%,0,9%x0" active="expr:@/Network/EDGEEnabled" name="edge-enabled" imageon="edge-enabled.svg" on="expr:@/Network/EDGEEnabled" />
+        <status xmlns="http://www.trolltech.com" rect="1.33%,0,9%x0" active="expr:@/Network/EDGEConnected" name="edge-connected" imageon="edge-connected.svg" on="expr:@/Network/EDGEConnected" />
+        <status xmlns="http://www.trolltech.com" rect="1.33%,0,9%x0" active="expr:@/Network/UMTSEnabled" name="umts-enabled" imageon="umts-enabled.svg" on="expr:@/Network/UMTSEnabled" />
+        <status xmlns="http://www.trolltech.com" rect="1.33%,0,9%x0" active="expr:@/Network/UMTSConnected" name="umts-connected" imageon="umts-connected.svg" on="expr:@/Network/UMTSConnected" />
+      </exclusive>
+      <status xmlns="http://www.trolltech.com" rect="13.66%,0,9%x0" name="callforwarding" imageon="callforwarding.svg" on="expr:@/Telephony/Status/CallDivert" />
+      <exclusive xmlns="http://www.trolltech.com">
+        <status xmlns="http://www.trolltech.com" rect="26%,0,9%x0" active="expr:@/Communications/Calls/ActiveCalls > 0" name="incall" imageon="dialup-online.svg" on="expr:@/Communications/Calls/ActiveCalls > 0" />
+        <status xmlns="http://www.trolltech.com" rect="26%,0,9%x0" active="expr:@/UI/KeyLock" name="lock" imageon="lock.svg" on="expr:@/UI/KeyLock" />
+      </exclusive>
+      <status xmlns="http://www.trolltech.com" rect="38.32%,0,9%x0" name="roaming" imageon="roaming.svg" on="expr:@/Telephony/Status/Roaming" />
+      <exclusive xmlns="http://www.trolltech.com">
+        <status xmlns="http://www.trolltech.com" rect="50.65%,0,9%x0" active="expr:@/Communications/Bluetooth/LocalDevice/Enabled" name="bluetooth" imageon="bluetooth-enabled.svg" on="expr:@/Communications/Bluetooth/LocalDevice/Enabled" />
+        <status xmlns="http://www.trolltech.com" rect="50.65%,0,9%x0" active="expr:@/Communications/Bluetooth/LocalDevice/Visible" name="bluetooth" imageon="bluetooth-visible.svg" on="expr:@/Communications/Bluetooth/LocalDevice/Visible" />
+      </exclusive>
+      <status xmlns="http://www.trolltech.com" rect="64.34%,0,9%x0" active="expr:@/System/Applications/Info/BusyCount > 0" name="busy" imageon="hourglass.svg" on="expr:@/System/Applications/Info/BusyCount > 0" />
+      <exclusive xmlns="http://www.trolltech.com">
+        <status xmlns="http://www.trolltech.com" rect="75.31%,0,9%x0" active="expr:@/Communications/Messages/NewMessages > 0" name="messages" imageon="messages.svg" on="expr:@/Communications/Messages/NewMessages > 0" />
+        <status xmlns="http://www.trolltech.com" rect="75.31%,0,9%x0" active="expr:@/Telephony/Status/SMSMemoryFull" name="smsfull" imageon="smsfull.svg" on="expr:@/Telephony/Status/SMSMemoryFull" />
+      </exclusive>
+      <status xmlns="http://www.trolltech.com" rect="87.64%,0,9%x0" name="alarm" imageon="alarmbell.svg" on="expr:@/UI/DailyAlarm" />
+    </rect>
+    <exclusive xmlns="http://www.trolltech.com">
+      <text xmlns="http://www.trolltech.com" size="5" rect="74%,0,26%x0" outline="#000000" bold="yes" color="#FFFFFF" align="hcenter,vcenter" >
+        expr:@/UI/DisplayTime/Time
+      </text>
+      <widget xmlns="http://www.trolltech.com" rect="75%,0,25%x0" active="expr:@/UI/IMVisible" name="inputmethod" transient="yes" />
+    </exclusive>
+  </rect>
+  <text xmlns="http://www.trolltech.com" size="7" rect="8%,44%,-8%,-3%" outline="#000000" bold="yes" name="caption" transient="yes" color="#FFFFFF" align="hcenter,vcenter" >
+    expr:@/UI/ActiveWindow/Caption
+  </text>
+</page>

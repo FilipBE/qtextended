@@ -1,0 +1,27 @@
+#include "../common.h"
+#include <QSettings>
+#include <QCategoryManager>
+
+class addressbook: public QObject, public CommonMethods
+{
+    Q_OBJECT
+
+private slots:
+    void initTestCase()
+    {
+        INIT_BODY(
+                false, // enable trace
+                "contacts" // dataset
+                );
+    }
+
+    COMMON_TEST_CASES
+
+    void cleanupTestCase()
+    {
+        CLEANUP_BODY();
+    }
+};
+QTEST_MAIN(addressbook)
+
+#include "main.moc"

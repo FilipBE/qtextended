@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Desktop File Standard</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Desktop File Standard<br /><span class="subtitle"></span>
+</h1>
+<a name="desktop"></a><p>A .desktop file provides the information required by the the <a href="docsys-overview.html">Qt Extended Document System</a> to include an application in a launcher folder.</p>
+<ul><li><a href="#installation">Installation</a></li>
+<li><a href="#file-format">File Format</a></li>
+<ul><li><a href="#desktop-entry">Desktop Entry</a></li>
+<li><a href="#translation">Translation</a></li>
+<li><a href="#drm">DRM</a></li>
+<li><a href="#other-groups">Other groups</a></li>
+</ul>
+<li><a href="#example-application-desktop-file">Example Application .desktop file</a></li>
+</ul>
+<a name="installation"></a>
+<h2>Installation</h2>
+<p>The install path for a .desktop file is <tt>/apps/&lt;category&gt;/&lt;appname&gt;.desktop</tt> where <tt>&lt;category&gt;</tt> is the category ID of the launcher folder the entry should appear in and <tt>&lt;appname&gt;</tt> is the name of the application binary. The category ID must belong to an existing launcher folder and will typically be one of the following:</p>
+<ul>
+<li><b>Settings:</b> if the software configures functionality that has an ongoing effect on the user's environment. Such software never creates Documents.</li>
+<li><b>Games:</b> if the software is solely for amusement purposes.</li>
+<li><b>Applications:</b> for all other software.</li>
+</ul>
+<p>These categories have been chosen and defined in this way to make it easier for the average user to differentiate between them.</p>
+<p>To install software in other categories would create confusion and should be avoided. For example, you should not attempt to categorize your software as a &quot;Utility&quot;, since it is difficult to differentiate this category from the <i>Settings</i> and <i>Applications</i> categories (it falls somewhere in between).</p>
+<p>For information on creating additional application categories see <a href="buildsystem/task-create-a-launcher-folder-1.html">Create a launcher folder</a>.</p>
+<a name="file-format"></a>
+<h2>File Format</h2>
+<p>The whole file has to be encoded using the <a href="qsettings.html">QSettings</a> INI file format and encoded in <tt>UTF-8</tt>, see also <a href="syscust-internat.html#desktop-configuration-file-internationalization">Desktop &amp; Configuration File Internationalization</a>.</p>
+<p>The file structure is similar to that used by the Unix desktops KDE and Gnome.</p>
+<p>A .desktop file is composed of the following settings groups:</p>
+<a name="desktop-entry"></a>
+<h3>Desktop Entry</h3>
+<p>The <tt>[Desktop Entry]</tt> group contains all the mandatory information for .desktop file.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Description</th><th>Required</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Name[]</tt></td><td>The user-visible name that will appear in the launcher folder.<p>This is equivalent to the <a href="qcontent.html#name">QContent::name</a>() property.</p>
+</td><td>Yes</td></tr>
+<tr valign="top" class="even"><td><tt>Type</tt></td><td>The type of the application or document the .desktop file links to. For applications this should always be <tt>Application</tt>, for documents it is the MIME type of the document and is equivalent to the <a href="qcontent.html#type">QContent::type</a>() property.</td><td>Yes</td></tr>
+<tr valign="top" class="odd"><td><tt>Role</tt></td><td>Categories entries according to their intended usage, possible values include <tt>Application</tt>, <tt>Document</tt>, and <tt>Data</tt>.<p>This equivalent to the <a href="qcontent.html#role">QContent::role</a>() property().</p>
+</td><td>No</td></tr>
+<tr valign="top" class="even"><td><tt>Exec</tt></td><td>Specifies the executable name of applications.</td><td>Applications</td></tr>
+<tr valign="top" class="odd"><td><tt>File</tt></td><td>Specifies the file name of documents and data.<p>This is equivalent to the <a href="qcontent.html#fileNamex">QContent::fileName</a>() property.</p>
+</td><td>Documents, Data</td></tr>
+<tr valign="top" class="even"><td><tt>Icon</tt></td><td>Specifies the icon to be found in /opt/Qtopia/pics. Endings are auto-detected.<p>This is equivalent to the <a href="qcontent.html#iconName">QContent::iconName</a>() property.</p>
+</td><td>No</td></tr>
+<tr valign="top" class="odd"><td><tt>Comment[]</tt></td><td>Specifies a comment describing the launcher entry.</td><td>No</td></tr>
+<tr valign="top" class="even"><td><tt>MimeType</tt></td><td>Specifies a comma separated list of MIME types an application can open.<p>This is equivalent to the <a href="qcontent.html#mimeTypes">QContent::mimeTypes</a>() property.</p>
+<p>See <a href="docwidget.html">Main Document Widget</a> for more information on associating MIME types with an application.</p>
+</td><td>No</td></tr>
+<tr valign="top" class="odd"><td><tt>MimeTypeIcons</tt></td><td>Specifies a comma separated list of icons for documents of the types in the <tt>MimeType</tt> list. There should be an icon in this list for each type in the <tt>MimeType</tt> list.<p>This is equivalent to the <a href="qcontent.html#mimeTypeIcons">QContent::mimeTypeIcons</a>() property.</p>
+</td><td>No</td></tr>
+<tr valign="top" class="even"><td><tt>Categories</tt></td><td>Specifies categories to add the launcher entry to in addition to the one specified in the installation path. Categories should be listed as a comma separated list of category IDs.</td><td>No</td></tr>
+<tr valign="top" class="odd"><td><tt>CanFastLoad</tt></td><td>Indicates whether the application can be fast loaded.</td><td>No</td></tr>
+<tr valign="top" class="even"><td><tt>Builtin</tt></td><td>Indicates the application is a built-in application.</td><td>No</td></tr>
+</table></p>
+<p><b>Note</b>: Lists may by semi-colon separated instead of comma separated, however semi-colon separated lists must be enclosed in double quotes otherwise the first semi-colon will be interpreted as a comment character and everything following it will be discarded.</p>
+<a name="translation"></a>
+<h3>Translation</h3>
+<p>The <tt>[Translation]</tt> group identifies where translation data for the .desktop file can be loaded from.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>File</tt></td><td>The name of the translation file to load.</td></tr>
+<tr valign="top" class="even"><td><tt>Context</tt></td><td>The translation context within the file.</td></tr>
+</table></p>
+<p>See also <a href="syscust-internat.html#desktop-configuration-file-internationalization">Desktop &amp; Configuration File Internationalization</a>.</p>
+<a name="drm"></a>
+<h3>DRM</h3>
+<p>The <tt>[DRM]</tt> group contains additional information required for DRM enabled applications.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>MimeTypePermissions</tt></td><td>Contains a comma separated list of permissions that must be verified before asking the application to open a document. There should be one permission for each MIME type in the <tt>MimeType</tt> parameter.</td></tr>
+</table></p>
+<p>See also <a href="docsys-drmintegr.html">Document System: DRM Integration</a></p>
+<a name="other-groups"></a>
+<h3>Other groups</h3>
+<p>If other groups are included in the .desktop their contents will be pulled into the documents database and stored as properties of the <a href="qcontent.html">QContent</a> created from the .desktop. These properties can be accessed using <a href="qcontent.html#property"><tt>QContent::property( const QString &amp;key, const QString &amp;group )</tt></a> where key is the parameter name and group is the settings group.</p>
+<a name="example-application-desktop-file"></a>
+<h2>Example Application .desktop file</h2>
+<p>For applications that are simply executables, the format is as follows (lines beginning with a ';' are ignored as comments):</p>
+<pre>    [Desktop Entry]
+    ; the line above is mandatory at the beginning of the file
+    ;
+    ; Exec specifies the name of the executable that should be in /opt/Qtopia/bin
+    ; Command-line arguments to the executable are not supported and should not be used.
+    Exec=executablename
+    ;
+    ; This should always be Application for links to applications.
+    Type=Application
+    ;
+    ; Specifies the icon to be found in /opt/Qtopia/pics. Endings are auto-detected.
+    ; The icons should be at least 32x32 and should smooth-scale well
+    ; from 14x14 to at least 48x48
+    Icon=Iconfile
+    ;
+    ; The mimetype entry specifies a comma separated list of mimetypes this application can handle.
+    MimeType=&quot;audio/mp3&quot;
+    ;
+    ; the next lines specify the name of the application as it should appear in the launcher
+    ; and start menu
+    ; Name[]=&quot;My fancy application&quot;</pre>
+<p>For applications that are realized by a service request, the format is similar, except the Type is a service (must take one <a href="qstring.html">QString</a> parameter), File is an arbitrary parameter, and Role must be &quot;Application&quot;:</p>
+<pre>    [Desktop Entry]
+    Type=Service/MyService::myMessage(QString)
+    File=MyParameter
+    Role=Application
+    Icon=Iconfile
+    Name[]=&quot;My fancy application&quot;</pre>
+<p>By using Services to realize applications, a single application can present an interface depending on information loaded from the parameter. For example, a Java engine could load a .jar file or a weblet could load a webpage.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

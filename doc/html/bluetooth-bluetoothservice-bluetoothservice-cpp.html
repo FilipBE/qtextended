@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>bluetoothservice.cpp Example File (bluetooth/bluetoothservice/bluetoothservice.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">bluetoothservice.cpp Example File<br /><span class="small-subtitle">bluetooth/bluetoothservice/bluetoothservice.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;bluetoothservice.h&quot;
+
+    #include &lt;QBluetoothAbstractService&gt;
+    #include &lt;QBluetoothRfcommSocket&gt;
+    #include &lt;QBluetoothRfcommServer&gt;
+    #include &lt;QBluetoothSdpRecord&gt;
+    #include &lt;QBluetoothLocalDevice&gt;
+    #include &lt;QBluetoothAddress&gt;
+    #include &lt;QBluetoothServiceController&gt;
+    #include &lt;Qtopia&gt;
+    #include &lt;QtopiaApplication&gt;
+
+    #include &lt;QLabel&gt;
+    #include &lt;QVBoxLayout&gt;
+    #include &lt;QFile&gt;
+    #include &lt;QDebug&gt;
+
+    class BluetoothSerialPortExampleService : public QBluetoothAbstractService
+    {
+        Q_OBJECT
+
+    public:
+        BluetoothSerialPortExampleService(QObject *parent = 0);
+        virtual ~BluetoothSerialPortExampleService();
+
+        virtual void start();
+        virtual void stop();
+        virtual void setSecurityOptions(QBluetooth::SecurityOptions options);
+
+    private slots:
+        void newRfcommConnection();
+
+    private:
+        bool startRfcommServer(int rfcommChannel);
+
+        QBluetooth::SecurityOptions m_securityOptions;
+        quint32 m_sdpRecordHandle;
+        QBluetoothRfcommServer *m_rfcommServer;
+    };
+
+    BluetoothSerialPortExampleService::BluetoothSerialPortExampleService(QObject *parent)
+        : QBluetoothAbstractService(&quot;SerialPortExampleService&quot;, tr(&quot;Serial Port Example&quot;), parent)
+    {
+        m_securityOptions = 0;
+        m_sdpRecordHandle = 0;
+        m_rfcommServer = 0;
+    }
+
+    BluetoothSerialPortExampleService::~BluetoothSerialPortExampleService()
+    {
+    }
+
+    void BluetoothSerialPortExampleService::start()
+    {
+        if (!m_rfcommServer)
+            m_rfcommServer = new QBluetoothRfcommServer(this);
+
+        <span class="comment">// Read the SDP record that we want to register for this service.</span>
+        QFile file(Qtopia::qtopiaDir() + &quot;/etc/bluetooth/sdp/SerialPortSDPRecord.xml&quot;);
+        if (!file.exists()) {
+            emit started(true, tr(&quot;Cannot find SDP record file&quot;));
+            return;
+        }
+        if (!file.open(QIODevice::ReadOnly)) {
+            emit started(true, tr(&quot;Error reading SDP record file&quot;));
+            return;
+        }
+        QBluetoothSdpRecord record = QBluetoothSdpRecord::fromDevice(&amp;file);
+        file.close();
+
+        <span class="comment">// QBluetoothAbstractService::registerRecord() registers a SDP record and</span>
+        <span class="comment">// returns the service record handle for the newly registered service.</span>
+        m_sdpRecordHandle = registerRecord(record);
+        if (m_sdpRecordHandle == 0) {
+            emit started(true, tr(&quot;Error registering the SDP service&quot;));
+            return;
+        }
+
+        int rfcommChannel = QBluetoothSdpRecord::rfcommChannel(record);
+
+        if (!startRfcommServer(rfcommChannel)) {
+            <span class="comment">// The server could not be started, so clean up and unregister the</span>
+            <span class="comment">// SDP record using QBluetoothAbstractService::unregisterRecord().</span>
+            unregisterRecord(m_sdpRecordHandle);
+            m_sdpRecordHandle = 0;
+
+            emit started(true, tr(&quot;Error starting RFCOMM server&quot;));
+            return;
+        }
+
+        qDebug() &lt;&lt; &quot;Started example Bluetooth service&quot;;
+        emit started(false, QString());
+    }
+
+    void BluetoothSerialPortExampleService::stop()
+    {
+        if (m_rfcommServer) {
+            m_rfcommServer-&gt;close();
+            delete m_rfcommServer;
+            m_rfcommServer = 0;
+        }
+
+        if (!unregisterRecord(m_sdpRecordHandle))
+            qDebug() &lt;&lt; &quot;Error unregistering the SDP service&quot;;
+        m_sdpRecordHandle = 0;
+
+        qDebug() &lt;&lt; &quot;Stopped example Bluetooth service&quot;;
+        emit stopped();
+    }
+
+    void BluetoothSerialPortExampleService::setSecurityOptions(QBluetooth::SecurityOptions options)
+    {
+        if (m_rfcommServer)
+            m_rfcommServer-&gt;setSecurityOptions(options);
+        m_securityOptions = options;
+    }
+
+    bool BluetoothSerialPortExampleService::startRfcommServer(int rfcommChannel)
+    {
+        if (!m_rfcommServer-&gt;setSecurityOptions(m_securityOptions)) {
+            qDebug() &lt;&lt; &quot;Error setting security options&quot;;
+            return false;
+        }
+
+        QBluetoothLocalDevice localDevice;
+        if (!m_rfcommServer-&gt;listen(localDevice.address(), rfcommChannel)) {
+            qDebug() &lt;&lt; &quot;Error listening on server&quot;;
+            return false;
+        }
+
+        connect(m_rfcommServer, SIGNAL(newConnection()),
+                this, SLOT(newRfcommConnection()));
+        return true;
+    }
+
+    void BluetoothSerialPortExampleService::newRfcommConnection()
+    {
+        QBluetoothRfcommSocket *socket =
+                qobject_cast&lt;QBluetoothRfcommSocket *&gt;(m_rfcommServer-&gt;nextPendingConnection());
+        if (socket) {
+            QByteArray greeting(&quot;hello, world!&quot;);
+            socket-&gt;write(greeting);
+            connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
+            socket-&gt;disconnect();
+        }
+    }
+
+<span class="comment">    //=================================================================</span>
+
+<span class="comment">    /*
+        Normally, Bluetooth services in Qtopia are created as server tasks using
+        the QTOPIA_TASK macro from QtopiaServerApplication, so that the service
+        will run as a background task.
+
+        However, since this example is running from an application instead of as
+        a server task, we will use QtopiaApplication::registerRunningTask() to
+        register the service as a task, so that it will continue to run after
+        you exit the example application.
+    */</span>
+    BluetoothService::BluetoothService(QWidget *parent, Qt::WFlags f)
+        : QMainWindow(parent, f)
+    {
+        <span class="comment">// This is the string used as the service name in the</span>
+        <span class="comment">// BluetoothSerialPortExampleService constructor.</span>
+        QString serviceName = &quot;SerialPortExampleService&quot;;
+
+        <span class="comment">// Create the service if it has not already been created (if this</span>
+        <span class="comment">// application has previously been launched).</span>
+        QBluetoothServiceController controller;
+        if (!controller.services().contains(serviceName)) {
+
+            BluetoothSerialPortExampleService *service = new BluetoothSerialPortExampleService;
+            Q_UNUSED(service);   <span class="comment">// silence compiler warning</span>
+
+            <span class="comment">// Register the service as a task so it will continue to run after the</span>
+            <span class="comment">// application is closed.</span>
+            QtopiaApplication::instance()-&gt;registerRunningTask(
+                    &quot;BluetoothServiceExample&quot;, this);
+        }
+
+        QLabel *label = new QLabel(tr(&quot;The &lt;b&gt;%1&lt;/b&gt; service has been created.&lt;P&gt;Go to Settings -&gt; Bluetooth, open the context menu and click 'My services' to modify the settings for this service.&quot;).arg(controller.displayName(serviceName)));
+
+        label-&gt;setWordWrap(true);
+        setCentralWidget(label);
+    }
+
+    BluetoothService::~BluetoothService()
+    {
+    }
+
+    #include &quot;bluetoothservice.moc&quot;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Resource System</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Resource System<br /><span class="subtitle"></span>
+</h1>
+<p>The Qt Extended resource system allows application programmers to access common application resources such as images, icons and sounds without having to concern themselves with the exact installation location or file types. The Qt Extended resource system is built on top of the Qt for Embedded Linux resource model.</p>
+<p>Rather than accessing resource files directly from disk, applications should use resource syntax inplace of a regular file name. For example, the following lines refer to the same image:</p>
+<pre>    QPixmap pix1(&quot;/opt/Qtopia/pics/addressbook/email.png&quot;);
+    QPixmap pix2(&quot;:image/addressbook/email&quot;);
+    QPixmap pix2(&quot;:image/service/Contacts/email&quot;);</pre>
+<p>When Qt Extended detects the use of the special &quot;:&quot; prefix, searches in various locations - depending on the resource type - and for various file types to locate the actual resource. In addition to improving the efficiency of reference for the programmer, the Qt Extended resource system improves the efficiency of access for the system. Using a special file, known as a resource database, Qt Extended can bundle many separate images and icons into a single archive that is both quick to access and efficiently shared across processes.</p>
+<p>A resource database is created using the Qt for Embedded Linux <tt>rcc</tt> tool in binary mode. Any type of Qt Extended supported image and icon can be added to a resource database. A special image type, known as a <i>QRAW</i> image, is also exclusively supported in resource databases. A <i>QRAW</i> image is an uncompressed raw image that can be mmap'ed directly from disk and efficiently displayed on screen with no resident in-memory copies. As the <i>QRAW</i> format is uncompressed, it is best reserved for small images, very frequently used images, or images stored on compressed filesystems. <i>QRAW</i> images can be created from other image types using the <tt>mkqraw</tt> tool included with Qtopia.</p>
+<p>Resource databases are always named <tt>qtopia.rdb</tt> and stored in the location dictated by the resouces they contain. The list of search directories outlined for each resource type below can be used to determine where a resource database be placed. In general, resource databases are placed in either the <tt>/opt/Qtopia/pics</tt> or <tt>/opt/Qtopia/pics/&lt;application name&gt;</tt> directories, but may be located elsewhere in the case of installable software or resources.</p>
+<p>Resource databases are only supported in the Qtopia 4.2 series and later.</p>
+<p>The specifics for each resource type are outlined below. Note that the <tt>&lt;app name&gt;</tt> may also be specified by refering to a service rather than the application which might provide the service - for example &quot;service/Contacts/&quot; rather than &quot;addressbook/&quot;.</p>
+<a name="images"></a>
+<h2>Images</h2>
+<p>When requesting an image, applications use a &quot;filename&quot; of the form <tt>&lt;path&gt; := :image/[i18n/][&lt;app name&gt;/]&lt;image&gt;</tt>. For each search directory listed in the $QTOPIA_PATHS environment variable, the following sub-locations are tried:</p>
+<p><tt>pics/&lt;QApplication::applicationName()&gt;/qtopia.rdb#&lt;app name&gt;/&lt;image&gt;</tt></p>
+<p><tt>pics/qtopia.rdb#&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/&lt;image&gt;</tt></p>
+<p><tt>pics/&lt;app name&gt;/qtopia.rdb#&lt;image&gt;</tt></p>
+<p><tt>pics/qtopia.rdb#&lt;app name&gt;/&lt;image&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/i18n/&lt;language&gt;_&lt;locale&gt;/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;app name&gt;/i18n/&lt;language&gt;_&lt;locale&gt;/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/i18n/&lt;language&gt;/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;app name&gt;/i18n/&lt;language&gt;/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/i18n/en_US/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;app name&gt;/i18n/en_US/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p><tt>pics/&lt;app name&gt;/&lt;image&gt;.&lt;image extension&gt;</tt></p>
+<p>In the listing above, <tt>&lt;language&gt;</tt> and <tt>&lt;locale&gt;</tt> correspond to the current language and locale selections. The supported &lt;image extensions&gt; are currently &quot;pic&quot;, &quot;svg&quot;, &quot;png&quot;, &quot;jpg&quot;, &quot;mng&quot; and no extension.</p>
+<p>For example, in the &quot;addressbook&quot; application</p>
+<pre><span class="comment">    // /opt/Qtopia/pics/addressbook/qtopia.rdb#email</span>
+<span class="comment">    // /opt/Qtopia/pics/qtopia.rdb#addressbook/email</span>
+<span class="comment">    // /opt/Qtopia/pics/qtopia.rdb#email</span>
+<span class="comment">    // /opt/Qtopia/pics/addressbook/email.pic</span>
+<span class="comment">    // /opt/Qtopia/pics/addressbook/email.svg</span>
+<span class="comment">    // /opt/Qtopia/pics/addressbook/email.png</span>
+<span class="comment">    // /opt/Qtopia/pics/addressbook/email.jpg</span>
+<span class="comment">    // /opt/Qtopia/pics/addressbook/email.mng</span>
+<span class="comment">    // /opt/Qtopia/pics/addressbook/email</span>
+<span class="comment">    // /opt/Qtopia/pics/email.pic</span>
+<span class="comment">    // /opt/Qtopia/pics/email.svg</span>
+<span class="comment">    // /opt/Qtopia/pics/email.png</span>
+<span class="comment">    // /opt/Qtopia/pics/email.jpg</span>
+<span class="comment">    // /opt/Qtopia/pics/email.mng</span>
+<span class="comment">    // /opt/Qtopia/pics/email</span>
+    QPixmap pix(&quot;:image/email&quot;);</pre>
+<p>More information on image translation can be found in the <a href="syscust-internat.html#image-translation">Internationalization</a> guide.</p>
+<p>Themes can override images by specifying an <tt>IconPath</tt>. See <a href="syscust-icons.html#installing-custom-icons">Images and Icons#installing-custom-icons</a>.</p>
+<p>See <a href="syscust-icons.html">Images and Icons</a> for more information on images in Qtopia.</p>
+<a name="icons"></a>
+<h2>Icons</h2>
+<p>When requesting an icon, applications use a &quot;filename&quot; of the form <tt>&lt;path&gt; := :icon/[i18n/][&lt;app name&gt;/]&lt;icon&gt;</tt>. For each search directory listed in the $QTOPIA_PATHS environment variable, the following sub-locations are tried:</p>
+<p><tt>pics/&lt;QApplication::applicationName()&gt;/qtopia.rdb#&lt;app name&gt;/icons/&lt;icon&gt;</tt></p>
+<p><tt>pics/qtopia.rdb#&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/icons/&lt;icon&gt;</tt></p>
+<p><tt>pics/&lt;app name&gt;/qtopia.rdb#icons/icon</tt></p>
+<p><tt>pics/qtopia.rdb#&lt;app name&gt;/icons/icon</tt></p>
+<p><tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/icons/i18n/&lt;language&gt;_&lt;locale&gt;/icon.&lt;icon extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;app name&gt;/icons/i18n/&lt;language&gt;_&lt;locale&gt;/icon.&lt;icon extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/icons/i18n/&lt;language&gt;/icon.&lt;icon extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;app name&gt;/icons/i18n/&lt;language&gt;/icon.&lt;icon extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;QApplication::applicationName()&gt;/&lt;app name&gt;/icons/i18n/en_US/icon.&lt;icon extension&gt;</tt></p>
+<p><i>i18n only:</i> <tt>pics/&lt;app name&gt;/icons/i18n/en_US/icon.&lt;icon extension&gt;</tt></p>
+<p><tt>pics/&lt;QApplication::applicationName()&gt;/icons/&lt;app name&gt;/icon&gt;.&lt;icon extension&gt;</tt></p>
+<p><tt>pics/&lt;app name&gt;/icons/&lt;icon&gt;.&lt;icon extension&gt;</tt></p>
+<p><i>If none found, search for :image/[i18n/][&lt;app name&gt;/]&lt;icon&gt; as though the icon was requested as an image</i></p>
+<p>In the listing above, <tt>&lt;language&gt;</tt> and <tt>&lt;locale&gt;</tt> correspond to the current language and locale. The supported &lt;icon extensions&gt; are currently &quot;pic&quot;, &quot;svg&quot;, &quot;png&quot;, &quot;jpg&quot;, &quot;mng&quot; and no extension.</p>
+<p>More information on icon translation can be found in the <a href="syscust-internat.html#image-translation">Internationalization</a> guide.</p>
+<p>Themes can override images by specifying an <tt>IconPath</tt>. See <a href="syscust-icons.html#installing-custom-icons">Images and Icons#installing-custom-icons</a>.</p>
+<p>See <a href="syscust-icons.html">Images and Icons</a> for more information on icons in Qtopia.</p>
+<a name="sounds"></a>
+<h2>Sounds</h2>
+<p>When requesting a sound, applications use a &quot;filename&quot; of the form <tt>&lt;path&gt; := :sound/&lt;sound&gt;</tt>. For each search directory listed in the $QTOPIA_PATHS environment variable, the following sub-locations are tried:</p>
+<p><tt>sounds/&lt;QApplication::applicationName()&gt;/&lt;sound&gt;.wav</tt></p>
+<p><tt>sounds/&lt;sound&gt;.wav</tt></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

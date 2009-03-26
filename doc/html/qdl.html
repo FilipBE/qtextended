@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDL Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDL Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDL class provides general utility functions for use with Qt Extended Data Linking. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDL&gt;</pre><ul>
+<li><a href="qdl-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdl.html#activateLink">activateLink</a></b> ( const QString &amp; <i>href</i>, const QList&lt;QDLClient *&gt; &amp; <i>clientList</i> )</li>
+<li><div class="fn"/>QList&lt;QDLClient *&gt; <b><a href="qdl.html#clients">clients</a></b> ( QObject * <i>parent</i> )</li>
+<li><div class="fn"/>void <b><a href="qdl.html#loadLinks">loadLinks</a></b> ( const QString &amp; <i>str</i>, QList&lt;QDLClient *&gt; <i>clientList</i> )</li>
+<li><div class="fn"/>void <b><a href="qdl.html#releaseLinks">releaseLinks</a></b> ( const QString &amp; <i>str</i> )</li>
+<li><div class="fn"/>void <b><a href="qdl.html#saveLinks">saveLinks</a></b> ( QString &amp; <i>str</i>, QList&lt;QDLClient *&gt; <i>clientList</i> )</li>
+</ul>
+<a name="related-non-members"></a>
+<h3>Related Non-Members</h3>
+<ul>
+<li><div class="fn"/>QDataStream &amp; <b><a href="qdl.html#operator-lt-lt-77">operator&lt;&lt;</a></b> ( QDataStream &amp; <i>stream</i>, const QList&lt;QDLClient *&gt; &amp; <i>clientList</i> )</li>
+<li><div class="fn"/>QDataStream &amp; <b><a href="qdl.html#operator-gt-gt-68">operator&gt;&gt;</a></b> ( QDataStream &amp; <i>stream</i>, QList&lt;QDLClient *&gt; &amp; <i>clientList</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDL class provides general utility functions for use with Qt Extended Data Linking.</p>
+<p>Qt Extended Data Linking (QDL) allows a client to link to data in a source. A client may be a stand-alone object (<a href="qdlclient.html">QDLClient</a>) or attached to a widget (<a href="qdlbrowserclient.html">QDLBrowserClient</a> or <a href="qdleditclient.html">QDLEditClient</a>). A source can be any application which acts as a container for useful data and provides the QDL Service.</p>
+<p>This class provides useful functions for loading and saving links and dealing with general QDL usage.</p>
+<p>First availability: Qtopia 2.0</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="activateLink"></a>void QDL::activateLink ( const <a href="qstring.html">QString</a> &amp; <i>href</i>, const <a href="qlist.html">QList</a>&lt;<a href="qdlclient.html">QDLClient</a> *&gt; &amp; <i>clientList</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Activates the QDL link specified by <i>href</i>, which should be in the form <tt>QDL:<span class="comment">//&lt;clientName&gt;:&lt;linkId&gt;</span></tt>. The <i>clientList</i> should contain the QDL client which holds the link, and is identified by <tt>clientName</tt>.</p>
+<h3 class="fn"><a name="clients"></a><a href="qlist.html">QList</a>&lt;<a href="qdlclient.html">QDLClient</a> *&gt; QDL::clients ( <a href="qobject.html">QObject</a> * <i>parent</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns all <a href="qdlclient.html">QDLClient</a> objects that are children of <i>parent</i>, recursively. This is useful for automatically loading links into multiple clients, for example:</p>
+<pre>    QDL::loadLinks( rec, QDL::clients( this ) );</pre>
+<h3 class="fn"><a name="loadLinks"></a>void QDL::loadLinks ( const <a href="qstring.html">QString</a> &amp; <i>str</i>, <a href="qlist.html">QList</a>&lt;<a href="qdlclient.html">QDLClient</a> *&gt; <i>clientList</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Loads the links stored in <i>str</i> into the clients in <i>clientList</i>. <i>str</i> is the base64 encoded binary data of the links created by <a href="qdl.html#saveLinks">QDL::saveLinks</a>().</p>
+<h3 class="fn"><a name="releaseLinks"></a>void QDL::releaseLinks ( const <a href="qstring.html">QString</a> &amp; <i>str</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Releases all the QDLLinks stored in <i>str</i> generated by <a href="qdl.html#saveLinks">QDL::saveLinks</a>()</p>
+<h3 class="fn"><a name="saveLinks"></a>void QDL::saveLinks ( <a href="qstring.html">QString</a> &amp; <i>str</i>, <a href="qlist.html">QList</a>&lt;<a href="qdlclient.html">QDLClient</a> *&gt; <i>clientList</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Saves the links from the clients contained in <i>clientList</i> into <i>str</i>. <i>str</i> will be the base64 encoded binary link data.</p>
+<hr />
+<h2>Related Non-Members</h2>
+<h3 class="fn"><a name="operator-lt-lt-77"></a><a href="qdatastream.html">QDataStream</a> &amp; operator&lt;&lt; ( <a href="qdatastream.html">QDataStream</a> &amp; <i>stream</i>, const <a href="qlist.html">QList</a>&lt;<a href="qdlclient.html">QDLClient</a> *&gt; &amp; <i>clientList</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Writes <i>clientList</i> to <i>stream</i></p>
+<h3 class="fn"><a name="operator-gt-gt-68"></a><a href="qdatastream.html">QDataStream</a> &amp; operator&gt;&gt; ( <a href="qdatastream.html">QDataStream</a> &amp; <i>stream</i>, <a href="qlist.html">QList</a>&lt;<a href="qdlclient.html">QDLClient</a> *&gt; &amp; <i>clientList</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Reads <i>clientList</i> from the <i>stream</i></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>pkg-config</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">pkg-config<br /><span class="subtitle"></span>
+</h1>
+<p>Qt (and thus Qt Embedded) do nothing special with pkg-config. In fact, if you are cross-compiling (as is usually the case with Qt Embedded) pkg-config is ignored unless you pass -force-pkg-config. This is because pkg-config files are generally unsuitable for use when cross-compiling.</p>
+<p>Qt Extended attempts to work around this limitation by providing the <tt>-pkg-config</tt> switch. This switch defaults to on and requires that you set <tt>PKG_CONFIG_PATH</tt> and <tt>PKG_CONFIG_PREFIX</tt> in the device's <a href="over-device-profiles-1.html#device-pkg-config">environment</a> file.</p>
+<p>Qt Extended creates a wrapper for pkg-config and inserts it at the front of the PATH. Qt Embedded is passed the -force-pkg-config switch so that it uses this wrapper script.</p>
+<p>The script causes the variable <i>prefix</i> in .pc files to be changed. It does not allow use of .pc files that do not use <i>prefix</i>. It also sets the <i>exec_prefix</i> value.</p>
+<p>These checks ensure that the .pc files from the toolchain can be trusted even if they would normally not work.</p>
+<p>Note that pkg-config is also used when -qvfb is passed (or the reference device is used) because in that case you are building for your system, so any available pkg-config files will be correct.</p>
+<p>See also <a href="overviews.html">Overviews</a> and <a href="over-device-profiles-1.html">Device Profiles</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

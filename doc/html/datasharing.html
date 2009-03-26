@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Data Sharing (QDS)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Data Sharing (QDS)<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#how-it-works">How it Works</a></li>
+<li><a href="#using-qds">Using QDS</a></li>
+<ul><li><a href="#finding-qds-services">Finding QDS services</a></li>
+<li><a href="#requesting-qds-services">Requesting QDS services</a></li>
+<ul><li><a href="#example-of-synchronous-request">Example of synchronous request</a></li>
+<li><a href="#example-of-asynchronous-request">Example of asynchronous request</a></li>
+</ul>
+<li><a href="#providing-qds-services">Providing QDS services</a></li>
+</ul>
+<li><a href="#extensibility">Extensibility</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended Data Sharing (QDS) provides an API to efficiently share and process data between applications, and provides mechanisms for finding and interacting with applications which provide desired QDS services. For example an application may want to display a street map for a location, instead of doing the conversion itself the application can search for a QDS service which takes a street address and returns an image of the street map.</p>
+<a name="how-it-works"></a>
+<h2>How it Works</h2>
+<p>QDS is a form of remote procedure call, layered on top of Qt Extended services, which is optimised for data processing and sharing. QDS encapsulates data into a typed data object (<a href="qdsdata.html">QDSData</a>) which is provided for the request, the response or both.</p>
+<p>QDS models the procedure call as an <i>action</i>. Actions are invoked in applications to request a service from an application which provides a QDS service. The provider then handles the <i>action request</i> and responds with any data.</p>
+<a name="using-qds"></a>
+<h2>Using QDS</h2>
+<p>Applications can utilise QDS through the QDS classes:</p>
+<ul>
+<li><a href="qdsaction.html">QDSAction</a></li>
+<li><a href="qdsactionrequest.html">QDSActionRequest</a></li>
+<li><a href="qdsdata.html">QDSData</a></li>
+<li><a href="qdsserviceinfo.html">QDSServiceInfo</a></li>
+<li><a href="qdsservices.html">QDSServices</a></li>
+</ul>
+<p>As mentioned previously, the <a href="qdsdata.html">QDSData</a> store class is used to manage the sharing and transfer of temporary or persistent data. The data in an <a href="qdsdata.html">QDSData</a> object is made persistent by calling <a href="qdsdata.html#store">QDSData::store</a>(), each application which needs the data in the future must call <a href="qdsdata.html#store">QDSData::store</a>(). <a href="qdsdata.html#remove">QDSData::remove</a>() should be called when the data is no longer required by an application. This is required to manage the data lifetime.</p>
+<a name="finding-qds-services"></a>
+<h3>Finding QDS services</h3>
+<p>Applications use the <a href="qdsservices.html">QDSServices</a> class to search for available QDS services. The search is defined on a combination of request data type, response data type, attributes, and Qt Extended service.</p>
+<p>If the details of a QDSService are already known a <a href="qdsserviceinfo.html">QDSServiceInfo</a> object can be constructed directly, and used to validate the existence of the QDS service.</p>
+<a name="requesting-qds-services"></a>
+<h3>Requesting QDS services</h3>
+<p>An application uses a QDS service by constructing a <a href="qdsaction.html">QDSAction</a> object with a valid <a href="qdsserviceinfo.html">QDSServiceInfo</a> object. Depending on the suitability to the application, requests for the QDS service can then be made synchronously or asynchronously using the <a href="qdsaction.html">QDSAction</a> object.</p>
+<a name="example-of-synchronous-request"></a>
+<h4>Example of synchronous request</h4>
+<pre>    QDSServiceInfo service( &quot;getImage&quot;, &quot;ExampleService&quot; );
+    QDSAction action( service);
+    if ( action.exec() != QDSAction::Complete ) {
+        qWarning() &lt;&lt; &quot;Couldn't use QDS service setImage from ExampleService&quot;;
+    }</pre>
+<a name="example-of-asynchronous-request"></a>
+<h4>Example of asynchronous request</h4>
+<pre>    void MyWidget::getImage()
+    {
+        QDSServiceInfo service( &quot;getImage&quot;, &quot;ExampleService&quot; );
+        QDSAction* action = new QDSAction( service );
+
+        connect( action,
+                 SIGNAL( response( const QLocalUniqueId&amp;, const QDSData&amp; ) ),
+                 this,
+                 SLOT( response( const QLocalUniqueId&amp;, const QDSData&amp; ) ) );
+
+        action-&gt;invoke();
+    }
+
+    void MyWidget::response( const QLocalUniqueId&amp; actionId, const QDSData&amp; responseData )
+    {
+        if ( ( action != 0 ) &amp;&amp; ( action-&gt;id() == actionId ) ) {
+            QByteArray imageKey = responseData.store();
+            QSettings settings( &quot;MySoft&quot;, &quot;MyWidget&quot; );
+            settings.setValue( &quot;imageKey&quot;, imageKey );
+            action-&gt;deleteLater();
+        }
+    }</pre>
+<p>Note in a typical implementation you should also connect to the <a href="qdsaction.html#error">QDSAction::error</a>() signal to catch any errors that occur with the request.</p>
+<a name="providing-qds-services"></a>
+<h3>Providing QDS services</h3>
+<p>Any application can provide a number of QDS services. A public slot must be added to the application's Qt Extended service class for each QDS service it provides. The slot must match the message constructed by <a href="qdsaction.html">QDSAction</a>, which is of the form <tt>void ClassName( const QDSActionRequest&amp; request )</tt>. QDS services can be made dependent on features defined in <a href="qtopiafeatures.html">QtopiaFeatures</a>, when these features are not present the service will not be available, and requests for the service will fail. For more details about service implementations see the Qt Extended <a href="services.html">service documentation</a>. Finally, each QDS service should be described in the QDS service file (see <a href="qdsserviceinfo.html">QDSServiceInfo</a> for details).</p>
+<p>The example below demonstrates a server application which allows an image to set and restored.</p>
+<pre>    MyServer::MyServer( QWidget *parent, Qt::WFlags f )
+    :   QMainWindow( parent, f )
+    {
+        ...
+
+        service = new ExampleService( this );
+
+        ....
+    }
+
+    void MyServer::getImage( const QDSActionRequest&amp; request )
+    {
+        QDSActionRequest requestCopy( request );
+        QSettings settings( &quot;MySoft&quot;, &quot;MyServer&quot; );
+        QByteArray imageKey = settings.getValue( &quot;imageKey&quot; );
+        requestCopy.respond( QDSData( imageKey ) );
+    }
+
+    void MyServer::setImage( const QDSActionRequest&amp; request )
+    {
+        QDSActionRequest requestCopy( request );
+        QByteArray imageKey = requestCopy.requestData().store();
+        QSettings settings( &quot;MySoft&quot;, &quot;MyServer&quot; );
+        settings.setValue( &quot;imageKey&quot;, imageKey );
+        requestCopy.respond();
+    }
+
+    class ExampleService : public QtopiaAbstractService
+    {
+        Q_OBJECT
+        friend class MyServer;
+    private:
+        ExampleService( MyServer *parent )
+        :   QtopiaAbstractService( &quot;ExampleService&quot;, parent )
+        {
+            this-&gt;parent = parent;
+            publishAll();
+        }
+
+    public slots:
+        void getImage( const QDSActionRequest&amp; request )
+        {
+            parent-&gt;getImage( request );
+        }
+
+        void setImage( const QDSActionRequest&amp; request )
+        {
+            parent-&gt;setImage( request );
+        }
+
+    private:
+        MyServer *parent;
+    };</pre>
+<p>If the processing of the QDS service request is going to take substantial time, i.e&#x2e; more than second, or requires user input a copy of the <a href="qdsactionrequest.html">QDSActionRequest</a> should be made as is done in the MyServer::getImage() and MyServer::setImage() methods above. This ensures that the client is informed that the request is being processed and a timeout error is not generated.</p>
+<a name="extensibility"></a>
+<h2>Extensibility</h2>
+<p>As <a href="qdsdata.html">QDSData</a> is typed, QDS provides an extensible API which can be used with user-defined classes by defining a MIME type for the class.</p>
+<p>The example below shows to create a <a href="qdsdata.html">QDSData</a> instance of a VCard using a streaming operator to pack the VCard into a <a href="qbytearray.html">QByteArray</a>.</p>
+<pre>    VCard vcard;
+    QByteArray vCardArray;
+    {
+        QDataStream stream( &amp;vCardArray, QIODevice::WriteOnly );
+        stream &lt;&lt; vcard;
+    }
+    QDSData vCardData( vCardArray, QMimeType( &quot;text/x-vCard&quot; ) );</pre>
+<p>This allows services to be provided for <tt>text/x-vCard</tt> data assuming that there has streaming operator defined in the VCard class.</p>
+<p>For example</p>
+<pre><span class="comment">    //declare the streaming function in the VCard's header file</span>
+    QDataStream&amp; operator&lt;&lt;( QDataStream&amp; stream, const VCard&amp; vcard );
+
+    ...
+
+<span class="comment">    //implement the streaming function in the VCard's cpp file</span>
+    QDataStream&amp; operator&lt;&lt;( QDataStream&amp; stream, const VCard&amp; vcard )
+    {
+    ...
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

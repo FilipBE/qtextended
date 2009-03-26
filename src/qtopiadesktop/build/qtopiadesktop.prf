@@ -1,0 +1,48 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(qtopiadesktop.prf)
+# Qtopia Sync Agent-specific config
+
+# Qtopia Sync Agent doesn't do versions
+VERSION=
+
+# Qtopia Sync Agent has it's own includes
+!depotProject:INCLUDEPATH-=$$QPEDIR/include
+!depotProject:INCLUDEPATH+=$$QPEDIR/include/qtopiadesktop
+
+# The 'edition' define
+DEFINES+=QTOPIA_DESKTOP
+
+# Let us detect when we're in a plugin
+plugin {
+    # Plugins need a prefix on Windows to help avoid naming conflicts with libs
+    #win32:TARGET=qd-$$TARGET
+    DEFINES*=PLUGIN
+    CONFIG-=embed_manifest_dll
+
+    # FIXME this is windows-only right now
+    INPUT_QDAUTOPLUGIN_CPP=$$QTOPIA_DEPOT_PATH/src/qtopiadesktop/build/qdautoplugin.cpp
+    qdautoplugin_cpp.input=INPUT_QDAUTOPLUGIN_CPP
+    #qdautoplugin_cpp.commands=$$COMMAND_HEADER\
+    qdautoplugin_cpp.commands=\
+        $$fixpath($$QBS_BIN/preprocess) AUTOPLUGIN_TARGET=$$ORIG_TARGET ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
+    qdautoplugin_cpp.output=_qdautoplugin.cpp
+    qdautoplugin_cpp.variable_out=SOURCES
+    qdautoplugin_cpp.name=${QMAKE_FILE_OUT}
+    QMAKE_EXTRA_COMPILERS+=qdautoplugin_cpp
+
+    # FIXME this is windows-only right now
+    INPUT_QDAUTOPLUGIN_H=$$QTOPIA_DEPOT_PATH/src/qtopiadesktop/build/qdautoplugin.h
+    qdautoplugin_h.input=INPUT_QDAUTOPLUGIN_H
+    #qdautoplugin_h.commands=$$COMMAND_HEADER\
+    qdautoplugin_h.commands=\
+        $$fixpath($$QBS_BIN/preprocess) AUTOPLUGIN_TARGET=$$ORIG_TARGET ${QMAKE_FILE_IN} ${QMAKE_FILE_OUT}
+    qdautoplugin_h.output=_qdautoplugin.h
+    qdautoplugin_h.variable_out=HEADERS
+    qdautoplugin_h.name=${QMAKE_FILE_OUT}
+    QMAKE_EXTRA_COMPILERS+=qdautoplugin_h
+
+    ALL_DEPS+=compiler_qdautoplugin_h_make_all compiler_qdautoplugin_cpp_make_all
+
+    # All Qtopia Sync Agent plugins have the same type
+    plugin_type=qtopiadesktop
+}
+

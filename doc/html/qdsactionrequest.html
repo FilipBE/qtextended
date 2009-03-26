@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDSActionRequest Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDSActionRequest Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDSActionRequest class encapsulates a received action request. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDSActionRequest&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qdsactionrequest-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdsactionrequest.html#QDSActionRequest">QDSActionRequest</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qdsactionrequest.html#QDSActionRequest-2">QDSActionRequest</a></b> ( const QDSActionRequest &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qdsactionrequest.html#QDSActionRequest-3">QDSActionRequest</a></b> ( const QDSServiceInfo &amp; <i>serviceInfo</i>, const QString &amp; <i>channel</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qdsactionrequest.html#QDSActionRequest-4">QDSActionRequest</a></b> ( const QDSServiceInfo &amp; <i>serviceInfo</i>, const QDSData &amp; <i>requestData</i>, const QString &amp; <i>channel</i>, const QByteArray &amp; <i>auxiliary</i> = QByteArray(), QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qdsactionrequest.html#dtor.QDSActionRequest">~QDSActionRequest</a></b> ()</li>
+<li><div class="fn"/>const QByteArray &amp; <b><a href="qdsactionrequest.html#auxiliaryData">auxiliaryData</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qdsactionrequest.html#errorMessage">errorMessage</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdsactionrequest.html#isComplete">isComplete</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdsactionrequest.html#isValid">isValid</a></b> () const</li>
+<li><div class="fn"/>const QDSData &amp; <b><a href="qdsactionrequest.html#requestData">requestData</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdsactionrequest.html#respond">respond</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qdsactionrequest.html#respond-2">respond</a></b> ( const QDSData &amp; <i>responseData</i> )</li>
+<li><div class="fn"/>bool <b><a href="qdsactionrequest.html#respond-3">respond</a></b> ( const QString &amp; <i>message</i> )</li>
+<li><div class="fn"/>const QDSData &amp; <b><a href="qdsactionrequest.html#responseData">responseData</a></b> () const</li>
+<li><div class="fn"/>const QDSServiceInfo &amp; <b><a href="qdsactionrequest.html#serviceInfo">serviceInfo</a></b> () const</li>
+<li><div class="fn"/>const QDSActionRequest &amp; <b><a href="qdsactionrequest.html#operator-eq">operator=</a></b> ( const QDSActionRequest &amp; <i>other</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDSActionRequest class encapsulates a received action request.</p>
+<p>A Qt Extended Data Sharing (QDS) service provider can use the QDSActionRequest class to capture the context of received requests, and as an interface to respond to the request.</p>
+<p>Applications seeking to utilise QDS services should use the <a href="qdsaction.html">QDSAction</a> class to request a service; the <a href="qdsaction.html">QDSAction</a> class will then create a QDSActionRequest instance and send it to the QDS service for processing.</p>
+<p>See also <a href="qdsaction.html">QDSAction</a>, <a href="qdsserviceinfo.html">QDSServiceInfo</a>, and <a href="datasharing.html">Qt Extended Data Sharing (QDS)</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDSActionRequest"></a>QDSActionRequest::QDSActionRequest ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs an empty request and attaches it to <i>parent</i>.</p>
+<h3 class="fn"><a name="QDSActionRequest-2"></a>QDSActionRequest::QDSActionRequest ( const QDSActionRequest &amp; <i>other</i> )</h3>
+<p>Constructs a deep copy of <i>other</i>.</p>
+<h3 class="fn"><a name="QDSActionRequest-3"></a>QDSActionRequest::QDSActionRequest ( const <a href="qdsserviceinfo.html">QDSServiceInfo</a> &amp; <i>serviceInfo</i>, const <a href="qstring.html">QString</a> &amp; <i>channel</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs an action request for a service with no request data. The service responding to the request is provided in <i>serviceInfo</i> and the channel for responding to the client is provided in <i>channel</i>. The request is attached to <i>parent</i>.</p>
+<h3 class="fn"><a name="QDSActionRequest-4"></a>QDSActionRequest::QDSActionRequest ( const <a href="qdsserviceinfo.html">QDSServiceInfo</a> &amp; <i>serviceInfo</i>, const <a href="qdsdata.html">QDSData</a> &amp; <i>requestData</i>, const <a href="qstring.html">QString</a> &amp; <i>channel</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>auxiliary</i> = QByteArray(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs an action request for a service with <i>requestData</i>. The service responding to the request is provided in <i>serviceInfo</i> and the channel for responding to the client is provided in <i>channel</i>. <i>auxiliary</i> data can also be attached to the request. The request is attached to <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QDSActionRequest"></a>QDSActionRequest::~QDSActionRequest ()</h3>
+<p>Destructor</p>
+<h3 class="fn"><a name="auxiliaryData"></a>const <a href="qbytearray.html">QByteArray</a> &amp; QDSActionRequest::auxiliaryData () const</h3>
+<p>Returns the auxiliary data accompanying the request.</p>
+<h3 class="fn"><a name="errorMessage"></a><a href="qstring.html">QString</a> QDSActionRequest::errorMessage () const</h3>
+<p>Returns any error message generated during the request. If no error has been reported a null string will be returned.</p>
+<h3 class="fn"><a name="isComplete"></a>bool QDSActionRequest::isComplete () const</h3>
+<p>Returns true if the request has been completely processed and a response has been sent to the client; otherwise returns false.</p>
+<h3 class="fn"><a name="isValid"></a>bool QDSActionRequest::isValid () const</h3>
+<p>Returns the validity of the request.</p>
+<h3 class="fn"><a name="requestData"></a>const <a href="qdsdata.html">QDSData</a> &amp; QDSActionRequest::requestData () const</h3>
+<p>Returns the request data.</p>
+<h3 class="fn"><a name="respond"></a>bool QDSActionRequest::respond ()</h3>
+<p>Sends a response back to the client to indicate that the request has been processed correctly. This method is to be used for services which don't have response data.</p>
+<p>Returns false if a response has already been sent or the service requires response data; otherwise returns true.</p>
+<h3 class="fn"><a name="respond-2"></a>bool QDSActionRequest::respond ( const <a href="qdsdata.html">QDSData</a> &amp; <i>responseData</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends <i>responseData</i> back to the client to indicate that the request has been processed correctly. This method is to be used for services which have response data.</p>
+<p>Returns false if a response has already been sent or the service doesn't require response data; otherwise returns true.</p>
+<h3 class="fn"><a name="respond-3"></a>bool QDSActionRequest::respond ( const <a href="qstring.html">QString</a> &amp; <i>message</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends the error message <i>message</i> back to the client to indicate that an error has occured.</p>
+<p>Returns false if a response has already been sent; otherwise returns true.</p>
+<h3 class="fn"><a name="responseData"></a>const <a href="qdsdata.html">QDSData</a> &amp; QDSActionRequest::responseData () const</h3>
+<p>Returns the response data.</p>
+<h3 class="fn"><a name="serviceInfo"></a>const <a href="qdsserviceinfo.html">QDSServiceInfo</a> &amp; QDSActionRequest::serviceInfo () const</h3>
+<p>Returns the description of the service requested.</p>
+<h3 class="fn"><a name="operator-eq"></a>const QDSActionRequest &amp; QDSActionRequest::operator= ( const QDSActionRequest &amp; <i>other</i> )</h3>
+<p>Makes a deep copy of <i>other</i> and assigns it to this <a href="qdsactionrequest.html">QDSActionRequest</a> object. Returns a reference to this <a href="qdsactionrequest.html">QDSActionRequest</a> object.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

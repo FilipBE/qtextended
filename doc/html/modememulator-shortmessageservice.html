@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Modem Emulator - Short Message Service</title>
+  <link rel="prev" href="modememulator-gprs.html" />
+  <link rel="next" href="modememulator-ignored.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="modememulator-gprs.html">Modem Emulator - GPRS</a>]
+[Next: <a href="modememulator-ignored.html">Modem Emulator - Ignored Commands</a>]
+</p>
+<h1 class="title">Modem Emulator - Short Message Service<br /><span class="subtitle"></span>
+</h1>
+<p>The AT commands in this section are used for accessing the Short Message Service (SMS) subsystem.</p>
+<p><b>AT+CMGD Delete Message</b></p>
+<p>The <tt>AT+CMGD</tt> command allows deletion of messages from the message store.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMGD=&lt;index&gt;[,&lt;delflag&gt;]</tt></td><td><tt>+CMS ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGD=?</tt></td><td><tt>+CMGD:</tt>(list of supported <tt>&lt;index&gt;</tt>s)<tt>[,</tt> (list of supported <tt>&lt;delflag&gt;</tt>s)<tt>]</tt></td></tr>
+</table></p>
+<p>If the <tt>&lt;delflag&gt;</tt> parameter is present and non-zero, the <tt>&lt;index&gt;</tt> is ignored. Otherwise, the message at the location <tt>&lt;index&gt;</tt> is deleted.</p>
+<p>Possible values for <tt>&lt;delflag&gt;</tt> are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0 (or omitted)</td><td>Delete the message at specified <tt>&lt;index&gt;</tt></td></tr>
+<tr valign="top" class="even"><td>1</td><td>Delete all &quot;REC READ&quot; messages from the store</td></tr>
+<tr valign="top" class="odd"><td>2</td><td>Delete all &quot;REC READ&quot; and &quot;STO SENT&quot; messages from the store</td></tr>
+<tr valign="top" class="even"><td>3</td><td>Delete all &quot;REC READ&quot;, &quot;STO SENT&quot; and &quot;STO UNSENT&quot; messages from the store</td></tr>
+<tr valign="top" class="odd"><td>4</td><td>Delete all messages from the store</td></tr>
+</table></p>
+<p>Conforms with 3GPP TS 27.005.</p>
+<p><b>AT+CMGF Message Format</b></p>
+<p>The <tt>AT+CMGF</tt> command can be used to set the SMS message format to PDU (0) or text (1). The default is PDU.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMGF=&lt;mode&gt;</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGF?</tt></td><td><tt>+CMGF: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMGF=?</tt></td><td><tt>+CMGF: (0,1)</tt></td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.005.</p>
+<p><b>AT+CMGL List Messages</b></p>
+<p>The <tt>AT+CMGL</tt> command returns messages with status <tt>&lt;stat&gt;</tt> from the message store to the TE. If the status of a message listed is &quot;REC UNREAD&quot;, status of that message should change to &quot;REC READ&quot;.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMGL[=&lt;stat&gt;]</tt></td><td><ul>
+<li><b>if text mode (+CMGF=1): </b> <tt>+CMGL: &lt;index&gt;,&lt;stat&gt;,&lt;address&gt;,[&lt;alpha&gt;],[&lt;scts&gt;] [,&lt;address_type&gt;,&lt;body_length&gt;]&lt;CR&gt;&lt;LF&gt;&lt;data&gt; [&lt;CR&gt;&lt;LF&gt;+CMGL: &lt;index&gt;,&lt;stat&gt;,&lt;address&gt;,[&lt;alpha&gt;],[&lt;scts&gt;] [,&lt;address_type&gt;,&lt;body_length&gt;]&lt;CR&gt;&lt;LF&gt;&lt;data&gt; [...]]</tt></li>
+<li><b>otherwise: </b> <tt>+CMS ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGL=?</tt></td><td><tt>+CMGL:</tt>(list of supported <tt>&lt;stat&gt;</tt>s)</td></tr>
+</table></p>
+<p>Note that <tt>&lt;scts&gt;</tt> is only shown if the message is incoming, and <tt>&lt;alpha&gt;</tt> is shown if the <tt>&lt;address&gt;</tt> has a corresponding entry in the PhoneBook. <tt>&lt;address_type&gt;</tt> and <tt>&lt;body_length&gt;</tt> are shown if <tt>AT+CSDH=1</tt>.</p>
+<p>Does not conform entirely with 3GPP TS 27.005, since only text mode (AT+CMGF=1) command is supported.</p>
+<p><b>AT+CMGR Read From Storage Area</b></p>
+<p>This command is used to read an SMS message from a certain location of the message storage area.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMGR=&lt;index&gt;</tt></td><td><ul>
+<li><tt>+CMGR: &lt;message_status&gt;,&lt;address&gt;,[&lt;address_text&gt;],&lt;service_centre_timestamp&gt;[,&lt;address_type&gt;,&lt;TPDU_first_octet&gt;,&lt;protocol_identifier&gt;,&lt;data_coding_scheme&gt;,&lt;service_centre_address&gt;,&lt;service_centre_address_type&gt;,&lt;sms_message_body_length&gt;]&lt;CR&gt;&lt;LF&gt;&lt;sms_message_body&gt;</tt></li>
+<li><tt>+CMGR: &lt;message_status&gt;,&lt;address&gt;,[&lt;address_text&gt;][,&lt;address_type&gt;,&lt;TPDU_first_octet&gt;,&lt;protocol_identifier&gt;,&lt;data_coding_scheme&gt;,[&lt;validity_period&gt;],&lt;service_centre_address&gt;,&lt;service_centre_address_type&gt;,&lt;sms_message_body_length&gt;]&lt;CR&gt;&lt;LF&gt;&lt;sms_message_body&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGR=?</tt></td><td><tt>+CMGR:</tt>(list of valid <tt>&lt;index&gt;</tt>s)</td></tr>
+</table></p>
+<p>Note that the response to the set command depends on whether the message stored at the given index is a message that was received by the MT or one that is to be (or has been) sent by the MT.</p>
+<p>In the first case, it will contain a <tt>&lt;service_centre_timestamp&gt;</tt>, and if the second, it may contain a <tt>&lt;validity_period&gt;</tt>.</p>
+<p>The <tt>&lt;address&gt;</tt> field will contain the sender's address if the message stored at the given index is a message that was received by the MT, and the recipient's address if the message stored at the given index is a message that is to be (or has been) sent by the MT.</p>
+<p>The fields <tt>&lt;address_type&gt;</tt>, <tt>&lt;TPDU_first_octet&gt;</tt>, <tt>&lt;protocol_identifier&gt;</tt>, <tt>&lt;data_coding_scheme&gt;</tt>, <tt>&lt;service_centre_address&gt;</tt>, <tt>&lt;service_centre_address_type&gt;</tt>, <tt>&lt;sms_message_body_length&gt;</tt> and <tt>&lt;validity_period&gt;</tt> are optional, and enabled by the <tt>AT+CSDH</tt> command.</p>
+<p>The <tt>&lt;address_text&gt;</tt> field is optional and contains the string associated with the <tt>&lt;address&gt;</tt> in the address book of the MT.</p>
+<p>The <tt>&lt;message_status&gt;</tt> field can have the following values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>REC UNREAD</tt></td><td>A received, incoming message that is unread</td></tr>
+<tr valign="top" class="even"><td><tt>REC READ</tt></td><td>A received, incoming message that has been read</td></tr>
+<tr valign="top" class="odd"><td><tt>STO UNSENT</tt></td><td>A stored, outgoing message that is yet to be sent</td></tr>
+<tr valign="top" class="even"><td><tt>STO SENT</tt></td><td>A stored, outgoing message that has been sent</td></tr>
+</table></p>
+<p>Does not conform completely with 3GPP TS 27.005; this implementation only allows reading of SMS messages in text mode (AT+CMGF=1).</p>
+<p><b>AT+CMGS Send Message</b></p>
+<p>The <tt>AT+CMGS</tt> command can be used to send SMS messages in either PDU (<tt>AT+CMGF=0</tt>) or text (<tt>AT+CMGF=1</tt>) mode.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMGS=&lt;da&gt;[,&lt;toda&gt;]&lt;CR&gt;message&lt;ctrl-Z/ESC&gt;</tt></td><td><tt>+CMGS: &lt;mr&gt;</tt>, <tt>+CME ERROR: &lt;err&gt;</tt> - if in text mode.</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGS=&lt;length&gt;&lt;CR&gt;pdu&lt;ctrl-Z/ESC&gt;</tt></td><td><tt>+CMGS: &lt;mr&gt;</tt>, <tt>+CME ERROR: &lt;err&gt;</tt> - if in pdu mode.</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMGS=?</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>Execution command sends the message to the network. The message reference value <tt>&lt;mr&gt;</tt> is returned to the TE upon successful message delivery.</p>
+<p>Conforms with: 3GPP TS 27.005.</p>
+<p><b>AT+CMGW Write Message to Memory</b></p>
+<p>The <tt>AT+CMGW</tt> command stores a message to memory storage. The memory location <tt>&lt;index&gt;</tt> of the stored message is returned. By default, the message status will be set to &quot;REC UNREAD&quot;, however other status values may be given.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><b>if text mode (AT+CGMF=1):</b> <tt>AT+CMGW=[=&lt;address&gt;[,&lt;address_type&gt;[,&lt;stat&gt;]]]&lt;CR&gt;</tt> <b>text is entered</b><tt>ctrl-z/ESC</tt></td><td><ul>
+<li><tt>+CMGW: &lt;index&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGW=?</tt></td><td></td></tr>
+</table></p>
+<p>Does not conform completely with 3GPP TS 27.005; in this implementation, SMS message may only be written in text mode.</p>
+<p><b>AT+CMMS More Messages to Send</b></p>
+<p>The <tt>AT+CMMS</tt> command can be used to inform the modem that several SMS messages will be sent in quick succession, and the link should be held open for more efficient transmission.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMMS?</tt> <tt>\c{+CMMS: 0}</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGS=?</tt></td><td><tt>+CMMS: (0-2)</tt></td></tr>
+</table></p>
+<p>This implementation does not do anything special for this command. The underlying modem will hold the link open when it judges that it would be advantageous to do so.</p>
+<p>Conforms with: 3GPP TS 27.005.</p>
+<p><b>AT+CNMI New Message Indications to TE</b></p>
+<p>The <tt>AT+CNMI</tt> command is used to select the procedure for how receiving new messages from the network is indicated to the TE when the TE is active.</p>
+<p>When the TE is inactive, message receiving is done as specified in 3GPP TS 23.038.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CNMI=[&lt;mode&gt;[,&lt;mt&gt;[,&lt;bm&gt;[,&lt;ds&gt;[,&lt;bfr]]]]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CNMI?</tt></td><td><tt>+CNMI: &lt;mode&gt;,&lt;mt&gt;,&lt;bm&gt;,&lt;ds&gt;,&lt;bfr&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CNMI=?</tt></td><td><tt>+CNMI:</tt>(list of supported <tt>&lt;mode&gt;</tt>s), (list of supported <tt>&lt;mt&gt;</tt>s), (list of supported <tt>&lt;bm&gt;</tt>s), (list of supported <tt>&lt;ds&gt;</tt>s), (list of supported <tt>&lt;bfr&gt;</tt>s)</td></tr>
+</table></p>
+<p>This implementation is currently a dummy implementation; it does nothing, and always returns error.</p>
+<p>Conforms with: 3GPP TS 27.005.</p>
+<p><b>AT+CPMS Preferred Message Storage</b></p>
+<p>The <tt>AT+CPMS</tt> command can be used to set the preferred message storage for reading and writing SMS messages. The only message storage that is supported by this implementation is <tt>SM</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPMS=&lt;mem1&gt;[,&lt;mem2&gt;[,&lt;mem3&gt;]]</tt></td><td><tt>+CPMS: &lt;mem1&gt;,&lt;used1&gt;,&lt;total1&gt;,&lt;mem2&gt;,&lt;used2&gt;,&lt;total2&gt;,&lt;mem3&gt;,&lt;used3&gt;,&lt;total3&gt;</tt> or <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPMS?</tt></td><td><tt>+CPMS: &lt;mem1&gt;,&lt;used1&gt;,&lt;total1&gt;,&lt;mem2&gt;,&lt;used2&gt;,&lt;total2&gt;,&lt;mem3&gt;,&lt;used3&gt;,&lt;total3&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CPMS=?</tt></td><td><tt>+CPMS: ((list of supported &lt;mem1&gt;s),(list of supported &lt;mem2&gt;s),(list of supported &lt;mem3&gt;s))</tt></td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CRES Restore Settings</b></p>
+<p>The <tt>AT+CRES</tt> command restores SMS settings from EEPROM. This is not supported in this implementation.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CRES[=&lt;profile&gt;]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CRES=?</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>This implementation does not conform with 3GPP TS 27.005.</p>
+<p><b>AT+CSAS Save Settings</b></p>
+<p>The <tt>AT+CSAS</tt> command saved SMS settings to EEPROM. This is not supported in this implementation.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSAS[=&lt;profile&gt;]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSAS=?</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>This implementation does not conform with 3GPP TS 27.005.</p>
+<p><b>AT+CSCA Service Center Address</b></p>
+<p>The <tt>AT+CSCA</tt> command reads or modifies the SMS service center address on the SIM.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSCA=&lt;sca&gt;[,&lt;tosca&gt;]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSCA?</tt></td><td><tt>+CSCA: &lt;sca&gt;,&lt;tosca&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSCA=?</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>Set command updates the SMS service center address on the SIM. Read command reports the current SMS service center address on the SIM.</p>
+<p>Conforms with 3GPP TS 27.005.</p>
+<p><b>AT+CSDH Show Text Mode Parameters</b></p>
+<p>The <tt>AT+CSDH</tt> command controls whether extended text mode parameters are shown in response to <tt>AT+CMGL</tt> and <tt>AT+CMGR</tt> commands in text mode.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSDH=&lt;show&gt;</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSDH?</tt></td><td><tt>+CSDH: &lt;show&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSDH=?</tt></td><td><tt>+CSDH: (0,1)</tt></td></tr>
+</table></p>
+<p>Conforms with 3GPP TS 27.005.</p>
+<p><b>AT+CSMP Set Text Mode Parameters</b></p>
+<p>The <tt>AT+CSMP</tt> command sets the additional parameters that are passed in the header of an SMS message when sending messages in text mode (<tt>AT+CMGF=1</tt>).</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSMP=[&lt;fo&gt;[,&lt;vp&gt;[,&lt;pid&gt;[,&lt;dcs&gt;]]]]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSMP?</tt></td><td><tt>+CSMP: 1,167,0,0</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSMP=?</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>This implementation always sends SMS messages with the default GSM values, irrespective of what is set with <tt>AT+CSMP</tt>. Applications should use PDU mode for sending messages with specific header values.</p>
+<p>Conforms with 3GPP TS 27.005.</p>
+<p><b>AT+CSMS Select Message Service</b></p>
+<p>The <tt>AT+CSMS</tt> command selects the short message service to use.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSMS=&lt;service&gt;</tt></td><td><tt>+CSMS: &lt;mt&gt;,&lt;mo&gt;,&lt;bm&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSMS?</tt></td><td><tt>+CSMS: &lt;service&gt;,&lt;mt&gt;,&lt;mo&gt;,&lt;bm&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSMS=?</tt></td><td><tt>+CSMS:</tt> (list of supported <tt>&lt;service&gt;</tt>s)</td></tr>
+</table></p>
+<p>This implementation says that it supports service 0 and 1, mobile-terminated messages, mobile-originated messages, and cell broadcast messages, irrespective of the underlying modem's message support. The underlying modem will select the correct service automatically.</p>
+<p>Conforms with 3GPP TS 27.005.</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p>
+[Previous: <a href="modememulator-gprs.html">Modem Emulator - GPRS</a>]
+[Next: <a href="modememulator-ignored.html">Modem Emulator - Ignored Commands</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

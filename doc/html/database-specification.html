@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Database Specification</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Database Specification<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#general-architectural-description">General Architectural Description</a></li>
+<ul><li><a href="#general-concepts">General Concepts</a></li>
+<li><a href="#qt-extended-databases">Qt Extended Databases</a></li>
+</ul>
+<li><a href="#content-and-pim-functions">Content and PIM Functions</a></li>
+<ul><li><a href="#multiple-databases">Multiple Databases</a></li>
+</ul>
+<li><a href="#supported-relational-database-systems">Supported Relational Database Systems</a></li>
+<ul><li><a href="#sqlite-specific-notes">Sqlite Specific Notes</a></li>
+</ul>
+<li><a href="#qt-extended-database-schema">Qt Extended Database Schema</a></li>
+<li><a href="#meta-data-and-versioning">Meta-data and Versioning</a></li>
+<ul><li><a href="#custom-databases-and-applications">Custom Databases and Applications</a></li>
+</ul>
+</ul>
+<p>This document describes the use and operation of relational database systems in Qt Extended and should be used in conjunction with the <a href="database-policy.html">Database Policy</a> document.</p>
+<a name="general-architectural-description"></a>
+<h2>General Architectural Description</h2>
+<p>Qt Extended relies on relational database systems for a number of purposes and functions as summarized in the following table:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Function</th><th>Description</th><th>Created</th><th>Visibility</th></tr></thead>
+<tr valign="top" class="odd"><td><b>System</b></td><td>Persistent system data and meta information, eg track VPN &amp; PKI certificates, system tones, system categories.</td><td>ROM image</td><td>Not user visible</td></tr>
+<tr valign="top" class="even"><td><b>Content</b></td><td>Qt Extended Document system; Categories</td><td>ROM image / Device run-time</td><td>User visible</td></tr>
+<tr valign="top" class="odd"><td><b>PIM</b></td><td>Qt Extended Personal Information Management data, including Contacts (Address book), and Calendar</td><td>ROM image / Device run-time</td><td>User visible</td></tr>
+<tr valign="top" class="even"><td><b>Application</b></td><td>Additional Qt Extended applications, Custom applications, 3rd party or installed applications</td><td>Device run-time</td><td>Depends on app</td></tr>
+</table></p>
+<a name="general-concepts"></a>
+<h3>General Concepts</h3>
+<p>For the purposes of Qt Extended, a relational database is defined as a system of managed data stores, which are queried and updated using <a href="http://en.wikipedia.org/wiki/Data_Manipulation_Language">Data Manipulation Language</a> statements.</p>
+<p>The most popular data manipulation standard is SQL, which is standardized in <b>ISO/IEC 9075:1999(E) Information technology - Database languages - SQL</b>.</p>
+<p>An SQL relational database system is organized as:</p>
+<ul>
+<li>Databases</li>
+<li>Tables</li>
+<li>Columns</li>
+</ul>
+<p>where each is made up of the next, ie Databases are made up of Tables, which are made up of Columns. Additionally within Databases, a Table may have one or more indexes. Non-SQL-99 standard extensions such as stored procedures, relational constraints and triggers are also part of the database.</p>
+<p>A Table may be TEMPORARY. Such tables are lost when the database connection is dropped, and may be used for staging large or complex queries.</p>
+<p>More on basic or general theory regarding databases can be found in <a href="http://en.wikipedia.org/wiki/Database_management_system">online sources</a> or textbooks.</p>
+<p>For the details of Qt Extended system organization see <a href="#qt-extended-database-schema">Schema</a> below.</p>
+<a name="qt-extended-databases"></a>
+<h3>Qt Extended Databases</h3>
+<p>A relational database system may contain a number of discrete databases used to partition the system by purpose or function or to allow databases with different characteristics to coexist. For example databases may have:</p>
+<ul>
+<li>different storage engines and properties</li>
+<li>specific access characteristics for example, a database may be restricted to one application.</li>
+</ul>
+<p>Databases may have back-end storage on temporary file-systems or removable media. Such transient databases are a different concept to a temporary table. Transient databases are lost when the storage system is removed or reset (for example, <tt>tmpfs</tt> on reboot).</p>
+<p>The following databases are used in Qt Extended:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>PREFIX</tt></td><td>The System function of Qt Extended is backed by a read-only database. The storage back-end is associated with the Qt Extended prefix, which is the root of the Qt Extended ROM image on the file-system.</td></tr>
+<tr valign="top" class="even"><td><tt>CONTENT</tt></td><td>The <tt>Content</tt> function is provided by a separate database It includes the <tt>Categories</tt> table accessed by PIM. This database is read-write, and files used by the storage engine are located in a user home directory.</td></tr>
+<tr valign="top" class="odd"><td><tt>PIM</tt></td><td>The <tt>PIM</tt> function is provided by a separate database which reduces locking contention and namespace issues with the <tt>Content</tt> database. The <tt>Categories</tt> table, where required is accessed from the <tt>Content</tt> database. This database is read-write, and files used by the storage engine are located in a user home directory.</td></tr>
+<tr valign="top" class="even"><td><tt>MEDIA</tt></td><td>Databases with the same identical schema as the <tt>HOME</tt> database are used for each media card on the Qt Extended device. These Databases are transient and there is one for each media device.</td></tr>
+<tr valign="top" class="odd"><td><tt>APPS</tt></td><td>In future releases of Qt Extended other applications will create their own databases. This will allow access control to be used to protect data from corruption by incorrect use. Applications might include optional Qt Extended applications, and/or second- &amp; third-party applications.</td></tr>
+</table></p>
+<p>The <b>same schema of PIM + Content Tables</b> is used for <tt>PREFIX</tt>, <tt>HOME</tt> and <tt>per MEDIA</tt> databases.</p>
+<p>Other applications are free to use any schema as defined by the <a href="database-policy.html">Database Policy</a>.</p>
+<a name="content-and-pim-functions"></a>
+<h2>Content and PIM Functions</h2>
+<p>The <tt>Content</tt> function is maintained as a separate collection of schema entries and has a separate API based around the <tt>QContent</tt> and <tt>QContentSet</tt> classes.</p>
+<p>PIM has also its own set of schema entries and is accessed via the PIM library and its API via <tt>QPimRecord</tt> and related classes.</p>
+<p>Applications using the PIM API connect to the database directly and execute SQL to update and query the tables in the PIM schema.</p>
+<p>However, the <tt>Content</tt> function has a client-server architecture, as shown in the diagram below, such that only the Qt Extended server process can perform updates and queries on it.</p>
+<p align="center"><img src="images/db-arch.png" /></p><p>The <tt>Content</tt> function has this structure for the following reasons:</p>
+<ul>
+<li>Performance - the content system tracks all user files and large collections of files should only be tracked once.</li>
+<li>Synchronization - database per media. See the next section on <a href="#multidatabase">Multiple Databases</a></li>
+<li>Notification - when new media cards are inserted, applications can receive updates via the QPE server of a <tt>QContentSet</tt> to which that process is subscribed.</li>
+</ul>
+<a name="multidatabase"></a><a name="multiple-databases"></a>
+<h3>Multiple Databases</h3>
+<p>Typically it is not possible to query or update across databases, and it is best practice to design systems so requirements do not arise for cross-database queries. Currently in Qt Extended cross-database queries are required due to the database per-media architecture. Application code is used to work around the situation, and the client-server architecture mitigates the risks.</p>
+<p>Where separate databases are used and queries are required across both, there are two options:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Cross-database Work-around</th><th>Risks</th></tr></thead>
+<tr valign="top" class="odd"><td>Write application code to perform the operations and merge the results as required.</td><td>Race conditions, non-transactional performance problems.</td></tr>
+<tr valign="top" class="even"><td>Employ vendor specific extensions, such as <a href="http://dev.mysql.com/doc/refman/5.0/en/merge-storage-engine.html">MERGE TABLES</a> or <a href="http://www.sqlite.org/lang_attach.html">ATTACH DATABASE</a>.</td><td>Portability issues - extensions can be factored into a pluggable architecture to avoid this.</td></tr>
+</table></p>
+<a name="supported-relational-database-systems"></a>
+<h2>Supported Relational Database Systems</h2>
+<p>When examining vendor database products great care must be taken with their use of the word <b>embedded</b>. It is used with two different and conflicting meanings:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Context</th><th>Meaning of <i>Embedded</i></th></tr></thead>
+<tr valign="top" class="odd"><td><b>Mobile</b></td><td>Suitable for systems with limited resources such as mobile phones and PDAs</td></tr>
+<tr valign="top" class="even"><td><b>Integrated</b></td><td>A database used locally and tightly integrated into a single application.</td></tr>
+</table></p>
+<p><b>Note:</b> <i>Integrated</i> databases do not generally support access by multiple processes. Qt Extended is designed to cater for this by using a client server architecture in the case of <tt>Content</tt>, and by limiting access to a single process in other cases.</p>
+<p>Database Systems and their support status are:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>System</th><th>Vendor</th><th>Status</th><th>Embedded</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="http://sqlite.org">Sqlite</a></td><td>Sqlite.org &amp; D. Richard Hipp</td><td>Supported since Qtopia 4.0</td><td>Mobile and Integrated</td></tr>
+<tr valign="top" class="even"><td><a href="http://www.mimer.com">Mimer SQL</a></td><td>Mimer Information Technology AB, Sweden</td><td>Supported since Qtopia 4.3</td><td>Mobile</td></tr>
+</table></p>
+<a name="sqlite-specific-notes"></a>
+<h3>Sqlite Specific Notes</h3>
+<p>The <a href="http://sqlite.org">Sqlite</a> relational database system is one of the supported systems for Qt Extended. In that system, there is a one-to-one correspondence between actual files on the file-system and <b>Databases</b>. To create a new database in Sqlite, a new database file is created on the file-system which encapsulates all data, relations and indexes.</p>
+<p>Generally databases are created by a DML statement, for example the SQL statement</p>
+<p><tt>CREATE DATABASE Home_Database;</tt></p>
+<p>would create a new database in most SQL based relational database systems.</p>
+<p>Application programs cannot or should not make assumptions about the location of the physical storage backing the database. That will depend on the configuration of the system and what vendor it was from.</p>
+<p>Some database systems can use raw unformatted partitions (raw block devices), others create a number of files for indexes, journals and meta-data (eg. PostgreSQL), while yet others use a single flat-file structure (eg. <a href="legal-sqlite.html">SQLite</a>).</p>
+<p>Great care needs to be taken in all implementation code not to intermix the notion of <b>Database</b> and <b>Database file</b>, since this would create code that is unlikely to work with other systems.</p>
+<a name="qt-extended-database-schema"></a>
+<h2>Qt Extended Database Schema</h2>
+<p>The Qt Extended Database Schema is split into two separate collections of schema files, one for Content and one for PIM.</p>
+<p>Other applications should maintain their own schema files following this model. The table names listed below should be considered as &quot;Qt Extended reserved words&quot; when creating or modifying schema.</p>
+<p>The main tables and their purpose are listed here:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Table</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><b>Content Functions</b></td></tr>
+<tr valign="top" class="even"><td>content</td><td>Contains meta data about Content items available to the device. Items include plain files, such as an MP3 music file, and contained or downloaded content for which there is no clear concept of a file, such as DRM content, or streamed content.</td></tr>
+<tr valign="top" class="odd"><td>mapCategoryToContent</td><td>Contains relational mappings between categories and content. Using a mapping table allows multiple tags to be applied to a content item, and the same category to be applied to many contents.</td></tr>
+<tr valign="top" class="even"><td>locationLookup</td><td>paths for file based content, this is primarily a storage optimization to save the cost of storing the full path where it is repeated across a number of content items. The content table contains a foreignKey entry pointing to this table.</td></tr>
+<tr valign="top" class="odd"><td>contentProps</td><td>Arbitrary meta-data may be associated with content items via the strings stored in this table.</td></tr>
+<tr valign="top" class="even"><td><b>PIM and Content</b></td></tr>
+<tr valign="top" class="odd"><td>categories</td><td>Lists names and translations of categories, which are <b>tags</b> used to label items in the Content system. The <b>System</b> function uses non-user visible categories to locate system resources such as certificates and system ring-tones. The end-user may create their own categories for sorting Content and PIM items. Two pre-loaded and specially treated categories are <b>Business</b> and <b>Personal</b>.</td></tr>
+<tr valign="top" class="even"><td><b>PIM Functions</b></td></tr>
+<tr valign="top" class="odd"><td>contacts</td><td>Address book entries. This table has over 40 columns, including ones for &quot;firstname&quot; and &quot;nickname&quot;.</td></tr>
+<tr valign="top" class="even"><td>emailaddresses</td><td>Email addresses for contacts. Linked to the contacts table by a foreign key.</td></tr>
+<tr valign="top" class="odd"><td>contactphonenumbers</td><td>Phone numbers for contacts. Linked to the contacts table by a foreign key.</td></tr>
+<tr valign="top" class="even"><td>appointments</td><td>Events forming part of the calendaring system.</td></tr>
+<tr valign="top" class="odd"><td>tasks</td><td>Tasks and TODO entries, also part of the calendaring system.</td></tr>
+<tr valign="top" class="even"><td>*custom</td><td>Each of appointments, tasks and contacts has a freeform field that can be added to create extra data entries.</td></tr>
+<tr valign="top" class="odd"><td>*categories</td><td>Each of appointments, tasks and contacts has a category table specific to it.</td></tr>
+</table></p>
+<p>This is not a full list of all tables. For comprehensive up-to-date details of the current schema refer to the files in the Qt Extended source tree under:</p>
+<ul>
+<li><tt>$QTOPIA_SOURCE/src/libraries/qtopia/resource</tt></li>
+<li><tt>$QTOPIA_SOURCE/src/libraries/qtopiapim/resource</tt></li>
+</ul>
+<a name="meta-data-and-versioning"></a>
+<h2>Meta-data and Versioning</h2>
+<p>The Content + PIM database contains embedded versioning information which shows the current version number of that database.</p>
+<p>When the schema of that database is changed, the SQL statement files referred to in the resources listing in the previous section are updated so that the current schema version can be obtained by an SQL query.</p>
+<p>Previously the mechanism for doing this was an entry <tt>PRAGMA user_version 100;</tt> in the file:</p>
+<ul>
+<li><tt>$QTOPIA_SOURCE/src/libraries/qtopia/resource/contentlnk.sqlite.sql</tt></li>
+</ul>
+<p>However this is Sqlite specific, and has been superseded in 4.3 by the <tt>schema_versions</tt> table, which contains:</p>
+<ul>
+<li>column <tt>schema_version INTEGER PRIMARY KEY</tt></li>
+<li>column <tt>upgrade_date INTEGER</tt> (in julian date format)</li>
+</ul>
+<p>The query <tt>SELECT MAX(schema_version) FROM schema_versions;</tt> will then return the current version number.</p>
+<p>The PIM database also maintains a <tt>changelog</tt> table and a <tt>sqlsources</tt> table, which contain meta data about updates to the PIM data and identities of data sources. These are intended for use in managing data synchronisation and import/export.</p>
+<a name="custom-databases-and-applications"></a>
+<h3>Custom Databases and Applications</h3>
+<p>When creating applications which require access or modifications to the Qt Extended database, follow the rules laid out in the <a href="database-policy.html">Database Policy</a>.</p>
+<p>At this time there are no examples of Custom database requirements.</p>
+<p>See also <a href="qcontent.html">QContent</a>, <a href="qcontentset.html">QContentSet</a>, <a href="qpimrecord.html">QPimRecord</a>, and <a href="docsys-overview.html">Document System</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

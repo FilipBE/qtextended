@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>obexquoteserver.cpp Example File (obex/simpleobexdemo/obexquoteserver.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">obexquoteserver.cpp Example File<br /><span class="small-subtitle">obex/simpleobexdemo/obexquoteserver.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;obexquoteserver.h&quot;
+
+    #include &lt;QObexServerSession&gt;
+    #include &lt;QTcpServer&gt;
+    #include &lt;QTcpSocket&gt;
+    #include &lt;QList&gt;
+    #include &lt;QDateTime&gt;
+
+    static QList&lt;QByteArray&gt; getDilbertQuotes()
+    {
+        QList&lt;QByteArray&gt; quotes;
+        quotes &lt;&lt; &quot;I love deadlines. I especially like the whooshing sound they make as they go flying by.&quot;
+                &lt;&lt; &quot;I can only please one person per day. Today is not your day. Tomorrow is not looking good either.&quot;
+                &lt;&lt; &quot;On the keyboard of life, always keep one finger on the escape key.&quot;
+                &lt;&lt; &quot;Never argue with idiots. They drag you down to their level, and then beat you with experience.&quot;
+                &lt;&lt; &quot;A pat on the back is only a few inches from a kick in the butt.&quot;
+                &lt;&lt; &quot;Don't be irreplaceable. If you can't be replaced, you can't be promoted.&quot;
+                &lt;&lt; &quot;Eat one live toad the first thing in the morning and nothing worse will happen to you the rest of the day.&quot;
+                &lt;&lt; &quot;If it wasn't for the last minute, nothing would get done.&quot;
+                &lt;&lt; &quot;When you don't know what to do, walk fast and look worried.&quot;
+                &lt;&lt; &quot;Only the mediocre are at their best all the time.&quot;
+                &lt;&lt; &quot;There's a fine line between genius and insanity. I have erased this line.&quot;
+                &lt;&lt; &quot;If at first you don't succeed... skydiving isn't for you.&quot;
+                &lt;&lt; &quot;At work, the authority of a person is inversely proportional to the number of pens that person is carrying.&quot;;
+        return quotes;
+    }
+    static const QList&lt;QByteArray&gt; DILBERT_QUOTES = getDilbertQuotes();
+
+    class ObexQuoteServerSession : public QObexServerSession
+    {
+        Q_OBJECT
+    public:
+        ObexQuoteServerSession(QIODevice *device, QObject *parent = 0);
+
+    protected slots:
+        QObex::ResponseCode connect(const QObexHeader &amp;header);
+        QObex::ResponseCode disconnect(const QObexHeader &amp;header);
+        QObex::ResponseCode get(const QObexHeader &amp;header);
+
+    protected:
+        virtual QObex::ResponseCode provideData(const char **data, qint64 *size);
+
+    private:
+        int m_nextQuoteIndex;
+        bool m_sentNextQuote;
+    };
+
+    ObexQuoteServerSession::ObexQuoteServerSession(QIODevice *device, QObject *parent)
+        : QObexServerSession(device, parent)
+    {
+        qsrand(QDateTime::currentDateTime().toTime_t());
+    }
+
+    QObex::ResponseCode ObexQuoteServerSession::connect(const QObexHeader &amp;header)
+    {
+        Q_UNUSED(header);
+        return QObex::Success;      <span class="comment">// accept the CONNECT request</span>
+    }
+
+    QObex::ResponseCode ObexQuoteServerSession::disconnect(const QObexHeader &amp;header)
+    {
+        Q_UNUSED(header);
+        return QObex::Success;      <span class="comment">// accept the DISCONNECT request</span>
+    }
+
+    QObex::ResponseCode ObexQuoteServerSession::get(const QObexHeader &amp;header)
+    {
+        Q_UNUSED(header);
+
+        m_nextQuoteIndex = qrand() % DILBERT_QUOTES.size();
+        m_sentNextQuote = false;
+
+        return QObex::Success;      <span class="comment">// accept the PUT request</span>
+    }
+
+    QObex::ResponseCode ObexQuoteServerSession::provideData(const char **data, qint64 *size)
+    {
+        if (m_sentNextQuote) {
+            *size = 0;  <span class="comment">// indicate there is no more data to be sent</span>
+        } else {
+            const QByteArray &amp;quote = DILBERT_QUOTES[m_nextQuoteIndex];
+            *data = quote.constData();
+            *size = quote.size();
+            m_sentNextQuote = true;
+        }
+        return QObex::Success;
+    }
+
+<span class="comment">    // ====================================================================</span>
+
+    ObexQuoteServer::ObexQuoteServer(QObject *parent)
+        : QObject(parent),
+          m_tcpServer(new QTcpServer(this))
+    {
+        connect(m_tcpServer, SIGNAL(newConnection()),
+                this, SLOT(newConnection()));
+    }
+
+    bool ObexQuoteServer::run()
+    {
+        return m_tcpServer-&gt;listen();
+    }
+
+    QHostAddress ObexQuoteServer::serverAddress() const
+    {
+        return m_tcpServer-&gt;serverAddress();
+    }
+
+    quint16 ObexQuoteServer::serverPort()
+    {
+        return m_tcpServer-&gt;serverPort();
+    }
+
+    void ObexQuoteServer::newConnection()
+    {
+        QTcpSocket *socket = m_tcpServer-&gt;nextPendingConnection();
+        ObexQuoteServerSession *obexServer = new ObexQuoteServerSession(socket);
+        connect(socket, SIGNAL(disconnected()),
+                obexServer, SLOT(deleteLater()));
+    }
+
+    #include &quot;obexquoteserver.moc&quot;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

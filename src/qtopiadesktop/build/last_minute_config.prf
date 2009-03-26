@@ -1,0 +1,19 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(last_minute_config.prf)
+# Load up any last minute config - stuff that depends on the results of qtopia_project()
+# Since this is read from a function, the usual scoping rules apply.
+
+# Load the default implicit dependencies
+include(implicit_deps.pri)
+
+# Get the PROJECT_ROOT's implicit dependencies (if any)
+load(implicit_deps,true)
+
+# Setup the install prefixes
+load(install_prefix)
+
+desktop:h=HOST
+else:h=TARGET
+INCLDEPATH+=$$eval($${h}_INCLUDEPATH)
+LIBS+=$$eval($${h}_LIBS)
+DEFINES+=$$eval($${h}_DEFINES)
+

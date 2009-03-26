@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Enablers: Application Execution</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Enablers: Application Execution<br><small>Functional Description</small></h1><p>
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-41">Daemon and non-UI Applications</a>
+<li><a href="#QTOPIA-40">Lazy Application Shutdown</a>
+<li><a href="#QTOPIA-8215">Preloaded Applications</a>
+<li><a href="#QTOPIA-39">Quicklauncher</a>
+</ul><h3><a name=QTOPIA-41>Daemon and non-UI Applications</a></h3>
+<p>Some Qt Extended applications, such as the <span class="nobr"><a href="fd-VoIP.html">VoIP<sup></sup></a></span> application "sipagent" and the mediaserver, act as daemons.  These applications provide services or functionality to the system, but do not have a UI.  Other applications, such as Qt Extended's synchronization agent qdsync have a UI but also provide an important service to the system that requires them to keep running in the background even when the UI is not shown.  Normally a Qt Extended application terminates (or enters the lazy application shutdown state pending termination) whenever its UI is hidden, but Qt Extended does provide special support for daemon and hybrid applications.
+
+<p>A Qt Extended Application - that is, one with a <span class="nobr"><a href="qtopiaapplication.html">QtopiaApplication<sup></sup></a></span> instance - will continue running while either it is showing its UI or it has any uncompleted "tasks" registered with the system.  Tasks are registered via a method call on QtopiaApplication.  This mechanism allows complex applications to control their lifecycle.</p>
+
+<p>Qt Extended provides no inbuilt support for daemon applications that are NOT Qt Extended Applications (again, have a QtopiaApplication instance).  Most such applications either have a dedicated owner that manages their lifecycle (eg. pppd) or are largely independent of and generally started before Qt Extended.</p>
+<h3><a name=QTOPIA-40>Lazy Application Shutdown</a></h3>
+<p>It is common for a user to be rapidly switching between a small number of applications.  While from their perspective they are starting, using and then exiting an application, starting an application, even with quicklauncher, is expensive and so it is inefficient for the system to truly act in this manner.  With "lazy application shutdown" enabled (Trolltech/Launcher:AppLoading/LazyShutdown=true) rather than terminating an application when the user exits from it the system leaves it running in a hidden state.  When the user restarts the application the running process only has to perform the comparatively quick operation of showing its UI.  
+
+<p>The system will automatically terminate applications in the lazy application shutdown state when either too many are in this state or the system gets low on memory.  Lazy Application Shutdown is a performance optimization and does not effect the way applications appear to the user.</p>
+<h3><a name=QTOPIA-8215>Preloaded Applications</a></h3>
+<p>Qt Extended provides a UI to preload applications which start immediately after Qt Extended starts, but in a hidden state. This ensures almost instantaneouse "startup" for applications which are frequently used.
+
+<ul>
+	<li>Preloaded applications are started during the server startup.</li>
+	<li>An applications is added to the Preload list via the options menu using the FastLoad option</li>
+	<li>When FastLoad is selected the application immediately loads in a hidden state</li>
+	<li>If a preloaded application crashes it is removed from the Preload list.</li>
+</ul>
+<h3><a name=QTOPIA-39>Quicklauncher</a></h3>
+<p>Much of a Qt Extended application's startup time is spent in the slow but necessary tasks of C++ symbol relocation and QtopiaApplication/QApplication construction. Doing this predictable, repetitive work at the last moment gives poor application launch performance.
+
+<p>To avoid this, at startup the Qt Extended server launches the quicklauncher stub application. While the user is still idling, this process is busy starting up, and performing all the common application initialization work. By the time the user gets around to launching an application, the quicklauncher process is idling in the background. Rather than running a new process from scratch the quicklauncher loads the requested application, as a shared library, into its address space and starts executing application specific code with no delay.</p>
+
+<p>The quicklauncher process is restarted once used, with a small delay to avoid poor performance of the foreground application. On typical devices, if the user starts two applications within 5-7 seconds, no quicklauncher process will exist for the second, and so the second application starts up slower.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

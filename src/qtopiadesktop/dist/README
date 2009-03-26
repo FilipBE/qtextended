@@ -1,0 +1,17 @@
+To build the Qtopia Sync Agent installer you will need to do the following:
+
+1) Install NSIS 2.0
+2) Build Qtopia Sync Agent
+3) Build the installer
+
+Ensure any redistributable files required by your compiler (eg. msvcrtxx.dll)
+are in %QPEDIR%\src\qtopiadesktop\dist\redist. For VC8 you must also provide
+an appropriate manifest file.
+
+Building the installer uses the makensi script:
+   %QPEDIR%\bin\makensi
+
+The installer will be placed in %QPEDIR%\src\qtopiadesktop\dist
+
+You can add your own sections to the installer by passing -extra <file> to
+makensi.

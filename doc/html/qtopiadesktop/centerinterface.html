@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>CenterInterface Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">CenterInterface Class Reference</h1>
+<p>The CenterInterface class provides access to the Qt Extended Sync Agent's internals. <a href="#details">More...</a></p>
+<pre>    #include &lt;CenterInterface&gt;</pre><ul>
+<li><a href="centerinterface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QDDevPlugin * <b><a href="centerinterface.html#currentDevice">currentDevice</a></b> () = 0</li>
+<li><div class="fn"/>virtual const QDDevPluginList <b><a href="centerinterface.html#devicePlugins">devicePlugins</a></b> () = 0</li>
+<li><div class="fn"/>virtual QDPlugin * <b><a href="centerinterface.html#getPlugin">getPlugin</a></b> ( const QString &amp; <i>id</i> ) = 0</li>
+<li><div class="fn"/>virtual const QDLinkPluginList <b><a href="centerinterface.html#linkPlugins">linkPlugins</a></b> () = 0</li>
+<li><div class="fn"/>virtual QObject * <b><a href="centerinterface.html#syncObject">syncObject</a></b> () = 0</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The CenterInterface class provides access to the Qt Extended Sync Agent's internals.</p>
+<p>The CenterInterface struct is the interface that plugins use to access the Qt Extended Sync Agent's internals. It can be retieved using the <a href="qdplugin.html#centerInterface">QDPlugin::centerInterface</a>() function.</p>
+<p>See also <a href="qdplugin.html#centerInterface">QDPlugin::centerInterface</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="currentDevice"></a><a href="qddevplugin.html">QDDevPlugin</a> * CenterInterface::currentDevice ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the current device plugin that the Qt Extended Sync Agent is connected to.</p>
+<h3 class="fn"><a name="devicePlugins"></a>const <a href="qdplugindefs-h.html#QDDevPluginList-typedef">QDDevPluginList</a> CenterInterface::devicePlugins ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the available device plugins.</p>
+<h3 class="fn"><a name="getPlugin"></a><a href="qdplugin.html">QDPlugin</a> * CenterInterface::getPlugin ( const <a href="foo/../../qstring.html">QString</a> &amp; <i>id</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return a plugin instance based on it's <i>id</i>. If the requested plugin does not exist returns 0.</p>
+<h3 class="fn"><a name="linkPlugins"></a>const <a href="qdplugindefs-h.html#QDLinkPluginList-typedef">QDLinkPluginList</a> CenterInterface::linkPlugins ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the available link plugins.</p>
+<h3 class="fn"><a name="syncObject"></a><a href="foo/../../qobject.html">QObject</a> * CenterInterface::syncObject ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns an object that exists for as long as the sync does.</p>
+<p>The object is deleted after QDLinkPluginList::finishSync() is called but before control returns from the sync process.</p>
+<p>Resources shared by multiple sync objects can be assigned this object as a parent so that they are cleaned up when the sync ends.</p>
+<p>See also <a href="foo/../../qobject.html#destroyed">QObject::destroyed</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

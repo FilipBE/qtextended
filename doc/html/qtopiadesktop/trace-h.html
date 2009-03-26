@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>&lt;trace.h&gt; - &lt;trace.h&gt;</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">&lt;trace.h&gt; - &lt;trace.h&gt;<br /><span class="subtitle"></span>
+</h1>
+<p>The &lt;trace.h&gt; header contains some useful debugging macros. <a href="#details">More...</a></p>
+<ul>
+</ul>
+<a name="Macros"></a>
+<h3>Macros</h3>
+<ul>
+<li><div class="fn"/><b><a href="trace-h.html#LOG">LOG</a></b> ()</li>
+<li><div class="fn"/><b><a href="trace-h.html#TRACE">TRACE</a></b> (  <i>CATEGORY</i> )</li>
+<li><div class="fn"/><b><a href="trace-h.html#WARNING">WARNING</a></b> ()</li>
+</ul>
+<p>The &lt;trace.h&gt; header contains some useful debugging macros.</p>
+<p>You use the macros in this file like this.</p>
+<pre>    void MyClass::MyFunc()
+    {
+        TRACE(TRACE) &lt;&lt; &quot;MyClass::MyFunc&quot;;
+
+        otherfunc( 1 );
+    }
+    void MyClass::otherfunc( int arg )
+    {
+        TRACE(TRACE) &lt;&lt; &quot;MyClass::otherfunc&quot; &lt;&lt; &quot;arg&quot; &lt;&lt; arg;
+        LOG() &lt;&lt; &quot;Message&quot;;
+    }</pre>
+<p>The output looks like this.</p>
+<pre>    T1 MyClass::MyFunc()
+    T1 {
+    T1     MyClass::otherfunc() arg 1
+    T1     {
+    T1         Message
+    T1     }
+    T1 }</pre>
+<p>For each new thread seen, the number is incremented (eg. T2, T3, etc.)&#x2e;</p>
+<hr />
+<h2>Macro Documentation</h2>
+<h3 class="fn"><a name="LOG"></a>LOG ()</h3>
+<p>Use this macro like <a href="foo/../../qtglobal.html#qDebug">qDebug</a>() and the output will be indented.</p>
+<h3 class="fn"><a name="TRACE"></a>TRACE (  <i>CATEGORY</i> )</h3>
+<p>Register the logging category to use (TRACE if <i>CATEGORY</i> is null). This statement must appear before calls to <a href="trace-h.html#LOG">LOG</a>() so that indenting happens correctly. See <a href="qtopiadesktoplog-h.html">&lt;qtopiadesktoplog.h&gt;</a> for the available categories.</p>
+<h3 class="fn"><a name="WARNING"></a>WARNING ()</h3>
+<p>Use this macro like <a href="foo/../../qtglobal.html#qWarning">qWarning</a>() and the output will be indented. Note that calls to WARNING() cannot be turned off like calls to <a href="trace-h.html#LOG">LOG</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

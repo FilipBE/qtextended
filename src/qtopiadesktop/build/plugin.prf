@@ -1,0 +1,55 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(plugin.prf)
+
+isEmpty(plugin_type) {
+    echo(Guessing plugin type)
+    QTOPIA_SPLIT_ID=$$split(QTOPIA_ID,/)
+    plugin_type=$$member(QTOPIA_SPLIT_ID,-2)
+}
+echo(Using plugin type $$plugin_type)
+
+contains(PROJECT_TYPE,embedded) {
+    target.path=/qt_plugins/$$plugin_type
+}
+
+# Qtopia projects have link_test on by default (external projects must opt-in)
+depotProject:CONFIG+=link_test
+
+# Opt-out of the link test (eg. because you know it will fail but you
+# also know your plugin will work at runtime).
+no_link_test:CONFIG-=link_test
+
+!singleexec:!win32:link_test {
+    # If you modify this section, be EXTREMELY careful with quoting. There's code here
+    # that must be correctly escaped through several layers.
+    LT_DEFINES=
+    contains(SOURCES,main.cpp) {
+        LT_DEFINES+=-DREAL_FILE=$$LITERAL_ESCAPED_QUOTE$$SRCDIR/main.cpp$$LITERAL_ESCAPED_QUOTE
+    }
+    qtopia:!contains(PROJECT_TYPE,core):LT_DEFINES+=-DLINK_QTOPIA
+    else:qt:LT_DEFINES+=-DLINK_QT
+    compile_line=\$$(echo $$LITERAL_QUOTE$(CXX)$$LITERAL_QUOTE | sed $${LITERAL_SQUOTE}s/^@.*&& //$$LITERAL_SQUOTE) -c $(CXXFLAGS) $(INCPATH) $$LT_DEFINES -o $$OUT_PWD/link_test.o $$QTOPIA_DEPOT_PATH/src/qtopiadesktop/build/link_test.cpp
+    commands=$$COMMAND_HEADER\
+        compile_line=$$LITERAL_QUOTE$$compile_line$$LITERAL_QUOTE;
+    !silent:commands+=echo $$LITERAL_QUOTE\$$compile_line$$LITERAL_QUOTE;
+    commands+=\$$compile_line $$LINE_SEP\
+        OBJECTS=;\
+        for obj in $(OBJECTS); do\
+            echo \$$obj | grep $$LITERAL_SQUOTE\/main\.o$$LITERAL_SQUOTE >/dev/null 2>&1 || OBJECTS=$$LITERAL_QUOTE\$$OBJECTS \$$obj$$LITERAL_QUOTE;\
+        done
+    link_line="$$QMAKE_LINK $$QMAKE_LFLAGS"
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        link_line~=s/^"//
+        link_line~=s/"$//
+    }
+    link_line~=s,^@echo.*&& ,,
+    CONFIG(release,debug|release):link_line+=$$QMAKE_LFLAGS_RELEASE
+    CONFIG(debug,debug|release):link_line+=$$QMAKE_LFLAGS_DEBUG
+    link_line+=-o link_test $$OUT_PWD/link_test.o \$$OBJECTS $(LIBS) $(OBJCOMP)
+    link_test.commands=$$commands; link_line=$$LITERAL_QUOTE$$link_line$$LITERAL_QUOTE;
+    !silent:link_test.commands+=echo $$LITERAL_QUOTE\$$link_line$$LITERAL_QUOTE;
+    link_test.commands+=\$$link_line
+    link_test.depends=$(TARGET)
+    QMAKE_EXTRA_TARGETS+=link_test
+    ALL_DEPS+=link_test
+}
+

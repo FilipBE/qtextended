@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case $1 in
+start)
+    splash -p + "Starting services"
+    ;;
+stop)
+    splash -p + "Stopping services"
+    ;;
+*)
+    ;;
+esac
+
+# start other services
+for file in /etc/rc.d/*.sh; do
+    if [ "$file" != "/etc/rc.d/*.sh" ]; then
+        eval $file "$@"
+    fi
+done
+

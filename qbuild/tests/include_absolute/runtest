@@ -1,0 +1,9 @@
+#!/bin/sh
+cat template.in | perl -pe 's/\$PWD/$ENV{PWD}/g' >template
+qbuild -script >output
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output template
+    result=$?
+fi
+exit $result

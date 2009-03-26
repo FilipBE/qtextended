@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Data Linking (QDL)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Data Linking (QDL)<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#how-it-works">How it Works</a></li>
+<ul><li><a href="#qdl-clients">QDL Clients</a></li>
+<ul><li><a href="#editing">Editing</a></li>
+<li><a href="#browsing">Browsing</a></li>
+<li><a href="#security-policy">Security Policy</a></li>
+</ul>
+<li><a href="#qdl-sources">QDL Sources</a></li>
+<ul><li><a href="#link-requests">Link Requests</a></li>
+<li><a href="#link-activation">Link Activation</a></li>
+<li><a href="#storing-the-link">Storing the Link</a></li>
+<li><a href="#security-policy">Security Policy</a></li>
+</ul>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended Data Linking (QDL) provides an API to associate data items across applications. A <a href="qdllink.html">QDLLink</a> is conceptually the same as an ordinary anchor on a webpage or as information which uniquely references an object in the same application, or another Qt Extended application. When the user clicks the link the referenced object is accessed. For example, using QDL a user can create a meeting event in <tt>Calendar</tt> and a link to each person attending the meeting from <tt>Contacts</tt>. When the event is viewed, hypertext links appear for each linked contact. Activating a link sends a message to the <tt>Contacts</tt> application to display that contact.</p>
+<a name="how-it-works"></a>
+<h2>How it Works</h2>
+<p>The linking process begins when the user edits a QDL enabled text field. These text fields are called the <i>client</i> in QDL and interface through an associated <a href="qdleditclient.html">QDLEditClient</a> object for QDL operations.</p>
+<p>The user selects an <i>Insert Link</i> context menu option in the text field which is connected to the {QDLEditClient::requestLink()} slot. This displays a dialog listing all applications providing a QDL service, known as QDL sources. The user then selects an application which contains the data item they wish to link to.</p>
+<p>Then a request for links is made with Qt Extended Data Sharing (QDS) to the selected source. Typically, the source application will present the user with a list of items available for linking and the user then selects the desired items from the list. However, the source may carry out any specific processing required to determine the set of links.</p>
+<p>Once a source has determined the items to be linked, it creates links for all of the items and sends them back to the client. The client receives the links and inserts them into the text field.</p>
+<p>Links are edited and viewed as hypertext anchors. The links work like links on a standard webpage - clicking them accesses the object they refer to.</p>
+<a name="qdl-clients"></a>
+<h3>QDL Clients</h3>
+<p>The core functionality for a QDL client is provided in the <a href="qdlclient.html">QDLClient</a> class. <a href="qdlclient.html">QDLClient</a> manages the client's QDLLinks, allows QDLLinks to be requested from a QDL source and to activate a <a href="qdllink.html">QDLLink</a> on a QDL source.</p>
+<p>To make the editing and manipulation of QDLLinks in rich-text documents easier <a href="qdleditclient.html">QDLEditClient</a> and <a href="qdlbrowserclient.html">QDLBrowserClient</a> can be used. <a href="qdleditclient.html">QDLEditClient</a> is used when a QDL enabled rich-text document is being created with a <a href="qtextedit.html">QTextEdit</a> widget, and <a href="qdlbrowserclient.html">QDLBrowserClient</a> is used when a QDL enabled rich-text document is to be displayed using a <a href="qtextbrowser.html">QTextBrowser</a> widget.</p>
+<a name="editing"></a>
+<h4>Editing</h4>
+<p>To enable QDL on a <a href="qtextedit.html">QTextEdit</a> widget you create a <a href="qdleditclient.html">QDLEditClient</a> object and associate it with the <a href="qtextedit.html">QTextEdit</a> widget. The <a href="qdleditclient.html">QDLEditClient</a> is given a unique name to help identify its links during activation, loading and saving.</p>
+<pre>    QTextEdit* txtNote = new QTextEdit( this );
+    QDLEditClient* txtNoteQDLClient = new QDLEditClient( txtNote, &quot;QDL Example&quot; );</pre>
+<p>To request a link from a QDL source <a href="qdleditclient.html#requestLinks">QDLEditClient::requestLinks</a>() is called. For Qt Extended a &quot;Insert Link&quot; action can be added to the context menu of the <a href="qtextedit.html">QTextEdit</a> widget which is connected to this slot, this is done using QDLEditWidget::setupStandardContextMenu().</p>
+<pre>    txtNoteQDLClient-&gt;requestLinks();</pre>
+<p>When the creation of the the rich-text document has finished, the links and the text need to be saved. The links for all QDL clients in the widget can be saved using <a href="qdl.html#saveLinks">QDL::saveLinks</a>() as in the example below, or for an individual QDL client using <a href="qdlclient.html#saveLinks">QDLClient::saveLinks</a>().</p>
+<pre>    QString links;
+    QDL::saveLinks( links, QDL::clients( this ) );
+    saveLinksToFile( links );
+    saveTextToFile( txtNote-&gt;toHtml() );</pre>
+<p>When the client is finished with the QDLLinks they must be removed. This can be done by calling <a href="qdlclient.html#clear">QDLClient::clear</a>() for each QDL client in the group or calling <a href="qdl.html#releaseLinks">QDL::releaseLinks</a>() for the entire QDL client group.</p>
+<a name="browsing"></a>
+<h4>Browsing</h4>
+<p><a href="qdlbrowserclient.html">QDLBrowserClient</a> subclasses <a href="qtextbrowser.html">QTextBrowser</a> and handles the display and activation of QDLLinks in a rich-text document. <a href="qdlbrowserclient.html">QDLBrowserClient</a> can be used directly, or subclassed as in the example below. The QDLLinks for the client should be loaded into <a href="qdlbrowserclient.html">QDLBrowserClient</a>, and the text should be set using <a href="qtextedit.html#html-prop">QTextBrowser::setHtml</a>(). Then <a href="qdlbrowserclient.html#verifyLinks">QDLBrowserClient::verifyLinks</a>() can be used to check the correctness of the QDLLinks in the widget's text.</p>
+<pre>    class ExampleBrowser : public QDLBrowserClient
+    {
+        Q_OBJECT;
+
+    public:
+        ExampleBrowser( QWidget *parent );
+
+        void init();
+
+    private:
+        QString loadLinksFromFile();
+        QString loadTextFromFile();
+    }
+
+    ExampleBrowser::ExampleBrowser( QWidget *parent )
+    :   QDLBrowserClient( parent, &quot;QDL Example&quot; )
+    {
+        init();
+    }
+
+    void ExampleBrowser::init()
+    {
+        QDLBrowserClient::loadLinks( loadLinksFromFile() );
+        setHtml( loadTextFromFile() );
+        QDLBrowserClient::verifyLinks();
+    }</pre>
+<a name="security-policy"></a>
+<h4>Security Policy</h4>
+<p>For devices which use SXE the application's project file must including <tt>qdl</tt> and <tt>qds</tt> in the package domain.</p>
+<a name="qdl-sources"></a>
+<h3>QDL Sources</h3>
+<p>A QDL source is any Qt Extended service which provides QDS services for QDL link requests and activation. Naturally the Qt Extended service will be part of an application which provides data items which are of interest to other applications, such as contacts, appointment or tasks. An example Qt Extended service class is provided below.</p>
+<pre>    class MyQdlService : public QtopiaAbstractService
+    {
+    public slots:
+        ...
+        void activateLink( const QDSActionRequest&amp; request );
+        void requestLinks( const QDSActionRequest&amp; request );
+        ...
+
+    private:
+        QDSData dataItemToQDLLink( DataItem data );
+    }</pre>
+<p>As the QDL is implemented on top of QDS, a QDS service file needs to be defined. Refer to Qt Extended Data Sharing for details.</p>
+<a name="link-requests"></a>
+<h4>Link Requests</h4>
+<p>For link requests the name of the service slot is not important, but the QDS service for link requests must have a request data type of &quot;text/x-qstring&quot;, a response data type of &quot;x-link/x-qlist-qdsdata&quot; (as returned by <a href="qdllink.html#listMimeType">QDLLink::listMimeType</a>(), and the attributes must contain &quot;qdl&quot; and &quot;request&quot;. For the service class above the service file <tt>&lt;Qt Extended Runtime Prefix&gt;/etc/MyQslService</tt> would look like the one below.</p>
+<pre>    [Translation]
+    File=QtopiaServices
+    Context=MyQdlService
+    [requestLinks]
+    RequestDataType=text/x-qstring
+    ResponseDataType=x-link/x-qlist-qdsdata
+    Attributes=&quot;qdl;request&quot;
+    Description[]=Request QDL links to data items
+    Icon=myQdlServceIcon</pre>
+<p>The request for links is handled in an application specific manner, but the response should contain a list of QDLLinks which have been stored as <a href="qdsdata.html">QDSData</a> objects. For requests which require user interation, a copy of the <a href="qdsactionrequest.html">QDSActionRequest</a> should be created at the beginning of the service slot so that the client is informed that the request is being processed.</p>
+<pre>    void MyQdlService::qdlRequestLinks( const QDSActionRequest&amp; request )
+    {
+        <span class="comment">// Copy request to inform client of processing</span>
+        QDSActionRequest processingRequest( request );
+
+        ...
+        QList&lt;DataItem&gt; dataItems;
+        <span class="comment">// Select the data items</span>
+        ...
+
+        <span class="comment">// Pack each data item into a list and respond.</span>
+        QList&lt;QDSData&gt; links;
+        foreach( DataItem dataItem, dataItems ) {
+            links.push_back( dataItemToQDLLink( dataItem ) );
+        }
+
+        QByteArray array;
+        {
+            QDataStream ds( &amp;array, QIODevice::WriteOnly );
+            ds &lt;&lt; links;
+        }
+
+        processingRequest.respond( QDSData( array, QDLLink::listMimeType() ) );
+    }</pre>
+<a name="link-activation"></a>
+<h4>Link Activation</h4>
+<p>For link activation the name of the service slot is not important, but the QDS service for link activation must have a request data type of &quot;x-link/x-qdllink&quot; (as returned by <a href="qdllink.html#mimeType">QDLLink::mimeType</a>(), have no response data type, and the attributes must contain &quot;qdl&quot; and &quot;activate&quot;. For the service class above the service file <tt>&lt;Qt Extended Runtime Prefix&gt;/etc/MyQslService</tt> would look like the one below.</p>
+<pre>    [Translation]
+    File=QtopiaServices
+    Context=MyQdlService
+    [requestLinks]
+    RequestDataType=text/x-qstring
+    ResponseDataType=x-link/x-qlist-qdsdata
+    Attributes=&quot;qdl;request&quot;
+    Description[]=Request QDL links to data items
+    Icon=myQdlServceIcon
+    [activateLink]
+    RequestDataType=x-link/x-qdllink
+    ResponseDataType=
+    Attributes=&quot;qdl;activate&quot;
+    Description[]=Activate a QDL link to a data item
+    Icon=myQdlServceIcon</pre>
+<p>The activation of links is handled in an application specific manner, an example is provided below.</p>
+<pre>    void MyQdlService::qdlActivateLink( const QDSActionRequest&amp; request )
+    {
+        <span class="comment">// Grab the link from the request and check that is one of ours</span>
+        QDLLink link( request.requestData() );
+        if ( link.service() != &quot;MyQdlService&quot; ) {
+            QDSActionRequest( request ).respond( &quot;Link doesn't belong to MyQdlService&quot; );
+            return;
+        }
+
+        const QByteArray data = link.data();
+        QDataStream refStream( data );
+
+        ...
+        QString error;
+        <span class="comment">// Use the data in refStream to activate the data item</span>
+        <span class="comment">// If an error occurs set the error string</span>
+        ...
+
+        if ( error.isEmpty() ) {
+            QDSActionRequest( request ).respond();
+        } else {
+            QDSActionRequest( request ).respond( error );
+        }
+    }</pre>
+<a name="storing-the-link"></a>
+<h4>Storing the Link</h4>
+<p>Typically only one <a href="qdllink.html">QDLLink</a> should be generated for each data item. This is possible as QDS allows the QDLLinks to be shared across a number of QDL clients, and enables the <a href="qdllink.html">QDLLink</a> information to be updated as the data item changes. If the data item is removed, the <a href="qdllink.html">QDLLink</a> stored in the QDS data store can be broken to inform QDL clients that the data item no longer exists, and attempted activation will fail.</p>
+<p>To make this possible the QDL source should store the <a href="qdsdata.html">QDSData</a> for the <a href="qdllink.html">QDLLink</a> and hold onto the key. Then when another request for a link to a data item is made the same <a href="qdsdata.html">QDSData</a> object can be used. In the request example above the dataItemToQDLLink() method would look something like the code below:</p>
+<pre>    QDSData MyQdlService::dataItemToQDLLink( DataItem data );
+    {
+        if ( !data.isValid() )
+            return QDSData();
+
+        <span class="comment">// Check if we need to create the QDLLink</span>
+        QString keyString = data.getField( QDL::SOURCE_DATA_KEY );
+        if ( keyString.isEmpty() ||
+             !QDSData( QLocalUniqueId( keyString ) ).isValid() ) {
+            <span class="comment">// Creating QDLLink</span>
+            QByteArray dataRef;
+            QDataStream refStream( &amp;dataRef, QIODevice::WriteOnly );
+            refStream &lt;&lt; data.uid();
+
+            QDLLink link( &quot;MyQdlService&quot;,
+                          dataRef,
+                          data.label(),
+                          &quot;myQdlServceIcon&quot; );
+
+            QDSData linkData = link.toQDSData();
+            QLocalUniqueId key = linkData.store();
+            data.setField( QDL::SOURCE_DATA_KEY, key.toString() );
+
+            return linkData;
+        }
+
+        <span class="comment">// Already have a link, get it from the QDSDataStore</span>
+        return QDSData( QLocalUniqueId( keyString ) );
+    }</pre>
+<p>In a similar manner the information in the stored <a href="qdllink.html">QDLLink</a> can be updated, the example below shows how the <a href="qdllink.html">QDLLink</a> can be broken when the data item is deleted.</p>
+<pre>    void MyQdlService::removeDataItemQDLLink( DataItem data )
+    {
+        if ( !data.isValid() )
+            return QDSData();
+
+        <span class="comment">// Check if the QDLLink is stored</span>
+        QString keyString = data.getField( QDL::SOURCE_DATA_KEY );
+        if ( key.isEmpty() )
+            return;
+
+        <span class="comment">// Break the link in the QDSDataStore</span>
+        QDSData linkData = QDSData( QLocalUniqueId( key ) );
+        QDLLink link( linkData );
+        link.setBroken( true );
+        linkData.modify( link.toQDSData().data() );
+
+        <span class="comment">// Now remove our reference to the link data</span>
+        linkData.remove();
+
+        <span class="comment">// Finally remove the stored key</span>
+        data.setField( QDL::SOURCE_DATA_KEY, QString() );
+    }</pre>
+<a name="security-policy"></a>
+<h4>Security Policy</h4>
+<p>For devices which use SXE the application's project file must including <tt>qdl</tt> and <tt>qds</tt> in the package domain. The SXE policy for the <tt>qdl</tt> package must also contain entries for the QDS services provided by the QDL support for the request and activation of QDLLinks. For the service class above the security policy would include:</p>
+<pre>    #
+    [qdl]
+    ...
+    QCopSend/QCop/QPE/Application/myserviceapp/MyQdlService::requestLinks(QDSActionRequest)
+    QCopSend/QCop/QPE/Application/myserviceapp/MyQdlService::activateLink(QDSActionRequest)
+    ...</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

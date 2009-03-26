@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Document Storage</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Document Storage<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#storage-conf">Storage.conf</a></li>
+<ul><li><a href="#mount-point-groups">Mount Point Groups</a></li>
+<ul><li><a href="#"><tt>HOME</tt></a></li>
+<li><a href="#"><tt>PREFIX</tt></a></li>
+</ul>
+<li><a href="#non-mount-point-groups">Non Mount Point Groups</a></li>
+<ul><li><a href="#"><tt>MountTable</tt></a></li>
+<li><a href="#"><tt>Updates</tt></a></li>
+<li><a href="#"><tt>Packages</tt></a></li>
+<li><a href="#"><tt>SxeDatabase</tt></a></li>
+</ul>
+</ul>
+<li><a href="#non-removable-vs-removable-storage">Non-removable vs Removable Storage</a></li>
+<ul><li><a href="#explicit-mount-unmount-notifications">Explicit Mount/Unmount Notifications</a></li>
+</ul>
+<li><a href="#using-read-only-file-systems">Using read-only File Systems</a></li>
+</ul>
+<a name="removable-storage-cards"></a><a name="storageconf"></a><a name="storage-conf"></a>
+<h2>Storage.conf</h2>
+<p>The <tt>Storage.conf</tt> configuration file defines the organization of storage devices in a Qt Extended installation. <tt>Storage.conf</tt> maps devices to human-readable names, and defines whether they are removable, read-only, and what type of data they may store and where. It also defines which devices packages and Qt Extended updates are installed to.</p>
+<p>The information stored in the <tt>Storage.conf</tt> can be accessed at run-time using the <a href="qstoragemetainfo.html">QStorageMetaInfo</a> and <a href="qfilesystem.html">QFileSystem</a> classes, and the <a href="qstoragedeviceselector.html">QStorageDeviceSelector</a> widget provides a user interface for selecting storage devices defined in the <tt>Storage.conf</tt>.</p>
+<p>An example <tt>Storage.conf</tt> is available at: <tt>&lt;qt-extended-root-dir&gt;/devices/greenphone/Storage.conf</tt>.</p>
+<a name="mount-point-groups"></a>
+<h3>Mount Point Groups</h3>
+<p>The configuration for each storage device is defined in a separate settings group in the <tt>Storage.conf</tt>. Any group key may be used for a mount point provided it's not a reserved group names, but they typically take the form of <tt>MountPointX</tt> where <tt>X</tt> is an integer (<tt>MountPoint0</tt>,<tt>MountPoint1</tt>).</p>
+<p>The parameters defined for a mount point group are:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Applications</tt></td><td>Indicates if the mount can contain applications.<p>See <a href="qfilesystem.html#applications">QFileSystem::applications</a>().</p>
+</td><td>boolean</td><td>1</td></tr>
+<tr valign="top" class="even"><td><tt>ApplicationsPath</tt></td><td>Specifies the sub-directory of the mount in which application data is stored.<p>See <a href="qfilesystem.html#applicationsPath">QFileSystem::applicationsPath</a>().</p>
+</td><td>string</td><td><tt>/Applications</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>ContentDatabase</tt></td><td>Indicates whether the mount has its own content database. If a mount does not have its own database the system database will be used for content on the mount.<p>See <a href="qfilesystem.html#contentDatabase">QFileSystem::contentDatabase</a>().</p>
+</td><td>boolean</td><td><tt>1</tt></td></tr>
+<tr valign="top" class="even"><td><tt>Documents</tt></td><td>Indicates if the mount can contain user documents.<p>See <a href="qfilesystem.html#documents">QFileSystem::documents</a>().</p>
+</td><td>boolean</td><td><tt>1</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>DocumentsPath</tt></td><td>Specifies the sub-directory of the mount in which user documents are stored.<p>See <a href="qfilesystem.html#documentsPath">QFileSystem::documentsPath</a>().</p>
+</td><td>string</td><td><tt>/Documents</tt></td></tr>
+<tr valign="top" class="even"><td><tt>Options</tt></td><td>Specifies mount options to use instead of those in <tt>/proc/mounts</tt>.<p>A device's <tt>Options</tt> may need to be overwritten if they don't include rw but are writable or if they are overly complex. For example, SMB mounts on a machine have <tt>Options</tt> of 0.</p>
+<p>See <a href="qfilesystem.html#options">QFileSystem::options</a>().</p>
+</td><td>string</td><td><tt>rw</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>Name[]</tt></td><td>The translatable name shown to the user.<p>See <a href="qfilesystem.html#name">QFileSystem::name</a>().</p>
+</td><td>string</td><td><tt>MyDocuments</tt></td></tr>
+<tr valign="top" class="even"><td><tt>Path</tt></td><td>Specifies the device path of the mount. This may be any path that appears in the first column of <tt>/proc/mounts</tt>.<p>See <a href="qfilesystem.html#disk">QFileSystem::disk</a>().</p>
+</td><td>string</td><td><tt>/dev/mmca1</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>Removable</tt></td><td>Indicates if the mount is removable.<p>See <a href="qfilesystem.html#isRemovable">QFileSystem::isRemovable</a>().</p>
+</td><td>boolean</td><td><tt>1</tt></td></tr>
+<tr valign="top" class="even"><td><tt>Thumbnails</tt></td><td>Indicates that thumbnails of files on the mount should also be stored on the mount.<p>If true a value for <tt>ThumbnailsPath</tt> should also be given.</p>
+</td><td>boolean</td><td><tt>1</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>ThumbnailsPath</tt></td><td>Specifies the sub-directory of the mount in which thumbnails should be stored.</td><td>string</td><td><tt>/Thumbnails</tt></td></tr>
+</table></p>
+<p><b>Example</b>: Mount point group for an SD Card</p>
+<pre>    [MountPoint1]
+    Name[] = SD Card
+    Path=/dev/mmca
+    Removable = 1
+    Applications = 0
+    Documents = 1
+    ContentDatabase = 1</pre>
+<a name=""></a>
+<h4><tt>HOME</tt></h4>
+<p>The <tt>HOME</tt> group is a special case mount path which holds the settings for the Qt Extended <a href="qtopia.html#homePath">home directory</a>. Unless specified otherwise the <tt>HOME</tt> mount is assumed to be a valid storage location which may contain both applications and documents. The <tt>HOME</tt> mount may be explicitly disabled by setting <tt>Path = HIDE</tt>, otherwise no value of <tt>Path</tt> is necessary.</p>
+<p><b>Example</b>: <tt>HOME</tt> mount that contains applications but not documents.</p>
+<pre>    [HOME]
+    Name[] = HOME
+    Path = HOME
+    Applications = 1
+    Documents = 0</pre>
+<a name=""></a>
+<h4><tt>PREFIX</tt></h4>
+<p>The <tt>PREFIX</tt> is another special case mount path, which holds the settings for the directory Qt Extended is run from. It is normally not necessary to define anything for the <tt>PREFIX</tt> mount.</p>
+<p><b>Note</b>: Commercial customers please contact support before using this group.</p>
+<a name="non-mount-point-groups"></a>
+<h3>Non Mount Point Groups</h3>
+<p>In addition to the mount point settings groups there are also reserved groups, these either index the storage devices or identify which device should be used as the storage location for a particular set of data.</p>
+<a name=""></a>
+<h4><tt>MountTable</tt></h4>
+<p>The <tt>MountTable</tt> group provides a list of all the device mount points defined in the <tt>Storage.conf</tt> and identifies which mount points are the default storage locations for application, and document data.</p>
+<p>The parameters for the <tt>MountTable</tt> group are:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ApplicationsDefault</tt></td><td>Specifies the group key of the mount point to which application data is saved by default.<p>See <a href="qfilesystem.html#applicationsFileSystem">QFileSystem::applicationsFileSystem</a>(), and <a href="qtopia.html#applicationFileName">Qtopia::applicationFileName</a>().</p>
+</td><td>string</td><td><tt>HOME</tt></td></tr>
+<tr valign="top" class="even"><td><tt>DocumentsDefault</tt></td><td>Specifies the group key of the mount point to which documents are saved by default.<p>See <a href="qfilesystem.html#documentsFileSystem">QFileSystem::documentsFileSystem</a>().</p>
+</td><td>string</td><td><tt>HOME</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>ThumbnailsDefault</tt></td><td>Specifies the group key of the mount point to which thumbnail data is saved by default.</td><td>string</td><td><tt>HOME</tt></td></tr>
+<tr valign="top" class="even"><td><tt>MountPoints</tt></td><td>Lists the group keys of the mount points the <tt>Storage.conf</tt> has definitions for. The <tt>HOME</tt> and <tt>PREFIX</tt> groups are not included in this list.</td><td>string</td><td><tt>MountPoint0</tt>, <tt>MountPont1</tt></td></tr>
+</table></p>
+<p><b>Example</b>: <tt>MountTable</tt> group for device with two storage devices, one the default documents location.</p>
+<pre>    [MountTable]
+    MountPoints=&quot;MountPoint0,MountPoint1&quot;
+    DocumentsDefault=MountPoint0
+    ApplicationsDefault=HOME</pre>
+<a name=""></a>
+<h4><tt>Updates</tt></h4>
+<p>The <tt>Updates</tt> group specifies where Qt Extended updates are installed to:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>MountPoint</tt></td><td>Specifies the group key of the mount point Qt Extended updates are installed to.</td><td>string</td><td><tt>HOME</tt></td></tr>
+<tr valign="top" class="even"><td><tt>Path</tt></td><td>Indicates the path of the directory Qt Extended updates are installed to relative to the mount point.</td><td>string</td><td><tt>Updates</tt></td></tr>
+</table></p>
+<p><b>Example</b>: Updates installed to the <tt>Updates</tt> sub-directory of the <tt>HOME</tt> mount.</p>
+<pre>    [Updates]
+    MountPoint=HOME
+    Path=Updates</pre>
+<a name=""></a>
+<h4><tt>Packages</tt></h4>
+<a name="package-storage-conf"></a><p>The <tt>Packages</tt> group specifies where downloaded packages are installed to:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>MountPoint</tt></td><td>Specifies the group key of the mount point Qt Extended packages are installed to.</td><td>string</td><td><tt>HOME</tt></td></tr>
+<tr valign="top" class="even"><td><tt>Path</tt></td><td>Indicates the path of the directory Qt Extended packages are installed to relative to the mount point.</td><td>string</td><td><tt>Packages</tt></td></tr>
+</table></p>
+<p><b>Example</b>: Packages installed to the <tt>Packages</tt> sub-directory of the <tt>HOME</tt> mount.</p>
+<pre>    [Packages]
+    MountPoint=HOME
+    Path=Packages</pre>
+<a name=""></a>
+<h4><tt>SxeDatabase</tt></h4>
+<p>The <tt>SxeDatabase</tt> group specifies the directory in which the SXE database is located.</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Path</tt></td><td>Indicates the absolute path of the directory in which the SXE database is located.</td><td>string</td><td><tt>/home/Updates/etc/sxe</tt></td></tr>
+</table></p>
+<p><b>Example</b>: SXE database located in <tt>/home/Updates/etc/sxe</tt></p>
+<pre>    [SxeDatabase]
+    Path = /home/Updates/etc/sxe</pre>
+<a name="non-removable-vs-removable-storage"></a>
+<h2>Non-removable vs Removable Storage</h2>
+<p>Application data is stored only in non-removable locations, however documents can be stored in any location. Removable locations are scanned on insertion and removal.</p>
+<p>The scanning is triggered when the Qt Extended library receives one of the following messages via the <tt>QPE/Card</tt> QCop channel:</p>
+<ul>
+<li><tt>mtabChanged()</tt> - sent when <tt>/etc/mtab</tt> has changed</li>
+<li><tt>stabChanged()</tt> - sent when <tt>/var/run/stab</tt>, <tt>/var/state/pcmcia/stab</tt>, or <tt>/var/lib/pcmcia/stab</tt> have changed. The <a href="stabmonitor.html">StabMonitor</a> server task provides a default implementation.</li>
+</ul>
+<p><b>Note:</b> Removable media with a content database must be <i>Lazy</i> unmounted to allow time for Qt Extended to release file resources; see also the umount man page.</p>
+<a name="explicit-mount-unmount-notifications"></a>
+<h3>Explicit Mount/Unmount Notifications</h3>
+<p>If monitoring mtab/stab or lazy unmounting in unsuitable, Qt Extended can also be explicitly informed of a mount or pending unmount. This is done by sending messages to the <tt>QPE/QStorage</tt> QCop channel.</p>
+<p>The <tt>mounting(QString)</tt> message notifies Qt Extended that a storage device has been mounted, the <a href="qstring.html">QString</a> argument is the device path of the storage device mounted. In response to this Qt Extended will add the storage device to the list of connected devices, load it's content database if it has one, and start a document scan.</p>
+<p><b>Example</b>: Sending a notification that the storage device with the device path <tt>/dev/mmca</tt> has been mounted:</p>
+<pre>    QtopiaChannel::send( &quot;QPE/QStorage&quot;, &quot;mounting(QString)&quot;, &quot;/dev/mmca&quot; );</pre>
+<p>The <tt>unmounting(QString)</tt> message notifies Qt Extended that a storage device is about to be unmounted, the <a href="qstring.html">QString</a> argument is the device path of the storage device to be unmounted. In response to this Qt Extended will remove the storage device from the list of connected devices, and close the content database if it has one.</p>
+<p><b>Example</b>: Sending a notification that the storage device with the device path <tt>/dev/mmca</tt> is about to be unmounted:</p>
+<pre>    QtopiaChannel::send( &quot;QPE/QStorage&quot;, &quot;unmounting(QString)&quot;, &quot;/dev/mmca&quot; );</pre>
+<a name="using-read-only-file-systems"></a>
+<h2>Using read-only File Systems</h2>
+<p>Using read-only file systems have a number of benefits:</p>
+<ul>
+<li>compressed read-only file systems such as <tt>cramfs</tt> and <tt>squashfs</tt> have better compression than read-write file systems such as <tt>jffs2</tt></li>
+<li>read-only file systems provide a measure of protection for system files.</li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

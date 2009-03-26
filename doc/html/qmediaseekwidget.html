@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaSeekWidget Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaSeekWidget Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaSeekWidget class allows the user to seek within a media content object. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaSeekWidget&gt;</pre><p>Inherits <a href="qwidget.html">QWidget</a>.</p>
+<ul>
+<li><a href="qmediaseekwidget-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmediaseekwidget.html#QMediaSeekWidget">QMediaSeekWidget</a></b> ( QWidget * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qmediaseekwidget.html#dtor.QMediaSeekWidget">~QMediaSeekWidget</a></b> ()</li>
+<li><div class="fn"/>QMediaContent * <b><a href="qmediaseekwidget.html#content">content</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>206 public functions inherited from <a href="qwidget.html#public-functions">QWidget</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>14 public functions inherited from <a href="qpaintdevice.html#public-functions">QPaintDevice</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmediaseekwidget.html#setMediaContent">setMediaContent</a></b> ( QMediaContent * <i>content</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>19 public slots inherited from <a href="qwidget.html#public-slots">QWidget</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmediaseekwidget.html#lengthChanged">lengthChanged</a></b> ( quint32 <i>ms</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediaseekwidget.html#positionChanged">positionChanged</a></b> ( quint32 <i>ms</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qwidget.html#signals">QWidget</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>57 properties inherited from <a href="qwidget.html#properties">QWidget</a></li>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qwidget.html#static-public-members">QWidget</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>38 protected functions inherited from <a href="qwidget.html#protected-functions">QWidget</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qpaintdevice.html#protected-functions">QPaintDevice</a></li>
+<li><div class="fn"/>1 protected slot inherited from <a href="qwidget.html#protected-slots">QWidget</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+<li><div class="fn"/>1 protected type inherited from <a href="qpaintdevice.html#protected-variables">QPaintDevice</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaSeekWidget class allows the user to seek within a media content object.</p>
+<p>The QMediaSeekWidget class can be used in conjunction with the <a href="qmediacontent.html">QMediaContent</a> class to enable the user to seek within a media content object.</p>
+<pre>    QMediaSeekWidget *seek = new QMediaSeekWidget( this );
+
+    QMediaContent *content = new QMediaContent( url, this );
+    seek-&gt;setMediaContent( content );</pre>
+<p>The user can seek within a media content object by holding down the left and right arrow keys. A hold of <a href="qt.html#Key-enum">Qt::Key_Left</a> seeks backward while a hold of <a href="qt.html#Key-enum">Qt::Key_Right</a> seeks forward. The actual seek within the media content object is deferred until the user releases the arrow keys.</p>
+<p>During the seek the <a href="qmediaseekwidget.html#positionChanged">positionChanged</a>() signal will be emitted continually with the current seek position. While the user is not seeking the <a href="qmediaseekwidget.html#positionChanged">positionChanged</a>() and <a href="qmediaseekwidget.html#lengthChanged">lengthChanged</a>() signals will be emitted when position and length have changed in the media content object.</p>
+<p align="center"><img src="images/qmediaseekwidget.jpg" alt="&quot;QMediaSeekWidget&quot;" /></p><p>QMediaSeekWidget is a <a href="qmediacontentcontext.html#player-object">player object</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMediaSeekWidget"></a>QMediaSeekWidget::QMediaSeekWidget ( <a href="qwidget.html">QWidget</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a seek widget.</p>
+<p>The <i>parent</i> argument is passed to the <a href="qwidget.html">QWidget</a> constructor.</p>
+<h3 class="fn"><a name="dtor.QMediaSeekWidget"></a>QMediaSeekWidget::~QMediaSeekWidget ()</h3>
+<p>Destroys the widget.</p>
+<h3 class="fn"><a name="content"></a><a href="qmediacontent.html">QMediaContent</a> * QMediaSeekWidget::content () const</h3>
+<p>Returns the media content object currently being used.</p>
+<h3 class="fn"><a name="lengthChanged"></a>void QMediaSeekWidget::lengthChanged ( <a href="qtglobal.html#quint32-typedef">quint32</a> <i>ms</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the total time of the playing media content has changed. The time is given by <i>ms</i> in milliseconds.</p>
+<h3 class="fn"><a name="positionChanged"></a>void QMediaSeekWidget::positionChanged ( <a href="qtglobal.html#quint32-typedef">quint32</a> <i>ms</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the seek position has changed. While the user is not seeking this signal will be emitted when the position has changed in the media content object. The position is given by <i>ms</i> in milliseconds.</p>
+<h3 class="fn"><a name="setMediaContent"></a>void QMediaSeekWidget::setMediaContent ( <a href="qmediacontent.html">QMediaContent</a> * <i>content</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Sets <i>content</i> as the media content object to use.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

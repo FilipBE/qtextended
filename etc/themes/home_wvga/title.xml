@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="title" base="themes/home_wvga" rect="0,0,0x30">
+  <image rect="0,0,0x100%" src="bar_background.png" tile="yes" scale="vertical"/>
+  <rect rect="7,10,10x10">
+    <exclusive>
+      <image src="presence-offline.svg" active="expr:@/Telephony/Status/VoIP/Presence/Local/Presence == 1"/>
+      <image src="presence-away.svg" active="expr:@/Telephony/Status/VoIP/Presence/Local/Presence == 2"/>
+      <image src="presence-online.svg" active="expr:@/Telephony/Status/VoIP/Presence/Local/Presence == 4"/>
+      <image src="presence-none.svg" active="expr:@/Telephony/Status/VoIP/Presence/Local/Presence == 0"/>
+    </exclusive>
+  </rect>
+  <text rect="22,0%,50%x100%" name="caption" size="7" bold="yes" color="#FFFFFF" align="left,vcenter" transient="yes" elided="right">
+    expr:@/Telephony/Status/VoIP/Presence/Local/DisplayName
+  </text>
+  <image rect="65%,10%,6%x65%" src="voicemail.svg" transient="yes" active="expr:@/Communications/Messages/VoiceMail/UnreadMessagesWaiting" />
+  <text rect="72%,0%,-2%,0" name="date" size="7" bold="yes" color="#FFFFFF" align="hcenter,vcenter" transient="yes" elided="right">
+    expr:@/UI/DisplayTime/Date ."  ". @/UI/DisplayTime/Time . " "
+  </text>
+</page>

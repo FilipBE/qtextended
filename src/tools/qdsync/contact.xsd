@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/****************************************************************************
+**
+** This file is part of the Qt Extended Opensource Package.
+**
+** Copyright (C) 2009 Trolltech ASA.
+**
+** Contact: Qt Extended Information (info@qtextended.org)
+**
+** This file may be used under the terms of the GNU General Public License
+** version 2.0 as published by the Free Software Foundation and appearing
+** in the file LICENSE.GPL included in the packaging of this file.
+**
+** Please review the following information to ensure GNU General Public
+** Licensing requirements will be met:
+**     http://www.fsf.org/licensing/licenses/info/GPLv2.html.
+**
+**
+****************************************************************************/
+Qt Extended PIM Contact schema
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="phoneType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="HomePhone"/>
+            <xs:enumeration value="BusinessPhone"/>
+            <xs:enumeration value="HomeMobile"/>
+            <xs:enumeration value="HomeFax"/>
+            <xs:enumeration value="BusinessMobile"/>
+            <xs:enumeration value="BusinessFax"/>
+            <xs:enumeration value="BusinessPager"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="identifierType" mixed="true">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                localIdentifier refers to the parsing entity.  E.g. if parsed on the device, the id
+                is local to the device when true.  If parsed by an outlook plugin, it is local to the outlook plugin if true.
+                This is used to indicate to the parser when the id needs to be mapped.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="localIdentifier" type="xs:boolean" use="optional" default="true"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:element name="Contact">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Identifier" type="identifierType"/>
+                <xs:element name="NameTitle" type="xs:string" minOccurs="0"/>
+                <xs:element name="FirstName" minOccurs="0">
+                    <xs:complexType mixed="true">
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="pronunciation" type="xs:string" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="MiddleName" type="xs:string" minOccurs="0"/>
+                <xs:element name="LastName" minOccurs="0">
+                    <xs:complexType mixed="true">
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="pronunciation" type="xs:string" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Suffix" type="xs:string" minOccurs="0"/>
+                <xs:element name="Company" minOccurs="0">
+                    <xs:complexType mixed="true">
+                        <xs:simpleContent>
+                            <xs:extension base="xs:string">
+                                <xs:attribute name="pronunciation" type="xs:string" use="optional"/>
+                            </xs:extension>
+                        </xs:simpleContent>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="BusinessWebpage" type="xs:string" minOccurs="0"/>
+                <xs:element name="JobTitle" type="xs:string" minOccurs="0"/>
+                <xs:element name="Department" type="xs:string" minOccurs="0"/>
+                <xs:element name="Office" type="xs:string" minOccurs="0"/>
+                <xs:element name="Profession" type="xs:string" minOccurs="0"/>
+                <xs:element name="Assistant" type="xs:string" minOccurs="0"/>
+                <xs:element name="Manager" type="xs:string" minOccurs="0"/>
+                <xs:element name="HomeWebpage" type="xs:string" minOccurs="0"/>
+                <xs:element name="Spouse" type="xs:string" minOccurs="0"/>
+                <xs:element name="Nickname" type="xs:string" minOccurs="0"/>
+                <xs:element name="Children" type="xs:string" minOccurs="0"/>
+                <xs:element name="Birthday" type="xs:date" minOccurs="0"/>
+                <xs:element name="Anniversary" type="xs:date" minOccurs="0"/>
+                <xs:element name="Portrait" type="xs:base64Binary" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="en">
+                            The format of the bytes should be in Portable Network Graphic (PNG).
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Notes" type="xs:string" minOccurs="0"/>
+                <xs:element name="Gender" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:NMTOKEN">
+                            <xs:enumeration value="UnspecifiedGender"/>
+                            <xs:enumeration value="Male"/>
+                            <xs:enumeration value="Female"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Addresses" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Address" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Street" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="City" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="State" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="Zip" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="Country" type="xs:string" minOccurs="0"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="type" use="required">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:NMTOKEN">
+                                                <xs:enumeration value="Home"/>
+                                                <xs:enumeration value="Business"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="maxItems" use="optional" type="xs:positiveInteger"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="PhoneNumbers" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Number" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType mixed="true">
+                                    <xs:simpleContent>
+                                        <xs:extension base="xs:string">
+                                            <xs:attribute name="type" use="required" type="phoneType"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="maxItems" use="optional" type="xs:positiveInteger"/>
+                        <xs:attribute name="default" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="EmailAddresses" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Email" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                        <xs:attribute name="maxItems" use="optional" type="xs:positiveInteger"/>
+                        <xs:attribute name="default" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Categories" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Category" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                        <xs:attribute name="maxItems" use="optional" type="xs:positiveInteger"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="CustomFields" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Field" minOccurs="0" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Key" type="xs:string"/>
+                                        <xs:element name="Value" type="xs:string"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="maxItems" use="optional" type="xs:positiveInteger"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+
+        <xs:key name="phoneNumberTypeKey">
+            <xs:selector xpath="PhoneNumbers/Number"/>
+            <xs:field xpath="@type"/>
+        </xs:key>
+        <xs:key name="EmailKey">
+            <xs:selector xpath="EmailAddresses/Email"/>
+            <xs:field xpath="."/>
+        </xs:key>
+        <xs:keyref name="EmailKeyRef" refer="EmailKey">
+            <xs:selector xpath="EmailAddresses/default"/>
+            <xs:field xpath="."/>
+        </xs:keyref>
+        <xs:key name="addressTypeKey">
+            <xs:selector xpath="Addresses/Address"/>
+            <xs:field xpath="@type"/>
+        </xs:key>
+        <xs:key name="CustomFieldKey">
+            <xs:selector xpath="CustomFields/Field"/>
+            <xs:field xpath="Key"/>
+        </xs:key>
+        <xs:key name="CategoryUnique">
+            <xs:selector xpath="Categories/Category"/>
+            <xs:field xpath="."/>
+        </xs:key>
+    </xs:element>
+</xs:schema>

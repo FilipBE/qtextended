@@ -1,0 +1,71 @@
+#!/usr/bin/perl
+
+use lib ( ".." );
+
+use Hash::Ordered;
+
+my %n;
+my %t;
+tie %t, "Hash::Ordered";
+
+print "test: adding some items\n";
+
+for ( $i = 0; $i < 10; $i++ ) {
+    $n{$i} = $i;
+    $t{$i} = $i;
+}
+
+print "n: ".dumphash(\%n)."\n";
+print "t: ".dumphash(\%t)."\n";
+
+print "test: removing an item\n";
+
+delete($n{5});
+delete($t{5});
+
+print "n: ".dumphash(\%n)."\n";
+print "t: ".dumphash(\%t)."\n";
+
+my $n = \%n;
+my $t = \%t;
+
+print "test: removing an item (ref)\n";
+
+delete($$n{1});
+delete($$t{1});
+
+print "n: ".dumphash($n)."\n";
+print "t: ".dumphash($t)."\n";
+
+print "test: removing last item\n";
+
+delete($n{9});
+delete($t{9});
+
+print "n: ".dumphash($n)."\n";
+print "t: ".dumphash($t)."\n";
+
+print "test: removing first item\n";
+
+delete($n{0});
+delete($t{0});
+
+print "n: ".dumphash($n)."\n";
+print "t: ".dumphash($t)."\n";
+
+exit 0;
+
+sub dumphash
+{
+    my $this = shift;
+    if (not ref $this) {
+        return $this;
+    } elsif (ref $this eq "HASH") {
+        my @vals;
+        map { push(@vals, "$_ => ".dumphash($this->{$_})); } keys %$this;
+        return "+{ ".join(", ", @vals)." }";
+    } else {
+        die "what type is $_?";
+    }
+}
+

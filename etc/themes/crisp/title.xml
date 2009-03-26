@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="title" base="themes/crisp" color="#FFFFFF">
+    <rect rect="0,0,0x40%" color="Base" brush="Base">
+	<text name="time" rect="1.5%,0,17%x100%" size="6" color="Text" bold="yes" onclick="color=Highlight" interactive="yes">
+	    expr:@/UI/DisplayTime/Time
+	</text>
+	<text name="date" rect="28.4%,0,-1.5%,100%" size="6" color="Text" bold="yes" onclick="color=Highlight" align="right" interactive="yes">
+	    expr:@/UI/DisplayTime/Date
+	</text>
+    </rect>
+    <line rect="0,40%,0x1" color="Highlight"/>
+    <rect rect="0,43.34%,0x56.67%" color="None" brush="Midlight">
+	<exclusive rect="2,2,51.14%x76.5%">
+	    <text name="location" bold="yes" size="6" color="Text">
+		expr:@/Telephony/Status/CellLocation
+	    </text>
+	    <text name="caption" size="6" bold="yes" color="Text" transient="yes" active="expr:@/UI/ActiveWindow/Caption != false">
+		expr:@/UI/ActiveWindow/Caption
+	    </text>
+	</exclusive>
+    <exclusive>
+      <status name="bluetooth" rect="-80,2,14x14" imageon="bluetooth-enabled.svg" on="expr:@/Communications/Bluetooth/LocalDevice/Enabled" active="expr:@/Communications/Bluetooth/LocalDevice/Enabled"/>
+      <status name="bluetooth" rect="-80,2,14x14" imageon="bluetooth-visible.svg" on="expr:@/Communications/Bluetooth/LocalDevice/Visible" active="expr:@/Communications/Bluetooth/LocalDevice/Visible"/>
+    </exclusive>
+    <status name="voice" rect="-96,2,14x14" imageon="voice" coloron="Highlight" transient="yes" active="no"/>
+	<status name="roaming" rect="-112,2,14x14" imageon="roaming" onclick="coloron=Highlight" interactive="yes" on="expr:@/Telephony/Status/Roaming"/>
+	<status name="messages" rect="-64,4,14x9" imageon="mailalert" onclick="coloron=Highlight" interactive="yes" on="expr:@/Communications/Messages/NewMessages > 0"/>
+	<status name="call_active" rect="-46,2,11x14" imageon="call" onclick="coloron=Highlight" interactive="yes" on="expr:@/Communications/Calls/ActiveCalls > 0"/>
+    <level name="signal" rect="-31,1,13x14" src="signal" count="5" width="13" onclick="color=Highlight" interactive="yes" min="0" max="100" active="expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength">
+            expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength
+	</level>
+	<level name="battery" rect="-16,1,12x14" src="battery" count="5" width="12" onclick="color=Highlight" interactive="yes" min="0" max="100" delay="1000" loop="0" play="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charging == true">
+            expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge
+	</level>
+    <inputmethods-plugin rect="-31,1,30x14" transient="yes" active="expr:@/UI/IMVisible"/>
+	<line rect="0,93.34%,0x1" color="Highlight"/>
+    </rect>
+</page>

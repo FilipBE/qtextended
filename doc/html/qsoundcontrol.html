@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSoundControl Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSoundControl Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSoundControl class extends the functionality of the <a href="qsound.html">QSound</a> class. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSoundControl&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qsoundcontrol-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qsoundcontrol.html#Priority-enum">Priority</a></b> { Default, RingTone }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsoundcontrol.html#QSoundControl">QSoundControl</a></b> ( QSound * <i>sound</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>Priority <b><a href="qsoundcontrol.html#priority">priority</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qsoundcontrol.html#setPriority">setPriority</a></b> ( Priority <i>priority</i> )</li>
+<li><div class="fn"/>void <b><a href="qsoundcontrol.html#setVolume">setVolume</a></b> ( int <i>volume</i> )</li>
+<li><div class="fn"/>QSound * <b><a href="qsoundcontrol.html#sound">sound</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qsoundcontrol.html#volume">volume</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qsoundcontrol.html#done">done</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSoundControl class extends the functionality of the <a href="qsound.html">QSound</a> class.</p>
+<p>The QSoundControl class can be used to control the volume, priority and provide the status for a <a href="qsound.html">QSound</a> object.</p>
+<p>Construct a QSoundControl object with an exising <a href="qsound.html">QSound</a> object.</p>
+<pre>    QSoundControl *control = new QSoundControl( new QSound( &quot;test.wav&quot; ) );</pre>
+<p>The control may now be used to alter the behavior of the sound object.</p>
+<pre>    control-&gt;setVolume( 50 );
+    control-&gt;setPriority( QSoundControl::RingTone );</pre>
+<p>In additon the control may be used to listen for when the sound object finishes playback.</p>
+<pre>    connect( control, SIGNAL(done()), this, SLOT(doSomething()) );</pre>
+<p>The control object does not take owenership of the sound object. Care must be taken to ensure the sound object remains valid for the life of the control object.</p>
+<pre>    delete control-&gt;sound();
+    delete control;</pre>
+<p>See also <a href="qsound.html">QSound</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Priority-enum"></a>enum QSoundControl::Priority</h3>
+<p>This enum type specifies the different priorities available for <a href="qsound.html">QSound</a> objects.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QSoundControl::Default</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">This is the lowest priority.</td></tr>
+<tr><td valign="top"><tt>QSoundControl::RingTone</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">This is the highest priority. Sounds with this priority will be played in preference to all other sounds.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSoundControl"></a>QSoundControl::QSoundControl ( <a href="qsound.html">QSound</a> * <i>sound</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a sound control for the given <i>sound</i> object and a <i>parent</i>. Ownership of the sound object is not taken.</p>
+<h3 class="fn"><a name="done"></a>void QSoundControl::done ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the sound object finishes playing. For looped sound object this signal will only be emitted once all loops have played through.</p>
+<h3 class="fn"><a name="priority"></a><a href="qsoundcontrol.html#Priority-enum">Priority</a> QSoundControl::priority () const</h3>
+<p>Returns the current priority of the sound object.</p>
+<p>See also <a href="qsoundcontrol.html#setPriority">setPriority</a>().</p>
+<h3 class="fn"><a name="setPriority"></a>void QSoundControl::setPriority ( <a href="qsoundcontrol.html#Priority-enum">Priority</a> <i>priority</i> )</h3>
+<p>Sets the priority of the sound object to <i>priority</i>.</p>
+<p>See also <a href="qsoundcontrol.html#priority">priority</a>().</p>
+<h3 class="fn"><a name="setVolume"></a>void QSoundControl::setVolume ( int <i>volume</i> )</h3>
+<p>Adjusts the volume of the sound object to <i>volume</i>. The given value should be between 0 and 100.</p>
+<p>See also <a href="qsoundcontrol.html#volume">volume</a>().</p>
+<h3 class="fn"><a name="sound"></a><a href="qsound.html">QSound</a> * QSoundControl::sound () const</h3>
+<p>Returns the sound object the control is associated with.</p>
+<h3 class="fn"><a name="volume"></a>int QSoundControl::volume () const</h3>
+<p>Returns the current volume of the sound object.</p>
+<p>See also <a href="qsoundcontrol.html#setVolume">setVolume</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

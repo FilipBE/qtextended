@@ -1,0 +1,86 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Basename;
+use File::stat;
+use File::Path;
+
+my $deps_file;
+if ( @ARGV && $ARGV[0] eq "-write-deps" ) {
+    shift(@ARGV);
+    $deps_file = shift(@ARGV) or usage();
+}
+my %deps;
+
+my $allow_non_exported = 1;
+if ( @ARGV && $ARGV[0] eq "-needs-export" ) {
+    shift(@ARGV);
+    $allow_non_exported = 0;
+}
+
+my $outdir = shift(@ARGV) or usage();
+mkpath($outdir);
+
+while ( @ARGV ) {
+    my $infile = shift(@ARGV);
+    processFile($infile);
+}
+
+if ( $deps_file ) {
+    if ( -f $deps_file ) {
+        unlink $deps_file;
+    }
+    if ( keys %deps ) {
+        open OUT, ">$deps_file" or die "Can't write $deps_file";
+        for ( keys %deps ) {
+            print OUT "$_: ".join(" ", @{$deps{$_}})."\n";
+        }
+        close OUT;
+    }
+}
+
+exit 0;
+
+sub usage
+{
+    print "Usage:  syncqtopia [-write-deps file.d] [-needs-export] outdir input1 [... inputn]\n";
+    exit 2;
+}
+
+sub processFile
+{
+    my ( $filename ) = @_;
+
+    open INPUT, $filename or die "Can't read $filename";
+
+    my $src_s = stat($filename);
+    my $now = $src_s->mtime;
+
+    while (<INPUT>) {
+        if ( /^\s*class\s+.*_EXPORT\s+([^\s:]+)/ ||
+             ($allow_non_exported && /^\s*class\s+([^\s:<]+)/ && index($_, ";") == -1) ||
+             /syncqtopia\s+header\s+([^\s:]+)/ )
+        {
+            # Skip preprocessor-related items
+            next if ( $1 =~ /#/ );
+
+            my $outfile = "$outdir/$1";
+
+            print "Create header $outfile\n";
+
+            #system("install", "-m", "0644", $filename, $outfile);
+            open OUT, ">$outfile" or die "Can't write $outfile";
+            print OUT "#include \"".basename($filename)."\"\n";
+            close OUT;
+
+            if ( !exists($deps{$filename}) ) {
+                $deps{$filename} = [];
+            }
+            push(@{$deps{$filename}}, $outfile);
+        }
+    }
+    close INPUT;
+}
+

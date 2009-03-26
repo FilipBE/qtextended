@@ -1,0 +1,59 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(singleexec.prf)
+# Handle the singleexec stuff
+
+enable_singleexec {
+    # Bail out early if the project doesn't support singleexec
+    requires(!no_singleexec)
+
+    # A non-Qtopia embedded app MUST declare no_singleexec
+    !qtopia:!desktop:app:!no_singleexec:error("$$self: You must declare this project with CONFIG no_singleexec or make it a qtopia project and declare CONFIG qtopia_main or singleexec_main")
+
+    isEmpty(TRTARGET):TRTARGET=$$TARGET
+
+    contains(PROJECT_TYPE,app) {
+        instsymlink.path=$$bindir
+        instsymlink.commands=$$COMMAND_HEADER\
+            rm -f $(INSTALL_ROOT)$$instsymlink.path/$$ORIG_TARGET $$LINE_SEP_VERBOSE\
+            ln -s qpe $(INSTALL_ROOT)$$instsymlink.path/$$ORIG_TARGET
+        INSTALLS+=instsymlink
+        TARGET=app_$$TARGET
+    }
+
+    contains(PROJECT_TYPE,plugin) {
+        TARGET=plugin_$${plugin_type}_$$TARGET
+        DEFINES+=QTOPIA_PLUGIN_TYPE=$$LITERAL_ESCAPED_QUOTE$${plugin_type}$$LITERAL_ESCAPED_QUOTE
+        DEFINES+=QTOPIA_PLUGIN_NAME=$$LITERAL_ESCAPED_QUOTE$${ORIG_TARGET}$$LITERAL_ESCAPED_QUOTE
+        DEFINES+=QT_STATICPLUGIN
+    }
+
+    DEFINES*=SINGLE_EXEC QTOPIA_NO_MAIN QTOPIA_APP_INTERFACE QTOPIA_INTERNAL_INITAPP
+
+    TEMPLATE=lib
+    CONFIG-=shared
+    CONFIG-=plugin
+    CONFIG+=static staticlib no_target
+    target.path=
+    !no_dest:DESTDIR=$$QPEDIR/lib
+
+    # This makes server.pro take an unreasonable amount of time to process.
+    # It seems to be p ^ d runs where p = number of projects and d = number of dependencies.
+    CONFIG-=link_prl
+
+    # If we had link_prl enabled, we'd get all this from Qt's .prl files.
+    qt {
+        contains(QTE_CONFIG,system-jpeg):LIBS+=-ljpeg
+        contains(QTE_CONFIG,system-png):LIBS+=-lpng
+        contains(QTE_CONFIG,system-mng):LIBS+=-lmng
+        contains(QTE_CONFIG,system-zlib):LIBS+=-lz
+        contains(QTE_CONFIG,system-freetype) {
+            include($$QT_SOURCE_TREE/config.tests/unix/freetype/freetype.pri)
+            LIBS+=-lfreetype
+        }
+        contains(QTE_CONFIG,openssl) {
+            include($$QT_SOURCE_TREE/config.tests/unix/openssl/openssl.pri)
+            LIBS+=-lssl -lcrypto
+        }
+        LIBS+=-lrt
+    }
+}
+

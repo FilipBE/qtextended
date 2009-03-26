@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>changelistener.cpp Example File (content/changelistener/changelistener.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">changelistener.cpp Example File<br /><span class="small-subtitle">content/changelistener/changelistener.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;changelistener.h&quot;
+    #include &lt;QSoftMenuBar&gt;
+    #include &lt;QContentSet&gt;
+    #include &lt;QTimer&gt;
+    #include &lt;QDir&gt;
+    #include &lt;QCategoryManager&gt;
+    #include &lt;QtDebug&gt;
+
+<span class="comment">    /*!
+        \class ChangeListener
+        \brief The ChangeListener application demonstrates listening for content changed events.
+
+        It periodically installs images into the document system and listens for the content changed
+        notifications generated in response.  When a notification is received for one of the images it
+        installed it will display that image.
+    */</span>
+
+<span class="comment">    /*!
+        Constructs a ChangeListener widget which is a child of \a parent and has the given window
+        \a flags.
+     */</span>
+    ChangeListener::ChangeListener( QWidget *parent, Qt::WindowFlags flags )
+        : QLabel( parent, flags )
+        , nextIndex( 0 )
+        , lastContentId( QContent::InvalidId )
+    {
+        setScaledContents( true );
+
+        <span class="comment">// Construct context menu, available to the user via Qtopia's soft menu bar.</span>
+         QSoftMenuBar::menuFor( this );
+
+         <span class="comment">// Populate the list of images to display.</span>
+        imageFiles.append( QFileInfo( &quot;:image/Bubble.png&quot; ) );
+        imageFiles.append( QFileInfo( &quot;:image/Clouds.png&quot; ) );
+        imageFiles.append( QFileInfo( &quot;:image/Splatters.png&quot; ) );
+        imageFiles.append( QFileInfo( &quot;:image/Water.png&quot; ) );
+
+        <span class="comment">// Ensure the 'Change Listener' category exists in the the 'Examples' scope.</span>
+        QCategoryManager categoryManager( &quot;Examples&quot; );
+
+        categoryId = categoryManager.idForLabel( &quot;Change Listener&quot; );
+
+        if( categoryId.isEmpty() )
+            categoryId = categoryManager.add( &quot;Change Listener&quot; );
+
+        <span class="comment">// Create a content set and listen to it's changed() signal.  Unistall any content in the</span>
+        <span class="comment">// Change Listener category that may have been left over from an earlier run that was abnormally</span>
+        <span class="comment">// terminated.</span>
+        QContentSet *contentSet = new QContentSet( QContentFilter::category( categoryId ), this );
+
+        connect( contentSet, SIGNAL(changed(QContentIdList,QContent::ChangeType)),
+                this, SLOT(changed(QContentIdList,QContent::ChangeType)) );
+
+        for ( int i = 0; i &lt; contentSet-&gt;count(); i++ ) {
+            QContent::uninstall( contentSet-&gt;contentId( i ) );
+        }
+
+        <span class="comment">// Construct a timer to time out at 3 second intervals.</span>
+        QTimer *timer = new QTimer( this );
+
+        connect( timer, SIGNAL(timeout()), this, SLOT(timeout()) );
+
+        timer-&gt;start( 3000 );
+    }
+
+<span class="comment">    /*!
+        Destroys a ChangeListener widget.
+     */</span>
+    ChangeListener::~ChangeListener()
+    {
+        if( lastContentId != QContent::InvalidId )
+            QContent::uninstall( lastContentId );
+    }
+
+<span class="comment">    /*!
+        Installs an image to the document system and uninstalls the one previously installed in response
+        to a timer time out.
+    */</span>
+    void ChangeListener::timeout()
+    {
+        QFileInfo fileInfo = imageFiles.at( nextIndex );
+
+        <span class="comment">// At the least, we want to set the QContent's name and mime type. We'll also</span>
+        <span class="comment">// give the object a category, so that all picture objects created by this application</span>
+        <span class="comment">// can be grouped together and the QContent::Data role so it doesn't appear in document menus.</span>
+        QContent image;
+        image.setName( fileInfo.baseName() );
+        image.setFile( fileInfo.absoluteFilePath() );
+        image.setType( &quot;image/png&quot; );
+        image.setRole( QContent::Data );
+        image.setCategories( QStringList( categoryId ) );
+
+        if ( image.commit() ) {
+            if ( lastContentId != QContent::InvalidId ) {
+                QContent::uninstall( lastContentId );
+            }
+            lastContentId = image.id();
+        } else {
+            qWarning(&quot;Could not commit the new content object!! Document generator exits.&quot;);
+        }
+
+        nextIndex = (nextIndex + 1) % imageFiles.count();
+    }
+
+<span class="comment">    /*!
+        Responds to a content changed notification.  If the notification refers to an image installed by the
+        timeout(), the image installed will be displayed.
+    */</span>
+    void ChangeListener::changed(const QContentIdList &amp;idList,QContent::ChangeType changeType)
+    {
+        if ( changeType == QContent::Added ) {
+            foreach ( QContentId id, idList ) {
+                QContent content( id );
+                <span class="comment">// Check that we've got a valid content object and that its category is the same</span>
+                <span class="comment">// as that which was set in the generate() method.</span>
+                if ( content.isValid() &amp;&amp; content.categories().contains( categoryId ) ) {
+                    setWindowTitle( content.name() );
+                    <span class="comment">// Open the content in read-only mode.</span>
+                    QIODevice *ioDevice = content.open( QIODevice::ReadOnly );
+                    if ( ioDevice ) {
+                        <span class="comment">// Read the image and display it.</span>
+                        QImage image;
+                        image.load( ioDevice,&quot;PNG&quot; );
+                        setPixmap( QPixmap::fromImage( image ) );
+
+                        <span class="comment">// Close and delete the I/O device.</span>
+                        ioDevice-&gt;close();
+                        delete ioDevice;
+                    }
+
+                    <span class="comment">// For the purposes of this example, we're only interested in one (and there</span>
+                    <span class="comment">// should only be one).</span>
+                    break;
+                }
+            }
+        }
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

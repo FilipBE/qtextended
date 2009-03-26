@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Build system changes for 4.4&#x2e;2</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Build system changes for 4.4&#x2e;2<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>This page describes changes to the 4.4&#x2e;2 build system.</p>
+<ul>
+<li>The <a href="optsystem.html">Opt System</a> has been refactored.</li>
+<li>Any SDK that is created is now standalone and can be deployed by itself.</li>
+<li>configure will now build Qt for you if you pass -build-qt and Qt 4.3 or higher is not installed on your system. A -force-build-qt switch also exists to force this behaviour (eg. so that you can create an SDK without a dependency on Qt).</li>
+<li>Most projects have been updated to use the preferred style and to remove legacy code.</li>
+<li>Resources are now stored in the project that owns them. The server still handles the global translations, it finds files by looking for projects that set <tt>UNIFIED_NCT_LUPDATE=1</tt>. This has a significant impact on existing devices as any override files must be moved so that the build system will find them.</li>
+<li>Server projects are now enabled via <a href="var-server-projects-1.html">SERVER_PROJECTS</a>. Server projects can now live outside <tt>src/server</tt>.</li>
+</ul>
+<a name="known-issues"></a>
+<h3>Known Issues</h3>
+<ul>
+<li>Building for an x86_64 target does not work.</li>
+<li>Devices need to have override files moved. This is most noticeable for files in etc.</li>
+</ul>
+<p>See also <a href="changes.html">What's New?</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ThemeListItem Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ThemeListItem Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The ThemeListItem class represents a graphical list in a themed view. <a href="#details">More...</a></p>
+<pre>    #include &lt;ThemeListItem&gt;</pre><p>Inherits <a href="themewidgetitem.html">ThemeWidgetItem</a>.</p>
+<ul>
+<li><a href="themelistitem-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="themelistitem.html#ThemeListItem">ThemeListItem</a></b> ( ThemeItem * <i>parent</i>, ThemedView * <i>view</i>, const ThemeAttributes &amp; <i>atts</i> )</li>
+<li><div class="fn"/>virtual <b><a href="themelistitem.html#dtor.ThemeListItem">~ThemeListItem</a></b> ()</li>
+<li><div class="fn"/>QListView * <b><a href="themelistitem.html#listView">listView</a></b> () const</li>
+<li><div class="fn"/>ThemeListModel * <b><a href="themelistitem.html#model">model</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="themelistitem.html#setModel">setModel</a></b> ( ThemeListModel * <i>model</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>3 public functions inherited from <a href="themewidgetitem.html#public-functions">ThemeWidgetItem</a></li>
+<li><div class="fn"/>20 public functions inherited from <a href="themeitem.html#public-functions">ThemeItem</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>15 protected functions inherited from <a href="themegraphicitem.html#protected-functions">ThemeGraphicItem</a></li>
+<li><div class="fn"/>21 protected functions inherited from <a href="themeitem.html#protected-functions">ThemeItem</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ThemeListItem class represents a graphical list in a themed view.</p>
+<p>The ThemeListItem class implements the <a href="themed-view-elements.html#themelistelement">list element</a> from the theme XML.</p>
+<p>As an extension of <a href="themewidgetitem.html">ThemeWidgetItem</a>, ThemeListItem has the same functionality but only works with a <a href="qlistview.html">QListView</a> derived widget, and extra functionality needed to work with a <a href="themelistmodel.html">ThemeListModel</a>.</p>
+<p>Normally you do not want to call this item's functions directly, but rather specify the relevant attributes and data for this item in the themed view XML, and just pass it as a parameter when constructing a <a href="themelistmodel.html">ThemeListModel</a>. The model installs itself automatically using <a href="themelistitem.html#setModel">ThemeListItem::setModel</a>().</p>
+<p>See also <a href="themelistmodel.html">ThemeListModel</a> and <a href="themed-view-elements.html#themelistelement">list element</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="ThemeListItem"></a>ThemeListItem::ThemeListItem ( <a href="themeitem.html">ThemeItem</a> * <i>parent</i>, <a href="themedview.html">ThemedView</a> * <i>view</i>, const ThemeAttributes &amp; <i>atts</i> )</h3>
+<p>Constructs a <a href="themelistitem.html">ThemeListItem</a> object. <i>parent</i>, <i>view</i> and <i>atts</i> are passed to the base class constructor.</p>
+<h3 class="fn"><a name="dtor.ThemeListItem"></a>ThemeListItem::~ThemeListItem ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="themelistitem.html">ThemeListItem</a> object.</p>
+<h3 class="fn"><a name="listView"></a><a href="qlistview.html">QListView</a> * ThemeListItem::listView () const</h3>
+<p>Returns the <a href="qlistview.html">QListView</a> for this item. Equivalent to qobject_cast&lt;<a href="qlistview.html">QListView</a>*&gt;(<a href="themewidgetitem.html#widget">widget</a>())</p>
+<h3 class="fn"><a name="model"></a><a href="themelistmodel.html">ThemeListModel</a> * ThemeListItem::model () const</h3>
+<p>Returns the <a href="themelistmodel.html">ThemeListModel</a> object associated with this <a href="themelistitem.html">ThemeListItem</a>.</p>
+<p>See also <a href="themelistitem.html#setModel">setModel</a>().</p>
+<h3 class="fn"><a name="setModel"></a>void ThemeListItem::setModel ( <a href="themelistmodel.html">ThemeListModel</a> * <i>model</i> )</h3>
+<p>Sets <i>model</i> to be the <a href="themelistmodel.html">ThemeListModel</a> associated with this <a href="themelistitem.html">ThemeListItem</a>. If this item currently has a <a href="qlistview.html">QListView</a> widget set, this model is installed immediately on the view using <a href="qabstractitemview.html#setModel">QListView::setModel</a>(). If a call is made to QWidget::setWidget() in the future, this model will be installed in the same way.</p>
+<p>See also <a href="themelistitem.html#model">model</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

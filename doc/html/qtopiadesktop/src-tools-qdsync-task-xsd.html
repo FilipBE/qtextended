@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>src/tools/qdsync/task.xsd</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">src/tools/qdsync/task.xsd<br /><span class="subtitle"></span>
+</h1>
+<ul>
+</ul>
+<pre>    &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+    &lt;!--
+    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/
+    Qt Extended PIM task schema
+    --&gt;
+    &lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        &lt;xs:simpleType name=&quot;statusType&quot;&gt;
+            &lt;xs:restriction base=&quot;xs:NMTOKEN&quot;&gt;
+                &lt;xs:enumeration value=&quot;NotStarted&quot;/&gt;
+                &lt;xs:enumeration value=&quot;InProgress&quot;/&gt;
+                &lt;xs:enumeration value=&quot;Completed&quot;/&gt;
+                &lt;xs:enumeration value=&quot;Waiting&quot;/&gt;
+                &lt;xs:enumeration value=&quot;Deferred&quot;/&gt;
+            &lt;/xs:restriction&gt;
+        &lt;/xs:simpleType&gt;
+        &lt;xs:simpleType name=&quot;priorityType&quot;&gt;
+            &lt;xs:restriction base=&quot;xs:NMTOKEN&quot;&gt;
+                &lt;xs:enumeration value=&quot;VeryHigh&quot;/&gt;
+                &lt;xs:enumeration value=&quot;High&quot;/&gt;
+                &lt;xs:enumeration value=&quot;Normal&quot;/&gt;
+                &lt;xs:enumeration value=&quot;Low&quot;/&gt;
+                &lt;xs:enumeration value=&quot;VeryLow&quot;/&gt;
+            &lt;/xs:restriction&gt;
+        &lt;/xs:simpleType&gt;
+        &lt;xs:complexType name=&quot;identifierType&quot; mixed=&quot;true&quot;&gt;
+            &lt;xs:annotation&gt;
+                &lt;xs:documentation xml:lang=&quot;en&quot;&gt;
+                    localIdentifier refers to the parsing entity.  E.g. if parsed on the device, the id
+                    is local to the device when true.  If parsed by an outlook plugin, it is local to the outlook plugin if true.
+                    This is used to indicate to the parser when the id needs to be mapped.
+                &lt;/xs:documentation&gt;
+            &lt;/xs:annotation&gt;
+            &lt;xs:simpleContent&gt;
+                &lt;xs:extension base=&quot;xs:string&quot;&gt;
+                    &lt;xs:attribute name=&quot;localIdentifier&quot; type=&quot;xs:boolean&quot; use=&quot;optional&quot; default=&quot;true&quot;/&gt;
+                &lt;/xs:extension&gt;
+            &lt;/xs:simpleContent&gt;
+        &lt;/xs:complexType&gt;
+        &lt;xs:element name=&quot;Task&quot;&gt;
+            &lt;xs:complexType&gt;
+                &lt;xs:sequence&gt;
+                    &lt;xs:element name=&quot;Identifier&quot; type=&quot;identifierType&quot;/&gt;
+                    &lt;xs:element name=&quot;Description&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;Priority&quot; type=&quot;priorityType&quot; /&gt;
+                    &lt;xs:element name=&quot;Status&quot; type=&quot;statusType&quot; /&gt;
+                    &lt;xs:element name=&quot;DueDate&quot; type=&quot;xs:date&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;StartedDate&quot; type=&quot;xs:date&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;CompletedDate&quot; type=&quot;xs:date&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;PercentCompleted&quot; type=&quot;xs:integer&quot; /&gt;
+                    &lt;xs:element name=&quot;Notes&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;
+                    &lt;xs:element name=&quot;Categories&quot; minOccurs=&quot;0&quot;&gt;
+                        &lt;xs:complexType&gt;
+                            &lt;xs:sequence&gt;
+                                &lt;xs:element name=&quot;Category&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;
+                            &lt;/xs:sequence&gt;
+                            &lt;xs:attribute name=&quot;maxItems&quot; use=&quot;optional&quot; type=&quot;xs:positiveInteger&quot;/&gt;
+                        &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                    &lt;xs:element name=&quot;CustomFields&quot; minOccurs=&quot;0&quot;&gt;
+                        &lt;xs:complexType&gt;
+                            &lt;xs:sequence&gt;
+                                &lt;xs:element name=&quot;Field&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;
+                                    &lt;xs:complexType&gt;
+                                        &lt;xs:sequence&gt;
+                                            &lt;xs:element name=&quot;Key&quot; type=&quot;xs:string&quot;/&gt;
+                                            &lt;xs:element name=&quot;Value&quot; type=&quot;xs:string&quot;/&gt;
+                                        &lt;/xs:sequence&gt;
+                                    &lt;/xs:complexType&gt;
+                                &lt;/xs:element&gt;
+                            &lt;/xs:sequence&gt;
+                            &lt;xs:attribute name=&quot;maxItems&quot; use=&quot;optional&quot; type=&quot;xs:positiveInteger&quot;/&gt;
+                        &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                &lt;/xs:sequence&gt;
+            &lt;/xs:complexType&gt;
+            &lt;xs:key name=&quot;CustomFieldKey&quot;&gt;
+                &lt;xs:selector xpath=&quot;CustomFields/Field&quot;/&gt;
+                &lt;xs:field xpath=&quot;Key&quot;/&gt;
+            &lt;/xs:key&gt;
+            &lt;xs:key name=&quot;CategoryUnique&quot;&gt;
+                &lt;xs:selector xpath=&quot;Categories/Category&quot;/&gt;
+                &lt;xs:field xpath=&quot;.&quot;/&gt;
+            &lt;/xs:key&gt;
+        &lt;/xs:element&gt;
+    &lt;/xs:schema&gt;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

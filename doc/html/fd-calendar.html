@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PIM: Calendar</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PIM: Calendar<br><small>Functional Description</small></h1><p>The <strong>Calendar</strong> application allows a user to plan their schedule. This includes the scheduling of timed events such as meetings,
+day events such as birthdays, and multi-day events such as workshops. The application also provides the facility to set alarms for events and to specify a pattern of repetition for events.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-244">Add Event</a>
+<li><a href="#QTOPIA-250">Alarms</a>
+<li><a href="#QTOPIA-248">All Day Events</a>
+<li><a href="#QTOPIA-252">Beaming</a>
+<li><a href="#QTOPIA-243">Calendar Views</a>
+<li><a href="#QTOPIA-251">Configure Day View</a>
+<li><a href="#QTOPIA-241">Data Model</a>
+<li><a href="#QTOPIA-245">Delete Event</a>
+<li><a href="#QTOPIA-246">Edit Event</a>
+<li><a href="#QTOPIA-256">Integration with Tasks</a>
+<li><a href="#QTOPIA-249">Navigation</a>
+<li><a href="#QTOPIA-242">Patterns of Repetition</a>
+<li><a href="#QTOPIA-253">QDL Support</a>
+<li><a href="#QTOPIA-247">Repeat Event</a>
+</ul><h3><a name=QTOPIA-244>Add Event</a></h3>
+<p>It is possible to add events to the <b>Calendar</b>.
+<h3><a name=QTOPIA-250>Alarms</a></h3>
+<p>Alarmed events sound or display an alarm at the<br/>
+specified time. The <b>Calendar</b> application does not need to be running in order for the alarm to sound.
+<h3><a name=QTOPIA-248>All Day Events</a></h3>
+<p>It is possible to specify events as taking all day. These<br/>
+events are not affected by timezone changes.
+<h3><a name=QTOPIA-252>Beaming</a></h3>
+<p>It is possible to beam events to or from another device using Bluetooth, IR, and other mechanisms supported by the <span class="nobr"><a href="qtopiasendvia.html">QtopiaSendVia<sup></sup></a></span> mechanism.
+<h3><a name=QTOPIA-243>Calendar Views</a></h3>
+<p>It is possible to view the events in the following ways:
+
+<ul>
+	<li>The events for a single day.</li>
+	<li>The events for a single month.</li>
+	<li>A detailed view of a single event.</li>
+	<li>An event opened for editing.</li>
+</ul>
+
+
+
+<h4><a name="DayView"></a>Day View</h4>
+
+<p>This shows the events that occur for a particular date. Repeating events are shown in pale blue and non-repeating events are shown in pale red. All day events are shown at the top of the view.<br/>
+The view also adjusts the height of hours through the<br/>
+day to show as much detail of the events for that day as possible.</p>
+
+<p>The user is able to navigate to other days by typing that date on the phone keypad, or by using the left and right cursor keys.</p>
+
+<p>The user is able to edit the general settings such as the default alarm preset and the default day start time.</p>
+
+<p>The user is able to change to the month view, a detailed view of the current event or add a new event.</p>
+
+<h4><a name="MonthView"></a>Month View</h4>
+
+<p>This shows the events that occur for a particular month. Repeating events are shown in blue, non-repeating events in red.</p>
+
+<p>The month view is drawn so that an approximate indication of when events occur within the month is presented.</p>
+
+<p>The user is able to navigate to other days by typing that date on the phone keypad, or by using the cursor keys.</p>
+
+<p>The user is able to edit the general settings such as the default alarm preset and the default day start time.</p>
+
+<p>The user is also able to show the details for a particular day or add a new event.</p>
+
+<h4><a name="DetailedView"></a>Detailed View</h4>
+
+<p>The detailed view of an event displays the data for a single event. This is shown as rich text. All the information for the event is shown formatted for optimum readability.</p>
+
+<p>From the detailed list view the user is able to:</p>
+
+<ul>
+	<li>Edit the current event, using the Edit view of the event.</li>
+	<li>Delete the current event.</li>
+	<li>Beam the current event via IR.</li>
+</ul>
+
+
+
+<h4><a name="EditView"></a>Edit View</h4>
+
+<p>The edit view of an event allows the user to specify the data for a new event<br/>
+or modify that of an existing event.</p>
+
+<p>Non-applicable values are disabled. For example, the start time entry are disabled if the event is marked as an all day event.</p>
+
+<p>When the editing has been completed the user is able to either accept or cancel the changes they have made.</p>
+<h3><a name=QTOPIA-251>Configure Day View</a></h3>
+<p>It is possible to configure the day view to display<br/>
+events starting from a particular time.
+<h3><a name=QTOPIA-241>Data Model</a></h3>
+<p>An event consists of the following:
+
+<ul>
+	<li>A single line text description.</li>
+	<li>A single line text location.</li>
+	<li>A multi-line text note.</li>
+	<li>A start date and time.</li>
+	<li>An end date and time.</li>
+	<li>A timezone for start and end times. This is only available where the event is associated with a timezone.</li>
+	<li>A pattern of repetition.</li>
+	<li>An alarm, including if it is audible and how long before the event it is to be activated.</li>
+	<li>One or more categories. If the event is not assigned any category it is categorized as <em>unfiled</em>.</li>
+</ul>
+<h3><a name=QTOPIA-245>Delete Event</a></h3>
+<p>It is possible to delete events. The user is prompted to verify the deletion of an event.<br/>
+If an occurrence of a repeating event is deleted then the user is asked if they mean to delete just that occurrence, all of the future events for that sequence, all of the preceding events for that sequence, or the entire sequence.
+<h3><a name=QTOPIA-246>Edit Event</a></h3>
+<p>It is possible to modify events.<br/>
+If an occurrence of a repeating event is modified, the user is prompted to indicate if they mean to modify just that occurrence, all of the following events for that sequence, all preceding events for that sequence, or the entire sequence.
+<h3><a name=QTOPIA-256>Integration with Tasks</a></h3>
+<p><ul>
+	<li>If a task has a due date, the calendar application shows the task on that due date (similar in appearance to an all day event).  In addition, tasks can be scheduled as recurring tasks, and they are then marked as "due" on each particular recurrence.  If a recurring task has been completed, it is returned to the incomplete state on the day following the existing due date and assigned a new due date based on the recurrence rule.</li>
+	<li>The tasks application is still the main point of entry for tasks, and selecting a task from the calendar application simply instructs the tasks application to display that task.</li>
+	<li>Tasks can have reminders set for them some period before the due date.</li>
+</ul>
+<h3><a name=QTOPIA-249>Navigation</a></h3>
+<p>Navigation between dates and events is easy and clear and the date is visible at all times.
+<h3><a name=QTOPIA-242>Patterns of Repetition</a></h3>
+<p>The user is able to set an event to: repeat daily, weekly, monthly, yearly or other. These are standard patterns of repetition and the user is able to create a more complex pattern using the advanced options.
+
+<p>These repeat patterns are not guaranteed to be maintained when syncing to non-Qt Extended devices or software.</p>
+
+<h4><a name="Daily"></a>Daily</h4>
+
+<p>These events happen once each day. In the advanced options the user is able to specify the number of days between each occurrence of the event.</p>
+
+<h4><a name="Weekly"></a>Weekly</h4>
+
+<p>These events happen once each week. In the advanced options the user is able to specify the number of weeks between repetitions, as well as specifying that an event occurs on multiple days of a week. The date<br/>
+of the starting day for an event is always the first day the event will<br/>
+occur in a week. Therefore an event occurring every four weeks on Wednesday,<br/>
+Friday, and Monday occurs on the Wednesday, then the Friday of that week and the immediately following Monday, and then does not re-occur until the forth Wednesday following that.</p>
+
+
+<h4><a name="Monthly"></a>Monthly</h4>
+
+<p>These events happen once each month on the same day of month as the start event.<br/>
+In the advanced options the user is able to specify how many months apart each repeating event will occur.</p>
+
+<p>It is also possible to specify that the event:</p>
+
+<ul>
+	<li>Occurs on a specific day of the month. For example, every 2 months on the 18th of the month.</li>
+	<li>Occurs so many weeks from the start of the month. For example, every 2 months on the 2nd Sunday of the month.</li>
+	<li>Occurs so many weeks from the end of the month. For example, every 2 months on the last Thursday of the month.</li>
+</ul>
+
+
+
+<p>If a repeated event falls on a day not included in a particular month, the event is skipped for that month.</p>
+
+<h4><a name="Yearly"></a>Yearly</h4>
+
+<p>This event happens once each year. In the advanced options the user is able to specify how many years apart each repeating event will occur.</p>
+<h3><a name=QTOPIA-253>QDL Support</a></h3>
+<p>It is possible to access occurrences of events from other applications using the QDL service interface. When activated the <b>Calender</b> application runs and displays the occurrence of the event.
+
+<p>QDL links are embedded into the notes of an event. When in the Detailed View,<br/>
+clicking on a QDL link activates the link's application.</p>
+<h3><a name=QTOPIA-247>Repeat Event</a></h3>
+<p>It is possible to set an event to repeat over a specified period of time.
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

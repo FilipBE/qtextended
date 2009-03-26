@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBuild Concepts</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBuild Concepts<br /><span class="subtitle"></span>
+</h1>
+<a name="solution"></a>
+<h3>Solution</h3>
+<p>When you execute QBuild, you are building a solution. A solution is configured by the file <tt>qbuild.solution</tt> and if no solution file can be found in the current directory, QBuild will search through the parent directories until it finds one or the root directory is reached. If no solution file is found a default solution is used.</p>
+<p>The primary use of the solution is to map physical locations into QBuild's <a href="over-solution-filesystem-1.html">solution filesystem</a>. The default solution maps the root directory.</p>
+<p>See <a href="file-qbuild-solution-1.html">qbuild.solution</a> for information about solution files.</p>
+<a name="project"></a>
+<h3>Project</h3>
+<p>A project is defined by the file <tt>qbuild.pro</tt>.</p>
+<p>See <a href="file-qbuild-pro-1.html">qbuild.pro</a> for information about project files.</p>
+<a name="extension"></a>
+<h3>Extension</h3>
+<p>See <a href="file-extension-js-1.html">extension.js</a> for information about extension files.</p>
+<a name="startup-scripts"></a>
+<h3>Startup Scripts</h3>
+<p>See <a href="file-qbuild-startup-args-1.html">qbuild.startup.args</a> and <a href="file-qbuild-startup-js-1.html">qbuild.startup.js</a> for information about startup files.</p>
+<a name="dependencies"></a>
+<h3>Dependencies</h3>
+<p>QBuild manages 2 types of dependencies. Immediate dependencies and module dependencies. Module dependencies are the preferred kind because they can be loaded in the absense of a source tree. A .dep file is created for every module and depending on that module is a simple as including the file. See <a href="file-module-dep-2.html">module.dep</a> for information about .dep files.</p>
+<p>Immediate dependencies are resolved by searching through the available projects and immediately extracting the dependency information. They are primarily used to enable parallel building of projects that depend on each other.</p>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

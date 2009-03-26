@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Bluetooth Module</title>
+  <link rel="prev" href="qtbasemodule.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="qtcellmodule.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtbasemodule.html">Qt Base Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtcellmodule.html">Qt Cell Module</a>]
+</p>
+<h1 class="title">Qt Bluetooth Module<br /><span class="subtitle"></span>
+</h1>
+<a name="qtbluetoothmodule"></a><p>The Qt Bluetooth module offers a Bluetooth API and common Bluetooth profile implementations. It is based on the <a href="qtbasemodule.html">Base module</a>.</p>
+<p>The following configure line can be used to build the Base and Bluetooth module only:</p>
+<pre>    ./configure -modules bluetooth -device xyz</pre>
+<p>Note that not specifying a device profile would result in the reference device being build. The <tt>-bluetooth</tt> option is equivalent to the <tt>-modules cell</tt> option.</p>
+<a name="feature-description"></a>
+<h2>Feature description</h2>
+<p>The Qt Extended <a href="bluetooth.html">Bluetooth support</a> is based on <a href="http://www.bluez.org">Bluez</a>. The provided <a href="qtopiabluetooth.html">Bluetooth API's</a> function as a wrapper around Bluez and allow direct manipulation of Bluetooth devices. In addition the <a href="bluetooth-servicemanager.html">Bluetooth Service Management Framework</a> can be used to create arbitrary Bluetooth service. Most profile implementations are based on this framework and the more generic classes mentioned earlier.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Details</th></tr></thead>
+<tr valign="top" class="odd"><td>Device and service Control</td><td>The device and service control classes provide the most basic set of classes for arbitrary Bluetooth development:<ul>
+<li><a href="qtopiabluetooth.html">Device Control Classes</a></li>
+<li><a href="bluetooth-servicemanager.html">Service framework</a></li>
+<li><a href="btpowerservicetask.html">Session control</a> for efficient device power management</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Bluetooth profiles</td><td>This module supports a variety of Bluetooth profiles. Please check the <a href="bluetooth.html">Bluetooth documentation</a> for the list of supported profiles.</td></tr>
+<tr valign="top" class="odd"><td>General file transfer user interface</td><td>A <a href="filetransfertask.html">server task</a> monitors transfer operations and shows a <a href="filetransferwindow.html">status widget</a> while the transfer is in progress. This feature is shared with various Infrared transfer protocols.</td></tr>
+</table></p>
+<a name="software-components"></a>
+<h2>Software components</h2>
+<p>The Bluetooth module includes the following software components:</p>
+<ul>
+<li><tt>libraries/qtopiaaudio</tt></li>
+<li><tt>libraries/qtopiapim</tt></li>
+<li>bluetooth settings and bluetooth FTP applications</li>
+<li><tt>libraries/qtopiacomm</tt> (bluetooth components)</li>
+<li>profile related server components</li>
+</ul>
+<p>The exact list of components included in this module can be found in <tt>$QPEDIR/src/module_bluetooth.pri</tt>.</p>
+<p>The <a href="tp-module-bluetooth.html">test plan</a> for the Bluetooth module summarizes the Quality Assurance procedures for this module. The results of these test are available <a href="qt-extended-test-results.html">here</a>.</p>
+<p>The following table contains all classes and services which are part of this module:</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="bluetoothfilesendservice.html">BluetoothFileSendService</a></th><td>Runs a BluetoothPush service and provides updates regarding the progress of each file transfer request that is sent through the service</td></tr>
+<tr valign="top" class="even"><th><a href="bluetoothobexpushservice.html">BluetoothObexPushService</a></th><td>Runs a Bluetooth OBEX Object Push server and provides notifications of received requests and their status</td></tr>
+<tr valign="top" class="odd"><th><a href="bluetoothpasskeyagenttask.html">BluetoothPasskeyAgentTask</a></th><td>Default passkey agent for performing Bluetooth passkey authentications</td></tr>
+<tr valign="top" class="even"><th><a href="bluetoothpushingservice.html">BluetoothPush</a></th><td>The BluetoothPush service</td></tr>
+<tr valign="top" class="odd"><th><a href="bluetoothservicemanager.html">BluetoothServiceManager</a></th><td>Controls Bluetooth services</td></tr>
+<tr valign="top" class="even"><th><a href="btdialupservicetask.html">BtDialupServiceTask</a></th><td>Server side support for the Bluetooth DUN profile</td></tr>
+<tr valign="top" class="odd"><th><a href="btftpservicetask.html">BtFtpServiceTask</a></th><td>Server side support for the Bluetooth FTP profile</td></tr>
+<tr valign="top" class="even"><th><a href="bthandsfreeservicetask.html">BtHandsfreeServiceTask</a></th><td>Implementation of the Bluetooth Handsfree Service</td></tr>
+<tr valign="top" class="odd"><th><a href="btheadsetservicetask.html">BtHeadsetServiceTask</a></th><td>The Bluetooth Headset Service</td></tr>
+<tr valign="top" class="even"><th><a href="btpowerservicetask.html">BtPowerServiceTask</a></th><td>The BtPowerService</td></tr>
+<tr valign="top" class="odd"><th><a href="btserialservicetask.html">BtSerialServiceTask</a></th><td>Server side support for the Bluetooth Serial profile</td></tr>
+<tr valign="top" class="even"><th><a href="defaultobexpushservice.html">DefaultObexPushService</a></th><td>OBEX Push server</td></tr>
+<tr valign="top" class="odd"><th><a href="filetransfertask.html">FileTransferTask</a></th><td>Interface to receive notifications about file transfer operations</td></tr>
+<tr valign="top" class="even"><th><a href="filetransferwindow.html">FileTransferWindow</a></th><td>Shown while the Qt Extended server performs a file transfer</td></tr>
+<tr valign="top" class="odd"><th><a href="obexpushrequestsender.html">ObexPushRequestSender</a></th><td>Convenience methods for sending a variety of OBEX Push requests and also provides updates regarding the progress of each request</td></tr>
+<tr valign="top" class="even"><th><a href="qabstractcommdevicemanager.html">QAbstractCommDeviceManager</a></th><td>Manages power state of a communications device</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudio.html">QAudio</a></th><td>Container for miscellaneous Audio functionality</td></tr>
+<tr valign="top" class="even"><th><a href="qaudioelement.html">QAudioElement</a></th><td>Manages an element of the audio mixer</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudioinput.html">QAudioInput</a></th><td>Interface to read raw audio data from a microphone input</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiointerface.html">QAudioInterface</a></th><td>Way of managing access to the audio system</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiomixer.html">QAudioMixer</a></th><td>Way of accessing the audio systems mixer controls</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiooutput.html">QAudioOutput</a></th><td>Interface for sending live audio samples to the default audio output device</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiostate.html">QAudioState</a></th><td>Encapsulates an audio device state</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiostateconfiguration.html">QAudioStateConfiguration</a></th><td>Defines a read-only view to the current audio device configuration</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiostateinfo.html">QAudioStateInfo</a></th><td>Point of access to information about an audio state</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiostatemanager.html">QAudioStateManager</a></th><td>Manages QAudioStatePlugin objects</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiostateplugin.html">QAudioStatePlugin</a></th><td>Way of managing the underlying audio system</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetooth.html">QBluetooth</a></th><td>Contains miscellaneous Bluetooth functionality</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothabstractserver.html">QBluetoothAbstractServer</a></th><td>Represents an abstract Bluetooth server socket</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothabstractservice.html">QBluetoothAbstractService</a></th><td>Base interface class for Bluetooth services within Qtopia</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothabstractsocket.html">QBluetoothAbstractSocket</a></th><td>Represents an abstract Bluetooth client socket</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothaddress.html">QBluetoothAddress</a></th><td>Represents a bluetooth address</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothaudiogateway.html">QBluetoothAudioGateway</a></th><td>Interface to a Bluetooth Audio Gateway</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothauthorizationagent.html">QBluetoothAuthorizationAgent</a></th><td>Represents an authorization proxy</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothhandsfreeaudiogatewayserver.html">QBluetoothHandsfreeAudioGatewayServer</a></th><td>Implements the Bluetooth handsfree service Audio Gateway interface</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothhandsfreecomminterface.html">QBluetoothHandsfreeCommInterface</a></th><td>Qt Extended IPC interface to the Handsfree Audio Gateway profile implementation</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothhandsfreeservice.html">QBluetoothHandsfreeService</a></th><td>Implements Bluetooth Handsfree Audio Gateway profile</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothheadsetaudiogatewayserver.html">QBluetoothHeadsetAudioGatewayServer</a></th><td>Implements the Bluetooth headset service Audio Gateway interface</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothheadsetcomminterface.html">QBluetoothHeadsetCommInterface</a></th><td>Qt Extended IPC interface to the Headset Audio Gateway profile implementation</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothheadsetservice.html">QBluetoothHeadsetService</a></th><td>Implements Bluetooth Headset Audio Gateway profile</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothl2capdatagramsocket.html">QBluetoothL2CapDatagramSocket</a></th><td>Represents an L2CAP Datagram Socket</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothl2capserver.html">QBluetoothL2CapServer</a></th><td>Represents an L2CAP server socket</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothl2capsocket.html">QBluetoothL2CapSocket</a></th><td>Represents an L2CAP client socket</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></th><td>Represents a local bluetooth device</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothlocaldevicemanager.html">QBluetoothLocalDeviceManager</a></th><td>Access to local Bluetooth devices</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothpasskeyagent.html">QBluetoothPasskeyAgent</a></th><td>Represents a passkey entry proxy</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothpasskeyrequest.html">QBluetoothPasskeyRequest</a></th><td>Encapsulates a Bluetooth PIN request</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothremotedevice.html">QBluetoothRemoteDevice</a></th><td>Represents a remote bluetooth device</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothremotedevicedialog.html">QBluetoothRemoteDeviceDialog</a></th><td>Allows the user to perform a bluetooth device discovery and select a particular device</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothremotedevicedialogfilter.html">QBluetoothRemoteDeviceDialogFilter</a></th><td>Filter on the devices that are displayed by a QBluetoothRemoteDeviceDialog</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothreply.html">QBluetoothReply</a></th><td>Wrapper object that contains a reply, and an error indicator</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothrfcommserialport.html">QBluetoothRfcommSerialPort</a></th><td>Represents a RFCOMM serial port device</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothrfcommserver.html">QBluetoothRfcommServer</a></th><td>Represents an RFCOMM server socket</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothrfcommsocket.html">QBluetoothRfcommSocket</a></th><td>Represents an RFCOMM client socket</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothscoserver.html">QBluetoothScoServer</a></th><td>Represents a SCO server socket</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothscosocket.html">QBluetoothScoSocket</a></th><td>Represents an SCO client socket</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothsdpalternative.html">QBluetoothSdpAlternative</a></th><td>Convenience wrapper used in QBluetoothSdpRecord</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothsdpquery.html">QBluetoothSdpQuery</a></th><td>Encapsulates operations performed by the SDAP profile</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothsdpqueryresult.html">QBluetoothSdpQueryResult</a></th><td>Encapsulates a result of an SDAP query</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothsdprecord.html">QBluetoothSdpRecord</a></th><td>Represents a bluetooth SDP record</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothsdpsequence.html">QBluetoothSdpSequence</a></th><td>Convenience wrapper used in QBluetoothSdpRecord</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothsdpuuid.html">QBluetoothSdpUuid</a></th><td>Encapsulates Unique Identifiers defined and used by the Bluetooth Service Discovery Protocol</td></tr>
+<tr valign="top" class="odd"><th><a href="qbluetoothserialportservice.html">QBluetoothSerialPortService</a></th><td>Bluetooth service implementation for the Bluetooth Serial Port Profile</td></tr>
+<tr valign="top" class="even"><th><a href="qbluetoothservicecontroller.html">QBluetoothServiceController</a></th><td>Means to control and access information for Qt Extended Bluetooth services</td></tr>
+<tr valign="top" class="odd"><th><a href="qtopianetworkserver.html">QtopiaNetworkServer</a></th><td>Manages all network interfaces</td></tr>
+<tr valign="top" class="even"><th><a href="qtopiaprinterinterface.html">QtopiaPrinterInterface</a></th><td>The minimum interface to various printers</td></tr>
+<tr valign="top" class="odd"><th><a href="qtopiaprinterplugin.html">QtopiaPrinterPlugin</a></th><td>Abstract base for QtopiaPrinterInterface plug-ins</td></tr>
+<tr valign="top" class="even"><th><a href="sessionedobexclient.html">SessionedObexClient</a></th><td>Base implementation for performing an OBEX Put request inside of a device session for a particular hardware device</td></tr>
+<tr valign="top" class="odd"><th><a href="volumecontroltask.html">VolumeControlTask</a></th><td>Task that manages services related to Media in Qt Extended This class is used to manage media related facilities in Qtopia. It watches media key events and forwards them to the appropriate party</td></tr>
+<tr valign="top" class="even"><th><a href="volumedialogtask.html">VolumeDialogTask</a></th><td>Volume dialog that gives feedback on volume changes</td></tr>
+</table></p>
+<p>
+[Previous: <a href="qtbasemodule.html">Qt Base Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtcellmodule.html">Qt Cell Module</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

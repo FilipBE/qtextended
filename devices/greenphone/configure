@@ -1,0 +1,19 @@
+# Device-specific configuration
+-xplatform greenphone
+-arch arm
+-helix-system-id linux-2.2-libc6-xscale-cross-gcc32
+-prefix /opt/Qtopia
+-languages "en_US"
+# semtimedop doesn't work on the Greenphone
+-no-semtimedop
+
+# Force Qt to use its own libs (not sure why)
+-extra-qt-embedded-config "-qt-libjpeg"
+-extra-qt-embedded-config "-qt-libmng"
+-extra-qt-embedded-config "-qt-libpng"
+-extra-qt-embedded-config "-qt-zlib"
+
+# For the touchscreen
+-extra-qt-embedded-config "-qt-mouse-linuxtp"
+-extra-qt-embedded-config "-D QT_QWS_SCREEN_COORDINATES"
+

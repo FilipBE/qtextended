@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Enablers: Resources: System Info</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Enablers: Resources: System Info<br><small>Functional Description</small></h1><p><strong>System Info</strong> is a Qt Extended application that displays system information
+    about the device such as how much space is left and the software version. It provides
+    the user with accurate information to determine if it is necessary
+    to carry out maintenance on the device such as removing unwanted
+    files or arranging for a firmware upgrade.
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1691">Cleanup wizard</a>
+<li><a href="#QTOPIA-1689">Software information</a>
+<li><a href="#QTOPIA-1690">System information</a>
+</ul><h3><a name=QTOPIA-1691>Cleanup wizard</a></h3>
+<p>The Clean-up Wizard is invoked from the System Info application's "Storage" tab.  It may also be invoked from a dialog that is automatically displayed on the homescreen when the device's Documents filesystem has less than 10% free (the trigger limit is configurable).
+
+<p>Items for clean-up are broken into three categories and a sequence of pages is displayed to the user depending on which categories the user selects.  If any items are chosen for clean-up then the wizard will delete those items and report on recovered space.</p>
+
+<p>At each page in the sequence a "Next" button is available once the page has been completed. Selecting the "Next" button displays the next page in the sequence, as listed below.</p>
+
+<p>The pages in the Clean-up Wizard are:</p>
+
+<ul>
+	<li><b>Page 1 What items would you like to clean-up?</b> A choice of Documents, Messages and Events is offered. The user may select any or all of these for clean-up.</li>
+	<li><b>Page 2 Clean-up Messages:</b> If Messages was chosen on Page 1 then this page is displayed. On this page the user may set parameters to search for messages (emails) to clean-up. The user may choose a minimum size and use a date picker to select an "older than" date to by which to filter.</li>
+	<li><b>Dialog: Warning:</b> If items were checked in the previous screen then the user is allowed the opportunity to back out by selecting "No". Selecting "Yes" permits the system to go ahead and delete the items.</li>
+	<li><b>Dialog: Warning:</b> A warning for Messages is displayed as per the Documents warning above.</li>
+	<li><b>Dialog: Deleting items:</b> A progress dialog is displayed as above.</li>
+	<li><b>Page 3 Clean-up Events:</b> If Events was chosen on Page 1 then this page is displayed. On this page the user may set parameters to search for events (from the Calendar) to clean-up. A date picker is available to allow the user to select an "older than" date by which to filter.</li>
+	<li><b>Dialog: Warning:</b> A warning for Events is displayed as per the Messages warning above.</li>
+	<li><b>Dialog: Deleting items:</b> A progress dialog is displayed as above.</li>
+	<li><b>Page 4 Clean-up Documents:</b>. If Documents was chosen on Page 1, then this page is displayed. It allows the user to specify the minimum size, location and type of documents to be selected for clean-up. Clicking the "OK" button commits the size and category choices made and allows moving forward to the documents found page.</li>
+	<li><b>Page 5 Documents found:</b> This page lists details of how many documents were found and the space that can be recovered by deleting them. A "Show Details" button takes the user to a checklist page.</li>
+	<li><b>Page 6 Uncheck Documents:</b> this page provides a checklist that initially lists as checked all items available for clean-up (deletion). They may be unchecked to preserve them from being cleaned-up.</li>
+	<li><b>Dialog: Warning:</b> A warning for Documents is displayed as per the Messages warning above.</li>
+	<li><b>Dialog: Deleting items:</b> A progress bar shows the deletion of items being completed.</li>
+	<li><b>Page 7 Items deleted:</b> A final page summarizing the item deletions with a count of items removed is displayed.</li>
+</ul>
+<h3><a name=QTOPIA-1689>Software information</a></h3>
+<p>The <b>Version</b> tab displays information about the firmware/software on the device: this includes the Qt Extended name and icon accompanied by the current software version number and copyright statement. If updated Qt Extended firmware is available to suit the device an upgrade may be appropriate.
+<h3><a name=QTOPIA-1690>System information</a></h3>
+<p>After <b>Version</b>, several other tabs present information about resource usage on the device.
+
+<h4><a name="Storage"></a>Storage </h4>
+
+<ul>
+	<li>The "Storage" tab displays the current state of non-volatile storage devices (such as compact flash cards).</li>
+	<li>A separate bar graph shows how much of each device is being used, for example, a unit fitted with two storage devices will show two bar graphs.</li>
+</ul>
+
+
+<h4><a name="CPU"></a>CPU</h4>
+
+<ul>
+	<li>The "CPU" tab graphically displays the CPU usage information of Application and System.</li>
+</ul>
+
+
+<h4><a name="Memory"></a>Memory</h4>
+
+<ul>
+	<li>The "Memory" tab contains a bar graph showing how much memory is currently being used to run the device and its applications.</li>
+</ul>
+
+
+<h4><a name="Data"></a>Data</h4>
+
+<ul>
+	<li>The "Data" tab shows 5 different types of files and the amount of space each type is using (in kilobytes or megabytes).</li>
+	<li>The file types presented are: audio, images, mail, text and video. A bar indicator with a color for each file type is used to show the share of storage each is using. Another color denotes free space. Note that if one file type is using a sufficiently large share then the other colors may not show and the bar may be all one color. For example if Free space is greater than 95% a solid purple bar<br/>
+   will show.</li>
+</ul>
+
+
+<h4><a name="Security"></a>Security</h4>
+
+<ul>
+	<li>The "Security" tab shows the status of the Safe Execution environment, including whether Safe Execution is currently enabled and whether the currently running Linux Kernel contains the LIDS patches for Mandatory Access Control.</li>
+</ul>
+
+
+<h4><a name="Modem"></a>Modem</h4>
+
+<ul>
+	<li>The "Modem" tab shows version information for the modem, including the manufacturer, model,<br/>
+      revision, and serial number (IMEI).</li>
+</ul>
+
+
+<h4><a name="SIM"></a>SIM</h4>
+
+<ul>
+	<li>The "SIM" tab shows the number of used and free SMS messages and phone book entries on the SIM.</li>
+</ul>
+
+
+<h4><a name="Network"></a>Network</h4>
+
+<ul>
+	<li>The "Network" tab shows all configured network interfaces (e.g. GPRS, Bt DUN, (W)LAN) and their status.</li>
+</ul>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

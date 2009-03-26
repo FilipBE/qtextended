@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtUiTest Module</title>
+  <link rel="prev" href="qtdevtoolsmodule.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtdevtoolsmodule.html">Qt Development Tools Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+</p>
+<h1 class="title">QtUiTest Module<br /><span class="subtitle"></span>
+</h1>
+<a name="qtuitestmodule"></a><p>The <a href="qtuitest.html">QtUiTest</a> module provides system test features. It improves the quality assurance process but is not expected to be part of a final device image. This module is based on the <a href="qtbasemodule.html">Base module</a>.</p>
+<p>The following configure line can be used to build the Base and <a href="qtuitest.html">QtUiTest</a> module:</p>
+<pre>    ./configure -modules qtuitest -device xyz</pre>
+<p>Note that not specifying a device profile would result in the reference device being build.</p>
+<a name="feature-description"></a>
+<h2>Feature description</h2>
+<p><i>QtUiTest</i> is a tool for generating and running automated and semi-automated system tests. Tests are written in ECMAScript and run against a network-accessible device. A high-level testing API is provided, enabling tests which are flexible with respect to user user interface changes. Traditional screenshot-based, record-and-playback testing is also possible.</p>
+<p><a href="qtuitest.html">QtUiTest</a> is implemented as a plugin and can be loaded at runtime with no changes required to the application being tested.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Details</th></tr></thead>
+<tr valign="top" class="odd"><td>System test API</td><td>The <a href="qtuitest-manual.html#the-scripting-language">QtUiTest scripting language</a> provides an API for simulating high-level interaction with applications.<p>Tests are written using abstract concepts such as entering a value into a field with a specific label or activating a widget with particular text. This allows tests to be written which work correctly across different themes or minor user interface changes, and allows a test to be generated using a keypad device and subsequently run on a touchscreen-only device.</p>
+<p>A low-level API is also provided to directly simulate key and mouse input and compare screenshots against expected values.</p>
+</td></tr>
+<tr valign="top" class="even"><td>Performance test API</td><td>Timestamped log messages are used to instrument applications. <a href="qtuitest.html">QtUiTest</a> can then be used to query the amount of time taken to perform certain actions, verifying that applications meet their performance requirements.</td></tr>
+<tr valign="top" class="odd"><td>Widget plugin API</td><td><a href="qtuitest.html">QtUiTest</a>'s high-level interaction with widgets requires certain information to be provided for each type of widget. Support for Qt and Qt Extended widgets is provided with <a href="qtuitest.html">QtUiTest</a>. If custom widgets are created, plugins can be written to expose the necessary information about new widgets to <a href="qtuitest.html">QtUiTest</a>.<p>For example, this allows an existing test which selects an item in a list to continue working even if the list, originally a <a href="qabstractitemview.html">QAbstractItemView</a>, is replaced with a new type of widget written from scratch.</p>
+</td></tr>
+</table></p>
+<a name="software-components"></a>
+<h2>Software components</h2>
+<p>The <a href="qtuitest.html">QtUiTest</a> module includes the following software components:</p>
+<ul>
+<li><tt>plugins/qtuitest</tt> - <a href="qtuitest.html">QtUiTest</a> main plugin and widget plugins</li>
+<li><tt>libraries/qtuitest</tt> - API used by widget plugins</li>
+<li><tt>tools/qtuitestrunner</tt> - interpreter for test scripts</li>
+<li><tt>tests/shared</tt> - extensions to test scripting API</li>
+</ul>
+<p>The exact list of components included in this module can be found in <tt>$QPEDIR/src/module_qtuitest.pri</tt>.</p>
+<p>The <a href="tp-module-qtuitest.html">test plan</a> for the <a href="qtuitest.html">QtUiTest</a> module summarizes the Quality Assurance procedures for this module. The results of these test are available <a href="qt-extended-test-results.html">here</a>.</p>
+<p>The following table contains all classes and services which are part of this module:</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="qtuitest-activatewidget.html">QtUiTest::ActivateWidget</a></th><td>Abstract base class for all test widgets which can conceptually be &quot;activated&quot; by a user</td></tr>
+<tr valign="top" class="even"><th><a href="qtuitest-checkwidget.html">QtUiTest::CheckWidget</a></th><td>Abstract base class for all test widgets which support 'checked' and 'unchecked' states</td></tr>
+<tr valign="top" class="odd"><th><a href="qtuitest-inputwidget.html">QtUiTest::InputWidget</a></th><td>Abstract base class for all test widgets which allow the user to input text</td></tr>
+<tr valign="top" class="even"><th><a href="qtuitest-labelwidget.html">QtUiTest::LabelWidget</a></th><td>Abstract base class for all test widgets which are conceptually labels</td></tr>
+<tr valign="top" class="odd"><th><a href="qtuitest-listwidget.html">QtUiTest::ListWidget</a></th><td>Abstract base class for all test widgets which display a list of items to the user</td></tr>
+<tr valign="top" class="even"><th><a href="qsystemtest.html">QSystemTest</a></th><td>Script based system test functionality for Qt</td></tr>
+<tr valign="top" class="odd"><th><a href="qtuitest.html">QtUiTest</a></th><td>The plugin interfaces used for customizing the behaviour of QtUiTest</td></tr>
+<tr valign="top" class="even"><th><a href="qtuitestrecorder.html">QtUiTestRecorder</a></th><td>Interface for observing application-wide high level user actions</td></tr>
+<tr valign="top" class="odd"><th><a href="qtopiasystemtest.html">QtopiaSystemTest</a></th><td>Script based system test functionality for Qt Extended</td></tr>
+<tr valign="top" class="even"><th><a href="qtopiasystemtestmodem.html">QtopiaSystemTestModem</a></th><td>Functionality for simulating modem events from within a system test</td></tr>
+<tr valign="top" class="odd"><th><a href="qtuitest-selectwidget.html">QtUiTest::SelectWidget</a></th><td>Abstract base class for all test widgets which allow the user to select from a range of items</td></tr>
+<tr valign="top" class="even"><th><a href="qtuitest-textwidget.html">QtUiTest::TextWidget</a></th><td>Abstract base class for all test widgets which display text to the user</td></tr>
+<tr valign="top" class="odd"><th><a href="qtuitest-widget.html">QtUiTest::Widget</a></th><td>Abstract base class for all test widgets</td></tr>
+<tr valign="top" class="even"><th><a href="qtuitest-widgetfactory.html">QtUiTest::WidgetFactory</a></th><td>Factory interface for QtUiTest widget wrapper classes</td></tr>
+</table></p>
+<p>
+[Previous: <a href="qtdevtoolsmodule.html">Qt Development Tools Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

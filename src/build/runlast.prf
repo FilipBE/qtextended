@@ -1,0 +1,12 @@
+exists($$QPEDIR/src/build/trace_on):message(runlast.prf)
+# A hack to run stuff really late (ie. after Qt's features)
+
+for(c,LAST_CMDS) {
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        c~=s/^"//
+        c~=s/"$//
+    }
+    echo(runlast: $$c)
+    eval($$c)
+}
+

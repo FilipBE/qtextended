@@ -1,0 +1,370 @@
+diff -ur prelink-0.0.20060712/gelf/gelf.c prelink-0.0.20060712-greenphone/gelf/gelf.c
+--- prelink-0.0.20060712/gelf/gelf.c	2004-11-23 19:50:27.000000000 +1000
++++ prelink-0.0.20060712-greenphone/gelf/gelf.c	2006-11-01 13:48:03.000000000 +1000
+@@ -49,8 +49,10 @@
+     {
+     case ELFCLASS32:
+       return elf32_fsize (type, count, ver);
++#ifdef WANT64
+     case ELFCLASS64:
+       return elf64_fsize (type, count, ver);
++#endif
+     default:
+       return 0;
+     }
+@@ -60,7 +62,9 @@
+ gelf_getehdr (Elf *elf, GElf_Ehdr *dst)
+ {
+   Elf32_Ehdr *ehdr32;
++#ifdef WANT64
+   Elf64_Ehdr *ehdr64;
++#endif
+ 
+   switch (gelf_getclass (elf))
+     {
+@@ -85,6 +89,7 @@
+ 	  return dst;
+ 	}
+       break;
++#ifdef WANT64
+     case ELFCLASS64:
+       ehdr64 = elf64_getehdr (elf);
+       if (ehdr64 != NULL)
+@@ -92,6 +97,7 @@
+ 	  memcpy (dst, ehdr64, sizeof (Elf64_Ehdr));
+ 	  return dst;
+ 	}
++#endif
+     }
+   return NULL;
+ }
+@@ -100,7 +106,9 @@
+ gelf_update_ehdr (Elf *elf, GElf_Ehdr *src)
+ {
+   Elf32_Ehdr *ehdr32;
++#ifdef WANT64
+   Elf64_Ehdr *ehdr64;
++#endif
+ 
+   switch (gelf_getclass (elf))
+     {
+@@ -123,6 +131,7 @@
+       ehdr32->e_shnum = src->e_shnum;
+       ehdr32->e_shstrndx = src->e_shstrndx;
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       ehdr64 = elf64_getehdr (elf);
+       if (ehdr64 != NULL)
+@@ -130,6 +139,7 @@
+ 	  memcpy (ehdr64, src, sizeof (Elf64_Ehdr));
+ 	  return 1;
+ 	}
++#endif
+     default:
+       break;
+     }
+@@ -143,8 +153,10 @@
+     {
+     case ELFCLASS32:
+       return (unsigned long) elf32_newehdr (elf);
++#ifdef WANT64
+     case ELFCLASS64:
+       return (unsigned long) elf64_newehdr (elf);
++#endif
+     default:
+       return 0;
+     }
+@@ -179,6 +191,7 @@
+       dst->p_flags = phdr32->p_flags;
+       dst->p_align = phdr32->p_align;
+       return dst;
++#ifdef WANT64
+     case ELFCLASS64:
+       phdr64 = elf64_getphdr (elf);
+       if (phdr64 == NULL)
+@@ -190,6 +203,7 @@
+ 	return NULL;
+       memcpy (dst, phdr64 + ndx, sizeof (Elf64_Phdr));
+       return dst;
++#endif
+     default:
+       return NULL;
+     }
+@@ -224,6 +238,7 @@
+       phdr32->p_flags = src->p_flags;
+       phdr32->p_align = src->p_align;
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       phdr64 = elf64_getphdr (elf);
+       if (phdr64 == NULL)
+@@ -235,6 +250,7 @@
+ 	return 0;
+       memcpy (phdr64 + ndx, src, sizeof (Elf64_Phdr));
+       return 1;
++#endif
+     default:
+       return 0;
+     }
+@@ -247,8 +263,10 @@
+     {
+     case ELFCLASS32:
+       return (unsigned long) elf32_newphdr (elf, phnum);
++#ifdef WANT64
+     case ELFCLASS64:
+       return (unsigned long) elf64_newphdr (elf, phnum);
++#endif
+     default:
+       return 0;
+     }
+@@ -258,7 +276,9 @@
+ gelfx_getshdr (Elf *elf, Elf_Scn *scn, GElf_Shdr *dst)
+ {
+   Elf32_Shdr *shdr32;
++#ifdef WANT64
+   Elf64_Shdr *shdr64;
++#endif
+ 
+   switch (gelf_getclass (elf))
+     {
+@@ -277,12 +297,14 @@
+       dst->sh_addralign = shdr32->sh_addralign;
+       dst->sh_entsize = shdr32->sh_entsize;
+       return dst;
++#ifdef WANT64
+     case ELFCLASS64:
+       shdr64 = elf64_getshdr (scn);
+       if (shdr64 == NULL)
+ 	return NULL;
+       memcpy (dst, shdr64, sizeof (Elf64_Shdr));
+       return dst;
++#endif
+     default:
+       return NULL;
+     }
+@@ -292,7 +314,9 @@
+ gelfx_update_shdr (Elf *elf, Elf_Scn *scn, GElf_Shdr *src)
+ {
+   Elf32_Shdr *shdr32;
++#ifdef WANT64
+   Elf64_Shdr *shdr64;
++#endif
+ 
+   switch (gelf_getclass (elf))
+     {
+@@ -311,12 +335,14 @@
+       shdr32->sh_addralign = src->sh_addralign;
+       shdr32->sh_entsize = src->sh_entsize;
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       shdr64 = elf64_getshdr (scn);
+       if (shdr64 == NULL)
+ 	return 0;
+       memcpy (shdr64, src, sizeof (Elf64_Shdr));
+       return 1;
++#endif
+     default:
+       return 0;
+     }
+@@ -329,8 +355,10 @@
+     {
+     case ELFCLASS32:
+       return elf32_xlatetom (dst, src, encode);
++#ifdef WANT64
+     case ELFCLASS64:
+       return elf64_xlatetom (dst, src, encode);
++#endif
+     default:
+       return NULL;
+     }
+@@ -343,8 +371,10 @@
+     {
+     case ELFCLASS32:
+       return elf32_xlatetof (dst, src, encode);
++#ifdef WANT64
+     case ELFCLASS64:
+       return elf64_xlatetof (dst, src, encode);
++#endif
+     default:
+       return NULL;
+     }
+@@ -370,11 +400,13 @@
+       dst->st_value = sym32->st_value;
+       dst->st_size = sym32->st_size;
+       return dst;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Sym) > data->d_size)
+ 	return NULL;
+       *dst = ((GElf_Sym *) data->d_buf)[ndx];
+       return dst;
++#endif
+     default:
+       return NULL;
+     }
+@@ -400,11 +432,13 @@
+       sym32->st_value = src->st_value;
+       sym32->st_size = src->st_size;
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Sym) > data->d_size)
+ 	return 0;
+       ((GElf_Sym *) data->d_buf)[ndx] = *src;
+       return 1;
++#endif
+     default:
+       return 0;
+     }
+@@ -426,11 +460,13 @@
+       dst->d_tag = dyn32->d_tag;
+       dst->d_un.d_val = dyn32->d_un.d_val;
+       return dst;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Dyn) > data->d_size)
+ 	return NULL;
+       *dst = ((GElf_Dyn *) data->d_buf)[ndx];
+       return dst;
++#endif
+     default:
+       return NULL;
+     }
+@@ -452,11 +488,13 @@
+       dyn32->d_tag = src->d_tag;
+       dyn32->d_un.d_val = src->d_un.d_val;
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Dyn) > data->d_size)
+ 	return 0;
+       ((GElf_Dyn *) data->d_buf)[ndx] = *src;
+       return 1;
++#endif
+     default:
+       return 0;
+     }
+@@ -479,11 +517,13 @@
+       dst->r_info = GELF_R_INFO (ELF32_R_SYM (rel32->r_info),
+ 				 ELF32_R_TYPE (rel32->r_info));
+       return dst;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Rel) > data->d_size)
+ 	return NULL;
+       *dst = ((GElf_Rel *) data->d_buf)[ndx];
+       return dst;
++#endif
+     default:
+       return NULL;
+     }
+@@ -506,11 +546,13 @@
+       rel32->r_info = ELF32_R_INFO (GELF_R_SYM (src->r_info),
+ 				     GELF_R_TYPE (src->r_info));
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Rel) > data->d_size)
+ 	return 0;
+       ((GElf_Rel *) data->d_buf)[ndx] = *src;
+       return 1;
++#endif
+     default:
+       return 0;
+     }
+@@ -534,11 +576,13 @@
+ 				 ELF32_R_TYPE (rela32->r_info));
+       dst->r_addend = rela32->r_addend;
+       return dst;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Rela) > data->d_size)
+ 	return NULL;
+       *dst = ((GElf_Rela *) data->d_buf)[ndx];
+       return dst;
++#endif
+     default:
+       return NULL;
+     }
+@@ -562,11 +606,13 @@
+ 				     GELF_R_TYPE (src->r_info));
+       rela32->r_addend = src->r_addend;
+       return 1;
++#ifdef WANT64
+     case ELFCLASS64:
+       if ((ndx + 1) * sizeof (Elf64_Rela) > data->d_size)
+ 	return 0;
+       ((GElf_Rela *) data->d_buf)[ndx] = *src;
+       return 1;
++#endif
+     default:
+       return 0;
+     }
+diff -ur prelink-0.0.20060712/src/dso.c prelink-0.0.20060712-greenphone/src/dso.c
+--- prelink-0.0.20060712/src/dso.c	2006-06-28 05:51:01.000000000 +1000
++++ prelink-0.0.20060712-greenphone/src/dso.c	2006-11-01 13:48:39.000000000 +1000
+@@ -789,9 +789,11 @@
+     case ELFCLASS32:
+       e_ident = (char *) elf32_newehdr (elf);
+       break;
++#ifdef WANT64
+     case ELFCLASS64:
+       e_ident = (char *) elf64_newehdr (elf);
+       break;
++#endif
+     default:
+       e_ident = NULL;
+       break;
+diff -ur prelink-0.0.20060712/src/prelink.c prelink-0.0.20060712-greenphone/src/prelink.c
+--- prelink-0.0.20060712/src/prelink.c	2006-06-28 05:53:20.000000000 +1000
++++ prelink-0.0.20060712-greenphone/src/prelink.c	2006-11-01 13:50:28.000000000 +1000
+@@ -208,6 +208,7 @@
+ 	      return 1;
+ 	    }
+ 	  break;
++#ifdef WANT64
+ 	case ELFCLASS64:
+ 	  src.d_buf = elf64_getehdr (dso->elf);
+ 	  if (elf64_xlatetof (&dst, &src, dso->ehdr.e_ident[EI_DATA]) == NULL)
+@@ -217,6 +218,7 @@
+ 	      return 1;
+ 	    }
+ 	  break;
++#endif
+ 	default:
+ 	  return 1;
+ 	}
+@@ -236,6 +238,7 @@
+ 	      return 1;
+ 	    }
+ 	  break;
++#ifdef WANT64
+ 	case ELFCLASS64:
+ 	  src.d_buf = elf64_getphdr (dso->elf);
+ 	  if (elf64_xlatetof (&dst, &src, dso->ehdr.e_ident[EI_DATA]) == NULL)
+@@ -245,6 +248,7 @@
+ 	      return 1;
+ 	    }
+ 	  break;
++#endif
+ 	}
+       src.d_buf = dst.d_buf + src.d_size;
+       src.d_type = ELF_T_SHDR;
+@@ -267,6 +271,7 @@
+ 	      return 1;
+ 	    }
+ 	  break;
++#ifdef WANT64
+ 	case ELFCLASS64:
+ 	  shdr64 = (Elf64_Shdr *) src.d_buf;
+ 	  /* Note: cannot use dso->scn[i] below, since we want to save the
+@@ -281,6 +286,7 @@
+ 	      return 1;
+ 	    }
+ 	  break;
++#endif
+ 	}
+     }
+ 

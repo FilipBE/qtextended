@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPacketProtocol Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPacketProtocol Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QPacketProtocol class encapsulates communicating discrete packets across fragmented IO channels, such as TCP sockets. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPacketProtocol&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qpacketprotocol-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qpacketprotocol.html#QPacketProtocol">QPacketProtocol</a></b> ( QIODevice * <i>dev</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qpacketprotocol.html#dtor.QPacketProtocol">~QPacketProtocol</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qpacketprotocol.html#clear">clear</a></b> ()</li>
+<li><div class="fn"/>QIODevice * <b><a href="qpacketprotocol.html#device">device</a></b> ()</li>
+<li><div class="fn"/>qint32 <b><a href="qpacketprotocol.html#maximumPacketSize">maximumPacketSize</a></b> () const</li>
+<li><div class="fn"/>qint64 <b><a href="qpacketprotocol.html#packetsAvailable">packetsAvailable</a></b> () const</li>
+<li><div class="fn"/>QPacket <b><a href="qpacketprotocol.html#read">read</a></b> ()</li>
+<li><div class="fn"/>QPacketAutoSend <b><a href="qpacketprotocol.html#send">send</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qpacketprotocol.html#send-2">send</a></b> ( const QPacket &amp; <i>packet</i> )</li>
+<li><div class="fn"/>qint32 <b><a href="qpacketprotocol.html#setMaximumPacketSize">setMaximumPacketSize</a></b> ( qint32 <i>max</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qpacketprotocol.html#invalidPacket">invalidPacket</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qpacketprotocol.html#packetWritten">packetWritten</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qpacketprotocol.html#readyRead">readyRead</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPacketProtocol class encapsulates communicating discrete packets across fragmented IO channels, such as TCP sockets.</p>
+<p>QPacketProtocol makes it simple to send arbitrary sized data &quot;packets&quot; across fragmented transports such as TCP and UDP.</p>
+<p>As transmission boundaries are not respected, sending packets over protocols like TCP frequently involves &quot;stitching&quot; them back together at the receiver. QPacketProtocol makes this easier by performing this task for you. Packet data sent using QPacketProtocol is prepended with a 4-byte size header allowing the receiving QPacketProtocol to buffer the packet internally until it has all been received. QPacketProtocol does not perform any sanity checking on the size or on the data, so this class should only be used in prototyping or trusted situations where DOS attacks are unlikely.</p>
+<p>QPacketProtocol does not perform any communications itself. Instead it can operate on any <a href="qiodevice.html">QIODevice</a> that supports the <a href="qiodevice.html#readyRead">QIODevice::readyRead</a>() signal. A logical &quot;packet&quot; is encapsulated by the companion <a href="qpacket.html">QPacket</a> class. The following example shows two ways to send data using QPacketProtocol. The transmitted data is equivalent in both.</p>
+<pre>    QTcpSocket socket;
+<span class="comment">    // ... connect socket ...</span>
+
+    QPacketProtocol protocol(&amp;socket);
+
+<span class="comment">    // Send packet the quick way</span>
+    protocol.send() &lt;&lt; &quot;Hello world&quot; &lt;&lt; 123;
+
+<span class="comment">    // Send packet the longer way</span>
+    QPacket packet;
+    packet &lt;&lt; &quot;Hello world&quot; &lt;&lt; 123;
+    protocol.send(packet);</pre>
+<p>Likewise, the following shows how to read data from QPacketProtocol, assuming that the <a href="qpacketprotocol.html#readyRead">QPacketProtocol::readyRead</a>() signal has been emitted.</p>
+<pre><span class="comment">    // ... QPacketProtocol::readyRead() is emitted ...</span>
+
+    int a;
+    QByteArray b;
+
+<span class="comment">    // Receive packet the quick way</span>
+    protocol.read() &gt;&gt; a &gt;&gt; b;
+
+<span class="comment">    // Receive packet the longer way</span>
+    QPacket packet = protocol.read();
+    p &gt;&gt; a &gt;&gt; b;</pre>
+<p>See also <a href="qpacket.html">QPacket</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPacketProtocol"></a>QPacketProtocol::QPacketProtocol ( <a href="qiodevice.html">QIODevice</a> * <i>dev</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a <a href="qpacketprotocol.html">QPacketProtocol</a> instance that works on <i>dev</i> with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QPacketProtocol"></a>QPacketProtocol::~QPacketProtocol ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qpacketprotocol.html">QPacketProtocol</a> instance.</p>
+<h3 class="fn"><a name="clear"></a>void QPacketProtocol::clear ()</h3>
+<p>Discard any unread packets.</p>
+<h3 class="fn"><a name="device"></a><a href="qiodevice.html">QIODevice</a> * QPacketProtocol::device ()</h3>
+<p>Return the <a href="qiodevice.html">QIODevice</a> passed to the <a href="qpacketprotocol.html">QPacketProtocol</a> constructor.</p>
+<h3 class="fn"><a name="invalidPacket"></a>void QPacketProtocol::invalidPacket ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>A packet larger than the maximum allowable packet size was received. The packet will be discarded and, as it indicates corruption in the protocol, no further packets will be received.</p>
+<h3 class="fn"><a name="maximumPacketSize"></a><a href="qtglobal.html#qint32-typedef">qint32</a> QPacketProtocol::maximumPacketSize () const</h3>
+<p>Returns the maximum packet size allowed. By default this is 2,147,483,647 bytes.</p>
+<p>If a packet claiming to be larger than the maximum packet size is received, the <a href="qpacketprotocol.html#invalidPacket">QPacketProtocol::invalidPacket</a>() signal is emitted.</p>
+<p>See also <a href="qpacketprotocol.html#setMaximumPacketSize">QPacketProtocol::setMaximumPacketSize</a>().</p>
+<h3 class="fn"><a name="packetWritten"></a>void QPacketProtocol::packetWritten ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted each time a packet is completing written to the device. This signal may be used for communications flow control.</p>
+<h3 class="fn"><a name="packetsAvailable"></a><a href="qtglobal.html#qint64-typedef">qint64</a> QPacketProtocol::packetsAvailable () const</h3>
+<p>Returns the number of received packets yet to be read.</p>
+<h3 class="fn"><a name="read"></a><a href="qpacket.html">QPacket</a> QPacketProtocol::read ()</h3>
+<p>Return the next unread packet, or an invalid <a href="qpacket.html">QPacket</a> instance if no packets are available. This method does NOT block.</p>
+<h3 class="fn"><a name="readyRead"></a>void QPacketProtocol::readyRead ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever a new packet is received. Applications may use <a href="qpacketprotocol.html#read">QPacketProtocol::read</a>() to retrieve this packet.</p>
+<h3 class="fn"><a name="send"></a>QPacketAutoSend QPacketProtocol::send ()</h3>
+<p>Returns a streamable object that is transmitted on destruction. For example</p>
+<pre>    protocol.send() &lt;&lt; &quot;Hello world&quot; &lt;&lt; 123;</pre>
+<p>will send a packet containing &quot;Hello world&quot; and 123. To construct more complex packets, explicitly construct a <a href="qpacket.html">QPacket</a> instance.</p>
+<h3 class="fn"><a name="send-2"></a>void QPacketProtocol::send ( const <a href="qpacket.html">QPacket</a> &amp; <i>packet</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Transmit the <i>packet</i>.</p>
+<h3 class="fn"><a name="setMaximumPacketSize"></a><a href="qtglobal.html#qint32-typedef">qint32</a> QPacketProtocol::setMaximumPacketSize ( <a href="qtglobal.html#qint32-typedef">qint32</a> <i>max</i> )</h3>
+<p>Sets the maximum allowable packet size to <i>max</i>.</p>
+<p>See also <a href="qpacketprotocol.html#maximumPacketSize">QPacketProtocol::maximumPacketSize</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

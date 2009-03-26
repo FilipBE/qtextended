@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>FunctionProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">FunctionProvider Class Reference</h1>
+<p>The FunctionProvider class exports functions into the QBuild environment. <a href="#details">More...</a></p>
+<pre>    #include &lt;FunctionProvider&gt;</pre><p>Inherited by <a href="builtinfunctions.html">BuiltinFunctions</a> and <a href="qtscriptfunctions.html">QtScriptFunctions</a>.</p>
+<ul>
+<li><a href="functionprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="functionprovider.html#FunctionProvider">FunctionProvider</a></b> ( const QString &amp; <i>type</i>, int <i>priority</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="functionprovider.html#dtor.FunctionProvider">~FunctionProvider</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="functionprovider.html#callFunction">callFunction</a></b> ( Project * <i>project</i>, QStringList &amp; <i>rv</i>, const QString &amp; <i>function</i>, const QStringLists &amp; <i>arguments</i> ) = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="functionprovider.html#fileExtension">fileExtension</a></b> () const = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="functionprovider.html#loadFile">loadFile</a></b> ( const QString &amp; <i>file</i>, Project * <i>project</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="functionprovider.html#resetProject">resetProject</a></b> ( Project * <i>project</i> ) = 0</li>
+<li><div class="fn"/>QString <b><a href="functionprovider.html#type">type</a></b> () const</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="functionprovider.html#addExtensionsPath">addExtensionsPath</a></b> ( const QString &amp; <i>path</i> )</li>
+<li><div class="fn"/>bool <b><a href="functionprovider.html#evalFunction">evalFunction</a></b> ( Project * <i>project</i>, QStringList &amp; <i>rv</i>, const QString &amp; <i>function</i>, const QStringLists &amp; <i>arguments</i> )</li>
+<li><div class="fn"/>bool <b><a href="functionprovider.html#evalLoad">evalLoad</a></b> ( Project * <i>project</i>, const QString &amp; <i>name</i> )</li>
+<li><div class="fn"/>QStringList <b><a href="functionprovider.html#extensionsPaths">extensionsPaths</a></b> ()</li>
+<li><div class="fn"/>QList&lt;FunctionProvider *&gt; <b><a href="functionprovider.html#functionProviders">functionProviders</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="functionprovider.html#reset">reset</a></b> ( Project * <i>project</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The FunctionProvider class exports functions into the QBuild environment.</p>
+<p>Function providers are typically instantiated like this.</p>
+<pre>    static MyFunctionProvider myFunctionProvider;</pre>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="FunctionProvider"></a>FunctionProvider::FunctionProvider ( const QString &amp; <i>type</i>, int <i>priority</i> = 0 )</h3>
+<p>Construct a <a href="functionprovider.html">FunctionProvider</a> with the specified <i>type</i> and <i>priority</i>. Higher priority values take precedence over lower priority values. Valid priority values are positive numbers greater than 0. If an invalid priority is passed, the provider is added at the end of the list.</p>
+<h3 class="fn"><a name="dtor.FunctionProvider"></a>FunctionProvider::~FunctionProvider ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destruct the <a href="functionprovider.html">FunctionProvider</a>, removing it from the list of providers.</p>
+<h3 class="fn"><a name="addExtensionsPath"></a>void FunctionProvider::addExtensionsPath ( const QString &amp; <i>path</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Add <i>path</i> to the list of paths that extensions can be found in.</p>
+<h3 class="fn"><a name="callFunction"></a>bool FunctionProvider::callFunction ( <a href="project.html">Project</a> * <i>project</i>, QStringList &amp; <i>rv</i>, const QString &amp; <i>function</i>, const QStringLists &amp; <i>arguments</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This runs <i>function</i> with <i>arguments</i>. The function is passed the <i>project</i> and returns data via <i>rv</i>. Returns true if the function exists, false otherwise.</p>
+<h3 class="fn"><a name="evalFunction"></a>bool FunctionProvider::evalFunction ( <a href="project.html">Project</a> * <i>project</i>, QStringList &amp; <i>rv</i>, const QString &amp; <i>function</i>, const QStringLists &amp; <i>arguments</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Attempt to execute function <i>function</i> with arguments <i>arguments</i>. The function providers are queried in order. They are passed the <i>project</i>. The return value is set via <i>rv</i>. Returns true if the function was called, false otherwise.</p>
+<p>See also <a href="functionprovider.html#callFunction">callFunction</a>().</p>
+<h3 class="fn"><a name="evalLoad"></a>bool FunctionProvider::evalLoad ( <a href="project.html">Project</a> * <i>project</i>, const QString &amp; <i>name</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Load <i>name</i> as an extension for <i>project</i>. The <i>name</i> is either a path to a file or a name to search for in the extensions paths. Returns true if the extension was loaded, false otherwise.</p>
+<h3 class="fn"><a name="extensionsPaths"></a>QStringList FunctionProvider::extensionsPaths ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the list of paths that extensions can be found in.</p>
+<h3 class="fn"><a name="fileExtension"></a>QString FunctionProvider::fileExtension () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the extension of files that this <a href="functionprovider.html">FunctionProvider</a> can load.</p>
+<h3 class="fn"><a name="functionProviders"></a>QList&lt;FunctionProvider *&gt; FunctionProvider::functionProviders ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the list of function providers ordered by priority.</p>
+<h3 class="fn"><a name="loadFile"></a>bool FunctionProvider::loadFile ( const QString &amp; <i>file</i>, <a href="project.html">Project</a> * <i>project</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Load extension <i>file</i> for <i>project</i>. Returns true if successful, false otherwise.</p>
+<h3 class="fn"><a name="reset"></a>void FunctionProvider::reset ( <a href="project.html">Project</a> * <i>project</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Reset project <i>project</i>. The providers will clear out any associated data.</p>
+<p>See also <a href="functionprovider.html#resetProject">resetProject</a>().</p>
+<h3 class="fn"><a name="resetProject"></a>void FunctionProvider::resetProject ( <a href="project.html">Project</a> * <i>project</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This function is called because <i>project</i> has been reset. Any state associated with this project should be cleared.</p>
+<h3 class="fn"><a name="type"></a>QString FunctionProvider::type () const</h3>
+<p>Returns the name of the function provider.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

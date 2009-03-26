@@ -1,0 +1,108 @@
+exists($$QPEDIR/src/build/trace_on):message(packages.prf)
+# Package creation
+#
+# struct package {
+#     name       # eg. $name.ipk
+#     desc       # one line summary
+#     domain     # SXE security domains
+#     deps       # packages that this ipk depends on
+#     multi      # put multiple projects in a single package
+#     version    # package version
+#     license    # package license
+#     maintainer # package maintainer
+#     targets    # targets to run (ie. install stuff)
+# }
+
+# FIXME document how to set the default license and maintainer
+isEmpty(DEFAULT_LICENSE) {
+    free_package:DEFAULT_LICENSE=GPL
+    else:DEFAULT_LICENSE=Unspecified
+}
+isEmpty(DEFAULT_MAINTAINER) {
+    depotProject:qtopia_depot:DEFAULT_MAINTAINER=Qt Extended <info@qtextended.org>
+    else:DEFAULT_MAINTAINER=Unspecified
+}
+isEmpty(DEFAULT_VERSION) {
+    !isEmpty(VERSION):DEFAULT_VERSION=$$VERSION
+    else:DEFAULT_VERSION=1.0.0-1
+}
+
+p.quicklaunch=0
+quicklaunch:p.quicklaunch=1
+
+# pkg is the "default" package
+!no_pkg {
+    PACKAGES+=pkg
+    # Some defaults for the "default" package
+    isEmpty(pkg.deps):pkg.deps=$$QTOPIA_DEPENDS
+    for(i,INSTALLS) {
+        c=$$eval($${i}.CONFIG)
+        d=$$eval($${i}.domain)
+        !contains(c,no_default_install):!contains(pkg.no_install,$$i) {
+            pkg.domain*=$$d
+            !containsre($$i,^register_domain_):pkg.targets*=install_$$i
+        }
+    }
+}
+
+for(_p,PACKAGES) {
+    # Load everything into a local structure
+    PARTS=name desc domain deps multi version trust license maintainer targets
+    for(part,PARTS) {
+        eval(p.$${part}=\$$eval(\$${_p}.$${part}))
+    }
+    # Only add projects that are in PROJECTS
+    tmp=$$p.multi
+    p.multi=
+    for(t,tmp) {
+        contains(PROJECTS,$$t):p.multi+=$$t
+    }
+
+    # Default values
+    isEmpty(p.name):p.name=qpe-$$ORIG_TARGET
+    isEmpty(p.desc):p.desc=No description written for this package
+    isEmpty(p.domain):p.domain=none
+    isEmpty(p.version):p.version=$$DEFAULT_VERSION
+    isEmpty(p.trust):p.trust=Untrusted
+    isEmpty(p.license):p.license=$$DEFAULT_LICENSE
+    isEmpty(p.maintainer):p.maintainer=$$DEFAULT_MAINTAINER
+
+    WORKING_PATH=$$OUT_PWD/.package_$$p.name
+    commands=$$COMMAND_HEADER\
+        $$QBS_BIN/mkpkg\
+            $$LITERAL_QUOTE$$MAKE$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$(FORMAT)$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$WORKING_PATH$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$arch$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$PROJECT_ROOT$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$LANGUAGES$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$PKG_PATH$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$SRCDIR$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$OUT_PWD$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.name$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.desc$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.domain$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.deps$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.multi$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.version$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.trust$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.license$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.maintainer$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.targets$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$$p.quicklaunch$$LITERAL_QUOTE\
+            $$LITERAL_QUOTE$(SPLIT_I18N)$$LITERAL_QUOTE
+    eval(package_$${p.name}_dummy.commands=\$$commands)
+    QMAKE_EXTRA_TARGETS+=package_$${p.name}_dummy
+    packages.depends+=package_$${p.name}_dummy
+}
+
+isEmpty(PACKAGES):packages.messages+="No packages have been defined for $${self}."
+
+!isEmpty(packages.messages) {
+    packages.commands=$$COMMAND_HEADER
+    for(msg,packages.messages) {
+        !equals(packages.commands,$$COMMAND_HEADER):packages.commands+=$$LINE_SEP
+        packages.commands+=echo $$LITERAL_QUOTE$$msg$$LITERAL_QUOTE
+    }
+}
+

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Simple Media Engine</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Simple Media Engine<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="ffmpeg-ffmpegdirectpainterwidget-cpp.html">ffmpeg/ffmpegdirectpainterwidget.cpp</a></li>
+<li><a href="ffmpeg-ffmpegdirectpainterwidget-h.html">ffmpeg/ffmpegdirectpainterwidget.h</a></li>
+<li><a href="ffmpeg-ffmpegengine-cpp.html">ffmpeg/ffmpegengine.cpp</a></li>
+<li><a href="ffmpeg-ffmpegengine-h.html">ffmpeg/ffmpegengine.h</a></li>
+<li><a href="ffmpeg-ffmpegenginefactory-cpp.html">ffmpeg/ffmpegenginefactory.cpp</a></li>
+<li><a href="ffmpeg-ffmpegenginefactory-h.html">ffmpeg/ffmpegenginefactory.h</a></li>
+<li><a href="ffmpeg-ffmpegengineinformation-cpp.html">ffmpeg/ffmpegengineinformation.cpp</a></li>
+<li><a href="ffmpeg-ffmpegengineinformation-h.html">ffmpeg/ffmpegengineinformation.h</a></li>
+<li><a href="ffmpeg-ffmpegplaybinsession-cpp.html">ffmpeg/ffmpegplaybinsession.cpp</a></li>
+<li><a href="ffmpeg-ffmpegplaybinsession-h.html">ffmpeg/ffmpegplaybinsession.h</a></li>
+<li><a href="ffmpeg-ffmpegsinkwidget-cpp.html">ffmpeg/ffmpegsinkwidget.cpp</a></li>
+<li><a href="ffmpeg-ffmpegsinkwidget-h.html">ffmpeg/ffmpegsinkwidget.h</a></li>
+<li><a href="ffmpeg-ffmpegurisessionbuilder-cpp.html">ffmpeg/ffmpegurisessionbuilder.cpp</a></li>
+<li><a href="ffmpeg-ffmpegurisessionbuilder-h.html">ffmpeg/ffmpegurisessionbuilder.h</a></li>
+<li><a href="ffmpeg-qbuild-pro.html">ffmpeg/qbuild.pro</a></li>
+</ul>
+<p>The Ffmpeg Media Engine tutorial shows how to use the Qt Extended Media API to create a simple Media Engine.</p>
+<p>The engine requires ffmpeg installed into your system or toolchain. This engine is for demonstration purposes only.</p>
+<p>Firstly ffmpeg requires initialization, this is added to ffmpegengine.cpp</p>
+<pre>    av_register_all();</pre>
+<p>Everything else goes into ffmpegplaybinsession.cpp In constructor open audio output</p>
+<pre>    d-&gt;output = new QAudioOutput(this);</pre>
+<p>Create video output, wrapper class for <a href="qvideoframe.html">QVideoFrame</a>, see ffmpegdirectpainterwidget.cpp</p>
+<pre>    d-&gt;sinkWidget = new DirectPainterWidget;</pre>
+<p>Ffmpeg's open and codec functions</p>
+<pre>    av_open_input_file();
+    av_find_stream_info();
+    avcodec_find_decoder();
+    avcodec_open();
+    avcodec_alloc_frame();</pre>
+<p>Once we have all the information about the file to play we can register if it has video to play.</p>
+<pre>    d-&gt;videoControlServer = new QMediaVideoControlServer(d-&gt;id);
+    d-&gt;videoControlServer-&gt;setVideoDelegate(d-&gt;sinkWidget-&gt;videoSurface());
+    d-&gt;videoControlServer-&gt;setRenderTarget(d-&gt;sinkWidget-&gt;windowId());
+    d-&gt;interfaces &lt;&lt; &quot;Video&quot;;
+    emit interfaceAvailable(&quot;Video&quot;);
+    d-&gt;haveStreamInfo = true;</pre>
+<p>When the system is ready to start playback void PlaybinSession::start() is called to begin, readFrame() is called to decode and output the audio and video data.</p>
+<pre>    av_read_frame();
+<span class="comment">    // audio output</span>
+    d-&gt;output-&gt;write((const char*)audio_buf,(qint64)data_size);
+<span class="comment">    // video output</span>
+    d-&gt;sinkWidget-&gt;paint(*f);</pre>
+<a name="engine-class-definition"></a>
+<h2>Engine Class Definition</h2>
+<pre>    class QMediaEngineInformation;
+    class QMediaSessionRequest;
+    class QMediaServerSession;
+
+    namespace ffmpeg
+    {
+
+    class EnginePrivate;
+
+    class Engine : public QMediaEngine
+    {
+        Q_OBJECT
+
+    public:
+        Engine();
+        ~Engine();
+
+        void initialize();
+
+        void start();
+        void stop();
+
+        void suspend();
+        void resume();
+
+        QMediaEngineInformation const* engineInformation();
+
+        void registerSession(QMediaServerSession* session);
+        void unregisterSession(QMediaServerSession* session);
+
+    private:
+        PlaybinSession*   s;
+        EnginePrivate*    d;
+    };</pre>
+<a name="playbinsession-class-definition"></a>
+<h2>PlaybinSession Class Definition</h2>
+<pre>    class PlaybinSessionPrivate;
+
+    class PlaybinSession : public QMediaServerSession
+    {
+        Q_OBJECT
+
+    public:
+        PlaybinSession(Engine* engine, QUuid const&amp; id, QUrl const&amp; url,
+                QMediaDevice* sink);
+        ~PlaybinSession();
+
+        bool isValid() const;
+
+        void start();
+        void pause();
+        void stop();
+
+        void suspend();
+        void resume();
+
+        void seek(quint32 ms);
+        quint32 length();
+
+        void setVolume(int volume);
+        int volume() const;
+
+        void setMuted(bool mute);
+        bool isMuted() const;
+
+        QtopiaMedia::State playerState() const;
+
+        QString errorString();
+
+        void setDomain(QString const&amp; domain);
+        QString domain() const;
+
+        QStringList interfaces();
+
+        QString id() const;
+        QString reportData() const;
+
+    private slots:
+        void readFrame();
+
+    private:
+        void getStreamsInfo();
+        void readySession();
+
+        PlaybinSessionPrivate*  d;
+    };</pre>
+<a name="building-the-simple-media-engine"></a>
+<h2>Building the Simple Media Engine</h2>
+<p>To install and run the demonstration, carry out the following steps.</p>
+<ol type="1">
+<li>Create a new directory (e.g&#x2e; $HOME/src/ffmpeg) and copy all the example files to that directory.<pre>        mkdir $HOME/src/ffmpeg
+        cd $HOME/src/ffmpeg
+        cp -r &lt;qt-extended-source-directory&gt;/examples/ffmpeg/* .
+        chmod +w *</pre>
+</li>
+<li>Build the new engine.<p>Add CONFIG+=enable_ffmpeg to the pro file or add it to your device profiles custom.pri file</p>
+<pre>        export QPEDIR=&lt;qt-extended-build-directory&gt;
+        $QPEDIR/bin/qbuild
+        $QPEDIR/bin/qbuild image</pre>
+</li>
+<li>Run Qt Extended.<pre>        $QPEDIR/bin/runqtopia</pre>
+</li>
+<li>Restart Qt Extended.</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

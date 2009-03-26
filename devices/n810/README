@@ -1,0 +1,135 @@
+This document describes how to setup the toolchain for use with the n810 device configuration profile for the Nokia n810 device.
+Qtopia uses the cs2005q3.2 scratchbox toolchain.
+
+1) Install the scratchbox SDK for maemo. You can download it from here:
+http://tablets-dev.nokia.com/
+http://repository.maemo.org/stable/diablo/maemo-scratchbox-install_4.1.sh
+
+
+-----------
+To create the rootfs, you must have a developer rootfs, mkfs.jffs2 and sumtool.
+ assuming the file system is in rootfs/
+
+mkfs.jffs2 -v -r rootfs -o somename.temp -e 128 -l -n
+sumtool -i somename.temp -o somename.jffs2 -e 128KiB -l -n
+----------
+
+to flash :
+Make sure nokia device is unplugged and powered off. 
+Plug in USB. run this command:
+./flasher-3.0 -r somename.jffs2 -f -R
+
+While holding the Menu button, plug the power in the N800.
+
+----------------------
+##########################
+compiling inside of scratchbox:
+
+
+    * Download and unpack sources into your scratchbox home directory:
+    set QTOPIA_DEPOT_PATH to your Qt Extended sources directory.
+
+    export QTOPIA_DEPOT_PATH=$PWD/qt-extended-<version>
+
+    mkdir build
+    cd build
+
+
+1) In x86 target:
+  - Install (x86) X11 binary and -dev packages and copy them
+    where Qt Extended host tools building can find them:
+    cp -a /usr/lib/libX* /usr/lib/libICE.* /usr/lib/libSM.* /host_usr/lib/
+
+    [ could also be named /host_shared/lib ]
+    [ might have to run mkdir /host_usr/lib ]
+
+
+2) Switch to ARMEL target and install dependencies checked by
+  Qt Extended configure:
+
+  fakeroot apt-get install libstdc++6-dev tslib-dev zlib1g-dev libjpeg62-dev libpng12-dev libtiff4-dev libungif4-dev libsqlite3-dev libglib2.0-dev libdbus-glib-1-dev libdbus-1-dev libxcursor-dev libxfixes-dev libxrandr-dev libssl-dev libasound2-dev libgstreamer0.10-dev libbluetooth2-dev libfreetype6-dev
+
+
+3) Configure is done with:
+
+    $QTOPIA_DEPOT_PATH/configure -device n810 -platform linux-scratchbox-g++ -xplatform scratchbox
+
+    [This needs to be done in separate build directory.]
+
+4) bin/qbuild && bin/qbuild image
+
+5) Wait a few hours.
+
+
+##########################
+compiling outside of scratchbox (CHINOOK)
+
+2) Copy the libts files from the n810 device and place then in: /scratchbox/compilers/cs2005q3.2-glibc-arm/arm-none-linux-gnueabi/sys-include
+
+3) run $QTOPIA_DEPOT_PATH/configure -device n810 && bin/qbuild && bin/qbuild image
+
+4) copy or scp image/ to your device and put it in /opt/Qtopia
+
+
+(login to scratchbox, make sure CHINOOK_ARMEL target is setup)
+### log out of scratchbox and do the rest of this outside of scratchbox
+ environment
+
+
+Since scratchbox is broken in regards to compiling outside of the scratchbox
+environment, we have to fix some symlinks and patch a few files to make it
+work like a normal toolchain.
+
+
+----------------- 8< ------------------------------------ start script
+#!/bin/sh
+### might need to become root, or sudo this script!!
+
+# from scratchbox users target dir
+
+echo -n "What is your scratchbox user name? > "
+read "USERNAME"
+
+cd /scratchbox/users/"$USERNAME"/targets/CHINOOK_ARMEL/usr
+
+
+#### copy files to toolchain ####
+
+cd include
+cp -a tslib.h alsa dbus-1.0 bluetooth /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/sys-include
+
+cd ../lib
+mkdir /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/lib/pkgconfig
+cp -a pkgconfig/alsa.pc pkgconfig/bluez.pc pkgconfig/dbus-1.pc
+/scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi
+
+cp -a libasound* libts* libbluetooth* libdbus-1* /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/lib
+
+## (or add target to -I and -L in qtopia )
+
+
+#### fix sym links ####
+
+cd /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/lib
+
+FILES = "libm.so libBrokenLocale.so libanl.so libcidn.so libcrypt.so libdl.so libnsl.so libnss_compat.so libnss_dns.so libnss_files.so libnss_hesiod.so libnss_nis.so libnss_nisplus.so libresolv.so librt.so libthread_db.so libutil.so"
+
+for FILE in $FILES; do
+
+LINK=`ls -l $FILE | awk 'BEGIN{FS=" "}{print $10}'|awk 'BEGIN{FS="/"}{print $3}'`
+rm $FILE
+ln -s $LINK $FILE
+
+done
+
+#### fix pkgconfig and some .so paths ####
+
+cd /
+patch -p 0 <  n800-pkgconfig.patch
+patch -p 0 <  n800-so.patch
+
+----------------- 8< ------------------------------------ end script
+
+
+videodev2.h from CHINNOK_ARMEL to toolchain
+

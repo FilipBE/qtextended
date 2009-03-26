@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>User Interface: Multitasking</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">User Interface: Multitasking<br><small>Functional Description</small></h1><p>Multitasking is fully supported by the underlying Linux system, the support in Qt Extended is primarily user interface aspects.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-886">Switching between Applications</a>
+</ul><h3><a name=QTOPIA-886>Switching between Applications</a></h3>
+<p><h4><a name="SupportviaSpecialKey"></a>Support via Special Key</h4>
+
+<p>Where a device has a special "Home" or "Multitasking" key, the user is able to:</p>
+
+<ul>
+	<li>Launch another application by pressing the Special key to return to home screen without terminating current application.</li>
+	<li>Switch between previously launched applications by multi-pressing the Special key to cycle between all applications and the home screen.</li>
+	<li>Terminate current application by the normal use of the Back button.</li>
+</ul>
+
+
+<h4><a name="SupportWithoutSpecialKey"></a>Support Without Special Key</h4>
+
+<p>Devices which do not have any dedicated "multitasking" or "Home" key can provide access to multitasking by binding some other key. To be useful, this key must not be otherwise used. One possible binding is press-and-hold of the Menu key to bring up the Running applications list:</p>
+
+<div class="code"><div class="codeHeader"><b>defaultbuttons.conf</b></div><div class="codeContent">
+<pre class="code-java">[Button&lt;i&gt;N&lt;/i&gt;]
+Name[]=Left Soft Key
+Key=Context1
+HeldActionService=TaskManager
+HeldActionMessage=showRunningTasks()
+HeldActionMappable=0
+PressActionMappable=0</pre>
+</div></div>
+
+<h4><a name="ApplicationResponse"></a>Application Response</h4>
+
+<p>When applications are switched <em>from</em>, whether by the user directly switching to another application, or by a window spontaneously obscuring them (for example, incoming call), they receive a window deactivation event. Applications are written to respond accordingly. Static applications do nothing special in response. Dynamic applications such as media players and games will generally pause their activity, possibly expecting the user to manually unpause when they return. Applications are free to act as they choose, for example an audio playback might not pause at all, except when a call comes in.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

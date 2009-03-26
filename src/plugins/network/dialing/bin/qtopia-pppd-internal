@@ -1,0 +1,83 @@
+#!/bin/sh
+
+# This script is invoked by pppd to dial or hangup the modem.  Usage:
+#
+#   qtopia-pppd-internal dial
+#	Dial the connection.  This is used with modems that send data
+#	setup commands on the command channel.
+#
+#   qtopia-pppd-internal stop
+#	Stop the connection.  This is used with modems that send data
+#	setup commands on the command channel.
+#
+#   qtopia-pppd-internal active chatscript
+#	Run the supplied chat(1) script and notify Qtopia that the
+#	data call is active.  This is used with modems that send data
+#	setup commands on the data channel.
+#
+#   qtopia-pppd-internal inactive chatscript
+#	Run the supplied chat(1) script and notify Qtopia that the
+#	data call is inactive.  This is used with modems that send data
+#	setup commands on the data channel.
+
+TIMEOUT=60000
+CHAT="/usr/sbin/chat -s -v -f"
+QTOPIA_INSTALL_PREFIX=/opt/Qtopia # set to the -prefix location at install time
+QCOP_PPPD="$QTOPIA_INSTALL_PREFIX/bin/qcop QPE/pppd"
+
+case "$1" in
+    dial)
+	# Tell Qtopia to initiate a data call setup on the command channel.
+	# Wait for the dialResult(bool) to report the status of the dial.
+	RESULT=`$QCOP_PPPD 'dial()' -w QPE/pppd 'dialResult(bool)' $TIMEOUT`
+	if test "x$RESULT" = "xtrue" ; then
+	    exit 0
+	else
+	    exit 1
+	fi
+	;;
+
+    stop)
+	# Tell Qtopia to stop the current data call on the command channel.
+	$QCOP_PPPD 'stop()'
+	exit 0
+        ;;
+
+    active)
+	# If there is a connect chat script present, then execute it.
+	$QCOP_PPPD 'connecting()' >/dev/null 2>/dev/null
+	if test -n "$2" ; then
+	    $CHAT "$2"
+	    RESULT="$?"
+	else
+	    RESULT=0
+	fi
+
+	# Tell Qtopia the result of the chat script.
+	if test "$RESULT" = "0" ; then
+	    $QCOP_PPPD 'active()' >/dev/null 2>/dev/null
+	else
+	    $QCOP_PPPD 'connectFailed()' >/dev/null 2>/dev/null
+	fi
+	exit $RESULT
+	;;
+
+    inactive)
+	# If there is a disconnect chat script present, then execute it.
+	if test -n "$2" ; then
+	    $CHAT "$2"
+	    RESULT="$?"
+	else
+	    RESULT=0
+	fi
+
+	# Tell Qtopia that the data call is no longer active.
+	$QCOP_PPPD 'inactive()' >/dev/null 2>/dev/null
+	exit $RESULT
+	;;
+
+    *)
+	# Don't know what this is, so just fail.
+	exit 1
+esac
+

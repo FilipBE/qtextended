@@ -1,0 +1,149 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Glob;
+use File::Copy;
+use File::Path;
+use File::Find;
+use Cwd;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::File;
+use Hash::Ordered;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/qtopiadesktop/build/bin", $ARGV[0]);
+}
+
+
+use constant DEBUG => 0;
+
+my $QTOPIA_SDKROOT = shift(@ARGV);
+my $INSTALL_ROOT = $QTOPIA_SDKROOT;
+
+DEBUG and print "QTOPIA_SDKROOT = $QTOPIA_SDKROOT\n";
+DEBUG and print "INSTALL_ROOT = $INSTALL_ROOT\n";
+DEBUG and print "QTOPIA_DEPOT_PATH = $depotpath\n";
+DEBUG and print "QPEDIR = $QPEDIR\n";
+#DEBUG and print "QTEDIR = $QTEDIR\n";
+#DEBUG and print "DQTDIR = $DQTDIR\n";
+#DEBUG and print "QT_DEPOT_PATH = $qt_depot_path\n";
+
+my %map = (
+    "QTOPIA_DEPOT_PATH" => "",
+    "QPEDIR" => "",
+    "QT_DEPOT_PATH" => "/qtopiacore/qt",
+    "QTEDIR" => "/qtopiacore/target",
+    "DQTDIR" => "/qtopiacore/host",
+);
+
+tie my %pathmap, 'Hash::Ordered';
+%pathmap = (
+    "QTEDIR" => [ #$QTEDIR,
+                  "$QTOPIA_SDKROOT/qtopiacore/target" ],
+    "DQTDIR" => [ #$DQTDIR,
+                  "$QTOPIA_SDKROOT/qtopiacore/host" ],
+    "qt_depot_path" => [ #$qt_depot_path,
+                         "$QTOPIA_SDKROOT/qtopiacore/qt" ],
+    "QPEDIR" => [ $QPEDIR, $QTOPIA_SDKROOT ],
+    "depotpath" => [ $depotpath, $QTOPIA_SDKROOT ],
+);
+
+processfile("$QPEDIR/config.cache", "$INSTALL_ROOT/config.cache");
+
+for my $fileglob ( #"qtopiacore/host/lib/*.prl",
+                   #"qtopiacore/host/lib/*.la",
+                   #"qtopiacore/host/lib/*.pc",
+                   #"qtopiacore/host/include/Qt/qconfig*.h",
+                   #"qtopiacore/host/include/QtCore/qconfig*.h",
+                   "qtopiacore/target/lib/*.prl",
+                   "qtopiacore/target/lib/*.la",
+                   "qtopiacore/target/lib/*.pc",
+                   "qtopiacore/target/include/Qt/qconfig*.h",
+                   "qtopiacore/target/include/QtCore/qconfig*.h",
+                   "qtopiacore/qt/doc/html/*.html",
+                   #"lib/*.prl",
+                   #"src/qtopiadesktop/build/extra/Makefile",
+                   #"doc/html/*.html",
+                 ) {
+    for my $file ( glob("$INSTALL_ROOT/$fileglob") ) {
+        processfile($file, $file);
+    }
+}
+
+# Replace symlinks
+find(sub {
+    my $file = $File::Find::name;
+    return if ( $file eq $QTOPIA_SDKROOT );
+    if ( -l $file ) {
+        my $dest = readlink($file);
+        if ( $dest =~ /^\// ) {
+            #print "$file -> $dest\n";
+            unlink $file;
+            system("cp", "-aRp", $dest, $file);
+        }
+    } elsif ( -f $file && $file =~ /\.h$/ ) {
+        my $orig = resolveHeader($file);
+        if ( $orig ne $file ) {
+            unlink $file;
+            system("cp", "-aRp", $orig, $file);
+        }
+    }
+}, "$QTOPIA_SDKROOT/");
+
+my %allowed = map { $_ => 1 } qw(designer linguist qt3to4);
+for my $source ( glob("$QTOPIA_SDKROOT/qtopiacore/host/bin/*") ) {
+    my $name = basename($source);
+    if ( $allowed{$name} ) {
+        my $dest = "$QTOPIA_SDKROOT/bin/$name";
+        symlink_file($source, $dest);
+    }
+}
+
+exit 0;
+
+
+sub processfile
+{
+    my ( $infile, $outfile ) = @_;
+
+    DEBUG and print "Processing file $infile => $outfile\n";
+
+    open IN, $infile or die "Can't read $infile";
+    my @data = <IN>;
+    close IN;
+
+    for ( @data ) {
+        if ( /^(paths\.)([A-Z_]+)=.*/ && $map{$2} ) {
+            $_ = "$1$2=$QTOPIA_SDKROOT".$map{$2}."\n";
+        }
+        s/^(opt\.prefix\.default=).*/$1$QTOPIA_SDKROOT\/image/;
+        for my $key ( keys %pathmap ) {
+            my $listref = $pathmap{$key};
+            for my $path ( @$listref ) {
+                s/\Q$path\E/{__${key}__}/g;
+            }
+        }
+        for my $key ( keys %pathmap ) {
+            my $listref = $pathmap{$key};
+            my $path = $$listref[scalar(@$listref)-1];
+            s/\Q{__${key}__}\E/$path/g;
+        }
+        DEBUG and print "LINE: $_";
+    }
+
+    if ( -f $outfile ) {
+        unlink($outfile);
+    }
+    open OUT, ">$outfile" or die "Can't write $outfile";
+    print OUT @data;
+    close OUT;
+    #exit if ( $outfile =~ /config\.cache/ );
+}
+

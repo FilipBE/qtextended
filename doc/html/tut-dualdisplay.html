@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Dual Screen Display</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Dual Screen Display<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>Qt Extended provides two possibilities for controlling a secondary display:</p>
+<ol type="1">
+<li>Secondary display as a framebuffer, controlled by Qt Extended.</li>
+<li>Secondary display controlled independantly of Qt Extended.</li>
+</ol>
+<a name="controlled-by-qt-extended"></a>
+<h2>Controlled by Qt Extended</h2>
+<p>This is the preferred method of controlling a secondary display. This display is available as a framebuffer device and managed by the Qt Extended multiple display support. This allows any Qt Extended application to display windows on the secondary display. Support for a secondary display of this type is already built into Qt Extended and will be enabled if more than one display is specified.</p>
+<p>The display configuration is specified to Qt Extended by the <tt>QWS_DISPLAY</tt> environment variable. The <tt>multi</tt> display driver presents multiple display devices to Qt Extended as one large display. The <a href="qdesktopwidget.html">QDesktopWidget</a> class may be used to access the display properties.</p>
+<p>Consider the following screen configuration:</p>
+<ol type="1">
+<li>/dev/fb0 - primary 240x320 display</li>
+<li>/dev/fb1 - secondary 96x80 display</li>
+</ol>
+<p>We will create a virtual layout with the secondary display positioned directly below the primary display. The positioning of the primary display should always be at 0,0 (the default). The secondary display can be positioned anywhere around the primary display, provided it is not overlapping. For the above configuration <tt>QWS_DISPLAY</tt> will be defined as:</p>
+<pre>    QWS_DISPLAY=&quot;multi: LinuxFb:/dev/fb0:0 LinuxFb:/dev/fb1:offset=0,320:1 :0&quot;</pre>
+<p>The multi display driver accepts a space delimited list of drivers. The first parameter specifies the primary display, attached to /dev/fb0. The second parameter specifies the secondary display, attached to /dev/fb1 and positioned directly below the primary display (at 0, 320).</p>
+<p>If it required to test Qt Extended in the virtual framebuffer (using the same resolution as above) the following <tt>QWS_DISPLAY</tt> configuration can be used:</p>
+<pre>    QWS_DISPLAY=&quot;multi: QVFb:mmWidth34:mmHeight44:0 QVFb:offset=0,320:1 :0&quot;</pre>
+<p>Note that two QVFb instances have to be started for this use case. For more details on how to setup and configure see <a href="qvfb.html">The Virtual Framebuffer</a> documentation.</p>
+<p>The secondary display support provided by Qt Extended uses themes to specify the title and homescreen of the secondary display, similar to the title and homescreen of the primary screen. These are specified by <tt>secondarytitle.xml</tt> and <tt>secondaryhome.xml</tt> in the <tt>$QPEDIR/etc/themes/</tt> directories and are able to display the same data as the primary title and homescreen.</p>
+<p>Besides the homescreen and title, Qt Extended provides callscreen and camera integration on the secondary display. It is also possible for any application to display a widget on the secondary display simply by positioning a top level window in the secondary display logical area, for example:</p>
+<pre>    if (QApplication::desktop()-&gt;numScreens() &gt; 1) {
+        QLabel *label = new QLabel(&quot;Hello&quot;);
+        label-&gt;setGeometry(QApplication::desktop()-&gt;availableGeometry(1));
+        label-&gt;showMaximized();
+    }</pre>
+<a name="controlled-independantly"></a>
+<h2>Controlled Independantly</h2>
+<p>If the secondary display is not exposed as a framebuffer device, or Qt Extended multiple display support is not being used, the <a href="qphonestatus.html">QPhoneStatus</a> class is available to enable easy access to phone status information for custom secondary status display.</p>
+<a name="example-dual-screen-application"></a>
+<h3>Example Dual Screen Application</h3>
+<p>There is an example of a simple status display for a dual screen phone in <tt>examples/dualdisplaybasic</tt>. It illustrates the use of the phone status library and provides a small display, similar to a monochrome LCD display to display the state of the phone.</p>
+<p>There are two options for display:</p>
+<ol type="1">
+<li>using one Qt for Embedded Linux display -<p>the status display will appear as a floating display in the Qt Extended display. This is the common case for a LCD display which does not need the complete Qt for Embedded Linux graphics engine to drive it. To view in this mode, simply run the application.</p>
+</li>
+<li>using a separate display -<p>the status display appears in a separate framebuffer. This case is desirable on a larger, full color secondary display. To view the example in this mode create a separate framebuffer and start the application in this framebuffer.</p>
+<p>For example:</p>
+<pre>    qvfb -width 83 -height 46 -qwsdisplay :2
+    ./dualdisplaybasic -qws -display :2</pre>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

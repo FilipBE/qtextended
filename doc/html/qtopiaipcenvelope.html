@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaIpcEnvelope Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaIpcEnvelope Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaIpcEnvelope class encapsulates and sends QCop messages. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaIpcEnvelope&gt;</pre><p>Inherits <a href="qdatastream.html">QDataStream</a>.</p>
+<ul>
+<li><a href="qtopiaipcenvelope-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopiaipcenvelope.html#QtopiaIpcEnvelope">QtopiaIpcEnvelope</a></b> ( const QString &amp; <i>channel</i>, const QString &amp; <i>message</i> )</li>
+<li><div class="fn"/><b><a href="qtopiaipcenvelope.html#dtor.QtopiaIpcEnvelope">~QtopiaIpcEnvelope</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>39 public functions inherited from <a href="qdatastream.html#public-functions">QDataStream</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaIpcEnvelope class encapsulates and sends QCop messages.</p>
+<p>QCop messages allow applications to communicate with each other by sending messages using QtopiaIpcEnvelope and receiving messages by connecting to a <a href="qtopiachannel.html">QtopiaChannel</a>.</p>
+<p>To send a message, use the following protocol:</p>
+<pre>    QtopiaIpcEnvelope e(channelname, messagename);
+    e &lt;&lt; parameter1 &lt;&lt; parameter2 &lt;&lt; ...;</pre>
+<p>For messages without parameters, simply use:</p>
+<pre>    QtopiaIpcEnvelope e(channelname, messagename);</pre>
+<p>where:</p>
+<ul>
+<li><tt>channelname</tt> is the channel name within Qtopia, commencing with &quot;QPE/&quot;.</li>
+<li><tt>messagename</tt> is a function identifier followed by a list of types in parentheses. No white space is permitted.</li>
+</ul>
+<p>Note: Do not try to simplify this further as it may confuse some compilers.</p>
+<p>To receive a message either:</p>
+<ul>
+<li>use the predefined QPE/Application/<i>appname</i> channel in the application. For further information refer to: <a href="qtopiaapplication.html#appMessage">QtopiaApplication::appMessage</a>().</li>
+<li>create another channel and connect it to a slot using:<pre>     myChannel = new QtopiaChannel( &quot;QPE/FooBar&quot;, this );
+     connect( myChannel, SIGNAL(received(QString,QByteArray)),
+              this, SLOT(fooBarMessage(QString,QByteArray)) );</pre>
+</li>
+</ul>
+<p>See also: <a href="qtextendedipc.html">Qt Extended IPC</a> and <a href="services.html">Services</a>.</p>
+<p>Consider using <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> or <a href="qtopiaservicerequest.html">QtopiaServiceRequest</a> instead of QtopiaIpcEnvelope, as they provide a better interface for sending QCop messages.</p>
+<p>See also <a href="qtopiachannel.html">QtopiaChannel</a>, <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>, and <a href="qtopiaservicerequest.html">QtopiaServiceRequest</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtopiaIpcEnvelope"></a>QtopiaIpcEnvelope::QtopiaIpcEnvelope ( const <a href="qstring.html">QString</a> &amp; <i>channel</i>, const <a href="qstring.html">QString</a> &amp; <i>message</i> )</h3>
+<p>Constructs a <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a> to write <i>message</i> to <i>channel</i>. If <i>message</i> has parameters then use operator&lt;&lt;() to add the parameters to the envelope.</p>
+<h3 class="fn"><a name="dtor.QtopiaIpcEnvelope"></a>QtopiaIpcEnvelope::~QtopiaIpcEnvelope ()</h3>
+<p>Writes the message and then destroys the <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

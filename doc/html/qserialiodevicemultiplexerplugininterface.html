@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSerialIODeviceMultiplexerPluginInterface Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSerialIODeviceMultiplexerPluginInterface Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSerialIODeviceMultiplexerPluginInterface class defines the interface to multiplexing plugins. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSerialIODeviceMultiplexerPluginInterface&gt;</pre><p>Inherited by <a href="qserialiodevicemultiplexerplugin.html">QSerialIODeviceMultiplexerPlugin</a>.</p>
+<ul>
+<li><a href="qserialiodevicemultiplexerplugininterface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QSerialIODeviceMultiplexer * <b><a href="qserialiodevicemultiplexerplugininterface.html#create">create</a></b> ( QSerialIODevice * <i>device</i> ) = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qserialiodevicemultiplexerplugininterface.html#detect">detect</a></b> ( QSerialIODevice * <i>device</i> ) = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qserialiodevicemultiplexerplugininterface.html#forceGsm0710Stop">forceGsm0710Stop</a></b> () = 0</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSerialIODeviceMultiplexerPluginInterface class defines the interface to multiplexing plugins.</p>
+<p>Multiplexer plug-ins will typically inherit from <a href="qserialiodevicemultiplexerplugin.html">QSerialIODeviceMultiplexerPlugin</a> rather than this class. This class defines the abstract interface for plug-ins, whereas <a href="qserialiodevicemultiplexerplugin.html">QSerialIODeviceMultiplexerPlugin</a> implements most of the functionality for a plug-in, except for the parts that are specific to the plug-in in question.</p>
+<p>See the <a href="tut-multiplexing.html">Tutorial: Writing a Multiplexer Plug-in</a> for more information on how to write a multiplexer plug-in.</p>
+<p>See also <a href="qserialiodevicemultiplexerplugin.html">QSerialIODeviceMultiplexerPlugin</a> and <a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="create"></a><a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a> * QSerialIODeviceMultiplexerPluginInterface::create ( <a href="qserialiodevice.html">QSerialIODevice</a> * <i>device</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Create a multiplexer handler around <i>device</i>. This will be called only if <a href="qserialiodevicemultiplexerplugininterface.html#detect">detect</a>() returns true.</p>
+<p>See also <a href="qserialiodevicemultiplexerplugininterface.html#forceGsm0710Stop">forceGsm0710Stop</a>() and <a href="qserialiodevicemultiplexerplugininterface.html#detect">detect</a>().</p>
+<h3 class="fn"><a name="detect"></a>bool QSerialIODeviceMultiplexerPluginInterface::detect ( <a href="qserialiodevice.html">QSerialIODevice</a> * <i>device</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Issue commands to detect if this plug-in can provide multiplexing for <i>device</i>. Returns true if multiplexing is possible, or false if not. The plug-in can use <a href="qserialiodevicemultiplexer.html#chat">QSerialIODeviceMultiplexer::chat</a>() to simplify the issuing of commands.</p>
+<p>See also <a href="qserialiodevicemultiplexerplugininterface.html#create">create</a>() and <a href="qserialiodevicemultiplexer.html#chat">QSerialIODeviceMultiplexer::chat</a>().</p>
+<h3 class="fn"><a name="forceGsm0710Stop"></a>bool QSerialIODeviceMultiplexerPluginInterface::forceGsm0710Stop ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if the caller should force an existing GSM 07.10 session to stop before calling <a href="qserialiodevicemultiplexerplugininterface.html#detect">detect</a>(). The default implementation returns false. This is typcially needed for plugins that issue the AT+CMUX command in their <a href="qserialiodevicemultiplexerplugininterface.html#detect">detect</a>() function.</p>
+<p>See also <a href="qserialiodevicemultiplexerplugininterface.html#detect">detect</a>() and <a href="qserialiodevicemultiplexerplugininterface.html#create">create</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

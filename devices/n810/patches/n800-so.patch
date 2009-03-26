@@ -1,0 +1,16 @@
+--- libc.so.orig	2007-12-01 05:36:09.000000000 +1000
++++ /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/lib/libc.so	2007-11-20 11:51:28.000000000 +1000
+@@ -2,4 +2,4 @@
+    Use the shared library, but some functions are only in
+    the static library, so try that secondarily.  */
+ OUTPUT_FORMAT(elf32-littlearm)
+-GROUP ( /lib/libc.so.6 /usr/lib/libc_nonshared.a  AS_NEEDED ( /lib/ld-linux.so.3 ) )
++GROUP ( libc.so.6 libc_nonshared.a  AS_NEEDED ( ld-linux.so.3 ) )
+--- libpthread.so.orig	2007-12-01 05:37:34.000000000 +1000
++++ /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/lib/libpthread.so	2007-11-27 07:41:23.000000000 +1000
+@@ -2,4 +2,4 @@
+    Use the shared library, but some functions are only in
+    the static library, so try that secondarily.  */
+ OUTPUT_FORMAT(elf32-littlearm)
+-GROUP ( /usr/lib/libpthread.so.0 /usr/lib/libpthread_nonshared.a )
++GROUP ( libpthread.so.0 libpthread_nonshared.a )

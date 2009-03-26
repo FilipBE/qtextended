@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCallSettings Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCallSettings Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QCallSettings class provides access to auxiliary settings in a GSM phone related to calls. <a href="#details">More...</a></p>
+<pre>    #include &lt;QCallSettings&gt;</pre><p>Inherits <a href="qcomminterface.html">QCommInterface</a>.</p>
+<p>Inherited by <a href="qmodemcallsettings.html">QModemCallSettings</a>.</p>
+<ul>
+<li><a href="qcallsettings-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qcallsettings.html#CallerIdRestriction-enum">CallerIdRestriction</a></b> { Subscription, Invoked, Suppressed }</li>
+<li><div class="fn"/>enum <b><a href="qcallsettings.html#CallerIdRestrictionStatus-enum">CallerIdRestrictionStatus</a></b> { NotProvisioned, Permanent, Unknown, TemporaryRestricted, TemporaryAllowed }</li>
+<li><div class="fn"/>enum <b><a href="qcallsettings.html#PresentationStatus-enum">PresentationStatus</a></b> { PresentationNotProvisioned, PresentationProvisioned, PresentationUnknown }</li>
+<li><div class="fn"/>enum <b><a href="qcallsettings.html#SmsTransport-enum">SmsTransport</a></b> { SmsTransportPD, SmsTransportCS, SmsTransportPDPreferred, SmsTransportCSPreferred, SmsTransportUnavailable }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcallsettings.html#QCallSettings">QCallSettings</a></b> ( const QString &amp; <i>service</i> = QString::null, QObject * <i>parent</i> = 0, QCommInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qcallsettings.html#dtor.QCallSettings">~QCallSettings</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#requestCallWaiting">requestCallWaiting</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#requestCallerIdPresentation">requestCallerIdPresentation</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#requestCallerIdRestriction">requestCallerIdRestriction</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#requestConnectedIdPresentation">requestConnectedIdPresentation</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#requestSmsTransport">requestSmsTransport</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#setCallWaiting">setCallWaiting</a></b> ( bool <i>enable</i>, QTelephony::CallClass <i>cls</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#setCallerIdRestriction">setCallerIdRestriction</a></b> ( QCallSettings::CallerIdRestriction <i>clir</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qcallsettings.html#setSmsTransport">setSmsTransport</a></b> ( QCallSettings::SmsTransport <i>transport</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#callWaiting">callWaiting</a></b> ( QTelephony::CallClass <i>cls</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#callerIdPresentation">callerIdPresentation</a></b> ( QCallSettings::PresentationStatus <i>status</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#callerIdRestriction">callerIdRestriction</a></b> ( QCallSettings::CallerIdRestriction <i>clir</i>, QCallSettings::CallerIdRestrictionStatus <i>status</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#connectedIdPresentation">connectedIdPresentation</a></b> ( QCallSettings::PresentationStatus <i>status</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#setCallWaitingResult">setCallWaitingResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#setCallerIdRestrictionResult">setCallerIdRestrictionResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#setSmsTransportResult">setSmsTransportResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+<li><div class="fn"/>void <b><a href="qcallsettings.html#smsTransport">smsTransport</a></b> ( QCallSettings::SmsTransport <i>transport</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCallSettings class provides access to auxiliary settings in a GSM phone related to calls.</p>
+<p>Other classes such as <a href="qcallforwarding.html">QCallForwarding</a>, <a href="qcallbarring.html">QCallBarring</a>, <a href="qnetworkregistration.html">QNetworkRegistration</a>, etc, are used for specific call settings that have rich interfaces. The QCallSettings class is for minor settings that don't require more than simple request and set methods.</p>
+<p>See also <a href="qcallforwarding.html">QCallForwarding</a>, <a href="qcallbarring.html">QCallBarring</a>, and <a href="qnetworkregistration.html">QNetworkRegistration</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="CallerIdRestriction-enum"></a>enum QCallSettings::CallerIdRestriction</h3>
+<p>This enum defines the states that the caller ID restriction service can be in.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCallSettings::Subscription</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Caller ID restriction is according to the network operator's subscription preferences.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::Invoked</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Caller ID restriction is currently invoked. That is, the caller ID information of the local party will not be sent during calls.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::Suppressed</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Caller ID restriction is currently suppressed. That is, the caller ID information of the local party will be sent during calls.</td></tr>
+</table></p>
+<h3 class="fn"><a name="CallerIdRestrictionStatus-enum"></a>enum QCallSettings::CallerIdRestrictionStatus</h3>
+<p>This enum defines the status of the caller ID restriction service within the network, indicating whether it can be modified or not.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCallSettings::NotProvisioned</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The caller ID restriction service is not provisioned.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::Permanent</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The caller ID restriction service is provisioned in permanent mode and the local user cannot change it.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::Unknown</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The caller ID restriction state is currently unknown (e.g&#x2e; no network).</td></tr>
+<tr><td valign="top"><tt>QCallSettings::TemporaryRestricted</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The caller ID restriction service is provisioned in temporary restricted mode.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::TemporaryAllowed</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">The caller ID restriction service is provisioned in temporary allowed mode.</td></tr>
+</table></p>
+<h3 class="fn"><a name="PresentationStatus-enum"></a>enum QCallSettings::PresentationStatus</h3>
+<p>This enum defines the presentation status of caller id information.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCallSettings::PresentationNotProvisioned</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Presentation of caller id has not been provisioned by the network operator.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::PresentationProvisioned</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Presentation of caller id has been provisioned by the network operator.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::PresentationUnknown</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Presentation status is unknown, probably because of no network service.</td></tr>
+</table></p>
+<h3 class="fn"><a name="SmsTransport-enum"></a>enum QCallSettings::SmsTransport</h3>
+<p>This enum defines the transport to be used for sending SMS messages.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCallSettings::SmsTransportPD</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Use GPRS packet domain to send SMS messages.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::SmsTransportCS</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Use non-GPRS circuit switching to send SMS messages.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::SmsTransportPDPreferred</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Use GPRS packet domain if available, or non-GPRS circuit switched otherwise.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::SmsTransportCSPreferred</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Use non-GPRS circuit switching if available, or GPRS packet domain otherwise.</td></tr>
+<tr><td valign="top"><tt>QCallSettings::SmsTransportUnavailable</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">The modem does not support selecting an SMS transport.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCallSettings"></a>QCallSettings::QCallSettings ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString::null, <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new call settings object for <i>service</i> and attach it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports call settings. If there is more than one service that supports call settings, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qcallsettings.html">QCallSettings</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QCallSettings"></a>QCallSettings::~QCallSettings ()</h3>
+<p>Destroy this call settings object.</p>
+<h3 class="fn"><a name="callWaiting"></a>void QCallSettings::callWaiting ( <a href="qtelephony.html#CallClass-enum">QTelephony::CallClass</a> <i>cls</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted in response to a <a href="qcallsettings.html#requestCallWaiting">requestCallWaiting</a>() request. The call classes in <i>cls</i> currently have call waiting enabled. All other classes have call waiting disabled.</p>
+<p>See also <a href="qcallsettings.html#setCallWaiting">setCallWaiting</a>() and <a href="qcallsettings.html#requestCallWaiting">requestCallWaiting</a>().</p>
+<h3 class="fn"><a name="callerIdPresentation"></a>void QCallSettings::callerIdPresentation ( <a href="qcallsettings.html#PresentationStatus-enum">QCallSettings::PresentationStatus</a> <i>status</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the current caller id presentation <i>status</i>.</p>
+<p>See also <a href="qcallsettings.html#requestCallerIdPresentation">requestCallerIdPresentation</a>().</p>
+<h3 class="fn"><a name="callerIdRestriction"></a>void QCallSettings::callerIdRestriction ( <a href="qcallsettings.html#CallerIdRestriction-enum">QCallSettings::CallerIdRestriction</a> <i>clir</i>, <a href="qcallsettings.html#CallerIdRestrictionStatus-enum">QCallSettings::CallerIdRestrictionStatus</a> <i>status</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted in response to a <a href="qcallsettings.html#requestCallerIdRestriction">requestCallerIdRestriction</a>() request. The current state is specified by the <i>clir</i> and <i>status</i> parameters.</p>
+<p>See also <a href="qcallsettings.html#setCallerIdRestriction">setCallerIdRestriction</a>() and <a href="qcallsettings.html#requestCallerIdRestriction">requestCallerIdRestriction</a>().</p>
+<h3 class="fn"><a name="connectedIdPresentation"></a>void QCallSettings::connectedIdPresentation ( <a href="qcallsettings.html#PresentationStatus-enum">QCallSettings::PresentationStatus</a> <i>status</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the current connected line id presentation <i>status</i>.</p>
+<p>See also <a href="qcallsettings.html#requestConnectedIdPresentation">requestConnectedIdPresentation</a>().</p>
+<h3 class="fn"><a name="requestCallWaiting"></a>void QCallSettings::requestCallWaiting ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the current call waiting flags. The service responds by emitting the <a href="qcallsettings.html#callWaiting">callWaiting</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CCWA</tt> command.</p>
+<p>See also <a href="qcallsettings.html#callWaiting">callWaiting</a>().</p>
+<h3 class="fn"><a name="requestCallerIdPresentation"></a>void QCallSettings::requestCallerIdPresentation ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the presentation state of caller id information on incoming calls. The state will be returned via the <a href="qcallsettings.html#callerIdPresentation">callerIdPresentation</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CLIP</tt> command.</p>
+<p>See also <a href="qcallsettings.html#callerIdPresentation">callerIdPresentation</a>().</p>
+<h3 class="fn"><a name="requestCallerIdRestriction"></a>void QCallSettings::requestCallerIdRestriction ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the current state of the caller ID restriction service. The service responds by emitting the <a href="qcallsettings.html#callerIdRestriction">callerIdRestriction</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CLIR</tt> command.</p>
+<p>See also <a href="qcallsettings.html#callerIdRestriction">callerIdRestriction</a>().</p>
+<h3 class="fn"><a name="requestConnectedIdPresentation"></a>void QCallSettings::requestConnectedIdPresentation ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the presentation state of connected line identification information (COLP). The state will be returned via the <a href="qcallsettings.html#connectedIdPresentation">connectedIdPresentation</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+COLP</tt> command.</p>
+<p>See also <a href="qcallsettings.html#connectedIdPresentation">connectedIdPresentation</a>().</p>
+<h3 class="fn"><a name="requestSmsTransport"></a>void QCallSettings::requestSmsTransport ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the transport that is being used to send SMS messages. The service responds by emitting the <a href="qcallsettings.html#smsTransport">smsTransport</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CGSMS</tt> command.</p>
+<p>See also <a href="qcallsettings.html#smsTransport">smsTransport</a>().</p>
+<h3 class="fn"><a name="setCallWaiting"></a>void QCallSettings::setCallWaiting ( bool <i>enable</i>, <a href="qtelephony.html#CallClass-enum">QTelephony::CallClass</a> <i>cls</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Enable or disable call waiting for the call classes specified in <i>cls</i>, according to the <i>enable</i> flag. The service responds by emitting the <a href="qcallsettings.html#setCallWaitingResult">setCallWaitingResult</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CCWA</tt> command.</p>
+<p>See also <a href="qcallsettings.html#callWaiting">callWaiting</a>() and <a href="qcallsettings.html#setCallWaitingResult">setCallWaitingResult</a>().</p>
+<h3 class="fn"><a name="setCallWaitingResult"></a>void QCallSettings::setCallWaitingResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of a <a href="qcallsettings.html#setCallWaiting">setCallWaiting</a>() request.</p>
+<p>See also <a href="qcallsettings.html#setCallWaiting">setCallWaiting</a>().</p>
+<h3 class="fn"><a name="setCallerIdRestriction"></a>void QCallSettings::setCallerIdRestriction ( <a href="qcallsettings.html#CallerIdRestriction-enum">QCallSettings::CallerIdRestriction</a> <i>clir</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Sets the caller ID restriction state to <i>clir</i>. The service responds by emitting the <a href="qcallsettings.html#setCallerIdRestrictionResult">setCallerIdRestrictionResult</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CLIR</tt> command.</p>
+<p>See also <a href="qcallsettings.html#callerIdRestriction">callerIdRestriction</a>() and <a href="qcallsettings.html#setCallerIdRestrictionResult">setCallerIdRestrictionResult</a>().</p>
+<h3 class="fn"><a name="setCallerIdRestrictionResult"></a>void QCallSettings::setCallerIdRestrictionResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of a <a href="qcallsettings.html#setCallerIdRestriction">setCallerIdRestriction</a>() request.</p>
+<p>See also <a href="qcallsettings.html#setCallerIdRestriction">setCallerIdRestriction</a>().</p>
+<h3 class="fn"><a name="setSmsTransport"></a>void QCallSettings::setSmsTransport ( <a href="qcallsettings.html#SmsTransport-enum">QCallSettings::SmsTransport</a> <i>transport</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Sets the <i>transport</i> to be used for sending SMS messages. The service responds by emitting the <a href="qcallsettings.html#setSmsTransportResult">setSmsTransportResult</a>() signal.</p>
+<p>On AT-based modems, this will typically use the <tt>AT+CGSMS</tt> command.</p>
+<p>See also <a href="qcallsettings.html#smsTransport">smsTransport</a>() and <a href="qcallsettings.html#setSmsTransportResult">setSmsTransportResult</a>().</p>
+<h3 class="fn"><a name="setSmsTransportResult"></a>void QCallSettings::setSmsTransportResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of a <a href="qcallsettings.html#setSmsTransport">setSmsTransport</a>() request.</p>
+<p>See also <a href="qcallsettings.html#setSmsTransport">setSmsTransport</a>().</p>
+<h3 class="fn"><a name="smsTransport"></a>void QCallSettings::smsTransport ( <a href="qcallsettings.html#SmsTransport-enum">QCallSettings::SmsTransport</a> <i>transport</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted in response to a <a href="qcallsettings.html#requestSmsTransport">requestSmsTransport</a>() request. The current transport is specified by the <i>transport</i> parameter. If <i>transport</i> is <tt>SmsTransportUnavailable</tt>, then the modem does not support selecting an SMS transport.</p>
+<p>See also <a href="qcallsettings.html#setSmsTransport">setSmsTransport</a>() and <a href="qcallsettings.html#requestSmsTransport">requestSmsTransport</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

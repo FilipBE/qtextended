@@ -1,0 +1,30 @@
+#include "../common.h"
+
+class addressbook: public testcase
+{
+    Q_OBJECT
+private slots:
+    void initTestCase()
+    {
+        INIT_TEST_CASE_BODY(
+                "com.trolltech.plugin.outlook.sync.contacts", // plugin
+                false, // TRACE/LOG enabled
+                false  // wait for debugger
+                )
+    }
+
+    void prepareForSync()
+    {
+        PREPARE_FOR_SYNC_BODY()
+    }
+
+    COMMON_TEST_CASES
+
+    void cleanupTestCase()
+    {
+        CLEANUP_TEST_CASE_BODY()
+    }
+};
+QTEST_MAIN(addressbook)
+
+#include "main.moc"

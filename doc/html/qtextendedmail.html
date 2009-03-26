@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Messaging Library</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Messaging Library<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#composition-and-manipulation-of-messages">Composition and Manipulation of Messages</a></li>
+<li><a href="#message-accounts">Message Accounts</a></li>
+<li><a href="#message-listing">Message Listing</a></li>
+<li><a href="#message-navigation">Message Navigation</a></li>
+<li><a href="#sorting-and-searching-functionality">Sorting and Searching Functionality</a></li>
+<li><a href="#message-composer-and-viewer-plugins">Message Composer and Viewer Plugins</a></li>
+<li><a href="#message-transport-service">Message Transport Service</a></li>
+<li><a href="#new-message-arrival-service">New Message Arrival Service</a></li>
+<li><a href="#concurrent-access-to-messaging-data">Concurrent Access to Messaging Data</a></li>
+<li><a href="#abstraction-of-messaging-data-storage-mechanism">Abstraction of Messaging Data Storage Mechanism</a></li>
+<li><a href="#assumptions-and-dependencies">Assumptions and Dependencies</a></li>
+<li><a href="#examples">Examples</a></li>
+</ul>
+<a name="overview"></a>
+<h2>Overview</h2>
+<p>The Qt Extended Messaging library provides a set of APIs for accessing Qt Extended messaging data. Interfaces are provided to create, modify, store, retrieve and display messages. The library does not directly support sending or retrieving messages; these actions are currently supported via the <a href="services.html">QtopiaServiceRequest</a> mechanism. For detailed class information refer to: <a href="messaginglibrary.html">Messaging Classes</a>.</p>
+<p>The Qt Extended Messaging library provides unified access to the messaging data on a Qt Extended device including concurrent access to messaging data by multiple applications, and independence from the mechanism used to store the messaging data on the device.</p>
+<a name="composition-and-manipulation-of-messages"></a>
+<h2>Composition and Manipulation of Messages</h2>
+<p>The Qt Extended Messaging library provides a number of classes to assist with the composition and manipulation of message data. Messages of all supported types are represented uniformly, although not all transport mechanisms are able to deliver more complex message formulations. Messages can be composed of multiple parts and constructed hierarchically. The Qt Extended Messaging Library supports composition of multipart messages from individual part objects.</p>
+<p>Classes to assist with composition and manipulation of messages:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Class</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qmailmessageid.html">QMailMessageId</a></td><td>Represents the mail store identifiers for message records.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailmessagemetadata.html">QMailMessageMetaData</a></td><td>Represents a message stored by the Qt Extended Messaging library.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessage.html">QMailMessage</a></td><td>Convenient interface for working with messages.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailmessagepart.html">QMailMessagePart</a></td><td>Convenient interface for working with message attachments.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessagepartcontainer.html">QMailMessagePartContainer</a></td><td>Access to a collection of message parts.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailmessagebody.html">QMailMessageBody</a></td><td>The body element of a message or message part.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td><td>Encapsulates the parsing of message header fields.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailmessagecontentdisposition.html">QMailMessageContentDisposition</a></td><td>Encapsulates the parsing of the RFC 2822 'Content-Disposition' header field.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessagecontenttype.html">QMailMessageContentType</a></td><td>Encapsulates the parsing of the RFC 2822 'Content-Type' header field.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailaddress.html">QMailAddress</a></td><td>Interface for manipulating message address strings.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailtimestamp.html">QMailTimeStamp</a></td><td>Manages message time stamps.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailcodec.html">QMailCodec</a></td><td>Base class for classes implementing codecs used in message composition.</td></tr>
+</table></p>
+<a name="message-accounts"></a>
+<h2>Message Accounts</h2>
+<p>The Qt Extended Messaging Library provides classes for storing information about messaging accounts both outgoing and incoming.</p>
+<p>Classes relating to messaging accounts:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Class</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qmailaccountid.html">QMailAccountId</a></td><td>Represents the mail store identifiers for account records.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailaccount.html">QMailAccount</a></td><td>Stores attributes for a messaging account.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailfolderid.html">QMailFolderId</a></td><td>Represents the mail store identifiers for folder records.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailfolder.html">QMailFolder</a></td><td>Represents a folder for messages on the mail store.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessageremovalrecord.html">QMailMessageRemovalRecord</a></td><td>Represents a message deleted from the local mail store.</td></tr>
+<tr valign="top" class="even"><td><a href="accountconfiguration.html">AccountConfiguration</a></td><td>Contains the configuration details for an account.</td></tr>
+</table></p>
+<a name="message-listing"></a>
+<h2>Message Listing</h2>
+<p>The Qt Extended Messaging library provides classes to assist with displaying lists of message data. These classes allow clients to display lists of messages and accounts with minimal effort, and with minimal resource consumption.</p>
+<p>Classes to assist with listing messages:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Class</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qmailaccountlistmodel.html">QMailAccountListModel</a></td><td>Provides a model representing the accounts stored by the Qt Extended Messaging library.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailmessagelistmodel.html">QMailMessageListModel</a></td><td>Provides a model representing the messages stored by the Qt Extended Messaging library.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessagedelegate.html">QMailMessageDelegate</a></td><td>Provides a standard visual representation of a message in a list view.</td></tr>
+</table></p>
+<a name="message-navigation"></a>
+<h2>Message Navigation</h2>
+<p>The Qt Extended Messaging library provides classes to assist with partitioning and navigating message data according to the intrinsic message properties. The classes allow clients to display a hierarchical taxonomy of message data, using standard or arbitrary categorization criteria.</p>
+<p>Classes to assist with navigating messages:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Class</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qmailmessageset.html">QMailMessageSet</a></td><td>Provides a representation for a subset of the store's messages, suitable for display in a tree view.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailaccountmessageset.html">QMailAccountMessageSet</a></td><td>Provides a message set implementation grouping messages by their parent account ID.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailfoldermessageset.html">QMailFolderMessageSet</a></td><td>Provides a message set implementation grouping messages by their parent folder ID.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailfiltermessageset.html">QMailFilterMessageSet</a></td><td>Provides a message set implementation grouping messages by arbitrary criteria.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessagesetmodel.html">QMailMessageSetModel</a></td><td>Provides a model representing arbitrary message sets in a tree arrangement.</td></tr>
+</table></p>
+<a name="sorting-and-searching-functionality"></a>
+<h2>Sorting and Searching Functionality</h2>
+<p>The Qt Extended Messaging library provides a number of sort and search functions to aid in selecting data most useful to the view requested. This reduces the burden on the application for managing the messaging data, as well as allowing better use of the underlying storage mechanism.</p>
+<p>Sorting is accomplished by providing a sorting key, specifying the sort order, and the message property upon which to sort.</p>
+<p>Searching is accomplished by providing a search condition, specifying a value, the message property to match, and the desired relation between the value and the message property. Search conditions can be combined to produce searches of arbitrary complexity.</p>
+<p>Classes to assist with sorting and searching messages:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Class</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qmailstore.html">QMailStore</a></td><td>Represents the main interface for storage and retrieval of messages and folders on the mail store.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailaccountkey.html">QMailAccountKey</a></td><td>Defines the parameters used for querying a subset of all available accounts from the mail store.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailaccountsortkey.html">QMailAccountSortKey</a></td><td>Defines the parameters used for sorting accounts queried from the mail store.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailfolderkey.html">QMailFolderKey</a></td><td>Defines the parameters used for querying a subset of all available mail folders from the mail store.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailfoldersortkey.html">QMailFolderSortKey</a></td><td>Defines the parameters used for sorting mail folders queried from the mail store.</td></tr>
+<tr valign="top" class="even"><td><a href="qmailmessagekey.html">QMailMessageKey</a></td><td>Defines the parameters used for querying a subset of all available mail messages from the mail store.</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailmessagesortkey.html">QMailMessageSortKey</a></td><td>Defines the parameters used for sorting messages queried from the mail store.</td></tr>
+</table></p>
+<a name="message-composer-and-viewer-plugins"></a>
+<h2>Message Composer and Viewer Plugins</h2>
+<p>The Qt Extended Messaging Library uses a plugin system to register components that can compose and view messages. Although this mechanism can be accessed by applications, it is currently recommended that <a href="services.html">Services</a> should be used to support message composing and viewing requirements.</p>
+<p>Classes supporting the use of plugins for message composition and viewing:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Class</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qmailcomposerfactory.html">QMailComposerFactory</a></td><td>Creates objects implementing the <a href="qmailcomposerinterface.html">QMailComposerInterface</a> interface</td></tr>
+<tr valign="top" class="even"><td><a href="qmailviewerfactory.html">QMailViewerFactory</a></td><td>Creates objects implementing the <a href="qmailviewerinterface.html">QMailViewerInterface</a> interface</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailcomposerinterface.html">QMailComposerInterface</a></td><td>Defines the interface to objects that can compose a mail message</td></tr>
+<tr valign="top" class="even"><td><a href="qmailviewerinterface.html">QMailViewerInterface</a></td><td>Defines the interface to objects that can display a mail message</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailcomposerplugin.html">QMailComposerPlugin</a></td><td>Defines a base class for implementing mail message composer plug-ins</td></tr>
+<tr valign="top" class="even"><td><a href="qmailviewerplugin.html">QMailViewerPlugin</a></td><td>Defines a base class for implementing mail message viewer plug-ins</td></tr>
+<tr valign="top" class="odd"><td><a href="qmailcomposerplugininterface.html">QMailComposerPluginInterface</a></td><td>Defines the interface to plug-ins that provide mail message composers</td></tr>
+<tr valign="top" class="even"><td><a href="qmailviewerplugininterface.html">QMailViewerPluginInterface</a></td><td>Defines the interface to plug-ins that provide mail message viewers</td></tr>
+</table></p>
+<a name="message-transport-service"></a>
+<h2>Message Transport Service</h2>
+<p>The Qt Extended Messaging library provides the <a href="qmailmessageserver.html">QMailMessageServer</a> class, which provides an interface for a messaging client application to communicate with the system's messaging server. The messaging server provides services relating to the transmission and retrieval of messages from various sources defined by <a href="qmailaccount.html">QMailAccount</a> objects. Using <a href="qmailmessageserver.html">QMailMessageServer</a>, clients can communicate with the messaging server via local-process signals and slots, without having any direct contact with the server process.</p>
+<p>The <a href="qmailserviceaction.html">QMailServiceAction</a> class provides a convenient abstraction above the <a href="qmailmessageserver.html">QMailMessageServer</a> interface, allowing clients to handle only events relating to a specific action requested from the messaging server. <a href="qmailretrievalaction.html">QMailRetrievalAction</a>, <a href="qmailtransmitaction.html">QMailTransmitAction</a> and <a href="qmailsearchaction.html">QMailSearchAction</a> specialize <a href="qmailserviceaction.html">QMailServiceAction</a> to implement specific exchanges between a client application and the messaging server.</p>
+<a name="new-message-arrival-service"></a>
+<h2>New Message Arrival Service</h2>
+<p>The Qt Extended Messaging library provides services permitting client applications to handle the event of new message arrival.</p>
+<p>Each of <a href="qmailnewsmshandler.html">QMailNewSmsHandler</a>, <a href="qmailnewmmshandler.html">QMailNewMmsHandler</a>, <a href="qmailnewemailhandler.html">QMailNewEmailHandler</a>, <a href="qmailnewinstantmessagehandler.html">QMailNewInstantMessageHandler</a> and <a href="qmailnewsystemmessagehandler.html">QMailNewSystemMessageHandler</a> can be instantiated to permit a client application to respond to the arrival of new messages of the relevant type.</p>
+<a name="concurrent-access-to-messaging-data"></a>
+<h2>Concurrent Access to Messaging Data</h2>
+<p>The Qt Extended Messaging library provides a level of concurrent access to messaging data by multiple applications. The concurrent access does guarantee that data won't be corrupted by concurrent access, however does not give any guarantees as to performance of messaging data access if accessed concurrently by multiple applications.</p>
+<a name="abstraction-of-messaging-data-storage-mechanism"></a>
+<h2>Abstraction of Messaging Data Storage Mechanism</h2>
+<p>The Qt Extended Messaging library abstracts the storage method used to store messaging data. On a device the Qt Extended Messaging library will only read and write the primary storage mechanism and synchronizing mechanism.</p>
+<a name="assumptions-and-dependencies"></a>
+<h2>Assumptions and Dependencies</h2>
+<p>The Qt Extended Messaging library requires SQL support either through the included <a href="legal-sqlite.html">SQLite</a> or through some other SQL engine.</p>
+<a name="examples"></a>
+<h2>Examples</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Name</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="messageviewer.html">MessageViewer</a></td><td>Demonstrates the use of <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> and <a href="qmailmessagekey.html">QMailMessageKey</a> in finding and viewing messages.</td></tr>
+<tr valign="top" class="even"><td><a href="messagenavigator.html">MessageNavigator</a></td><td>Demonstrates the use of <a href="qmailmessagesetmodel.html">QMailMessageSetModel</a> and <a href="qmailmessagelistmodel.html">QMailMessageListModel</a> in presenting account, folder and message listings.</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

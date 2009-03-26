@@ -1,0 +1,46 @@
+This is a simple tool to profile an application and generate a Callgrind
+format output file using the Qt signal spy hooks.
+
+It measures the real time, CPU time and memory allocations of every
+signal/slot invoke.
+
+Advantages over callgrind:
+ - don't need to use valgrind!
+ - in theory, can work on any OS and device (needs some tweaking for non-POSIX)
+ - much less slowdown than valgrind
+ - can measure fairly accurate real time, since there's not too much slowdown
+
+Disadvantages:
+ - much lower granularity than callgrind; only signals/slots appear in the call
+   tree.
+ - doesn't give file/line info
+ - doesn't measure instruction fetches or cache misses (should be possible to
+   implement on some platforms...)
+ - doesn't merge the information from multiple threads (can be considered a
+   feature)
+ - in practice, the timer resolution available for measuring user and system CPU
+   time is not particularly good
+ - measurements are generally a bit inaccurate because it's not possible to
+   be notified of the exact entry to functions and threads
+
+Bugs:
+ - will get totally confused if a single thread switches between stacks
+ - slower than it needs to be; too many mutexes
+ - the "leak" detection is weird due to limitations in the callgrind file format
+
+Usage:
+
+spygrind needs to be loaded into the application you want to profile.
+On Linux, this can be achieved using LD_PRELOAD.
+
+So:
+
+  $ LD_PRELOAD=./path/to/libspygrind.so /usr/bin/assistant
+  # Then do some stuff, exit, and get a message like this:
+  spygrind: writing data to spygrind.out.9626.thread1
+  spygrind: writing data to spygrind.out.9626.thread2
+  $ kcachegrind spygrind.out.9626*
+
+When using Qt Extended with the greenphone, the "startup flags" tool can be
+used to enable spygrind.
+

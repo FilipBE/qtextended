@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Dependencies and Prerequisites</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Dependencies and Prerequisites<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#supported-compilers">Supported Compilers</a></li>
+<li><a href="#sounds-and-qt-extended">Sounds and Qt Extended</a></li>
+<ul><li><a href="#helix-media-engine-integration">Helix Media Engine Integration</a></li>
+<li><a href="#gstreamer-media-engine-integration">GStreamer Media Engine Integration</a></li>
+<li><a href="#directly-playing-sounds-to-hardware">Directly Playing Sounds to Hardware</a></li>
+</ul>
+<li><a href="#video4linux">Video4Linux</a></li>
+<li><a href="#3rd-party-libraries">3rd Party libraries</a></li>
+<li><a href="#related-topics">Related topics</a></li>
+<ul><li><a href="#getting-started">Getting started</a></li>
+<li><a href="#system-customization-guide">System Customization Guide</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>In order for Qt Extended to run as intended the following prerequisites must be satisfied:</p>
+<ul>
+<li>a suitable <a href="#supported-compilers">compiler</a> must be installed</li>
+<li>Linux kernel that provides shared memory, mmap, sockets and Framebuffer support as specified in the <a href="integration-guide.html#linux">integration guide</a>.</li>
+<li>compliance with the <a href="integration-guide.html#the-qt-extended-root-file-system">Qt Extended root file system requirements</a></li>
+<li>compliance with the <a href="requirements.html">General Qt Requirements</a>.</li>
+<li>If Qt Extended is being built with <a href="sxe.html">Safe Execution Environment - (SXE)</a> support, then the kernel must be patched to have LIDS support.</li>
+<li>If Qt Extended is being built with <a href="docsys-drmintegr.html">Digital Rights Management</a>(DRM) support, then version 2.4 of <tt>drmagent</tt> from BeepScience must be installed ( <b>Note:</b> A commercial license from <a href="http://www.beepscience.com">BeepScience</a> is required to use the BeepScience <tt>drmagent</tt>).</li>
+<li>If Qt Extended is being built with Helix please refer to <a href="syscust-mediaplayer.html">Helix</a> for further information about using Helix with Qt Extended.</li>
+<li>For dependencies related to playing sounds see <a href="#sounds-and-qt-extended">Sounds and Qt Extended</a></li>
+<li>For dependencies related to Bluetooth see <a href="bluetooth.html">Bluetooth Support</a></li>
+</ul>
+<a name="supported-compilers"></a>
+<h2>Supported Compilers</h2>
+<p>In general terms any version of GCC greater than or equal to 3.4 may be used to compile/cross-compile Qt Extended. The following table provides additional information about the status of a given versions of GCC.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Property</th><th>Version(s)</th></tr></thead>
+<tr valign="top" class="odd"><td>Minimum</td><td>GCC 3.4</td></tr>
+<tr valign="top" class="even"><td>Recommended</td><td>GCC 3.4&#x2e;3, GCC 3.4&#x2e;5, GCC 4.1&#x2e;1 (uses symbol visibility)</td></tr>
+<tr valign="top" class="odd"><td>Not recommended</td><td>GCC 4.0&#x2e;2, GCC 4.1&#x2e;0</td></tr>
+</table></p>
+<p>For further information about GCC see: <a href="http://www.gnu.org">http://www.gnu.org</a></p>
+<a name="sounds-and-qt-extended"></a>
+<h2>Sounds and Qt Extended</h2>
+<p>Qt Extended can be configured to play sounds via a media engine integration or by playing sounds directly to the sound hardware. One or more media engine integration can be enable via the <b>-mediaengines</b> option see also</p>
+<pre>    ./configure -help -verbose</pre>
+<a name="helix-media-engine-integration"></a>
+<h3>Helix Media Engine Integration</h3>
+<p>For details on how to use the Helix Integration see <a href="syscust-mediaplayer.html">Qt Extended Helix Integration</a>.</p>
+<a name="gstreamer-media-engine-integration"></a>
+<h3>GStreamer Media Engine Integration</h3>
+<p>Before attempting to configure Qt Extended with <a href="legal-gstreamer.html">GStreamer</a> support enabled ensure that all requirements as stated at <a href="http://gstreamer.freedesktop.org/">http://gstreamer.freedesktop.org/</a> are met.</p>
+<a name="directly-playing-sounds-to-hardware"></a>
+<h3>Directly Playing Sounds to Hardware</h3>
+<p>When a media engine integration is not used Qt Extended requires that either:</p>
+<ol type="1">
+<li>A OSS Linux sound driver is used</li>
+<li>A ALSA sound support with OSS compatibility</li>
+</ol>
+<p>In addition Qt Extended requires that <tt>/dev/dsp</tt> is writable and supports the following <tt>ioctls</tt>:</p>
+<ul>
+<li>SNDCTL_DSP_SETFRAGMENT - Qt Extended will set this to 0x4000c.</li>
+<li>SNDCTL_DSP_SETFM - Qt Extended will set this to AFMT_S16_LE</li>
+<li>SNDCTL_DSP_STEREO - Qt Extended will set this to 1/true.</li>
+<li>SNDCTL_DSP_SPEED - Qt Extended will set this to 44100.</li>
+<li>SNDCTL_DSP_GETOSPACE.</li>
+</ul>
+<p>Qt Extended also requires that <tt>/dev/dsp</tt> can be opened as both blocking and non-blocking. The values set above are the Qt Extended preferred settings for the audio device, and some deviation is allowed. However smooth playing of audio is not guaranteed if the above <tt>ioctls</tt> cannot be set to the Qt Extended preferred settings.</p>
+<p>For example your device only plays at 22500 speed, then it is required to report this when the <tt>SNDCTL_DSP_SPEED ioctl</tt> is called and should not result in a drop in audio quality. However not supporting <tt>GETOSPACE</tt>, non-blocking write or <tt>SNDCTL_DSP_SET_FRAGMENT</tt> will almost certainly result loss of audio quality.</p>
+<a name="video4linux"></a>
+<h2>Video4Linux</h2>
+<p>The <tt>Camera</tt> application requires a kernel with <a href="#video4linux">Video4Linux</a> version 1 or version 2 support. This is not provided with Qt Extended.</p>
+<p>Please refer to the official <a href="http://www.exploits.org/v4l/">Video for Linux </a> resources site for details about this API.</p>
+<a name="3rd-party-libraries"></a>
+<h2>3rd Party libraries</h2>
+<p>For a list of 3rd party libraries that Qt Extended may use see <a href="qtextended-licensing.html">Qt Extended Licensing</a></p>
+<a name="related-topics"></a>
+<h2>Related topics</h2>
+<a name="getting-started"></a>
+<h3>Getting started</h3>
+<p>To determine what steps are needed to get started with Qt Extended see: <a href="getting-started.html">Getting started </a></p>
+<a name="system-customization-guide"></a>
+<h3>System Customization Guide</h3>
+<p>To see the outline of steps required to customize Qt Extended for a new device see: <a href="syscust-index.html">System Customization Guide </a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

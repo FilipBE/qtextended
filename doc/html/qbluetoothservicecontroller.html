@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothServiceController Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothServiceController Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothServiceController class provides a means to control and access information for Qt Extended Bluetooth services. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothServiceController&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qbluetoothservicecontroller-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qbluetoothservicecontroller.html#ServiceState-enum">ServiceState</a></b> { NotRunning, Starting, Running }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothservicecontroller.html#QBluetoothServiceController">QBluetoothServiceController</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qbluetoothservicecontroller.html#dtor.QBluetoothServiceController">~QBluetoothServiceController</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qbluetoothservicecontroller.html#displayName">displayName</a></b> ( const QString &amp; <i>name</i> ) const</li>
+<li><div class="fn"/>QBluetooth::SecurityOptions <b><a href="qbluetoothservicecontroller.html#securityOptions">securityOptions</a></b> ( const QString &amp; <i>name</i> ) const</li>
+<li><div class="fn"/>QStringList <b><a href="qbluetoothservicecontroller.html#services">services</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qbluetoothservicecontroller.html#setSecurityOptions">setSecurityOptions</a></b> ( const QString &amp; <i>name</i>, QBluetooth::SecurityOptions <i>options</i> )</li>
+<li><div class="fn"/>void <b><a href="qbluetoothservicecontroller.html#start">start</a></b> ( const QString &amp; <i>name</i> )</li>
+<li><div class="fn"/>QBluetoothServiceController::ServiceState <b><a href="qbluetoothservicecontroller.html#state">state</a></b> ( const QString &amp; <i>name</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qbluetoothservicecontroller.html#stop">stop</a></b> ( const QString &amp; <i>name</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qbluetoothservicecontroller.html#started">started</a></b> ( const QString &amp; <i>name</i>, bool <i>error</i>, const QString &amp; <i>description</i> )</li>
+<li><div class="fn"/>void <b><a href="qbluetoothservicecontroller.html#stopped">stopped</a></b> ( const QString &amp; <i>name</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothServiceController class provides a means to control and access information for Qt Extended Bluetooth services.</p>
+<p>This class allows the programmer to start and stop Qt Extended Bluetooth services, set their security options, and view a service's attributes, such as its state, name and security options.</p>
+<p>Qt Extended has a number of built-in Bluetooth services, as found in the Bluetooth settings application. Any of these services can be controlled through an instance of QBluetoothServiceController. You can also create your own Qt Extended Bluetooth services that will be controllable through this interface; simply subclass <a href="qbluetoothabstractservice.html">QBluetoothAbstractService</a>. (See the <a href="qbluetoothabstractservice.html">QBluetoothAbstractService</a> class documentation for more details.)</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ServiceState-enum"></a>enum QBluetoothServiceController::ServiceState</h3>
+<p>Defines the possible states for a service which may be returned from <a href="qbluetoothservicecontroller.html#state">state</a>().</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QBluetoothServiceController::NotRunning</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The service is not running.</td></tr>
+<tr><td valign="top"><tt>QBluetoothServiceController::Starting</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The service is starting.</td></tr>
+<tr><td valign="top"><tt>QBluetoothServiceController::Running</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The service is running.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothServiceController"></a>QBluetoothServiceController::QBluetoothServiceController ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qbluetoothservicecontroller.html">QBluetoothServiceController</a> with parent object <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QBluetoothServiceController"></a>QBluetoothServiceController::~QBluetoothServiceController ()</h3>
+<p>Destroys a <a href="qbluetoothservicecontroller.html">QBluetoothServiceController</a>.</p>
+<h3 class="fn"><a name="displayName"></a><a href="qstring.html">QString</a> QBluetoothServiceController::displayName ( const <a href="qstring.html">QString</a> &amp; <i>name</i> ) const</h3>
+<p>Returns the user-friendly, internationalized display name for the service named <i>name</i>.</p>
+<h3 class="fn"><a name="securityOptions"></a><a href="qbluetooth.html#SecurityOption-enum">QBluetooth::SecurityOptions</a> QBluetoothServiceController::securityOptions ( const <a href="qstring.html">QString</a> &amp; <i>name</i> ) const</h3>
+<p>Returns the security options for the service named <i>name</i>.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#setSecurityOptions">setSecurityOptions</a>().</p>
+<h3 class="fn"><a name="services"></a><a href="qstringlist.html">QStringList</a> QBluetoothServiceController::services () const</h3>
+<p>Returns a list of the names of all known Bluetooth services within Qtopia.</p>
+<h3 class="fn"><a name="setSecurityOptions"></a>void QBluetoothServiceController::setSecurityOptions ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, <a href="qbluetooth.html#SecurityOption-enum">QBluetooth::SecurityOptions</a> <i>options</i> )</h3>
+<p>Sets the security options for the service with name <i>name</i> to the given <i>options</i>.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#securityOptions">securityOptions</a>().</p>
+<h3 class="fn"><a name="start"></a>void QBluetoothServiceController::start ( const <a href="qstring.html">QString</a> &amp; <i>name</i> )</h3>
+<p>Starts the service named <i>name</i>.</p>
+<p>The <a href="qbluetoothservicecontroller.html#started">started</a>() signal will be emitted when the service has started.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#stop">stop</a>().</p>
+<h3 class="fn"><a name="started"></a>void QBluetoothServiceController::started ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, bool <i>error</i>, const <a href="qstring.html">QString</a> &amp; <i>description</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the service named <i>name</i> has started or failed while attempting to start. If there was a failure, <i>error</i> is <tt>true</tt> and <i>description</i> provides the human-readable error description.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#start">start</a>() and <a href="qbluetoothservicecontroller.html#stopped">stopped</a>().</p>
+<h3 class="fn"><a name="state"></a><a href="qbluetoothservicecontroller.html#ServiceState-enum">QBluetoothServiceController::ServiceState</a> QBluetoothServiceController::state ( const <a href="qstring.html">QString</a> &amp; <i>name</i> ) const</h3>
+<p>Returns the state of the service named <i>name</i>.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#stopped">stopped</a>() and <a href="qbluetoothservicecontroller.html#started">started</a>().</p>
+<h3 class="fn"><a name="stop"></a>void QBluetoothServiceController::stop ( const <a href="qstring.html">QString</a> &amp; <i>name</i> )</h3>
+<p>Stops the service named <i>name</i>.</p>
+<p>The <a href="qbluetoothservicecontroller.html#stopped">stopped</a>() signal will be emitted when the service has stopped.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#start">start</a>().</p>
+<h3 class="fn"><a name="stopped"></a>void QBluetoothServiceController::stopped ( const <a href="qstring.html">QString</a> &amp; <i>name</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the service named <i>name</i> has stopped.</p>
+<p>See also <a href="qbluetoothservicecontroller.html#stop">stop</a>() and <a href="qbluetoothservicecontroller.html#started">started</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

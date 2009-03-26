@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>MessageServer Daemon</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">MessageServer Daemon<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#accounts">Accounts</a></li>
+<li><a href="#interface">Interface</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The <i>MessageServer</i> application provides message transport services to Qt Extended client applications. It can send and retrieve messages of various types, to and from external message service providers such as POP and IMAP servers, or local resources such as a SIM card.</p>
+<p>The MessageServer application is a daemon managed by the QPE server; it is always running and available to client applications. If the MessageServer experiences a fault and restarts, clients do not need to re-establish communication with the server process.</p>
+<a name="features"></a>
+<h2>Features</h2>
+<p>Messages provides the following features:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>Send messages</td><td>Send messages via the transport mechanism defined for the associated account.</td></tr>
+<tr valign="top" class="even"><td>Retrieve message lists</td><td>Report the list messages available at the server for an account.</td></tr>
+<tr valign="top" class="odd"><td>Retrieve messages</td><td>Retrieve the content of specified messages from the originating server.</td></tr>
+<tr valign="top" class="even"><td>Status reporting</td><td>Status and progress information is emitted during MessageServer operations, for the benefit of client applications.</td></tr>
+</table></p>
+<a name="accounts"></a>
+<h2>Accounts</h2>
+<p>MessageServer supports the following aspects of messaging accounts:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>Unrestricted accounts</td><td>MessageServer supports any number of messaging accounts.</td></tr>
+<tr valign="top" class="even"><td>Messaging service types</td><td>MessageServer supports accounts using the following service types:<ul>
+<li>SMS</li>
+<li>MMS</li>
+<li>email</li>
+<li>Instant Messaging servics</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Email protocols</td><td>The following email protocols are available:<ul>
+<li>POP</li>
+<li>SMTP</li>
+<li>IMAP</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Instant Messaging protocols</td><td>The following Instant Messaging protocols are available:<ul>
+<li>XMPP (Jabber)</li>
+</ul>
+</td></tr>
+</table></p>
+<a name="interface"></a>
+<h2>Interface</h2>
+<p>MessageServer communicates with clients via a <a href="qtopiachannel.html">QtopiaChannel</a>. The recommended method of passing messages over this channel is for each client to instantiate an object of the <a href="qmailmessageserver.html">QMailMessageServer</a> class, which converts between IPC messages and local signals and slots.</p>
+<p>Some actions of the MessageServer process affect the Qt Extended Messaging Library data store directly. A client can respond to these actions by connecting to the relevant signals of the <a href="qmailstore.html">QMailStore</a> class, such as <a href="qmailstore.html#messagesAdded">QMailStore::messagesAdded</a>(), and <a href="qmailstore.html#messagesRemoved">QMailStore::messagesRemoved</a>().</p>
+<a name="dependencies"></a>
+<h2>Dependencies</h2>
+<p>MessageServer has the following dependencies:</p>
+<ul>
+<li>the <a href="qtextendedmail.html">Qt Extended Messaging Library</a></li>
+<li>the Qt Extended Collective Library</li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

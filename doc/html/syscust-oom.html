@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Handling Out Of Memory</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Handling Out Of Memory<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#the-out-of-memory-problem-oom">The Out Of Memory Problem (OOM)</a></li>
+<ul><li><a href="#oom-in-the-desktop-environment">OOM in the Desktop Environment</a></li>
+<li><a href="#oom-in-qt-extended">OOM in Qt Extended</a></li>
+</ul>
+<li><a href="#how-linux-handles-the-expected-oom-problem">How Linux Handles the Expected OOM Problem</a></li>
+<ul><li><a href="#handling-oom-in-linux-2-4">Handling OOM in Linux 2.4</a></li>
+<li><a href="#handling-oom-in-linux-2-6">Handling OOM in Linux 2.6</a></li>
+<li><a href="#unacceptable-consequences-for-qt-extended-and-the-greenphone">Unacceptable Consequences for Qt Extended and the Greenphone</a></li>
+</ul>
+<li><a href="#the-qt-extended-oom-solution">The Qt Extended OOM Solution</a></li>
+<ul><li><a href="#the-oom-data-manager">The OOM Data Manager</a></li>
+<li><a href="#the-application-launcher">The Application Launcher</a></li>
+<li><a href="#the-memory-monitor">The Memory Monitor</a></li>
+<ul><li><a href="#the-main-memory-test">The Main Memory Test</a></li>
+<li><a href="#the-page-fault-test">The Page Fault Test</a></li>
+</ul>
+<li><a href="#the-low-memory-handler">The Low Memory Handler</a></li>
+<ul><li><a href="#handling-the-low-memory-state">Handling The Low Memory State</a></li>
+<li><a href="#handling-the-very-low-memory-state">Handling the Very Low Memory State</a></li>
+<li><a href="#handling-the-critical-memory-state">Handling the Critical Memory State</a></li>
+</ul>
+</ul>
+<li><a href="#user-modification-of-the-qt-extended-oom-solution">User Modification of the Qt Extended OOM Solution</a></li>
+<ul><li><a href="#reconfigurable-items">Reconfigurable Items</a></li>
+<ul><li><a href="#the-group">The <tt>[oom_adj]</tt> Group</a></li>
+<li><a href="#the-group">The <tt>[values]</tt> Group</a></li>
+</ul>
+<li><a href="#replacing-the-memory-monitor">Replacing the Memory Monitor</a></li>
+</ul>
+</ul>
+<a name="the-out-of-memory-problem-oom"></a>
+<h2>The Out Of Memory Problem (OOM)</h2>
+<a name="oom-in-the-desktop-environment"></a>
+<h3>OOM in the Desktop Environment</h3>
+<p>Most applications running in today's Linux desktop computing environments can safely ignore handling the OOM state, because desktop computing environments are not limited by the amount of physical memory built into the computer. In these systems, Linux provides a large swap space in secondary memory, and when the amount of memory required by the applications running exceeds the amount of main memory available, pages of memory are swapped out into the swap space to make room for more pages, and the swapped out pages later swapped back in as needed.</p>
+<p>The virtual address space available to each Linux process is much larger than even the total size of the physical memory plus the swap space, and an OOM condition caused by too many applications consuming too much virtual address space rarely occurs. When it does occur, the system administrator has the option of increasing the size of the swap space and rerunning the applications that failed.</p>
+<p>The OOM case that occurs most often in Linux systems is the so-called runaway application that calls <tt>malloc()</tt> in an unbounded loop, eventually exhausting its virtual memory space. But this case is always assumed to be a bug in the offending application, so Linux handles it by placing an &quot;rlimit&quot; on the amount of virtual memory an application process can acquire for its heap and stack.</p>
+<a name="oom-in-qt-extended"></a>
+<h3>OOM in Qt Extended</h3>
+<p>Qt Extended is not meant to run in a desktop environment. It is designed for use in mobile and other embedded devices (e.g&#x2e;, the Greenphone), where the amount of main memory might be severely limited, and swap space is not used. In the typical Qt Extended environment, running out of memory becomes much more likely.</p>
+<p>OOM can occur in Qt Extended in two ways. The runaway application problem remains, and it could even become acute, when Greenphone users begin downloading third party applications. The Safe Execution Environment does have a <a href="syscust-sxe.html#sxe-memory-limits">mechanism</a> based on rlimits to mitigate this issue for downloaded applications.</p>
+<p>The second way OOM can occur in Qt Extended is when too many applications legitimately require too much memory in total. No single process consumes too much memory, but all of them together do. This is the expected OOM problem for Qt Extended and the one that is currently not handled adequately.</p>
+<a name="how-linux-handles-the-expected-oom-problem"></a>
+<h2>How Linux Handles the Expected OOM Problem</h2>
+<a name="handling-oom-in-linux-2-4"></a>
+<h3>Handling OOM in Linux 2.4</h3>
+<p>Version 2.4 of the Linux kernel recovers from the expected OOM problem by finding the process currently consuming the most memory and simply killing that process, thereby freeing its memory for use by the remaining processes. Functions in the Linux kernel source <tt>mm/oom_kill.c</tt> implement the algorithm for computing the amount of memory each process consumes and selecting the worst offender. In version 2.4 the user has no control over this algorithm. In particular, the user cannot specify a set of processes that the kernel must never kill.</p>
+<a name="handling-oom-in-linux-2-6"></a>
+<h3>Handling OOM in Linux 2.6</h3>
+<p>Version 2.6 of the kernel modifies the algorithm for selecting the process to kill by incorporating a per process integer value in the final step of computing the amount of memory each process consumes. It obtains the integer value from <tt>/proc/&lt;pid&gt;/oom_adj</tt>, where <tt>&lt;pid&gt;</tt> is the process id of the process being considered. The value in oom_adj is the number of bits to shift the memory estimate by, to the left or to the right depending on whether the value is positive or negative. Thus the oom_adj value for a process increases or decreases the amount of memory Linux thinks the process has consumed. Given a sufficiently large negative <tt>oom_adj</tt> value, a process can be made to appear to Linux as if it has consumed no memory at all, which will prevent the process from being selected to be killed.</p>
+<a name="unacceptable-consequences-for-qt-extended-and-the-greenphone"></a>
+<h3>Unacceptable Consequences for Qt Extended and the Greenphone</h3>
+<p>The Linux OOM handling infrastructure described above cannot be disabled by Qt Extended. Furthermore, since the current Greenphone runs version 2.4 of the Linux kernel, Qt Extended can not even prevent Linux from selecting the Qt Extended server process as the process to be killed. If Linux kills the Qt Extended server process, the Greenphone freezes, and the only way to correct the problem is to turn off the phone and temporarily remove the battery. Qt Extended must be given a safer and more deterministic way to recover from the OOM condition.</p>
+<a name="the-qt-extended-oom-solution"></a>
+<h2>The Qt Extended OOM Solution</h2>
+<p>The strategy of the Qt Extended solution to the OOM problem is to prevent the Linux kernel from getting control in the first place by intervening earlier, before OOM occurs, when Qt Extended detects certain low-memory warning signs. However, in case no warning signs are detected, and a real OOM condition forces Linux to choose a process to kill, the Qt Extended solution also uses the kernel's <tt>oom_adj</tt> infrastructure to prevent the kernel from choosing the Qt Extended server or some other critical process for killing.</p>
+<p>The Qt Extended solution is divided into four components:</p>
+<ol type="1">
+<li>The OOM Data Manager for managing an application database of the per process data required,</li>
+<li>The Application Launcher for building and maintaining the database</li>
+<li>The Memory Monitor for detecting low memory states and signaling them</li>
+<li>And the Low Memory Handler for recovering memory when a low memory state has been signaled.</li>
+</ol>
+<a name="the-oom-data-manager"></a>
+<h3>The OOM Data Manager</h3>
+<p>The OOM Data Manager is a new C++ class that maintains a database mapping the name of each running application to its process id. The database is divided into three maps. When a process is started it is inserted into one of these maps, depending on whether the application has been designated as expendable, important, or critical.</p>
+<p>Qt Extended chooses applications marked expendable first, when a low memory state is signaled and a process must be killed. Applications marked as important can also be killed, but only if there are no expendable applications to kill instead. Applications marked critical must never be killed. In the default Qt Extended solution, the Qt Extended server, the SIP agent, and the media server are marked as critical applications.</p>
+<p>The OOM Data Manager reads a configuration file called <tt>oom.conf</tt> to get the user-defined lists of critical, important, and expendable application names. The configuration file is discussed in section 4, but note here that any application that is not defined in the file as either critical or important is assumed to be expendable, regardless of whether it is defined as such in the configuration file. In particular, downloaded third party applications are always marked expendable.</p>
+<p>The OOM data manager also initializes <tt>/proc/&lt;pid&gt;/oom_adj</tt> for each process started with a value commensurate with the importance of the process. Critical processes get a large negative value; important processes get 0 (default), and expendable processes get a large positive value. This ensures that Linux will never kill the Qt Extended server if the Qt Extended OOM solution fails to detect an imminent OOM condition and the kernel gets control.</p>
+<a name="the-application-launcher"></a>
+<h3>The Application Launcher</h3>
+<p>The Application Launcher is responsible for launching application processes and keeping track of them until they terminate. For preventing OOM, the Application Launcher has been modified to use the OOM Data Manager to keep track of the mappings from application name to process id for the applications that it starts as separate Linux processes. Qt Extended applications that are not run as separate Linux processes are of no interest to the OOM algorithm.</p>
+<p>The Application Launcher inserts each name/pid pair into the OOM Data Manager, when the process achieves the running state, and removes it later, when the process terminates for any reason. These mappings are available to the Low Memory Handler, if and when an imminent OOM event is detected.</p>
+<a name="the-memory-monitor"></a>
+<h3>The Memory Monitor</h3>
+<p>The Memory Monitor is a Qt Extended task (ie a C++ class) that runs on a timer to check for signs that indicate Qt Extended is running low on memory. Four memory states are possible: Normal, Low, Very Low, and Critical. When the Memory Monitor detects a memory state change, it signals the new memory state to the Low Memory Handler. The Low Memory Handler receives the signal and takes the appropriate actions for handling the new memory state.</p>
+<p>The Memory Monitor performs two tests at each interval timeout. The first test is called the Main Memory Test, and the second test is called the Page Fault Test.</p>
+<a name="the-main-memory-test"></a>
+<h4>The Main Memory Test</h4>
+<p>The purpose of the Main Memory Test is to decide how often to run the Memory Monitor. The test involves reading certain values from <tt>/proc/meminfo</tt> and summing them to estimate the amount of main memory available. The values used are MemFree, Buffers, and Cached. When the sum of these values drops below a certain percentage of the main memory in the device (MemTotal), the timer that governs how often the Memory Monitor should run is reset with a short timeout interval so the Memory Monitor runs more often. Otherwise, the timer is reset with a long timeout interval so the Memory Monitor runs less often. The values for the short and long timeout intervals and the main memory threshold percentage are user-defined and are read from the <tt>oom.conf</tt> configuration file.</p>
+<p>Note that the sum of the values of MemFree, Buffers, and Cached is not the amount of virtual memory that is actually available, ie it cannot be used to determine the memory state. In practice, the amount of memory available is much greater than this sum, because many of the memory pages consumed by a process are from code space, and a code space page can become free as soon as program execution leaves the page.</p>
+<a name="the-page-fault-test"></a>
+<h4>The Page Fault Test</h4>
+<p>The page fault test involves monitoring the number of major page faults that occur in each timeout interval (long or short), normalizing them, and averaging them over a specified number of timeout intervals (test cycle). A major page fault is one that cannot be satisfied by a page already loaded in main memory. It requires loading the requested page from secondary memory. We expect that an abnormally high average number of major page faults per test cycle implies that too many pages of main memory are occupied by data pages of too many processes. These processes are competing for the few remaining code space pages available, and page thrashing is the result. Since Linux processes cannot be forced to relinquish data pages they no longer need, an abnormally high average number of major page faults per test cycle is a reliable sign that the system is running low on memory.</p>
+<p>The page fault test is run in three steps. Step one computes the number of major page faults that occurred during the last timeout interval. The data for this computation is read from the per process virtual memory status files in <tt>/proc</tt>. The number of page faults is then stored in a circular list that represents the last n timeout intervals, i.e&#x2e; one test cycle. Step two computes the average number of page faults over all the entries in the test cycle. This average is compared to three user-defined page fault threshold values read from the <tt>oom.conf</tt> configuration file.</p>
+<p>The three page fault threshold values represent the Low, Very Low, and Critical memory states. If the average number of major page faults is greater than the critical threshold, the memory state is believed to be critically low. If the average number of major page faults is greater than the very low threshold, the memory state is believed to be very low. If the average number of major page faults is greater than the low threshold, the memory state is believed to be just low. Otherwise the memory state is normal.</p>
+<p>If the memory state of the current timeout interval is different from the memory state of the previous timeout interval, the memory-state-changed signal is emitted.</p>
+<a name="the-low-memory-handler"></a>
+<h3>The Low Memory Handler</h3>
+<p>A slot in the Low Memory Handler runs whenever the Memory Monitor emits the memory-state-changed signal. When the memory state changes from normal to low, very low, or critical, the Low Memory Handler takes some action that should result in the memory state returning to normal. Action is also taken when the memory state jumps from low to very low or critical, or from very low to critical.</p>
+<p>The Low Memory Handler uses the OOM data manager to get the names and process ids of the applications marked expendable or important.</p>
+<p>Note that the Low Memory Handler is notified of all memory state changes, but it only takes action when the memory state changes for the worse. The Low Memory Monitor is notified of all memory state changes because it must keep track of the last memory state so it can decide if the memory state is getting worse or better.</p>
+<a name="handling-the-low-memory-state"></a>
+<h4>Handling The Low Memory State</h4>
+<p>When the memory state worsens to low, the Low Memory Handler broadcasts a quit-if-invisible message to all applications marked expendable or important that were not pre-loaded and that have entered the lazy shutdown state. All the so-called lazy shutdown applications will then die if they have terminated and are simply remaining in memory to cut down on load time if they are asked to run again later.</p>
+<a name="handling-the-very-low-memory-state"></a>
+<h4>Handling the Very Low Memory State</h4>
+<p>When the memory state worsens to very low, the Low Memory Handler sends a quit message to one process. The quit message tells a process to shut itself down gracefully. If expendable processes are running, one of these is the one told to quit. If the active process is expendable, it is the one told to quit. Otherwise the expendable process with the highest oom_score value is told to quit. Note that in Linux 2.4, the kernel does not maintain oom_score values in <tt>/proc</tt> so the first expendable process in the OOM Data Manager's list of expendable processes will be the one told to quit.</p>
+<p>If no expendable processes are running but processes marked important are running, one of these is the told to quit. If the active process is marked important, it is the one told to quit. Otherwise the process marked important with the highest oom_score is the one told to quit. Note that in Linux 2.4, the kernel does not maintain oom_score values in <tt>/proc</tt> so the first process marked important in the OOM Data Manager's list of important processes will be the one told to quit.</p>
+<a name="handling-the-critical-memory-state"></a>
+<h4>Handling the Critical Memory State</h4>
+<p>When the memory state worsens to critical, the Low Memory Handler sends a kill signal to one process. The kill signal terminates the process immediately without giving it a chance to shut itself down gracefully. The algorithm for choosing the process to be killed is as described in section 3.4&#x2e;2&#x2e;</p>
+<a name="user-modification-of-the-qt-extended-oom-solution"></a>
+<h2>User Modification of the Qt Extended OOM Solution</h2>
+<p>Several details of the Qt Extended OOM solution can be reconfigured by the user to suit specific embedded device characteristics. Additionally, the Memory Monitor component can be replaced by a memory monitor designed by the user.</p>
+<a name="reconfigurable-items"></a>
+<h3>Reconfigurable Items</h3>
+<p>The reconfigurable items are all found in the configuration file <tt>oom.conf</tt>, which is found in <tt>$HOME/Settings/Trolltech</tt>. The file is read by the <a href="qsettings.html">QSettings</a> class. It contains two settings groups named <tt>[oom_adj]</tt> and <tt>[values]</tt>.</p>
+<a name="the-group"></a>
+<h4>The <tt>[oom_adj]</tt> Group</h4>
+<p>This group allows the user to specify which applications to mark critical, important, and expendable. Any application that is not assigned one of these marks defaults to expendable. The Qt Extended server (&quot;qpe&quot;) must always be defined to be critical. The following partial example illustrates how to create the <tt>[oom_adj]</tt> group. The application name appears to the left of the equal sign. The priority appears to the right. The only priorities allowed are critical, important, and expendable.</p>
+<pre>    [oom_adj]
+    qpe=critical
+    sipagent=critical
+    mediaserver=critical
+    qasteroids=expendable
+    fifteen=expendable
+    minesweep=expendable
+    snake=expendable
+    calculator=important
+    clock=important
+    datebook=important</pre>
+<p>Note that any application that does not appear in the <tt>[oom_adj]</tt> group is automatically expendable.</p>
+<a name="the-group"></a>
+<h4>The <tt>[values]</tt> Group</h4>
+<p>This group defines several integer values used by the components of the Qt Extended OOM system. The values shown in the following example are the default values for the default Memory Monitor.</p>
+<pre>       [values]
+       critical=250
+       verylow=120
+       low=60
+       samples=5
+       percent=20
+       long=10000
+       short=1000</pre>
+<p>The values specified for the keywords critical, verylow, and low are the page fault thresholds used by the Memory Monitor to determine the current memory state. Using this example configuration file, if the average number of major page faults in a test cycle is above 250, the memory state is critical. If the average number of major page faults for the test cycle is above 120, the memory state is very low. If the average number of major page faults for the test cycle is above 60, the memory state is low. Otherwise, the memory state is normal. Page fault threshold values must be selected with care. Experimentation with different values may be required.</p>
+<p>The value of the keyword percent is the threshold of free main memory that determines whether the Memory Monitor should run every long or short timeout interval. While the amount of free main memory remains above the threshold, the long timeout interval is used. Otherwise the short timeout interval is used.</p>
+<p>A test cycle consists of a certain number of test intervals or samples. The size of a test cycle is specified by the value of the keyword samples. The number of elements in the circular buffer of page fault counts is set to this value. The page fault counts in the circular buffer are summed and the sum is divided by the number of samples to get the average page fault count for the test cycle. This average is then compared to the three page fault threshold values to determine the memory state.</p>
+<p>The values of the keywords long and short specify the long and short timer intervals respectively. They determine how often the Memory Monitor is run. The long interval is used when there appears to be plenty of main memory available, and the short interval is used when the amount of main memory available gets low. The values are in milliseconds.</p>
+<p>If the user replaces the Memory Monitor task with his own, the page fault threshold values and the number of samples per test cycle need not be defined, because these items are specific to the algorithm in the default Memory Monitor. The long and short timer intervals are also specific to that algorithm, but the user's replacement class will require at least one timer interval. It can, of course, be hardcoded into the replacement class, but it is probably better to make it a configurable item.</p>
+<a name="replacing-the-memory-monitor"></a>
+<h3>Replacing the Memory Monitor</h3>
+<p>The Memory Monitor task is the component that runs periodically, determines the memory state, and emits a signal whenever the memory state changes. It is a C++ class. The user can replace this class with one of his own design.</p>
+<p>The replacement class must inherit the base class <a href="memorymonitor.html">MemoryMonitor</a> in server/memorymonitor.h and fully implement its interface. The most important part of the interface is the memStateChanged signal. The user's replacement class must emit this signal whenever the system memory state changes. The signal's parameter must be one of the values of the MemState enumeration, ie MemNormal, when there is plenty of memory available, MemLow, when the amount of memory available is low but not dangerously so, MemVerylow when the amount of memory available is dangerously low, and MemCritical when the system is about to run out of memory.</p>
+<p>The user must decide specific memory levels for these enum values and then implement an algorithm for computing the memory state accordingly. The algorithm should be run on a timer.</p>
+<p>The class <a href="genericmemorymonitortask.html">GenericMemoryMonitorTask</a> in <tt>server/genericmemorymonitortask.h</tt> can be used as an example. This class implements the default Memory Monitor described in this document.</p>
+<p>The replacement class is compiled with the Qt Extended server. To get the replacement class installed as a Qt Extended task, its implementation file must contain instances of the following macros, which are described in the Qt Extended documentation:</p>
+<pre>     QTOPIA_TASK ( TaskName, Object )
+     QTOPIA_TASK_PROVIDES ( TaskName, Interface )</pre>
+<p><tt>TaskName</tt> is the name you choose to call your replacement task, and <tt>Object</tt> is the class name of your replacement class. Interface is the name of the interface base class. For example, the following macros appear in the implementation file for the default Memory Monitor:</p>
+<pre>     QTOPIA_TASK(GenericMemoryMonitor, GenericMemoryMonitorTask);
+     QTOPIA_TASK_PROVIDES(GenericMemoryMonitor, MemoryMonitor);</pre>
+<p>The default Memory Monitor task name is <tt>GenericMemoryMonitor</tt>, and the name of the class that implements it is <a href="genericmemorymonitortask.html">GenericMemoryMonitorTask</a>. The class is found in <tt>server/genericmemorymonitor.h</tt>. The class inherits the interface base class <a href="memorymonitor.html">MemoryMonitor</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Infrared Support</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Infrared Support<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#qt-extended-configuration">Qt Extended Configuration</a></li>
+</ul>
+<li><a href="#functionality">Functionality</a></li>
+<ul><li><a href="#local-device-control-remote-device-discovery">Local device control &amp; remote device discovery</a></li>
+<li><a href="#access-to-lm-ias-link-management-information-access-service">Access to LM-IAS (Link Management Information Access Service)</a></li>
+<li><a href="#tiny-tp-socket-support">Tiny TP socket support</a></li>
+<li><a href="#object-push-profile-support">Object Push Profile support</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides library support for infrared development, as well as infrared file transfer implementations for end users.</p>
+<p>The Qt Extended infrared support relies on Linux-IrDA, an implementation of the IrDA standards that has been included with the Linux kernel since the Linux 2.2&#x2e;x series. Infrared hardware support is dependent on Linux-IrDA; Qt Extended does not provide direct support for any hardware.</p>
+<a name="qt-extended-configuration"></a>
+<h3>Qt Extended Configuration</h3>
+<p>Infrared support is included by default in Qt Extended. No additional configuration options are required.</p>
+<a name="functionality"></a>
+<h2>Functionality</h2>
+<a name="local-device-control-remote-device-discovery"></a>
+<h3>Local device control &amp; remote device discovery</h3>
+<p>The local infrared device can be turned on/off through the <a href="qirlocaldevice.html">QIrLocalDevice</a> class. This class can also be used to find remote infrared devices. Alternatively the <a href="qirremotedevicewatcher.html">QIrRemoteDeviceWatcher</a> class can be used to be notified when a particular remote device is found.</p>
+<a name="access-to-lm-ias-link-management-information-access-service"></a>
+<h3>Access to LM-IAS (Link Management Information Access Service)</h3>
+<p>The LM-IAS database contains the details that are advertised to remote infrared devices that are searching for particular services. The <a href="qiriasdatabase.html">QIrIasDatabase</a> class allows these service attributes to be added and removed from the local LM-IAS database.</p>
+<a name="tiny-tp-socket-support"></a>
+<h3>Tiny TP socket support</h3>
+<p>Tiny TP (Tiny Transport Protocol) is an IrDA protocol that provides flow control on top of the IrLMP (Infrared Link Management Protocol) layer. Qt Extended provides support for Tiny TP client and server sockets through the <a href="qirsocket.html">QIrSocket</a> and <a href="qirserver.html">QIrServer</a> classes. For convenience, services published through <a href="qirserver.html">QIrServer</a> are automatically added to the local LM-IAS database.</p>
+<a name="object-push-profile-support"></a>
+<h3>Object Push Profile support</h3>
+<p>Qt Extended provides support for both client and server implementations of the Object Push Profile, a simple file transfer protocol built on top of the IrOBEX protocol. This includes specific support for vCards and vCalendar transfers as well as the transfer of arbitrary files.</p>
+<p>Object Push clients can be implemented by using <a href="qobexpushclient.html">QObexPushClient</a> together with <a href="qirsocket.html">QIrSocket</a>. Object Push servers can be implemented by using <a href="qobexpushservice.html">QObexPushService</a> together with <a href="qirserver.html">QIrServer</a>. See the <a href="qobexpushclient.html">QObexPushClient</a> and <a href="qobexpushservice.html">QObexPushService</a> class documentation for more details.</p>
+<p>Qt Extended has built-in client and server implementations of the Object Push Profile. End users can send and receive files over infrared; file transfer progress indicators are displayed to the user, and any received vCards can be saved to the address book.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCellBroadcast Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCellBroadcast Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QCellBroadcast class provides access to cell broadcast messages on GSM networks according to 3GPP TS 03.41. <a href="#details">More...</a></p>
+<pre>    #include &lt;QCellBroadcast&gt;</pre><p>Inherits <a href="qcomminterface.html">QCommInterface</a>.</p>
+<p>Inherited by <a href="qmodemcellbroadcast.html">QModemCellBroadcast</a>.</p>
+<ul>
+<li><a href="qcellbroadcast-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h3>Properties</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcellbroadcast.html#channels-prop">channels</a></b> : QList&lt;int&gt;</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcellbroadcast.html#QCellBroadcast">QCellBroadcast</a></b> ( const QString &amp; <i>service</i> = QString(), QObject * <i>parent</i> = 0, QCommInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qcellbroadcast.html#dtor.QCellBroadcast">~QCellBroadcast</a></b> ()</li>
+<li><div class="fn"/>QList&lt;int&gt; <b><a href="qcellbroadcast.html#channels-prop">channels</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qcellbroadcast.html#channels-prop">setChannels</a></b> ( const QList&lt;int&gt; &amp; <i>list</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcellbroadcast.html#broadcast">broadcast</a></b> ( const QCBSMessage &amp; <i>message</i> )</li>
+<li><div class="fn"/>void <b><a href="qcellbroadcast.html#setChannelsResult">setChannelsResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCellBroadcast class provides access to cell broadcast messages on GSM networks according to 3GPP TS 03.41.</p>
+<p>The cell broadcast service permits a number of unacknowledged general messages to be broadcast to all receivers within a particular region. Cell broadcast messages are broadcast to defined geographical areas known as cell broadcast areas. These areas may comprise of one or more cells, or may comprise the entire network operator's coverage area.</p>
+<p>Cell broadcast messages contain a channel number which allows simple filtering to be performed at the modem to reduce the amount of traffic that the client phone software needs to deal with. Client applications request the list of channels they are interested in with the <a href="qcellbroadcast.html#channels-prop">setChannels</a>() method. As messages on the selected channels arrive, they are delivered to client applications using the <a href="qcellbroadcast.html#broadcast">broadcast</a>() signal.</p>
+<p>See also <a href="qcbsmessage.html">QCBSMessage</a> and <a href="qcomminterface.html">QCommInterface</a>.</p>
+<hr />
+<h2>Property Documentation</h2>
+<h3 class="fn"><a name="channels-prop"></a>channels : <a href="qlist.html">QList</a>&lt;int&gt;</h3>
+<p>This property holds the current list of cell broadcast channels that are being listened to by the modem.</p>
+<p>Access functions:</p>
+<ul>
+<li><div class="fn"/><b>QList&lt;int&gt; channels () const</b></li>
+<li><div class="fn"/><b>virtual void setChannels ( const QList&lt;int&gt; &amp; <i>list</i> )</b></li>
+</ul>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCellBroadcast"></a>QCellBroadcast::QCellBroadcast ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new cell broadcast handling object for <i>service</i> and attach it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports cell broadcast. If there is more than one service that supports cell broadcast, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qcellbroadcast.html">QCellBroadcast</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QCellBroadcast"></a>QCellBroadcast::~QCellBroadcast ()</h3>
+<p>Destroy this cell broadcast handling object.</p>
+<h3 class="fn"><a name="broadcast"></a>void QCellBroadcast::broadcast ( const <a href="qcbsmessage.html">QCBSMessage</a> &amp; <i>message</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when a new cell broadcast <i>message</i> arrives.</p>
+<p>See also <a href="qcbsmessage.html">QCBSMessage</a>.</p>
+<h3 class="fn"><a name="setChannelsResult"></a>void QCellBroadcast::setChannelsResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of a <a href="qcellbroadcast.html#channels-prop">setChannels</a>() request.</p>
+<p>See also <a href="qcellbroadcast.html#channels-prop">setChannels</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

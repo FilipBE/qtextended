@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Quicklauncher</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Quicklauncher<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#issues-affecting-application-startup-times">Issues affecting application startup times</a></li>
+<li><a href="#quicklauncher-stub-application">Quicklauncher Stub Application</a></li>
+<ul><li><a href="#sxe-issues">SXE Issues</a></li>
+</ul>
+<li><a href="#launcher-integration">Launcher integration</a></li>
+<li><a href="#making-applications-quicklauncher-enabled">Making Applications quicklauncher Enabled</a></li>
+<li><a href="#initial-results">Initial Results</a></li>
+</ul>
+<a name="issues-affecting-application-startup-times"></a>
+<h2>Issues affecting application startup times</h2>
+<p>Early Qtopia versions suffered from slow startup times primarily for the following reasons:</p>
+<ul>
+<li>loading and linking dynamic libraries</li>
+<li>constructing <a href="qtopiaapplication.html">QtopiaApplication</a></li>
+<li>constructing widgets</li>
+<li>loading data files</li>
+</ul>
+<p>The <tt>quicklauncher</tt> functionality aims to eliminate 1, 2, and some of 3. Further information about speeding up application startup times can be found in <a href="syscust-writing-fast-apps.html">Writing Applications that Start Quickly</a>.</p>
+<a name="quicklauncher-stub-application"></a>
+<h2>Quicklauncher Stub Application</h2>
+<p>To eliminate loading/linking and <a href="qtopiaapplication.html">QtopiaApplication</a> construction, a stub application (called quicklauncher) will be run in advance of an application being requested. When the quicklauncher is started, it will:</p>
+<ul>
+<li>link to the most common libraries</li>
+<li>construct <a href="qtopiaapplication.html">QtopiaApplication</a></li>
+<li>pre-load the default font and initialize other data where possible</li>
+<li>execute the event loop and wait for a request to run an application</li>
+</ul>
+<p>When quicklauncher is requested to run an application, it will:</p>
+<ul>
+<li>drop all current LIDS/SXE credentials</li>
+<li>load the application plugin</li>
+<li>change identity to that of the requested application. This includes LIDS/SXE credentials, process listings and QCop channels</li>
+<li>run the application initialization function (which constructs the main widget)</li>
+<li>return to the event loop</li>
+</ul>
+<p>At this point, quicklauncher appears and should behave exactly as if the app had been started normally.</p>
+<a name="sxe-issues"></a>
+<h3>SXE Issues</h3>
+<p>The use of static global initializers in quicklaunch applications should be avoided where possible. The problem is that these fire before quicklauncher can confirm and switch to the identity of the application. A typical symptom is SXE errors reported for the quicklauncher process or for an invalid process.</p>
+<p>Static global initalizers can be used as long as they do not cause code that interacts with LIDS/SXE to be run. It is suggested to limit static global initializers to registration-type functions and to perform any further actions required once the main widget has been constructed.</p>
+<a name="launcher-integration"></a>
+<h2>Launcher integration</h2>
+<p>The <a href="quickexeapplicationlauncher.html">QuickExeApplicationLauncher</a> server task is responsible for ensuring enough instances of quicklauncher are running.</p>
+<p>When a request to launch an application is made:</p>
+<ul>
+<li><a href="quickexeapplicationlauncher.html">QuickExeApplicationLauncher</a> checks if it can launch the app</li>
+<li>If quicklauncher is running it is sent a message via QCop to become the application</li>
+<li>Otherwise the application is started manually (which causes quicklauncher to run and then become the application)</li>
+<li>If required new quicklauncher processes will be started</li>
+</ul>
+<p>If the server is running as root, it will set the priority of quicklauncher to low while it is being started to ensure that it does not take processor cycles needed by foreground processes. It will be given normal priority when a request to load a new application is received.</p>
+<a name="making-applications-quicklauncher-enabled"></a>
+<h2>Making Applications quicklauncher Enabled</h2>
+<p>To enable an application for quicklauncher, use the macros described in <a href="buildsystem/over-applications-1.html">Applications</a>.</p>
+<a name="initial-results"></a>
+<h2>Initial Results</h2>
+<p>The initial results of the design described above are:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Application</th><th>Qtopia 1.6&#x2e;0 (sec)</th><th>+ quicklauncher (sec)</th></tr></thead>
+<tr valign="top" class="odd"><td>Calendar</td><td>1.9</td><td>0.8</td></tr>
+<tr valign="top" class="even"><td>Contacts</td><td>2.2</td><td>1.1</td></tr>
+<tr valign="top" class="odd"><td>Email</td><td>2.4</td><td>1.2</td></tr>
+<tr valign="top" class="even"><td>Image Viewer</td><td>1.4</td><td>0.9</td></tr>
+<tr valign="top" class="odd"><td>Media Player</td><td>2.3</td><td>0.4/1.3*</td></tr>
+<tr valign="top" class="even"><td>Tasks</td><td>2.0</td><td>1.1</td></tr>
+<tr valign="top" class="odd"><td>Today</td><td>1.8</td><td>0.8</td></tr>
+<tr valign="top" class="even"><td>Clock</td><td>1.6</td><td>0.6</td></tr>
+</table></p>
+<p>* The Media Player delays its main GUI construction, so the initial window displays in 0.4 seconds and the full GUI is displayed in 1.3 seconds</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

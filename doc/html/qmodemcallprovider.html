@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QModemCallProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QModemCallProvider Class Reference<br /><span class="small-subtitle">[<a href="qtcellmodule.html">QtCellModule</a>]</span>
+</h1>
+<p>The QModemCallProvider class implements a mechanism for AT-based phone call providers to hook into the telephony system. <a href="#details">More...</a></p>
+<pre>    #include &lt;QModemCallProvider&gt;</pre><p>Inherits <a href="qphonecallprovider.html">QPhoneCallProvider</a>.</p>
+<ul>
+<li><a href="qmodemcallprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmodemcallprovider.html#AtdBehavior-enum">AtdBehavior</a></b> { AtdOkIsConnect, AtdOkIsDialing, AtdOkIsDialingWithStatus, AtdUnknown }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmodemcallprovider.html#QModemCallProvider">QModemCallProvider</a></b> ( QModemService * <i>service</i> )</li>
+<li><div class="fn"/><b><a href="qmodemcallprovider.html#dtor.QModemCallProvider">~QModemCallProvider</a></b> ()</li>
+<li><div class="fn"/>QAtChat * <b><a href="qmodemcallprovider.html#atchat">atchat</a></b> () const</li>
+<li><div class="fn"/>QModemCall * <b><a href="qmodemcallprovider.html#callForIdentifier">callForIdentifier</a></b> ( uint <i>id</i> ) const</li>
+<li><div class="fn"/>QModemCall * <b><a href="qmodemcallprovider.html#dialingCall">dialingCall</a></b> () const</li>
+<li><div class="fn"/>QModemCall * <b><a href="qmodemcallprovider.html#incomingCall">incomingCall</a></b> () const</li>
+<li><div class="fn"/>QSerialIODeviceMultiplexer * <b><a href="qmodemcallprovider.html#multiplexer">multiplexer</a></b> () const</li>
+<li><div class="fn"/>uint <b><a href="qmodemcallprovider.html#nextModemIdentifier">nextModemIdentifier</a></b> ()</li>
+<li><div class="fn"/>QModemService * <b><a href="qmodemcallprovider.html#service">service</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>5 public functions inherited from <a href="qphonecallprovider.html#public-functions">QPhoneCallProvider</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmodemcallprovider.html#hangupRemote">hangupRemote</a></b> ( QModemCall * <i>call</i> )</li>
+<li><div class="fn"/>void <b><a href="qmodemcallprovider.html#ringing">ringing</a></b> ( const QString &amp; <i>number</i>, const QString &amp; <i>callType</i>, uint <i>modemIdentifier</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qmodemcallprovider.html#abortDial">abortDial</a></b> ( uint <i>modemIdentifier</i>, QPhoneCall::Scope <i>scope</i> )</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#acceptCallCommand">acceptCallCommand</a></b> ( bool <i>otherActiveCalls</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#activateCallCommand">activateCallCommand</a></b> ( uint <i>modemIdentifier</i>, bool <i>otherActiveCalls</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#activateHeldCallsCommand">activateHeldCallsCommand</a></b> () const</li>
+<li><div class="fn"/>virtual QModemCallProvider::AtdBehavior <b><a href="qmodemcallprovider.html#atdBehavior">atdBehavior</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#deflectCallCommand">deflectCallCommand</a></b> ( const QString &amp; <i>number</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#dialServiceCommand">dialServiceCommand</a></b> ( const QDialOptions &amp; <i>options</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#dialVoiceCommand">dialVoiceCommand</a></b> ( const QDialOptions &amp; <i>options</i> ) const</li>
+<li><div class="fn"/>virtual QStringList <b><a href="qmodemcallprovider.html#gprsSetupCommands">gprsSetupCommands</a></b> () const</li>
+<li><div class="fn"/>virtual bool <b><a href="qmodemcallprovider.html#hasRepeatingRings">hasRepeatingRings</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#joinCallsCommand">joinCallsCommand</a></b> ( bool <i>detachSubscriber</i> ) const</li>
+<li><div class="fn"/>virtual bool <b><a href="qmodemcallprovider.html#partOfHoldGroup">partOfHoldGroup</a></b> ( const QString &amp; <i>type</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#putOnHoldCommand">putOnHoldCommand</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#releaseActiveCallsCommand">releaseActiveCallsCommand</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#releaseCallCommand">releaseCallCommand</a></b> ( uint <i>modemIdentifier</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#releaseHeldCallsCommand">releaseHeldCallsCommand</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#resolveCallMode">resolveCallMode</a></b> ( int <i>mode</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#resolveRingType">resolveRingType</a></b> ( const QString &amp; <i>type</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qmodemcallprovider.html#setBusyCommand">setBusyCommand</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 protected functions inherited from <a href="qphonecallprovider.html#protected-functions">QPhoneCallProvider</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<a name="protected-slots"></a>
+<h3>Protected Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qmodemcallprovider.html#resetModem">resetModem</a></b> ()</li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qphonecallprovider.html#signals">QPhoneCallProvider</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QModemCallProvider class implements a mechanism for AT-based phone call providers to hook into the telephony system.</p>
+<p>This class provides a number of methods, such as <a href="qmodemcallprovider.html#dialVoiceCommand">dialVoiceCommand</a>(), <a href="qmodemcallprovider.html#releaseCallCommand">releaseCallCommand</a>(), <a href="qmodemcallprovider.html#putOnHoldCommand">putOnHoldCommand</a>(), etc, that can be used to customize the AT commands that are used by <a href="qmodemcall.html">QModemCall</a> for specific operations. Modem vendor plug-ins override these methods in their own phone call provider.</p>
+<p>Client applications should use <a href="qphonecall.html">QPhoneCall</a> and <a href="qphonecallmanager.html">QPhoneCallManager</a> to make and receive phone calls. The QModemCallProvider class is intended for the phone server.</p>
+<p><a href="qmodemcall.html">QModemCall</a> instances are created by the <a href="qphonecallprovider.html#create">QModemCallProvider::create</a>() function. If a modem vendor plug-in needs to change some of the functionality in this class, they should do the following:</p>
+<ul>
+<li>Inherit from <a href="qmodemcall.html">QModemCall</a> and override the functionality that is different.</li>
+<li>Inherit from QModemCallProvider and override <a href="qphonecallprovider.html#create">QModemCallProvider::create</a>() to instantiate the new class that inherits from <a href="qmodemcall.html">QModemCall</a>.</li>
+</ul>
+<p>See the documentation for <a href="qmodemcall.html">QModemCall</a> for more information.</p>
+<p>See also <a href="qmodemcall.html">QModemCall</a>, <a href="qmodemdatacall.html">QModemDataCall</a>, <a href="qphonecallprovider.html">QPhoneCallProvider</a>, and <a href="qphonecallimpl.html">QPhoneCallImpl</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="AtdBehavior-enum"></a>enum QModemCallProvider::AtdBehavior</h3>
+<p>This enum defines the behavior of the <tt>ATD</tt> modem command when dialing voice calls.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QModemCallProvider::AtdOkIsConnect</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">When <tt>ATD</tt> reports <tt>OK</tt>, the call has connected.</td></tr>
+<tr><td valign="top"><tt>QModemCallProvider::AtdOkIsDialing</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">When <tt>ATD</tt> reports <tt>OK</tt>, the call is dialing, but not yet connected. The <tt>AT+CLCC</tt> command must be used to determine when it transitions from dialing to connected.</td></tr>
+<tr><td valign="top"><tt>QModemCallProvider::AtdOkIsDialingWithStatus</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">When <tt>ATD</tt> reports <tt>OK</tt>, the call is dialing, but not yet connected. The modem vendor plug-in will call setState() on the call when it transitions to connected.</td></tr>
+<tr><td valign="top"><tt>QModemCallProvider::AtdUnknown</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">When <tt>ATD</tt> reports <tt>OK</tt>, it is unknown whether the call is dialing or connected and <tt>AT+CLCC</tt> must be used to determine the status. This is the default.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QModemCallProvider"></a>QModemCallProvider::QModemCallProvider ( <a href="qmodemservice.html">QModemService</a> * <i>service</i> )</h3>
+<p>Constructs a new AT-based phone call provider for <i>service</i>.</p>
+<h3 class="fn"><a name="dtor.QModemCallProvider"></a>QModemCallProvider::~QModemCallProvider ()</h3>
+<p>Destroys this AT-based phone call provider and all <a href="qphonecallimpl.html">QPhoneCallImpl</a> instances associated with it.</p>
+<h3 class="fn"><a name="abortDial"></a>void QModemCallProvider::abortDial ( <a href="qtglobal.html#uint-typedef">uint</a> <i>modemIdentifier</i>, <a href="qphonecall.html#Scope-enum">QPhoneCall::Scope</a> <i>scope</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Aborts an <tt>ATD</tt> dial command for the call <i>modemIdentifier</i>. The <i>scope</i> parameter is passed from <a href="qphonecallimpl.html#hangup">QModemCall::hangup</a>().</p>
+<p>The default implementation calls <a href="qmodemcallprovider.html#atchat">atchat</a>()-&gt;abortDial(), followed by either <tt>AT+CHLD=1</tt> or <tt>AT+CHLD=1n</tt> depending upon the value of <i>scope</i>.</p>
+<p>See also <a href="qatchat.html#abortDial">QAtChat::abortDial</a>() and <a href="qphonecallimpl.html#hangup">QModemCall::hangup</a>().</p>
+<h3 class="fn"><a name="acceptCallCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::acceptCallCommand ( bool <i>otherActiveCalls</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to accept an incoming call. If <i>otherActiveCalls</i> is true, then there are other active calls within the system. The default implementation returns <tt>AT+CHLD=2</tt> if <i>otherActiveCalls</i> is true, or <tt>ATA</tt> otherwise.</p>
+<p>See also <a href="qmodemcallprovider.html#setBusyCommand">setBusyCommand</a>() and <a href="qphonecallimpl.html#accept">QModemCall::accept</a>().</p>
+<h3 class="fn"><a name="activateCallCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::activateCallCommand ( <a href="qtglobal.html#uint-typedef">uint</a> <i>modemIdentifier</i>, bool <i>otherActiveCalls</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to activate the call <i>modemIdentifier</i>. If <i>otherActiveCalls</i> is true, then there are other active calls within this system. The default implementation returns <tt>AT+CHLD=2modemIdentifier</tt> if <i>otherActiveCalls</i> is true, or <tt>AT+CHLD=2</tt> if the call being activated is the only one in the system.</p>
+<p>See also <a href="qmodemcallprovider.html#activateHeldCallsCommand">activateHeldCallsCommand</a>(), <a href="qmodemcallprovider.html#putOnHoldCommand">putOnHoldCommand</a>(), and <a href="qphonecallimpl.html#activate">QModemCall::activate</a>().</p>
+<h3 class="fn"><a name="activateHeldCallsCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::activateHeldCallsCommand () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to place the currently active calls on hold and activate the held calls. The default implementation returns <tt>AT+CHLD=2</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#activateCallCommand">activateCallCommand</a>(), <a href="qmodemcallprovider.html#putOnHoldCommand">putOnHoldCommand</a>(), and <a href="qphonecallimpl.html#activate">QModemCall::activate</a>().</p>
+<h3 class="fn"><a name="atchat"></a><a href="qatchat.html">QAtChat</a> * QModemCallProvider::atchat () const</h3>
+<p>Returns the AT chat handler for this modem call provider.</p>
+<h3 class="fn"><a name="atdBehavior"></a><a href="qmodemcallprovider.html#AtdBehavior-enum">QModemCallProvider::AtdBehavior</a> QModemCallProvider::atdBehavior () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the behavior of the <tt>ATD</tt> modem command when dialing voice calls.</p>
+<p>The defined behavior in 3GPP TS 27.007 is for the <tt>ATD</tt> command to immediately return to command mode when it has a trailing semi-colon (i.e&#x2e; <tt>ATDnumber;</tt>), even if the call has not yet connected. Not all modems support this correctly.</p>
+<p>This function can be used to alter how the system uses the <tt>ATD</tt> command when dialing voice calls to accommodate non-standard modems.</p>
+<p><tt>AtdOkIsConnect</tt> indicates that <tt>ATD</tt> blocks until the call has connected before reporting <tt>OK</tt>. <tt>AtdOkIsDialing</tt> and <tt>AtdOkIsDialingWithStatus</tt> indicates that the modem obeys 3GPP TS 27.007 and returns immediately to command mode.</p>
+<p>In the case of <tt>AtdOkIsDialing</tt>, the <tt>AT+CLCC</tt> command is polled to determine when the call transitions from dialing to connected. The modem vendor plug-in can avoid polling if it has call status tracking. In that case it should return <tt>AtdOkIsDialingWithStatus</tt> from this function and call setState() once the transition occurs.</p>
+<p><tt>AtdUnknown</tt> indicates that it is not known which of these modes is supported by the modem. A separate <tt>AT+CLCC</tt> command is used to determine what state the call is actually in once <tt>ATD</tt> reports <tt>OK</tt>.</p>
+<p>The default implementation returns <a href="qmodemcallprovider.html#AtdBehavior-enum">AtdUnknown</a>.</p>
+<p>See also <a href="qmodemcallprovider.html#AtdBehavior-enum">QModemCallProvider::AtdBehavior</a>.</p>
+<h3 class="fn"><a name="callForIdentifier"></a><a href="qmodemcall.html">QModemCall</a> * QModemCallProvider::callForIdentifier ( <a href="qtglobal.html#uint-typedef">uint</a> <i>id</i> ) const</h3>
+<p>Returns the phone call associated with modem identifier <i>id</i>. Returns null if there is no such call.</p>
+<h3 class="fn"><a name="deflectCallCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::deflectCallCommand ( const <a href="qstring.html">QString</a> &amp; <i>number</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to deflect the incoming call to <i>number</i>. The default implementation returns <tt>AT+CTFR=number</tt>.</p>
+<p>See also <a href="qphonecallimpl.html#transfer">QModemCall::transfer</a>().</p>
+<h3 class="fn"><a name="dialServiceCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::dialServiceCommand ( const <a href="qdialoptions.html">QDialOptions</a> &amp; <i>options</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to dial the supplementary service specified by <i>options</i>. The default implementation returns <tt>ATDnumber</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#dialVoiceCommand">dialVoiceCommand</a>().</p>
+<h3 class="fn"><a name="dialVoiceCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::dialVoiceCommand ( const <a href="qdialoptions.html">QDialOptions</a> &amp; <i>options</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to dial the voice call specified by <i>options</i>. The default implementation returns <tt>ATDnumber[i][g];</tt> where the <tt>i</tt> flag indicates the caller ID disposition and the <tt>g</tt> flag indicates the closed user group disposition.</p>
+<p>See also <a href="qdialoptions.html#number">QDialOptions::number</a>(), <a href="qdialoptions.html#callerId">QDialOptions::callerId</a>(), <a href="qdialoptions.html#closedUserGroup">QDialOptions::closedUserGroup</a>(), and <a href="qmodemcallprovider.html#dialServiceCommand">dialServiceCommand</a>().</p>
+<h3 class="fn"><a name="dialingCall"></a><a href="qmodemcall.html">QModemCall</a> * QModemCallProvider::dialingCall () const</h3>
+<p>Returns the phone call object associated with the current dialing or alerting call. Returns null if there is no such call.</p>
+<p>See also <a href="qmodemcallprovider.html#incomingCall">incomingCall</a>().</p>
+<h3 class="fn"><a name="gprsSetupCommands"></a><a href="qstringlist.html">QStringList</a> QModemCallProvider::gprsSetupCommands () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT commands to use to set up a GPRS session. The returned list should not contain <tt>AT+CGDCONT</tt> and <tt>ATD*99***1#</tt> as these commands are automatically inserted. The default Implementation returns <tt>AT+CGATT=1</tt>.</p>
+<h3 class="fn"><a name="hangupRemote"></a>void QModemCallProvider::hangupRemote ( <a href="qmodemcall.html">QModemCall</a> * <i>call</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Called by the modem vendor plug-in to indicate that it in determined that <i>call</i> was hung up remotely. This is usually called in response to a proprietary unsolicited result code.</p>
+<p>If <i>call</i> is null, then the modem vendor plug-in has determined that the active call has hung up but it was unable to be any more precise than that.</p>
+<p>See also <a href="qphonecallimpl.html#hangup">QModemCall::hangup</a>().</p>
+<h3 class="fn"><a name="hasRepeatingRings"></a>bool QModemCallProvider::hasRepeatingRings () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns true if the modem automatically re-sends <tt>RING</tt> every few seconds while a call is incoming, and stops sending <tt>RING</tt> if the caller hangs up. Returns false if the modem does not resend <tt>RING</tt> every few seconds and instead uses some other mechanism to notify Qt Extended that a remote hangup has occurred. The default return value is true.</p>
+<p>See also <a href="qmodemcallprovider.html#ringing">ringing</a>().</p>
+<h3 class="fn"><a name="incomingCall"></a><a href="qmodemcall.html">QModemCall</a> * QModemCallProvider::incomingCall () const</h3>
+<p>Returns the phone call object associated with the current incoming call. Returns null if there is no incoming call.</p>
+<p>See also <a href="qmodemcallprovider.html#dialingCall">dialingCall</a>().</p>
+<h3 class="fn"><a name="joinCallsCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::joinCallsCommand ( bool <i>detachSubscriber</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to join the active and held calls into a single multi-party conversation. If <i>detachSubscriber</i> is true, then detach the local party from the conversation after joining the calls. Returns <tt>AT+CHLD=4</tt> if <i>detachSubscriber</i> is true, or <tt>AT+CHLD=3</tt> otherwise.</p>
+<p>See also <a href="qphonecallimpl.html#join">QModemCall::join</a>().</p>
+<h3 class="fn"><a name="multiplexer"></a><a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a> * QModemCallProvider::multiplexer () const</h3>
+<p>Returns the serial multiplexer for this modem call provider.</p>
+<h3 class="fn"><a name="nextModemIdentifier"></a><a href="qtglobal.html#uint-typedef">uint</a> QModemCallProvider::nextModemIdentifier ()</h3>
+<p>Allocates the next modem identifier in rotation that is not currently used by a call.</p>
+<h3 class="fn"><a name="partOfHoldGroup"></a>bool QModemCallProvider::partOfHoldGroup ( const <a href="qstring.html">QString</a> &amp; <i>type</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns true if a particular kind of call is part of the normal hold group. On some systems, video calls are separate from the call grouping for voice and fax calls. Returns true only for <tt>Voice</tt> by default. The <i>type</i> parameter indicates the type of call (<tt>Voice</tt>, <tt>Video</tt>, <tt>Fax</tt>, etc).</p>
+<h3 class="fn"><a name="putOnHoldCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::putOnHoldCommand () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to put the currently active calls on hold. The default implementation returns <tt>AT+CHLD=2</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#activateCallCommand">activateCallCommand</a>(), <a href="qmodemcallprovider.html#activateHeldCallsCommand">activateHeldCallsCommand</a>(), and <a href="qphonecallimpl.html#hold">QModemCall::hold</a>().</p>
+<h3 class="fn"><a name="releaseActiveCallsCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::releaseActiveCallsCommand () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to release all active calls. The default implementation returns <tt>AT+CHLD=1</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#releaseCallCommand">releaseCallCommand</a>() and <a href="qmodemcallprovider.html#releaseHeldCallsCommand">releaseHeldCallsCommand</a>().</p>
+<h3 class="fn"><a name="releaseCallCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::releaseCallCommand ( <a href="qtglobal.html#uint-typedef">uint</a> <i>modemIdentifier</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to release the call <i>modemIdentifier</i>. The default implementation returns <tt>AT+CHLD=1modemIdentifier</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#releaseActiveCallsCommand">releaseActiveCallsCommand</a>() and <a href="qmodemcallprovider.html#releaseHeldCallsCommand">releaseHeldCallsCommand</a>().</p>
+<h3 class="fn"><a name="releaseHeldCallsCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::releaseHeldCallsCommand () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to release all held calls. The default implementation returns <tt>AT+CHLD=0</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#releaseCallCommand">releaseCallCommand</a>() and <a href="qmodemcallprovider.html#releaseActiveCallsCommand">releaseActiveCallsCommand</a>().</p>
+<h3 class="fn"><a name="resetModem"></a>void QModemCallProvider::resetModem ()&nbsp;&nbsp;<tt> [virtual protected slot]</tt></h3>
+<p>Called when the modem resets after PIN entry, to initialize the call provider.</p>
+<h3 class="fn"><a name="resolveCallMode"></a><a href="qstring.html">QString</a> QModemCallProvider::resolveCallMode ( int <i>mode</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Resolves a call <i>mode</i> as reported by the <tt>AT+CLCC</tt> command.</p>
+<p>See also <a href="qmodemcallprovider.html#resolveRingType">resolveRingType</a>().</p>
+<h3 class="fn"><a name="resolveRingType"></a><a href="qstring.html">QString</a> QModemCallProvider::resolveRingType ( const <a href="qstring.html">QString</a> &amp; <i>type</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Resolves a call type on a &quot;+CRING&quot; notification into the particular type of call that it represents. The <i>type</i> is guaranteed to be in lower case on entry to this function.</p>
+<p>See also <a href="qmodemcallprovider.html#resolveCallMode">resolveCallMode</a>().</p>
+<h3 class="fn"><a name="ringing"></a>void QModemCallProvider::ringing ( const <a href="qstring.html">QString</a> &amp; <i>number</i>, const <a href="qstring.html">QString</a> &amp; <i>callType</i>, <a href="qtglobal.html#uint-typedef">uint</a> <i>modemIdentifier</i> = 0 )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Sets the ringing state in the phone library, indicating a call from <i>number</i> of the type <i>callType</i>. Modem vendor plug-ins call this if the modem reports incoming calls with something other than <tt>RING</tt> or <tt>+CRING</tt>.</p>
+<p>Either <i>number</i> or <i>callType</i> may be empty indicating that the information is not available yet. The information may become available shortly on a different unsolicited result code (e.g&#x2e; <tt>+CLIP</tt> or <tt>+CCWA</tt>).</p>
+<p>If <i>modemIdentifier</i> is not zero, it indicates the modem identifier for the call. If <i>modemIdentifier</i> is zero, the next available modem identifier is used.</p>
+<p>See also <a href="qphonecallimpl.html#callType">QModemCall::callType</a>(), <a href="qphonecallimpl.html#number">QModemCall::number</a>(), <a href="qmodemcall.html#modemIdentifier">QModemCall::modemIdentifier</a>(), and <a href="qmodemcallprovider.html#hasRepeatingRings">hasRepeatingRings</a>().</p>
+<h3 class="fn"><a name="service"></a><a href="qmodemservice.html">QModemService</a> * QModemCallProvider::service () const</h3>
+<p>Returns the modem service that this call provider is associated with.</p>
+<h3 class="fn"><a name="setBusyCommand"></a><a href="qstring.html">QString</a> QModemCallProvider::setBusyCommand () const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Returns the AT command to use to reject the incoming call and set the busy state for the caller. The default implementation returns <tt>AT+CHLD=0</tt>.</p>
+<p>See also <a href="qmodemcallprovider.html#acceptCallCommand">acceptCallCommand</a>() and <a href="qphonecallimpl.html#hangup">QModemCall::hangup</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

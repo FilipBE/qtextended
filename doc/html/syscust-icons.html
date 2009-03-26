@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Images and Icons</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Images and Icons<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#images">Images</a></li>
+<li><a href="#icons">Icons</a></li>
+<li><a href="#installing-custom-icons">Installing Custom Icons</a></li>
+</ul>
+<a name="images"></a>
+<h2>Images</h2>
+<p>Qt Extended can be configured with image codecs builtin, or extened via plugins (<a href="qimageioplugin.html">QImageIOPlugin</a>). Standard Qt Extended configurations include support for PNG, JPEG, SVG and <a href="qpicture.html">QPicture</a> image formats. <a href="qpicture.html">QPicture</a> is the format written by the <a href="qpicture.html#save">QPicture::save</a>() function.</p>
+<p>SVG images are preferred wherever resolution independence is desirable. Almost all images shipped with Qt Extended are SVG images since Qt Extended runs on a large variety of displays with different resolutions and physical sizes. Qt Extended will automatically convert SVG images to <a href="qpicture.html">QPicture</a> images at install time as <a href="qpicture.html">QPicture</a> format files are faster to load than SVG images.</p>
+<p>Images are normally located in the <tt>pics/&lt;appname&gt;</tt> directory.</p>
+<p>To load an image within Qt Extended, use the <tt>:image</tt> reference, for example to load the <tt>foo</tt> image:</p>
+<pre>    QImage image(&quot;:image/foo&quot;).</pre>
+<a name="icons"></a>
+<h2>Icons</h2>
+<p>Icons are a special type of image. They are often required at different (standard) sizes and in different states (enabled vs. disabled). <a href="qicon.html">QIcon</a> takes care of loading, scaling and any necessary post-processing of the image. Qt Extended also caches rendered icons of standard sizes in the global cache. A standard icon size is one of <a href="qstyle.html#PixelMetric-enum">QStyle::PM_SmallIconSize</a>, <a href="qstyle.html#PixelMetric-enum">QStyle::PM_LargeIconSize</a>, <a href="qstyle.html#PixelMetric-enum">QStyle::PM_ListViewIconSize</a>.</p>
+<p>It is recommended that icons be used for standard Qt Extended widgets, e.g&#x2e; <a href="qpushbutton.html">QPushButton</a>, <a href="qlistview.html">QListView</a>, <a href="qaction.html">QAction</a>, etc. The Qt API encourages this usage by requiring <a href="qicon.html">QIcon</a> parameters, rather than <a href="qimage.html">QImage</a> or <a href="qpixmap.html">QPixmap</a>.</p>
+<p>In the Qt Extended source, SVG icons are located in the <tt>pics/icons/scalable/</tt> or <tt>pics/&lt;appname&gt;/icons/scalable/</tt> directories. The <tt>scalable</tt> part of the path is stripped out during installation, so they appear in, e.g&#x2e; <tt>/opt/Qtopia/pics/icons/</tt> on the device.</p>
+<p>Standard raster images are placed in <tt>pics/icons/&lt;SxS&gt;/</tt> or <tt>pics/&lt;appname&gt;/icons/&lt;SxS&gt;/</tt> where <tt>&lt;SxS&gt;</tt> is the size of the image, e.g&#x2e; 16x16, 22x22. The size installed is determined by the <tt>-iconsize</tt> configure parameter. The <tt>SxS</tt> size hint will be stripped out of the path when the image is installed.</p>
+<p>When installing icons the installation process will first look for an SVG image, then an image of the size specified, and finally scale down a larger image to the desired size. Note that a smaller image will never be scaled up. For example, consider the following files in the source directory:</p>
+<pre>    pics/icons/22x22/foo.png
+    pics/icons/22x22/bar.png
+    pics/icons/scalable/bar.svg</pre>
+<p>If Qt Extended is configured with <tt>-iconsize 16</tt> the installed image will have:</p>
+<pre>    pics/icons/foo.png
+    pics/icons/bar.pic</pre>
+<p>where foo.png is 16x16 pixels in size. Note also that the SVG image has been converted to a <a href="qpicture.html">QPicture</a>.</p>
+<p>To load an icon within Qt Extended, use the <tt>:icon</tt> reference, for example to load the <tt>bar</tt> icon:</p>
+<pre>    QIcon icon(&quot;:icon/bar&quot;).</pre>
+<a name="installing-custom-icons"></a>
+<h2>Installing Custom Icons</h2>
+<p>Custom icons can be installed as part of a Qt Extended <a href="syscust-theming.html">Theme</a>. The <a href="tut-themefiles.html#configtheme">Theme Configuration File</a> includes an <tt>IconPath</tt> that will be searched before standard system locations. This allows a theme to override any icon installed on the device. The directory structure of the IconPath must mirror that of the standard system path, i.e&#x2e; any replacement image must have the same name and relative location as the image being replaced.</p>
+<p>For example, to replace <tt>pics/icons/cancel.pic</tt> with a new version supplied with the <tt>animal</tt> theme, the icon could be located in:</p>
+<pre>    pics/themes/animal/pics/icons/cancel.svg</pre>
+<p>with an IconPath of:</p>
+<pre>    IconPath=&quot;pics/themes/animal/pics&quot;</pre>
+<p>See also <a href="files.html">File System Standards</a>, <a href="qicon.html">QIcon</a>, and <a href="qimage.html">QImage</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

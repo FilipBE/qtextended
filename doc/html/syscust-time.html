@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Time on an Embedded Device</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Time on an Embedded Device<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#external-time-sources">External Time Sources</a></li>
+<li><a href="#install-required-time-conversion-files">Install Required Time Conversion files</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>For a device to keep correct time with Qt Extended requires the following:</p>
+<ol type="1">
+<li>the kernel must support a Real-Time Clock (RTC) interface and be built with the correct driver for the device RTC.</li>
+<li>the Linux distribution must contain <tt>/sbin/hwclock</tt> that accepts the <tt>-s</tt> and <tt>-w</tt> parameters.</li>
+<li>boot scripts set system-time from hardware-time on startup <tt>/sbin/hwclock -s</tt>.</li>
+</ol>
+<p><b>Note:</b> These processes should be tested on the device prior to Qt Extended controlling them.</p>
+<a name="external-time-sources"></a>
+<h2>External Time Sources</h2>
+<p>Devices may that have readily available external time sources, such as:</p>
+<ul>
+<li>GSM Cell Tower Time</li>
+<li>NTP IP Network Time</li>
+</ul>
+<p>Such devices should report such updates by sending a <tt>storeExternalSource(QString,uint,int,int)</tt> message to the <a href="timeupdateservice.html">TimeUpdate</a> service.</p>
+<p>Currently, only one external source is supported.</p>
+<p>If no external source is available, the user will need to set the time shortly after start-up, and the RTC will need to be sufficiently reliable.</p>
+<a name="install-required-time-conversion-files"></a>
+<h2>Install Required Time Conversion files</h2>
+<p>Qt Extended requires Time Conversion data such as in <tt>&lt;qt-extended-root-dir&gt;/etc/zoneinfo</tt> to be on the device. To install the Time Conversion data files either:</p>
+<ol type="1">
+<li>Create a symbolic link to the Time Conversion data files provided by Qt Extended, for example, on the device run:<pre>    if [ ! -d /usr/share/zoneinfo ]; then ln -s /opt/Qtopia/etc/zoneinfo /usr/share/zoneinfo; fi</pre>
+</li>
+<li>Create a symbolic link to the Time Conversion data files provided by the device's environment, for example, on the device run:<pre>    if [ -d /usr/share/zoneinfo ]; then rm -rf /opt/Qtopia/etc/zoneinfo; ln -s /usr/share/zoneinfo /opt/Qtopia/etc/zoneinfo ; fi</pre>
+</li>
+<li>If the Time Conversion data cannot be uploaded to the device's root file system modify the value of <tt>QTOPIA_ZONEINFO_PATH</tt> in the device's <tt>custom.h</tt> to point to where the Time Conversion data files are stored.</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

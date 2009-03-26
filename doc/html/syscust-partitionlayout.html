@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Device Partition Layout</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Device Partition Layout<br /><span class="subtitle"></span>
+</h1>
+<a name="why-partition-internal-devices"></a>
+<h2>Why Partition Internal Devices?</h2>
+<p>Partitioning internal storage devices provides a several benefits, including:</p>
+<ul>
+<li>separation of system software, user installed software and user data</li>
+<li>selection of file systems used optimized for each task</li>
+<li>the ability to use a combination of read-only and read-write file systems.</li>
+</ul>
+<p>The file system type, size and number of partitions used in a device depends on several factors and can be restricted by the underlying hardware. For example the <tt>jffs2</tt> file system is only supported on <tt>mtd</tt> block devices.</p>
+<p>Other factors that determine the file system type include:</p>
+<ul>
+<li>whether the contents change frequently</li>
+<li>how robust to corruption does the file system need to be</li>
+<li>does the contents need to be retained over reboots</li>
+<li>is there a performance or cost benefit in compressing the data?</li>
+</ul>
+<p>System software changes infrequently and can be efficiently stored in a compressed read-only file system such as <tt>cramfs</tt> or <tt>squashfs</tt>. Read-only compressed file systems have better compression than compressed read-write file systems and are typically optimized for decompression performance. Additionally read-only file systems are less susceptible to corruption.</p>
+<p>Journaling file systems, such as <tt>ext3</tt>, are more robust and less susceptible to corruption that file systems without journaling. However, there is a performance penalty for maintaining the journal.</p>
+<p>RAM discs are typically used for temporary storage, they eliminate the need for an extra read-write partition and do not contribute to write cycles to internal flash.</p>
+<p>The size of each partition is determined by the expected size of it contents and whether additional space should be reserved in each partition for future software expansion.</p>
+<p>The size of user-data partitions is dependent on the targeted use case of the device. For example, low-end phone devices with limited address book and message data would need only a few MB of space allocated for the User Documents and Settings partition. Whereas a Media Playback device would typically have a User Documents and Settings partition in excess of 1GB for storing media files.</p>
+<a name="typical-partition-layout"></a>
+<h2>Typical Partition Layout</h2>
+<p>A typical Qt Extended device contains the following partitions:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Contents</th><th>Path</th><th>Size</th><th>Mode</th><th>File System</th></tr></thead>
+<tr valign="top" class="odd"><td>System Software</td><td><tt>/</tt></td><td>less than 10MB</td><td>read-only</td><td>cramfs</td></tr>
+<tr valign="top" class="even"><td>UI Software</td><td><tt>/opt/Qtopia</tt></td><td>greater than 20MB</td><td>read-only</td><td>cramfs</td></tr>
+<tr valign="top" class="odd"><td>User Documents and Settings</td><td><tt>/home</tt></td><td>at least 5MB</td><td>read-write</td><td>jffs2, ext2, ext3</td></tr>
+<tr valign="top" class="even"><td>Temporary Storage</td><td><tt>/var</tt></td><td>500KB</td><td>read-write</td><td>tmpfs</td></tr>
+<tr valign="top" class="odd"><td>Temporary Storage</td><td><tt>/tmp</tt></td><td>0</td><td>symbolic link to <tt>/var/tmp</tt></td><td>tmpfs</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Create an Input method Plug-in that Modifies Keyboard Input</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Create an Input method Plug-in that Modifies Keyboard Input<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#creating-a-text-input-filter">Creating a Text Input Filter</a></li>
+<li><a href="#creating-the-containing-plug-in">Creating the Containing Plug-in</a></li>
+</ul>
+<a name="creating-a-text-input-filter"></a>
+<h2>Creating a Text Input Filter</h2>
+<p>This is a very simple example of how to write a composing input method, the code described can be found in <tt>&lt;qt-extended-root-dir&gt;/examples/inputmethods/composing</tt>.</p>
+<p>Qt for Embedded Linux provides the <a href="qwsinputmethod.html">QWSInputMethod</a> class to allow modification of keyboard or pointer input to generate text. At a minimum you will need to provide an implementation for one of the two <tt>filter</tt> functions available depending on whether you intend to filter mouse or keyboard input. You will also need to provide an implementation for the <tt>reset</tt> function.</p>
+<p>In our example we filter keyboard so that pressing the <tt>shift</tt> key will change the case of the most recently typed letter.</p>
+<pre>    #include &lt;Qt/qwindowsystem_qws.h&gt;
+    #include &lt;qtopia/inputmethodinterface.h&gt;
+
+    class ComposeIM : public QWSInputMethod
+    {
+    public:
+        ComposeIM();
+        ~ComposeIM();
+
+        void reset();
+        bool filter(int unicode, int keycode, int modifiers, bool isPress, bool autoRepeat);
+
+        void setActive(bool);
+        bool active() const { return isActive; }
+
+    private:
+        QString lastText;
+        bool upper;
+        bool isActive;
+    };</pre>
+<p>In addition to the <tt>filter</tt> and <tt>reset</tt> functions, we also have an <tt>Active</tt> property used to turn the input method on and off. The string variable <tt>lastText</tt> stores the previously typed letter and <tt>upper</tt> stores the case of the letter.</p>
+<pre>    bool ComposeIM::filter(int unicode, int keycode, int modifiers,
+            bool isPress, bool autoRepeat)
+    {
+        Q_UNUSED(autoRepeat);
+
+        if (!isActive)
+            return false;
+
+        if ((keycode &gt; Qt::Key_Z || keycode &lt; Qt::Key_A) &amp;&amp; keycode != Qt::Key_Shift) {
+            reset();
+            return false;
+        }
+
+        if (isPress) {
+            if (keycode == Qt::Key_Shift) {
+                lastText = upper ? lastText.toLower() : lastText.toUpper();
+                upper = !upper;
+                sendPreeditString(lastText, 0);
+            } else {
+                if (!lastText.isEmpty())
+                    sendCommitString(lastText);
+
+                lastText = QChar(unicode);
+                upper = (modifiers &amp; Qt::ShiftModifier) == Qt::ShiftModifier;
+                sendPreeditString(lastText, 0);
+            }
+        }
+        return true;
+    }</pre>
+<p>The <tt>filter</tt> function is called for every key that is pressed and returns:</p>
+<ul>
+<li><tt>false</tt>: if it is not going to filter the key</li>
+<li><tt>true</tt>: if it is going to filter the key.</li>
+</ul>
+<p>The function for this example only filters when <tt>active</tt> and the key is <i>A-Z</i> or <i>Shift</i>.</p>
+<p>The call to <tt>sendPreeditString</tt> sends text to the current text input widget and indicates to the input widget that it has not been confirmed by the user. Generally Qt text input widget will underline pre-edit text. <tt>sendCommitString</tt> sends text to the current text input widget and indicates to the widget that the text has been confirmed by the user. For our input method pressing <i>Shift</i> will send the previous text again with a different text. Pressing the keys <i>A-Z</i> will confirm the text for the last key pressed and send a new pre-edit text. Any other key will result in the input method resetting, which will clear the pre-edit text.</p>
+<p>See also: <a href="qwsinputmethod.html#sendPreeditString">QWSInputMethod::sendPreeditString</a>(), <a href="qwsinputmethod.html#sendCommitString">QWSInputMethod::sendCommitString</a>() for more information.</p>
+<pre>    void ComposeIM::reset()
+    {
+        if (!lastText.isEmpty())
+            sendCommitString(lastText);
+        upper = false;
+        lastText = QString::null;
+    }</pre>
+<p>The <tt>reset</tt> function is called when the focus changes between widgets. Our input method example will confirm any currently tentative text and then reset to its initial state. In the previous function we saw that sending a key that was not <i>A-Z</i> or <i>Shift</i> would result in a reset, and then not filter the key. For this input method that means a space will confirm the character, and then as it is unfiltered will then send the space so that both the letter and the space arrive at the input widget in the correct order. More importantly though, a <i>Backspace</i> will cause the tentative character to be committed then deleted. It is important to ensure your input method handles keys like <i>Backspace</i> correctly.</p>
+<pre>    ComposeIM::ComposeIM()
+        : QWSInputMethod(),
+        upper(false), isActive(false)
+    {
+    }
+
+    ComposeIM::~ComposeIM()
+    {
+    }
+
+    void ComposeIM::setActive(bool b)
+    {
+        if (b &amp;&amp; b != isActive) {
+            lastText.clear();
+            upper = false;
+        }
+        isActive = b;
+    }</pre>
+<p>The remaining functions merely manage the state of the input method. It is possible to use this class in a stand-alone Qt for Embedded Linux application by constructing it and passing it to <a href="qwsserver.html#setCurrentInputMethod">QWSServer::setCurrentInputMethod</a>(). We will now show how to integrate the class into a Qt Extended Input Method plug-in.</p>
+<a name="creating-the-containing-plug-in"></a>
+<h2>Creating the Containing Plug-in</h2>
+<p>Qt Extended allows for input methods to be loaded via plug-ins. This means you can extend the input capabilities of Qt Extended after it has been installed. However since Qt Extended provides for a range of different methods to provide text input, the plug-in also needs to describe the capabilities and requirements of the input method.</p>
+<pre>    #include &lt;qtopia/inputmethodinterface.h&gt;
+    class ComposeIM;
+
+    class ComposeImpl : public QtopiaInputMethod
+    {
+
+    public:
+        ComposeImpl(QObject *parent = 0);
+        ~ComposeImpl();
+
+
+        QString name() const;
+        QString identifier() const;
+
+        QIcon icon() const;
+        QString version() const;
+
+        int properties() const;
+
+        State state() const;
+
+        void reset();
+
+        QWSInputMethod *inputModifier();
+
+        void setHint(const QString &amp;, bool);
+    private:
+        ComposeIM *input;
+        QIcon icn;
+        ulong ref;
+    };</pre>
+<p>The following table and the <a href="qtopiainputmethod.html">QtopiaInputMethod</a> class documentation describe the functions used:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Function</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>name</tt></td><td>Returns a string identifying the plug-in that is translated for display to the user of the device.</td></tr>
+<tr valign="top" class="even"><td><tt>identifier</tt></td><td>Returns a string identifying the plugin-in that is not translated but is suitable for identifying the plug-in.</td></tr>
+<tr valign="top" class="odd"><td><tt>icon</tt></td><td>Returns an <tt>Icon</tt> to display to the user while the plug-in is active.</td></tr>
+<tr valign="top" class="even"><td><tt>version</tt></td><td>Returns a version string describing the version of the plug-in.</td></tr>
+<tr valign="top" class="odd"><td>properties</td><td>describes the capabilities and requirements of the plug-in. The return value is determined by the content of the flags provided in <tt>QtopiaInputMethod::Properties</tt></td></tr>
+<tr valign="top" class="even"><td><tt>state</tt></td><td>Returns whether the input method plug-in is:<ul>
+<li><tt>QtopiaInputMethod::Ready</tt>: processing text input</li>
+<li><tt>QtopiaInputMethod::Sleeping</tt>: not processing text input.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>reset</tt></td><td>called when the plug-in is unloaded or needs to be returned to its initial state by the server. It resets the plug-in to its state at construction.</td></tr>
+<tr valign="top" class="even"><td><tt>inputModifier</tt></td><td>Returns the <a href="qwsinputmethod.html">QWSInputMethod</a> object if the plug-in modifes keyboard or mouse input to generate text for a text input widget.</td></tr>
+</table></p>
+<p><b>Note:</b> While <tt>setHint</tt> does not have to be re-implemented it is highly recommended. Qt Extended calls this function with a:</p>
+<ul>
+<li>null <tt>QString</tt> when there is no widget to receive text input</li>
+<li>string describing the input when a text input widget has focus.</li>
+</ul>
+<p>Typical types of input are:</p>
+<ul>
+<li><i>text</i>: for text made up mostly of dictionary words</li>
+<li><i>words</i>: for text that does not appear in the dictionary like passwords or names</li>
+<li><i>numbers</i>: for numbers</li>
+<li><i>phone</i>: for phone numbers</li>
+</ul>
+<p>However, applications can also define custom hints such as <i>email</i> so the input method should be able to handle hints it does not recognize and have some fall back mode if it is going to attempt to do more than simply activate on a non-null hint. In this example we will activate the input method only for the <i>text</i> and <i>words</i> hints.</p>
+<p>Apart from the <i>input</i> and <i>icon</i> properties specific to this example, an <tt>unsigned long</tt> <i>ref</i> property is required for all Qt Extended plug-ins. It is used to keep a reference of where the input method is used and when it can be safely unloaded.</p>
+<p>For a complete list of the composing input method plug-in implementation, see <tt>&lt;qt-extended-root-dir&gt;/examples/inputmethods/composing/composeimpl.cpp</tt>. This is a listing of the more critical code that needs to be included.</p>
+<pre>    ComposeImpl::ComposeImpl(QObject *parent)
+        : QtopiaInputMethod(parent), input(0), ref(0)
+        {
+        <span class="comment">// construct icon</span>
+        }</pre>
+<p><b>Note:</b> It is important to construct the plug-in with an appropriate parent and to set the value of <i>ref</i> to 0 in the constructor.</p>
+<pre>    QWSInputMethod *ComposeImpl::inputModifier( )
+    {
+        if ( !input )
+            input = new ComposeIM( );
+        return input;
+    }</pre>
+<p>Returns the <a href="qwsinputmethod.html">QWSInputMethod</a> provided by the plug-in. If it has not constructed one already it should construct it now.</p>
+<pre>    void ComposeImpl::setHint(const QString &amp;hint, bool)
+    {
+        inputModifier();
+        if (hint.isEmpty() || hint == &quot;numbers&quot; || hint == &quot;phone&quot;) {
+            if (input-&gt;active()) {
+                input-&gt;setActive(false);
+                emit stateChanged(Sleeping);
+            }
+        } else if (!input-&gt;active()) {
+            input-&gt;setActive(true);
+            emit stateChanged(Ready);
+        }
+    }
+
+    QtopiaInputMethod::State ComposeImpl::state() const
+    {
+        return (input &amp;&amp; input-&gt;active()) ? Ready : Sleeping;
+    }</pre>
+<p>As the example input method deals with the capitalization of text it should be inactive when the input required is either a number or a phone number. Custom hints might still require changing capitalization so the default is to be on if the hint is not recognized. The input method status is communicated to the server by the <tt>stateChanged()</tt> signal and the <tt>state()</tt> function.</p>
+<pre>    int ComposeImpl::properties() const
+    {
+        return RequireKeypad | InputModifier;
+    }</pre>
+<p>Our input method requires the device has keyboard or keypad input and also filters either keyboard/keypad or mouse events. This is represented by returning the combination of these flags for the properties. The properties of an input method are not expected to change.</p>
+<pre>    QTOPIA_EXPORT_PLUGIN(ComposeImpl)</pre>
+<p>This macro is required to provide the code required to implement the functions allowing the plug-in to be queried and loaded.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

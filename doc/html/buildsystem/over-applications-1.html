@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Applications</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Applications<br /><span class="subtitle"></span>
+</h1>
+<p>Qt Extended applications can be built in one of four ways.</p>
+<ul>
+<li>quicklaunch</li>
+<li>non-quicklaunch</li>
+<li>singleexec (quicklaunch)</li>
+<li>singleexec (non-quicklaunch)</li>
+</ul>
+<p>To facilitate switching between build modes, two macros are provided. They are to be used as follows (from examples/application/main.cpp):</p>
+<pre>    #include &quot;example.h&quot;
+    #include &lt;qtopiaapplication.h&gt;
+
+    QTOPIA_ADD_APPLICATION(QTOPIA_TARGET,Example)
+    QTOPIA_MAIN</pre>
+<p>The first argument to <a href="foo/../../qtopiaapplication.html#QTOPIA_ADD_APPLICATION">QTOPIA_ADD_APPLICATION</a>() must be a literal string that matches the binary name (ie. the value of TARGET from the qbuild.pro file). The build system defines <a href="def-qtopia-target-1.html">QTOPIA_TARGET</a> with the value of TARGET and it is recommended to use this macro. The second argument to <a href="foo/../../qtopiaapplication.html#QTOPIA_ADD_APPLICATION">QTOPIA_ADD_APPLICATION</a>() should be the name of your class. If you use the wrong value you will get a compile failure.</p>
+<p>Some applications cannot use the macros (eg. If you need to use a custom application class). This prevents the use of quicklauncher but you can still work with singleexec if you make some changes to your code. You need to have a main.cpp that looks something like this (from examples/manual_main/main.cpp):</p>
+<pre>    #include &quot;example.h&quot;
+    #include &lt;qtopiaapplication.h&gt;
+
+    #ifdef SINGLE_EXEC
+    QTOPIA_ADD_APPLICATION(QTOPIA_TARGET,exampleapp)
+    #define MAIN_FUNC main_exampleapp
+    #else
+    #define MAIN_FUNC main
+    #endif
+
+<span class="comment">    // This is the storage for the SXE key that uniquely identified this applicaiton.</span>
+<span class="comment">    // make will fail without this</span>!
+    QSXE_APP_KEY
+
+    int MAIN_FUNC( int argc, char **argv )
+    {
+        <span class="comment">// This is required to load the SXE key into memory</span>
+        QSXE_SET_APP_KEY(argv[0]);
+
+        QtopiaApplication a( argc, argv );
+
+        <span class="comment">// Set the preferred document system connection type</span>
+        QTOPIA_SET_DOCUMENT_SYSTEM_CONNECTION();
+
+        Example *mw = new Example();
+        a.setMainWidget(mw);
+        if ( mw-&gt;metaObject()-&gt;indexOfSlot(&quot;setDocument(QString)&quot;) != -1 ) {
+            a.showMainDocumentWidget();
+        } else {
+            a.showMainWidget();
+        }
+        int rv = a.exec();
+        delete mw;
+        return rv;
+    }</pre>
+<p>Note that the second argument to <a href="foo/../../qtopiaapplication.html#QTOPIA_ADD_APPLICATION">QTOPIA_ADD_APPLICATION</a>() is appended to main_ so that the main function has a unique name.</p>
+<p>Note that packages cannot contain quicklaunched applications. See <a href="over-packages-overview-1.html#package-limitations">Package Limitations</a> for more informtation.</p>
+<p>The project must declare what build styles it supports. It does this via the quicklaunch and singleexec CONFIG values. The following table illustrates.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Singleexec build?</th><th>quicklaunch</th><th>singleexec</th><th>result</th></tr></thead>
+<tr valign="top" class="odd"><td>no</td><td>no</td><td>no</td><td>regular application</td></tr>
+<tr valign="top" class="even"><td>no</td><td>yes</td><td>no</td><td>quicklaunch application</td></tr>
+<tr valign="top" class="odd"><td>yes</td><td>no</td><td>no</td><td>regular application (avoid using Qt and other Qtopia libs as they will be statically linked)</td></tr>
+<tr valign="top" class="even"><td>yes</td><td>no</td><td>yes</td><td>singleexec application (main function mechanism)</td></tr>
+<tr valign="top" class="odd"><td>yes</td><td>yes</td><td>yes</td><td>singleexec application (quicklaunch mechanism)</td></tr>
+</table></p>
+<p>See also <a href="overviews.html">Overviews</a>, <a href="conf-quicklaunch-1.html">quicklaunch</a>, <a href="conf-singleexec-1.html">singleexec</a>, <a href="def-qtopia-target-1.html">QTOPIA_TARGET</a>, <a href="foo/../../qtopiaapplication.html#QTOPIA_ADD_APPLICATION">QTOPIA_ADD_APPLICATION</a>(), <a href="foo/../../sxeprograminfo.html#QSXE_APP_KEY">QSXE_APP_KEY</a>, <a href="foo/../../qtopiaapplication.html#QTOPIA_SET_DOCUMENT_SYSTEM_CONNECTION">QTOPIA_SET_DOCUMENT_SYSTEM_CONNECTION</a>(), <a href="foo/../../quicklaunch.html">Quicklauncher</a>, <a href="foo/../../single-exec.html">Qt Extended Single Exec</a>, and <a href="over-project-files-1.html">Project Files</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

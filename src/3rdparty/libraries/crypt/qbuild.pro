@@ -1,0 +1,5 @@
+MODULE_NAME=crypt
+DEP.libs [
+    TYPE=DEPENDS PERSISTED SDK
+    EVAL="LIBS+=-lcrypt"
+]

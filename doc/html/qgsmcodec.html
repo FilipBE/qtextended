@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGsmCodec Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QGsmCodec Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QGsmCodec class represents the text codec for the GSM 7-bit encoding of Latin-1 <a href="#details">More...</a></p>
+<pre>    #include &lt;QGsmCodec&gt;</pre><p>Inherits <a href="qtextcodec.html">QTextCodec</a>.</p>
+<ul>
+<li><a href="qgsmcodec-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qgsmcodec.html#QGsmCodec">QGsmCodec</a></b> ( bool <i>noLoss</i> = false )</li>
+<li><div class="fn"/><b><a href="qgsmcodec.html#dtor.QGsmCodec">~QGsmCodec</a></b> ()</li>
+<li><div class="fn"/>virtual int <b><a href="qgsmcodec.html#mibEnum">mibEnum</a></b> () const</li>
+<li><div class="fn"/>virtual QByteArray <b><a href="qgsmcodec.html#name">name</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>12 public functions inherited from <a href="qtextcodec.html#public-functions">QTextCodec</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>char <b><a href="qgsmcodec.html#singleFromUnicode">singleFromUnicode</a></b> ( QChar <i>c</i> )</li>
+<li><div class="fn"/>QChar <b><a href="qgsmcodec.html#singleToUnicode">singleToUnicode</a></b> ( char <i>ch</i> )</li>
+<li><div class="fn"/>unsigned short <b><a href="qgsmcodec.html#twoByteFromUnicode">twoByteFromUnicode</a></b> ( QChar <i>ch</i> )</li>
+<li><div class="fn"/>QChar <b><a href="qgsmcodec.html#twoByteToUnicode">twoByteToUnicode</a></b> ( unsigned short <i>ch</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>13 static public members inherited from <a href="qtextcodec.html#static-public-members">QTextCodec</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QByteArray <b><a href="qgsmcodec.html#convertFromUnicode">convertFromUnicode</a></b> ( const QChar * <i>in</i>, int <i>length</i>, ConverterState * <i>state</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qgsmcodec.html#convertToUnicode">convertToUnicode</a></b> ( const char * <i>in</i>, int <i>length</i>, ConverterState * <i>state</i> ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>2 protected functions inherited from <a href="qtextcodec.html#protected-functions">QTextCodec</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QGsmCodec class represents the text codec for the GSM 7-bit encoding of Latin-1</p>
+<p>The GSM specifications for SMS use a compact 7-bit encoding to represent Latin-1 characters, compared to the more usual 8-bit ISO-8859-1 encoding used on many computer systems.</p>
+<p>The QGsmCodec class enables conversion back and forth between the GSM encoding and the normal Unicode encoding used by Qtopia.</p>
+<p>Application programs will rarely need to use this class, because the <a href="qsmsmessage.html">QSMSMessage</a> class automatically converts between 7-bit and Unicode encodings as necessary.</p>
+<p>If an application program does need to use this class, it should call <a href="qatutils.html#codec">QAtUtils::codec</a>() to obtain an instance of the codec. Constructing QGsmCodec objects directly is not recommended, due to how <a href="qtextcodec.html">QTextCodec</a> registers and deregisters codec implementations.</p>
+<p>The following example converts the <tt>input</tt> string into the compact 7-bit encoding within <tt>output</tt>.</p>
+<pre>    QString input = &quot;...&quot;;
+    QByteArray output = QAtUtils::codec(&quot;gsm&quot;)-&gt;fromUnicode(input);</pre>
+<p>This codec implementation conforms to 3GPP TS 03.38 and 3GPP TS 07.05, including the extension tables from 3GPP TS 03.38.</p>
+<p>See also <a href="qsmsmessage.html">QSMSMessage</a> and <a href="qatutils.html#codec">QAtUtils::codec</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QGsmCodec"></a>QGsmCodec::QGsmCodec ( bool <i>noLoss</i> = false )</h3>
+<p>Construct a new GSM text codec. If <i>noLoss</i> is true, then the codec should not encode characters that may result in an ambiguous decoding.</p>
+<p>This constructor should not be used directly. Instead, call <a href="qatutils.html#codec">QAtUtils::codec</a>() to obtain an instance of this codec implementation. This is due to how <a href="qtextcodec.html">QTextCodec</a> registers and deregisters codec implementations. The codec names to use with <a href="qatutils.html#codec">QAtUtils::codec</a>() are <tt>gsm</tt> and <tt>gsm-noloss</tt>, for the regular and no-loss versions of the codec.</p>
+<p>See also <a href="qatutils.html#codec">QAtUtils::codec</a>().</p>
+<h3 class="fn"><a name="dtor.QGsmCodec"></a>QGsmCodec::~QGsmCodec ()</h3>
+<p>Destruct a GSM text codec. This should not be used directly by application programs.</p>
+<h3 class="fn"><a name="convertFromUnicode"></a><a href="qbytearray.html">QByteArray</a> QGsmCodec::convertFromUnicode ( const <a href="qchar.html">QChar</a> * <i>in</i>, int <i>length</i>, <a href="qtextcodec-converterstate.html">ConverterState</a> * <i>state</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Convert the <i>length</i> characters at <i>in</i> into 7-bit GSM. The <tt>invalidChars</tt> field of <i>state</i> will be incremented if there are invalid characters within <i>in</i>.</p>
+<p>Reimplemented from <a href="qtextcodec.html#convertFromUnicode">QTextCodec</a>.</p>
+<p>See also <a href="qgsmcodec.html#convertToUnicode">convertToUnicode</a>().</p>
+<h3 class="fn"><a name="convertToUnicode"></a><a href="qstring.html">QString</a> QGsmCodec::convertToUnicode ( const char * <i>in</i>, int <i>length</i>, <a href="qtextcodec-converterstate.html">ConverterState</a> * <i>state</i> ) const&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Convert the <i>length</i> bytes at <i>in</i> into Unicode. The <tt>invalidChars</tt> field of <i>state</i> will be incremented if there are invalid characters within <i>in</i>.</p>
+<p>Reimplemented from <a href="qtextcodec.html#convertToUnicode">QTextCodec</a>.</p>
+<p>See also <a href="qgsmcodec.html#convertFromUnicode">convertFromUnicode</a>().</p>
+<h3 class="fn"><a name="mibEnum"></a>int QGsmCodec::mibEnum () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the MIB value associated with this codec.</p>
+<p>Reimplemented from <a href="qtextcodec.html#mibEnum">QTextCodec</a>.</p>
+<h3 class="fn"><a name="name"></a><a href="qbytearray.html">QByteArray</a> QGsmCodec::name () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the name of this codec.</p>
+<p>Reimplemented from <a href="qtextcodec.html#name">QTextCodec</a>.</p>
+<h3 class="fn"><a name="singleFromUnicode"></a>char QGsmCodec::singleFromUnicode ( <a href="qchar.html">QChar</a> <i>c</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Convert a single Unicode character <i>c</i> into GSM 7-bit. Returns 0x10 if the character cannot be mapped. Use of this function is discouraged.</p>
+<p>Note: this will not work for two-byte GSM encodings. Use <a href="qgsmcodec.html#twoByteFromUnicode">twoByteFromUnicode</a>() instead.</p>
+<p>See also <a href="qgsmcodec.html#singleToUnicode">singleToUnicode</a>() and <a href="qgsmcodec.html#twoByteFromUnicode">twoByteFromUnicode</a>().</p>
+<h3 class="fn"><a name="singleToUnicode"></a><a href="qchar.html">QChar</a> QGsmCodec::singleToUnicode ( char <i>ch</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Convert a single GSM 7-bit character <i>ch</i> into Unicode. Use of this function is discouraged.</p>
+<p>Note: this will not work for two-byte GSM encodings. Use <a href="qgsmcodec.html#twoByteToUnicode">twoByteToUnicode</a>() instead.</p>
+<p>See also <a href="qgsmcodec.html#singleFromUnicode">singleFromUnicode</a>() and <a href="qgsmcodec.html#twoByteToUnicode">twoByteToUnicode</a>().</p>
+<h3 class="fn"><a name="twoByteFromUnicode"></a>unsigned short QGsmCodec::twoByteFromUnicode ( <a href="qchar.html">QChar</a> <i>ch</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Convert a Unicode character <i>ch</i> into its GSM-encoded counterpart. The return value will be greater than 256 if the Unicode character should be encoded as two bytes.</p>
+<p>See also <a href="qgsmcodec.html#twoByteToUnicode">twoByteToUnicode</a>().</p>
+<h3 class="fn"><a name="twoByteToUnicode"></a><a href="qchar.html">QChar</a> QGsmCodec::twoByteToUnicode ( unsigned short <i>ch</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Convert a single GSM-encoded character into its Unicode counterpart. If <i>ch</i> is greater than 256, then it represents a two-byte sequence.</p>
+<p>See also <a href="qgsmcodec.html#twoByteFromUnicode">twoByteFromUnicode</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

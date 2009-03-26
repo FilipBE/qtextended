@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Installing a Qt Extended SDK</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Installing a Qt Extended SDK<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#installing-a-software-development-kit-sdk">Installing a Software Development Kit (SDK)</a></li>
+<ul><li><a href="#installing-the-sdk-on-windows">Installing the SDK on Windows.</a></li>
+<li><a href="#installing-the-sdk-on-linux">Installing the SDK on Linux.</a></li>
+<ul><li><a href="#using-a-cd-dvd">Using a CD/DVD</a></li>
+<li><a href="#using-a-loopback-device">Using a loopback device</a></li>
+</ul>
+<li><a href="#installing-the-sdk-continued">Installing the SDK (continued)</a></li>
+<li><a href="#running-the-sdk">Running the SDK</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This document describes how to install a Qt Extended SDK package. It should be read after:</p>
+<ul>
+<li><a href="getting-started.html">Getting Started </a> which explains the process of selecting and downloading a Qt Extended source package.</li>
+<li>the section on <a href="tools-list.html">Tools </a> available in the package to help build and develop Qt Extended and Qt Extended based applications.</li>
+</ul>
+<p>Before continuing, you must ensure that the SDK package has been downloaded, or that you have a CD/DVD available that contains the Qt Extended SDK.</p>
+<a name="installing-a-software-development-kit-sdk"></a>
+<h2>Installing a Software Development Kit (SDK)</h2>
+<p>SDKs are typically delivered as an ISO image or are pre-written on a CD/DVD. The ISO image can be downloaded and then written onto a CD/DVD using a regular CD/DVD writer, or on Linux can be alternatively mounted as a loopback device. For Windows, there is 'Virtual CD-ROM Control Panel' available from Microsoft, which can mount an iso and be displayed as a drive in Windows Explorer.</p>
+<p>The procedure for writing a CD/DVD falls outside the scope of this document and won't be discussed any further, please read the user manual of your CD/DVD writer for detailed instructions.</p>
+<p>For the Qt Extended SDK to work properly you also need to install VmPlayer. This package needs to be downloaded from the VmWare website. The install program will prompt you at the appropriate time and give some hints on how to install VmPlayer. For a detailed instruction on how to set up VmPlayer, please refer to the VmWare website.</p>
+<a name="installing-the-sdk-on-windows"></a>
+<h3>Installing the SDK on Windows.</h3>
+<p>On Windows the SDK can only be installed via a CD/DVD.</p>
+<p>To install the SDK, simply put the CD/DVD in the drive. If autorun is working properly the installer should start up and the installation process will begin. Just follow the prompts and the SDK will be installed.</p>
+<a name="installing-the-sdk-on-linux"></a>
+<h3>Installing the SDK on Linux.</h3>
+<p>On Linux the SDK can both be installed using a CD/DVD and/or using a loopback device. Using a loopback device is convenient if you have downloaded an ISO image and don't want to waste time burning a CD.</p>
+<a name="using-a-cd-dvd"></a>
+<h4>Using a CD/DVD</h4>
+<p>To install the SDK from a CD/DVD:</p>
+<pre>    put the CD/DVD in the drive.
+    The CD should automount into /media/cdrom (or something similar)
+    Don't forget to install VmPlayer.</pre>
+<a name="using-a-loopback-device"></a>
+<h4>Using a loopback device</h4>
+<p>To use the iso image as a loopback device, please do the following:</p>
+<pre>    su (login as root, enter password if needed)
+    mkdir &lt;mountpoint&gt; (create a directory where the ISO needs to be mounted)
+    mount -o loop &lt;filename&gt; &lt;mountpoint&gt;
+    exit (logout as root, i.e. logged in as normal user again)</pre>
+<a name="installing-the-sdk-continued"></a>
+<h3>Installing the SDK (continued)</h3>
+<pre>    cd &lt;mountpoint&gt; (You MUST cd into the mounted directory)
+    ./install.sh (run the install script)</pre>
+<p>Answer the questions asked in the installer program and make sure VmPlayer is installed.</p>
+<a name="running-the-sdk"></a>
+<h3>Running the SDK</h3>
+<p>To run the SDK:</p>
+<pre>    cd /home/&lt;username&gt;/QtopiaGreenphoneSDK (or wherever the SDK is installed)
+    vmplayer greenphone.vmx</pre>
+<p>Once the VMPlayer is running a fully functional Linux environment is available inside the VMPlayer that contains all the Qt Extended SDK tools, pre-build Qt Extended binaries, documentation, etc to be used. To run Qt Extended, click on <tt>runqtopia</tt>.</p>
+<p>The SDK does not come with any source code, Qt Extended comes in a pre-build form. The starting point of an SDK is where a Source Package user would be after having configured and build Qt Extended both for the desktop and for the device. If you want to rebuild Qt Extended, you must download the source code package separately.</p>
+<p>The Qt Extended binaries are located (from within the VmPlayer environment) in <tt>/opt/Qtopia/SDK/&lt;version&gt;/x86</tt> and <tt>/opt/Qtopia/SDK/&lt;version&gt;/&lt;device&gt;</tt>. The &lt;device&gt; directory contains all the files (and <i>only</i> the files) that should be installed onto the device. Note that we have passed -prefix to specify the location that Qt Extended will run from /opt/Qtopia.</p>
+<p>For further information about running Qt Extended refer to <a href="running-qtextended.html">Running Qt Extended</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailNewInstantMessageHandler Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailNewInstantMessageHandler Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>]</span>
+</h1>
+<p>The QMailNewInstantMessageHandler class provides a convenient interface for responding to new instant message arrival notifications emitted by the message server. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailNewInstantMessageHandler&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qmailnewmessagehandler.html">QMailNewMessageHandler</a>.</p>
+<ul>
+<li><a href="qmailnewinstantmessagehandler-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailnewinstantmessagehandler.html#QMailNewInstantMessageHandler">QMailNewInstantMessageHandler</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual QMailMessage::MessageType <b><a href="qmailnewinstantmessagehandler.html#messageType">messageType</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qmailnewmessagehandler.html#public-functions">QMailNewMessageHandler</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qmailnewmessagehandler.html#public-slots">QMailNewMessageHandler</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qmailnewmessagehandler.html#signals">QMailNewMessageHandler</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qtopiaabstractservice.html#protected-functions">QtopiaAbstractService</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailNewInstantMessageHandler class provides a convenient interface for responding to new instant message arrival notifications emitted by the message server.</p>
+<p>When a new instant message is retrieved by the message server, the <tt>NewInstantMessageArrival::arrived(QDSActionRequest)</tt> service request is emitted. If a process registers to handle this request and instantiates a QMailNewInstantMessageHandler object, the handler object will process the service request and emit the <a href="qmailnewmessagehandler.html#newCountChanged">newCountChanged</a>() signal.</p>
+<p>In response to the <a href="qmailnewmessagehandler.html#newCountChanged">newCountChanged</a>() signal, the handler process should invoke the <a href="qmailnewmessagehandler.html#setHandled">setHandled</a>() slot, to communicate whether or not they have handled the event to the message server. If any handler process reports the event as handled, then the count of new instant message messages will be reset, and those messages will have the <a href="qmailmessagemetadata.html#New-var">QMailMessage::New</a> status flag unset.</p>
+<p>Note: if a process instantiates a QMailNewInstantMessageHandler, it will not do anything unless the process is also registered to handle the <tt>NewInstantMessageArrival</tt> service.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailNewInstantMessageHandler"></a>QMailNewInstantMessageHandler::QMailNewInstantMessageHandler ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new handler for the <tt>NewInstantMessageArrival</tt> service, with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="messageType"></a><a href="qmailmessagemetadata.html#MessageType-enum">QMailMessage::MessageType</a> QMailNewInstantMessageHandler::messageType () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns <a href="qmailmessagemetadata.html#MessageType-enum">QMailMessage::Instant</a>, the type of messages handled by <a href="qmailnewinstantmessagehandler.html">QMailNewInstantMessageHandler</a>.</p>
+<p>Reimplemented from <a href="qmailnewmessagehandler.html#messageType">QMailNewMessageHandler</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

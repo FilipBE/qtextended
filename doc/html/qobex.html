@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QObex Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QObex Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QObex namespace contains miscellaneous OBEX functionality. <a href="#details">More...</a></p>
+<pre>    #include &lt;QObex&gt;</pre><ul>
+<li><a href="qobex-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qobex.html#AuthChallengeOption-enum">AuthChallengeOption</a></b> { UserIdRequired, ReadOnlyAccess }</li>
+<li><div class="fn"/>flags <b><a href="qobex.html#AuthChallengeOption-enum">AuthChallengeOptions</a></b></li>
+<li><div class="fn"/>enum <b><a href="qobex.html#Request-enum">Request</a></b> { Connect, Disconnect, Put, PutDelete, ..., NoRequest }</li>
+<li><div class="fn"/>enum <b><a href="qobex.html#ResponseCode-enum">ResponseCode</a></b> { Success, Created, Accepted, NonAuthoritative, ..., DatabaseLocked }</li>
+<li><div class="fn"/>enum <b><a href="qobex.html#SetPathFlag-enum">SetPathFlag</a></b> { BackUpOneLevel, NoPathCreation }</li>
+<li><div class="fn"/>flags <b><a href="qobex.html#SetPathFlag-enum">SetPathFlags</a></b></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QObex namespace contains miscellaneous OBEX functionality.</p>
+<p>The QObex namespace defines various functions and enums that are used globally by the OBEX library.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="flags"><a name="AuthChallengeOption-enum"></a>enum QObex::AuthChallengeOption<br />flags QObex::AuthChallengeOptions</h3>
+<p>Defines the option flags that can be used in an OBEX authentication challenge.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QObex::UserIdRequired</tt></td><td align="center" valign="top"><tt>0x01</tt></td><td valign="top">The party receiving the authentication challenge must provide a user ID value in its authentication response.</td></tr>
+<tr><td valign="top"><tt>QObex::ReadOnlyAccess</tt></td><td align="center" valign="top"><tt>0x2</tt></td><td valign="top">The sender of the authentication challenge will offer read-only access to its data. If this option is not set, the sender will permit full access (both read and write).</td></tr>
+</table></p>
+<p>The AuthChallengeOptions type is a typedef for <a href="qflags.html">QFlags</a>&lt;AuthChallengeOption&gt;. It stores an OR combination of AuthChallengeOption values.</p>
+<h3 class="fn"><a name="Request-enum"></a>enum QObex::Request</h3>
+<p>Defines the types of requests that can be made by an OBEX client to an OBEX server.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QObex::Connect</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Initiate the OBEX session.</td></tr>
+<tr><td valign="top"><tt>QObex::Disconnect</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Close the OBEX session.</td></tr>
+<tr><td valign="top"><tt>QObex::Put</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Send an object.</td></tr>
+<tr><td valign="top"><tt>QObex::PutDelete</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Delete an object.</td></tr>
+<tr><td valign="top"><tt>QObex::Get</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Get an object.</td></tr>
+<tr><td valign="top"><tt>QObex::SetPath</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Change the current path on the OBEX server.</td></tr>
+<tr><td valign="top"><tt>QObex::NoRequest</tt></td><td align="center" valign="top"><tt>100</tt></td><td valign="top">&nbsp;</td></tr>
+</table></p>
+<h3 class="fn"><a name="ResponseCode-enum"></a>enum QObex::ResponseCode</h3>
+<p>Defines the response codes that may be sent by an OBEX server in response to a client request.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QObex::Success</tt></td><td align="center" valign="top"><tt>0x20</tt></td><td valign="top">OK, Success</td></tr>
+<tr><td valign="top"><tt>QObex::Created</tt></td><td align="center" valign="top"><tt>0x21</tt></td><td valign="top">Created</td></tr>
+<tr><td valign="top"><tt>QObex::Accepted</tt></td><td align="center" valign="top"><tt>0x22</tt></td><td valign="top">Accepted</td></tr>
+<tr><td valign="top"><tt>QObex::NonAuthoritative</tt></td><td align="center" valign="top"><tt>0x23</tt></td><td valign="top">Non-authoritative information</td></tr>
+<tr><td valign="top"><tt>QObex::NoContent</tt></td><td align="center" valign="top"><tt>0x24</tt></td><td valign="top">No content</td></tr>
+<tr><td valign="top"><tt>QObex::ResetContent</tt></td><td align="center" valign="top"><tt>0x25</tt></td><td valign="top">Reset content</td></tr>
+<tr><td valign="top"><tt>QObex::PartialContent</tt></td><td align="center" valign="top"><tt>0x26</tt></td><td valign="top">Partial content</td></tr>
+<tr><td valign="top"><tt>QObex::MultipleChoices</tt></td><td align="center" valign="top"><tt>0x30</tt></td><td valign="top">Multiple choices</td></tr>
+<tr><td valign="top"><tt>QObex::MovedPermanently</tt></td><td align="center" valign="top"><tt>0x31</tt></td><td valign="top">Moved permanently</td></tr>
+<tr><td valign="top"><tt>QObex::MovedTemporarily</tt></td><td align="center" valign="top"><tt>0x32</tt></td><td valign="top">Moved temporarily</td></tr>
+<tr><td valign="top"><tt>QObex::SeeOther</tt></td><td align="center" valign="top"><tt>0x33</tt></td><td valign="top">See other</td></tr>
+<tr><td valign="top"><tt>QObex::NotModified</tt></td><td align="center" valign="top"><tt>0x34</tt></td><td valign="top">Not modified</td></tr>
+<tr><td valign="top"><tt>QObex::UseProxy</tt></td><td align="center" valign="top"><tt>0x35</tt></td><td valign="top">Use proxy</td></tr>
+<tr><td valign="top"><tt>QObex::BadRequest</tt></td><td align="center" valign="top"><tt>0x40</tt></td><td valign="top">Bad request - server couldn't understand request</td></tr>
+<tr><td valign="top"><tt>QObex::Unauthorized</tt></td><td align="center" valign="top"><tt>0x41</tt></td><td valign="top">Unauthorized</td></tr>
+<tr><td valign="top"><tt>QObex::PaymentRequired</tt></td><td align="center" valign="top"><tt>0x42</tt></td><td valign="top">Payment required</td></tr>
+<tr><td valign="top"><tt>QObex::Forbidden</tt></td><td align="center" valign="top"><tt>0x43</tt></td><td valign="top">Forbidden - operation is understood but refused</td></tr>
+<tr><td valign="top"><tt>QObex::NotFound</tt></td><td align="center" valign="top"><tt>0x44</tt></td><td valign="top">Not found</td></tr>
+<tr><td valign="top"><tt>QObex::MethodNotAllowed</tt></td><td align="center" valign="top"><tt>0x45</tt></td><td valign="top">Method not allowed</td></tr>
+<tr><td valign="top"><tt>QObex::NotAcceptable</tt></td><td align="center" valign="top"><tt>0x46</tt></td><td valign="top">Not acceptable</td></tr>
+<tr><td valign="top"><tt>QObex::ProxyAuthenticationRequired</tt></td><td align="center" valign="top"><tt>0x47</tt></td><td valign="top">Proxy authentication required</td></tr>
+<tr><td valign="top"><tt>QObex::RequestTimeOut</tt></td><td align="center" valign="top"><tt>0x48</tt></td><td valign="top">Request time out</td></tr>
+<tr><td valign="top"><tt>QObex::Conflict</tt></td><td align="center" valign="top"><tt>0x49</tt></td><td valign="top">Conflict</td></tr>
+<tr><td valign="top"><tt>QObex::Gone</tt></td><td align="center" valign="top"><tt>0x4a</tt></td><td valign="top">Gone</td></tr>
+<tr><td valign="top"><tt>QObex::LengthRequired</tt></td><td align="center" valign="top"><tt>0x4b</tt></td><td valign="top">Length required</td></tr>
+<tr><td valign="top"><tt>QObex::PreconditionFailed</tt></td><td align="center" valign="top"><tt>0x4c</tt></td><td valign="top">Precondition failed</td></tr>
+<tr><td valign="top"><tt>QObex::RequestedEntityTooLarge</tt></td><td align="center" valign="top"><tt>0x4d</tt></td><td valign="top">Requested entity too large</td></tr>
+<tr><td valign="top"><tt>QObex::RequestedUrlTooLarge</tt></td><td align="center" valign="top"><tt>0x4e</tt></td><td valign="top">Request URL too large</td></tr>
+<tr><td valign="top"><tt>QObex::UnsupportedMediaType</tt></td><td align="center" valign="top"><tt>0x4f</tt></td><td valign="top">Unsupported media type</td></tr>
+<tr><td valign="top"><tt>QObex::InternalServerError</tt></td><td align="center" valign="top"><tt>0x50</tt></td><td valign="top">Internal server error</td></tr>
+<tr><td valign="top"><tt>QObex::NotImplemented</tt></td><td align="center" valign="top"><tt>0x51</tt></td><td valign="top">Not implemented</td></tr>
+<tr><td valign="top"><tt>QObex::BadGateway</tt></td><td align="center" valign="top"><tt>0x52</tt></td><td valign="top">Bad Gateway</td></tr>
+<tr><td valign="top"><tt>QObex::ServiceUnavailable</tt></td><td align="center" valign="top"><tt>0x53</tt></td><td valign="top">Service unavailable</td></tr>
+<tr><td valign="top"><tt>QObex::GatewayTimeout</tt></td><td align="center" valign="top"><tt>0x54</tt></td><td valign="top">Gateway timeout</td></tr>
+<tr><td valign="top"><tt>QObex::HttpVersionNotSupported</tt></td><td align="center" valign="top"><tt>0x55</tt></td><td valign="top">HTTP version not supported</td></tr>
+<tr><td valign="top"><tt>QObex::DatabaseFull</tt></td><td align="center" valign="top"><tt>0x60</tt></td><td valign="top">Database full</td></tr>
+<tr><td valign="top"><tt>QObex::DatabaseLocked</tt></td><td align="center" valign="top"><tt>061</tt></td><td valign="top">Database locked</td></tr>
+</table></p>
+<h3 class="flags"><a name="SetPathFlag-enum"></a>enum QObex::SetPathFlag<br />flags QObex::SetPathFlags</h3>
+<p>Defines the option flags that can be used for an OBEX <tt>Set Path</tt> operation. An OBEX client can use these options to specify a <tt>Set Path</tt> request in greater detail.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QObex::BackUpOneLevel</tt></td><td align="center" valign="top"><tt>0x1</tt></td><td valign="top">The OBEX server should go back up one directory level before applying the path.</td></tr>
+<tr><td valign="top"><tt>QObex::NoPathCreation</tt></td><td align="center" valign="top"><tt>0x2</tt></td><td valign="top">The OBEX server should <i>not</i> automatically create the path if it does not exist.</td></tr>
+</table></p>
+<p>The SetPathFlags type is a typedef for <a href="qflags.html">QFlags</a>&lt;SetPathFlag&gt;. It stores an OR combination of SetPathFlag values.</p>
+<p>See also <a href="qobexclientsession.html#setPath">QObexClientSession::setPath</a>() and <a href="qobexserversession.html#setPath">QObexServerSession::setPath</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

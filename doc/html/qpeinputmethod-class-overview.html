@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Input Methods: Class Overview</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Input Methods: Class Overview<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#qwsinputmethod">QWSInputMethod</a></li>
+<li><a href="#qtopiainputmethod">QtopiaInputMethod</a></li>
+<li><a href="#server-side">Server-side</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>There are three broad sections to Qt Extended Input Methods:</p>
+<ol type="1">
+<li>The Qt Extended Input Method interface - <a href="qtopiainputmethod.html">QtopiaInputMethod</a></li>
+<li>The server side of Input Methods - <a href="qwsinputmethod.html">QWSInputMethod</a></li>
+<li>The Input Method Manager - <a href="inputmethods.html">InputMethods</a></li>
+</ol>
+<p>Every input method plugin must implement the <a href="qtopiainputmethod.html">QtopiaInputMethod</a> interface. This is the minimum set of behaviours for any Qt Extended input method, providing information to the system about the input method and some basic channels of communication with the system (like menu items).</p>
+<p>Most input methods will need some of the more advanced behaviours available through <a href="qwsinputmethod.html">QWSInputMethod</a>. This class is used for filtering and modifying keyEvents and mouseEvents, and also provides preedit string related behaviours for in-place input methods.</p>
+<a name="qwsinputmethod"></a>
+<h3>QWSInputMethod</h3>
+<p>This is the Qt Extended Core class for input methods. It provides the API required for many input-related things, including a very high priority event filter and functions to create input method events, as well as key and mouse events should they be required.</p>
+<p>For a detailed description, see <a href="qwsinputmethod.html">QWSInputMethod</a></p>
+<a name="qtopiainputmethod"></a>
+<h3>QtopiaInputMethod</h3>
+<p>This is the starting point for any input method for Qt Extended. Derive from this class, and implement all the pure virtual functions and the input method is ready to be made and installed.</p>
+<p><a href="qtopiainputmethod.html">QtopiaInputMethod</a> simplifies the process of building a plugin for Qt Extended down to implementing a simple interface. It defines several core comunicative functions used by the Qt Extended server to determine behaviour and appearance, and allows the resulting binary to be installed by simply dropping it into the image/plugins/inputmethods directory, where Qt Extended will find and load it at run time, and add it to the input method menu.</p>
+<p>For a detailed description, see <a href="qtopiainputmethod.html">QtopiaInputMethod</a></p>
+<a name="server-side"></a>
+<h3>Server-side</h3>
+<p>Input method developers should not need to modify these classes, but it may help to appreciate how they work.</p>
+<p>The Input Method Manager is comprised of several parts, but primarily turns input methods on and off appropriately. It also coordinates multiple input methods. <a href="inputmethods.html">InputMethods</a> is the primary class on the server side. It handles loading of plugins, and showing/hiding and activation/deactivation of the current input method.</p>
+<p>The <a href="inputmethodselector.html">InputMethodSelector</a> encompasses most of the functionality that is visible to the user. It is the actual widget that is made visible to the user as a pop-up menu, allowing selection between installed input methods. It is also responsible for docking widgets on behalf of input methods (causing the space available for applications to be reduced), and handling the current input methods soft-key menu items.</p>
+<p><a href="inputmethodservice.html">InputMethodService</a> receives and interprets IPC messages and relays them to the <a href="inputmethods.html">InputMethods</a> object, it does no processing itself.</p>
+<p>For more detailed information on these specific classes, see <a href="inputmethodservice.html">InputMethodService</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

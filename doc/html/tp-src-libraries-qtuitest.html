@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Test Plan for component 'src/libraries/qtuitest'</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Test Plan for component 'src/libraries/qtuitest'<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#environment-setup">Environment Setup</a></li>
+<li><a href="#component-test-strategy">Component Test Strategy</a></li>
+<li><a href="#test-details">Test Details</a></li>
+<ul><li><a href="#sys-introspection-isvisible">sys_introspection::isVisible</a></li>
+<li><a href="#sys-introspection-verifyimage">sys_introspection::verifyImage</a></li>
+<li><a href="#sys-introspection-getgeometry">sys_introspection::getGeometry</a></li>
+<li><a href="#tst-qtestprotocol-postmessage">tst_QTestProtocol::postMessage</a></li>
+<li><a href="#tst-qalternatestack-start">tst_QAlternateStack::start</a></li>
+<li><a href="#tst-qalternatestack-switching">tst_QAlternateStack::switching</a></li>
+<li><a href="#tst-qalternatestack-sigaltstack">tst_QAlternateStack::sigaltstack</a></li>
+<li><a href="#tst-qalternatestack-multipleinstances">tst_QAlternateStack::multipleInstances</a></li>
+<li><a href="#sys-script-string-contains">sys_script::string_contains</a></li>
+<li><a href="#sys-script-qtcore-objects">sys_script::qtcore_objects</a></li>
+<li><a href="#sys-script-qtcore-values">sys_script::qtcore_values</a></li>
+<li><a href="#sys-script-include">sys_script::include</a></li>
+<li><a href="#sys-input-enter-homescreen">sys_input::enter_homescreen</a></li>
+<li><a href="#sys-input-enter-text">sys_input::enter_text</a></li>
+<li><a href="#sys-input-enter-qtextedit">sys_input::enter_QTextEdit</a></li>
+<li><a href="#sys-input-enter-text-nocommit">sys_input::enter_text_nocommit</a></li>
+<li><a href="#sys-input-enter-qtextedit-nocommit">sys_input::enter_QTextEdit_nocommit</a></li>
+<li><a href="#sys-input-enter-qtextedit">sys_input::enter_QTextEdit</a></li>
+<li><a href="#sys-input-enter-qtimeedit">sys_input::enter_QTimeEdit</a></li>
+<li><a href="#sys-input-enter-qdateedit">sys_input::enter_QDateEdit</a></li>
+<li><a href="#sys-input-mouseclick">sys_input::mouseClick</a></li>
+<li><a href="#sys-input-select-button">sys_input::select_button</a></li>
+<li><a href="#sys-input-select-close">sys_input::select_close</a></li>
+<li><a href="#sys-input-select-optionsmenu">sys_input::select_optionsMenu</a></li>
+<li><a href="#sys-input-select-tabbar">sys_input::select_tabBar</a></li>
+<li><a href="#sys-input-select-combobox">sys_input::select_combobox</a></li>
+<li><a href="#sys-input-select-launchermenu">sys_input::select_launcherMenu</a></li>
+<li><a href="#sys-input-scroll-scrollarea-vertical">sys_input::scroll_scrollarea_vertical</a></li>
+<li><a href="#sys-input-scroll-combobox">sys_input::scroll_combobox</a></li>
+<li><a href="#sys-input-setchecked-checkbox">sys_input::setChecked_checkbox</a></li>
+<li><a href="#sys-input-select-calls">sys_input::select_calls</a></li>
+<li><a href="#sys-input-select-close">sys_input::select_close</a></li>
+<li><a href="#sys-log-bug231961">sys_log::bug231961</a></li>
+<li><a href="#sys-log-log">sys_log::log</a></li>
+<li><a href="#sys-log-parse">sys_log::parse</a></li>
+<li><a href="#sys-log-find">sys_log::find</a></li>
+<li><a href="#sys-log-many">sys_log::many</a></li>
+<li><a href="#tst-perfregression-bad">tst_PerfRegression::bad</a></li>
+<li><a href="#tst-qtuitestnamespace-wait">tst_QtUiTestNamespace::wait</a></li>
+<li><a href="#tst-qtuitestnamespace-connectfirst">tst_QtUiTestNamespace::connectFirst</a></li>
+<li><a href="#tst-qtuitestnamespace-connectfirstisfirst">tst_QtUiTestNamespace::connectFirstIsFirst</a></li>
+<li><a href="#tst-qtuitestnamespace-connectfirstdestruction">tst_QtUiTestNamespace::connectFirstDestruction</a></li>
+<li><a href="#tst-qtuitestnamespace-connectfirstinvalid">tst_QtUiTestNamespace::connectFirstInvalid</a></li>
+<li><a href="#tst-qtuitestnamespace-disconnectfirstinvalid">tst_QtUiTestNamespace::disconnectFirstInvalid</a></li>
+<li><a href="#tst-qtuitestnamespace-connectfirstdefaultparam">tst_QtUiTestNamespace::connectFirstDefaultParam</a></li>
+<li><a href="#tst-qtuitestnamespace-disconnectfirstwildcards">tst_QtUiTestNamespace::disconnectFirstWildcards</a></li>
+<li><a href="#tst-qtuitestwidgets-cast-unregistered">tst_QtUiTestWidgets::cast_unregistered</a></li>
+<li><a href="#tst-qtuitestwidgets-cast">tst_QtUiTestWidgets::cast</a></li>
+<li><a href="#tst-qtuitestwidgets-cast-inherit-single">tst_QtUiTestWidgets::cast_inherit_single</a></li>
+<li><a href="#tst-qtuitestwidgets-cast-self">tst_QtUiTestWidgets::cast_self</a></li>
+<li><a href="#tst-qtuitestwidgets-cast-zero">tst_QtUiTestWidgets::cast_zero</a></li>
+<li><a href="#tst-qelapsedtimer-elapsed">tst_QElapsedTimer::elapsed</a></li>
+<li><a href="#sys-perf-meminfo">sys_perf::meminfo</a></li>
+<li><a href="#sys-perf-memsampling">sys_perf::memsampling</a></li>
+<li><a href="#sys-perf-logging">sys_perf::logging</a></li>
+<li><a href="#sys-files-putfile">sys_files::putFile</a></li>
+<li><a href="#sys-files-putdata">sys_files::putData</a></li>
+<li><a href="#sys-extend-handler">sys_extend::handler</a></li>
+</ul>
+</ul>
+<a name="environment-setup"></a>
+<h2>Environment Setup</h2>
+<p><a href="qt-extended-test-plan.html#general-environment-setup">General Environment Setup</a> procedures apply for this component.</p>
+<a name="component-test-strategy"></a>
+<h2>Component Test Strategy</h2>
+<p>The <a href="qt-extended-test-plan.html#general-test-strategy">general test strategy</a> applies for this component.</p>
+<a name="test-details"></a>
+<h2>Test Details</h2>
+<a name="sys-introspection-isvisible"></a>
+<h3>sys_introspection::isVisible</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>introspection</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_introspection/sys_introspection.js</td></tr>
+</table></p>
+<a name="sys-introspection-verifyimage"></a>
+<h3>sys_introspection::verifyImage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>introspection</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_introspection/sys_introspection.js</td></tr>
+</table></p>
+<a name="sys-introspection-getgeometry"></a>
+<h3>sys_introspection::getGeometry</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>introspection</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_introspection/sys_introspection.js</td></tr>
+</table></p>
+<a name="tst-qtestprotocol-postmessage"></a>
+<h3>tst_QTestProtocol::postMessage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtestprotocol/tst_qtestprotocol.cpp</td></tr>
+</table></p>
+<a name="tst-qalternatestack-start"></a>
+<h3>tst_QAlternateStack::start</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qalternatestack/tst_qalternatestack.cpp</td></tr>
+</table></p>
+<a name="tst-qalternatestack-switching"></a>
+<h3>tst_QAlternateStack::switching</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qalternatestack/tst_qalternatestack.cpp</td></tr>
+</table></p>
+<a name="tst-qalternatestack-sigaltstack"></a>
+<h3>tst_QAlternateStack::sigaltstack</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qalternatestack/tst_qalternatestack.cpp</td></tr>
+</table></p>
+<a name="tst-qalternatestack-multipleinstances"></a>
+<h3>tst_QAlternateStack::multipleInstances</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qalternatestack/tst_qalternatestack.cpp</td></tr>
+</table></p>
+<a name="sys-script-string-contains"></a>
+<h3>sys_script::string_contains</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>script</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_script/sys_script.js</td></tr>
+</table></p>
+<a name="sys-script-qtcore-objects"></a>
+<h3>sys_script::qtcore_objects</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>script</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_script/sys_script.js</td></tr>
+</table></p>
+<a name="sys-script-qtcore-values"></a>
+<h3>sys_script::qtcore_values</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>script</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_script/sys_script.js</td></tr>
+</table></p>
+<a name="sys-script-include"></a>
+<h3>sys_script::include</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>script</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_script/sys_script.js</td></tr>
+</table></p>
+<a name="sys-input-enter-homescreen"></a>
+<h3>sys_input::enter_homescreen</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-text"></a>
+<h3>sys_input::enter_text</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-qtextedit"></a>
+<h3>sys_input::enter_QTextEdit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-text-nocommit"></a>
+<h3>sys_input::enter_text_nocommit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-qtextedit-nocommit"></a>
+<h3>sys_input::enter_QTextEdit_nocommit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-qtextedit"></a>
+<h3>sys_input::enter_QTextEdit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-qtimeedit"></a>
+<h3>sys_input::enter_QTimeEdit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-enter-qdateedit"></a>
+<h3>sys_input::enter_QDateEdit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-mouseclick"></a>
+<h3>sys_input::mouseClick</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-button"></a>
+<h3>sys_input::select_button</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-close"></a>
+<h3>sys_input::select_close</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-optionsmenu"></a>
+<h3>sys_input::select_optionsMenu</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-tabbar"></a>
+<h3>sys_input::select_tabBar</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-combobox"></a>
+<h3>sys_input::select_combobox</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-launchermenu"></a>
+<h3>sys_input::select_launcherMenu</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-scroll-scrollarea-vertical"></a>
+<h3>sys_input::scroll_scrollarea_vertical</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-scroll-combobox"></a>
+<h3>sys_input::scroll_combobox</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-setchecked-checkbox"></a>
+<h3>sys_input::setChecked_checkbox</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-calls"></a>
+<h3>sys_input::select_calls</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-input-select-close"></a>
+<h3>sys_input::select_close</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>input</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_input/sys_input.js</td></tr>
+</table></p>
+<a name="sys-log-bug231961"></a>
+<h3>sys_log::bug231961</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>log</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Manual System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_log/sys_log.js</td></tr>
+</table></p>
+<a name="sys-log-log"></a>
+<h3>sys_log::log</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>log</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Manual System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_log/sys_log.js</td></tr>
+</table></p>
+<a name="sys-log-parse"></a>
+<h3>sys_log::parse</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>log</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_log/sys_log.js</td></tr>
+</table></p>
+<a name="sys-log-find"></a>
+<h3>sys_log::find</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>log</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_log/sys_log.js</td></tr>
+</table></p>
+<a name="sys-log-many"></a>
+<h3>sys_log::many</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>log</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Manual System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_log/sys_log.js</td></tr>
+</table></p>
+<a name="tst-perfregression-bad"></a>
+<h3>tst_PerfRegression::bad</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_perfregression/tst_perfregression.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-wait"></a>
+<h3>tst_QtUiTestNamespace::wait</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-connectfirst"></a>
+<h3>tst_QtUiTestNamespace::connectFirst</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-connectfirstisfirst"></a>
+<h3>tst_QtUiTestNamespace::connectFirstIsFirst</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-connectfirstdestruction"></a>
+<h3>tst_QtUiTestNamespace::connectFirstDestruction</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-connectfirstinvalid"></a>
+<h3>tst_QtUiTestNamespace::connectFirstInvalid</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-disconnectfirstinvalid"></a>
+<h3>tst_QtUiTestNamespace::disconnectFirstInvalid</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-connectfirstdefaultparam"></a>
+<h3>tst_QtUiTestNamespace::connectFirstDefaultParam</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestnamespace-disconnectfirstwildcards"></a>
+<h3>tst_QtUiTestNamespace::disconnectFirstWildcards</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestnamespace/tst_qtuitestnamespace.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestwidgets-cast-unregistered"></a>
+<h3>tst_QtUiTestWidgets::cast_unregistered</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestwidgets/tst_qtuitestwidgets.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestwidgets-cast"></a>
+<h3>tst_QtUiTestWidgets::cast</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestwidgets/tst_qtuitestwidgets.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestwidgets-cast-inherit-single"></a>
+<h3>tst_QtUiTestWidgets::cast_inherit_single</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestwidgets/tst_qtuitestwidgets.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestwidgets-cast-self"></a>
+<h3>tst_QtUiTestWidgets::cast_self</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestwidgets/tst_qtuitestwidgets.cpp</td></tr>
+</table></p>
+<a name="tst-qtuitestwidgets-cast-zero"></a>
+<h3>tst_QtUiTestWidgets::cast_zero</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qtuitestwidgets/tst_qtuitestwidgets.cpp</td></tr>
+</table></p>
+<a name="tst-qelapsedtimer-elapsed"></a>
+<h3>tst_QElapsedTimer::elapsed</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/tst_qelapsedtimer/tst_qelapsedtimer.cpp</td></tr>
+</table></p>
+<a name="sys-perf-meminfo"></a>
+<h3>sys_perf::meminfo</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>perf</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_perf/sys_perf.js</td></tr>
+</table></p>
+<a name="sys-perf-memsampling"></a>
+<h3>sys_perf::memsampling</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>perf</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_perf/sys_perf.js</td></tr>
+</table></p>
+<a name="sys-perf-logging"></a>
+<h3>sys_perf::logging</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>perf</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_perf/sys_perf.js</td></tr>
+</table></p>
+<a name="sys-files-putfile"></a>
+<h3>sys_files::putFile</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>files</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_files/sys_files.js</td></tr>
+</table></p>
+<a name="sys-files-putdata"></a>
+<h3>sys_files::putData</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td>QTOPIA-78{}</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>files</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_files/sys_files.js</td></tr>
+</table></p>
+<a name="sys-extend-handler"></a>
+<h3>sys_extend::handler</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td>extend</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated System Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtuitest/tests/sys_extend/sys_extend.js</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

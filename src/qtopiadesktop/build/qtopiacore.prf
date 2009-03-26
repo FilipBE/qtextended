@@ -1,0 +1,201 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(qtopiacore.prf)
+# The actual Qtopia Core build tree is located somewhere else so redirect the commands
+
+FEATURES=
+!isEmpty(DEVICE_CONFIG_PATH):exists($$DEVICE_CONFIG_PATH/features/qt_patch):FEATURES=$$DEVICE_CONFIG_PATH/features/qt_patch$$PATH_SEP
+FEATURES=$${FEATURES}$$fixpath($$QTOPIA_DEPOT_PATH/src/qtopiadesktop/build/qt_patch)
+
+win32:quote=$$LITERAL_QUOTE
+else:quote=$$LITERAL_QUOTE
+#win32:isEmpty(QTOPIA_ADD_CFLAGS):QTOPIA_ADD_CFLAGS=none
+
+equals(qt,host):QTOPIACORE_CONFIG+=host
+equals(qt,target):QTOPIACORE_CONFIG+=target
+
+defineReplace(make) {
+    target=$$2
+    equals(target,all):target=
+    MAKE_RULE=\
+        $$ENV MAKEFILE=Makefile\
+            QMAKEFEATURES=$$quote$$FEATURES$$quote\
+            QMAKEPATH=$$quote$$QT_DEPOT_PATH$$quote\
+            QPE_CONFIG=$$quote$$CONFIG$$quote\
+            QTOPIACORE_CONFIG=$$quote$$QTOPIACORE_CONFIG$$quote\
+            QPEDIR=$$quote$$QPEDIR$$quote\
+            QPE_TARGET=$$quote$$tail($$dir)$$quote\
+            ADD_CFLAGS=$$quote$$QTOPIA_ADD_CFLAGS$$quote\
+                $$MAKE -C $$fixpath($$1) $$target\
+                    MAKEFILE=Makefile
+    win32:MAKE_RULE+=\
+                    QMAKE_QMAKE=$$fixpath($$QTDIR/bin/qmake)
+    return($$MAKE_RULE)
+}
+
+silent:qmake=qmake >/dev/null
+else:qmake=qmake
+qt_qmake.commands=$$COMMAND_HEADER\
+    $$make($$QTDIR/$$dir,$$qmake)
+QMAKE_EXTRA_TARGETS+=qt_qmake
+regenerate.depends+=qt_qmake
+
+qt_qmake_debug.commands=$$COMMAND_HEADER\
+    $$make($$QTDIR/$$dir,qmake $${LITERAL_QUOTE}QMAKE=$$QTDIR/bin/qmake $(D)$$LITERAL_QUOTE)
+QMAKE_EXTRA_TARGETS+=qt_qmake_debug
+
+CLEAN_TARGETS=clean distclean
+TARGETS=all $$CLEAN_TARGETS remove_target
+ALL_DEPS+=redirect_all
+remove_target.depends+=redirect_remove_target
+removeconf=
+equals(qt,host) {
+    INST_DIR=$$fixpath($$OUT_PWD/$$QTOPIA_SDKROOT/qtopiacore/host)
+    removeconf=build_dqt
+}
+equals(qt,target) {
+    INST_DIR=$$fixpath($$OUT_PWD/$$QTOPIA_SDKROOT/qtopiacore/target)
+    removeconf=build_qte
+}
+!isEmpty(removeconf):!contains(CONFIG,$$removeconf) {
+    echo($$removeconf is set so don't build anything)
+    # Don't do any "passthrough" targets
+    TARGETS=
+    ALL_DEPS-=redirect_all
+    remove_target.depends-=redirect_remove_target
+    regenerate.depends-=qt_qmake
+}
+for(t,TARGETS) {
+    rt=$$t
+    equals(t,distclean):rt=clean clean_target
+    echo(TARGET $$rt : $$make($$QTDIR/$$dir,$$rt))
+    commands=$$COMMAND_HEADER\
+        $$make($$QTDIR/$$dir,$$rt)
+    !win32 {
+        contains(CLEAN_TARGETS,$$t)|contains(QTOPIACORE_CONFIG,ignore_errors) {
+            commands+=|| true
+        }
+    }
+    eval(redirect_$${t}.commands=\$$commands)
+    QMAKE_EXTRA_TARGETS+=redirect_$$t
+}
+for(t,EXTRA_TARGETS) {
+    rt=$$t
+    echo(TARGET $$rt : $$make($$QTDIR/$$dir,$$rt))
+    commands=$$COMMAND_HEADER\
+        $$make($$QTDIR/$$dir,$$rt)
+    !win32 {
+        contains(CLEAN_TARGETS,$$t)|contains(QTOPIACORE_CONFIG,ignore_errors) {
+            commands+=|| true
+        }
+    }
+    eval($${t}.commands=\$$commands)
+    QMAKE_EXTRA_TARGETS+=$$t
+}
+
+contains(QTOPIACORE_CONFIG,qt_plugins):!enable_singleexec {
+    sp.dir=$$INST_DIR
+    sp.last=
+    for(f,forever) {
+        sp.last=$$sp.dir
+        sp.dir=$$dirname(sp.dir)
+        equals(sp.dir,$$OUT_PWD):break()
+    }
+    inst_prepare.commands=$$COMMAND_HEADER\
+        rm -rf $$sp.last $$LINE_SEP\
+        mkdir -p $$INST_DIR $$LINE_SEP\
+        mkdir -p $(INSTALL_ROOT)/qt_plugins $$LINE_SEP\
+        ln -sf $(INSTALL_ROOT)/qt_plugins $$INST_DIR/plugins
+    inst_prepare.CONFIG=no_path
+    INSTALLS+=inst_prepare
+
+    inst_install.commands=$$COMMAND_HEADER\
+        $$make($$QTDIR/$$dir,install INSTALL_ROOT=$$OUT_PWD)
+    inst_install.CONFIG=no_path
+    inst_install.depends=install_inst_prepare
+    INSTALLS+=inst_install
+}
+
+!contains(QTOPIACORE_CONFIG,staticlib) {
+    sdk_install.commands=$$COMMAND_HEADER\
+        $$make($$QTDIR/$$dir,install INSTALL_ROOT=$(SDKSANDBOX) )
+    sdk_install.CONFIG=no_path
+    sdk_install.hint=sdk
+    INSTALLS+=sdk_install
+}
+
+dolibs=0
+contains(QTOPIACORE_CONFIG,lib) {
+    equals(qt,target):!enable_singleexec:dolibs=1
+    equals(qt,host):containstext($$QTOPIA_ID,libraries/qt/):dolibs=1
+    contains(QTOPIACORE_CONFIG,no_install):dolibs=0
+}
+equals(dolibs,1) {
+    lib=$$tail($$dir)
+    equals(lib,corelib):lib=core
+    lib=$$resolveqt($$lib)
+    var=$$lower($$lib)
+
+    isEmpty(VERSION) {
+        equals(QTDIR,$$QTEDIR) {
+            QT_VERSION=$$QTE_VERSION
+            QT_MAJOR_VERSION=$$QTE_MAJOR_VERSION
+            QT_MINOR_VERSION=$$QTE_MINOR_VERSION
+        } else {
+            QT_VERSION=$$DQT_VERSION
+            QT_MAJOR_VERSION=$$DQT_MAJOR_VERSION
+            QT_MINOR_VERSION=$$DQT_MINOR_VERSION
+        }
+    } else {
+        QT_VERSION=$$VERSION
+        QT_MAJOR_VERSION=
+        QT_MINOR_VERSION=
+        ver=$$VERSION
+        ver~=s/\./ /g
+        ver=$$ver
+        !contains(QMAKE_BEHAVIORS,var_split) {
+            ver=$$split(ver," ")
+        }
+        for(v,ver) {
+            isEmpty(QT_MAJOR_VERSION) {
+                QT_MAJOR_VERSION=$$v
+                next()
+            }
+            isEmpty(QT_MINOR_VERSION) {
+                QT_MINOR_VERSION=$$v
+                next()
+            }
+        }
+    }
+
+    unix {
+        libqt=lib$$lib
+        #CONFIG(debug,debug|release):libqt=$${libqt}_debug
+
+        commands=\
+            install -c $$LITERAL_QUOTE$$QTDIR/lib/$${libqt}.so.$$QT_VERSION$$LITERAL_QUOTE $$LITERAL_QUOTE$(INSTALL_ROOT)$$libdir/$${libqt}.so.$$QT_VERSION$$LITERAL_QUOTE $$LINE_SEP_VERBOSE\
+            ln -sf $${libqt}.so.$$QT_VERSION $(INSTALL_ROOT)$$libdir/$${libqt}.so $$LINE_SEP_VERBOSE\
+            ln -sf $${libqt}.so.$$QT_VERSION $(INSTALL_ROOT)$$libdir/$${libqt}.so.$$QT_MAJOR_VERSION $$LINE_SEP_VERBOSE\
+            ln -sf $${libqt}.so.$$QT_VERSION $(INSTALL_ROOT)$$libdir/$${libqt}.so.$${QT_MAJOR_VERSION}.$$QT_MINOR_VERSION
+        CONFIG(release,debug|release):!isEmpty(QMAKE_STRIP):commands+=\
+            $$LINE_SEP_VERBOSE $$QMAKE_STRIP $$QMAKE_STRIPFLAGS_LIB $$LITERAL_QUOTE$(INSTALL_ROOT)$$libdir/$${libqt}.so.$$QT_VERSION$$LITERAL_QUOTE
+        eval($${var}.path=\$$libdir)
+    } else {
+        libqt=$$lib
+        CONFIG(debug,debug|release):libqt=$${libqt}d
+        commands=\
+            @$(CHK_DIR_EXISTS) $(INSTALL_ROOT) $(MKDIR) $(INSTALL_ROOT) $$LINE_SEP\
+            $(COPY) $$fixpath($$DQTDIR/lib/$$libqt$${QT_MAJOR_VERSION}.dll) $(INSTALL_ROOT)
+        eval($${var}.path=/)
+    }
+    eval($${var}.commands=\$$commands)
+    echo(installing $$var)
+    INSTALLS+=$$var
+
+    win32:CONFIG(debug,debug|release) {
+        pdb=$$QTDIR/lib/$${libqt}$${QT_MAJOR_VERSION}.pdb
+        pdb.commands=$$QMAKE_COPY $$fixpath($$pdb) $(INSTALL_ROOT)
+        pdb.CONFIG=no_path
+        pdb.depends=install_$$var
+        INSTALLS+=pdb
+    }
+}
+

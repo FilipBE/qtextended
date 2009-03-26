@@ -1,0 +1,48 @@
+--- /dev/null	2006-11-25 22:17:37.000000000 +1000
++++ /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/pkgconfig/alsa.pc	2007-11-20 14:36:51.000000000 +1000
+@@ -0,0 +1,14 @@
++prefix=/scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi
++exec_prefix=${prefix}/usr
++libdir=${exec_prefix}/lib
++includedir=${prefix}/sys-include
++
++Name: alsa
++Description: Advanced Linux Sound Architecture (ALSA) - Library
++Version: 1.0.14a
++Requires: 
++Libs: -L${libdir} -lasound
++Libs.private: -lm -ldl -lpthread
++# -I${includedir}/alsa below is just for backward compatibility
++# (it was set so mistakely in the older version)
++Cflags: -I${includedir} -I${includedir}/alsa
+--- /dev/null	2006-11-25 22:17:37.000000000 +1000
++++ /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/pkgconfig/bluez.pc	2007-11-20 14:37:07.000000000 +1000
+@@ -0,0 +1,11 @@
++prefix=/scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi
++exec_prefix=${prefix}
++libdir=/usr/lib
++includedir=${prefix}/sys-include
++ 
++Name: BlueZ
++Description: Bluetooth protocol stack for Linux
++Version: 3.20
++Requires: 
++Libs: -L${libdir} -lbluetooth
++Cflags: -I${includedir}
+--- /dev/null	2006-11-25 22:17:37.000000000 +1000
++++ /scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi/pkgconfig/dbus-1.pc	2007-11-20 14:36:30.000000000 +1000
+@@ -0,0 +1,14 @@
++prefix=/scratchbox/compilers/cs2005q3.2-glibc2.5-arm/arm-none-linux-gnueabi
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/sys-include
++system_bus_default_address=unix:path=/var/run/dbus/system_bus_socket
++sysconfdir=/etc
++session_bus_services_dir=/usr/share/dbus-1/services
++
++Name: dbus
++Description: Free desktop message bus
++Version: 1.0.2
++Libs: -L${libdir} -ldbus-1  
++Cflags: -I${includedir}/dbus-1.0 -I${libdir}/dbus-1.0/include
++

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>configure Options</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">configure Options<br /><span class="subtitle"></span>
+</h1>
+<p>The authorative source of the available configure options (and defaults) is the script itself. Here is the output of <tt>configure -help</tt> as it was when the documentation was built.</p>
+<p>Note that some configure options will change the default value of other options. You can run <tt>configure -some -options -help</tt> to see the effect of this.</p>
+<p>For suitable values to pass to <tt>-extra-qt-config</tt> see <a href="over-configure-options-qt-1.html">configure Options (Qt)</a>.</p>
+<p>For suitable values to pass to <tt>-extra-qtopiacore-config</tt> see <a href="over-configure-options-qt-embedded-1.html">configure Options (Qt Embedded)</a>.</p>
+<a name="configure-help"></a>
+<h3>configure -help</h3>
+<pre>    Usage:  configure [options]
+
+    The defaults (*) are usually acceptable. A plus (+) denotes a default
+    value that needs to be evaluated. If the evaluation succeeds, the
+    feature is included.
+
+    Here is a short explanation of each option:
+
+        -help ..................  Print help and usage information.
+        -verbose ...............  Print out extra information while configuring.
+
+        -silent ................  Hide compiler commandlines.
+      * -no-silent .............  Show compiler commandlines.
+
+            Note that this applies to building of Qt only. QBuild always hides
+            commandlines but shows then whenever the process creates output or
+            returns non-zero.
+
+      * -release ...............  Create a release build.
+        -debug .................  Create a debug build.
+
+        -separate-debug-info ...  Separate debug info into a .debug file.
+      * -no-separate-debug-info   Do not separate debug info into a .debug file.
+
+      * -clean .................  Clean the build tree.
+        -no-clean ..............  Do not clean the build tree.
+
+        -profile ...............  Create a build with profiling.
+      * -no-profile ............  Create a build without profiling.
+
+        -reduce-exports arg ....  Reduce symbol exports in Qt/Qt Embedded/Qt
+                                  Extended (requires GCC 4).
+                                  Available: auto, yes, no
+                                  Default: auto
+
+        -little-endian .........  Force target build to use little endian (LSB
+                                  first).
+        -big-endian ............  Force target build to use big endian (MSB first).
+
+        -I dir .................  Add an explicit include path.
+        -L dir .................  Add Add an explicit library path.
+        -l lib .................  Add Add an explicit library.
+        -R dir .................  Add an explicit dynamic library runtime search
+                                  path.
+        -D def .................  Add an explicit define to the build. Use -D
+                                  FOO=bar to give it a value.
+
+            The -I, -L, -l, -R and -D flags apply when building Qt Extended and Qt
+            Embedded projects. You need to use -host-I, -host-L, -host-l, -host-R
+            and -host-D flags if you want the effects for Qt and host projects.
+
+        -host-I dir ............  Add an explicit include path.
+        -host-L dir ............  Add Add an explicit library path.
+        -host-l lib ............  Add Add an explicit library.
+        -host-R dir ............  Add an explicit dynamic library runtime search
+                                  path.
+        -host-D def ............  Add an explicit define to the build. Use -D
+                                  FOO=bar to give it a value.
+
+      + -rpath .................  Set an automatic RPATH (so LD_LIBRARY_PATH is not
+                                  required to run Qt Extended). Note that this
+                                  requires QMAKE_RPATH to be set in your selected
+                                  mkspec.
+        -no-rpath ..............  Do not set an automatic RPATH.
+
+      * -posix-locks ...........  Use POSIX file locking.
+        -flock-locks ...........  Use flock() for file locking.
+
+      + -semtimedop ............  Use semtimedop.
+        -no-semtimedop .........  Use semop instead.
+
+      + -malloc-hook ...........  Use glibc's __malloc_hook for memory allocation
+                                  debugging.
+        -no-malloc-hook ........  Disable features which depend on __malloc_hook.
+
+        -exceptions ............  Enable Exceptions.
+      * -no-exceptions .........  Disable Exceptions.
+
+        -rtti ..................  Enable RTTI (implies -exceptions).
+      * -no-rtti ...............  Disable RTTI.
+
+      + -strict-warnings .......  Use strict compiler warning flags.
+        -no-strict-warnings ....  Do not use strict compiler warning flags.
+
+        -error .................  Treat warnings as errors when compiling Qt
+                                  Extended (except for code in src/3rdparty).
+      * -no-error ..............  Do not treat warnings as errors.
+
+      * -ld-optimize-speed .....  Optimize the link algorithm for speed.
+        -ld-optimize-memory ....  Optimize the link algorithm for memory use. This
+                                  is handy on memory-constrained systems.
+
+      + -pkg-config ............  Use pkg-config to resolve dependencies when
+                                  cross-compiling. This requires that
+                                  PKG_CONFIG_PATH and PKG_CONFIG_PREFIX are set and
+                                  only allows packages to be used that allow $prefix
+                                  to be overridden.
+        -no-pkg-config .........  Do not use pkg-config when cross-compiling. Any
+                                  required compiler flags to satisfy dependencies
+                                  must be provided manually.
+
+        -force-pkg-config ......  Force the use of pkg-config. This may be reqired
+                                  for devices that cannot set PKG_CONFIG_PATH and
+                                  PKG_CONFIG_PREFIX. You must manually ensure that
+                                  pkg-config will return correct results.
+
+            Builds for QVFb (including builds using the reference device) will
+            always use pkg-config if it is available as they are not
+            cross-compiling.
+
+        -device device .........  Build for a device.
+                                  Available: greenphone, n810, neo, reference
+                                  Default: reference
+
+            The reference device can only run under QVFb. You must create a device
+            profile or use an existing profile if you wish to run your build on a
+            device.
+
+        -qvfb ..................  Build a device configuration for running under
+                                  QVFb.
+
+            The reference Building for any device except reference (the default
+            device) will create a build that does not run under QVFb. By passing
+            -device foo -qvfb you can build using the configuration from a device
+            in a build for QVFb. Note that this requires support from the device.
+
+        -allow-fail option .....  Allow an option to fail. Note that this uses
+                                  option names, which do not match switch names. See
+                                  devices/reference/configure-qvfb for the options
+                                  that are useful to use with this switch.
+
+            Note that passing an option overrides any previously-declared
+            -allow-fail for that option.
+
+        -ui-type ui ............  Build Qt Extended with the specified UI.
+                                  Available: mobile, home
+
+        -add-module module
+        -remove-module module
+        -modules module,module .  Select the modules to build.
+                                  Available: bluetooth, cell, connectivity,
+                                  devtools, drm, essentials, games, infrared,
+                                  inputmethods, ipcomms, location, media, messaging,
+                                  pim, pkgmanagement, qtuitest, telephony, ui
+
+            Note that some features previously enabled with configure switches are
+            now controlled by modules. The following list describes these features.
+
+                location  : Enable the Qt Extended Whereabouts API.
+                bluetooth : Enable Bluetooth.
+                infrared  : Enable Infrared.
+                drm       : Enable support for DRM (Using the Beep Science DRM
+            Agent v2.4).
+                telephony : Enable Telephony components (UI, Modem, VoIP).
+                cell      : Enable Modem communication.
+                ipcomms   : Enable VoIP (Voice over IP) communication. Note that
+            the reference SIP agent will not build in singleexec mode.
+                media     : Enable the Qt Extended Media API.
+                qtuitest  : Enable the test framework which provides automated GUI
+            testing functionality. WARNING: This option creates a security hole and
+            should only be used when automated testing is going to be used.
+
+        -platform host .........  The host platform that you are compiling on. If
+                                  not specified, configure will attempt to
+                                  autodetect the host.
+        -xplatform target ......  The target platform that you are compiling for. If
+                                  not specified, configure will attempt to
+                                  autodetect the target based on the host.
+      + -arch architecture .....  The CPU family you are building for.
+                                  Available: alpha, arm, avr32, bfin, generic, i386,
+                                  ia64, macosx, mips, parisc, powerpc, s390, sparc,
+                                  windows, x86_64
+        -sdk dir ...............  Set the SDK location to &lt;dir&gt;.
+                                  Default: /home/test1/tmp/mksrcpackage_20873/qt-ext
+                                  ended-4.4.3/qbuild/doc/user_guide/src/gen/configur
+                                  e/sdk
+        -image dir .............  Set the Qt Extended install location to &lt;dir&gt;.
+                                  Default: /home/test1/tmp/mksrcpackage_20873/qt-ext
+                                  ended-4.4.3/qbuild/doc/user_guide/src/gen/configur
+                                  e/image
+        -prefix dir ............  Set the runtime location of Qt Extended to &lt;dir&gt;.
+                                  Default: /home/test1/tmp/mksrcpackage_20873/qt-ext
+                                  ended-4.4.3/qbuild/doc/user_guide/src/gen/configur
+                                  e/image
+
+        -launch-method method ..  Launch applications using the selected method.
+                                  Please see the documentation for a description of
+                                  each launch method.
+                                  Available: normal, quicklaunch
+                                  Default: quicklaunch
+      + -setproc-method method .  Select the method used by quicklauncher to change
+                                  the process title.
+                                  Available: prctl, argv0, none
+                                  Default: argv0
+
+            The prctl method uses the prctl() system call. This is available to
+            Linux 2.6.9 and later.
+
+            The argv0 method overwrites argv[0]. This is the traditional approach
+            used by Qt Extended. It makes assumptions about the layout in memory or
+            argv and char **environ.
+
+            The none method is provided for systems that cannot use prctl() and
+            break on the argv0 method.
+
+        -singleexec ............  Qt Extended is compiled into a single binary that
+                                  contains all the libraries, plug-ins and
+                                  applications. This implies -no-sxe.
+      * -shared ................  Qt Extended is compiled as a collection of
+                                  libraries, plug-ins and applications.
+
+        -add-language lang
+        -remove-language lang
+        -languages lang,lang ...  Select the languages to use. Resources
+                                  (translations, dictionary files, icons) are
+                                  updated/installed for the specified languages.
+                                  Available: en_US
+                                  Default: en_US
+
+        -iconsize size .........  Non-scalable icons are installed at the requested
+                                  size. Can be a single number (for square icons) or
+                                  WxH. Images will be scaled from one of the
+                                  available sizes.
+                                  Default: 22x22
+        -svg-format ext ........  Specify the format to convert SVG files to at
+                                  install time. Converting to the pic (QPicture)
+                                  format allows for faster image loading.
+                                  Available: svg, pic
+                                  Default: pic
+        -image-extension-order    Select the priority of extensions for images that
+         ext,ext                  exist in multiple formats.
+                                  Available: png, gif, xpm
+                                  Default: png,gif,xpm
+
+            Only one version of an image will be installed. This list determines
+            the priority of extensions. An image with multiple extensions, none of
+            which appear in this list will have the first (as determined by perl's
+            glob(&quot;$file.*&quot;);) extension chosen. Note that you cannot force
+            extensions other than .svg to have the highest priority with this
+            option.
+
+        -add-displaysize ui:size
+        -displaysizes             Set the display sizes to match against the current
+         ui:size,ui:size          UI.
+
+            This flag only affects some images (mostly theme backgrounds) that are
+            scaled to the size of the display.
+
+            The value home:800x480,480x800 means that the home UI has a display
+            size of 800x480 and any other UI has  a display size of 480x800.
+
+      * -auto-i18n-fonts .......  Allow automatic installation of i18n fonts based
+                                  on the configured language.
+        -no-auto-i18n-fonts ....  Do not automatically install i18n fonts.
+
+        -add-font fontspec .....  Install font &lt;fontspec&gt; (defined as
+                                  &quot;family:sizes:styles&quot; OR a truetype font file (eg.
+                                  qtopiadejavu.ttf). Pass -font multiple times to
+                                  install multiple fonts.
+                                  Default: dejavu_sans_condensed:*:*
+
+            family is the name of the font.
+
+            sizes is a list or range. For example, '80,100,120', '80-120', '*'.
+            Note that .qpf2 files are named with pixel height so 8-12 is more
+            likely.
+
+            styles is a list of weights. For example: '50,50i,80', '*'.
+
+            Unless you have changed the Qt Embedded configuration, fonts must be
+            truetype, .qpf or .qpf2 files.format and are searched for in
+            /home/test1/tmp/mksrcpackage_20873/qt-extended-4.4.3/qtopiacore/qt/lib/
+            fonts and
+            /home/test1/tmp/mksrcpackage_20873/qt-extended-4.4.3/dist/fonts. One
+            .qpf/.qpf2 file is installed for each combination of family, size,
+            style and rotation. Note that fonts may not be available in all styles
+            and sizes.
+
+        -mount dir:mountpoint ..  Mount &lt;dir&gt; at &lt;mountpoint&gt; on the solution
+                                  filesystem.
+
+            There are 3 ways to specify &lt;dir&gt;. It can be absolute, the directory is
+            used. The path can begin with DEVICE/, in which case the path is
+            relative to the device directory (eg. DEVICE/include =&gt;
+            &lt;source&gt;/devices/reference/include). A relative path is relative to the
+            source directory. (eg. devices/foo/src =&gt; &lt;source&gt;/devices/foo/src).
+            Any mounted directories will have the lowest priority when searching
+            for files.
+
+        -dynamic-rotation ......  Enable support for dynamic rotation in Qt
+                                  Extended.
+        -no-dynamic-rotation ...  Do not enable support for dynamic rotation.
+
+        -ssl ...................  Enable the use of OpenSSL. This lets qtmail
+                                  connect over SSL and use SMTP authentication. It
+                                  also allows communication with Google services.
+        -no-ssl ................  Disable the use of OpenSSL.
+
+        -sxe ...................  Enable the Safe Execution Environment.
+        -no-sxe ................  Disable the Safe Execution Environment.
+
+        -sxe-discovery .........  Turn on support for SXE discovery mode so that new
+                                  policy rules can be tested. To utilise SXE
+                                  discovery mode you must set the SXE_DISCOVERY_MODE
+                                  environment variable to 1. WARNING: This option
+                                  creates a security hole and should only be used
+                                  when creating new policy rules.
+      * -no-sxe-discovery ......  Turn off support for SXE discovery mode.
+
+        -sxe-soft-kill .........  Turn on support for SXE soft kill so that
+                                  processes can be sent a signal other than 9 when
+                                  being killed. To utilise SXE soft kill you must
+                                  set the SXE_SOFT_KILL environment variable to the
+                                  number of the signal to send. To see the available
+                                  signals run kill -l. WARNING: This option creates
+                                  a security hole and should only be used when
+                                  debugging SXE violations.
+      * -no-sxe-soft-kill ......  Turn off support for SXE soft kill.
+
+        -dbus ..................  Enable DBUS support.
+        -no-dbus ...............  Disable DBUS support.
+
+        -dbusipc ...............  Enable DBUS for IPC.
+        -no-dbusipc ............  Disable DBUS for IPC.
+
+      + -sound-system ss .......  Select the sound system to use. You might need to
+                                  force OSS if your toolchain has ALSA but your
+                                  kernel does not.
+                                  Available: alsa, oss
+                                  Default: alsa
+
+      + -v4l2 ..................  Enable support for V4L2 (Video for Linux version
+                                  2).
+        -no-v4l2 ...............  Disable support for V4L2. Video for Linux version
+                                  1 will be used instead. You might need to force
+                                  this if your toolchain has V4L2 but your kernel
+                                  does not.
+
+        -add-phonevendor plugin
+        -remove-phonevendor
+         plugin
+        -phonevendors             Build and install phonevendor plugins (reqires
+         plugin,plugin            Modem).
+                                  Available: ericsson, wavecom
+                                  Default: ericsson,wavecom
+
+        -add-multiplexer plugin
+        -remove-multiplexer
+         plugin
+        -multiplexers             Build and install multiplexer plugins (reqires
+         plugin,plugin            Modem).
+                                  Available: wavecom
+                                  Default: wavecom
+
+            Modem and VoIP communication are not exclusive or mandatory. You can
+            enable one, both or none. You must enable telephony to enable Modem or
+            VoIP.
+
+        -vpn ...................  Enable VPN (Virtual Private Network) support.
+        -no-vpn ................  Disable VPN.
+
+        -add-mediaengine engine
+        -remove-mediaengine
+         engine
+        -mediaengines             Select the audio/video engines to use with the Qt
+         engine,engine            Extended Media API.The order of the engines is
+                                  significant
+                                  Available: cruxus, gstreamer, helix
+
+        -phonon ................  Enable Phonon support in Qt Extended.
+        -no-phonon .............  Disable Phonon support.
+
+        -libamr ................  Enable libamr.
+        -no-libamr .............  Disable libamr.
+
+        -build-examples ........  Build the example projects (for verification only,
+                                  does not install them).
+      * -no-examples ...........  Do not build the example projects.
+
+        -pictureflow ...........  Enable the PictureFlow 3rdparty addin.
+        -no-pictureflow ........  Disable the PictureFlow 3rdparty addin.
+
+      * -gif ...................  Enable GIF support.
+        -no-gif ................  Disable GIF support.
+
+        -glib ..................  Enable Glib support in Qt Embedded (uses glib-2.0
+                                  from pkg-config).
+      * -no-glib ...............  Disable Glib support in Qt Embedded.
+
+      * -qtopia-sqlite .........  Use sqlite3 from Qt Extended.
+        -system-sqlite .........  Use sqlite3 from the system.
+
+        -script ................  Enable QtScript support in Qt Embedded.
+      * -no-script .............  Disabled QtScript support in Qt Embedded.
+
+        -extra-qt-embedded-config Add something to the Qt Embedded configure
+         &quot;-option arg&quot;            commandline.
+        -extra-qt-config &quot;-option Add something to the Qt configure commandline.
+         arg&quot;
+
+      + -system-qt .............  Use Qt from the system.
+        -build-qt ..............  Build Qt.
+
+        -force-build-qt ........  Force a build of Qt (for bootstrap purposes),
+                                  ignoring any pre-existing version.</pre>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

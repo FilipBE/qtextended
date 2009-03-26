@@ -1,0 +1,189 @@
+--- busybox-1.2.1/sysklogd/syslogd.c	2007-06-04 11:36:57.000000000 +1000
++++ busybox-1.2.1_438760073_modified/sysklogd/syslogd.c	2007-06-04 11:02:58.000000000 +1000
+@@ -41,6 +41,16 @@
+ /* Path for the file where all log messages are written */
+ #define __LOG_FILE "/var/log/messages"
+ 
++#ifdef CONFIG_FEATURE_ALT_LOG
++typedef struct alt_log_spec {
++    int fac;
++    const char *apath;
++    struct alt_log_spec *next;
++} alt_log_spec_t;
++static alt_log_spec_t *altLogSpecs = 0;
++static alt_log_spec_t *lastLogSpec = 0;
++#endif
++
+ /* Path to the unix socket */
+ static char lfile[MAXPATHLEN];
+ 
+@@ -411,6 +421,51 @@
+ }
+ #endif
+ 
++#ifdef CONFIG_FEATURE_ALT_LOG
++static void createLogSpec( const char *optStr )
++{
++    const char *fac_part = NULL;
++    CODE *c_fac = NULL;
++    alt_log_spec_t *spec = NULL;
++    int path_part = 0;
++
++    if (( fac_part = strstr( optStr, ":" )) == 0 )
++        bb_show_usage();
++    ++fac_part;
++    path_part = fac_part - optStr;
++
++    for (c_fac = facilitynames;
++            c_fac->c_name && strcmp( c_fac->c_name, fac_part ); c_fac++);
++    if ( c_fac == NULL )
++        bb_show_usage();
++
++    spec = (alt_log_spec_t *)malloc( sizeof( struct alt_log_spec ));
++    if ( spec == NULL )
++        abort();
++    spec->fac = c_fac->c_val;
++    spec->apath = (char*)malloc( path_part );
++    memset( (char*)spec->apath, '\0', path_part );
++    memcpy( (char*)spec->apath, optStr, path_part - 1 );
++    if ( altLogSpecs == 0 ) /* first one */
++        altLogSpecs = spec;
++    else
++        lastLogSpec->next = spec;
++    lastLogSpec = spec;
++}
++
++static void alt_log_cleanupSyslog(void)
++{
++    struct alt_log_spec *spec;
++    for ( spec = altLogSpecs; spec; spec = spec->next )
++    {
++        free( (char*)spec->apath );
++        free( spec );
++    }
++    altLogSpecs = 0;
++    lastLogSpec = 0;
++}
++#endif
++
+ static void logMessage(int pri, char *msg)
+ {
+ 	time_t now;
+@@ -420,6 +475,11 @@
+ 	static char line[MAXLINE + 1];
+ #endif
+ 	CODE *c_pri, *c_fac;
++#ifdef CONFIG_FEATURE_ALT_LOG
++    const char *saveLogFilePath = 0;
++    alt_log_spec_t *spec = 0;
++    int fac_code = -1;
++#endif
+ 
+ 	if (pri != 0) {
+ 		for (c_fac = facilitynames;
+@@ -474,11 +534,28 @@
+ 	if (local_logging == TRUE)
+ #endif
+ 	{
++#ifdef CONFIG_FEATURE_ALT_LOG
++        if ( altLogSpecs )
++        {
++            fac_code = LOG_FAC(pri) << 3;
++            for ( spec = altLogSpecs; spec && spec->fac != fac_code; spec = spec->next );
++            if ( spec )
++            {
++                saveLogFilePath = logFilePath;
++                logFilePath = spec->apath;
++            }
++        }
++#endif
+ 		/* now spew out the message to wherever it is supposed to go */
+ 		if (small)
+ 			message("%s %s\n", timestamp, msg);
+ 		else
+ 			message("%s %s %s %s\n", timestamp, LocalHostName, res, msg);
++
++#ifdef CONFIG_FEATURE_ALT_LOG
++        if ( saveLogFilePath )
++            logFilePath = saveLogFilePath;
++#endif
+ 	}
+ }
+ 
+@@ -489,7 +566,9 @@
+ #ifdef CONFIG_FEATURE_IPC_SYSLOG
+ 	ipcsyslog_cleanup();
+ #endif
+-
++#ifdef CONFIG_FEATURE_ALT_LOG
++    alt_log_cleanupSyslog();
++#endif
+ 	exit(TRUE);
+ }
+ 
+@@ -637,7 +716,7 @@
+ 	char *p;
+ 
+ 	/* do normal option parsing */
+-	while ((opt = getopt(argc, argv, "m:nO:s:Sb:R:LC::r:")) > 0) {
++	while ((opt = getopt(argc, argv, "m:nO:A:s:Sb:R:LC::r:")) > 0) {
+ 		switch (opt) {
+ 		case 'm':
+ 			MarkInterval = atoi(optarg) * 60;
+@@ -648,6 +727,13 @@
+ 		case 'O':
+ 			logFilePath = optarg;
+ 			break;
++#ifdef CONFIG_FEATURE_ALT_LOG
++        /* -A FILE:FACILITY Use an alternate log file for
++           facility (default=/var/log/authlog:auth) */
++        case 'A':
++            createLogSpec( optarg );
++            break;
++#endif
+ #ifdef CONFIG_FEATURE_ROTATE_LOGFILE
+ 		case 's':
+ 			logFileSize = atoi(optarg) * 1024;
+@@ -716,5 +802,9 @@
+ 	}
+ 	doSyslogd();
+ 
++#ifdef CONFIG_FEATURE_ALT_LOG
++    alt_log_cleanupSyslog();
++#endif
++
+ 	return EXIT_SUCCESS;
+ }
+--- busybox-1.2.1/sysklogd/Config.in	2006-07-01 08:42:04.000000000 +1000
++++ busybox-1.2.1_438760073_modified/sysklogd/Config.in	2007-06-04 10:55:15.000000000 +1000
+@@ -42,6 +42,18 @@
+ 	  measure to prevent system logs from being tampered with
+ 	  by an intruder.
+ 
++config CONFIG_FEATURE_ALT_LOG
++	bool "Alternate Log support"
++	default n
++	depends on CONFIG_SYSLOGD
++	help
++	  When you enable this feature, the syslogd utility can
++          accept multiple arguments of the form -A filename:fac
++          where filename is a full path to an alternate log file
++          and fac is the name of a facility such as "auth" or
++          "local4" - see "man syslog.h" for more.  Syslog will then
++          send all log messages for that facility to the alt log.
++
+ config CONFIG_FEATURE_IPC_SYSLOG
+ 	bool "Circular Buffer support"
+ 	default n
+--- busybox-1.2.1/include/usage.h	2006-07-01 08:42:10.000000000 +1000
++++ busybox-1.2.1_438760073_modified/include/usage.h	2007-06-04 10:55:15.000000000 +1000
+@@ -2868,7 +2868,8 @@
+ 	"Options:\n" \
+ 	"\t-m MIN\t\tMinutes between MARK lines (default=20, 0=off)\n" \
+ 	"\t-n\t\tRun as a foreground process\n" \
+-	"\t-O FILE\t\tUse an alternate log file (default=/var/log/messages)\n" \
++	"\t-O FILE\t\tUse a specific log file (default=/var/log/messages)\n" \
++	"\t-A FILE:FACILITY\t\tUse an alternate log file for facility (default=/var/log/authlog:auth)\n" \
+ 	"\t-S\t\tMake logging output smaller." \
+ 	USAGE_ROTATE_LOGFILE( \
+ 	"\n\t-s SIZE\t\tMax size (KB) before rotate (default=200KB, 0=off)\n" \

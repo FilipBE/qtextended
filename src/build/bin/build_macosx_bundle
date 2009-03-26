@@ -1,0 +1,242 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::Opt;
+
+Qtopia::Paths::get_paths();
+
+set_optvar( "help", +{
+    "type" => "bool",
+    "set" => [ "%", "Print help and usage information." ],
+});
+set_optvar( "builddir", +{
+    "type" => "value",
+    "set" => [ "%=s", "Put the output files in dir." ],
+    "arg" => "dir",
+    "default" => $QPEDIR,
+});
+
+set_optvar( "x", +{
+    "type" => "bool",
+    "set" => [ "%", "Enable debugging." ],
+});
+set_optvar( "dmg", +{
+    "type" => "bool",
+    "set" => [ "%", "Build a disk image." ],
+});
+set_optvar( "gz", +{
+    "type" => "bool",
+    "set" => [ "%", "Build a gzip-compressed tarball." ],
+});
+set_optvar( "bz2", +{
+    "type" => "bool",
+    "set" => [ "%", "Build a bzip2-compressed tarball." ],
+});
+
+set_optvar( "keeptemp", +{
+    "type" => "bool",
+    "set" => [ "%", "Do not remove temporary files (from builddir)." ],
+});
+
+# Process commandline options
+opt_get_options();
+opt_apply_defaults();
+
+if ( opt("builddir") && ! -d opt("builddir") ) {
+    if ( -f opt("builddir") ) {
+	die "ERROR: ".opt("builddir")." exists but is not a directory\n";
+    }
+    pexec("mkdir", "-p", opt("builddir"));
+}
+
+# Get set variables
+my $verfile = "$depotpath/src/libraries/qtopia/version.h";
+$verfile = "$depotpath/src/libraries/qtopiabase/version.h" unless ( -f "$verfile" );
+my $VERSION = `sed -n -e 's/.*QPE_VERSION "\\(.*\\)".*/\\1/p' "$verfile"`;
+my $IMAGE = `sed -n -e 's/.*DPREFIX\?=\\(.*\\).*/\\1/p' "$QPEDIR/src/qtopiadesktop/Makefile"`;
+# Handle the extra CR from the backticks
+foreach ( $VERSION, $IMAGE ) {
+    chomp;
+}
+
+# Start the packaging process
+print "Creating App Bundle...\n";
+
+my $BUNDLE = opt("builddir")."/Qtopia Sync Agent.app";
+my $CONTENTS = "$BUNDLE/Contents";
+my $BINARY = "$CONTENTS/MacOS/qtopiadesktop";
+my $LIBDIR = "$CONTENTS/Frameworks";
+my $RESOURCES = "$CONTENTS/Resources";
+my $OUTNAME = opt("builddir")."/qtopiadesktop-$VERSION";
+
+pexec("rm", "-rf", $BUNDLE);
+pexec("cp", "-R", "$QPEDIR/bin/qtopiadesktop.app", $BUNDLE);
+for my $file ( glob("$IMAGE/*") ) {
+    pexec("cp", "-R", $file, $CONTENTS);
+}
+
+# Install frameworks (libs)
+print "Frameworks...\n";
+
+pexec("mkdir", "-p", $LIBDIR);
+# We want libqd-*.[digit].dylib (ie. not [digit].[digit].dylib)
+chdir $IMAGE."/Frameworks" or die $!;
+my @QD_LIBS = grep(/[^\d]\.\d+\.dylib/, glob("*.dylib"));
+chdir $IMAGE."/Resources/plugins" or die $!;
+my @QD_PLUGINS = glob("*.dylib");
+my @change_files = ( $BINARY );
+foreach my $lib ( @QD_LIBS ) {
+    push(@change_files, "$LIBDIR/$lib");
+}
+foreach my $lib ( @QD_PLUGINS ) {
+    push(@change_files, "$RESOURCES/plugins/$lib");
+}
+
+=pod We should be using the assistant library
+# Setup Qt Assistant
+print "Qt Assistant...\n";
+pexec("cp", "-R", "$QTDIR/bin/assistant.app", $RESOURCES);
+my $ASLIBDIR = "$RESOURCES/assistant.app/Contents/Frameworks";
+pexec("rm", "-rf", $ASLIBDIR);
+pexec("mkdir", "-p", $ASLIBDIR);
+chdir $ASLIBDIR;
+my @files = glob("../../../../Frameworks/*") or die "ERROR: Qtopia Sync Agent frameworks don't exist\n";
+pexec("ln", "-s", @files, ".");
+push(@change_files, "$RESOURCES/assistant.app/Contents/MacOS/assistant");
+=cut
+
+=pod redundant?
+# Other crap that needs to be installed
+print "Application Data...\n";
+foreach ( glob("$IMAGE/qtopiadesktop/*") ) {
+    my $i = basename($_);
+    pexec("mkdir", "-p", "$RESOURCES/$i");
+    @files = glob("$IMAGE/qtopiadesktop/$i/*") or die "ERROR: Failed to glob $IMAGE/qtopiadesktop/$i/*\n";
+    pexec("cp", "-R", @files, "$RESOURCES/$i");
+}
+=cut
+
+# Setup dynamic library names so that everything can be found
+print "Configuring Frameworks...\n";
+foreach my $i ( @QD_LIBS ) {
+    pexec("install_name_tool", "-id", "\@executable_path/../Frameworks/$i", "$LIBDIR/$i");
+    foreach my $j ( @change_files ) {
+        my $orig_name;
+        open IN, "otool -L \"$j\" |" or die $!;
+        while ( defined($_ = <IN>) ) {
+            my @bits = split;
+            $_ = $bits[0];
+            if ( /\Q$i\E$/ ) {
+                $orig_name = $_;
+                last;
+            }
+        }
+        close IN;
+        if ( $orig_name ) {
+            pexec("install_name_tool", "-change", $orig_name, "\@executable_path/../Frameworks/$i", $j);
+        }
+    }
+}
+=pod redundant?
+# Incremental lib seems to be a "special case" thing that can't be handled by qmake
+foreach my $lib ( qw(qpe qpepim) ) {
+    pexec("cp", "$QPEDIR/lib/libqd-${lib}_incremental.dylib", "$LIBDIR/libqd-${lib}_incremental.dylib");
+    pexec("install_name_tool", "-id", "\@executable_path/../Frameworks/libqd-${lib}_incremental.dylib",
+	  "$LIBDIR/libqd-${lib}_incremental.dylib");
+    my $libqpe = join("", grep(/-${lib}\./, @QPE_LIBS));
+    my $incname = `otool -L '$LIBDIR/$libqpe' | grep incremental`;
+    chomp($incname);
+    $incname =~ s/^\s+(.*) \(.*$/$1/;
+    pexec("install_name_tool", "-change", "$incname",
+	  "\@executable_path/../Frameworks/libqd-${lib}_incremental.dylib", "$LIBDIR/$libqpe");
+}
+=cut
+
+# Create the disk image
+if ( opt("dmg") ) {
+    print "Making Disk Image...\n";
+    my $dmgsource = opt("builddir")."/dmgsource";
+    my $image = "$OUTNAME.dmg";
+    foreach my $var ( $dmgsource, $image ) {
+	if (  -e $var ) {
+	    pexec("rm", "-rf", $var);
+	}
+    }
+    pexec("mkdir", "-p", $dmgsource);
+    pexec("cp", "-R", $BUNDLE, $dmgsource);
+    pexec("cp", "$IMAGE/LICENSE", $dmgsource);
+    pexec("hdiutil", "create", "-srcfolder", $dmgsource,
+          "-volname", "Qtopia Sync Agent $VERSION", "-scrub",
+	  $image);
+    if ( !opt("keeptemp") ) {
+	pexec("rm", "-rf", $dmgsource);
+    }
+}
+
+# Create the tarball
+if ( opt("gz") || opt("bz2") ) {
+    print "Making Tarball...\n";
+    my $tarsource = opt("builddir")."/tarsource";
+    my $tarball = "$OUTNAME.tar";
+    foreach my $var ( $tarsource, $tarball ) {
+	if (  -e $var ) {
+	    pexec("rm", "-rf", $var);
+	}
+    }
+    pexec("mkdir", "-p", $tarsource);
+    pexec("cp", "-R", $BUNDLE, $tarsource);
+    pexec("cp", "$IMAGE/LICENSE", $tarsource);
+    my $oldpwd = getcwd();
+    chdir $tarsource;
+    pexec("tar", "cf", $tarball, ".");
+    chdir $oldpwd;
+    # Compress the tarball
+    print "Compressing Tarball...\n";
+    if ( opt("gz") ) {
+        pexec("rm", "$tarball.gz");
+        pexec("gzip", $tarball);
+    } elsif ( opt("bz2") ) {
+        pexec("rm", "$tarball.bz2");
+        pexec("bzip2", $tarball);
+    }
+    if ( !opt("keeptemp") ) {
+	pexec("rm", "-rf", $tarsource);
+    }
+}
+
+# Notify user of created files
+print "\n";
+print "Created $BUNDLE\n";
+if ( opt("dmg") ) {
+    print "Created $OUTNAME.dmg\n";
+}
+if ( opt("gz") ) {
+    print "Created $OUTNAME.tar.gz\n";
+} elsif ( opt("bz2") ) {
+    print "Created $OUTNAME.tar.bz2\n";
+}
+print "\n";
+
+exit 0;
+
+#
+# Subroutines
+#
+
+# exec with debug
+sub pexec
+{
+    my @args = @_;
+    if ( opt("x") ) {
+	print "+ ".join(" ", @args)."\n";
+    }
+    my $status = system(@args);
+    $status = $status >> 8;
+    return $status;
+}
+

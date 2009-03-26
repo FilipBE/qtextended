@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailServiceAction Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailServiceAction Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>]</span>
+</h1>
+<p>The QMailServiceAction class provides the interface for requesting actions from external message services. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailServiceAction&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="qmailretrievalaction.html">QMailRetrievalAction</a>, <a href="qmailsearchaction.html">QMailSearchAction</a>, and <a href="qmailtransmitaction.html">QMailTransmitAction</a>.</p>
+<ul>
+<li><a href="qmailserviceaction-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qmailserviceaction-status.html">Status</a></b>&nbsp;&nbsp;<tt> (preliminary)</tt></li>
+<li><div class="fn"/>enum <b><a href="qmailserviceaction.html#Activity-enum">Activity</a></b> { Pending, InProgress, Successful, Failed }</li>
+<li><div class="fn"/>enum <b><a href="qmailserviceaction.html#Connectivity-enum">Connectivity</a></b> { Offline, Connecting, Connected, Disconnected }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>Activity <b><a href="qmailserviceaction.html#activity">activity</a></b> () const</li>
+<li><div class="fn"/>Connectivity <b><a href="qmailserviceaction.html#connectivity">connectivity</a></b> () const</li>
+<li><div class="fn"/>QPair&lt;uint, uint&gt; <b><a href="qmailserviceaction.html#progress">progress</a></b> () const</li>
+<li><div class="fn"/>const Status <b><a href="qmailserviceaction.html#status">status</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qmailserviceaction.html#cancelOperation">cancelOperation</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailserviceaction.html#activityChanged">activityChanged</a></b> ( QMailServiceAction::Activity <i>a</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailserviceaction.html#connectivityChanged">connectivityChanged</a></b> ( QMailServiceAction::Connectivity <i>c</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailserviceaction.html#progressChanged">progressChanged</a></b> ( uint <i>value</i>, uint <i>total</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailserviceaction.html#statusChanged">statusChanged</a></b> ( const QMailServiceAction::Status &amp; <i>s</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailserviceaction.html#setStatus">setStatus</a></b> ( Status::ErrorCode <i>c</i>, const QString &amp; <i>t</i> = QString() )</li>
+<li><div class="fn"/>void <b><a href="qmailserviceaction.html#setStatus-2">setStatus</a></b> ( Status::ErrorCode <i>c</i>, const QString &amp; <i>t</i>, const QMailAccountId &amp; <i>a</i>, const QMailFolderId &amp; <i>f</i> = QMailFolderId(), const QMailMessageId &amp; <i>m</i> = QMailMessageId() )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailServiceAction class provides the interface for requesting actions from external message services.</p>
+<p>QMailServiceAction provides the mechanisms for messaging clients to request actions from external services, and to receive information in response. The details of requests differ for each derived action, and the specific data returned is also variable. However, all actions present the same interface for communicating status, connectivity and progress information.</p>
+<p>All actions communicate changes in their operational state by emitting the <a href="qmailserviceaction.html#activityChanged">activityChanged</a>() signal. If the execution of the action requires connectivity to an external service, then changes in connectivity state are emitted via the <a href="qmailserviceaction.html#connectivityChanged">connectivityChanged</a>() signal. Some actions are able to provide progress information as they execute; these changes are reported via the <a href="qmailserviceaction.html#progressChanged">progressChanged</a>() signal. If error conditions are encountered, the <a href="qmailserviceaction.html#statusChanged">statusChanged</a>() signal is emitted to report the new status.</p>
+<p>A user may attempt to cancel an operation after it has been initiated. The <a href="qmailserviceaction.html#cancelOperation">cancelOperation</a>() slot is provided for this purpose.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Activity-enum"></a>enum QMailServiceAction::Activity</h3>
+<p>This enum type is used to describe the activity state of the requested action.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Pending</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The action has not yet begun execution.</td></tr>
+<tr><td valign="top"><tt>QMailServiceAction::InProgress</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The action is currently executing.</td></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Successful</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The action has completed successfully.</td></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Failed</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The action could not be completed successfully, and has finished execution.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Connectivity-enum"></a>enum QMailServiceAction::Connectivity</h3>
+<p>This enum type is used to describe the connectivity state of the service implementing an action.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Offline</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The service is offline.</td></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Connecting</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The service is currently attempting to establish a connection.</td></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Connected</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The service is connected.</td></tr>
+<tr><td valign="top"><tt>QMailServiceAction::Disconnected</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The service has been disconnected.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="activity"></a><a href="qmailserviceaction.html#Activity-enum">Activity</a> QMailServiceAction::activity () const</h3>
+<p>Returns the current activity state of the action.</p>
+<p>See also <a href="qmailserviceaction.html#activityChanged">activityChanged</a>().</p>
+<h3 class="fn"><a name="activityChanged"></a>void QMailServiceAction::activityChanged ( <a href="qmailserviceaction.html#Activity-enum">QMailServiceAction::Activity</a> <i>a</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the activity status of the action changes, with the new state sdescribed by <i>a</i>.</p>
+<p>See also <a href="qmailserviceaction.html#activity">activity</a>().</p>
+<h3 class="fn"><a name="cancelOperation"></a>void QMailServiceAction::cancelOperation ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Attempts to cancel the last requested operation.</p>
+<h3 class="fn"><a name="connectivity"></a><a href="qmailserviceaction.html#Connectivity-enum">Connectivity</a> QMailServiceAction::connectivity () const</h3>
+<p>Returns the current connectivity state of the service implementing this action.</p>
+<p>See also <a href="qmailserviceaction.html#connectivityChanged">connectivityChanged</a>().</p>
+<h3 class="fn"><a name="connectivityChanged"></a>void QMailServiceAction::connectivityChanged ( <a href="qmailserviceaction.html#Connectivity-enum">QMailServiceAction::Connectivity</a> <i>c</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the connectivity status of the service performing the action changes, with the new state described by <i>c</i>.</p>
+<p>See also <a href="qmailserviceaction.html#connectivity">connectivity</a>().</p>
+<h3 class="fn"><a name="progress"></a><a href="qpair.html">QPair</a>&lt;<a href="qtglobal.html#uint-typedef">uint</a>, <a href="qtglobal.html#uint-typedef">uint</a>&gt; QMailServiceAction::progress () const</h3>
+<p>Returns the current progress of the service action.</p>
+<p>See also <a href="qmailserviceaction.html#progressChanged">progressChanged</a>().</p>
+<h3 class="fn"><a name="progressChanged"></a>void QMailServiceAction::progressChanged ( <a href="qtglobal.html#uint-typedef">uint</a> <i>value</i>, <a href="qtglobal.html#uint-typedef">uint</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the progress of the action changes, with the new state described by <i>value</i> and <i>total</i>.</p>
+<p>See also <a href="qmailserviceaction.html#progress">progress</a>().</p>
+<h3 class="fn"><a name="setStatus"></a>void QMailServiceAction::setStatus ( <a href="qmailserviceaction-status.html#ErrorCode-enum">Status::ErrorCode</a> <i>c</i>, const <a href="qstring.html">QString</a> &amp; <i>t</i> = QString() )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Set the current status so that <a href="qmailserviceaction-status.html#errorCode-var">QMailServiceAction::Status::errorCode</a> errorCode is set to <i>c</i> and <a href="qmailserviceaction-status.html#text-var">QMailServiceAction::Status::text</a> text is set to <i>t</i>.</p>
+<p>See also <a href="qmailserviceaction.html#status">status</a>().</p>
+<h3 class="fn"><a name="setStatus-2"></a>void QMailServiceAction::setStatus ( <a href="qmailserviceaction-status.html#ErrorCode-enum">Status::ErrorCode</a> <i>c</i>, const <a href="qstring.html">QString</a> &amp; <i>t</i>, const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>a</i>, const <a href="qmailfolderid.html">QMailFolderId</a> &amp; <i>f</i> = QMailFolderId(), const <a href="qmailmessageid.html">QMailMessageId</a> &amp; <i>m</i> = QMailMessageId() )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Set the current status so that <a href="qmailserviceaction-status.html#errorCode-var">QMailServiceAction::Status::errorCode</a> errorCode is set to <i>c</i>, <a href="qmailserviceaction-status.html#text-var">QMailServiceAction::Status::text</a> text is set to <i>t</i>, <a href="qmailserviceaction-status.html#accountId-var">QMailServiceAction::Status::accountId</a> accountId is set to <i>a</i>, <a href="qmailserviceaction-status.html#folderId-var">QMailServiceAction::Status::folderId</a> folderId is set to <i>f</i> and <a href="qmailserviceaction-status.html#messageId-var">QMailServiceAction::Status::messageId</a> messageId is set to <i>m</i>.</p>
+<h3 class="fn"><a name="status"></a>const <a href="qmailserviceaction-status.html">Status</a> QMailServiceAction::status () const</h3>
+<p>Returns the current status of the service action.</p>
+<p>See also <a href="qmailserviceaction.html#setStatus">setStatus</a>() and <a href="qmailserviceaction.html#statusChanged">statusChanged</a>().</p>
+<h3 class="fn"><a name="statusChanged"></a>void QMailServiceAction::statusChanged ( const <a href="qmailserviceaction-status.html">QMailServiceAction::Status</a> &amp; <i>s</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the error status of the action changes, with the new status described by <i>s</i>.</p>
+<p>See also <a href="qmailserviceaction.html#status">status</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

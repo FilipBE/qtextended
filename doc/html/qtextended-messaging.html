@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Messaging</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Messaging<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides the following messaging features:</p>
+<ol type="1">
+<li>a client application supporting common messaging functionality</li>
+<li>a server application supporting multiple messaging transport mechanisms</li>
+<li>a library for developing other applications that work with messages</li>
+</ol>
+<p>The <a href="messaging.html">Messages</a> client application provides standard functionality for creating and viewing SMS, MMS and email messages.</p>
+<p>The <a href="messageserver.html">MessageServer</a> application is a daemon managed by the QPE server. It provides messaging transport functionality, communicating with external servers on behalf of Qt Extended messaging client applications. New types of messaging (such as Instant Messages or video messages) can be handled by the server application without modification to existing client applications.</p>
+<p>The <a href="qtextendedmail.html">Qt Extended Messaging Library</a> provides classes giving access to all messages stored on the device, via a uniform interface. It simplifies the task of creating messaging client applications, and permits other Qt Extended applications to interact with messaging data where appropriate. New types of messages can be supported by the library without modification to existing client applications.</p>
+<a name="architecture"></a>
+<h2>Architecture</h2>
+<p>Qt Extended Messaging uses a database to store all messaging-related data. Rather than providing access via Structured Query Language, the Qt Extended Messaging library wraps the database with classes providing structured, focussed access to the database. Clients can add, remove or update messaging data via the wrapper classes, with appropriate guarantees of isolation, and with automatic propagation of updates between clients.</p>
+<p>Clients access messaging data via the Qt Extended Messaging library which provides a direct connection to the messaging database. Notifications of database changes that occur as a result of other clients' actions are received by IPC, and the messaging library automatically reflects those changes in all clients.</p>
+<p>A model/view architecture is provided for clients to access the messaging data content. A flexible system of filtering and sorting keys is provided, enabling clients to display a specific subset of the library's data with minimal resource overhead.</p>
+<p>Rather than requiring each client application to perform transmission and retrieval of messages from external sources, a server application provides these services to any Qt Extended Messaging Library client. The server receives service requests from clients via IPC, and reports events and status information back over the same channel. However, to avoid the overhead of passing message data within the system, the server reads and writes messages directly to and from the messaging database, via the library class interface. Messaging clients do not need to communicate with the server directly.</p>
+<p>For detailed information refer to:</p>
+<ul>
+<li><a href="messaging.html">Messages client application</a></li>
+<li><a href="messageserver.html">MessageServer server daemon</a></li>
+<li><a href="qtextendedmail.html">Qt Extended Messaging Library</a></li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

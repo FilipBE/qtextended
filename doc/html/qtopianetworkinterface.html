@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaNetworkInterface Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaNetworkInterface Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaNetworkInterface class describes the minimum interface that a network plug-in must provide. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaNetworkInterface&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qtopianetworkinterface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qtopianetworkinterface.html#Error-enum">Error</a></b> { NoError, NotConnected, NotInitialized, NotAvailable, UnknownError }</li>
+<li><div class="fn"/>enum <b><a href="qtopianetworkinterface.html#Status-enum">Status</a></b> { Unknown, Down, Up, Pending, Demand, Unavailable }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="qtopianetworkinterface.html#dtor.QtopiaNetworkInterface">~QtopiaNetworkInterface</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qtopianetworkinterface.html#cleanup">cleanup</a></b> () = 0</li>
+<li><div class="fn"/>virtual QtopiaNetworkConfiguration * <b><a href="qtopianetworkinterface.html#configuration">configuration</a></b> () = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qtopianetworkinterface.html#device">device</a></b> () const = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopianetworkinterface.html#initialize">initialize</a></b> () = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtopianetworkinterface.html#setDefaultGateway">setDefaultGateway</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopianetworkinterface.html#setProperties">setProperties</a></b> ( const QtopiaNetworkProperties &amp; <i>properties</i> ) = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtopianetworkinterface.html#start">start</a></b> ( const QVariant <i>options</i> = QVariant() ) = 0</li>
+<li><div class="fn"/>virtual Status <b><a href="qtopianetworkinterface.html#status">status</a></b> () = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtopianetworkinterface.html#stop">stop</a></b> () = 0</li>
+<li><div class="fn"/>virtual QtopiaNetwork::Type <b><a href="qtopianetworkinterface.html#type">type</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaNetworkInterface class describes the minimum interface that a network plug-in must provide.</p>
+<p>The <a href="qtopianetworkserver.html">QtopiaNetworkServer</a> interacts with Linux network devices via network plug-ins. Each plug-in implements this interface. It allows to <a href="qtopianetworkinterface.html#start">start</a>() and <a href="qtopianetworkinterface.html#stop">stop</a>() network devices, changes to the routing table via <a href="qtopianetworkinterface.html#setDefaultGateway">setDefaultGateway</a>() and provides access to the <a href="qtopianetworkinterface.html#status">status</a>() and Linux <a href="qtopianetworkinterface.html#device">device</a>() name.</p>
+<p>Note that applications should usually not handle QtopiaNetworkInterface instances directly. This interface is only of interest to device integrators intending to implement their own network plug-ins. Most functions of this interface have a public equivalent which can be used by application developer wanting to utilise network facilities:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>QtopiaNetworkInterface call</th><th>Public replacement call</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>cleanup()</tt></td><td>none (internally used by network server only)</td></tr>
+<tr valign="top" class="even"><td><tt>configuration()</tt></td><td>can be savely called from any Qt Extended application that intends to configure the interface.</td></tr>
+<tr valign="top" class="odd"><td><tt>device()</tt></td><td>use <a href="qnetworkdevice.html#interfaceName">QNetworkDevice::interfaceName</a>()</td></tr>
+<tr valign="top" class="even"><td><tt>initialize()</tt></td><td>none (internally used by network server only)</td></tr>
+<tr valign="top" class="odd"><td><tt>setDefaultGateway()</tt></td><td>use <a href="qtopianetwork.html#setDefaultGateway">QtopiaNetwork::setDefaultGateway</a>() and <a href="qtopianetwork.html#unsetDefaultGateway">QtopiaNetwork::unsetDefaultGateway</a>()</td></tr>
+<tr valign="top" class="even"><td><tt>setProperties()</tt></td><td><tt>no</tt> equivalent available (use <a href="qtopianetworkinterface.html#configuration">configuration</a>())</td></tr>
+<tr valign="top" class="odd"><td><tt>start()</tt></td><td>use <a href="qtopianetwork.html#startInterface">QtopiaNetwork::startInterface</a>()</td></tr>
+<tr valign="top" class="even"><td><tt>status()</tt></td><td>use <a href="qnetworkdevice.html#state">QNetworkDevice::state</a>() and <a href="qnetworkdevice.html#stateChanged">QNetworkDevice::stateChanged</a>()</td></tr>
+<tr valign="top" class="odd"><td><tt>stop()</tt></td><td>use <a href="qtopianetwork.html#stopInterface">QtopiaNetwork::stopInterface</a>()</td></tr>
+<tr valign="top" class="even"><td><tt>type()</tt></td><td>use <a href="qnetworkstate.html#deviceType">QNetworkState::deviceType</a>()</td></tr>
+</table></p>
+<p>Each instance publishes various internal states to the network value space. The network value space can be found under <tt>/Network/Interfaces/&lt;config hash&gt;</tt>. The hash value uniquely identifies each interface and is generated via:</p>
+<pre>    QtopiaNetworkInterface* iface = ...
+    QString hash = qHash( iface-&gt;configuration()-&gt;configFile() );</pre>
+<p>Each QtopiaNetworkInterface instance must publish the following values:</p>
+<ul>
+<li><tt>Config</tt> - the configuration file associated to this interface</li>
+<li><tt>Error</tt> - the last <a href="qtopianetworkinterface.html#Error-enum">QtopiaNetworkInterface::Error</a> value converted to an integer</li>
+<li><tt>ErrorString</tt> - the human-readable string describing the last error</li>
+<li><tt>NetDevice</tt> - the Linux network interface that this interface is managing e.g&#x2e;, eth0</li>
+<li><tt>State</tt> - the current state (<a href="qtopianetworkinterface.html#Status-enum">QtopiaNetworkInterface::Status</a> enum converted to integer)</li>
+</ul>
+<p>There is no default implementation available for this interface.</p>
+<p>See also <a href="qtopianetworkserver.html">QtopiaNetworkServer</a> and <a href="qtopianetworkconfiguration.html">QtopiaNetworkConfiguration</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Error-enum"></a>enum QtopiaNetworkInterface::Error</h3>
+<p>This enum identifies the error that occurred.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::NoError</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">No error occurred.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::NotConnected</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The device could not connect to the network or in case of of a PPP connection to the peer server.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::NotInitialized</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The network plug-in has not been initialized yet. The interface can be initialized by calling <a href="qtopianetworkinterface.html#initialize">QtopiaNetworkInterface::initialize</a>().</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::NotAvailable</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The device is not available (e.g&#x2e; the PCMCIA card is not plugged in).</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::UnknownError</tt></td><td align="center" valign="top"><tt>100</tt></td><td valign="top">An error other than those specified above occurred.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Status-enum"></a>enum QtopiaNetworkInterface::Status</h3>
+<p>The status provides information about the state of the network interface.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::Unknown</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">this is the initial state of a network interface that has not been initialized yet (<tt>initialize()</tt>). The interface must never return to this state after initialization.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::Down</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">the interface is ready to be started</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::Up</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">the interface is up and running</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::Pending</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">temporary state of the interface</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::Demand</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Initiate the link only on demand when data traffic is present</td></tr>
+<tr><td valign="top"><tt>QtopiaNetworkInterface::Unavailable</tt></td><td align="center" valign="top"><tt>100</tt></td><td valign="top">the interface cannot be started because the network device does not exist and/or cannot be recognised</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.QtopiaNetworkInterface"></a>QtopiaNetworkInterface::~QtopiaNetworkInterface ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a> instance.</p>
+<h3 class="fn"><a name="cleanup"></a>void QtopiaNetworkInterface::cleanup ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Removes all system and config files (e.g&#x2e;, the dialup plug-in deletes the peer and connect/disconnect chat file) created for this interface. However this function must not remove the network configuration file associated with this plug-in instance as this will be done by the network server.</p>
+<h3 class="fn"><a name="configuration"></a><a href="qtopianetworkconfiguration.html">QtopiaNetworkConfiguration</a> * QtopiaNetworkInterface::configuration ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns a pointer to allow access to the configuration for this interface. This function must not change the internal state of the current network interface instance. Its sole purpose is to allow applications to change the underlying configuration.</p>
+<h3 class="fn"><a name="device"></a><a href="qstring.html">QString</a> QtopiaNetworkInterface::device () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the name of the network device that is used for connections. (e.g&#x2e;, eth0, wlan1, ppp0). This name is only valid if the interface status is not <a href="qtopianetworkinterface.html#Status-enum">QtopiaNetworkInterface::Unknown</a> or <a href="qtopianetworkinterface.html#Status-enum">QtopiaNetworkInterface::Unavailable</a></p>
+<h3 class="fn"><a name="initialize"></a>void QtopiaNetworkInterface::initialize ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Initializes the network interface configuration. The implementation must change the interface state to a value that is not equal to <a href="qtopianetworkinterface.html#Status-enum">QtopiaNetworkInterface::Unknown</a>.</p>
+<h3 class="fn"><a name="setDefaultGateway"></a>bool QtopiaNetworkInterface::setDefaultGateway ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This interface becomes the default gateway for the device. This function returns false if the default gateway could not be set.</p>
+<h3 class="fn"><a name="setProperties"></a>void QtopiaNetworkInterface::setProperties ( const <a href="qtopianetworkproperties.html">QtopiaNetworkProperties</a> &amp; <i>properties</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>The content of <i>properties</i> is written to the network configuration for this interface.</p>
+<h3 class="fn"><a name="start"></a>bool QtopiaNetworkInterface::start ( const <a href="qvariant.html">QVariant</a> <i>options</i> = QVariant() )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Starts the network service, returning true on success. <i>options</i> is used to pass optional parameter to the interface. The actual value of <i>options</i> is plug-in specific and plug-in developer may use it for any arbitrary value that might be of importance to the startup code.</p>
+<p>Note: This function may only be called by the qpe server. Qt Extended applications should start an interface via <a href="qtopianetwork.html#startInterface">QtopiaNetwork::startInterface</a>().</p>
+<h3 class="fn"><a name="status"></a><a href="qtopianetworkinterface.html#Status-enum">Status</a> QtopiaNetworkInterface::status ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Updates and returns the current status of the interface. At any given time a call to this function should always perform a status check before returning the results.</p>
+<p>See also <a href="qtopianetworkinterface.html#Status-enum">QtopiaNetworkInterface::Status</a>.</p>
+<h3 class="fn"><a name="stop"></a>bool QtopiaNetworkInterface::stop ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Stops the network service, returning true on success.</p>
+<p>Note: This function may only be called by the qpe server. Qt Extended applications should stop a specific interface via <a href="qtopianetwork.html#stopInterface">QtopiaNetwork::stopInterface</a>() or <a href="qtopianetwork.html#shutdown">QtopiaNetwork::shutdown</a>()</p>
+<h3 class="fn"><a name="type"></a><a href="qtopianetwork.html#TypeFlag-enum">QtopiaNetwork::Type</a> QtopiaNetworkInterface::type () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the type of network interface that this particular interface can handle.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

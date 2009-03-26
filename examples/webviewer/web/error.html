@@ -1,0 +1,34 @@
+<html>
+<title>Error</title>
+<body>
+
+<script>
+var param = new Array(); 
+var pairs = window.location.search.substring(1).split('&'); 
+for (var i=0; i<pairs.length; i++) { 
+    keyVal = pairs[i].split('='); 
+    param[keyVal[0]] = keyVal[1]; 
+} 
+</script>
+<h1>Error <script>document.write(param["code"])</script></h1>
+
+Cannot load page: <script>document.write(param["url"])</script>
+<p>
+
+<script>
+document.write(param["reason"],"<p>");
+
+if (param["code"]==2) {
+    document.write("Connection refused from ", param["hostname"]);
+} else if (param["code"]==3) {
+    document.write("Host not found: ", param["hostname"]);
+} else if (param["code"]==4) {
+    document.write("Timeout contacting ", param["hostname"]);
+} else if (param["code"]==203) {
+    document.write("Content not found.");
+} else if (param["code"]/100 == 1) {
+    document.write("Proxy error");
+} else if (param["code"]/200 == 1) {
+    document.write("Authentication error");
+}
+</script>

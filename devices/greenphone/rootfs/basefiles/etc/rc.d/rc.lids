@@ -1,0 +1,70 @@
+#!/bin/sh
+
+if [ ! -f /proc/sys/lids/locks ]; then
+    echo "LIDS kernel not enabled!"
+    exit 1
+fi
+
+if [ ! -x /opt/Qtopia/etc/sxe_qtopia/sxe_qtopia ] && [ "$1" = "start" -o "$1" = "first_boot" ]; then
+    echo "Qtopia does not support SXE, disabling LIDS!"
+    exit 1
+fi
+
+case "$1" in
+    first_boot)
+        if [ ! -f /etc/lids/lids_initialized ]; then
+            echo "Generating LIDS rules"
+
+            splash -p + "Generating" "LIDS rules"
+
+            QTOPIA_ID=$( cat /etc/qtopia.id 2>/dev/null )
+            PREGEN_ID=$( cat /etc/lids/qtopia.id 2>/dev/null )
+
+            if [ "$QTOPIA_ID" = "$PREGEN_ID" ] && [ -d /etc/lids/.pregenerated ]; then
+                cp /etc/lids/.pregenerated/* /etc/lids
+
+                mkdir -p /home/Updates/etc/sxe
+                for i in manifest installs sxe.policy keyfile sxe.profiles; do
+                    /bin/cp -a /opt/Qtopia/etc/$i /home/Updates/etc/sxe/$i
+                done
+            else
+                /etc/rc.d/sxe_boot
+            fi
+
+            # Generate a random LIDS password.
+            # Because the Greenphone is a development device this is disabled.
+            #head -c32 /dev/urandom | uuencode -m - | sed -n '2s/=*$//;2p' > /etc/lids/lids.secret
+            #cat /etc/lids/lids.secret | /sbin/lidsconf -P
+
+            touch /etc/lids/lids_initialized
+        fi
+        ;;
+    start)
+        echo "Updating LIDS rules"
+
+        splash -p + "Updating LIDS rules"
+
+        lidsconf -U
+        lidsconf -U BOOT
+        lidsconf -U POSTBOOT
+        lidsconf -U SHUTDOWN
+
+        splash -p - "Starting LIDS"
+
+        # Enable LIDS.
+        lidsadm -I
+        ;;
+    stop)
+        splash -p + "Stopping LIDS"
+
+        # Only enter LIDS shutdown state if the kernel has been sealed.
+        if /sbin/lidsadm -V | grep ' POSTBOOT 1' >/dev/null; then
+            /sbin/lidsadm -S -- +SHUTDOWN < /etc/lids/lids.secret
+        fi
+        ;;
+    *)
+        echo "Usage: $0 [first_boot|start|stop]"
+        exit 1
+        ;;
+esac
+

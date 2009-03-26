@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothAddress Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothAddress Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothAddress class represents a bluetooth address. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothAddress&gt;</pre><ul>
+<li><a href="qbluetoothaddress-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothaddress.html#QBluetoothAddress">QBluetoothAddress</a></b> ()</li>
+<li><div class="fn"/><b><a href="qbluetoothaddress.html#QBluetoothAddress-2">QBluetoothAddress</a></b> ( const QBluetoothAddress &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qbluetoothaddress.html#QBluetoothAddress-3">QBluetoothAddress</a></b> ( const QString &amp; <i>addr</i> )</li>
+<li><div class="fn"/><b><a href="qbluetoothaddress.html#dtor.QBluetoothAddress">~QBluetoothAddress</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothaddress.html#isValid">isValid</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qbluetoothaddress.html#toString">toString</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothaddress.html#operator-not-eq">operator!=</a></b> ( const QBluetoothAddress &amp; <i>other</i> ) const</li>
+<li><div class="fn"/>QBluetoothAddress &amp; <b><a href="qbluetoothaddress.html#operator-eq">operator=</a></b> ( const QBluetoothAddress &amp; <i>other</i> )</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothaddress.html#operator-eq-eq">operator==</a></b> ( const QBluetoothAddress &amp; <i>other</i> ) const</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>const QBluetoothAddress <b><a href="qbluetoothaddress.html#all-var">all</a></b></li>
+<li><div class="fn"/>const QBluetoothAddress <b><a href="qbluetoothaddress.html#any-var">any</a></b></li>
+<li><div class="fn"/>const QBluetoothAddress <b><a href="qbluetoothaddress.html#invalid-var">invalid</a></b></li>
+<li><div class="fn"/>const QBluetoothAddress <b><a href="qbluetoothaddress.html#local-var">local</a></b></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothAddress class represents a bluetooth address.</p>
+<p>Each Bluetooth device can have one and only one address. There are certain special addresses defined, namely <tt>any</tt>, <tt>local</tt>, <tt>all</tt>.</p>
+<p>The Bluetooth address can be constructed from a string representation. For instance,</p>
+<pre>    QBluetoothAddress addr(&quot;00:00:FF:FF:00:00&quot;);</pre>
+<p>If the address is a valid Bluetooth address, then <a href="qbluetoothaddress.html#isValid">isValid</a>() will return true, and false otherwise.</p>
+<p>See also <a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a> and <a href="qbluetoothremotedevice.html">QBluetoothRemoteDevice</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothAddress"></a>QBluetoothAddress::QBluetoothAddress ()</h3>
+<p>Constructs a new invalid bluetooth address.</p>
+<h3 class="fn"><a name="QBluetoothAddress-2"></a>QBluetoothAddress::QBluetoothAddress ( const QBluetoothAddress &amp; <i>other</i> )</h3>
+<p>Constructs a copy of a bluetooth address from <i>other</i>.</p>
+<h3 class="fn"><a name="QBluetoothAddress-3"></a>QBluetoothAddress::QBluetoothAddress ( const <a href="qstring.html">QString</a> &amp; <i>addr</i> )</h3>
+<p>Constructs a bluetooth address based on string representation given by <i>addr</i>. The string should be in the format of XX:XX:XX:XX:XX:XX where XX represents a hexadecimal number. If the string is in an invalid format, an invalid bluetooth address is constructed.</p>
+<h3 class="fn"><a name="dtor.QBluetoothAddress"></a>QBluetoothAddress::~QBluetoothAddress ()</h3>
+<p>Destroys a Bluetooth address.</p>
+<h3 class="fn"><a name="isValid"></a>bool QBluetoothAddress::isValid () const</h3>
+<p>Returns whether the address is valid.</p>
+<h3 class="fn"><a name="toString"></a><a href="qstring.html">QString</a> QBluetoothAddress::toString () const</h3>
+<p>Converts the Bluetooth address into a <a href="qstring.html">QString</a>. The format will be of the form XX:XX:XX:XX:XX:XX where XX is a hexadecimal number. If the address is invalid, a null string is returned.</p>
+<h3 class="fn"><a name="operator-not-eq"></a>bool QBluetoothAddress::operator!= ( const QBluetoothAddress &amp; <i>other</i> ) const</h3>
+<p>Compares the current address to <i>other</i>. Returns true if the addresses are not equal, false if they are.</p>
+<h3 class="fn"><a name="operator-eq"></a>QBluetoothAddress &amp; QBluetoothAddress::operator= ( const QBluetoothAddress &amp; <i>other</i> )</h3>
+<p>Assigns the contents of the Bluetooth address <i>other</i> to the current address.</p>
+<h3 class="fn"><a name="operator-eq-eq"></a>bool QBluetoothAddress::operator== ( const QBluetoothAddress &amp; <i>other</i> ) const</h3>
+<p>Returns the result of comparing the current Bluetooth address against a Bluetooth address given by <i>other</i>.</p>
+<hr />
+<h2>Member Variable Documentation</h2>
+<h3 class="fn"><a name="all-var"></a>const QBluetoothAddress QBluetoothAddress::all</h3>
+<p>Bluetooth address that represents a special address <b>all</b></p>
+<h3 class="fn"><a name="any-var"></a>const QBluetoothAddress QBluetoothAddress::any</h3>
+<p>Bluetooth address that represents a special address <b>any</b></p>
+<h3 class="fn"><a name="invalid-var"></a>const QBluetoothAddress QBluetoothAddress::invalid</h3>
+<p>Invalid Bluetooth address.</p>
+<h3 class="fn"><a name="local-var"></a>const QBluetoothAddress QBluetoothAddress::local</h3>
+<p>Bluetooth address that represents a special address <b>local</b></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

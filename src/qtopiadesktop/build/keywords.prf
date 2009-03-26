@@ -1,0 +1,117 @@
+# These are appended to in case a project has "extended" one of these.
+
+###
+### NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+###
+### This code is read by src/qtopiadesktop/build/bin/Qtopia/BlackMagic.pm
+### Do not put any complicated instructions in here
+### or they will bork the parser.
+###
+### NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+###
+
+# Applications
+keyword.app.commands+=\
+    "TEMPLATE=app"\
+    "CONFIG*=app"
+PROJECT_KEYWORDS*=app
+
+# Libraries
+keyword.lib.commands+=\
+    "TEMPLATE=lib"\
+    "CONFIG*=lib"\
+    "CONFIG*=syncqtopia"
+PROJECT_KEYWORDS*=lib
+
+# Plugins
+keyword.plugin.commands+=\
+    "TEMPLATE=lib"\
+    "CONFIG*=plugin"
+PROJECT_KEYWORDS*=plugin
+
+# Subdirectories
+keyword.subdirs.equiv=external
+keyword.subdirs.commands+=\
+    "TEMPLATE=subdirs"\
+    "CONFIG*=subdirs no_install"\
+    "CONFIG-=depends"
+PROJECT_KEYWORDS*=subdirs
+
+# Dummy projects
+keyword.stub.equiv=external
+keyword.stub.commands+=\
+    "CONFIG*=stub no_target no_dest"
+PROJECT_KEYWORDS*=stub
+
+# Non-Qt projects
+keyword.external.commands+=\
+    "CONFIG-=qt"\
+    "CONFIG-=qtopia"\
+    "CONFIG-=qtopiadesktop"\
+    "CONFIG*=no_tr"
+PROJECT_KEYWORDS*=external
+
+# Qt/Embedded projects
+keyword.embedded.commands+=\
+    "CONFIG-=qtopia"\
+    "CONFIG-=qtopiadesktop"
+PROJECT_KEYWORDS*=embedded
+
+# Qt/Desktop projects
+keyword.desktop.commands+=\
+    "CONFIG-=qtopia"\
+    "CONFIG-=qtopiadesktop"\
+    "CONFIG*=desktop"
+PROJECT_KEYWORDS*=desktop
+
+# Core projects don't depend on the "usual" libs
+PROJECT_KEYWORDS*=core
+
+# Qtopia Core stuff is all redirected into the actual Qtopia Core tree
+keyword.qtopiacore.equiv=stub
+keyword.qtopiacore.commands+=\
+    "CONFIG+=qtopiacore"
+PROJECT_KEYWORDS*=qtopiacore
+
+# Qtopia project
+keyword.qtopia.commands+=\
+    "CONFIG+=qtopia part_of_qtopia"
+PROJECT_KEYWORDS*=qtopia
+
+# Qtopia Sync Agent project
+keyword.qtopiadesktop.commands+=\
+    "CONFIG+=qtopiadesktop part_of_qtopiadesktop"
+PROJECT_KEYWORDS*=qtopiadesktop
+
+# A theme is almost the same as a stub but it now has i18n
+keyword.theme.commands+=\
+    "CONFIG*=stub no_target no_dest"\
+    "CONFIG-=qt"\
+    "CONFIG-=qtopia"\
+    "CONFIG-=qtopiadesktop"
+PROJECT_KEYWORDS+=theme
+
+# An automated testcase
+keyword.unittest.equiv=qtopia core app
+keyword.unittest.commands=\
+    "CONFIG+=no_tr no_quicklaunch unittest"\
+    "CONFIG-=enable_singleexec"\
+    "CONFIG+=no_target_sxe"
+PROJECT_KEYWORDS+=unittest
+
+keyword.integrationtest.equiv=unittest
+keyword.integrationtest.commands=\
+    "CONFIG+=integrationtest"
+PROJECT_KEYWORDS+=integrationtest
+
+# A GUI testcase
+keyword.systemtest.equiv=desktop app
+keyword.systemtest.commands=\
+    "CONFIG+=systemtest"
+PROJECT_KEYWORDS+=systemtest
+
+# A server library (static lib compiled into the server)
+keyword.server_lib.equiv=qtopia lib
+keyword.server_lib.commands=\
+    "CONFIG+=staticlib no_tr"
+PROJECT_KEYWORDS+=server_lib

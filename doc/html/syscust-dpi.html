@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Setting Display Size</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Setting Display Size<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#font-sizes">Font Sizes</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides a resolution independent UI so that it appears as close as possible to its intended design, regardless of the resolution and physical dimensions of the display.</p>
+<p>The physical display size can be specified as part of the Qt for Embedded Linux display specification. The <a href="qt-embedded-displaymanagement.html">mmWidth</a> and <a href="qt-embedded-displaymanagement.html">mmHeight</a> parameters specify the width and height of the display in millimeters. This allows Qt Extended to determine the correct font and icon size for the display. For example, a display with a 35mm x 45mm display can be specified as:</p>
+<pre>    export QWS_DISPLAY=&quot;LinuxFb:mmWidth35:mmHeight45:0&quot;</pre>
+<p><a href="qt-embedded-envvars.html">QWS_DISPLAY</a> can also be set in the QVFb skin being used by <a href="qvfb.html">The Virtual Framebuffer</a>. For additional information on how this ties into Qt Extended startup also see <a href="running-qtextended.html">Running Qt Extended</a>.</p>
+<a name="font-sizes"></a>
+<h2>Font Sizes</h2>
+<p>The default Qt Extended configuration installs many font sizes, however it is only necessary to install a small selection. The standard Qt Extended font size is 9 point (1 point = 1/72inch). In addition, several other fonts sizes are used. A recommended selection of point sizes is: 5, 7, 9, 11, 14.</p>
+<p>The .qpf font files included in Qt Extended are specified by pixel size. Qt for Embedded Linux will use the nearest pixel size available if the exact size is not present. In order to determine the desired pixel sizes to be installed on the device the following formulas can be used:</p>
+<ol type="1">
+<li>Determine DPI of the display<pre>        DPI = 25.4 * resY / mmHeight
+
+        Consider a 240x320 display with 35mm x 45mm physical size:
+
+        DPI = 25.4 * 320 / 45 = 180dpi</pre>
+</li>
+<li>Determine the font pixel size<pre>        pixelSize = DPI * pointSize / 72
+
+        Consider a 9pt font on the above display:
+
+        pixelSize = 180 * 9 / 72 = 22pixels</pre>
+</li>
+</ol>
+<p>Once the desired font pixels sizes have been determined, they can be passed to configure via the <b>-font</b> switch. For example to use the DejaVu font with the pixel sizes of 10, 12, 16 and 28:</p>
+<pre>        configure -font dejavu_sans_condensed:10,12,16,28:50</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

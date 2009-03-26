@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtUiTestRecorder Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtUiTestRecorder Class Reference<br /><span class="small-subtitle">[<a href="qtuitestmodule.html">QtUiTestModule</a>]</span>
+</h1>
+<p>The QtUiTestRecorder class provides an interface for observing application-wide high level user actions. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtUiTestRecorder&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qtuitestrecorder-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtuitestrecorder.html#QtUiTestRecorder">QtUiTestRecorder</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtuitestrecorder.html#dtor.QtUiTestRecorder">~QtUiTestRecorder</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#activated">activated</a></b> ( QObject * <i>widget</i> )</li>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#entered">entered</a></b> ( QObject * <i>widget</i>, QVariant const &amp; <i>item</i> )</li>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#gotFocus">gotFocus</a></b> ( QObject * <i>widget</i> )</li>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#keyEvent">keyEvent</a></b> ( int <i>key</i>, int <i>modifiers</i>, bool <i>isPress</i>, bool <i>isAutoRepeat</i> )</li>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#mouseEvent">mouseEvent</a></b> ( int <i>x</i>, int <i>y</i>, int <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#selected">selected</a></b> ( QObject * <i>widget</i>, QString const &amp; <i>item</i> )</li>
+<li><div class="fn"/>void <b><a href="qtuitestrecorder.html#stateChanged">stateChanged</a></b> ( QObject * <i>widget</i>, int <i>state</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtUiTestRecorder class provides an interface for observing application-wide high level user actions.</p>
+<p>QtUiTestRecorder aggregates the signals declared in the <a href="qtuitest.html">QtUiTest widget interfaces</a> to provide a single object capable of watching for user input.</p>
+<p>Note that using this class is expensive because it involves watching for signals on a large number of objects. When you create a QtUiTestRecorder and connect to its signals, this will result in every existing widget being wrapped in a <a href="qtuitest.html">test widget</a>. To avoid this, do not connect to the signals of a QtUiTestRecorder unless you will definitely use the result.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtUiTestRecorder"></a>QtUiTestRecorder::QtUiTestRecorder ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qtuitestrecorder.html">QtUiTestRecorder</a> with the given <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QtUiTestRecorder"></a>QtUiTestRecorder::~QtUiTestRecorder ()</h3>
+<p>Destroys the <a href="qtuitestrecorder.html">QtUiTestRecorder</a>.</p>
+<h3 class="fn"><a name="activated"></a>void QtUiTestRecorder::activated ( <a href="qobject.html">QObject</a> * <i>widget</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>widget</i> is activated by any means.</p>
+<p>In this context, &quot;activated&quot; means, for example, clicking a button.</p>
+<p>See also <a href="qtuitest-activatewidget.html#activated">QtUiTest::ActivateWidget::activated</a>().</p>
+<h3 class="fn"><a name="entered"></a>void QtUiTestRecorder::entered ( <a href="qobject.html">QObject</a> * <i>widget</i>, <a href="qvariant.html">QVariant</a> const &amp; <i>item</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>item</i> is entered into <i>widget</i>.</p>
+<p>See also <a href="qtuitest-inputwidget.html#entered">QtUiTest::InputWidget::entered</a>().</p>
+<h3 class="fn"><a name="gotFocus"></a>void QtUiTestRecorder::gotFocus ( <a href="qobject.html">QObject</a> * <i>widget</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>widget</i> obtains focus by any means.</p>
+<p>See also <a href="qtuitest-widget.html#gotFocus">QtUiTest::Widget::gotFocus</a>().</p>
+<h3 class="fn"><a name="keyEvent"></a>void QtUiTestRecorder::keyEvent ( int <i>key</i>, int <i>modifiers</i>, bool <i>isPress</i>, bool <i>isAutoRepeat</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>key</i> (with <i>modifiers</i>) is pressed or released.</p>
+<p><i>key</i> is compatible with <a href="qt.html#Key-enum">Qt::Key</a> and <i>modifiers</i> is compatible with <a href="qt.html#KeyboardModifiers-typedef">Qt::KeyboardModifiers</a>.</p>
+<p>If the event is a press <i>isPress</i> is true, otherwise it is a release. <i>isAutoRepeat</i> is true if the event is generated due to autorepeat.</p>
+<p>This signal is only emitted within the server process, because individual applications cannot monitor system-wide key events.</p>
+<h3 class="fn"><a name="mouseEvent"></a>void QtUiTestRecorder::mouseEvent ( int <i>x</i>, int <i>y</i>, int <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the mouse changes state.</p>
+<p><i>x</i> and <i>y</i> are the global co-ordinates of the event. <i>state</i> is the current state of the mouse buttons, compatible with <a href="qt.html#MouseButtons-typedef">Qt::MouseButtons</a>.</p>
+<p>This signal is only emitted within the server process, because individual applications cannot monitor system-wide mouse events.</p>
+<h3 class="fn"><a name="selected"></a>void QtUiTestRecorder::selected ( <a href="qobject.html">QObject</a> * <i>widget</i>, <a href="qstring.html">QString</a> const &amp; <i>item</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>item</i> is selected from <i>widget</i>.</p>
+<p>See also <a href="qtuitest-selectwidget.html#selected">QtUiTest::SelectWidget::selected</a>().</p>
+<h3 class="fn"><a name="stateChanged"></a>void QtUiTestRecorder::stateChanged ( <a href="qobject.html">QObject</a> * <i>widget</i>, int <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the check state changes to <i>state</i> in <i>widget</i>.</p>
+<p>See also <a href="qtuitest-checkwidget.html#stateChanged">QtUiTest::CheckWidget::stateChanged</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

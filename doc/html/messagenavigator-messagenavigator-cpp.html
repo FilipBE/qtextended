@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>messagenavigator.cpp Example File (messagenavigator/messagenavigator.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">messagenavigator.cpp Example File<br /><span class="small-subtitle">messagenavigator/messagenavigator.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;messagenavigator.h&quot;
+    #include &quot;foldermodel.h&quot;
+    #include &lt;QHeaderView&gt;
+    #include &lt;QKeyEvent&gt;
+    #include &lt;QLabel&gt;
+    #include &lt;QListView&gt;
+    #include &lt;QMailMessageDelegate&gt;
+    #include &lt;QMailMessageListModel&gt;
+    #include &lt;QSoftMenuBar&gt;
+    #include &lt;QtopiaItemDelegate&gt;
+    #include &lt;QtopiaServiceRequest&gt;
+    #include &lt;QTreeView&gt;
+    #include &lt;QVBoxLayout&gt;
+
+<span class="comment">    // A stackable widget allowing the selection of a message folder</span>
+    class FolderSelector : public QWidget
+    {
+        Q_OBJECT
+
+    public:
+        FolderSelector(QWidget* parent = 0)
+            : QWidget(parent),
+              label(new QLabel),
+              treeView(new QTreeView)
+        {
+            label-&gt;setText(tr(&quot;Select a folder:&quot;));
+
+            treeView-&gt;setModel(&amp;model);
+            treeView-&gt;setItemDelegate(new QtopiaItemDelegate(this));
+            treeView-&gt;setSelectionMode(QAbstractItemView::SingleSelection);
+            treeView-&gt;header()-&gt;setVisible(false);
+            treeView-&gt;installEventFilter(this);
+
+            connect(treeView, SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+
+            QVBoxLayout* layout = new QVBoxLayout(this);
+            layout-&gt;addWidget(label);
+            layout-&gt;addWidget(treeView);
+            <span class="comment">// Adjust FolderSelector layout for attractive layout - not relevant to example discussion</span>
+            int horizontal = style()-&gt;pixelMetric(QStyle::PM_LayoutLeftMargin);
+            int vertical = style()-&gt;pixelMetric(QStyle::PM_LayoutTopMargin);
+            label-&gt;setContentsMargins(horizontal, vertical, horizontal, 0);
+            layout-&gt;setContentsMargins(0, 0, 0, 0);
+            treeView-&gt;setFrameStyle(QFrame::NoFrame);
+            <span class="comment">// end-Adjust</span>
+        }
+
+    signals:
+        void folderSelected(const QMailMessageSet* folder);
+        void done();
+
+    protected slots:
+        void activated(const QModelIndex&amp; index);
+
+    protected:
+        virtual bool eventFilter(QObject* obj, QEvent* event);
+
+    private:
+        FolderModel model;
+        QLabel* label;
+        QTreeView* treeView;
+    };
+
+    void FolderSelector::activated(const QModelIndex&amp; index)
+    {
+        emit folderSelected(model.itemFromIndex(index));
+    }
+
+    bool FolderSelector::eventFilter(QObject* obj, QEvent* event)
+    {
+        <span class="comment">// We need to capture the back key, so it doesn't close our window</span>
+        if ((obj == treeView) &amp;&amp; (event-&gt;type() == QEvent::KeyPress)) {
+            if (QKeyEvent* keyEvent = static_cast&lt;QKeyEvent*&gt;(event)) {
+                if (keyEvent-&gt;key() == Qt::Key_Back) {
+                    emit done();
+                    return true;
+                }
+            }
+        }
+
+        return QWidget::eventFilter(obj, event);
+    }
+
+<span class="comment">    // A stackable widget allowing the selection of a message</span>
+    class MessageSelector : public QWidget
+    {
+        Q_OBJECT
+
+    public:
+        MessageSelector(QWidget* parent = 0)
+            : QWidget(parent),
+              label(new QLabel),
+              listView(new QListView),
+              delegate(new QMailMessageDelegate(QMailMessageDelegate::AddressbookMode, this))
+        {
+            label-&gt;setWordWrap(true);
+
+            listView-&gt;setModel(&amp;model);
+            listView-&gt;setItemDelegate(delegate);
+            listView-&gt;setSelectionMode(QAbstractItemView::SingleSelection);
+            listView-&gt;installEventFilter(this);
+
+            connect(listView, SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+
+            QVBoxLayout* layout = new QVBoxLayout(this);
+            layout-&gt;addWidget(label);
+            layout-&gt;addWidget(listView);
+            <span class="comment">// Adjust MessageSelector layout for attractive layout - not relevant to example discussion</span>
+            int horizontal = style()-&gt;pixelMetric(QStyle::PM_LayoutLeftMargin);
+            int vertical = style()-&gt;pixelMetric(QStyle::PM_LayoutTopMargin);
+            label-&gt;setContentsMargins(horizontal, vertical, horizontal, 0);
+            layout-&gt;setContentsMargins(0, 0, 0, 0);
+            listView-&gt;setResizeMode(QListView::Adjust);
+            listView-&gt;setLayoutMode(QListView::Batched);
+            listView-&gt;setFrameStyle(QFrame::NoFrame);
+            <span class="comment">// end-Adjust</span>
+        }
+
+    signals:
+        void listPrepared();
+        void messageSelected(const QMailMessageId&amp; id);
+        void done();
+
+    public slots:
+        void listMessages(const QMailMessageSet* folder);
+
+    protected slots:
+        void activated(const QModelIndex&amp; index);
+
+    protected:
+        virtual bool eventFilter(QObject* obj, QEvent* event);
+
+    private:
+        QMailMessageListModel model;
+        QLabel* label;
+        QListView* listView;
+        QMailMessageDelegate* delegate;
+    };
+
+    void MessageSelector::activated(const QModelIndex&amp; index)
+    {
+        emit messageSelected(model.idFromIndex(index));
+    }
+
+    void MessageSelector::listMessages(const QMailMessageSet* folder)
+    {
+        model.setKey(folder-&gt;messageKey());
+
+        if (model.isEmpty()) {
+            label-&gt;setText(tr(&quot;No messages in %1&quot;).arg(folder-&gt;displayName()));
+        } else {
+            listView-&gt;selectionModel()-&gt;select(model.index(0, 0), QItemSelectionModel::Select);
+            listView-&gt;scrollToTop();
+            label-&gt;setText(tr(&quot;Select a message to view the content:&quot;));
+        }
+
+        emit listPrepared();
+    }
+<span class="comment">    // end-listMessages</span>
+
+    bool MessageSelector::eventFilter(QObject* obj, QEvent* event)
+    {
+        <span class="comment">// We need to capture the back key, so it doesn't close our window</span>
+        if ((obj == listView) &amp;&amp; (event-&gt;type() == QEvent::KeyPress)) {
+            if (QKeyEvent* keyEvent = static_cast&lt;QKeyEvent*&gt;(event)) {
+                if (keyEvent-&gt;key() == Qt::Key_Back) {
+                    emit done();
+                    return true;
+                }
+            }
+        }
+
+        return QWidget::eventFilter(obj, event);
+    }
+
+    MessageNavigator::MessageNavigator(QWidget *parent, Qt::WFlags f)
+        : QWidget(parent, f),
+          folderSelector(new FolderSelector),
+          messageSelector(new MessageSelector)
+    {
+        setupUi(this);
+
+        <span class="comment">// Connect our components</span>
+        connect(folderSelector, SIGNAL(folderSelected(const QMailMessageSet*)), messageSelector, SLOT(listMessages(const QMailMessageSet*)));
+        connect(folderSelector, SIGNAL(done()), qApp, SLOT(quit()));
+
+        connect(messageSelector, SIGNAL(listPrepared()), this, SLOT(showMessageList()));
+        connect(messageSelector, SIGNAL(messageSelected(QMailMessageId)), this, SLOT(viewMessage(QMailMessageId)));
+        connect(messageSelector, SIGNAL(done()), this, SLOT(showFolderTree()));
+
+        widgetStack-&gt;addWidget(folderSelector);
+        widgetStack-&gt;addWidget(messageSelector);
+
+        QVBoxLayout* layout = new QVBoxLayout(this);
+        layout-&gt;addWidget(widgetStack);
+
+        <span class="comment">// Adjust MessageNavigator</span>
+        layout-&gt;setContentsMargins(0, 0, 0, 0);
+
+        <span class="comment">// Necessary to create the menu (which contains our help entry):</span>
+        (void)QSoftMenuBar::menuFor(this);
+        <span class="comment">// end-Adjust</span>
+        showFolderTree();
+    }
+
+    MessageNavigator::~MessageNavigator()
+    {
+    }
+
+    void MessageNavigator::showMessageList()
+    {
+        widgetStack-&gt;setCurrentWidget(messageSelector);
+    }
+
+    void MessageNavigator::showFolderTree()
+    {
+        widgetStack-&gt;setCurrentWidget(folderSelector);
+    }
+
+    void MessageNavigator::viewMessage(const QMailMessageId&amp; id)
+    {
+        <span class="comment">// Request that some application display the selected message</span>
+        QtopiaServiceRequest req( &quot;Messages&quot;, &quot;viewMessage(QMailMessageId)&quot; );
+        req &lt;&lt; id;
+        req.send();
+    }
+
+    #include &quot;messagenavigator.moc&quot;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

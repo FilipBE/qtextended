@@ -1,0 +1,4 @@
+TEMPLATE=app
+TARGET=testme
+TARGETDIR=.
+SOURCES=main.cpp

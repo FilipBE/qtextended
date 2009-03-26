@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPacket Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPacket Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QPacket class encapsulates an unfragmentable packet of data to be transmitted by <a href="qpacketprotocol.html">QPacketProtocol</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPacket&gt;</pre><p>Inherits <a href="qdatastream.html">QDataStream</a>.</p>
+<ul>
+<li><a href="qpacket-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qpacket.html#QPacket">QPacket</a></b> ()</li>
+<li><div class="fn"/><b><a href="qpacket.html#QPacket-2">QPacket</a></b> ( const QPacket &amp; <i>other</i> )</li>
+<li><div class="fn"/>virtual <b><a href="qpacket.html#dtor.QPacket">~QPacket</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qpacket.html#clear">clear</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qpacket.html#isEmpty">isEmpty</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>39 public functions inherited from <a href="qdatastream.html#public-functions">QDataStream</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPacket class encapsulates an unfragmentable packet of data to be transmitted by <a href="qpacketprotocol.html">QPacketProtocol</a>.</p>
+<p>The QPacket class works together with <a href="qpacketprotocol.html">QPacketProtocol</a> to make it simple to send arbitrary sized data &quot;packets&quot; across fragmented transports such as TCP and UDP.</p>
+<p>QPacket provides a <a href="qdatastream.html">QDataStream</a> interface to an unfragmentable packet. Applications should construct a QPacket, propagate it with data and then transmit it over a <a href="qpacketprotocol.html">QPacketProtocol</a> instance. For example:</p>
+<pre>    QPacketProtocol protocol(...);
+
+    QPacket myPacket;
+    myPacket &lt;&lt; &quot;Hello world!&quot; &lt;&lt; 123;
+    protocol.send(myPacket);</pre>
+<p>As long as both ends of the connection are using the <a href="qpacketprotocol.html">QPacketProtocol</a> class, the data within this packet will be delivered unfragmented at the other end, ready for extraction.</p>
+<pre>    QByteArray greeting;
+    int count;
+
+    QPacket myPacket = protocol.read();
+
+    myPacket &gt;&gt; greeting &gt;&gt; count;</pre>
+<p>Only packets returned from <a href="qpacketprotocol.html#read">QPacketProtocol::read</a>() may be read from. QPacket instances constructed by directly by applications are for transmission only and are considered &quot;write only&quot;. Attempting to read data from them will result in undefined behaviour.</p>
+<p>See also <a href="qpacketprotocol.html">QPacketProtocol</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPacket"></a>QPacket::QPacket ()</h3>
+<p>Constructs an empty write-only packet.</p>
+<h3 class="fn"><a name="QPacket-2"></a>QPacket::QPacket ( const QPacket &amp; <i>other</i> )</h3>
+<p>Creates a copy of <i>other</i>. The initial stream positions are shared, but the two packets are otherwise independant.</p>
+<h3 class="fn"><a name="dtor.QPacket"></a>QPacket::~QPacket ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qpacket.html">QPacket</a> instance.</p>
+<h3 class="fn"><a name="clear"></a>void QPacket::clear ()</h3>
+<p>Clears data in the packet. This is useful for reusing one writable packet. For example</p>
+<pre>    QPacketProtocol protocol(...);
+
+    QPacket packet;
+
+    packet &lt;&lt; &quot;Hello world!&quot; &lt;&lt; 123;
+    protocol.send(packet);
+
+    packet.clear();
+    packet &lt;&lt; &quot;Goodbyte world!&quot; &lt;&lt; 789;
+    protocol.send(packet);</pre>
+<h3 class="fn"><a name="isEmpty"></a>bool QPacket::isEmpty () const</h3>
+<p>Returns true if this packet is empty - that is, contains no data.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Compile and Run the Example Application</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Compile and Run the Example Application<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#compile-the-example-application">Compile the Example Application</a></li>
+<li><a href="#run-the-example-application">Run the Example Application</a></li>
+<ul><li><a href="#install-directly-to-the-image">Install directly to the image</a></li>
+<li><a href="#install-via-a-package">Install via a package</a></li>
+</ul>
+</ul>
+<a name="compile-the-example-application"></a>
+<h2>Compile the Example Application</h2>
+<p>This section describes how to compile the example application. A list of the commands used to create the example application sources is available at: <a href="application.html">Tutorial: Creating a New Application</a>.</p>
+<p>To compile the example, follow these steps:</p>
+<ol type="1">
+<li>Create a copy of the example:<pre>    cd somewhere
+    cp -R $QTOPIA_DEPOT_PATH/examples/application .
+    chmod +w application/*
+    cd application</pre>
+</li>
+<li>Build the Example:<pre>    qbuild</pre>
+</li>
+</ol>
+<a name="run-the-example-application"></a>
+<h2>Run the Example Application</h2>
+<p>Before you can run the example application you must install it. There are two ways to achieve this. The first is to install it directly into a Qt Extended image. The second is to create a package and install it via the Package Manager.</p>
+<p>Installing directly to the image requires that Qt Extended is not running. It is convenient when developing to install in this way because a single command can be used to install the application. This method also allows more flexibility than installing a package but this method does not support uninstalling. See <a href="buildsystem/over-packages-overview-1.html">Package Limitations</a> for more information.</p>
+<a name="install-directly-to-the-image"></a>
+<h3>Install directly to the image</h3>
+<p>To install directly to the image, simply run:</p>
+<pre>    qbuild image</pre>
+<p>You can now start Qt Extended via the <a href="buildsystem/over-runqtopia-options-1.html">runqtopia</a> script. The example application can be found in the Applications menu.</p>
+<a name="install-via-a-package"></a>
+<h3>Install via a package</h3>
+<p>To create a package, simply run:</p>
+<pre>    qbuild packages</pre>
+<p>This will tell you what packages were created.</p>
+<pre>    Creating packages...
+
+    Created /home/user/build/qtopia/example_app/pkg/example_1.0.0-1_i386.qpk</pre>
+<p>You will now need to follow the instructions in <a href="sxe-qpk.html">Qpk Packages</a> to install the package.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

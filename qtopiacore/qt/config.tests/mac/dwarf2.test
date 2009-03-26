@@ -1,0 +1,25 @@
+#!/bin/sh
+
+DWARF2_SUPPORT=no
+COMPILER=$1
+VERBOSE=$2
+
+touch dwarf2.c
+
+if "$COMPILER" -c dwarf2.c -Werror -gdwarf-2 2>/dev/null 1>&2; then
+    if "$COMPILER" -c dwarf2.c -Werror -gdwarf-2  2>&1 | grep "unsupported" >/dev/null ; then
+        true
+    else
+        DWARF2_SUPPORT=yes
+    fi
+fi
+rm -f dwarf2.c dwarf2.o
+
+# done
+if [ "$DWARF2_SUPPORT" != "yes" ]; then
+    [ "$VERBOSE" = "yes" ] && echo "DWARF2 debug symbols disabled."
+    exit 0
+else
+    [ "$VERBOSE" = "yes" ] && echo "DWARF2 debug symbols enabled."
+    exit 1
+fi

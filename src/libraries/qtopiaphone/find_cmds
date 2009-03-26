@@ -1,0 +1,10 @@
+#!/bin/sh
+grep '"AT+C' *.cpp >cmds.tmp1
+grep '"AT+V' *.cpp >>cmds.tmp1
+grep '"AT[A-Z]' *.cpp >>cmds.tmp1
+grep 'performQuery.*"+C' *.cpp >>cmds.tmp1
+sed -e '1,$s/^.*"AT\([^"]*\)".*$/AT\1/' cmds.tmp1 >cmds.tmp2
+sed -e '1,$s/^.*performQuery.*"+C\([^"]*\)".*$/AT+C\1/' cmds.tmp2 >cmds.tmp1
+sed -e '1,$s/=.*$//g' cmds.tmp1 >cmds.tmp2
+sed -e '1,$s/\?//g' cmds.tmp2 | sort | uniq | fmt
+rm -f cmds.tmp1 cmds.tmp2

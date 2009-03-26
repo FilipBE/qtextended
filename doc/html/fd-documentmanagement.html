@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Content: Document Management</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Content: Document Management<br><small>Functional Description</small></h1><p>The Qt Extended document system integrates with Digital Rights Management (<a href="fd-DRM.html">DRM</a>) and the  <a href="fd-SafeExecutionEnvironment.html">Safe Execution Environment</a>  providing an enabling layer to enhance file-handling across all applications. Files are displayed by category rather than as a hierarchy which provides application-specific file displays. For example, if the user selects <em>Mediaplayer</em>, only the files able to be used by the <em>Mediaplayer</em> are displayed for selection.
+<p />
+The Document Management architecture of Qt Extended provides a system-wide approach to management of user-visible documents such as images and music files.  This allows efficient navigation of documents, removable storage media, and complex document types such as Digital Rights Management (<a href="fd-DRM.html">DRM</a>) files.  The Document Server also relies on the Document Management system to control access to documents.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-455">API</a>
+<li><a href="#QTOPIA-460">Document Selectors</a>
+<li><a href="#QTOPIA-461">Document Server</a>
+<li><a href="#QTOPIA-479">Incremental Document Search</a>
+<li><a href="#QTOPIA-458">Launcher Menus</a>
+<li><a href="#QTOPIA-459">Media Management</a>
+<li><a href="#QTOPIA-468">MIME Type Associations</a>
+<li><a href="#QTOPIA-8153">Rescan files under Document Management system</a>
+<li><a href="#QTOPIA-8538">Send documents via various mechanisms</a>
+</ul><h3><a name=QTOPIA-455>API</a></h3>
+<p>The document API framework provides the basis for the Qt Extended Document System and enables the browsing and launching of regular and Digital Rights Management (DRM) files.  An SQL database backs the framework allowing for flexible document management services.
+
+<p>The framework includes a scanning algorithm designed to run in the background and allow the user interface to continue to operate during document discovery.  Qt Extended applications in the launcher are also managed via the API.</p>
+
+<p>Loading, saving and other file operations are performed by Qt Extended applications through the Document System.  This allows management of DRM content for example, which must not be saved to external storage devices in plain-text format.</p>
+
+<p>See the <span class="nobr"><a href="docsys-overview.html">Document System Documentation<sup></sup></a></span> for further details.</p>
+<h3><a name=QTOPIA-460>Document Selectors</a></h3>
+<p>The QDocumentSelector and QImageDocumentSelector widgets provide applications with a view through which users can choose documents indexed by the document system.  Both widgets are backed by a  QContentSetModel with it's full range of filtering options.
+
+<p>In addition to selecting documents the widgets allow users to apply additional category and type filtering criteria, view document properties, and move and delete documents.</p>
+
+<p>The QDocumentSelector widget provides a list view of documents, with an optional selection to create a new document.  The QImageDocumentSelector provides a thumbnail view of images with an option to preview images before completing a selection.</p>
+<h3><a name=QTOPIA-461>Document Server</a></h3>
+<p>The Document Server exposes the functionality of the Document System using a Unix Domain Socket based server.  Untrusted applications may connect to the server and utilize a select sub-set of the document system features without requiring direct access to the documents database.
+
+<p>The functionality of the Document System available to an application is determined by its SXE profiles.  In this way an application may be allowed to view document meta-data but not open or edit documents.</p>
+
+<p>The Document Server also provides a Document Selector Service which displays an open/save document dialog on behalf of an untrusted application.  A selected document is opened by the Document Server process and passed to the untrusted application over the Unix Domain Socket using Ancilliary Data.  Because the dialog is displayed by the server it allows the user unfettered access to their documents, but strictly limits the application's access to documents explicity selected by the user.</p>
+
+<p>The Document Server thus allows downloaded untrusted applications to handle user documents. This enables downloadable Photo Editors, and so on.</p>
+<h3><a name=QTOPIA-479>Incremental Document Search</a></h3>
+<p>Typing characters in the Documents launcher menu launches an incremental search dialog.  The documents displayed in the menu are filtered by the text in the dialog as the user types, clearing the text will restore the full list.
+
+<p>This works in conjunction with scrolling through the list with up and down arrows, or selecting by type/category.</p>
+<h3><a name=QTOPIA-458>Launcher Menus</a></h3>
+<p>The Applications, Documents, Settings, Games, and other menus of the Qt Extended launcher utilize a Model/View framework backed by QContentSetModel.  The "just-in-time" fetching of content data and the change notification architecture ensures the menus are populated quickly and efficiently and remain up to date.
+
+<p>Additional filter expressions may be applied to the Documents menu to filter its contents by type or category.  The Documents menu also provides a visual notification of when Qt Extended is scanning for documents.</p>
+<h3><a name=QTOPIA-459>Media Management</a></h3>
+<p>Content plug-ins (<span class="nobr"><a href="qcontentplugin.html">QContentPlugin<sup></sup></a></span>) are used to extract meta-data embedded in content scanned by the Document System.  Qt Extended includes plug-ins for MP3 ID3 tags and EXIF tags in JPEG and TIFF images.
+
+<p>This meta-data as well as other information made available by the Document System (name, location, type, categories, etc) may be used to search for and sort documents.</p>
+
+<p>The QContentFilterModel and QContentFilterSelector classes provide a framework for querying and navigating searchable content information.  These may be used to produce flat selection lists, or hierarchical (drill down) menus.</p>
+<h3><a name=QTOPIA-468>MIME Type Associations</a></h3>
+<p>MIME type associations allow Qt Extended to identify the correct application to use to open a document based on the documents type.  They are also used to determine the icon to decorate a document with, and what DRM permission, if any, are to be validated before opening the document.
+
+<p>Applications can associate themselves with a MIME type through their .desktop file, or at run-time using QMimeType.  For more information see <span class="nobr"><a href="docwidget.html">Document Oriented Applications<sup></sup></a></span>.</p>
+<h3><a name=QTOPIA-8153>Rescan files under Document Management system</a></h3>
+<p>This feature is provided as part of the Touchscreen Phone Reference Design.</p>
+<p>While viewing the Documents list, the user of a device can manually trigger an update of the data stored on the files in filesystem areas overseen by the Documents Management system.   This allows files imported by non-Qt Extended controlled methods to be 'seen' by the system, and therefore the user, without rebooting the device.
+<h3><a name=QTOPIA-8538>Send documents via various mechanisms</a></h3>
+<p>Documents may be sent by a number of mechanisms.
+
+<p>Currently, Bluetooth and Infrared mechanisms are supported.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

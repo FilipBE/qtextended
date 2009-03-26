@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Document System: DRM Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Document System: DRM Integration<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#rendering-drm-content">Rendering DRM Content</a></li>
+<li><a href="#downloading-and-receiving-drm-files">Downloading and Receiving DRM Files</a></li>
+<li><a href="#oma-drm">OMA DRM</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>DRM protected content in Qt Extended is presented alongside regular content and is browsed, launched, moved, and deleted in the same manner. When presented in a document selector or launcher view; protected content can be identified by a superimposed key icon, which may be barred indicating the content has no valid rights.</p>
+<p>The DRM architecture is shown in the following diagram:</p>
+<p align="center"><img src="images/drm-arch.png" alt="DRM Architecture" /></p><a name="rendering-drm-content"></a>
+<h2>Rendering DRM Content</h2>
+<p>Constraints may be placed on the rendering of DRM content restricting thing such as the number of times and the time in which the content may be rendered so in order to comply with these constraints there are some additional steps that must be when rendering protected content.</p>
+<p>First to acquire access to a DRM protected file a license must be requested using the <a href="qdrmcontent.html">QDrmContent</a> class, if there are current rights for the file a license will be granted immediately, if not the user may be prompted to download a license or visit a web site. Once a license has been granted the plain-text content of DRM protected files may be accessed using the standard Qt file API or the file access methods of <a href="qcontent.html">QContent</a>. When access is to the file is no longer required the license should be released which will prevent any further access to the content.</p>
+<p>Once a license has been granted and file access is available it is necessary to update the constraints of the protected file as it is rendered. This is performed using calls to <a href="qdrmcontent.html#renderStarted">QDrmContent::renderStarted</a>(), <a href="qdrmcontent.html#renderPaused">QDrmContent::renderPaused</a>(), and <a href="qdrmcontent.html#renderStopped">QDrmContent::renderStopped</a>() on the <a href="qdrmcontent.html">QDrmContent</a> instance the license for the file was requested from. The agent will time these calls and count the number of times rendering is started and update the constraints. If rights to the file expire while it is being rendered <a href="qdrmcontent.html">QDrmContent</a> will emit a rights expired signal notifying the application it should release its license and stop rendering the content.</p>
+<a name="downloading-and-receiving-drm-files"></a>
+<h2>Downloading and Receiving DRM Files</h2>
+<p>Received DRM files may be content files, or rights objects or triggers. DRM content files is saved to the file system and registered with the document system like any other content. The preferred method of saving content is to construct a new <a href="qcontent.html">QContent</a> and assign it the name and type of the received file and then write the file to the <a href="qcontent.html">QContent</a> using either the <a href="qcontent.html#save">QContent::save</a>() or by opening a write only <a href="qiodevice.html">QIODevice</a> using <a href="qcontent.html#open">QContent::open</a>() and writing to it. If the IO device is used it is important to commit the <a href="qcontent.html">QContent</a> after closing the IO device to ensure the <a href="qcontent.html">QContent</a> is saved.</p>
+<p>If the file is rights object or trigger it shouldn't be saved to the file system, instead a <a href="datasharing.html">Qt Extended Data Sharing (QDS)</a> service which handles the type of the file should be invoked. File types that should be handled in this manner can be identified by performing a search for a service with the request type that of the received file, no response type and the attribute 'handle', the 'drm' attribute may also optionally be used to only invoke services for DRM file types.</p>
+<p>The example below checks for a service which handle the mime type of received data and invokes it if found, if not found it saves the data and invokes the default application for handling it.</p>
+<pre>    void receive( const QString &amp;name, const QString &amp;type, const QByteArray &amp;data )
+    {
+        <span class="comment">// First check if the mime type is handled by a QDS service.</span>
+        QDSServices services( type, QString(), QStringList() &lt;&lt; &quot;handle&quot; );
+
+        if( !services.isEmpty() )
+        {
+            QDSServiceInfo service = services.first();
+
+            QDSAction action( service );
+
+            action.exec( QDSData( data, QMimeType( type ) ) );
+        }
+        else <span class="comment">// Not handled by a QDS service so save to the file system and open in the default application.</span>
+        {
+            QContent content;
+
+            content.setName( name );
+            content.setType( type );
+            content.save( data );
+            content.commit();
+            content.execute();
+        }
+    }</pre>
+<p>Some DRM format such as OMA DRM messages need to be converted to a localized format when they are received, the Qt Extended document system will perform this automatically when the data is saved to the file system using <a href="qcontent.html">QContent</a>. If an application does not intend to save the received data directly to the file system for whatever reason QDS services are provided to convert the data to the localized format. The QDS signature for these services is the same as for handling rights objects and triggers except it also has a response type.</p>
+<a name="oma-drm"></a>
+<h2>OMA DRM</h2>
+<p>Qt Extended includes a reference integration of the <a href="http://www.beepscience.com">Beep Science</a> OMA DRM agent version 2.4 which implements the <a href="http://www.openmobilealliance.org">Open Mobile Alliance (OMA)</a> DRM version 1.0 and version 2.0 standards.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

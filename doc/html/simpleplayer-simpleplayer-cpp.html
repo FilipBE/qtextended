@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>simpleplayer.cpp Example File (simpleplayer/simpleplayer.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">simpleplayer.cpp Example File<br /><span class="small-subtitle">simpleplayer/simpleplayer.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;simpleplayer.h&quot;
+    #include &quot;basicmedia.h&quot;
+
+    #include &lt;QDesktopWidget&gt;
+    #include &lt;QApplication&gt;
+
+    #include &lt;QMediaControl&gt;
+
+    #include &lt;QDocumentSelectorDialog&gt;
+    #include &lt;QtopiaApplication&gt;
+
+    SimplePlayer::SimplePlayer(QWidget* p, Qt::WFlags f)
+        : QWidget(p, f)
+    {
+        setupUi(this);
+
+        connect(fileButton, SIGNAL(clicked()), this, SLOT(fileSelector()));
+        connect(playButton, SIGNAL(clicked()), this, SLOT(play()));
+        connect(pauseButton, SIGNAL(clicked()), this, SLOT(pause()));
+        connect(stopButton, SIGNAL(clicked()), this, SLOT(stop()));
+
+        docs = new QDocumentSelectorDialog(this);
+        docs-&gt;setFilter(
+                QContentFilter( QContentFilter::MimeType, &quot;audio/*&quot; )
+                | QContentFilter( QContentFilter::MimeType, &quot;video/*&quot; ));
+
+        connect(docs,SIGNAL(accepted()),this,SLOT(newFile()));
+        QtopiaApplication::showDialog(docs);
+    }
+
+    SimplePlayer::~SimplePlayer()
+    {
+        PlayScreen-&gt;stop();
+        PlayScreen-&gt;deleteLater();
+    }
+
+    void SimplePlayer::keyReleaseEvent( QKeyEvent *ke )
+    {
+        switch(ke-&gt;key())  {
+            case  Qt::Key_Backspace:
+                ke-&gt;ignore();
+                break;
+            case  Qt::Key_Back:
+                ke-&gt;ignore();
+                break;
+            default:
+                ke-&gt;ignore();
+                break;
+        };
+    }
+
+    void SimplePlayer::showEvent(QShowEvent *)
+    {
+        QDesktopWidget *desktop = QApplication::desktop();
+        QRect desk = desktop-&gt;screenGeometry(desktop-&gt;primaryScreen());
+        setGeometry(desk);
+        setVisible(true);
+        setFocusPolicy( Qt::StrongFocus );
+        setFocus();
+        showFullScreen();
+    }
+
+    void SimplePlayer::newFile()
+    {
+        QContent c = docs-&gt;selectedDocument();
+        PlayScreen-&gt;stop();
+        PlayScreen-&gt;setFilename(c.fileName());
+        PlayScreen-&gt;start();
+    }
+
+    void SimplePlayer::fileSelector()
+    {
+        QtopiaApplication::showDialog(docs);
+    }
+
+    void SimplePlayer::play()
+    {
+        PlayScreen-&gt;start();
+    }
+
+    void SimplePlayer::pause()
+    {
+        PlayScreen-&gt;stop();
+    }
+
+    void SimplePlayer::stop()
+    {
+        PlayScreen-&gt;stop();
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

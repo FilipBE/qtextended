@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>RuleVariables Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">RuleVariables Class Reference</h1>
+<p>Expands rule command variables. <a href="#details">More...</a></p>
+<pre>    #include &lt;RuleVariables&gt;</pre><ul>
+<li><a href="rulevariables-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="rulevariables.html#RuleVariables">RuleVariables</a></b> ( Rule * <i>rule</i>, RuleEngineThread * <i>thread</i> )</li>
+<li><div class="fn"/>virtual bool <b><a href="rulevariables.html#value">value</a></b> ( const QString &amp; <i>name</i>, QStringList &amp; <i>rv</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>Expands rule command variables.</p>
+<p>This is used when evaluating rule commands.</p>
+<pre>    rule.commands=&quot;echo $$[INPUT]&quot;</pre>
+<p>The supported variables are:</p>
+<ul>
+<li>INPUT<p>equivalent to rule.inputFiles</p>
+</li>
+<li>OUTPUT<p>equivalent to rule.outputFiles</p>
+</li>
+<li>OTHER<p>equivalent to rule.other</p>
+</li>
+</ul>
+<p>You can use the following modifiers:</p>
+<ul>
+<li>.[n]<p>Returns the <i>n</i>th item in the list.</p>
+</li>
+<li>.ABS<p>Returns absolute paths.</p>
+</li>
+</ul>
+<p>Note that .ABS must appear at the end.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="RuleVariables"></a>RuleVariables::RuleVariables ( <a href="rule.html">Rule</a> * <i>rule</i>, <a href="ruleenginethread.html">RuleEngineThread</a> * <i>thread</i> )</h3>
+<p>Construct a <a href="rulevariables.html">RuleVariables</a> instance for <i>rule</i>. Set <i>thread</i> to the current thread.</p>
+<h3 class="fn"><a name="value"></a>bool RuleVariables::value ( const QString &amp; <i>name</i>, QStringList &amp; <i>rv</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Fetch the variable <i>name</i> from the rule. The value is returned in <i>rv</i>. Returns true if successful, false otherwise.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

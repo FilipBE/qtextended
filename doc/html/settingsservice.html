@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SettingsService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SettingsService Class Reference</h1>
+<p>The SettingsService class provides the Settings service. <a href="#details">More...</a></p>
+<pre>    #include &lt;SettingsService&gt;</pre><p>Inherits <a href="qtopiaabstractservice.html">QtopiaAbstractService</a>.</p>
+<ul>
+<li><a href="settingsservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="settingsservice.html#activateDefault">activateDefault</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="settingsservice.html#activateSettings">activateSettings</a></b> ( const QString &amp; <i>details</i> )</li>
+<li><div class="fn"/>void <b><a href="settingsservice.html#pullSettingStatus">pullSettingStatus</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="settingsservice.html#setStatus">setStatus</a></b> ( const QString &amp; <i>details</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qtopiaabstractservice.html#protected-functions">QtopiaAbstractService</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The SettingsService class provides the Settings service.</p>
+<p>The <i>Settings</i> service is implemented by settings applications, to allow them to integrate with the Qt Extended settings manager.</p>
+<p>See also <a href="settingsmanagerservice.html">SettingsManagerService</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="activateDefault"></a>void SettingsService::activateDefault ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Activate the default settings for this application. This is sent from the settings manager when a settings override value is deleted.</p>
+<p>This slot corresponds to the QCop service message <tt>Settings::activateDefault()</tt>.</p>
+<h3 class="fn"><a name="activateSettings"></a>void SettingsService::activateSettings ( const <a href="qstring.html">QString</a> &amp; <i>details</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Make <i>details</i> the active settings for this application. This is sent from the settings manager when the settings profile is changed.</p>
+<p>This slot corresponds to the QCop service message <tt>Settings::activateSettings(QString)</tt>.</p>
+<h3 class="fn"><a name="pullSettingStatus"></a>void SettingsService::pullSettingStatus ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Pull the settings status for this application and send it to the settings manager. The settings application should respond to this message as follows:</p>
+<pre>    QtopiaServiceRequest req
+        ( &quot;SettingsManager&quot;, &quot;pullSettingStatus(QString,QString,QString)&quot; );
+    req &lt;&lt; appName;
+    req &lt;&lt; windowTitle;
+    req &lt;&lt; details;
+    req.send();</pre>
+<p>where <tt>appName</tt> is the name of the application (e.g&#x2e; <tt>appearance</tt>), <tt>windowTitle</tt> is the title on the window to indicate to the user what kind of settings are being sent, and <tt>details</tt> is an opaque string that can be later sent to <a href="settingsservice.html#activateSettings">activateSettings</a>().</p>
+<p>The settings application can also send its current settings whenever it likes by explicitly pushing the setting values to the settings manager as follows:</p>
+<pre>    QtopiaServiceRequest req
+        ( &quot;SettingsManager&quot;, &quot;pushSettingStatus(QString,QString,QString)&quot; );
+    req &lt;&lt; appName;
+    req &lt;&lt; windowTitle;
+    req &lt;&lt; details;
+    req.send();</pre>
+<p>This slot corresponds to the QCop service message <tt>Settings::pullSettingStatus()</tt>.</p>
+<p>See also <a href="settingsmanagerservice.html">SettingsManagerService</a>.</p>
+<h3 class="fn"><a name="setStatus"></a>void SettingsService::setStatus ( const <a href="qstring.html">QString</a> &amp; <i>details</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the status <i>details</i> for this settings application. This is sent from the settings manager when the user selects a particular setting for viewing or editing.</p>
+<p>This slot corresponds to the QCop service message <tt>Settings::setStatus(QString)</tt>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

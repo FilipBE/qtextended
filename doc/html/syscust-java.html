@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Java Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Java Integration<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="java-integration"></a>
+<h2>Java Integration</h2>
+<p>When integrating a Java VM into Qt Extended, it is important that the installed Java applications operate seamlessly with native Qt Extended applications. To ensure this, the following considerations should be made:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Consideration</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>Use <tt>.desktop</tt> files</td><td>Java applications should be referenced by <tt>.desktop</tt> files in the <tt>$QPEDIR/apps/Applications</tt> or <tt>$QPEDIR/apps/Games</tt> directory (depending whether it is an application or a game). They should not be isolated in a separate tab or in a totally different interface.</td></tr>
+<tr valign="top" class="even"><td>Use unique executables</td><td>For the Qt Extended execution model to function correctly the following line must be specified in the <tt>.desktop</tt> file:<pre>    Exec= line</pre>
+<p>where <tt>line</tt> is a unique executable name.</p>
+<p>This executable name may simply be a symbolic link to the actual executable which then uses <tt>argv[0]</tt> to determine its behavior. This is essential for <tt>QCop</tt> communication between the application and the launcher. In particular, the following will <b>not</b> work:</p>
+<pre>    Exec=jvm appname</pre>
+<p>.</p>
+</td></tr>
+<tr valign="top" class="odd"><td>Use <a href="qtopiaapplication.html">QtopiaApplication</a></td><td><a href="qtopiaapplication.html">QtopiaApplication</a> must be used, not <a href="qapplication.html">QApplication</a>, otherwise all the framework provided for Qt Extended will not function correctly. In particular, <a href="qtopiaapplication.html">QtopiaApplication</a> communicates with the launcher via <tt>QCop</tt> to handle things such as the <tt>taskbar</tt> icon, raising, quitting, opening documents and changing styles and fonts.</td></tr>
+<tr valign="top" class="even"><td>Use <a href="qtopiaapplication.html#exec">QtopiaApplication::exec</a>()</td><td>This ensures that functionality such as <tt>QCop</tt> processing is initiated. If you must use your own event loop rather than <tt>exec()</tt>, you must at least call <a href="qtopiaapplication.html#setMainWidget">QtopiaApplication::setMainWidget</a>(). If is not possible, additional functionality will need to be added to <a href="qtopiaapplication.html">QtopiaApplication</a> to support your event loop.</td></tr>
+<tr valign="top" class="odd"><td>Follow Qt Extended Conventions</td><td>The widget toolkit or bindings used by the JVM should follow the Qt Extended conventions. For example, it should use <a href="qtopiaapplication.html#execDialog">QtopiaApplication::execDialog</a>() rather than <a href="qdialog.html#exec">QDialog::exec</a>().</td></tr>
+</table></p>
+<p><b>Note:</b> These items are listed in order of the Qt Extended application execution control flow and so correspond to the order in which they can be easily tested.</p>
+<p>The above rules can be relaxed to some extent, however additional integration coding will be required in <a href="qtopiaapplication.html">QtopiaApplication</a> and the Qt Extended launcher (<tt>qpe</tt>) process.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

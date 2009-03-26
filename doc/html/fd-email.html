@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Messaging: Email</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Messaging: Email<br><small>Functional Description</small></h1><p><p />
+<p />
+<a href="fd-Messaging.html">Messaging</a> provides support for Email retrieval and sending. Support for retrieval via the
+POP3 and IMAP4 protocols and support for sending via the SMTP protocol is provided. Additionally
+support for encrypted and authenticated communications is provided via the SSL and TLS protocols.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-505">Attachments</a>
+<li><a href="#QTOPIA-506">Email Properties</a>
+<li><a href="#QTOPIA-507">Encrypted and Authenticated Connections</a>
+<li><a href="#QTOPIA-8348">Exclusion from synchronization</a>
+<li><a href="#QTOPIA-8351">Interval Checking</a>
+<li><a href="#QTOPIA-504">Receiving an Email</a>
+<li><a href="#QTOPIA-8219">Reply to an email message</a>
+<li><a href="#QTOPIA-503">Sending an Email</a>
+</ul><h3><a name=QTOPIA-505>Attachments</a></h3>
+<p>When composing the user can add attachments to the email being composed.  Attachments can comprise any document known to the system, and they can be freely added to, or removed from, the list of attachments.
+<h3><a name=QTOPIA-506>Email Properties</a></h3>
+<p>All email properties supported by RFC2822 are exposed via the messaging library.
+
+<p>The Messaging application supports:</p>
+<ul>
+	<li>Message timestamp</li>
+	<li>Sender name and address</li>
+	<li>To, CC and BCC address lists</li>
+	<li>Subject line</li>
+	<li>Message body</li>
+	<li>Attachments</li>
+</ul>
+
+
+<p>Encoding is used to support the use of non-ASCII character sets in composing and viewing email messages.</p>
+<h3><a name=QTOPIA-507>Encrypted and Authenticated Connections</a></h3>
+<p><ul>
+	<li>Encrypted: it is possible to send and receive mail via encrypted SSL/TLS connections.</li>
+	<li>Authenticated: POP or IMAP authentication is always attempted. SMTP authentication is supported.</li>
+</ul>
+<h3><a name=QTOPIA-8348>Exclusion from synchronization</a></h3>
+<p>This feature is provided as part of the Touchscreen Phone Reference Design.</p>
+<p>Qt Extended allows individual email folders to be excluded from mail synchronization, according to the user's selection.  An excluded folder is not checked for new mail during synchronization, and any messages already present in the folder are removed when exclusion is selected.  Folders nested within an excluded folder are automatically marked as excluded when their parent folder is excluded.
+
+<p>The email folder navigation view in the Messages application allows each folder to be individually marked for exclusion from synchronization, or to be re-included after exclusion.  Excluded folders are ghosted to indicate their unsynchronized status.</p>
+<h3><a name=QTOPIA-8351>Interval Checking</a></h3>
+<p>This feature is provided as part of the Touchscreen Phone Reference Design.</p>
+<p>Qt Extended supports Interval Checking for Email accounts.
+
+<p>User Interface</p>
+
+<p>1) The Email (POP and IMAP) account configuration dialog presents an 'Interval' checkbox, when checked periodic interval checking is enabled for the account. Note the 'Push Enabled' and ' Interval' checkboxes are mutually exclusive options.<br/>
+2) When the 'Interval' checkbox is checked a numeric spinbox below the checkbox is enabled which allows the user to control the frequency with which the account is checked, in minutes.<br/>
+3) Additionally when the 'Interval' checkbox is checked a 'Roaming interval checking' checkbox is enabled, and is checked by default. This allows the user to disable interval checking during roaming, to reduce expenses.<br/>
+4) When new email is retrieved by the interval checking mechanism the user is informed by a GUI new message notification dialog.</p>
+
+<p>API considerations.</p>
+
+<p>The QMailAccount class exposes the following interval checking related methods:</p>
+
+<p>    int checkInterval() const;<br/>
+    void setCheckInterval(int i);</p>
+
+<p>    bool intervalCheckRoamingEnabled() const;<br/>
+    void setIntervalCheckRoamingEnabled(bool enabled);</p>
+
+<p>A checkInterval of 0 indicates interval checking is disabled.</p>
+<h3><a name=QTOPIA-504>Receiving an Email</a></h3>
+<p>Once a user has created a valid incoming account they can connect to a mail server and download email from their email account to the device. 
+
+<p>Messages larger than a preset size can be skipped during mail retrieval; the threshold can be set by the user.  A skipped message can be later downloaded or deleted without downloading, at the user's discretion.</p>
+
+<p>For IMAP accounts, the user may specify the top-level mail folder from which to receive messages.</p>
+<h3><a name=QTOPIA-8219>Reply to an email message</a></h3>
+<p>The email viewer allows the user to:
+
+<ul>
+	<li>Reply to an email, which adds only the sender to the reply</li>
+	<li>Reply to all, which adds the sender and all To and CC recipients to the reply</li>
+</ul>
+<h3><a name=QTOPIA-503>Sending an Email</a></h3>
+<p>It is possible for a user to compose and after creating a valid outgoing account send an email.
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

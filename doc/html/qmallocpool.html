@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMallocPool Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMallocPool Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QMallocPool class allows management of allocations within a designated memory region. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMallocPool&gt;</pre><ul>
+<li><a href="qmallocpool-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qmallocpool-memorystats.html">MemoryStats</a></b></li>
+<li><div class="fn"/>enum <b><a href="qmallocpool.html#PoolType-enum">PoolType</a></b> { Owned, NewShared, Shared }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmallocpool.html#QMallocPool">QMallocPool</a></b> ()</li>
+<li><div class="fn"/><b><a href="qmallocpool.html#QMallocPool-2">QMallocPool</a></b> ( void * <i>poolBase</i>, unsigned int <i>poolLength</i>, PoolType <i>type</i> = Owned, const QString &amp; <i>name</i> = QString() )</li>
+<li><div class="fn"/><b><a href="qmallocpool.html#dtor.QMallocPool">~QMallocPool</a></b> ()</li>
+<li><div class="fn"/>void * <b><a href="qmallocpool.html#calloc">calloc</a></b> ( size_t <i>nmemb</i>, size_t <i>size</i> )</li>
+<li><div class="fn"/>void <b><a href="qmallocpool.html#dumpStats">dumpStats</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qmallocpool.html#free">free</a></b> ( void * <i>ptr</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmallocpool.html#isValid">isValid</a></b> () const</li>
+<li><div class="fn"/>void * <b><a href="qmallocpool.html#malloc">malloc</a></b> ( size_t <i>size</i> )</li>
+<li><div class="fn"/>MemoryStats <b><a href="qmallocpool.html#memoryStatistics">memoryStatistics</a></b> () const</li>
+<li><div class="fn"/>void * <b><a href="qmallocpool.html#realloc">realloc</a></b> ( void * <i>ptr</i>, size_t <i>size</i> )</li>
+<li><div class="fn"/>size_t <b><a href="qmallocpool.html#size_of">size_of</a></b> ( void * <i>mem</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMallocPool class allows management of allocations within a designated memory region.</p>
+<p>QMallocPool provides heap management capabilities into a fixed region of memory. Primarily this is useful for managing allocations in a shared memory region, but could be used in other scenarios.</p>
+<p>The QMallocPool class provides equivalents for most standard memory management functions, such as <tt>malloc</tt>, <tt>calloc</tt>, <tt>realloc</tt> and <tt>free</tt>. However, unlike these standard functions which acquire their memory from the system kernel, QMallocPool operators on a region of memory provided to it during construction.</p>
+<p>QMallocPool is based on dlmalloc, a public domain malloc implementation written by Doug Lea. dlmalloc is used as the default allocator in many projects, including several versions of Linux libc.</p>
+<p>QMallocPool is not thread safe.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="PoolType-enum"></a>enum QMallocPool::PoolType</h3>
+<p>Controls the type of pool to be created. In order to manage memory, a small amount of book keeping information is maintained. While this information is not required for reading from the managed pool, it is required for allocations. The PoolType controls where this bookkeeping data is stored.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMallocPool::Owned</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The bookkeeping data is maintained in the <a href="qmallocpool.html">QMallocPool</a> instance. Allocation to the pool is only possible via this instance.</td></tr>
+<tr><td valign="top"><tt>QMallocPool::NewShared</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The bookkeeping data is maintained in the managed region itself. This allows multiple <a href="qmallocpool.html">QMallocPool</a> instances, possibly in separate processes, to allocate from the pool.</td></tr>
+</table></p>
+<p>The NewShared PoolType also initializes this bookkeeping data to its default state. Thus, while the bookkeeping data is shared, only one of the sharing instances should use a NewShared type. All other instances should use the Shared pool type.</p>
+<p>The malloc pool bookkeeping data contains absolute pointers. As such, if multiple processes intend to allocate into the malloc pool, is is essential that they map the memory region to the same virtual address location.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMallocPool::Shared</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The bookkeeping data is stored in the managed region, and has previously been initialized by another <a href="qmallocpool.html">QMallocPool</a> instance constructed using the NewShared pool type.</td></tr>
+</table></p>
+<p>The malloc pool bookkeeping data contains absolute pointers. As such, if multiple processes intend to allocate into the malloc pool, is is essential that they map the memory region to the same virtual address location.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMallocPool"></a>QMallocPool::QMallocPool ()</h3>
+<p>Creates an invalid <a href="qmallocpool.html">QMallocPool</a>.</p>
+<h3 class="fn"><a name="QMallocPool-2"></a>QMallocPool::QMallocPool ( void * <i>poolBase</i>, unsigned int <i>poolLength</i>, <a href="qmallocpool.html#PoolType-enum">PoolType</a> <i>type</i> = Owned, const <a href="qstring.html">QString</a> &amp; <i>name</i> = QString() )</h3>
+<p>Creates a <a href="qmallocpool.html">QMallocPool</a> on the memory region <i>poolBase</i> of length <i>poolLength</i>. The pool will be constructed with the passed <i>type</i> and <i>name</i>. The <i>name</i> is used for diagnostics purposes only.</p>
+<h3 class="fn"><a name="dtor.QMallocPool"></a>QMallocPool::~QMallocPool ()</h3>
+<p>Destroys the malloc pool.</p>
+<h3 class="fn"><a name="calloc"></a>void * QMallocPool::calloc ( size_t <i>nmemb</i>, size_t <i>size</i> )</h3>
+<p>Allocates memory for an array of <i>nmemb</i> elements of <i>size</i> each and returns a pointer to the allocated memory. The memory is set to zero. Returns 0 if the memory could not be allocated.</p>
+<h3 class="fn"><a name="dumpStats"></a>void QMallocPool::dumpStats () const</h3>
+<p>Outputs statistical information regarding the state of the malloc pool using <a href="qtopiadesktop/qlog-h.html#qLog">qLog</a>().</p>
+<h3 class="fn"><a name="free"></a>void QMallocPool::free ( void * <i>ptr</i> )</h3>
+<p>Frees the memory space pointed to by <i>ptr</i>, which must have been returned by a previous call to <a href="qmallocpool.html#malloc">malloc</a>(), <a href="qmallocpool.html#calloc">calloc</a>() or <a href="qmallocpool.html#realloc">realloc</a>(). Otherwise, or if <tt>free(ptr)</tt> has already been called before, undefined behaviour occurs. If <i>ptr</i> is 0, no operation is performed.</p>
+<h3 class="fn"><a name="isValid"></a>bool QMallocPool::isValid () const</h3>
+<p>Returns true if this is a valid malloc pool. Invalid malloc pools cannot be allocated from.</p>
+<h3 class="fn"><a name="malloc"></a>void * QMallocPool::malloc ( size_t <i>size</i> )</h3>
+<p>Allocates <i>size</i> bytes and returns a pointer to the allocated memory. The memory is not cleared. Returns 0 if the memory could not be allocated.</p>
+<h3 class="fn"><a name="memoryStatistics"></a><a href="qmallocpool-memorystats.html">MemoryStats</a> QMallocPool::memoryStatistics () const</h3>
+<p>Returns a <a href="qmallocpool-memorystats.html">MemoryStats</a> structure containing information about the memory use of this pool.</p>
+<h3 class="fn"><a name="realloc"></a>void * QMallocPool::realloc ( void * <i>ptr</i>, size_t <i>size</i> )</h3>
+<p>Changes the size of the memory block pointed to by <i>ptr</i> to <i>size</i> bytes. The contents will be unchanged to the minimum of the old and new sizes; newly allocated memory will be uninitialized. If <i>ptr</i> is 0, the call is equivalent to malloc(size); if size is equal to zero, the call is equivalent to free(ptr). Unless ptr is 0, it must have been returned by an earlier call to <a href="qmallocpool.html#malloc">malloc</a>(), <a href="qmallocpool.html#calloc">calloc</a>() or realloc(). If the area pointed to was moved, a free(ptr) is done.</p>
+<h3 class="fn"><a name="size_of"></a>size_t QMallocPool::size_of ( void * <i>mem</i> )</h3>
+<p>Returns the allocated size of <i>mem</i>, assuming <i>mem</i> was previously returned by <a href="qmallocpool.html#malloc">malloc</a>(), <a href="qmallocpool.html#calloc">calloc</a>() or <a href="qmallocpool.html#realloc">realloc</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Theming Files</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Theming Files<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#theme-project-file">Theme Project File</a></li>
+<li><a href="#theme-configuration-file">Theme Configuration File</a></li>
+</ul>
+<p>Examples of the:</p>
+<ul>
+<li>theme Project File</li>
+<li>theme Configuration File</li>
+</ul>
+<p>required to construct a new theme, are provided below.</p>
+<a name="projtheme"></a><a name="theme-project-file"></a>
+<h2>Theme Project File</h2>
+<p>A project file in <tt>&lt;qt-extended-root-dir&gt;/etc/themes/&lt;theme name&gt;/qbuild.pro</tt> is required to define the files to be installed for the theme: For example, the Qtopia theme project file: <tt>&lt;qt-extended-root-dir&gt;/etc/themes/qtopia/qbuild.pro</tt> contains:</p>
+<pre>    STRING_LANGUAGE=en_US
+    AVAILABLE_LANGUAGES=$$QTOPIA_AVAILABLE_LANGUAGES
+    LANGUAGES=$$QTOPIA_LANGUAGES
+    UNIFIED_NCT_LUPDATE=1
+
+    pkg [
+        name=qtopia-theme
+        desc=&quot;Qtopia theme for Qt Extended.&quot;
+        version=$$QTOPIA_VERSION
+        license=$$QTOPIA_LICENSE
+        maintainer=$$QTOPIA_MAINTAINER
+    ]
+
+    conf [
+        hint=themecfg
+        files=qtopia.conf
+        path=/etc/themes
+        trtarget=Theme-Qtopia
+    ]
+
+    data [
+        hint=image
+        files=*.xml *rc
+        path=/etc/themes/qtopia
+    ]
+
+    pics [
+        hint=pics
+        files=pics/*
+        path=/pics/themes/qtopia
+    ]
+
+    bgimage [
+        hint=background
+        files=\
+            background.png\
+            ladybug.png
+        path=/pics/themes/qtopia
+    ]</pre>
+<a name="configtheme"></a><a name="theme-configuration-file"></a>
+<h2>Theme Configuration File</h2>
+<p>A configuration file in <tt>&lt;qt-extended-root-dir&gt;/etc/themes/</tt> is required to define a theme as follows:</p>
+<pre>    [Theme]
+    Name = &lt;name of theme (translatable)&gt;
+    Style = &lt;name of the Style plug-in that handles widget drawing&gt;
+    ColorScheme = &lt;list of color schemes associated with the theme&gt;
+    Backgrounds = &lt;list of background images associated with the theme&gt;
+    TitleConfig = &lt;path to the title configuration file&gt;
+    HomeConfig = &lt;path to the home screen configuration file&gt;
+    ContextConfig = &lt;path to the context bar configuration file&gt;
+    DialerConfig = &lt;path to the touch screen dialer configuration file&gt;
+    CallScreenConfig = &lt;path to the call screen configuration file&gt;
+    DecorationConfig = &lt;path to the window decoration configuration file&gt;
+    SecondaryTitleConfig = &lt;optional - path to the secondary title configuration file&gt;
+    SecondaryHomeConfig = &lt;optional - path to the secondary home screen configuration file&gt;
+    BootChargerConfig = &lt;path to the boot charger configuration file&gt;
+    IconPath = &lt;list of semi-colon separated paths to substitute icons&gt;</pre>
+<p>All paths are relative to the <tt>etc/themes</tt> directory except <tt>IconPath</tt> which is relative to <tt>&lt;qt-extended-root-dir&gt;</tt>.</p>
+<p>For example, the Qtopia theme is defined by: &lt;qt-extended-root-dir&gt;/etc/themes/qtopia.conf:</p>
+<pre>    [Theme]
+    Name[] = Qtopia
+    Style = Qtopia
+    HeaderSize = 0.145
+    ContextSize = 0.09
+    ColorScheme = Qtopia.scheme|Carmine.scheme|Crisp.scheme|Fern.scheme|Lavender.scheme|Saffron.scheme|SteelBlue.scheme
+    Backgrounds = background|ladybug
+    ExtendedFocusHighlight = 1
+    FormStyle = QtopiaDefaultStyle
+    PopupShadows = 0
+    HideMenuIcons = 1
+    FullWidthMenu = 1
+    TitleConfig = qtopia/title.xml
+    HomeConfig = qtopia/home.xml
+    ContextConfig = qtopia/context.xml
+    DialerConfig = qtopia/dialer.xml
+    CallScreenConfig = qtopia/callscreen.xml
+    DecorationConfig = qtopia/decorationrc
+    SecondaryTitleConfig = qtopia/secondarytitle.xml
+    SecondaryHomeConfig = qtopia/secondaryhome.xml
+    BootChargerConfig = qtopia/bootcharger.xml
+    [Translation]
+    File=QtopiaThemes
+    Context=Themes</pre>
+<p>The <tt>title</tt>, <tt>home screen</tt>, <tt>call screen</tt>, <tt>dialer</tt> and <tt>context bar</tt> share the same theming format while the window decoration and widget themes have their own formats.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

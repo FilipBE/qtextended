@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# clearipc - clear shared memory segments and semaphores
+
+# parameters are interpreted as PIDs of creator process whose
+# shared memory segments and semaphores should not be clean up
+
+# get ids for the process that we don't want to clean up
+no_clean_ids=$(ipcs -m -p | grep $USER | while read shmid owner cpid lpid; do
+    if echo $@ | grep "\b$cpid\b" >/dev/null; then
+        if [ "$got_one" = "1" ]; then
+            echo -n "|$shmid"
+        else
+            echo -n "$shmid"
+            got_one=1
+        fi
+    fi
+done)
+
+# convert ids into keys
+if [ "$no_clean_ids" = "" ]; then
+    no_clean_keys=
+else
+    no_clean_keys=$(ipcs -m | grep -E "^0x........ ("$no_clean_ids")" | awk '{print $1}')
+fi
+
+# clean up shared memory segments
+ipcs -m | grep $USER | while read shmkey shmid the_rest; do
+    if ! echo $no_clean_keys | grep "\b$shmkey\b" >/dev/null; then
+        ipcrm -m $shmid
+    fi
+done
+
+# clean up semaphores
+ipcs -s | grep $USER | while read shmkey shmid the_rest; do
+    if ! echo $no_clean_keys | grep "\b$shmkey\b" >/dev/null; then
+        ipcrm -s $shmid
+    fi
+done
+

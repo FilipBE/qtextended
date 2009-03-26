@@ -1,0 +1,6 @@
+TEMPLATE=app
+TARGET=micro_httpd
+
+MKSPEC.CFLAGS_OPTIMIZE=-Os
+
+SOURCES=micro_httpd.c

@@ -1,0 +1,504 @@
+#!/bin/bash
+
+. /opt/Qtopia/SDK/scripts/functions
+
+QPEVER=`version`
+
+ph_failed()
+{
+  if [ "$VERBOSE" = "0" ]; then
+    echo -e "[\033[01;31mFAILED\033[00m]"
+  else
+    echo "FAILED!"
+  fi
+  exit 1
+}
+
+#---------------------------------------------------------------
+
+ph_ok()
+{
+  if [ "$VERBOSE" = "0" ]; then
+    echo -e "[\033[01;32m  OK  \033[00m]"
+  fi
+}
+
+#---------------------------------------------------------------
+
+ph_net()
+{
+  # Bring up network to device
+if  ping -c 1 -i 2 $PHONEIP >/dev/null 2>&1 ; then
+    return 0;
+  fi
+
+  sudo modprobe usbnet >/dev/null 2>&1
+  export DEVNODE=`device_devnode`
+  if [ "$DEVNODE" = "" ] ; then
+    echo "Networking failed. Please unplug and plug the device back in."
+    return 1;
+  fi
+
+  sudo ifdown $DEVNODE >/dev/null 2>&1
+  sudo ifup $DEVNODE >/dev/null 2>&1
+
+  # Figure out the IP now that the device is up
+  PHONEIP=`phoneip`
+
+  if ! ping -c 1 -i 2 $PHONEIP >/dev/null 2>&1 ; then
+    echo "Could not contact device at $PHONEIP. Please unplug and plug the device back in."
+    return 1;
+  fi
+
+  if [ ! -f "$HOME/.ssh/id_dsa.pub" ]; then
+    # generate keypair of ssh
+    [ "$VERBOSE" = "1" ] && echo "Generating DSA keypair for ssh"
+    ssh-keygen -t dsa -N '' -f $HOME/.ssh/id_dsa >/dev/null 2>&1
+  fi
+
+# sudo /usr/sbin/iptables -A POSTROUTING -t nat -j MASQUERADE -s 192.168.0.0/24
+# sudo echo 1 > /proc/sys/net/ipv4/ip_forward
+# sudo /usr/sbin/iptables -P FORWARD ACCEPT
+
+if [ -e /etc/resolv.conf ]; then
+  scp /etc/resolv.conf root@$PHONEIP:/etc
+fi
+
+  # attempt to connect to device
+#  if ! ssh root@$PHONEIP ; then
+#    echo "Connection to device at $PHONEIP failed."
+#    return 1
+#  elif [ "$VERBOSE" = "1" ]; then
+#    echo "Success! device address is $PHONEIP"
+#  fi
+
+  return 0;
+}
+
+#---------------------------------------------------------------
+
+ph_source()
+{
+  # Loads environment variables for current configuration
+  # ph_config when run sets this to x86 or device
+  ARCH=${BUILD_ARCH}
+  if [ -z $ARCH ]; then
+    ARCH="$DEVICE" 
+  fi
+
+  . /opt/Qtopia/SDK/scripts/devel-$ARCH.sh
+}
+
+#---------------------------------------------------------------
+
+ph_config()
+{
+  #Reconfigure for new environment
+
+  echo
+  #Set ARCH to new option passed in and source environment
+  ARCH=$CONFIG
+  . /opt/Qtopia/SDK/scripts/devel-$ARCH.sh
+
+  if [ "$ARCH" = "x86" ] ; then
+    #This just makes output align in quiet mode
+    ARCH="x86       "
+  fi
+
+  if [ "$VERBOSE" = "0" ] ; then
+    echo -n "Configure for $ARCH "
+    if qbuild $QRELEASE $QDEBUG $OPTS >$OUTPUT; then
+      return 0;
+    else
+      return 1;
+    fi
+  else
+    if qbuild $QRELEASE $QDEBUG $OPTS; then
+      return 0;
+    else
+      return 1;
+    fi
+  fi
+}
+
+#---------------------------------------------------------------
+
+ph_clean()
+{
+  # Clean out old object files, libraries or executables
+
+  ph_source
+  TARGET=`grep TARGET *.pro|awk 'BEGIN{FS="="}{print $2}'`
+  rm -f $TARGET
+  if [ "$VERBOSE" = "0" ] ; then
+    echo -n "Cleaning up files        "
+    if qbuild clean >$OUTPUT; then
+      return 0;
+    else
+      return 1;
+    fi
+  else
+    if qbuild clean; then
+      return 0;
+    else
+      return 1;
+    fi
+  fi
+}
+
+#---------------------------------------------------------------
+
+ph_make()
+{
+  # Just building it
+
+  ph_source
+  if [ "$VERBOSE" = "0" ] ; then
+    echo -n "Building                 "
+    if qbuild >$OUTPUT; then
+      return 0;
+    else
+      return 1;
+    fi
+  else
+    if qbuild; then
+      return 0;
+    else
+      return 1;
+    fi
+  fi
+}
+
+#---------------------------------------------------------------
+
+ph_package()
+{
+  # Creating a package for installation
+
+  ph_source
+  if [ "$VERBOSE" = "0" ] ; then
+    echo -n "Creating package         "
+    if qbuild packages FORMAT=qpk >$OUTPUT; then
+      return 0;
+    else
+      return 1;
+    fi
+  else
+    if qbuild packages FORMAT=qpk; then
+      return 0;
+    else
+      return 1;
+    fi
+  fi
+}
+
+#---------------------------------------------------------------
+
+ph_install()
+{
+  # Transfer the package to the device and install it
+  ph_source
+  if [ "$ARCH" = "device" ] && ! ph_net ;then
+      return 1; 
+  fi
+  if [ "$QPKG" = "1" ] ;then
+    # Installing prebuilt qpk file
+    LIST=$QPKGNAME
+else    
+  if [ "$ARCH" = "x86" ] ;then
+    LIST=`ls -1 pkg|grep -i 'i386.qpk'|awk '{printf $1" "}'`
+  else
+    LIST=`ls -1 pkg|grep -i 'arm.qpk'|awk '{printf $1" "}'`
+  fi
+fi
+  sudo mkdir -p $QPKWEBSERVER
+  for PKG in $LIST; do
+			sudo cp -f pkg/$PKG $QPKWEBSERVER
+			sudo chmod 644 $QPKWEBSERVER/$PKG
+	done;
+  sudo /opt/Qtopia/SDK/scripts/mkPackages $QPKWEBSERVER --descriptors http://$HOSTIP
+
+  if [ "$ARCH" = "x86" ] ;then
+    PATH=/opt/Qtopia/SDK/$QPEVER/x86/image/bin:$PATH
+    for PKG in $LIST; do
+      echo "Install process for x86 ${PKG} successfully initiated"
+      PKGFILE=`echo $PKG|sed 's/.qpk//g'`
+      qcop service send PackageManager 'installPackageConfirm(QString)' http://$HOSTIP/$PKGFILE.qpd
+    done;
+  else
+    for PKG in $LIST; do
+      echo "Install process for ${PKG} successfully initiated"
+      PKGFILE=`echo $PKG|sed 's/.qpk//g'`
+# cheat here to get installation directory on device
+      ENVFILE=`cat /opt/Qtopia/SDK/$QPEVER/$DEVICE/configs/current.pri | grep QTOPIA_PREFIX= | awk 'BEGIN{FS="="}{print $2}'`"/qpe.env"
+      ssh root@$PHONEIP " . $ENVFILE;qcop service send PackageManager 'installPackageConfirm(QString)' 'http://${HOSTIP}/${PKGFILE}.qpd'; sleep 3; echo DONE;"
+    done;
+
+  fi
+
+  return 0;
+}
+
+#---------------------------------------------------------------
+
+ph_run()
+{
+
+  ph_source
+  TARGET=`grep TARGET *.pro|awk 'BEGIN{FS="="}{print $2}'`
+  if [ "$ARCH" = "x86" ] ; then
+    ./$TARGET 2>&1 | logger -t 'TEST' &
+    return 0;
+  fi
+  if [ "`grep -c "qtopia app" *.pro`" = "1" ] ; then
+    if [ "$VERBOSE" = "0" ] ; then
+      echo -n "Executing application    "
+    fi
+if [ "$QDEBUG" = "-debug" ] ; then
+
+  ssh root@$PHONEIP "killall gdbserver $TARGET; cd /; binary=\$(find . -name $TARGET 2>/dev/null | while read file; do if [ -x \$file ] && [ -f \$file ]; then echo \$file; exit; fi; done); . /opt/Qtopia/qpe.env; gdbserver hostpc:22222 \$binary 2>&1 | logger -t 'DEBUGGER' &"
+
+else
+  
+  ssh root@$PHONEIP "cd /; binary=\$(find . -name $TARGET 2>/dev/null | while read file; do if [ -x \$file ] && [ -f \$file ]; then echo \$file; exit; fi; done); . /opt/Qtopia/qpe.env; \$binary 2>&1 | logger -t 'DEBUGGER' &"
+ 
+  fi
+fi
+}
+
+ph_rescan()
+{
+  # Tell device to update, rescan for new Documents
+
+  if [ "$ARCH" = "x86" ] ;then
+    PATH=/opt/Qtopia/SDK/$QPEVER/x86/image/bin:$PATH
+    qcop QPE/DocAPI 'scanPath(QString,int)' 'all' '1'
+  else
+    if ! ph_net; then
+      return 1; 
+    fi
+
+ ssh root@$PHONEIP ". /opt/Qtopia/qpe.env; qcop QPE/DocAPI 'scanPath(QString,int)' 'all' '1'; sleep 3; echo DONE;"
+fi 
+}
+
+#ph_remove()
+#{
+# remove installed package here.
+
+#}
+
+#---------------------------------------------------------------
+
+# main program
+
+HELP=no
+VERBOSE=1
+CLEAN=0
+CONFIG=device
+RECONFIG=0
+BUILD=0
+PACKAGE=0
+INSTALL=0
+RUN=0
+OUTPUT=""
+QPKG=0
+QPKGNAME=""
+QDEBUG=""
+QRELEASE=""
+OPTS=""
+RESCAN=0
+QPKWEBSERVER=/var/www
+
+# Read in arguments and determine what to do
+
+if [ "$#" = "0" ] ; then
+  HELP=yes
+fi
+
+while [ -n "$1" ]; do
+  case $1 in
+  -h | -help | --help)
+    HELP=yes
+    ;;
+  -q | -quiet | --quiet) 
+    VERBOSE=0
+    OUTPUT="/dev/null"
+    ;;
+  -c | -clean | --clean)
+    CLEAN=1  
+    ;;
+  -C | -config | --config)
+    shift
+    CONFIG=$1
+    RECONFIG=1
+    ;;
+  -b | -build | --build)
+    BUILD=1
+    ;;
+  -p | -package | --package)
+    PACKAGE=1
+    ;;
+  -i | -install | --install)
+    INSTALL=1
+    ;;
+  -r | -run | --run)
+    RUN=1
+    ;;
+  -all | --all)
+    RECONFIG=1
+    BUILD=1
+    PACKAGE=1
+    INSTALL=1
+    RUN=1
+    ;;
+  -debug)
+    QDEBUG="-debug"
+    ;;
+  -release)
+    QRELEASE="-release"
+    ;;
+  -options)
+    shift
+    OPTS=$1
+    ;;
+  -rescan)
+    RESCAN=1
+    ;;
+  -net)
+    ph_net
+    exit
+    ;;
+  -console)
+    if ph_net; then
+      ssh root@$PHONEIP
+    fi
+    exit
+    ;;
+  -qpk)
+    INSTALL=1
+    QPKG=1 
+    shift
+    QPKGNAME=$1
+    ;; 
+  *)
+    echo $1: unknown argument
+    CLEAN=0
+    BUILD=0
+    PACKAGE=0
+    INSTALL=0 
+    RECONFIG=0
+    RUN=0
+    HELP=yes
+    ;;
+  esac
+  shift
+done
+
+
+# Reconfigure environment 
+
+if [ "$RECONFIG" = "1" ] ;then
+  if ph_config; then
+    ph_ok
+  else
+    ph_failed
+  fi
+  echo
+fi
+
+# Get current environment
+ph_source
+
+# make clean
+
+if [ "$CLEAN" = "1" ] ;then
+  if ph_clean; then
+    ph_ok
+  else
+    ph_failed
+  fi
+  echo
+fi
+
+
+# make
+
+if [ "$BUILD" = "1" ] ;then
+  if ph_make; then
+    ph_ok
+  else
+    ph_failed
+  fi
+  echo
+fi
+
+
+# make packages
+
+if [ "$PACKAGE" = "1" ] ;then
+  if ph_package; then
+    ph_ok
+  else
+    ph_failed
+  fi
+  echo
+fi
+
+
+# transfer package to device and install it
+
+if [ "$INSTALL" = "1" ] ;then
+  if ph_install; then
+    ph_ok
+  else
+    ph_failed
+  fi
+  echo
+fi
+
+if [ "$RESCAN" = "1" ] ; then
+  ph_rescan
+fi
+
+
+# Tell device to run your application
+
+if [ "$RUN" = "1" ] ;then
+  if ph_run; then
+    ph_ok
+  else
+    ph_failed
+  fi
+  echo
+fi
+
+
+
+if [ "$HELP" = "yes" ] ;then
+  echo
+  echo "FORMAT: $0 <options>"
+  echo 
+  echo "Options:"
+  echo " -h          display command help"
+  echo " -q          quiet mode"
+  echo " -c          clean"
+  echo " -C <opt>    reconfig <x86> or <device>, default device"
+  echo " -b          Run qbuild"
+  echo " -p          qbuild package"
+  echo " -i          install package to device"
+  echo " -r          run application on device"
+  echo " -all        reconfig, qbuild, qbuild package, install, run"
+  echo " -debug      force configure for debug build, override default"
+  echo " -release    force configure for release build, override default"
+  echo
+  echo " -options \"<opts>\" pass extra options to build system"
+  echo "          eg. $0 -C x86 -all -options \"CONFIG+=debug\""
+  echo 
+  echo " -net        bring up network to device"
+  echo " -console    console on device"
+  echo " -qpk <file> install qpk to SDK http server for installation"
+  echo " -rescan     Tell Qtopia to rescan for new documents and applications"
+  echo
+fi
+

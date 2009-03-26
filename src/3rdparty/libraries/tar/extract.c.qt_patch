@@ -1,0 +1,21 @@
+Qt Note:
+========
+If upgrading this library, apply this patch to lib/extract.c as it breaks
+without it.
+
+--- lib/extract.c       2005-05-17 17:04:43.847133146 +1000
++++ lib/extract.c.old   2005-05-17 17:03:14.494499319 +1000
+@@ -183,11 +183,7 @@
+        uid = th_get_uid(t);
+        gid = th_get_gid(t);
+
+-        /* dirname can alter its argument */
+-        char *cpyfn = strdup( filename );
+-        int mkdirres = mkdirhier(dirname(cpyfn));
+-        free( cpyfn );
+-        if ( mkdirres == -1)
++       if (mkdirhier(dirname(filename)) == -1)
+                return -1;
+
+ #ifdef DEBUG
+

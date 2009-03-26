@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Communications: Telephony: Voice Calls</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Communications: Telephony: Voice Calls<br><small>Functional Description</small></h1><p>
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-8098">Incoming voice calls</a>
+<li><a href="#QTOPIA-8099">Outgoing voice calls</a>
+<li><a href="#QTOPIA-7693">SIP Message Waiting Indications for Voice Mail</a>
+</ul><h3><a name=QTOPIA-8098>Incoming voice calls</a></h3>
+<p>This feature is provided as part of the Deskphone Reference Design.</p>
+<p>On the event of an incoming call, a dialog prompts the user to either accept or reject the call.
+
+<p>If the user is already on a call, the user is given the additional options of ending or holding the current call to answer the incoming call, or merging the calls into a multiparty (or conference) call.</p>
+<h3><a name=QTOPIA-8099>Outgoing voice calls</a></h3>
+<p>Calls can be made to other phones which are provided by the subscribed service.  Calls are made via the dialer, or through supported applications.
+<h3><a name=QTOPIA-7693>SIP Message Waiting Indications for Voice Mail</a></h3>
+<p>Message waiting is a mechanism for telephony providers to advertise to a handset that there are voice mail messages waiting for the user.  This state is typically indicated to the user via an on-screen icon or an external message waiting LED.
+
+<p>SIP-based systems use the mechanisms described in RFC 3842, which provide the following information:</p>
+
+<ul>
+	<li>A yes/no flag indicating if there are unread messages waiting.</li>
+	<li>The number of unread messages.</li>
+	<li>The number of read messages.</li>
+	<li>The number of urgent unread messages.</li>
+	<li>The number of urgent read messages.</li>
+</ul>
+
+
+<p>The current implementation provides this information to client applications via the QMessageWaiting telephony API.  The server provides a summarized version of the information in the value space which can then be displayed in the homescreen's theme.  On devices with an external LED, a server task can be added that reads the value space item and updates the LED using the appropriate system interface.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPhoneCall Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPhoneCall Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QPhoneCall class provides an interface for managing individual incoming and outgoing phone calls. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPhoneCall&gt;</pre><ul>
+<li><a href="qphonecall-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qphonecall.html#DataState-enum">DataState</a></b> { PPPdStarted, PPPdStopped, PPPdFailed, DataActive, ..., ConnectFailed }</li>
+<li><div class="fn"/>enum <b><a href="qphonecall.html#Notification-enum">Notification</a></b> { CallingName, DataStateUpdate, RemoteHold, ConnectedLineId }</li>
+<li><div class="fn"/>enum <b><a href="qphonecall.html#Request-enum">Request</a></b> { HoldFailed, JoinFailed, TransferFailed, ActivateFailed }</li>
+<li><div class="fn"/>enum <b><a href="qphonecall.html#Scope-enum">Scope</a></b> { CallOnly, Group }</li>
+<li><div class="fn"/>enum <b><a href="qphonecall.html#State-enum">State</a></b> { Idle, Incoming, Dialing, Alerting, ..., ServiceHangup }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qphonecall.html#QPhoneCall">QPhoneCall</a></b> ()</li>
+<li><div class="fn"/><b><a href="qphonecall.html#QPhoneCall-3">QPhoneCall</a></b> ( const QPhoneCall &amp; <i>call</i> )</li>
+<li><div class="fn"/><b><a href="qphonecall.html#dtor.QPhoneCall">~QPhoneCall</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#accept">accept</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#activate">activate</a></b> ( QPhoneCall::Scope <i>scope</i> = Group )</li>
+<li><div class="fn"/>QString <b><a href="qphonecall.html#callType">callType</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#canAccept">canAccept</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#canActivate">canActivate</a></b> ( QPhoneCall::Scope <i>scope</i> = Group ) const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#canHold">canHold</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#canJoin">canJoin</a></b> ( bool <i>detachSubscriber</i> = false ) const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#canTone">canTone</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#canTransfer">canTransfer</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#connectFloorChanged">connectFloorChanged</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#connectNotification">connectNotification</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#connectPendingTonesChanged">connectPendingTonesChanged</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#connectRequestFailed">connectRequestFailed</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#connectStateChanged">connectStateChanged</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>QDateTime <b><a href="qphonecall.html#connectTime">connectTime</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#connected">connected</a></b> () const</li>
+<li><div class="fn"/>QUniqueId <b><a href="qphonecall.html#contact">contact</a></b> () const</li>
+<li><div class="fn"/>QIODevice * <b><a href="qphonecall.html#device">device</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#dial">dial</a></b> ( const QString &amp; <i>number</i>, bool <i>sendcallerid</i>, const QUniqueId &amp; <i>contact</i> = QUniqueId() )</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#dial-2">dial</a></b> ( const QDialOptions &amp; <i>options</i> )</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#dialed">dialed</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#dialing">dialing</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#disconnectFloorChanged">disconnectFloorChanged</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#disconnectNotification">disconnectNotification</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#disconnectRequestFailed">disconnectRequestFailed</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#disconnectStateChanged">disconnectStateChanged</a></b> ( QObject * <i>object</i>, const char * <i>slot</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#dropped">dropped</a></b> () const</li>
+<li><div class="fn"/>QDateTime <b><a href="qphonecall.html#endTime">endTime</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#established">established</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#floorAvailable">floorAvailable</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qphonecall.html#fullNumber">fullNumber</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#hangup">hangup</a></b> ( QPhoneCall::Scope <i>scope</i> = Group )</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#hasBeenConnected">hasBeenConnected</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#haveFloor">haveFloor</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#hold">hold</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qphonecall.html#identifier">identifier</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#idle">idle</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#incoming">incoming</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#join">join</a></b> ( bool <i>detachSubscriber</i> = false )</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#missed">missed</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qphonecall.html#modemIdentifier">modemIdentifier</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qphonecall.html#number">number</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qphonecall.html#onHold">onHold</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qphonecall.html#pendingTones">pendingTones</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#releaseFloor">releaseFloor</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#requestFloor">requestFloor</a></b> ( int <i>secs</i> = -1 )</li>
+<li><div class="fn"/>QDateTime <b><a href="qphonecall.html#startTime">startTime</a></b> () const</li>
+<li><div class="fn"/>State <b><a href="qphonecall.html#state">state</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#tone">tone</a></b> ( const QString &amp; <i>tones</i> )</li>
+<li><div class="fn"/>void <b><a href="qphonecall.html#transfer">transfer</a></b> ( const QString &amp; <i>number</i> )</li>
+<li><div class="fn"/>QPhoneCall &amp; <b><a href="qphonecall.html#operator-eq">operator=</a></b> ( const QPhoneCall &amp; <i>call</i> )</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QPhoneCall::DataState <b><a href="qphonecall.html#parseDataState">parseDataState</a></b> ( const QString &amp; <i>value</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPhoneCall class provides an interface for managing individual incoming and outgoing phone calls.</p>
+<a name="qphonecall-overview"></a><p>QPhoneCall is the primary interface for managing a phone call that is in progress. Outgoing calls are created in client applications by a call to <a href="qphonecallmanager.html#create">QPhoneCallManager::create</a>(), and incoming calls are advertised to client applications via the <a href="qphonecallmanager.html#newCall">QPhoneCallManager::newCall</a>() signal, with the phone call's state set to <tt>Incoming</tt>.</p>
+<p>Client applications can see all of the calls in the system, even those created by other client applications. The <a href="qphonecallmanager.html#calls">QPhoneCallManager::calls</a>() method provides access to the complete call list, and the <a href="qphonecallmanager.html#newCall">QPhoneCallManager::newCall</a>() signal can be used to receive notification of when another client application creates a call.</p>
+<p>QPhoneCall instances act as identifiers for the actual call objects. The actual call object will persist until the call ends, either due to explicit <a href="qphonecall.html#hangup">hangup</a>(), remote disconnection, or some form of network failure.</p>
+<a name="outgoing-calls"></a>
+<h3>Outgoing calls</h3>
+<p>Outgoing phone calls are created by <a href="qphonecallmanager.html#create">QPhoneCallManager::create</a>() and start in the <tt>Idle</tt> state. They then transition to the <tt>Dialing</tt> state when the <a href="qphonecall.html#dial">dial</a>() method is called. The following example demonstrates how to dial a voice call to the phone number <tt>1234567</tt>:</p>
+<pre>    QPhoneCallManager mgr;
+    QPhoneCall call = mgr.create( &quot;Voice&quot; );
+
+    QDialOptions dialOptions;
+    dialOptions.setNumber( &quot;1234567&quot; );
+    call.dial( dialOptions );</pre>
+<p>Once an outgoing call enters the <tt>Dialing</tt> state, it may transition to one of the following states, as reported by <a href="qphonecall.html#state">state</a>():</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>Alerting</tt></td><td>The network is alerting the other party that they have an incoming call. Not all networks support alerting, so an outgoing call may never enter this state. For most client applications, <tt>Alerting</tt> can be considered identical to <tt>Dialing</tt>.</td></tr>
+<tr valign="top" class="even"><td><tt>Connected</tt></td><td>The call was accepted by the other party and is now connected.</td></tr>
+<tr valign="top" class="odd"><td><tt>HangupLocal</tt></td><td>This client application, or some other application, called <a href="qphonecall.html#hangup">hangup</a>() to abort the outgoing call before it could be accepted by the other party.</td></tr>
+<tr valign="top" class="even"><td><tt>HangupRemote</tt></td><td>The other party rejected the call, the party was busy, or it timed out without some kind of response.</td></tr>
+<tr valign="top" class="odd"><td><tt>OtherFailure</tt></td><td>The dial attempt could not start because of a local problem; usually because there is another call already dialing, or there are insufficient resources to complete the request.</td></tr>
+<tr valign="top" class="even"><td><tt>ServiceHangup</tt></td><td>The dial attempt was for a supplementary service number starting with <tt>*</tt> or <tt>#</tt>. The request has been sent, but there is no actual call from this point onwards. While supplementary service requests can be sent with <a href="qphonecall.html#dial">dial</a>(), it is better to use <a href="qsupplementaryservices.html#sendSupplementaryServiceData">QSupplementaryServices::sendSupplementaryServiceData</a>() as it has better error reporting for failed supplementary service requests.</td></tr>
+</table></p>
+<p>Changes in <a href="qphonecall.html#state">state</a>() are advertised to client applications with the <tt>stateChanged()</tt> signal. The client application must use <a href="qphonecall.html#connectStateChanged">connectStateChanged</a>() to connect to this signal.</p>
+<p>Once connected, the call can be terminated locally with <a href="qphonecall.html#hangup">hangup</a>(), put on hold with <a href="qphonecall.html#hold">hold</a>(), released from hold or split from a multi-party conversation with <a href="qphonecall.html#activate">activate</a>(), joined with another call for a multi-party conversation with <a href="qphonecall.html#join">join</a>(), and sent DTMF tones with <a href="qphonecall.html#tone">tone</a>().</p>
+<p>Voice-Over-IP calls are initiated in a similar manner to GSM voice calls:</p>
+<pre>    QPhoneCallManager mgr;
+    QPhoneCall call = mgr.create( &quot;VoIP&quot; );
+
+    QDialOptions dialOptions;
+    dialOptions.setNumber( &quot;sip:jane@random.com&quot; );
+    call.dial( dialOptions );</pre>
+<p>In this case, the phone number is replaced with the URI corresponding to the called party, and the call type is set to <tt>VoIP</tt>. The system locates the relevant Voice-Over-IP telephony service and forwards the request to it. The complete list of active call types and services can be obtained from the <a href="qphonecallmanager.html#callTypes">QPhoneCallManager::callTypes</a>() and <a href="qphonecallmanager.html#services">QPhoneCallManager::services</a>() methods.</p>
+<a name="incoming-calls"></a>
+<h4>Incoming calls</h4>
+<p>Incoming calls are advertised to client applications via the <a href="qphonecallmanager.html#newCall">QPhoneCallManager::newCall</a>() signal. They can be distinguished from outgoing calls made by other client applications by checking the <a href="qphonecall.html#state">state</a>() for <tt>Incoming</tt>. The <a href="qphonecall.html#number">number</a>() method will return the phone number of the calling party, if caller identification is available.</p>
+<p>An incoming call can be rejected by calling <a href="qphonecall.html#hangup">hangup</a>(), and will transition to the <tt>HangupLocal</tt> state.</p>
+<p>Calls in the <tt>Incoming</tt> state can be transferred to a different number with <a href="qphonecall.html#transfer">transfer</a>(). If the call has already been accepted, then to transfer the call requires the following steps be taken:</p>
+<ul>
+<li>Create a new outgoing QPhoneCall with <a href="qphonecall.html#dial">QPhoneCall::dial</a>().</li>
+<li>Join the two calls together with <a href="qphonecall.html#join">join</a>(), passing true as the <tt>detachSubscriber</tt> parameter.</li>
+</ul>
+<p>Normally this process is performed by the dialer as part of the multi-party conversation logic in the user interface.</p>
+<p>Once connected, the call can be terminated locally with <a href="qphonecall.html#hangup">hangup</a>(), put on hold with <a href="qphonecall.html#hold">hold</a>(), released from hold or split from a multi-party conversation with <a href="qphonecall.html#activate">activate</a>(), joined with another call for a multi-party conversation with <a href="qphonecall.html#join">join</a>(), and sent DTMF tones with <a href="qphonecall.html#tone">tone</a>(); just as for outgoing calls.</p>
+<p>For a larger example that demonstrates the use of QPhoneCall for managing incoming and outgoing calls, see <a href="tut-phonecalls.html">Making Phone Calls</a>.</p>
+<a name="phone-call-providers"></a>
+<h4>Phone call providers</h4>
+<p>Phone call functionality is provided by back-end telephony services in their <a href="qphonecallprovider.html">QPhoneCallProvider</a> implementation. Each call is associated with with a <a href="qphonecallimpl.html">QPhoneCallImpl</a> object, whose functions mirror those in QPhoneCall.</p>
+<p>The Qt Extended telephony API automatically routes requests from client applications to the appropriate <a href="qphonecallprovider.html">QPhoneCallProvider</a>, based on the <a href="qphonecall.html#callType">callType</a>(). State changes in the provider are routed back to client applications and appear as <tt>stateChanged()</tt> signals (use <a href="qphonecall.html#connectStateChanged">connectStateChanged</a>() to access these signals).</p>
+<p>See <a href="qphonecallprovider.html">QPhoneCallProvider</a> for more information on implementing phone call providers within telephony services.</p>
+<p>See also <a href="qphonecallmanager.html">QPhoneCallManager</a>, <a href="qdialoptions.html">QDialOptions</a>, <a href="qphonecallprovider.html">QPhoneCallProvider</a>, and <a href="qphonecallimpl.html">QPhoneCallImpl</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="DataState-enum"></a>enum QPhoneCall::DataState</h3>
+<p>This enum lists the flags that may be returned from <a href="qphonecall.html#parseDataState">QPhoneCall::parseDataState</a>()</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QPhoneCall::PPPdStarted</tt></td><td align="center" valign="top"><tt>0x0001</tt></td><td valign="top">The pppd daemon has been started. Usually combined with DataActive or DataInactive.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::PPPdStopped</tt></td><td align="center" valign="top"><tt>0x0002</tt></td><td valign="top">The pppd daemon stopped in response to an explicit call on <a href="qphonecall.html#hangup">QPhoneCall::hangup</a>()</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::PPPdFailed</tt></td><td align="center" valign="top"><tt>0x0004</tt></td><td valign="top">The pppd daemon stopped for some other reason.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::DataActive</tt></td><td align="center" valign="top"><tt>0x0008</tt></td><td valign="top">A data session is currently active.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::DataInactive</tt></td><td align="center" valign="top"><tt>0x0010</tt></td><td valign="top">No data session is currently active.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Connecting</tt></td><td align="center" valign="top"><tt>0x0020</tt></td><td valign="top">The pppd daemon is attempting to connect. Usually combined with PPPdStarted and DataInactive.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::ConnectFailed</tt></td><td align="center" valign="top"><tt>0x0040</tt></td><td valign="top">The pppd daemon failed in its connection attempt.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Notification-enum"></a>enum QPhoneCall::Notification</h3>
+<p>Defines auxiliary value notifications that may be associated with a phone call.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QPhoneCall::CallingName</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The name of the calling party.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::DataStateUpdate</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Notification that is sent when the GPRS data state changes. Use <a href="qphonecall.html#parseDataState">QPhoneCall::parseDataState</a>() to decode this value.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::RemoteHold</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Notification that is sent when the remote party requests that the call be held or unheld. This is used with VoIP implementations where either party can place a call on hold. This notification may have one of the values <tt>hold</tt> or <tt>unhold</tt> indicating whether the remote party is requesting a hold or an unhold.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::ConnectedLineId</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Full phone number of the other party, according to the connected line identification presentation (COLP) service. This notification may be emitted on outgoing calls where COLP is available. May be an empty string if the COLP service is available but the other party is blocking the provision of their phone number.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Request-enum"></a>enum QPhoneCall::Request</h3>
+<p>Defines the request types, for reporting failures.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QPhoneCall::HoldFailed</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">A call to <a href="qphonecall.html#hold">QPhoneCall::hold</a>() failed and the call could not be put on hold.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::JoinFailed</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">A call to <a href="qphonecall.html#join">QPhoneCall::join</a>() failed and the specified calls could not be joined.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::TransferFailed</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">A call to <a href="qphonecall.html#transfer">QPhoneCall::transfer</a>() failed and the call was not transferred.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::ActivateFailed</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">A call to <a href="qphonecall.html#activate">QPhoneCall::activate</a>() failed and the call was not activated.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Scope-enum"></a>enum QPhoneCall::Scope</h3>
+<p>Defines the scope of a <a href="qphonecall.html#hangup">QPhoneCall::hangup</a>() or <a href="qphonecall.html#activate">QPhoneCall::activate</a>() operation.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QPhoneCall::CallOnly</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Only the referenced call.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Group</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">All calls in the same active/held group.</td></tr>
+</table></p>
+<h3 class="fn"><a name="State-enum"></a>enum QPhoneCall::State</h3>
+<p>This enum defines the different states a <a href="qphonecall.html">QPhoneCall</a> can have. For discussion on the state transitions see the <a href="qphonecall.html#qphonecall-overview">class overview</a>.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QPhoneCall::Idle</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">New outgoing call, not dialed yet.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Incoming</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Incoming connection from remote party.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Dialing</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Dialing, but not yet connected.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Alerting</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Alerting other party during outgoing dial. This state will appear between <tt>Dialing</tt> and <tt>Connected</tt> only if the network and call type supports alerting notifications.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Connected</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Connected to the other party, but currently not on hold.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Hold</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Connected to the other party, but currently on hold.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::HangupLocal</tt></td><td align="center" valign="top"><tt>6</tt></td><td valign="top">Local side hung up the call.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::HangupRemote</tt></td><td align="center" valign="top"><tt>7</tt></td><td valign="top">Remote side hung up the call, or call lost.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::Missed</tt></td><td align="center" valign="top"><tt>8</tt></td><td valign="top">Incoming call that was missed.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::NetworkFailure</tt></td><td align="center" valign="top"><tt>9</tt></td><td valign="top">Network has failed in some way.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::OtherFailure</tt></td><td align="center" valign="top"><tt>10</tt></td><td valign="top">Unknown failure.</td></tr>
+<tr><td valign="top"><tt>QPhoneCall::ServiceHangup</tt></td><td align="center" valign="top"><tt>11</tt></td><td valign="top">Supplementary service request caused the call to &quot;hangup&quot;, notifying higher layers that the request has been sent.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPhoneCall"></a>QPhoneCall::QPhoneCall ()</h3>
+<p>Constructs a new phone call object, initially in the Idle state.</p>
+<h3 class="fn"><a name="QPhoneCall-3"></a>QPhoneCall::QPhoneCall ( const QPhoneCall &amp; <i>call</i> )</h3>
+<p>Constructs a copy of <i>call</i>.</p>
+<h3 class="fn"><a name="dtor.QPhoneCall"></a>QPhoneCall::~QPhoneCall ()</h3>
+<p>Destroys this phone call object. This will not destroy or hangup the actual underlying phone call, which will persist until hung up by the user or some other action.</p>
+<h3 class="fn"><a name="accept"></a>void QPhoneCall::accept ()</h3>
+<p>Accepts an incoming call. All active calls are automatically put on hold. Note that this object must be in the <tt>Incoming</tt> state for this to succeed. If the call is not currently in the <tt>Incoming</tt> state, the request is ignored.</p>
+<p>To reject an incoming call, use <a href="qphonecall.html#hangup">hangup</a>().</p>
+<p>See also <a href="qphonecall.html#canAccept">canAccept</a>(), <a href="qphonecall.html#dial">dial</a>(), and <a href="qphonecall.html#hangup">hangup</a>().</p>
+<h3 class="fn"><a name="activate"></a>void QPhoneCall::activate ( <a href="qphonecall.html#Scope-enum">QPhoneCall::Scope</a> <i>scope</i> = Group )</h3>
+<p>Activates this call and takes it off hold. The <i>scope</i> indicates whether the activation relates to this call only (<a href="qphonecall.html#Scope-enum">CallOnly</a>), or the entire call group (Group).</p>
+<p>See also <a href="qphonecall.html#hold">hold</a>() and <a href="qphonecall.html#canActivate">canActivate</a>().</p>
+<h3 class="fn"><a name="callType"></a><a href="qstring.html">QString</a> QPhoneCall::callType () const</h3>
+<p>Returns the type of call (<tt>Voice</tt>, <tt>Data</tt>, etc).</p>
+<p>See also <a href="qphonecallmanager.html#callTypes">QPhoneCallManager::callTypes</a>().</p>
+<h3 class="fn"><a name="canAccept"></a>bool QPhoneCall::canAccept () const</h3>
+<p>Returns true if the <a href="qphonecall.html#accept">accept</a>() action is valid in the call's current state.</p>
+<p>See also <a href="qphonecall.html#accept">accept</a>().</p>
+<h3 class="fn"><a name="canActivate"></a>bool QPhoneCall::canActivate ( <a href="qphonecall.html#Scope-enum">QPhoneCall::Scope</a> <i>scope</i> = Group ) const</h3>
+<p>Returns true if the <a href="qphonecall.html#activate">activate</a>() action is valid in the call's current state and for the specified <i>scope</i>.</p>
+<p>See also <a href="qphonecall.html#activate">activate</a>().</p>
+<h3 class="fn"><a name="canHold"></a>bool QPhoneCall::canHold () const</h3>
+<p>Returns true if the <a href="qphonecall.html#hold">hold</a>() action is valid in the call's current state.</p>
+<p>See also <a href="qphonecall.html#hold">hold</a>().</p>
+<h3 class="fn"><a name="canJoin"></a>bool QPhoneCall::canJoin ( bool <i>detachSubscriber</i> = false ) const</h3>
+<p>Returns true if the <a href="qphonecall.html#join">join</a>() action is valid in the call's current state and for the specified <i>detachSubscriber</i> state.</p>
+<p>See also <a href="qphonecall.html#join">join</a>().</p>
+<h3 class="fn"><a name="canTone"></a>bool QPhoneCall::canTone () const</h3>
+<p>Returns true if DTMF tones can be sent with <a href="qphonecall.html#tone">tone</a>() in the call's current state.</p>
+<p>See also <a href="qphonecall.html#tone">tone</a>().</p>
+<h3 class="fn"><a name="canTransfer"></a>bool QPhoneCall::canTransfer () const</h3>
+<p>Returns true if the <a href="qphonecall.html#transfer">transfer</a>() action is valid in the call's current state.</p>
+<p>See also <a href="qphonecall.html#transfer">transfer</a>().</p>
+<h3 class="fn"><a name="connectFloorChanged"></a>void QPhoneCall::connectFloorChanged ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Registers a specified <i>slot</i> on <i>object</i> to receive notification of changes in the floor. The signal prototype is &quot;floorChanged( const <a href="qphonecall.html">QPhoneCall</a>&amp; call )&quot;.</p>
+<p>See also <a href="qphonecall.html#floorAvailable">floorAvailable</a>().</p>
+<h3 class="fn"><a name="connectNotification"></a>void QPhoneCall::connectNotification ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Registers the specified <i>slot</i> on <i>object</i> to receive notification of auxiliary values that are associated with a call. The signal prototype is <tt>notification( const QPhoneCall&amp; call, QPhoneCall::Notification type, const QString&amp; value )</tt>.</p>
+<p>See also <a href="qphonecall.html#Notification-enum">QPhoneCall::Notification</a> and <a href="qphonecall.html#disconnectNotification">disconnectNotification</a>().</p>
+<h3 class="fn"><a name="connectPendingTonesChanged"></a>void QPhoneCall::connectPendingTonesChanged ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Registers a specified <i>slot</i> on <i>object</i> to receive notification of pending tone changes. The signal prototype is <tt>pendingTonesChanged( const QPhoneCall&amp; call )</tt>.</p>
+<p>See also <a href="qphonecall.html#pendingTones">pendingTones</a>().</p>
+<h3 class="fn"><a name="connectRequestFailed"></a>void QPhoneCall::connectRequestFailed ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Registers a specified <i>slot</i> on <i>object</i> to receive notification of <a href="qphonecall.html#Request-enum">QPhoneCall::Request</a> request failures. The signal prototype is <tt>requestFailed( const QPhoneCall&amp; call, QPhoneCall::Request request )</tt>.</p>
+<p>See also <a href="qphonecall.html#join">join</a>(), <a href="qphonecall.html#transfer">transfer</a>(), and <a href="qphonecall.html#disconnectRequestFailed">disconnectRequestFailed</a>().</p>
+<h3 class="fn"><a name="connectStateChanged"></a>void QPhoneCall::connectStateChanged ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Registers a specified <i>slot</i> on <i>object</i> to receive notification of <a href="qphonecall.html#State-enum">QPhoneCall::State</a> state changes. The signal prototype is <tt>stateChanged( const QPhoneCall&amp; call )</tt>.</p>
+<p>More than one call may be affected by a state change in cases where an entire group of calls are hung up, put on hold, or swapped with an active call group. The connectStateChanged() method does not allow such group operations to be tracked atomically. The <a href="qphonecallmanager.html#statesChanged">QPhoneCallManager::statesChanged</a>() signal does allow atomic tracking of group operations across all calls that are active in the system.</p>
+<p>See also <a href="qphonecall.html#state">state</a>(), <a href="qphonecall.html#disconnectStateChanged">disconnectStateChanged</a>(), and <a href="qphonecallmanager.html#statesChanged">QPhoneCallManager::statesChanged</a>().</p>
+<h3 class="fn"><a name="connectTime"></a><a href="qdatetime.html">QDateTime</a> QPhoneCall::connectTime () const</h3>
+<p>Returns the date and time that this call last entered the <a href="qphonecall.html#State-enum">QPhoneCall::Connected</a> state. Returns a null <a href="qdatetime.html">QDateTime</a> instance if the call has never connected.</p>
+<p>See also <a href="qphonecall.html#startTime">startTime</a>() and <a href="qphonecall.html#endTime">endTime</a>().</p>
+<h3 class="fn"><a name="connected"></a>bool QPhoneCall::connected () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Connected</a> state; false otherwise.</p>
+<p>See also <a href="qphonecall.html#state">state</a>(), <a href="qphonecall.html#onHold">onHold</a>(), and <a href="qphonecall.html#established">established</a>().</p>
+<h3 class="fn"><a name="contact"></a><a href="quniqueid.html">QUniqueId</a> QPhoneCall::contact () const</h3>
+<p>Returns the unique identifier of the contact of the remote party. Returns a null <a href="quniqueid.html">QUniqueId</a> if the remote party's unique identifier is unknown.</p>
+<h3 class="fn"><a name="device"></a><a href="qiodevice.html">QIODevice</a> * QPhoneCall::device () const</h3>
+<p>Returns an I/O device for accessing the raw data of a non-voice call. When a data, fax or video call is made and the <a href="qphonecall.html#state">state</a>() transitions to <tt>Connected</tt>, this device can be used to read or write data during the call. The returned device will already be open in <tt>ReadWrite</tt> mode.</p>
+<p>Returns null if the call does not support access to the raw data of the call, or the call has not connected yet.</p>
+<p>The returned device object is guaranteed to have at least two signals: <tt>readyRead()</tt> and <tt>closed()</tt>. The <tt>readyRead()</tt> signal indicates when data is available to be read, and the <tt>closed()</tt> signal indicates that the call has ended and the device is no longer valid.</p>
+<p>The returned device object will be deleted automatically when the phone call terminates. The caller should not delete this object.</p>
+<h3 class="fn"><a name="dial"></a>void QPhoneCall::dial ( const <a href="qstring.html">QString</a> &amp; <i>number</i>, bool <i>sendcallerid</i>, const <a href="quniqueid.html">QUniqueId</a> &amp; <i>contact</i> = QUniqueId() )</h3>
+<p>Dials a <i>number</i> on this call. The <a href="qphonecall.html">QPhoneCall</a> object must be in the Idle state.</p>
+<p>If a <i>contact</i> is specified, it is used to display information on the party being called, and will be stored as part of the call history.</p>
+<p>If <i>sendcallerid</i> is true, the caller ID is enabled (on the assumption that it is normally disabled).</p>
+<p>If the call is not in the <tt>Idle</tt> state, the request will be quietly ignored.</p>
+<p>See also <a href="qphonecall.html#hangup">hangup</a>() and <a href="qphonecall.html#accept">accept</a>().</p>
+<h3 class="fn"><a name="dial-2"></a>void QPhoneCall::dial ( const <a href="qdialoptions.html">QDialOptions</a> &amp; <i>options</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Dials a call according to the specified <i>options</i>. The <a href="qphonecall.html">QPhoneCall</a> object must be in the Idle state.</p>
+<p>If the call is not in the <tt>Idle</tt> state, the request will be quietly ignored.</p>
+<p>See also <a href="qdialoptions.html">QDialOptions</a>, <a href="qphonecall.html#hangup">hangup</a>(), and <a href="qphonecall.html#accept">accept</a>().</p>
+<h3 class="fn"><a name="dialed"></a>bool QPhoneCall::dialed () const</h3>
+<p>Returns true if this call was dialed, false otherwise.</p>
+<p>See also <a href="qphonecall.html#hasBeenConnected">hasBeenConnected</a>().</p>
+<h3 class="fn"><a name="dialing"></a>bool QPhoneCall::dialing () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Dialing</a> or <a href="qphonecall.html#State-enum">QPhoneCall::Alerting</a> states; false otherwise.</p>
+<p>See also <a href="qphonecall.html#state">state</a>().</p>
+<h3 class="fn"><a name="disconnectFloorChanged"></a>void QPhoneCall::disconnectFloorChanged ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Deregisters a specified <i>slot</i> on <i>object</i> to receive notification of changes in the floor. The signal prototype is &quot;floorChanged( const <a href="qphonecall.html">QPhoneCall</a>&amp; call )&quot;.</p>
+<p>See also <a href="qphonecall.html#floorAvailable">floorAvailable</a>().</p>
+<h3 class="fn"><a name="disconnectNotification"></a>void QPhoneCall::disconnectNotification ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Deregisters the specified <i>slot</i> on <i>object</i> to receive notification of auxiliary values. The signal prototype is <tt>notification( const QPhoneCall&amp; call, QPhoneCall::Notification type, const QString&amp; value )</tt>.</p>
+<p>See also <a href="qphonecall.html#Notification-enum">QPhoneCall::Notification</a> and <a href="qphonecall.html#connectNotification">connectNotification</a>().</p>
+<h3 class="fn"><a name="disconnectRequestFailed"></a>void QPhoneCall::disconnectRequestFailed ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Deregisters a specified <i>slot</i> on <i>object</i> to receive notification of request failures. The signal prototype is <tt>requestFailed( const QPhoneCall&amp; call, QPhoneCall::Request request )</tt>.</p>
+<p>See also <a href="qphonecall.html#join">join</a>(), <a href="qphonecall.html#transfer">transfer</a>(), and <a href="qphonecall.html#connectRequestFailed">connectRequestFailed</a>().</p>
+<h3 class="fn"><a name="disconnectStateChanged"></a>void QPhoneCall::disconnectStateChanged ( <a href="qobject.html">QObject</a> * <i>object</i>, const char * <i>slot</i> ) const</h3>
+<p>Deregisters a specified <i>slot</i> on <i>object</i> to receive notification of QPhoneCall::States changes. The signal prototype is <tt>stateChanged( const QPhoneCall&amp; call )</tt>.</p>
+<p>See also <a href="qphonecall.html#state">state</a>() and <a href="qphonecall.html#connectStateChanged">connectStateChanged</a>().</p>
+<h3 class="fn"><a name="dropped"></a>bool QPhoneCall::dropped () const</h3>
+<p>Returns true if the phone call is currently &quot;dropped&quot;; false otherwise. A &quot;dropped&quot; phone call is no longer connected due to normal call termination, network error, etc. Use <a href="qphonecall.html#state">QPhoneCall::state</a>() to determine the precise reason why the call was dropped.</p>
+<p>See also <a href="qphonecall.html#state">state</a>().</p>
+<h3 class="fn"><a name="endTime"></a><a href="qdatetime.html">QDateTime</a> QPhoneCall::endTime () const</h3>
+<p>Returns the date and time this call ended. If the call never ended a null <a href="qdatetime.html">QDateTime</a> is returned.</p>
+<p>See also <a href="qphonecall.html#startTime">startTime</a>() and <a href="qphonecall.html#connectTime">connectTime</a>().</p>
+<h3 class="fn"><a name="established"></a>bool QPhoneCall::established () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Connected</a> or <a href="qphonecall.html#State-enum">QPhoneCall::Hold</a> states; false otherwise.</p>
+<p>See also <a href="qphonecall.html#state">state</a>(), <a href="qphonecall.html#connected">connected</a>(), and <a href="qphonecall.html#onHold">onHold</a>().</p>
+<h3 class="fn"><a name="floorAvailable"></a>bool QPhoneCall::floorAvailable () const</h3>
+<p>Returns true if the floor is available in a voice group call. The &quot;floor&quot; is available if no one else is currently talking.</p>
+<p>If it isn't possible to detect whether or not the floor is available, even if the call type supports floors, this method will return true; however, calls to <a href="qphonecall.html#requestFloor">requestFloor</a>() might not succeed.</p>
+<p>If this call type does not support the floor, this method will return false.</p>
+<h3 class="fn"><a name="fullNumber"></a><a href="qstring.html">QString</a> QPhoneCall::fullNumber () const</h3>
+<p>Returns the full number of the remote party. This is the literal number that was dialed including affixes. Returns a null <a href="qstring.html">QString</a> if the number is unknown.</p>
+<p>See also <a href="qphonecall.html#number">number</a>().</p>
+<h3 class="fn"><a name="hangup"></a>void QPhoneCall::hangup ( <a href="qphonecall.html#Scope-enum">QPhoneCall::Scope</a> <i>scope</i> = Group )</h3>
+<p>Hangs up this call and/or all other calls of its type that are active or held. The <i>scope</i> indicates whether the hangup relates to this call only (<a href="qphonecall.html#Scope-enum">CallOnly</a>), or the entire call group (Group).</p>
+<p>See also <a href="qphonecall.html#dial">dial</a>() and <a href="qphonecall.html#accept">accept</a>().</p>
+<h3 class="fn"><a name="hasBeenConnected"></a>bool QPhoneCall::hasBeenConnected () const</h3>
+<p>Returns true if this call has been in the state <a href="qphonecall.html#State-enum">QPhoneCall::Connected</a> at some stage, otherwise false.</p>
+<p>See also <a href="qphonecall.html#dialed">dialed</a>().</p>
+<h3 class="fn"><a name="haveFloor"></a>bool QPhoneCall::haveFloor () const</h3>
+<p>Returns true if this object currently has the floor in a voice group call.</p>
+<p>See also <a href="qphonecall.html#floorAvailable">floorAvailable</a>().</p>
+<h3 class="fn"><a name="hold"></a>void QPhoneCall::hold ()</h3>
+<p>Puts this active call and all other active calls on hold. Also activates any calls that are on hold or waiting.</p>
+<p>See also <a href="qphonecall.html#activate">activate</a>() and <a href="qphonecall.html#canHold">canHold</a>().</p>
+<h3 class="fn"><a name="identifier"></a><a href="qstring.html">QString</a> QPhoneCall::identifier () const</h3>
+<p>Returns the globally-unique identifier for this call.</p>
+<h3 class="fn"><a name="idle"></a>bool QPhoneCall::idle () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Idle</a> state; false otherwise.</p>
+<p>See also <a href="qphonecall.html#state">state</a>().</p>
+<h3 class="fn"><a name="incoming"></a>bool QPhoneCall::incoming () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Incoming</a> state; false otherwise.</p>
+<p>See also <a href="qphonecall.html#state">state</a>() and <a href="qphonecall.html#missed">missed</a>().</p>
+<h3 class="fn"><a name="isNull"></a>bool QPhoneCall::isNull () const</h3>
+<p>Returns true if this <tt>QPhoneCall</tt> object is null.</p>
+<h3 class="fn"><a name="join"></a>void QPhoneCall::join ( bool <i>detachSubscriber</i> = false )</h3>
+<p>Joins the active and held calls together and makes them all active. If <i>detachSubscriber</i> is true, the current subscriber is detached from the conversation.</p>
+<p>Join requests may fail and cause the <tt>requestFailed()</tt> signal to be emitted.</p>
+<p>See also <a href="qphonecall.html#connectRequestFailed">connectRequestFailed</a>() and <a href="qphonecall.html#canJoin">canJoin</a>().</p>
+<h3 class="fn"><a name="missed"></a>bool QPhoneCall::missed () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Missed</a> state.</p>
+<p>See also <a href="qphonecall.html#state">state</a>() and <a href="qphonecall.html#incoming">incoming</a>().</p>
+<h3 class="fn"><a name="modemIdentifier"></a>int QPhoneCall::modemIdentifier () const</h3>
+<p>Returns the number that the modem uses to identify the call, or -1 if the number is unknown or the call has terminated.</p>
+<p>Modem identifiers usually range between 1 and 9. Once a call terminates, its identifier will be reused for another call.</p>
+<p>Modem identifiers are used with AT commands like <tt>AT+CHLD</tt> to identify specific calls. They may also be used in GCF key sequences such as <tt>1x SEND</tt> to hang up the call with modem identifier <tt>x</tt>.</p>
+<p>See also <a href="qphonecallmanager.html#fromModemIdentifier">QPhoneCallManager::fromModemIdentifier</a>().</p>
+<h3 class="fn"><a name="number"></a><a href="qstring.html">QString</a> QPhoneCall::number () const</h3>
+<p>Returns the phone number of the remote party, or a null <a href="qstring.html">QString</a> if the number is unknown.</p>
+<p>See also <a href="qphonecall.html#fullNumber">fullNumber</a>().</p>
+<h3 class="fn"><a name="onHold"></a>bool QPhoneCall::onHold () const</h3>
+<p>Returns true if the phone call is currently in the <a href="qphonecall.html#State-enum">QPhoneCall::Hold</a> state; false otherwise.</p>
+<p>See also <a href="qphonecall.html#state">state</a>(), <a href="qphonecall.html#connected">connected</a>(), and <a href="qphonecall.html#established">established</a>().</p>
+<h3 class="fn"><a name="parseDataState"></a><a href="qphonecall.html#DataState-enum">QPhoneCall::DataState</a> QPhoneCall::parseDataState ( const <a href="qstring.html">QString</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Parses the <i>value</i> from a <a href="qphonecall.html#Notification-enum">DataStateUpdate</a> notification into a set of <a href="qphonecall.html#DataState-enum">QPhoneCall::DataState</a> flags.</p>
+<p>See also <a href="qphonecall.html#connectNotification">connectNotification</a>().</p>
+<h3 class="fn"><a name="pendingTones"></a><a href="qstring.html">QString</a> QPhoneCall::pendingTones () const</h3>
+<p>Returns the pending tones for this call. Pending tones are accumulated when the call is dialed with <a href="qphonecall.html#dial">dial</a>(), or new tones are added with <a href="qphonecall.html#tone">tone</a>(). As the tones are sent, they are removed from the pendingTones() list.</p>
+<p>Use <a href="qphonecall.html#connectPendingTonesChanged">connectPendingTonesChanged</a>() to be notified of changes in the pending tones.</p>
+<p>See also <a href="qphonecall.html#connectPendingTonesChanged">connectPendingTonesChanged</a>().</p>
+<h3 class="fn"><a name="releaseFloor"></a>void QPhoneCall::releaseFloor ()</h3>
+<p>Releases the floor in a voice group call.</p>
+<p>See also <a href="qphonecall.html#floorAvailable">floorAvailable</a>().</p>
+<h3 class="fn"><a name="requestFloor"></a>void QPhoneCall::requestFloor ( int <i>secs</i> = -1 )</h3>
+<p>Requests the floor in a voice group call for <i>secs</i> seconds. After the timeout, the floor will be automatically released.</p>
+<p>If <i>secs</i> is -1, requests the floor until explicitly released by a call to <a href="qphonecall.html#releaseFloor">releaseFloor</a>().</p>
+<p>See also <a href="qphonecall.html#floorAvailable">floorAvailable</a>().</p>
+<h3 class="fn"><a name="startTime"></a><a href="qdatetime.html">QDateTime</a> QPhoneCall::startTime () const</h3>
+<p>Returns the date and time that this call started. Usually this is the first time it enters the Dialing or Incoming state.</p>
+<p>See also <a href="qphonecall.html#connectTime">connectTime</a>() and <a href="qphonecall.html#endTime">endTime</a>().</p>
+<h3 class="fn"><a name="state"></a><a href="qphonecall.html#State-enum">State</a> QPhoneCall::state () const</h3>
+<p>Returns the state of this call.</p>
+<p>See also <a href="qphonecall.html#connectStateChanged">connectStateChanged</a>(), <a href="qphonecall.html#idle">idle</a>(), <a href="qphonecall.html#incoming">incoming</a>(), <a href="qphonecall.html#dialing">dialing</a>(), <a href="qphonecall.html#established">established</a>(), <a href="qphonecall.html#connected">connected</a>(), <a href="qphonecall.html#onHold">onHold</a>(), <a href="qphonecall.html#dropped">dropped</a>(), and <a href="qphonecall.html#missed">missed</a>().</p>
+<h3 class="fn"><a name="tone"></a>void QPhoneCall::tone ( const <a href="qstring.html">QString</a> &amp; <i>tones</i> )</h3>
+<p>Sends a sequence of DTMF <i>tones</i> over the call. Ignored if the call is not connected, or it is on hold.</p>
+<p>See also <a href="qphonecall.html#pendingTones">pendingTones</a>() and <a href="qphonecall.html#canTone">canTone</a>().</p>
+<h3 class="fn"><a name="transfer"></a>void QPhoneCall::transfer ( const <a href="qstring.html">QString</a> &amp; <i>number</i> )</h3>
+<p>Transfers the call to a new <i>number</i> and then discontinues this call.</p>
+<p>Transfer requests may fail and cause the <tt>requestFailed()</tt> signal to be emitted.</p>
+<p>See also <a href="qphonecall.html#connectRequestFailed">connectRequestFailed</a>() and <a href="qphonecall.html#canTransfer">canTransfer</a>().</p>
+<h3 class="fn"><a name="operator-eq"></a>QPhoneCall &amp; QPhoneCall::operator= ( const QPhoneCall &amp; <i>call</i> )</h3>
+<p>Copies <i>call</i> object to this object.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

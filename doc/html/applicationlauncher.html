@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ApplicationLauncher Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ApplicationLauncher Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The ApplicationLauncher class is responsible for fundamental application management and IPC routing within Qtopia. <a href="#details">More...</a></p>
+<pre>    #include &lt;ApplicationLauncher&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="applicationlauncher-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>QStringList <b><a href="applicationlauncher.html#applications">applications</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="applicationlauncher.html#canLaunch">canLaunch</a></b> ( const QString &amp; <i>app</i> )</li>
+<li><div class="fn"/>bool <b><a href="applicationlauncher.html#launch">launch</a></b> ( const QString &amp; <i>app</i> )</li>
+<li><div class="fn"/>ApplicationTypeLauncher::ApplicationState <b><a href="applicationlauncher.html#state">state</a></b> ( const QString &amp; <i>app</i> ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="applicationlauncher.html#applicationNotFound">applicationNotFound</a></b> ( const QString &amp; <i>application</i> )</li>
+<li><div class="fn"/>void <b><a href="applicationlauncher.html#applicationStateChanged">applicationStateChanged</a></b> ( const QString &amp; <i>application</i>, ApplicationTypeLauncher::ApplicationState <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="applicationlauncher.html#applicationTerminated">applicationTerminated</a></b> ( const QString &amp; <i>application</i>, ApplicationTypeLauncher::TerminationReason <i>reason</i>, bool <i>filtered</i> = false )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ApplicationLauncher class is responsible for fundamental application management and IPC routing within Qtopia.</p>
+<p>The ApplicationLauncher provides a Qt Extended Server Task. Qt Extended Server Tasks are documented in full in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class documentation.</p>
+<p><b>Note:</b> This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>Task Name</td><td>ApplicationLauncher</td></tr>
+<tr valign="top" class="even"><td>Interfaces</td><td>ApplicationLauncher</td></tr>
+<tr valign="top" class="odd"><td>Services</td><td>Suspend</td></tr>
+</table></p>
+<p>IPC and application control are tightly linked in Qtopia. At any level higher than the ApplicationLauncher itself, Qt Extended does not intrinsically understand the notion of &quot;starting&quot; an application. Qt Extended treats an application as a named IPC endpoint that exposes one or more IPC services for use by other applications or the system itself. The named IPC endpoint is known as the application's &quot;application channel&quot;.</p>
+<p>The primary role of the ApplicationLauncher is to manage a component's ability to receive and respond to service requests. The ApplicationLauncher considers an application &quot;running&quot; when it is able to receive service messages even though the application may not be thought as such by an end user. Management of end user features of an application (such as when the UI is raised or hidden) is done by other system components.</p>
+<p>The application launcher framework consists of three primary parts - the application launcher, a series of application type launchers and the application IPC router.</p>
+<p>Internally the ApplicationLauncher class has a very basic model of an application - it is something that can be started, stopped and can receive IPC messages. The specifics of process control is handled by pluggable implementers of the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> interface. By separating the specifics in this way, Qt Extended can easily be adapted to handle foreign applications, such as Java applications, in a seamless and highly integrated fashion.</p>
+<p>The ApplicationLauncher also doesn't intrinsically know the specifics of the IPC bus. Instead an implementation of the <a href="applicationipcrouter.html">ApplicationIpcRouter</a> class abstracts the details from it.</p>
+<p>When the system attempts to start an application by sending it a message on its application channel, the <a href="applicationipcrouter.html">ApplicationIpcRouter</a> detects the message and asks the ApplicationLauncher to launch the application, by calling the <a href="applicationlauncher.html#launch">ApplicationLauncher::launch</a>() method. This instructs the ApplicationLauncher to bring the application to a state where it can receive IPC messages.</p>
+<p>If the application is not running, the ApplicationLauncher iterates through the ordered list of tasks implementing the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> interface. Each task is asked if it can launch the application, and if it can, is asked to do so. The ApplicationLauncher monitors the progress of the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> through Qt signals, which it consolidates and emits to the rest of the Qt Extended server.</p>
+<p>Once the application is ready to receive messages, the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> informs the router by invoking the <a href="applicationipcrouter.html#addRoute">ApplicationIpcRouter::addRoute</a>() method, passing an implementation of the <a href="applicationipcrouter-routedestination.html">ApplicationIpcRouter::RouteDestination</a> interface. This call instructs the IPC Router to forward messages to the application through the <a href="applicationipcrouter-routedestination.html">ApplicationIpcRouter::RouteDestination</a>. All queued messages will be delivered at this time.</p>
+<p>How the <a href="applicationipcrouter-routedestination.html">ApplicationIpcRouter::RouteDestination</a> implementation (usually the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a>) handles delivery of the message is up to it. This allows more advanced <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> implementations - such as a Java application type launcher - to adapt Qt Extended service messages into a form suitable for the application type they manage. For example, while Qt Extended uses a &quot;raise()&quot; message sent to an application's application channel to cause it to show its main UI, a Java application that has no notion of Qt Extended messages will need to have this message transformed appropriately.</p>
+<p>To summarize,</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>Class</th><th>Functionality</th></tr></thead>
+<tr valign="top" class="odd"><td>Application Launcher</td><td>ApplicationLauncher</td><td>Manages <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> instances and maintains a consolidated view of applications. Other components within the server may use the ApplicationLauncher to monitor application state, but must remember that this state only represents an applications ability to receive IPC messages, and not necessarily user visible information such as whether the application is visible.</td></tr>
+<tr valign="top" class="even"><td>Application Type Launchers</td><td><a href="applicationtypelauncher.html">ApplicationTypeLauncher</a></td><td>Handles the specifics of different types of applications and launching mechanisms on behalf of the ApplicationLauncher. Other components within the server should never need to access these instances directly.</td></tr>
+<tr valign="top" class="odd"><td>Application Ipc Router</td><td><a href="applicationipcrouter.html">ApplicationIpcRouter</a></td><td>Abstracts the IPC transport used for application messages from the ApplicationLauncher. On reception of an application message, instructs the ApplicationLauncher to start the application and subsequently delivers messages to <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> instances for possible transformation before delivery to the application.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="applicationNotFound"></a>void ApplicationLauncher::applicationNotFound ( const <a href="qstring.html">QString</a> &amp; <i>application</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever a non-existant <i>application</i> is asked to launch. The corresponding call to <a href="applicationlauncher.html#launch">launch</a>() will also return false.</p>
+<h3 class="fn"><a name="applicationStateChanged"></a>void ApplicationLauncher::applicationStateChanged ( const <a href="qstring.html">QString</a> &amp; <i>application</i>, <a href="applicationtypelauncher.html#ApplicationState-enum">ApplicationTypeLauncher::ApplicationState</a> <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the <i>application</i> state changes to <i>state</i>.</p>
+<h3 class="fn"><a name="applicationTerminated"></a>void ApplicationLauncher::applicationTerminated ( const <a href="qstring.html">QString</a> &amp; <i>application</i>, <a href="applicationtypelauncher.html#TerminationReason-enum">ApplicationTypeLauncher::TerminationReason</a> <i>reason</i>, bool <i>filtered</i> = false )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the <i>application</i> terminates. <i>reason</i> will be set to the termination reason. If <i>filtered</i> is true, an <a href="applicationterminationhandler.html">ApplicationTerminationHandler</a> instance has filtered the termination.</p>
+<h3 class="fn"><a name="applications"></a><a href="qstringlist.html">QStringList</a> ApplicationLauncher::applications () const</h3>
+<p>Return the list of starting and running applications. The list order represents the order in which the applications were launched.</p>
+<h3 class="fn"><a name="canLaunch"></a>bool ApplicationLauncher::canLaunch ( const <a href="qstring.html">QString</a> &amp; <i>app</i> )</h3>
+<p>Returns true if application <i>app</i> can be launched. Returns false otherwise. When true is returned, it means an instance of a subclass of <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> instance exists that knows how to launch the application. The subsequent attempt to launch the application may still fail.</p>
+<p>Note that true is also returned if <i>app</i> is already running.</p>
+<h3 class="fn"><a name="launch"></a>bool ApplicationLauncher::launch ( const <a href="qstring.html">QString</a> &amp; <i>app</i> )</h3>
+<p>Attempts to launch application <i>app</i>. Returns true if <i>app</i> is launched successfully. Also returns true if <i>app</i> is already running. Returns false if no launcher can be found that knows how to launch <i>app</i>.</p>
+<h3 class="fn"><a name="state"></a><a href="applicationtypelauncher.html#ApplicationState-enum">ApplicationTypeLauncher::ApplicationState</a> ApplicationLauncher::state ( const <a href="qstring.html">QString</a> &amp; <i>app</i> ) const</h3>
+<p>Returns the current state of the application, <i>app</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

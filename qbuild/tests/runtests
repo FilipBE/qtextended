@@ -1,0 +1,70 @@
+#!/bin/sh
+
+print_banner_pre()
+{
+    echo "**************************************************************"
+    echo "* TEST: $testname"
+    echo "**************************************************************"
+    echo ""
+}
+
+print_banner_post()
+{
+    cat output
+    str_result="SUCCESS"
+    [ "$result" -ne 0 ] && str_result="FAIL ($result)"
+    echo ""
+    echo "**************************************************************"
+    echo "* TEST: $testname - $str_result"
+    echo "**************************************************************"
+    echo ""
+    [ "$result" -ne 0 ] && failed="$failed $testname"
+}
+
+failed=
+mydir="$(/bin/pwd)"
+for dir in *; do
+    cd "$mydir"
+    if [ "$dir" = "*" ]; then
+        echo "No tests!"
+        continue
+    fi
+    if [ ! -d "$dir" ]; then
+        continue
+    fi
+    testname="$(basename "$dir")"
+    print_banner_pre
+    result=0
+    cd "$dir"
+    if [ -e "runtest" ]; then
+        ./runtest >output
+        result=$?
+    elif [ -e "template" ]; then
+        qbuild -script >output
+        result=$?
+        if [ "$result" -eq 0 ]; then
+            diff output template
+            result=$?
+        fi
+    elif [ -e "qbuild.pro" ]; then
+        qbuild -script >output
+        result=$?
+    elif [ -e "qbuild.solution" ]; then
+        qbuild -script >output
+        result=$?
+    else
+        echo "I don't know how to run test $(basename "$dir")"
+        result=1
+    fi
+    print_banner_post
+done
+
+if [ -n "$failed" ]; then
+    echo "ERROR: Some tests failed!"
+    echo $failed
+    exit 1
+fi
+
+echo "SUCCESS: All tests passed!"
+exit 0
+

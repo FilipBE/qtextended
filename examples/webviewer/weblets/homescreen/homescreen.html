@@ -1,0 +1,94 @@
+<html>
+<head>
+<link rel="stylesheet" href="default.css"/>
+</head>
+<body>
+<!-- 
+    icons for the expand/contract button for messages/weather come from
+    the Tango Desktop Project (http://tango.freedesktop.org)
+
+    (list-add.svg & list-remove.svg, and their PNG equivalents)
+-->
+<!--
+    icons for:
+    - messaging
+    - fav contacts
+    - call history
+
+    areas for:
+    - weather background
+    - stock ticker
+    - upcoming events
+    - news
+-->
+    <div id='content'>
+        <div id='informants'>
+            <div id='messages'>
+                <div id='messages_content' onclick='messages.clicked()'>
+                    <img src='message.png' id='messages_image'/>
+                    <div id='messages_text'></div>
+                </div>
+            </div>
+            <div id='calls'>
+                <div id='calls_content' onclick='calls.clicked()'>
+                    <img src='callhistory.png' id='calls_image'/>
+                    <div id='calls_text'></div>
+                </div>
+            </div>
+        </div>
+        <div id='buttons'>
+            <div id='buttonbox'>
+                <div id='button_callhistory' class='appbutton' onclick='showDialer()'><img class='appbuttonicon' src='callhistory.png'/></div>
+                <div id='button_apps' class='appbutton' onclick='showApplications()'><img class='appbuttonicon' src='menu.png'/></div>
+                <div id='button_favs' class='appbutton' onclick='showFavorites()'><img class='appbuttonicon' src='favorite.png'/></div>
+                <div id='button_lock' class='appbutton' onclick='lockPhone()'><img class='appbuttonicon' src='padlock.png'/></div>
+            </div>
+        </div>
+        <div id='weather'>
+            <div id='weather_details'>
+                <div id='weather_title_background' class='roundedtop' onclick='do_windowShade("weather")'>
+                    <img src='3rdparty/list-remove.png' id='weather_windowshade_img' class='windowshadeicon'>
+                    <span id='weather_location'>&nbsp;</span>
+                </div>
+                <div id='weather_details_background' class='roundedbottom'>
+                    <div id='weather_high'><span id='weather_highlabel'>High</span>: <span id='weather_highvalue'>&nbsp;</span></div>
+                    <div id='weather_low'><span id='weather_lowlabel'>Low</span>: <span id='weather_lowvalue'>&nbsp;</span></div>
+                    <div id='weather_now'><span id='weather_nowlabel'>Now</span>: <span id='weather_nowvalue'>&nbsp;</span></div>
+                    <div id='weather_conditions'>&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <div id='stockticker'>
+            <div id='stockticker_contents' style='left:0px'> <!-- seems to need inline style to work (!) -->
+            </div>
+        </div>
+        <div id='newsticker'>
+            <div id='newsticker_contents' style='left:0px'> <!-- seems to need inline style to work (!) -->
+            </div>
+        </div>
+        <div id='upcoming'>
+            <div id='upcoming_title_background' class='roundedtop' onclick="do_windowShade('upcoming')">
+                Upcoming events<img src='3rdparty/list-remove.png' id='upcoming_windowshade_img' class='windowshadeicon'>
+            </div>
+            <div id='upcoming_details_background' class='roundedbottom'>
+                <table id='upcoming_table'>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="util.js"/>
+    <script src='buttons.js'/>
+    <script src='weather.js'/>
+    <script src='stockticker.js'/>
+    <script src='upcoming.js'/>
+    <script src='messages.js'/>
+    <script src='calls.js'/>
+    <script src='news.js'/>
+    <script>
+        // Clear the caption, which forces the title to display the operator name instead
+        com.trolltech.setCaption('');
+    </script>
+</body>
+</html>

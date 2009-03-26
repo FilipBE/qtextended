@@ -1,0 +1,49 @@
+# /etc/inittab
+#
+# Copyright (C) 2008 Trolltech ASA
+#
+# Format: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored by BusyBox
+# action    == sysinit, respawn, askfirst, wait, or once
+# process   == command line to exec
+
+# Start the system
+::sysinit:/etc/rc.d/rc.modules boot
+::sysinit:/etc/rc.d/rc.filesystems
+::sysinit:/etc/rc.d/rc.gadget boot
+::sysinit:/etc/rc.d/rc.modules
+::sysinit:/etc/rc.d/rc.updateqtopia
+::sysinit:/etc/rc.d/rc.usbnet start
+::sysinit:/etc/rc.d/rc.sysinit
+::sysinit:/etc/rc.d/rc.lids first_boot
+::sysinit:/etc/rc.d/rc.bootcharger
+::sysinit:/etc/rc.d/rc.lids start
+::sysinit:/etc/rc.d/rc.usbnet restart
+::sysinit:/etc/rc.d/rc.services start
+
+# Start serial console
+ttyS2::respawn:-/bin/sh
+
+# Start Qtopia
+::respawn:/etc/rc.d/rc.syslog
+::respawn:/etc/rc.d/rc.klogd
+::respawn:/bin/nice -n 19 /usr/sbin/atd /var/spool/at >/dev/null 2>/dev/null
+::respawn:/etc/rc.d/rc.qtopia respawn
+
+# Start debugging support
+::sysinit:/etc/rc.d/rc.modules debug
+
+# Shutdown the system
+::shutdown:/bin/echo 0 > /tmp/progress
+::shutdown:/etc/rc.d/rc.lids stop
+::shutdown:/etc/rc.d/rc.services stop
+::shutdown:/bin/splash -now -p + "Shutting down" "system"
+::shutdown:/etc/rc.d/rc.sdcard
+::shutdown:/bin/kill -SIGTERM -1
+::shutdown:/bin/sleep 1
+::shutdown:/bin/kill -SIGKILL -1
+::shutdown:/bin/sleep 1
+::shutdown:/bin/umount -a -r
+

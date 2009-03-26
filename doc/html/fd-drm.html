@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Content: DRM</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Content: DRM<br><small>Functional Description</small></h1><p><p />
+<p />
+<p />Qt Extended's Digital Rights Management (DRM) support integrates with the <a href="docsys-overview.html">Qt Extended Document System</a>
+and allows users to receive, manage, and consume DRM protected content.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-7712">DRM Agent Plug-in Interface</a>
+<li><a href="#QTOPIA-7448">OMA DRM v1 Forward Lock / Combined Delivery</a>
+<li><a href="#QTOPIA-379">OMA DRM v1 Separate Delivery</a>
+<li><a href="#QTOPIA-380">OMA DRM v2</a>
+</ul><h3><a name=QTOPIA-7712>DRM Agent Plug-in Interface</a></h3>
+<p>The <span class="nobr"><a href="qdrmagentplugin.html">DRM Agent Plug-in<sup></sup></a></span> Interface allows DRM agents to be installed into the Qt Extended Document System.
+
+<p>The document system defers all DRM specific tasks to a DRM agent through the plug-in interface, this includes rights management functionality, content activation, and decrypting protected content.</p>
+
+<p>For more information see <span class="nobr"><a href="syscust-drm.html">DRM Agent Integration<sup></sup></a></span>.</p>
+<h3><a name=QTOPIA-7448>OMA DRM v1 Forward Lock / Combined Delivery</a></h3>
+<p>Content received in the OMA DRM message format (application/vnd.oma.drm.message; .dm) is encrypted and bound by the device on which it was received.  It is consumed and managed in the same manner as any other content, except that it is emblazoned with a key icon when presented in document lists and that it may not be edited or copied.
+
+<p>Forward lock message impose no limitations on the consumption of the content.  Combined delivery messages include a rights object which specifies constraints to be placed on the consumption of the content.  Constraints include limiting the number of times it may be consumed, limiting the accumulative time it may be consumed for, a limited period of availability after the first consumption, and absolute dates and times it is available between.</p>
+
+<p>The OMA DRM agent functionality is provided by a reference integration of the BeepScience DRM Agent.</p>
+<h3><a name=QTOPIA-379>OMA DRM v1 Separate Delivery</a></h3>
+<p>OMA DRM Separate Delivery content (application/vnd.oma.drm.content; .dcf) is received in an encrypted container format.  The key required to decrypt the content is delivered separately as part of a rights object (application/vnd.com.drm.rights+xml; .dr, application/vnd.oma.drm.rights+wbxml; .drc) pushed to the device in a WAP push.  Once received separate delivery content is subject to the same restrictions as combined delivery content with the exception that the encrypted container may be redistributed.
+
+<p>If the user attempts to consume separate delivery content they do not have rights for they may be prompted to visit a website from which they can purchase rights.  The purchased rights are subsequently delivered in a WAP push to the device.</p>
+<h3><a name=QTOPIA-380>OMA DRM v2</a></h3>
+<p><h4><a name="ROAPTriggers"></a>ROAP Triggers</h4>
+
+<p>ROAP triggers are the primary method of acquiring rights in OMA DRM v2 and are received either through a download from a web page or in a WAP push, in both case the DRM agent will perform all the actual processing of the trigger once received. </p>
+
+<h4><a name="EmbeddedPreview"></a>Embedded Preview</h4>
+
+<p>DCF files may contain an embedded preview object; an unprotected and likely reduced quality version of the actual content.  Where rights are not available for an item of content this preview is in its place.  Before rendering a preview object the user is given the option to activate the full version of the content, if they decline they are then notified that the version rendered is a preview version.</p>
+
+<h4><a name="PreviewRights"></a>Preview Rights</h4>
+
+<p>DCF files may contain a URL where preview rights are available.  The user is prompted to download these rights when trying to access locked content, or if a global option to download without prompting is enabled they will automatically be downloaded.</p>
+
+<h4><a name="SilentRightsObject"></a>Silent Rights Object</h4>
+
+<p>DCF files may contain a URL from which rights are downloaded automatically provided a global automatic download option is selected.</p>
+
+<h4><a name="Domains"></a>Domains</h4>
+
+<p>Some licenses belong to domains, when trying access content bound to a domain the device does not belong to, the user is prompted to join the domain, or upgrade the domain if the device belongs to a different version of the domain.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

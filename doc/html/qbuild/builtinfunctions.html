@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>BuiltinFunctions Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">BuiltinFunctions Class Reference</h1>
+<p>The BuiltinFunctions class provides functions for the qmake environment. <a href="#details">More...</a></p>
+<pre>    #include &lt;BuiltinFunctions&gt;</pre><p>Inherits <a href="functionprovider.html">FunctionProvider</a>.</p>
+<ul>
+<li><a href="builtinfunctions-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="builtinfunctions.html#BuiltinFunctions">BuiltinFunctions</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="builtinfunctions.html#callFunction">callFunction</a></b> ( Project * <i>project</i>, QStringList &amp; <i>rv</i>, const QString &amp; <i>function</i>, const QStringLists &amp; <i>arguments</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>5 public functions inherited from <a href="functionprovider.html#public-functions">FunctionProvider</a></li>
+</ul>
+<a name="macros"></a>
+<h3>Macros</h3>
+<ul>
+<li><div class="fn"/><b><a href="builtinfunctions.html#IMPLEMENT_FUNCTION">IMPLEMENT_FUNCTION</a></b> (  <i>x</i>,  <i>proj</i>,  <i>args</i>,  <i>rv</i> )</li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>6 static public members inherited from <a href="functionprovider.html#static-public-members">FunctionProvider</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The BuiltinFunctions class provides functions for the qmake environment.</p>
+<p>The functions provided are implemented using the <a href="builtinfunctions.html#IMPLEMENT_FUNCTION">IMPLEMENT_FUNCTION</a>() macro.</p>
+<p>See also <a href="builtin-functions.html">QBuild Functions</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="BuiltinFunctions"></a>BuiltinFunctions::BuiltinFunctions ()</h3>
+<p>Construct a <a href="builtinfunctions.html">BuiltinFunctions</a> instance. This function provider has a higher priority than <a href="qtscriptfunctions.html">QtScriptFunctions</a> so its functions override functions that are also specified in JavaScript.</p>
+<h3 class="fn"><a name="callFunction"></a>bool BuiltinFunctions::callFunction ( <a href="project.html">Project</a> * <i>project</i>, QStringList &amp; <i>rv</i>, const QString &amp; <i>function</i>, const QStringLists &amp; <i>arguments</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>This runs <i>function</i> with <i>arguments</i>. The function is passed the <i>project</i> and returns data via <i>rv</i>. Returns true if the function exists, false otherwise.</p>
+<p>Reimplemented from <a href="functionprovider.html#callFunction">FunctionProvider</a>.</p>
+<p>See also <a href="builtinfunctions.html#IMPLEMENT_FUNCTION">IMPLEMENT_FUNCTION</a>().</p>
+<hr />
+<h2>Macro Documentation</h2>
+<h3 class="fn"><a name="IMPLEMENT_FUNCTION"></a>IMPLEMENT_FUNCTION (  <i>x</i>,  <i>proj</i>,  <i>args</i>,  <i>rv</i> )</h3>
+<p>Define a builtin function for QBuild.</p>
+<p>The function is called <i>x</i>. You can specify the name of the project variable by setting <i>proj</i> or you can leave it empty. You can specify the name of the arguments variable by setting <i>args</i> or you can leave it empty. You can specify the name of the return variable by setting <i>rv</i> or you can leave it empty.</p>
+<p>For example, to define a function foo that returns data but does not take arguments or use the project you would do:</p>
+<pre>    IMPLEMENT_FUNCTION(foo,,,rv);</pre>
+<p><i>Note</i> that this macro only works in <tt>builtinfunctions.cpp</tt>.</p>
+<p>See also <a href="builtin-functions.html">QBuild Functions</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

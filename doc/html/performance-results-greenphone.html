@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Greenphone Performance Test Results</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Greenphone Performance Test Results<br /><span class="subtitle"></span>
+</h1>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This page contains performance statistics for Qt Extended, measured using the <tt>greenphone</tt> device profile. All figures are measured with respect to the default configuration.</p>
+<a name="device-specs"></a>
+<h2>Device specs</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Type</th><th>Value</th></tr></thead>
+<tr valign="top" class="odd"><td><b>Model</b></td><td>Greenphone</td></tr>
+<tr valign="top" class="even"><td><b>Kernel</b></td><td>Linux 2.4&#x2e;19</td></tr>
+<tr valign="top" class="odd"><td><b>CPU</b></td><td>Intel(R) XScale(R) PXA270 (ARMv5TE) 312 MHz</td></tr>
+<tr valign="top" class="even"><td><b>Baseband</b></td><td>Broadcom(R) BCM2121 GSM/GPRS baseband processor</td></tr>
+<tr valign="top" class="odd"><td><b>Memory</b></td><td>64MB RAM &amp; 128MB Flash</td></tr>
+<tr valign="top" class="even"><td><b>Display</b></td><td>QVGA(R) LCD color screen</td></tr>
+<tr valign="top" class="odd"><td><b>Input</b></td><td>Touch-screen and keypad UI</td></tr>
+<tr valign="top" class="even"><td><b>Features</b></td><td>Mini-SD(TM) card slot, Bluetooth(R) equipped, Mini-USB port</td></tr>
+</table></p>
+<p>Testing takes place under the following conditions:</p>
+<ul>
+<li>A SIM is inserted into the phone.</li>
+<li>The phone is operating with a USB cable attached.</li>
+</ul>
+<p>For Qt Extended 4.4&#x2e;2 and later, Qt Extended and the root filesystem are prelinked. No prelinking was done in earlier versions.</p>
+<a name="test-results"></a>
+<h2>Test Results</h2>
+<a name="linux-qt-extended-startup-time"></a>
+<h3>Linux + Qt Extended Startup Time</h3>
+<p>The <i>Linux + Qt Extended startup time</i> refers to the amount of time taken for a device to reach the Qt Extended homescreen and accept user input from the time the power button is pressed.</p>
+<p><table width="60%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Version</th><th>Time (seconds)</th></tr></thead>
+<tr valign="top" class="odd"><td>4.2&#x2e;0</td><td>70</td></tr>
+<tr valign="top" class="even"><td>4.2&#x2e;5</td><td>60</td></tr>
+<tr valign="top" class="odd"><td>4.3&#x2e;0</td><td>60</td></tr>
+<tr valign="top" class="even"><td>4.3&#x2e;1</td><td>60</td></tr>
+<tr valign="top" class="odd"><td>4.4&#x2e;1</td><td>60</td></tr>
+<tr valign="top" class="even"><td>4.4&#x2e;2</td><td>57</td></tr>
+<tr valign="top" class="odd"><td>4.4&#x2e;3</td><td>57</td></tr>
+</table></p>
+<p>The Greenphone is primarily intended as a development device. Therefore the configuration of Qtopia and the root filesystem is not optimized for fast boot. These test results are not indicative of the times achievable on an end-user device.</p>
+<a name="application-startup"></a>
+<h3>Application Startup</h3>
+<p>The <i>application startup time</i> refers to the amount of time taken for an application to appear on the screen and respond to user input, after the user requests the application to launch.</p>
+<p><i>warm startup time</i> indicates that the application has been started at least once since the device has last been booted.</p>
+<p>The below table shows the average warm startup times for each application or group of applications. Please note that small changes may be due to natural variance in the data. Figures are rounded.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>4.2&#x2e;5</th><th>4.3&#x2e;0</th><th>4.3&#x2e;1</th><th>4.4&#x2e;1</th><th>4.4&#x2e;3</th></tr></thead>
+<tr valign="top" class="odd"><td><b>addressbook</b></td><td>0.8</td><td>1.022</td><td>0.995</td><td>1.77</td><td>1.85</td></tr>
+<tr valign="top" class="even"><td><b>appearance</b></td><td>2.15</td><td>1.475</td><td>1.465</td><td>1.57</td><td>1.18</td></tr>
+<tr valign="top" class="odd"><td><b>bluetooth</b></td><td>NA</td><td>NA</td><td>NA</td><td>0.85</td><td>0.80</td></tr>
+<tr valign="top" class="even"><td><b>btsettings</b></td><td>1.6</td><td>2.092</td><td>1.685</td><td>2.10</td><td>1.75</td></tr>
+<tr valign="top" class="odd"><td><b>calculator</b></td><td>1.05</td><td>0.827</td><td>0.84</td><td>1.03</td><td>1.20</td></tr>
+<tr valign="top" class="even"><td><b>callforwarding</b></td><td>2.9</td><td>0.657</td><td>0.63</td><td>1.42</td><td>1.22</td></tr>
+<tr valign="top" class="odd"><td><b>camera</b></td><td>2.15</td><td>2.238</td><td>2.238</td><td>1.03</td><td>0.88</td></tr>
+<tr valign="top" class="even"><td><b>clock</b></td><td>1.3</td><td>0.98</td><td>0.992</td><td>1.27</td><td>1.20</td></tr>
+<tr valign="top" class="odd"><td><b>datebook</b></td><td>1.8</td><td>1.445</td><td>1.557</td><td>1.95</td><td>1.92</td></tr>
+<tr valign="top" class="even"><td><b>fifteen</b></td><td>2</td><td>0.732</td><td>0.72</td><td>1.05</td><td>0.80</td></tr>
+<tr valign="top" class="odd"><td><b>helpbrowser</b></td><td>0.9</td><td>0.792</td><td>0.885</td><td>1.10</td><td>0.95</td></tr>
+<tr valign="top" class="even"><td><b>hwsettings</b></td><td>1.95</td><td>0.79</td><td>0.82</td><td>1.23</td><td>1.12</td></tr>
+<tr valign="top" class="odd"><td><b>language</b></td><td>1.95</td><td>0.712</td><td>0.71</td><td>1.05</td><td>0.88</td></tr>
+<tr valign="top" class="even"><td><b>mediaplayer</b></td><td>1.6</td><td>2.361</td><td>1.005</td><td>2.10</td><td>2.07</td></tr>
+<tr valign="top" class="odd"><td><b>mediarecorder</b></td><td>0.75</td><td>0.877</td><td>0.795</td><td>1.12</td><td>1.10</td></tr>
+<tr valign="top" class="even"><td><b>minesweep</b></td><td>2.65</td><td>0.9</td><td>0.835</td><td>1.13</td><td>1.12</td></tr>
+<tr valign="top" class="odd"><td><b>netsetup</b></td><td>2.95</td><td>0.982</td><td>0.975</td><td>2.07</td><td>1.17</td></tr>
+<tr valign="top" class="even"><td><b>phonenetworks</b></td><td>2.45</td><td>0.572</td><td>0.617</td><td>1.15</td><td>1.02</td></tr>
+<tr valign="top" class="odd"><td><b>phonesettings</b></td><td>2.5</td><td>0.675</td><td>0.755</td><td>1.10</td><td>0.98</td></tr>
+<tr valign="top" class="even"><td><b>photoedit</b></td><td>0.85</td><td>0.492</td><td>0.527</td><td>1.00</td><td>0.83</td></tr>
+<tr valign="top" class="odd"><td><b>profileedit</b></td><td>1.2</td><td>0.995</td><td>1.002</td><td>1.42</td><td>1.53</td></tr>
+<tr valign="top" class="even"><td><b>qasteroids</b></td><td>3.6</td><td>3.047</td><td>1.185</td><td>1.37</td><td>1.13</td></tr>
+<tr valign="top" class="odd"><td><b>qtmail</b></td><td>1.8</td><td>1.447</td><td>1.46</td><td>2.62</td><td>2.55</td></tr>
+<tr valign="top" class="even"><td><b>snake</b></td><td>2.35</td><td>1.862</td><td>1.14</td><td>1.78</td><td>1.58</td></tr>
+<tr valign="top" class="odd"><td><b>speeddial</b></td><td>4.4</td><td>0.71</td><td>0.74</td><td>1.57</td><td>1.50</td></tr>
+<tr valign="top" class="even"><td><b>sysinfo</b></td><td>1.55</td><td>1.227</td><td>0.83</td><td>1.28</td><td>1.12</td></tr>
+<tr valign="top" class="odd"><td><b>systemtime</b></td><td>1.35</td><td>0.885</td><td>0.89</td><td>1.63</td><td>1.27</td></tr>
+<tr valign="top" class="even"><td><b>textedit</b></td><td>0.7</td><td>0.785</td><td>0.745</td><td>1.15</td><td>1.17</td></tr>
+<tr valign="top" class="odd"><td><b>todolist</b></td><td>0.85</td><td>0.747</td><td>0.582</td><td>0.98</td><td>0.87</td></tr>
+<tr valign="top" class="even"><td><b>words</b></td><td>1.9</td><td>0.612</td><td>0.7</td><td>1.18</td><td>1.00</td></tr>
+<tr valign="top" class="odd"><td><b>worldtime</b></td><td>2.75</td><td>0.847</td><td>0.877</td><td>1.22</td><td>0.95</td></tr>
+</table></p>
+<a name="ram-usage"></a>
+<h3>RAM usage</h3>
+<p>The below table shows the effective memory usage of Qt Extended. All sizes are in kilobytes. &quot;6 apps&quot; refers to having six core applications running simultaneously using the Qt Extended multitasking feature. These figures are taken after Qt Extended and the applications have actively been used.</p>
+<p>Effective memory usage refers to the total physical memory usage minus the portion of memory used by Linux for buffers and cache.</p>
+<p>The <b>All six</b> test refers to having all six tested applications running simultaneously using the Qt Extended multitasking mechanism.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>4.2&#x2e;5</th><th>4.3&#x2e;1</th><th>4.4&#x2e;1</th><th>4.4&#x2e;3</th></tr></thead>
+<tr valign="top" class="odd"><td><b>All six</b></td><td>34004</td><td>38680</td><td>39412</td><td>39356</td></tr>
+<tr valign="top" class="even"><td><b>addressbook</b></td><td>24304</td><td>28304</td><td>27456</td><td>28356</td></tr>
+<tr valign="top" class="odd"><td><b>calculator</b></td><td>24080</td><td>28564</td><td>26788</td><td>26960</td></tr>
+<tr valign="top" class="even"><td><b>clock</b></td><td>23772</td><td>26816</td><td>27100</td><td>26880</td></tr>
+<tr valign="top" class="odd"><td><b>datebook</b></td><td>24468</td><td>27604</td><td>26724</td><td>27268</td></tr>
+<tr valign="top" class="even"><td><b>homescreen</b></td><td>22060</td><td>25068</td><td>25632</td><td>26376</td></tr>
+<tr valign="top" class="odd"><td><b>qtmail</b></td><td>24324</td><td>27200</td><td>26788</td><td>27408</td></tr>
+<tr valign="top" class="even"><td><b>todolist</b></td><td>24116</td><td>27224</td><td>26936</td><td>27468</td></tr>
+</table></p>
+<a name="binary-sizes"></a>
+<h3>Binary Sizes</h3>
+<p>The below table shows the disk usage of Qt Extended filesystem images using the default filesystem for this device profile.</p>
+<p>The size includes only the space used by Qt Extended. The size of the root filesystem is not included in these figures.</p>
+<p><table width="60%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Version</th><th>Size (kilobytes)</th></tr></thead>
+<tr valign="top" class="odd"><td>4.2&#x2e;5</td><td>21631</td></tr>
+<tr valign="top" class="even"><td>4.3&#x2e;1</td><td>25142</td></tr>
+<tr valign="top" class="odd"><td>4.4&#x2e;1</td><td>31034</td></tr>
+<tr valign="top" class="even"><td>4.4&#x2e;3</td><td>31016</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

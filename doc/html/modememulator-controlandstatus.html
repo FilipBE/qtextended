@@ -1,0 +1,1079 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Modem Emulator - Control and Status</title>
+  <link rel="prev" href="modememulator-callcontrol.html" />
+  <link rel="next" href="modememulator-phonebook.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="modememulator-callcontrol.html">Modem Emulator - Call Control</a>]
+[Next: <a href="modememulator-phonebook.html">Modem Emulator - Phonebook Operations</a>]
+</p>
+<h1 class="title">Modem Emulator - Control and Status<br /><span class="subtitle"></span>
+</h1>
+<a name="control-and-status"></a>
+<h2>Control and Status</h2>
+<p>The AT commands in this section are used for controlling state information in the modem and for reporting the current status of the state information.</p>
+<p><b>AT+BRSF Bluetooth Retrieve Supported Features</b></p>
+<p>The <tt>AT+BRSF</tt> command is used by Bluetooth hands-free (HF) devices to report the features that are supported by the hands-free unit, and to request the phone's audio gateway (AG) feature set.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+BRSF=&lt;HF supported features bitmap&gt;</tt></td><td><tt>+BRSF: &lt;AG supported features bitmap&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+BRSF=&lt;HF supported features bitmap&gt;</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit.</td></tr>
+</table></p>
+<p>Set command is used by the hands-free device to send a bitmap of its supported features to the phone's audio gateway. The audio gateway in turn responds with a separate bitmap of its supported features.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;HF supported features bitmap&gt;</tt></td><td>Decimal integer containing the following bits:<ul>
+<li>0 - EC / NR function</li>
+<li>1 - Call waiting and 3-way calling</li>
+<li>2 - CLI presentation capability.</li>
+<li>3 - Voice recognition activation.</li>
+<li>4 - Remote volume control</li>
+<li>5 - Enhanced call status</li>
+<li>6 - Enhanced call control</li>
+<li>7-31 - Reserved</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;AG supported features bitmap&gt;</tt></td><td>Decimal integer containing the following bits:<ul>
+<li>0 - Three way calling</li>
+<li>1 - EC / NR function</li>
+<li>2 - Voice recognition</li>
+<li>3 - In-band ring</li>
+<li>4 - Attach a number to voice tag</li>
+<li>5 - Ability to reject a call</li>
+<li>6 - Enhanced call status</li>
+<li>7 - Enhanced call control</li>
+<li>8 - Extended error result codes</li>
+<li>9-31 - Reserved</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>AT+VGM Gain of Microphone</b></p>
+<p>The <tt>AT+VGM</tt> command is used by a Bluetooth hands-free (HF) device to report its current microphone gain level setting to the phone's audio gateway (AG).</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+VGM=&lt;gain&gt;</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+VGM=&lt;gain&gt;</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit.</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+VGM?</tt></td><td><tt>+VGM: &lt;gain&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+VGM=?</tt></td><td><tt>+VGM: (0-15)</tt></td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;gain&gt;</tt></td><td>Decimal integer indicating the microphone gain between 0 and 15, where 15 is the maximum gain.</td></tr>
+</table></p>
+<p>Set command reports the HF's current gain level setting. Get command reports the previous setting. Test command returns the valid gain levels.</p>
+<p>The audio gateway may also send unsolicited <tt>+VGM: &lt;gain&gt;</tt> messages whenever the gain changes on the AG.</p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>AT+VGS Gain of Speaker</b></p>
+<p>The <tt>AT+VGS</tt> command is used by a Bluetooth hands-free (HF) device to report its current speaker gain level setting to the phone's audio gateway (AG).</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+VGS=&lt;gain&gt;</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+VGS=&lt;gain&gt;</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit.</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+VGS?</tt></td><td><tt>+VGS: &lt;gain&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+VGS=?</tt></td><td><tt>+VGS: (0-15)</tt></td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;gain&gt;</tt></td><td>Decimal integer indicating the speaker gain between 0 and 15, where 15 is the maximum gain.</td></tr>
+</table></p>
+<p>Set command reports the HF's current gain level setting. Get command reports the previous setting. Test command returns the valid gain levels.</p>
+<p>The audio gateway may also send unsolicited <tt>+VGS: &lt;gain&gt;</tt> messages whenever the gain changes on the AG.</p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>AT+NREC Control Noise Reduction and Echo Cancellation</b></p>
+<p>The <tt>AT+NREC</tt> command is used by a Bluetooth hands-free (HF) device to turn off the Noise Reduction and Echo Cancellation capabilities of the phone's audio gateway (AG).</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+NREC=0</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+NREC=0</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit or functionality is not supported.</td></tr>
+</table></p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>AT+BVRA Control Bluetooth Voice Recognition</b></p>
+<p>The <tt>AT+BVRA</tt> command is used by a Bluetooth hands-free (HF) device to turn on and off the Voice Recognition capabilities of the phone's audio gateway (AG).</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+BVRA=&lt;num&gt;</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+BVRA=&lt;num&gt;</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit or functionality is not supported.</td></tr>
+</table></p>
+<p>The AG can also initiate Bluetooth Voice Recognition events by sending the {+BVRA=&lt;num&gt;} unsolicited result code.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;num&gt;</tt></td><td>Decimal integer. 0 indicates voice recognition functionality should be ended. 1 indicates voice recognition functionality should be started.</td></tr>
+</table></p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>AT+BINP Bluetooth: Attach Phone Number to a Voice Tag</b></p>
+<p>The <tt>AT+BINP</tt> command can be used by the Bluetooth hands-free (HF) device to request Phone Number from the AG.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+BINP=1</tt></td><td>+BINP:&lt;PhoneNumber&gt;, <tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+BINP=1</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit or functionality is not supported.</td></tr>
+</table></p>
+<p>Each time this command is sent, the Audio Gateway shall respond with a different Phone Number.</p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>AT+BTRH Bluetooth Respond and Hold</b></p>
+<p>The <tt>AT+BTRH</tt> command can be used by the Bluetooth hands-free (HF) device to perform the Respond and Hold feature.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+BTRH?</tt></td><td>[+BTRH:&lt;number&gt;], <tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+BTRH = &lt;num&gt;</tt></td><td>+BTRH:&lt;num&gt;, <tt>OK</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+BTRH = &lt;num&gt;</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit or functionality is not supported.</td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Num Value</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>0</tt></td><td>Put the incoming call on hold.</td></tr>
+<tr valign="top" class="even"><td><tt>1</tt></td><td>Accept the call which was held.</td></tr>
+<tr valign="top" class="odd"><td><tt>2</tt></td><td>Reject the call which was held.</td></tr>
+</table></p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>ATE Command Echo</b></p>
+<p>The <tt>ATE</tt> command can be used to turn command echo on (<tt>ATE1</tt>) or off (<tt>ATE0</tt>). If no parameter is supplied (i.e&#x2e; <tt>ATE</tt>), it is the same as <tt>ATE0</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATE[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>ERROR</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATQ Result Code Suppression</b></p>
+<p>The <tt>ATQ</tt> command can be used to suppress (<tt>ATQ1</tt>) or not suppress (<tt>ATQ0</tt>) the reporting of result codes. If no parameter is supplied (i.e&#x2e; <tt>ATQ</tt>), it is the same as <tt>ATQ0</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATQ[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>ERROR</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATS3 Command Line Termination Character</b></p>
+<p>The <tt>ATS3</tt> command can be used to query or alter the character character used to terminate AT command lines. There is usually no reason to set this to something other than the default of 13.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATS3=&lt;n&gt;]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>ATS3?</tt></td><td><tt>&lt;n&gt;&lt;CR&gt;&lt;LF&gt;OK</tt></td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATS4 Response Formatting Character</b></p>
+<p>The <tt>ATS4</tt> command can be used to query or alter the response formatting (line feed) character used to format AT response lines. There is usually no reason to set this to something other than the default of 10.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATS4=&lt;n&gt;]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>ATS4?</tt></td><td><tt>&lt;n&gt;&lt;CR&gt;&lt;LF&gt;OK</tt></td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATS5 Command Line Editing Character (Backspace)</b></p>
+<p>The <tt>ATS5</tt> command can be used to query or alter the backspace character that is used to edit AT command lines. There is usually no reason to set this to something other than the default of 8.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATS5=&lt;n&gt;]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>ATS5?</tt></td><td><tt>&lt;n&gt;&lt;CR&gt;&lt;LF&gt;OK</tt></td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATV Verbose Result Codes</b></p>
+<p>The <tt>ATV</tt> command can be used to turn on (<tt>ATV1</tt>) or off (<tt>ATV0</tt>) the use of verbose result codes such as <tt>OK</tt>, <tt>ERROR</tt>, <tt>NO CARRIER</tt>, etc. If no parameter is supplied (i.e&#x2e; <tt>ATV</tt>), it is the same as <tt>ATV0</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATV[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>ERROR</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATZ Initialize Modem</b></p>
+<p>The <tt>ATZ</tt> command initializes the modem and returns all status settings to their default values. In the current implementation, this command is identical to <tt>AT&amp;F</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATZ[&lt;n&gt;]</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>The parameter <tt>&lt;n&gt;</tt> is ignored in this implementation.</p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>AT&amp;F Reset to Factory Defaults</b></p>
+<p>The <tt>AT&amp;F</tt> command resets all status settings to their factory default values.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT&amp;F</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>AT&amp;W Write Settings</b></p>
+<p>The <tt>AT&amp;W</tt> command saves all status settings so they can be restored the next time the modem is initialized. In the current implementation, this command is ignored.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT&amp;W</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>AT+GCAP Request Capabilities</b></p>
+<p>The <tt>AT+GCAP</tt> command requests the capabilities of the modem. It responds with a list of functionality areas, such as GSM, Fax, etc, that the modem supports.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+GCAP</tt></td><td><tt>+GCAP: &lt;functionality-list&gt;</tt></td></tr>
+</table></p>
+<p>The following functionality values may be returned:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Value</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>+CGSM</tt></td><td>GSM commands according to 3GPP TS 27.007 and 27.005.</td></tr>
+<tr valign="top" class="even"><td><tt>+FCLASS</tt></td><td>Fax commands.</td></tr>
+<tr valign="top" class="odd"><td><tt>+VOIP</tt></td><td>VoIP calls can be dialed with <tt>ATD&lt;uri&gt;;</tt>.</td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>AT+CALM Alert Sound Mode</b></p>
+<p>This command is used to select the general alert sound mode of the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CALM=&lt;mode&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CALM?</tt></td><td><ul>
+<li><tt>+CALM: &lt;mode&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CALM=?</tt></td><td><tt>+CALM:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</td></tr>
+</table></p>
+<p>The list of <tt>&lt;mode&gt;</tt>s supported under qtopia are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0</td><td>&quot;Normal&quot; (callAlert and msgAlert set to &quot;Once&quot;)</td></tr>
+<tr valign="top" class="even"><td>1</td><td>&quot;Silent&quot; (entire MT set to silent mode)</td></tr>
+<tr valign="top" class="odd"><td>2</td><td>&quot;CallSilent&quot; (callAlert set to &quot;Off&quot;)</td></tr>
+<tr valign="top" class="even"><td>3</td><td>&quot;MsgSilent&quot; (msgAlert set to &quot;Off&quot;)</td></tr>
+<tr valign="top" class="odd"><td>4</td><td>&quot;AlertSilent&quot; (callAlert and msgAlert set to &quot;Off&quot;)</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CBC Battery Charge</b></p>
+<p>The <tt>AT+CBC</tt> command can be used to query the current battery charge.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CBC[?]</tt></td><td><tt>+CBC: &lt;bcs&gt;, &lt;bcl&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CBC=?</tt></td><td><tt>+CBC: (0-3),(0-100)</tt></td></tr>
+</table></p>
+<p>Execution command returns battery connection status <tt>&lt;bcs&gt;</tt> and battery charge level <tt>&lt;bcl&gt;</tt> of the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;bcs&gt;</tt></td><td><ul>
+<li>0 MT is powered by the battery</li>
+<li>1 MT has a battery connected, but is not powered by it</li>
+<li>2 MT does not have a battery connected</li>
+<li>3 Recognized power fault, calls inhibited</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;bcl&gt;</tt></td><td><ul>
+<li>0 battery is exhausted, or MT does not have a battery connected.</li>
+<li>1..&#x2e;100 battery has 1-100 percent of capacity remaining.</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CCLK Clock</b></p>
+<p>The <tt>AT+CCLK</tt> command sets the real-time clock of the MT. If setting fails in an MT error, <tt>+CME ERROR: &lt;err&gt;</tt> is returned.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CCLK=&lt;time&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CCLK?</tt></td><td><ul>
+<li><tt>+CCLK: &lt;time&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CCLK=?</tt></td><td></td></tr>
+</table></p>
+<p>The <tt>&lt;time&gt;</tt> parameter is of the form specified via <tt>AT+CSDF</tt>.</p>
+<p>In this implementation, we &quot;fake&quot; this command. When other time-related commands (such as <tt>AT+CALA</tt>) are performed, some operations are done to convert the presented time to the MT time, according to our fake time variable.</p>
+<p>It is recommended that the auxillary time format is set to 4-digit year format (AT+CSDF=,2) before using this command, as the two digit year format assumes a base date of 1900 AD.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p>/sa AT+CSDF</p>
+<p><b>AT+CEER Extended error report</b></p>
+<p>The <tt>AT+CEER</tt> command provides extended error information.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CEER</tt></td><td><tt>+CEER: &lt;report&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CEER=?</tt></td><td></td></tr>
+</table></p>
+<p>Execution command causes the TA to return one or more lines of information text <tt>&lt;report&gt;</tt>, determined by the MT manufacturer, which should offer the user of the TA an extended report of the reason for the last failed operation.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CLVL Loudspeaker Volume Level</b></p>
+<p>This command is used to select the volume of the internal loudspeaker of the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CLVL=&lt;level&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CLVL?</tt></td><td><ul>
+<li><tt>+CLVL: &lt;level&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CLVL=?</tt></td><td><ul>
+<li><tt>+CLVL:</tt>(list of supported <tt>&lt;level&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CIND Indicator Control</b></p>
+<p>The <tt>AT+CIND</tt> command is used to get the current indicator values.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CIND=[&lt;ind&gt;,[&lt;ind&gt;[,...]]]</tt></td><td><tt>+CME ERROR: 3</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CIND?</tt></td><td><tt>+CIND: &lt;ind&gt;[,&lt;ind&gt;[,...]]</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CIND=?</tt></td><td><tt>+CIND: (&lt;descr&gt;,(list of &lt;ind&gt;'s))[,...]</tt></td></tr>
+</table></p>
+<p>Set command is used to set the indicator values. In this implementation, indicators cannot be set and the set command will always return an error.</p>
+<p>Read command returns the current status of the indicators.</p>
+<p>Test command returns pairs, where the string value <tt>&lt;descr&gt;</tt> is a description of the indicator, and the compound value is the allowable values for the indicator.</p>
+<p>The following indicators are supported:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Name</th><th>Description</th><th>Range</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>battchg</tt></td><td>Battery charge level</td><td>0-5</td></tr>
+<tr valign="top" class="even"><td><tt>signal</tt></td><td>Signal quality</td><td>0-5</td></tr>
+<tr valign="top" class="odd"><td><tt>service</tt></td><td>Service availability</td><td>0-1</td></tr>
+<tr valign="top" class="even"><td><tt>message</tt></td><td>Message received</td><td>0-1</td></tr>
+<tr valign="top" class="odd"><td><tt>call</tt></td><td>Call in progress</td><td>0-1</td></tr>
+<tr valign="top" class="even"><td><tt>roam</tt></td><td>Roaming indicator</td><td>0-1</td></tr>
+<tr valign="top" class="odd"><td><tt>smsfull</tt></td><td>SMS memory state</td><td><ul>
+<li>0 space is available</li>
+<li>1 memory has just become full</li>
+<li>2 memory is full and a message was just rejected</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>callsetup</tt></td><td>Call setup state</td><td><ul>
+<li>0 no call setup in progress</li>
+<li>1 incoming call setup in progress</li>
+<li>2 outgoing call setup in progress</li>
+<li>3 outgoing call setup in the &quot;alerting&quot; phase</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>callheld</tt></td><td>Call hold state</td><td><ul>
+<li>0 no calls are held</li>
+<li>1 there are both active and held calls</li>
+<li>2 there are held calls, but no active calls</li>
+</ul>
+</td></tr>
+</table></p>
+<p>The <tt>callsetup</tt> and <tt>callheld</tt> indicators are from the Bluetooth Hands-Free Profile version 1.5&#x2e; The rest are from 3GPP TS 27.007.</p>
+<p>Conforms with: 3GPP TS 27.007, Bluetooth Hands-Free Profile 1.5&#x2e;</p>
+<p><b>AT+CKPD Keypad Control</b></p>
+<p>The <tt>AT+CKPD</tt> command is used to send keypad events to the phone.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CKPD=&lt;keys&gt;[,&lt;time&gt;[,&lt;pause&gt;]]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 3</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CKPD=?</tt></td><td><tt>+CKPD: (0123456789*#),(0-255),(0-255)</tt></td></tr>
+</table></p>
+<p>Execution command is used to send keypad events to the phone. The following <tt>&lt;keys&gt;</tt> are defined by 3GPP TS 27.007:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Character</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>#</tt></td><td>Hash (number sign)</td></tr>
+<tr valign="top" class="even"><td><tt>%</tt></td><td>Percent sign</td></tr>
+<tr valign="top" class="odd"><td><tt>*</tt></td><td>Star</td></tr>
+<tr valign="top" class="even"><td><tt>0</tt> ..&#x2e; <tt>9</tt></td><td>Digit keys</td></tr>
+<tr valign="top" class="odd"><td><tt>:C</tt></td><td>Send <tt>C</tt> as a literal character</td></tr>
+<tr valign="top" class="even"><td><tt>;CCC...;</tt></td><td>Send <tt>CCC...</tt> as literal characters</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;</tt></td><td>Left arrow key</td></tr>
+<tr valign="top" class="even"><td><tt>&gt;</tt></td><td>Right arrow key</td></tr>
+<tr valign="top" class="odd"><td><tt>@</tt></td><td>Alpha key for switching input method modes</td></tr>
+<tr valign="top" class="even"><td><tt>C/c</tt></td><td>Clear</td></tr>
+<tr valign="top" class="odd"><td><tt>D/d</tt></td><td>Volume down</td></tr>
+<tr valign="top" class="even"><td><tt>E/e</tt></td><td>Connection end (END or hangup key)</td></tr>
+<tr valign="top" class="odd"><td><tt>F/f</tt></td><td>Function key</td></tr>
+<tr valign="top" class="even"><td><tt>L/l</tt></td><td>Phone lock</td></tr>
+<tr valign="top" class="odd"><td><tt>M/m</tt></td><td>Menu</td></tr>
+<tr valign="top" class="even"><td><tt>Q/q</tt></td><td>Quiet/mute</td></tr>
+<tr valign="top" class="odd"><td><tt>S/s</tt></td><td>Connection start (SEND or call key)</td></tr>
+<tr valign="top" class="even"><td><tt>U/u</tt></td><td>Volume up</td></tr>
+<tr valign="top" class="odd"><td><tt>V/v</tt></td><td>Down arrow key</td></tr>
+<tr valign="top" class="even"><td><tt>W/w</tt></td><td>Pause character</td></tr>
+<tr valign="top" class="odd"><td><tt>Y/y</tt></td><td>Delete last character (same as <tt>C/c</tt>)</td></tr>
+<tr valign="top" class="even"><td><tt>[</tt></td><td>Soft key 1 (same as <tt>F/f</tt>)</td></tr>
+<tr valign="top" class="odd"><td><tt>]</tt></td><td>Soft key 2 (same as <tt>C/c</tt>)</td></tr>
+<tr valign="top" class="even"><td><tt>^</tt></td><td>Up arrow key</td></tr>
+</table></p>
+<p>The following keys from 3GPP TS 27.007 are not currently supported:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Character</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>A/a</tt></td><td>Channel A</td></tr>
+<tr valign="top" class="even"><td><tt>B/b</tt></td><td>Channel B</td></tr>
+<tr valign="top" class="odd"><td><tt>P/p</tt></td><td>Power</td></tr>
+<tr valign="top" class="even"><td><tt>R/r</tt></td><td>Recall last number</td></tr>
+<tr valign="top" class="odd"><td><tt>T/t</tt></td><td>Store/memory</td></tr>
+<tr valign="top" class="even"><td><tt>X/x</tt></td><td>Auxillary key</td></tr>
+</table></p>
+<p>The following additional non-27.007 keys are supported:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Character</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>H/h</tt></td><td>Key on headphones</td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>time</tt></td><td>Time that the key should be held down, in tenths of a second. The default is 1.</td></tr>
+<tr valign="top" class="even"><td><tt>pause</tt></td><td>The time to pause between keys, in tenths of a second. The default is 1.</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007</p>
+<p><b>AT+CLAE Language Event</b></p>
+<p>This command is used to enable/disable unsolicited result code <tt>+CLAV: &lt;code&gt;</tt>, which is sent from the MT when the language in the MT is changed.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Values</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CLAE=&lt;mode&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CLAE?</tt></td><td><ul>
+<li><tt>+CLAE: &lt;mode&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CLAE=?</tt></td><td><ul>
+<li><tt>+CLAE:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The <tt>&lt;mode&gt;</tt> param can be either 0 (disable unsolicited result code), or 1 (enable unsolicited result code). The <tt>+CLAV=&lt;code&gt;</tt> unsolicited result notification is disabled by default.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CLAN Set Language</b></p>
+<p>This command sets the language in the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CLAN=&lt;code&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CLAN?</tt></td><td><ul>
+<li><tt>+CLAN: &lt;code&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CLAN=?</tt></td><td><ul>
+<li><tt>+CLAN:</tt>(list of supported <tt>&lt;code&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The <tt>&lt;code&gt;</tt> parameter is a two letter abbreviation of the language. See ISO 639 for the complete list of codes.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CMEC Mobile Termination Control Mode</b></p>
+<p>The <tt>AT+CMEC</tt> command is used to select the modes that can control the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMEC=[&lt;keyp&gt;,[&lt;disp&gt;[,&lt;ind&gt;]]]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 3</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMEC?</tt></td><td><tt>+CMEC: 0,0,0</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMEC=?</tt></td><td><tt>+CMEC: (0),(0),(0)</tt></td></tr>
+</table></p>
+<p>In this implementation, keypad and display control are not supported, and indicators can only be read, never written. It is an error to use the set command with non-zero parameters.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CMEE Report Mobile Termination Error</b></p>
+<p>The <tt>AT+CMEE</tt> command is used to select the error reporting mode for the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMEE=[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 4</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMEE?</tt></td><td><tt>+CMEE: &lt;n&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMEE=?</tt></td><td><tt>+CMEE: (0-2)</tt></td></tr>
+</table></p>
+<p>Set command disables or enables the use of result code <tt>+CME ERROR: &lt;err&gt;</tt> as an indication of an error relating to the functionality of the MT. When enabled, MT related errors cause the <tt>+CME ERROR: &lt;err&gt;</tt> final result code instead of the regular <tt>ERROR</tt> result code. <tt>ERROR</tt> is still returned normally when the error is related to syntax, invalid parameters, or TA functionality.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;n&gt;</tt></td><td><ul>
+<li>0 disable <tt>+CME ERROR: &lt;err&gt;</tt> result code and use <tt>ERROR</tt> instead. This is the default value.</li>
+<li>1 enable <tt>+CME ERROR: &lt;err&gt;</tt> result code and use numeric <tt>&lt;err&gt;</tt> values.</li>
+<li>2 enable <tt>+CME ERROR: &lt;err&gt;</tt> result code and use verbose <tt>&lt;err&gt;</tt> values.</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CMER Mobile Termination Event Reporting</b></p>
+<p>The <tt>AT+CMER</tt> command enables or disables unsolicited result codes related to MT events.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMER=[&lt;mode&gt;[,&lt;keyp&gt;[,&lt;disp&gt;[,&lt;ind&gt;[,&lt;bfr&gt;]]]]]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 3</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMER?</tt></td><td><tt>+CMER: 1,0,0,&lt;ind&gt;,0</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMER=?</tt></td><td><tt>+CMER: (1,3),(0),(0),(0-2),(0)</tt></td></tr>
+</table></p>
+<p>Set command enables or disables unsolicited result codes for indicators. This implementation does not support the other event types and <tt>&lt;mode&gt;</tt> must be 1 or 3, which are treated as identical.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;ind&gt;</tt></td><td><ul>
+<li>0 no indicator event reporting.</li>
+<li>1 indicator event reporting using result code <tt>+CIEV: &lt;ind&gt;,&lt;value&gt;</tt>. Only those indicator changes that are not caused by <tt>AT+CIND</tt> set command are reported.</li>
+<li>2 indicator event reporting using result code <tt>+CIEV: &lt;ind&gt;,&lt;value&gt;</tt>. All indicator changes are reported.</li>
+</ul>
+</td></tr>
+</table></p>
+<p>In this implementation, <tt>AT+CIND</tt> set command is not supported, so <tt>&lt;ind&gt;</tt> values 1 and 2 are identical.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CMUT Mute Control</b></p>
+<p>This command is used to enable and disable the uplink voice muting during a voice call.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMUT=&lt;n&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMUT?</tt></td><td><ul>
+<li><tt>+CMUT: &lt;n&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMUT=?</tt></td><td><tt>+CMUT:</tt>(list of supported <tt>&lt;n&gt;</tt>s)</td></tr>
+</table></p>
+<p>Where <tt>&lt;n&gt;</tt> is either <tt>0</tt> (mute off) or <tt>1</tt> (mute on)</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CMUX Multiplexing Mode</b></p>
+<p>The <tt>AT+CMUX</tt> enables multiplexing according to 3GPP TS 27.010.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMUX=[&lt;mode&gt;[,&lt;subset&gt;[,&lt;port_speed&gt;[,&lt;frame_size&gt;[,...]]]]]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 4</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMUX=?</tt></td><td><tt>+CMUX: (0),(0),(1-6),(1-32768),(1-255),(0-100),(2-255),(1-255),(1-7)</tt></td></tr>
+</table></p>
+<p>Set command enables multiplexing mode according to the supplied parameters. This implementation supports basic mode, UIH frames, any port speed, and any frame size. Set command will report an error if some other mode is requested, or the command is used on a channel that already has multiplexing enabled.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;mode&gt;</tt></td><td>Multiplexer transparency mechanism:<ul>
+<li>0 Basic mode</li>
+<li>1 Advanced mode; not supported</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;subset&gt;</tt></td><td>Subset of <tt>&lt;mode&gt;</tt> to use:<ul>
+<li>0 UIH frames used only</li>
+<li>1 UI frames used only; not supported</li>
+<li>2 I frames used only; not supported</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;port_speed&gt;</tt></td><td>Transmission rate; ignored.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;frame_size&gt;</tt></td><td>Maximum frame size, 1-32768. Default is 31.</td></tr>
+</table></p>
+<p>Test command returns the parameter values that are supported, including additional parameters from 3GPP TS 27.007 which are ignored by this implementation.</p>
+<p>Conforms with: 3GPP TS 27.007, 27.010.</p>
+<p><b>AT+CPAS Phone Activity Status</b></p>
+<p>The <tt>AT+CPAS</tt> returns information about the mode the phone is currently operating in.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPAS</tt></td><td><tt>+CPAS: &lt;pas&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPAS=?</tt></td><td><tt>+CPAS: (0-5)</tt></td></tr>
+</table></p>
+<p>Execution command returns the activity status <tt>&lt;pas&gt;</tt> of the MT.</p>
+<p>It can be used to interrogate the MT before requesting action from the phone.</p>
+<p>Test command returns the values that are supported by the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;pas&gt;</tt></td><td><ul>
+<li>0 ready</li>
+<li>1 unavailable</li>
+<li>2 unknown</li>
+<li>3 ringing</li>
+<li>4 call in progress</li>
+<li>5 asleep</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CPIN Enter PIN</b></p>
+<p>The <tt>AT+CPIN</tt> command allows for querying and entering the PIN.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPIN=&lt;pin&gt;[,&lt;newpin]</tt></td><td><tt>+CME ERROR: 3</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPIN?</tt></td><td><tt>+CPIN: READY</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CPIN=?</tt></td><td><tt>OK</tt></td></tr>
+</table></p>
+<p>For security reasons, this implementation does not allow real access to the PIN through this interface. It is assumed that the user has already entered the PIN directly on the phone using some other means. If the user hasn't, then requests to use restricted features will be denied or delayed. Read command will always return <tt>READY</tt> and set command will always fail.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CR Service Reporting Control</b></p>
+<p>This command controls whether or not the intermediate result code <tt>+CR: &lt;serv&gt;</tt> is returned from the TA to the TE. If enabled, the intermediate result code is transmitted at the point during connect negotiation at which the TA has determined which speed and quality of service will be used, before any error control or data compression reports are transmitted, and before the intermediate result code <tt>CONNECT</tt> is transmitted.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CR=[&lt;mode&gt;]</tt></td><td></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CR?</tt></td><td><tt>+CR: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CR=?</tt></td><td><tt>+CR:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</td></tr>
+</table></p>
+<p>The <tt>&lt;mode&gt;</tt> parameter can be 0 (disable reporting; default) or 1 (enable intermediate result code reporting).</p>
+<p>The <tt>&lt;serv&gt;</tt> parameter reports the type of service that the data call will use, and can take the following values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>ASYNC</tt></td><td>Asynchronous Transparent</td></tr>
+<tr valign="top" class="even"><td><tt>SYNC</tt></td><td>Synchronous Transparent</td></tr>
+<tr valign="top" class="odd"><td><tt>REL ASYNC</tt></td><td>Asynchronous Non-transparent</td></tr>
+<tr valign="top" class="even"><td><tt>REL SYNC</tt></td><td>Synchronous Non-transparent</td></tr>
+<tr valign="top" class="odd"><td><tt>GPRS</tt></td><td>GRPS</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CRC Cellular Result Codes</b></p>
+<p>The <tt>AT+CRC</tt> command enables or disables the <tt>+CRING</tt> unsolicited response.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CRC=[&lt;mode&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 3</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CRC?</tt></td><td><tt>+CRC: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CRC=?</tt></td><td><tt>+CRC: (0,1)</tt></td></tr>
+</table></p>
+<p>Set command controls whether or not the extended format of incoming call indication is used. When enabled, an incoming call is indicated to the TE with unsolicited result code <tt>+CRING: &lt;type&gt;</tt> instead of the normal <tt>RING</tt>, where <tt>&lt;type&gt;</tt> is one of the following values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>ASYNC</tt></td><td>Asynchronous data</td></tr>
+<tr valign="top" class="even"><td><tt>FAX</tt></td><td>Reserved for future use: Fascimile</td></tr>
+<tr valign="top" class="odd"><td><tt>VOICE</tt></td><td>Normal voice</td></tr>
+</table></p>
+<p>GPRS network requests are not supported in this implementation. They are handled internally within the phone.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CRMC Ring Melody Control</b></p>
+<p>The <tt>AT+CRMC</tt> command selects a specific ring melody and volume for the selected call type and profile.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CRMC=&lt;index&gt;,&lt;volume&gt;[,[&lt;call_type&gt;][,&lt;profile&gt;]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CRMC?</tt></td><td><ul>
+<li><tt>+CRMC: &lt;index&gt;,&lt;volume&gt;[,[&lt;call_type1&gt;][,&lt;profile1&gt;]][&lt;CR&gt;&lt;LF&gt; +CRMC: &lt;index&gt;,&lt;volume&gt;[,[&lt;call_type2&gt;][,&lt;profile1&gt;]][&lt;CR&gt;&lt;LF&gt; +CRMC: &lt;index&gt;,&lt;volume&gt;[,[&lt;call_type1&gt;][,&lt;profile2&gt;]][&lt;CR&gt;&lt;LF&gt; +CRMC: &lt;index&gt;,&lt;volume&gt;[,[&lt;call_type2&gt;][,&lt;profile2&gt;]] [...]]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CRMC=?</tt></td><td><ul>
+<li><tt>+CRMC: (list of supported &lt;index&gt;s), (list of supported &lt;volume&gt;s)[,[ (list of supported &lt;call_type&gt;s)][,(list of supported &lt;profile&gt;s)]]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Defined Values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;index&gt;</tt></td><td>Integer; identifies a certain ring melody</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;volume&gt;</tt></td><td>Integer; range of sound levels</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;call_type\i{x}&gt;</tt></td><td>Integer; identifies a call type</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;profile\i{x}&gt;</tt></td><td>Integer; identifies a profile</td></tr>
+</table></p>
+<p>In this implementation, all of the parameters are ignored. Access to the ring tone settings is via the MT interface only.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p>/sa AT+CRMP</p>
+<p><b>AT+CRMP Ring Melody Playback</b></p>
+<p>The <tt>AT+CRMP</tt> command causes the MT to play a specific ring type. The default values for the optional parameters are those currently selected in the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CRMP=&lt;call_type&gt;[,&lt;volume&gt;[,&lt;type&gt;,&lt;index&gt;]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CRMP=?</tt></td><td><ul>
+<li><tt>+CRMP: (list of supported &lt;call_type&gt;s),(list of supported &lt;volume&gt;s), &lt;type0&gt;,(list of supported &lt;index&gt;s)[&lt;CR&gt;&lt;LF&gt; +CRMP: (list of supported &lt;call_type&gt;s),(list of supported &lt;volume&gt;s), &lt;type1&gt;,(list of supported &lt;index&gt;s)]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Defined Values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Value / Meaning</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>&lt;call_type&gt;</tt></td><td>Integer; defines the call type for which the melody is set</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;volume&gt;</tt></td><td>Integer; defines the volume at which to play the melody</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td><ul>
+<li>0 Manufacturer Defined</li>
+<li>1 User Defined</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;index&gt;</tt></td><td>Integer; defines which of the melodies for the given &lt;call_type&gt; to play</td></tr>
+</table></p>
+<p>In this implementation, all parameters except for <tt>&lt;volume&gt;</tt> must be 0. The currently active profile's ring melody will be played at the given volume, or at the current volume if the <tt>&lt;volume&gt;</tt> is not supplied.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p>/sa AT+CRMC</p>
+<p><b>AT+CSCS Select TE Character Set</b></p>
+<p>The <tt>AT+CSCS</tt> command selects the character set to use in commands that take or return string arguments.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSCS=&lt;chset&gt;</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 4</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSCS?</tt></td><td><tt>+CSCS: &lt;chset&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSCS=?</tt></td><td><tt>+CSCS:</tt> (list of supported <tt>&lt;chset&gt;</tt>s)</td></tr>
+</table></p>
+<p>Set command informs the TA which character set <tt>&lt;chset&gt;</tt> is used by the TE. TA is then able to convert character strings correctly between TE and MT character sets. <tt>+CME ERROR: 4</tt> will be returned if the character set is not supported.</p>
+<p>Read command shows the current setting, and test command displays the available character sets.</p>
+<p>The following character sets are supported by this implementation:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Name</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>GSM</tt></td><td>GSM 7-bit default alphabet from 3GPP TS 23.038. This is the default value.</td></tr>
+<tr valign="top" class="even"><td><tt>HEX</tt></td><td>Hexadecimal encoding of GSM 7-bit default alphabet.</td></tr>
+<tr valign="top" class="odd"><td><tt>UCS2</tt></td><td>16-bit universal multiple-octet coded character set. UCS2 character strings are converted to hexadecimal.</td></tr>
+<tr valign="top" class="even"><td><tt>8859-1</tt></td><td>ISO-8859 Latin 1 character set.</td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>AT+CSGT Set Greeting Text</b></p>
+<p>The <tt>AT+CSGT</tt> command sets and activates the greeting text in the MT. The greeting text is shown in the MT display when the MT is turned on.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSGT=&lt;mode&gt;[,&lt;text&gt;]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSGT?</tt></td><td><tt>+CSGT: &lt;text&gt;, &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSGT=?</tt></td><td><ul>
+<li><tt>+CSGT: (</tt>list of supported <tt>&lt;mode&gt;</tt>s<tt>)</tt>,&lt;ltext&gt;}</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p><tt>&lt;ltext&gt;</tt>, the maximum length of the greeting text supported is 20 characters.</p>
+<p>The <tt>&lt;mode&gt;</tt> parameter may be 0 (off; default) or 1 (on). In this implementation, the value of mode is ignored; the greeting text is always off.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSQ Signal Quality</b></p>
+<p>The <tt>AT+CSQ</tt> command can be used to query the current signal quality.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSQ[?]</tt></td><td><tt>+CBC: &lt;rssi&gt;, &lt;ber&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSQ=?</tt></td><td><tt>+CBC: (0-31),(0-7)</tt></td></tr>
+</table></p>
+<p>Execution command returns received signal strength indication <tt>&lt;rssi&gt;</tt> and channel bit error rate <tt>&lt;ber&gt;</tt> from the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;rssi&gt;</tt></td><td><ul>
+<li>0 -113 dBm or less</li>
+<li>1 -111 dBm</li>
+<li>2..&#x2e;30 -109 to -53 sBm</li>
+<li>31 -51 dBm or greater</li>
+<li>99 not known or not detectable.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;ber&gt;</tt></td><td><ul>
+<li>0..&#x2e;7 RXQUAL values as defined in 3GPP TS 45.008.</li>
+<li>99 not known or not detectable.</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSVM Set Voice Mail Number</b></p>
+<p>The <tt>AT+CSVM</tt> command is used to set the number to the voice mail server.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSVM=&lt;mode&gt;[,&lt;number&gt;[,&lt;type&gt;]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSVM?</tt></td><td><ul>
+<li><tt>+CSVM: &lt;mode&gt;,&lt;number&gt;,&lt;type&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSVM=?</tt></td><td><ul>
+<li><tt>+CSVM:</tt>(list of supported <tt>&lt;mode&gt;</tt>s), (list of supported <tt>&lt;type&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The <tt>&lt;mode&gt;</tt> parameter can take the value of 0 (disable voice mail; default) or 1 (enable voice mail).</p>
+<p>The <tt>&lt;number&gt;</tt> parameter is a string, &lt;0..9,+&gt;</p>
+<p>The <tt>&lt;type&gt;</tt> parameter is an integer type, default 129</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>129</td><td>ISDN/Telephony numbering, national/international unknown</td></tr>
+<tr valign="top" class="even"><td>145</td><td>ISDN/Telephony numbering, international number</td></tr>
+<tr valign="top" class="odd"><td>161</td><td>ISDN/Telephony numbering, national number</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CVHU Voice Hangup Control</b></p>
+<p>The <tt>AT+CVHU</tt> command controls the behaviour of the MT upon receiving ATH or &quot;drop DTR&quot;.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CVHU=[&lt;mode&gt;]</tt></td><td></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CVHU?</tt></td><td><tt>+CVHU: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CVHU=?</tt></td><td><tt>+CVHU:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</td></tr>
+</table></p>
+<p>Values defined for <tt>&lt;mode&gt;</tt> are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0 (default)</td><td>&quot;Drop DTR&quot; ignored but OK response given. ATH disconnects.</td></tr>
+<tr valign="top" class="even"><td>1</td><td>&quot;Drop DTR&quot; and ATH ignored but OK response given.</td></tr>
+<tr valign="top" class="odd"><td>2</td><td>&quot;Drop DTR&quot; behaviour according to &amp;D setting. ATH disconnects.</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CVIB Vibrator Mode</b></p>
+<p>This command is used to enable and disable the vibrator alert feature of the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CVIB=&lt;mode&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CVIB?</tt></td><td><ul>
+<li><tt>+CVIB: &lt;mode&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CVIB=?</tt></td><td><ul>
+<li><tt>+CVIB:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The following values for <tt>&lt;mode&gt;</tt> apply:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0</td><td>Disable</td></tr>
+<tr valign="top" class="even"><td>1</td><td>Enable</td></tr>
+<tr valign="top" class="odd"><td>...15</td><td>Reserved</td></tr>
+<tr valign="top" class="even"><td>16..&#x2e;</td><td>Manufacturer Specific</td></tr>
+</table></p>
+<p>This implementation supports only values 0 and 1 for <tt>&lt;mode&gt;</tt>.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT*QBC Enable Unsolicited Battery Charge Reporting</b></p>
+<p>The <tt>AT*QBC</tt> command can be used to enable or disable the unsolicited reporting of battery charge changes.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT*QBC=&lt;n&gt;</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT*QBC?</tt></td><td><tt>*QBC: &lt;n&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT*QBC=?</tt></td><td><tt>*QBC: (0,1)</tt></td></tr>
+</table></p>
+<p>Set command controls the presentation of an unsolicited result code <tt>*QBC: &lt;bcs&gt;,&lt;bcl&gt;</tt> when <tt>&lt;n&gt;</tt>=1 and there is a change in the battery charge information.</p>
+<p>Read command returns the current state of the result code presentation value <tt>&lt;n&gt;</tt>. The default value is 0.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;bcs&gt;</tt></td><td><ul>
+<li>0 MT is powered by the battery</li>
+<li>1 MT has a battery connected, but is not powered by it</li>
+<li>2 MT does not have a battery connected</li>
+<li>3 Recognized power fault, calls inhibited</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;bcl&gt;</tt></td><td><ul>
+<li>0 battery is exhausted, or MT does not have a battery connected.</li>
+<li>1..&#x2e;100 battery has 1-100 percent of capacity remaining.</li>
+</ul>
+</td></tr>
+</table></p>
+<p><b>AT*QCAM Call Status Monitoring</b></p>
+<p>The <tt>AT*QCAM</tt> command can be used to enable or disable the unsolicited reporting of call status changes.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT*QCAM=&lt;n&gt;</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT*QCAM?</tt></td><td><tt>*QCAM: &lt;n&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT*QCAM=?</tt></td><td><tt>*QCAM: (0,1)</tt></td></tr>
+</table></p>
+<p>Set command controls the presentation of an unsolicited result code <tt>*QCAV: &lt;id&gt;,&lt;state&gt;,&lt;calltype&gt;[,&lt;number&gt;,&lt;type&gt;]</tt> when <tt>&lt;n&gt;</tt>=1 and there is a change in the call status information.</p>
+<p>Read command returns the current state of the result code presentation value <tt>&lt;n&gt;</tt>. The default value is 0.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;id&gt;</tt></td><td>Identifier for the call.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;state&gt;</tt></td><td>State of the call:<ul>
+<li>0 idle</li>
+<li>1 calling</li>
+<li>2 connecting</li>
+<li>3 active</li>
+<li>4 hold</li>
+<li>5 waiting</li>
+<li>6 alerting</li>
+<li>7 busy</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;calltype&gt;</tt></td><td>Type of call:<ul>
+<li>1 voice</li>
+<li>2 data</li>
+<li>4 reserved for future use: fax</li>
+<li>32 video</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;number&gt;</tt></td><td>String type phone number of calling address in format specified by <tt>&lt;type&gt;</tt>.</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td>Type of address octet in integer format (refer 3GPP TS 24.008).</td></tr>
+</table></p>
+<p><b>AT*QSQ Enable Unsolicited Signal Quality Reporting</b></p>
+<p>The <tt>AT*QSQ</tt> command can be used to enable or disable the unsolicited reporting of battery charge changes.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT*QSQ=&lt;n&gt;</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT*QSQ?</tt></td><td><tt>*QBC: &lt;n&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT*QSQ=?</tt></td><td><tt>*QBC: (0,1)</tt></td></tr>
+</table></p>
+<p>Set command controls the presentation of an unsolicited result code <tt>*QSQ: &lt;rssi&gt;,&lt;ber&gt;</tt> when <tt>&lt;n&gt;</tt>=1 and there is a change in the battery charge information.</p>
+<p>Read command returns the current state of the result code presentation value <tt>&lt;n&gt;</tt>. The default value is 0.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;rssi&gt;</tt></td><td><ul>
+<li>0 -113 dBm or less</li>
+<li>1 -111 dBm</li>
+<li>2..&#x2e;30 -109 to -53 sBm</li>
+<li>31 -51 dBm or greater</li>
+<li>99 not known or not detectable.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;ber&gt;</tt></td><td><ul>
+<li>0..&#x2e;7 RXQUAL values as defined in 3GPP TS 45.008.</li>
+<li>99 not known or not detectable.</li>
+</ul>
+</td></tr>
+</table></p>
+<p><b>AT+CACM Accumulated Call Meter</b></p>
+<p>The <tt>AT+CACM</tt> command is used to reset or query the accumulated call meter advice of charge.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CACM=[&lt;passwd&gt;]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CACM?</tt></td><td><ul>
+<li><tt>+CACM: &lt;acm&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CACM=?</tt></td><td></td></tr>
+</table></p>
+<p>The <tt>&lt;passwd&gt;</tt> parameter is equal to the SIM PIN2 locking password, and is usually required to reset the accumulated call meter value.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CAMM Accumulated Call Meter Maximum</b></p>
+<p>The <tt>AT+CAMM</tt> command is used to set or query the Advice Of Charge related accumulated call meter maximum value in the SIM or active application in the UICC.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CAMM=[&lt;acmmax&gt;[,&lt;passwd&gt;]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CAMM?</tt></td><td><ul>
+<li><tt>+CAMM: &lt;acmmax&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CAMM=?</tt></td><td></td></tr>
+</table></p>
+<p>The <tt>&lt;acmmax&gt;</tt> parameter contains the maximum number of home units allowed to be consumed by the subscriber. When ACM (see <tt>AT+CACM</tt>) reaches <tt>&lt;acmmax&gt;</tt>, calls are prohibited. SIM PIN2 is usually required to set the value.</p>
+<p>A zero or non-present value of <tt>&lt;acmmax&gt;</tt> disables the ACMmax feature.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CLCK Facility Lock</b></p>
+<p>This command enables locking, unlocking and interrogation of a MT or network facility.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CLCK=&lt;fac&gt;,&lt;mode&gt;[,&lt;passwd&gt;[,&lt;class&gt;]]</tt></td><td><ul>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+<li><b>when mode = 2 and command is successful:</b> <tt>+CLCK: &lt;status&gt;[,&lt;class1&gt;</tt> <tt>[&lt;CR&gt;&lt;LF&gt;+CLCK: &lt;status&gt;,&lt;class2&gt;</tt> <tt>[...]]</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CLCK=?</tt></td><td><ul>
+<li><tt>+CLCK:</tt>(list of supported <tt>&lt;fac&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Defined values for the facility <tt>&lt;fac&gt;</tt> are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Value</th><th>Meaning</th></tr></thead>
+<tr valign="top" class="odd"><td>&quot;CS&quot;</td><td>CNTRL (lock CoNTRoL surface (e.g&#x2e; phone keyboard)</td></tr>
+<tr valign="top" class="even"><td>&quot;PS&quot;</td><td>PH-SIM (lock PHone to SIM/UICC card)</td></tr>
+<tr valign="top" class="odd"><td>&quot;PF&quot;</td><td>PH-FSIM (lock PHone to the very First inserted SIM/UICC card)</td></tr>
+<tr valign="top" class="even"><td>&quot;SC&quot;</td><td>SIM (lock SIM/UICC card)</td></tr>
+<tr valign="top" class="odd"><td>&quot;AO&quot;</td><td>BAOC (Barr All Outgoing Calls)</td></tr>
+<tr valign="top" class="even"><td>&quot;OI&quot;</td><td>BOIC (Barr Outgoing International Calls)</td></tr>
+<tr valign="top" class="odd"><td>&quot;OX&quot;</td><td>BOIC-exHC (Barr Outgoing International Call except to Home Country)</td></tr>
+<tr valign="top" class="even"><td>&quot;AI&quot;</td><td>BAIC (Barr All Incoming Calls)</td></tr>
+<tr valign="top" class="odd"><td>&quot;IR&quot;</td><td>BIC-Roam (Barr Incoming Calls when Roaming outside the home country)</td></tr>
+<tr valign="top" class="even"><td>&quot;NT&quot;</td><td>barr incoming calls from numbers Not stored in TA memory</td></tr>
+<tr valign="top" class="odd"><td>&quot;NM&quot;</td><td>barr incoming calls from numbers Not stored to MT memory</td></tr>
+<tr valign="top" class="even"><td>&quot;NS&quot;</td><td>barr incoming calls from numbers not stored to SIM/UICC memory</td></tr>
+<tr valign="top" class="odd"><td>&quot;NA&quot;</td><td>barr incoming calls from numbers Not stored in Any memory</td></tr>
+<tr valign="top" class="even"><td>&quot;AB&quot;</td><td>All Barring services (applicable for <tt>&lt;mode&gt;</tt> = 0)</td></tr>
+<tr valign="top" class="odd"><td>&quot;AG&quot;</td><td>All outGoing barring services (applicable for <tt>&lt;mode&gt;</tt> = 0)</td></tr>
+<tr valign="top" class="even"><td>&quot;AC&quot;</td><td>All inComing barring services (applicable for <tt>&lt;mode&gt;</tt> = 0)</td></tr>
+<tr valign="top" class="odd"><td>&quot;FD&quot;</td><td>SIM card or active application in the UICC fixed dialing memory feature</td></tr>
+<tr valign="top" class="even"><td>&quot;PN&quot;</td><td>Network Personalisation</td></tr>
+<tr valign="top" class="odd"><td>&quot;PU&quot;</td><td>network sUbset Personalisation</td></tr>
+<tr valign="top" class="even"><td>&quot;PP&quot;</td><td>service Provider Personalisation</td></tr>
+<tr valign="top" class="odd"><td>&quot;PC&quot;</td><td>Corporate Personalisation</td></tr>
+</table></p>
+<p>Defined values for <tt>&lt;mode&gt;</tt> are 0 (unlock), 1 (lock) and 2 (query status). Defined values for <tt>&lt;status&gt;</tt> are 0 (not active) and 1 (active).</p>
+<p><tt>&lt;classx&gt;</tt> is a sum of integers that each represent a class of information (default 7) Defined values for <tt>&lt;classx&gt;</tt> are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>1</td><td>voice (telephony)</td></tr>
+<tr valign="top" class="even"><td>2</td><td>data (refers to all bearer services)</td></tr>
+<tr valign="top" class="odd"><td>4</td><td>reserved for future use: fax (facsimile services)</td></tr>
+<tr valign="top" class="even"><td>8</td><td>sms (short message service)</td></tr>
+<tr valign="top" class="odd"><td>16</td><td>data circuit sync</td></tr>
+<tr valign="top" class="even"><td>32</td><td>data circuit async</td></tr>
+<tr valign="top" class="odd"><td>64</td><td>dedicated packet access</td></tr>
+<tr valign="top" class="even"><td>128</td><td>dedicated PAD access</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CCWE Call Meter Maximum Event</b></p>
+<p>The <tt>AT+CCWE</tt> command is used to enable the <tt>+CCWV</tt> unsolicited notification result.</p>
+<p>If enabled, the <tt>+CCWV</tt> unsolicited notification result will be returned when approximately 30 seconds of call time remains, or if less than 30 seconds of call time remains when a new call is started.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CCWE=&lt;mode&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CCWE?</tt></td><td><ul>
+<li><tt>+CCWE: &lt;mode&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CCWE=?</tt></td><td><ul>
+<li><tt>+CCWE:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The <tt>&lt;mode&gt;</tt> parameter can be:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0</td><td>Disable call meter warning event (default)</td></tr>
+<tr valign="top" class="even"><td>1</td><td>Enable call meter warning event</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CPUC Price Per Unit and Currency Table</b></p>
+<p>The <tt>AT+CPUC</tt> command is used to set the parameters of the Advice Of Charge related price per unit and currency table in the SIM card or active application in the UICC. PUCT information can be used to convert the home units (as used in <tt>AT+CAOC</tt>,<tt>AT+CACM</tt> and <tt>AT+CAMM</tt>) into currency units.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPUC=&lt;currency&gt;,&lt;ppu&gt;[,&lt;passwd&gt;]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPUC?</tt></td><td><ul>
+<li><tt>+CPUC: &lt;currency&gt;,&lt;ppu&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CPUC=?</tt></td><td></td></tr>
+</table></p>
+<p>The SIM PIN2 password is usually required to set the Advice Of Charge price per unit parameters.</p>
+<p>The <tt>&lt;currency&gt;</tt> parameter is a 3-character string currency code (e.g&#x2e; &quot;GBP&quot;, &quot;DEM&quot;).</p>
+<p>The <tt>&lt;ppu&gt;</tt> parameter is a string type price per unit; dot is used as a decimal separator (e.g&#x2e; &quot;2.66&quot;).</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CPWD Change Password</b></p>
+<p>The command allows a new password to be set for the facility lock function defined by the <tt>AT+CLCK</tt> command.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPWD=&lt;fac&gt;,&lt;oldpwd&gt;,&lt;newpwd&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPWD=?</tt></td><td><ul>
+<li><tt>+CPWD:</tt>list of supported <tt>(&lt;fac&gt;,&lt;pwdlength&gt;)</tt>s</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>All of the <tt>&lt;fac&gt;</tt>'s from <tt>AT+CLCK</tt> plus &quot;P2&quot; (SIM Pin 2) are defined for this command. <tt>&lt;oldpwd&gt;</tt>,<tt>&lt;newpwd&gt;</tt> are strings; the previous and new passwords for the facility. <tt>&lt;pwdlength&gt;</tt> is the maximum allowed length of a password for the facility.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSIM General SIM Access</b></p>
+<p>This command allows a direct control of the SIM by a distant application on the TE.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Comand</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSIM=&lt;length&gt;,&lt;command&gt;</tt></td><td><ul>
+<li><tt>+CSIM: &lt;length&gt;,&lt;response&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSIM=?</tt></td><td></td></tr>
+</table></p>
+<p>Conforms with 3GPP TS 27.007.</p>
+<p><b>AT+CFUN Set Phone Functionality</b></p>
+<p>The <tt>AT+CFUN</tt> command returns information about the current functionality level of the phone, and allows the level to be modified.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CFUN=&lt;fun&gt;[,&lt;rst&gt;]</tt></td><td><tt>OK</tt>, <tt>ERROR</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CFUN?</tt></td><td><tt>+CFUN: &lt;fun&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CFUN=?</tt></td><td><tt>+CFUN: (0-4),(0-1)</tt></td></tr>
+</table></p>
+<p>Set command selects the level of functionality <tt>&lt;fun&gt;</tt> in the MT. Read command returns the current level. Test command returns the values that are supported by the MT.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;fun&gt;</tt></td><td><ul>
+<li>0 minimum functionality</li>
+<li>1 full functionality</li>
+<li>2 disable phone transmit RF circuits only</li>
+<li>3 disable phone receive RF circuits only</li>
+<li>4 disable phone both transmit and receive RF circuits</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;rst&gt;</tt></td><td><ul>
+<li>0 do not reset the MT before setting it to <tt>&lt;fun&gt;</tt></li>
+<li>1 reset the MT before setting it to <tt>&lt;fun&gt;</tt> (not supported at present)</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p>
+[Previous: <a href="modememulator-callcontrol.html">Modem Emulator - Call Control</a>]
+[Next: <a href="modememulator-phonebook.html">Modem Emulator - Phonebook Operations</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

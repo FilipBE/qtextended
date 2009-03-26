@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QContactDelegate Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QContactDelegate Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>, <a href="qttelephonymodule.html">QtTelephonyModule</a>, <a href="qtuimodule.html">QtUiModule</a>]</span>
+</h1>
+<p>The QContactDelegate class provides drawing of <a href="qcontactmodel.html">QContactModel</a> items (<a href="qcontact.html">QContacts</a>). <a href="#details">More...</a></p>
+<pre>    #include &lt;QContactDelegate&gt;</pre><p>Inherits <a href="qpimdelegate.html">QPimDelegate</a>.</p>
+<p>Inherited by <a href="callcontactdelegate.html">CallContactDelegate</a>.</p>
+<ul>
+<li><a href="qcontactdelegate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcontactdelegate.html#QContactDelegate">QContactDelegate</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qcontactdelegate.html#dtor.QContactDelegate">~QContactDelegate</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>2 public functions inherited from <a href="qpimdelegate.html#public-functions">QPimDelegate</a></li>
+<li><div class="fn"/>7 public functions inherited from <a href="qabstractitemdelegate.html#public-functions">QAbstractItemDelegate</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qabstractitemdelegate.html#public-slots">QAbstractItemDelegate</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>3 signals inherited from <a href="qabstractitemdelegate.html#signals">QAbstractItemDelegate</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qpimdelegate.html#protected-functions">QPimDelegate</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QContactDelegate class provides drawing of <a href="qcontactmodel.html">QContactModel</a> items (<a href="qcontact.html">QContacts</a>).</p>
+<p>By using QContactDelegate, applications dealing with QContacts can achieve a consistent look and feel.</p>
+<p>QContacts are drawn with four major sections per item. There are icons on the left and right sides of the rendered item, and top and bottom lines of text. The data drawn is fetched from the model (which is assumed to be a <a href="qcontactmodel.html">QContactModel</a>), using some additional <a href="qt.html#ItemDataRole-enum">Qt::ItemDataRole</a> values defined in <a href="qcontactmodel.html">QContactModel</a>. The following image illustrates a list of <a href="qcontact.html">QContacts</a> being displayed in a <a href="qcontactlistview.html">QContactListView</a> using a QContactDelegate:</p>
+<p align="center"><img src="images/qcontactview.png" alt="&quot;List of QContacts&quot;" /></p><p><a href="qcontactmodel.html#QContactModelRole-enum">QContactModel::QContactModelRole</a> defines the additional roles used to draw the items:</p>
+<p><table width="80 %" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Role</th><th>Data Type</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qcontactmodel.html#QContactModelRole-enum">QContactModel::PortraitRole</a></td><td><a href="qpixmap.html">QPixmap</a></td><td>Drawn vertically centered on the leading side (left for LTR languages) of the item.</td></tr>
+<tr valign="top" class="even"><td><a href="qt.html#ItemDataRole-enum">Qt::DisplayRole</a></td><td><a href="qstring.html">QString</a></td><td>Plain unformatted text drawn at the top of the item, between any icons.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcontactmodel.html#QContactModelRole-enum">QContactModel::StatusIconRole</a></td><td><a href="qpixmap.html">QPixmap</a></td><td>Optional. Drawn vertically centered on the trailing side (right for LTR languages) of the item.</td></tr>
+<tr valign="top" class="even"><td><a href="qcontactmodel.html#QContactModelRole-enum">QContactModel::SubLabelRole</a></td><td><a href="qstring.html">QString</a></td><td>Drawn as plain text below the label text, if space is available.</td></tr>
+</table></p>
+<p>The first four contacts shown in the picture above have the following data in the <a href="qcontactmodel.html">QContactModel</a>:</p>
+<p><table width="80 %" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>PortraitRole</th><th>DisplayRole</th><th>StatusIconRole</th><th>SubLabelRole</th></tr></thead>
+<tr valign="top" class="odd"><td>Pixmap of a person</td><td>Adam Zucker</td><td>&lt;empty pixmap&gt;</td><td>12345</td></tr>
+<tr valign="top" class="even"><td>Pixmap of a SIM card</td><td>Adam Zucker/h</td><td>&lt;empty pixmap&gt;</td><td>12345</td></tr>
+<tr valign="top" class="odd"><td>Pixmap of a SIM card</td><td>Adam Zucker/m</td><td>&lt;empty pixmap&gt;</td><td>24685</td></tr>
+<tr valign="top" class="even"><td>Pixmap of a person</td><td>Bradley Young</td><td>Pixmap of a briefcase</td><td>48759</td></tr>
+</table></p>
+<p>See also <a href="qcontact.html">QContact</a>, <a href="qcontactlistview.html">QContactListView</a>, <a href="qcontactmodel.html">QContactModel</a>, <a href="qpimdelegate.html">QPimDelegate</a>, and <a href="qpim-library.html">Pim Library</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QContactDelegate"></a>QContactDelegate::QContactDelegate ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qcontactdelegate.html">QContactDelegate</a> with the given <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QContactDelegate"></a>QContactDelegate::~QContactDelegate ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys a <a href="qcontactdelegate.html">QContactDelegate</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

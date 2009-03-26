@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaNetworkProperties Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaNetworkProperties Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaNetworkProperties class reflects the content of a network interface configuration. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaNetworkProperties&gt;</pre><p>Inherits <a href="qmap.html">QMap&lt;QString, QVariant&gt;</a>.</p>
+<ul>
+<li><a href="qtopianetworkproperties-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopianetworkproperties.html#QtopiaNetworkProperties">QtopiaNetworkProperties</a></b> ()</li>
+<li><div class="fn"/><b><a href="qtopianetworkproperties.html#QtopiaNetworkProperties-2">QtopiaNetworkProperties</a></b> ( const QtopiaNetworkProperties &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qtopianetworkproperties.html#dtor.QtopiaNetworkProperties">~QtopiaNetworkProperties</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopianetworkproperties.html#debugDump">debugDump</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>41 public functions inherited from <a href="qmap.html#public-functions">QMap</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaNetworkProperties class reflects the content of a network interface configuration.</p>
+<p>This helper class is used to access network configurations sourced from settings files by mapping keys to values. The following example demonstrates the mapping:</p>
+<pre>    QtopiaNetworkProperties prop;
+<span class="comment">    //populate with content of Configuration.conf</span>
+    ...
+
+    QSettings s(&quot;Configuration&quot;, QSettings::IniFormat);
+    s.beginGroup( &quot;Group&quot; );
+    QString value = s.value(&quot;Key&quot;).toString();
+    ...
+
+<span class="comment">    //Is true</span>
+    value == prop.value(&quot;Group/Key&quot;).toString();</pre>
+<p>See also <a href="qmap.html">QMap</a> and <a href="qsettings.html">QSettings</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtopiaNetworkProperties"></a>QtopiaNetworkProperties::QtopiaNetworkProperties ()</h3>
+<p>Constructs an empty property map.</p>
+<h3 class="fn"><a name="QtopiaNetworkProperties-2"></a>QtopiaNetworkProperties::QtopiaNetworkProperties ( const QtopiaNetworkProperties &amp; <i>other</i> )</h3>
+<p>Constructs a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QtopiaNetworkProperties"></a>QtopiaNetworkProperties::~QtopiaNetworkProperties ()</h3>
+<p>Destroys the object.</p>
+<h3 class="fn"><a name="debugDump"></a>void QtopiaNetworkProperties::debugDump () const</h3>
+<p>This function dumps the content to the Network log stream if Qt Extended is build in debug mode; otherwise does nothing.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

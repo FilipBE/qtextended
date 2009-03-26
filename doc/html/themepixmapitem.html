@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ThemePixmapItem Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ThemePixmapItem Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The ThemePixmapItem class contains common functionality for image based items in a <a href="themedview.html">ThemedView</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;ThemePixmapItem&gt;</pre><p>Inherits <a href="themegraphicitem.html">ThemeGraphicItem</a>.</p>
+<p>Inherited by <a href="themeanimationitem.html">ThemeAnimationItem</a>, <a href="themeimageitem.html">ThemeImageItem</a>, and <a href="themestatusitem.html">ThemeStatusItem</a>.</p>
+<ul>
+<li><a href="themepixmapitem-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="themepixmapitem.html#ThemePixmapItem">ThemePixmapItem</a></b> ( ThemeItem * <i>parent</i>, ThemedView * <i>view</i>, const ThemeAttributes &amp; <i>atts</i> )</li>
+<li><div class="fn"/>virtual <b><a href="themepixmapitem.html#dtor.ThemePixmapItem">~ThemePixmapItem</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>20 public functions inherited from <a href="themeitem.html#public-functions">ThemeItem</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="themepixmapitem.html#colorizeImage">colorizeImage</a></b> ( QImage &amp; <i>img</i>, const QColor &amp; <i>col</i>, int <i>alpha</i>, bool <i>blendColor</i> = true )</li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>QPixmap <b><a href="themepixmapitem.html#loadImage">loadImage</a></b> ( const QString &amp; <i>filename</i>, int <i>colorRole</i>, const QColor &amp; <i>col</i>, int <i>alpha</i>, int <i>width</i> = 0, int <i>height</i> = 0 )</li>
+<li><div class="fn"/>QPixmap <b><a href="themepixmapitem.html#pixmap">pixmap</a></b> ( const QString &amp; <i>key</i>, ThemeItem::State <i>state</i> = ThemeItem::Default ) const</li>
+<li><div class="fn"/>QPixmap <b><a href="themepixmapitem.html#pixmap-2">pixmap</a></b> ( const QLatin1String &amp; <i>key</i>, ThemeItem::State <i>state</i> = ThemeItem::Default ) const</li>
+<li><div class="fn"/>void <b><a href="themepixmapitem.html#setPixmap">setPixmap</a></b> ( const QString &amp; <i>key</i>, const QPixmap &amp; <i>value</i>, ThemeItem::State <i>state</i> = ThemeItem::Default, const QString &amp; <i>filename</i> = QString::null )</li>
+<li><div class="fn"/>void <b><a href="themepixmapitem.html#setPixmap-2">setPixmap</a></b> ( const QLatin1String &amp; <i>key</i>, const QPixmap &amp; <i>value</i>, ThemeItem::State <i>state</i> = ThemeItem::Default, const QString &amp; <i>filename</i> = QString::null )</li>
+</ul>
+<ul>
+<li><div class="fn"/>15 protected functions inherited from <a href="themegraphicitem.html#protected-functions">ThemeGraphicItem</a></li>
+<li><div class="fn"/>21 protected functions inherited from <a href="themeitem.html#protected-functions">ThemeItem</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ThemePixmapItem class contains common functionality for image based items in a <a href="themedview.html">ThemedView</a>.</p>
+<p>As several items such as <a href="themeimageitem.html">ThemeImageItem</a>, <a href="themelevelitem.html">ThemeLevelItem</a> and <a href="themestatusitem.html">ThemeStatusItem</a> are based on images, a ThemePixmapItem provides the convenient <a href="themepixmapitem.html#setPixmap">setPixmap</a>() and <a href="themepixmapitem.html#pixmap">pixmap</a>() functions to access and store images based on a name and state pair of values.</p>
+<p>Normally you do not want to call this item's functions directly, but rather specify the relevant attributes and data for this item in the themed view XML.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="ThemePixmapItem"></a>ThemePixmapItem::ThemePixmapItem ( <a href="themeitem.html">ThemeItem</a> * <i>parent</i>, <a href="themedview.html">ThemedView</a> * <i>view</i>, const ThemeAttributes &amp; <i>atts</i> )</h3>
+<p>Constructs a <a href="themepixmapitem.html">ThemePixmapItem</a>. <i>parent</i>, <i>view</i> and <i>atts</i> are passed to the base class constructor.</p>
+<h3 class="fn"><a name="dtor.ThemePixmapItem"></a>ThemePixmapItem::~ThemePixmapItem ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="themepixmapitem.html">ThemePixmapItem</a>.</p>
+<h3 class="fn"><a name="colorizeImage"></a>void ThemePixmapItem::colorizeImage ( <a href="qimage.html">QImage</a> &amp; <i>img</i>, const <a href="qcolor.html">QColor</a> &amp; <i>col</i>, int <i>alpha</i>, bool <i>blendColor</i> = true )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Blend the color <i>col</i> and the alpha value <i>alpha</i> with the image <i>img</i> if <i>blendColor</i> is true (the default). If <i>blendColor</i> is false, only the alpha value <i>alpha</i> is blended. This function modifies <i>img</i> directly.</p>
+<h3 class="fn"><a name="loadImage"></a><a href="qpixmap.html">QPixmap</a> ThemePixmapItem::loadImage ( const <a href="qstring.html">QString</a> &amp; <i>filename</i>, int <i>colorRole</i>, const <a href="qcolor.html">QColor</a> &amp; <i>col</i>, int <i>alpha</i>, int <i>width</i> = 0, int <i>height</i> = 0 )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Loads the image given by <i>filename</i> for the given <i>width</i> and <i>height</i>. If <i>colorRole</i> is a valid index to <a href="qpalette.html">QPalette</a>, or if the color <i>col</i> is valid, and <i>alpha</i> is less than 255, the image is passed through <a href="themepixmapitem.html#colorizeImage">ThemePixmapItem::colorizeImage</a>(). Returns the loaded image.</p>
+<h3 class="fn"><a name="pixmap"></a><a href="qpixmap.html">QPixmap</a> ThemePixmapItem::pixmap ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, <a href="themeitem.html#State-enum">ThemeItem::State</a> <i>state</i> = ThemeItem::Default ) const&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Returns the pixmap for the given <i>key</i> and state <i>state</i>. <i>state</i> has a default value of <a href="themeitem.html#State-enum">ThemeItem::Default</a>.</p>
+<p>See also <a href="themepixmapitem.html#setPixmap">setPixmap</a>().</p>
+<h3 class="fn"><a name="pixmap-2"></a><a href="qpixmap.html">QPixmap</a> ThemePixmapItem::pixmap ( const <a href="qlatin1string.html">QLatin1String</a> &amp; <i>key</i>, <a href="themeitem.html#State-enum">ThemeItem::State</a> <i>state</i> = ThemeItem::Default ) const&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns the pixmap for the given <i>key</i> and state <i>state</i>. <i>state</i> has a default value of <a href="themeitem.html#State-enum">ThemeItem::Default</a>.</p>
+<p>This function was introduced in Qtopia 4.3&#x2e;1.</p>
+<h3 class="fn"><a name="setPixmap"></a>void ThemePixmapItem::setPixmap ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, const <a href="qpixmap.html">QPixmap</a> &amp; <i>value</i>, <a href="themeitem.html#State-enum">ThemeItem::State</a> <i>state</i> = ThemeItem::Default, const <a href="qstring.html">QString</a> &amp; <i>filename</i> = QString::null )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the pixmap <i>value</i> for the given <i>key</i> and state <i>state</i> from <i>filename</i>. <i>state</i> has a default value of <a href="themeitem.html#State-enum">ThemeItem::Default</a>.</p>
+<p>See also <a href="themepixmapitem.html#pixmap">pixmap</a>().</p>
+<h3 class="fn"><a name="setPixmap-2"></a>void ThemePixmapItem::setPixmap ( const <a href="qlatin1string.html">QLatin1String</a> &amp; <i>key</i>, const <a href="qpixmap.html">QPixmap</a> &amp; <i>value</i>, <a href="themeitem.html#State-enum">ThemeItem::State</a> <i>state</i> = ThemeItem::Default, const <a href="qstring.html">QString</a> &amp; <i>filename</i> = QString::null )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sets the pixmap <i>value</i> for the given <i>key</i> and state <i>state</i> from <i>filename</i>. <i>state</i> has a default value of <a href="themeitem.html#State-enum">ThemeItem::Default</a>.</p>
+<p>This function was introduced in Qtopia 4.3&#x2e;1.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

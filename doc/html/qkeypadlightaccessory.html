@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QKeypadLightAccessory Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QKeypadLightAccessory Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QKeypadLightAccessory class provides access to the keypad light on a phone. <a href="#details">More...</a></p>
+<pre>    #include &lt;QKeypadLightAccessory&gt;</pre><p>Inherits <a href="qhardwareinterface.html">QHardwareInterface</a>.</p>
+<p>Inherited by <a href="qkeypadlightaccessoryprovider.html">QKeypadLightAccessoryProvider</a>.</p>
+<ul>
+<li><a href="qkeypadlightaccessory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qkeypadlightaccessory.html#QKeypadLightAccessory">QKeypadLightAccessory</a></b> ( const QString &amp; <i>id</i> = QString(), QObject * <i>parent</i> = 0, QAbstractIpcInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qkeypadlightaccessory.html#dtor.QKeypadLightAccessory">~QKeypadLightAccessory</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qkeypadlightaccessory.html#on">on</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qkeypadlightaccessory.html#setOn">setOn</a></b> ( const bool <i>value</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qkeypadlightaccessory.html#onModified">onModified</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QKeypadLightAccessory class provides access to the keypad light on a phone.</p>
+<p>QKeypadLightAccessory can be used to turn the keypad light on and off using <a href="qkeypadlightaccessory.html#setOn">setOn</a>(). For example the following code can be used to turn on the keypad light from within a client application:</p>
+<pre>    QKeypadLightAccessory light;
+    light.setOn( true );</pre>
+<p>Keypad light implementations should inherit from <a href="qkeypadlightaccessoryprovider.html">QKeypadLightAccessoryProvider</a>.</p>
+<p>See also <a href="qkeypadlightaccessoryprovider.html">QKeypadLightAccessoryProvider</a> and <a href="qhardwareinterface.html">QHardwareInterface</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QKeypadLightAccessory"></a>QKeypadLightAccessory::QKeypadLightAccessory ( const <a href="qstring.html">QString</a> &amp; <i>id</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new keypad light bstraction for <i>id</i> and attaches it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>id</i> is empty, this class will use the first available provider that supports the keypad light interface. If there is more than one service that supports the keypad light interface, the caller should enumerate them with <a href="qhardwaremanager.html#providers">QHardwareManager::providers</a>() and create separate <a href="qkeypadlightaccessory.html">QKeypadLightAccessory</a> objects for each.</p>
+<p>See also <a href="qhardwaremanager.html#providers">QHardwareManager::providers</a>().</p>
+<h3 class="fn"><a name="dtor.QKeypadLightAccessory"></a>QKeypadLightAccessory::~QKeypadLightAccessory ()</h3>
+<p>Destroys the keypad light accessory object.</p>
+<h3 class="fn"><a name="on"></a>bool QKeypadLightAccessory::on () const</h3>
+<p>Returns true if the keypad light is currently on; otherwise returns false.</p>
+<p>See also <a href="qkeypadlightaccessory.html#setOn">setOn</a>().</p>
+<h3 class="fn"><a name="onModified"></a>void QKeypadLightAccessory::onModified ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the state of the keypad light changes.</p>
+<h3 class="fn"><a name="setOn"></a>void QKeypadLightAccessory::setOn ( const bool <i>value</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Turns the keypad light on if <i>value</i> is true; otherwise it is turned off.</p>
+<p>See also <a href="qkeypadlightaccessory.html#on">on</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

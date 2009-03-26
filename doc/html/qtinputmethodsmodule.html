@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt InputMethods Module</title>
+  <link rel="prev" href="qtinfraredmodule.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="qtipcommsmodule.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtinfraredmodule.html">Qt Infrared Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtipcommsmodule.html">Qt IPComms Module</a>]
+</p>
+<h1 class="title">Qt InputMethods Module<br /><span class="subtitle"></span>
+</h1>
+<a name="qtinputmethodsmodule"></a><p>The Qt <a href="inputmethods.html">InputMethods</a> module offers a range of input methods suitable for different use cases. This module is based on the <a href="qtbasemodule.html">Base module</a>.</p>
+<p>The following configure line can be used to build the Base and <a href="inputmethods.html">InputMethods</a> module only:</p>
+<pre>    ./configure -modules inputmethods -device xyz</pre>
+<p>Note that not specifying a device profile would result in the reference device being build.</p>
+<a name="feature-description"></a>
+<h2>Feature description</h2>
+<p>The Qt Extended <a href="inputmethods.html">InputMethods</a> module provides the variety of <a href="inputmethods-description.html">input methods</a> suitable for different use cases. New input method plug-ins can be added by implementing the <a href="qtopiainputmethod.html">QtopiaInputMethod</a> interface. Together with <a href="userinput.html">input/output related classes</a> it builds the framework for input method plug-ins. For more architecture details see the <a href="qpeinputmethod-class-overview.html">IM class overview</a>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Details</th></tr></thead>
+<tr valign="top" class="odd"><td>Phone Keys</td><td>This input methods is intended for use with keypad buttons using the standard 0-9, * and # keys. A dictionary is used to determine the most likely intended input.</td></tr>
+<tr valign="top" class="even"><td>Full Screen Handwriting</td><td>This input method can be used when using a pointing device such as a mouse or touchscreen. Text is entered by <a href="inputmethods-description.html#full-screen-handwriting">drawing a character</a> at a time. Multiple strokes can be used to compose characters.</td></tr>
+<tr valign="top" class="odd"><td>Virtual keyboards</td><td>Virtual keyboards show a simplified keyboard on the screen. The user enters text by clicking on the appropriate buttons. Qt Extended offers two types of virtual keyboards:<ul>
+<li>The <a href="inputmethods-description.html#the-predictive-keyboard">predictive keyboard</a> is designed for fingers which are less accurate than pointing devices. It uses a dictionary to resolve possible ambiguities.</li>
+<li>The <a href="inputmethods-description.html#the-qt-extended-keyboard">Standard Keyboard</a> shows a qwerty keyboard. Pressing a key on the keyboard creates a key event for that key and passes it on to the focus widget.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Input hinting</td><td>An input widget may hint what type of input it expects. This enables input methods to provide more targets input forms. A hint may for example be <tt>words</tt> (dictionary can be used), <tt>phone</tt> (phone number is expected) or <tt>text</tt> (name or password). Depending on the input method the actual behaviour may differ.</td></tr>
+<tr valign="top" class="odd"><td>Dictionary lookup</td><td>Qt Extended incorporates language specific dictionaries. This allows spell checking, guessing of input (e.g&#x2e; when using <a href="styleguide.html#phonekeys">PhoneKeys</a>) or can be used to remove ambiguities in the case of the predictive keyboard.</td></tr>
+</table></p>
+<a name="software-components"></a>
+<h2>Software components</h2>
+<p>The InputMethod module includes the following software components:</p>
+<ul>
+<li><tt>plugins/inputmethods/dockedkeyboard</tt> - Docked keyboard plug-in</li>
+<li>Handwriting settings application</li>
+<li>Inputmethod server (server component)</li>
+<li><tt>plugins/inputmethods/keyboard</tt> - Keyboard plug-in</li>
+<li><tt>libraries/handwriting</tt> (handwriting library)</li>
+<li><tt>plugins/inputmethods/pinyin</tt> - Pinyin inputmethod plug-in</li>
+<li><tt>plugins/inputmethods/predictivekeyboard</tt> - Predictive keyboard plug-in</li>
+<li><tt>3rdparty/plugins/inputmethods/pkim</tt> - T9 and fullscreen handwriting plug-in</li>
+<li>Words application</li>
+</ul>
+<p>The exact list of components included in this module can be found in <tt>$QPEDIR/src/module_inputmethods.pri</tt>.</p>
+<p>The <a href="tp-module-inputmethods.html">test plan</a> for the InputMethod module summarizes the Quality Assurance procedures for this module. The results of these test are available <a href="qt-extended-test-results.html">here</a>.</p>
+<p>The following table contains all classes and services which are part of this module:</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="inputmethodselector.html">InputMethodSelector</a></th><td>Provides the user-visible aspects of the Input Method system</td></tr>
+<tr valign="top" class="even"><th><a href="inputmethodservice.html">InputMethod</a></th><td>The InputMethod service</td></tr>
+<tr valign="top" class="odd"><th><a href="inputmethods.html">InputMethods</a></th><td>Implementation of Qt Extended server input method handling</td></tr>
+<tr valign="top" class="even"><th><a href="pkim.html">PkIM</a></th><td>Input method based on a standard telephone keypad. Also provides full screen handwriting input</td></tr>
+<tr valign="top" class="odd"><th><a href="qimpenchar.html">QIMPenChar</a></th><td>Handles a single character for the stroke recognition libraries</td></tr>
+<tr valign="top" class="even"><th><a href="qimpencharset.html">QIMPenCharSet</a></th><td>Maintains a set of related characters</td></tr>
+</table></p>
+<p>
+[Previous: <a href="qtinfraredmodule.html">Qt Infrared Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtipcommsmodule.html">Qt IPComms Module</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

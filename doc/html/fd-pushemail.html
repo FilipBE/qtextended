@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Messaging: Email: Push Email</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Messaging: Email: Push Email<br><small>Functional Description</small></h1><p>
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1467">Push-IMAP</a>
+</ul><h3><a name=QTOPIA-1467>Push-IMAP</a></h3>
+<p>Qt Extended supports push email for IMAP servers that support the IDLE extension (RFC2177).
+
+<p>Previously Qtmail was limited to synchronizing with IMAP servers when either the user manually checked mail (using the 'Get all mail' menu option) or during periodic polling (if interval checking was enabled). This had the disadvantage that if a user required that they be quickly notified of newly arrived mail (say normally at most a few minutes after the mail arrived) then they would be required to check mail frequently (every few minutes) which could lead to high data charges for users charged on the amount of traffic used.</p>
+
+<p>As Qt Extended supports IMAP IDLE based push email:<br/>
+1) For IMAP accounts the 'Push enabled' checkbox can be turned on to enable IMAP IDLE based push email.<br/>
+2) For such accounts a long lived connection to the server of the account is created when the messaging server starts up and an IDLE command is periodically sent to the server to keep the connection open (once every 28 minutes). If the connection cannot be created at startup then errors are logged and another attempt is made when the account is manually checked for mail.<br/>
+3) This long lived connection is used to monitor the account for newly arrived messsages, in which case standard mail checking for the account is invoked causing all new messages to be retrieved.<br/>
+4) Alternatively if the server does not support the IMAP IDLE command then errors are logged using the conventional qLog mechanism using the IMAP category.</p>
+
+<p>This support allows Qt Extended device users to be quickly notified of new messages (normally within a few seconds) arriving in IMAP accounts that support the IDLE extension, without the use of excessive (and potentially expensive) network bandwith.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

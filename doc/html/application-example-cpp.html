@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>example.cpp Example File (application/example.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">example.cpp Example File<br /><span class="small-subtitle">application/example.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;example.h&quot;
+    #include &lt;qpushbutton.h&gt;
+    #include &lt;qsoftmenubar.h&gt;
+
+<span class="comment">    /*
+     *  Constructs a Example which is a child of 'parent', with the
+     *  name 'name' and widget flags set to 'f'
+     */</span>
+    Example::Example(QWidget *parent, Qt::WFlags f)
+        : QWidget(parent, f)
+    {
+        setupUi(this); <span class="comment">// reads the .ui file to determine widgets and layout</span>
+        <span class="comment">// Construct context menu, available to the user via Qtopia's soft menu bar.</span>
+        QMenu *menu = QSoftMenuBar::menuFor(this);
+        Q_UNUSED(menu); <span class="comment">// Normally, we would use &quot;menu&quot; to add more actions.</span>
+        <span class="comment">// The context menu will not be active unless it has at least one action.</span>
+        <span class="comment">// Tell Qtopia to provide the &quot;Help&quot; option, which will enable the user to</span>
+        <span class="comment">// read the Help documentation for this application.</span>
+        QSoftMenuBar::setHelpEnabled(this,true);
+    }
+
+<span class="comment">    /*
+     *  Destroys the object and frees any allocated resources
+     */</span>
+    Example::~Example()
+    {
+        <span class="comment">// no need to delete child widgets, Qt does it all for us</span>
+    }
+
+<span class="comment">    /*
+     *  Every time the quit button is clicked, this slot will be invoked
+     *  (see QMetaObject::connectSlotsByName()).
+     */</span>
+    void Example::on_QuitButton_clicked()
+    {
+        close();
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

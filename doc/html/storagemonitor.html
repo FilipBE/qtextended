@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StorageMonitor Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">StorageMonitor Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The StorageMonitor class periodically checks filesystems for available space and prompts to start the cleanup wizard if low. <a href="#details">More...</a></p>
+<pre>    #include &lt;StorageMonitor&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="storagemonitor-members.html">List of all members, including inherited members</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The StorageMonitor class periodically checks filesystems for available space and prompts to start the cleanup wizard if low.</p>
+<p>Periodically the StorageMonitor class examines the writable filesystems for free space. The polling frequency can be controlled through configuration. If the amount of free space, summed across all writable filesystems, is found to be below a configurable limit, a dialog box is displayed prompting the user to delete unwanted documents. If an application providing the <tt>CleanupWizard</tt> service is installed, the user can also directly launch the cleanup wizard.</p>
+<p>As it is primarily a graphical feature, to preserve power the storage monitor suspends polling while the device's screen is turned off, on the rationale that the user is probably not present or interacting with the device.</p>
+<p>The StorageMonitor class is configured through the <tt>Trolltech/qpe</tt> settings file. The following keys control the configuration.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Key</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>StorageMonitor/Enabled</tt></td><td>Set to false if the storage monitor is to be disabled. By default this value is true and the storage monitor is enabled.</td></tr>
+<tr valign="top" class="even"><td><tt>StorageMonitor/UpdatePeriod</tt></td><td>The rate, in seconds, at which the storage monitor polls the filesystems. By default this is 60 seconds.</td></tr>
+<tr valign="top" class="odd"><td><tt>StorageMonitor/MinimalStorageLimit</tt></td><td>When the total free space summed across all writable filesystems is below this value, in percent, the storage monitor dialog will be triggered. By default this is 10 percent. Note that <tt>MaxAbsolute</tt> and <tt>MinAbsolute</tt> can override certain aspects of this condition. Setting this value to <tt>0</tt> disables relative storage alarms.</td></tr>
+<tr valign="top" class="even"><td><tt>StorageMonitor/MaxAbsolute</tt></td><td>The storage monitor will never be triggered unless the total free space is below this value (no matter what the relative <tt>minimalStorageLimit</tt> value is set to). This value is measured in megabyte and defaults to 100 MB. Setting this value to <tt>0</tt> causes the monitor to ignore this type of alarm adjustment.</td></tr>
+<tr valign="top" class="odd"><td><tt>StorageMonitor/MinAbsolute</tt></td><td>The storage monitor will always be triggered if the absolute amount of remaining storage space is below this value (no matter what the relative <tt>MinimalStorageLimit</tt> value is set to). This value is measured in megabyte and defaults to 1 MB. Setting this value to <tt>0</tt> causes the monitor to ignore this type of alarm adjustment. <tt>MinAbsolute</tt> takes precedence if <tt>MaxAbsolute &gt;= MinAbsolute</tt>.</td></tr>
+</table></p>
+<pre>    #Trolltech/qpe.conf
+    [StorageMonitor]
+    MinimalStorageLimit=7
+    MaxAbsolute=200
+    MinAbsolute=5</pre>
+<p>The above example triggers the monitor alarm if the total free space is below 7% but not if the free space is above 200MB (for devices with big file systems). It also triggers the alarm if the device's total free space drops below 5MB even if that equates to more than 7% of the total space (for devices with small file systems).</p>
+<p>Polls, by default, every 60 seconds, but pauses when screen is off or there are no writable file systems. Checks for CleanupWizard service.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

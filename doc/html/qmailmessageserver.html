@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailMessageServer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailMessageServer Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>]</span>
+</h1>
+<p>The QMailMessageServer class provides signals and slots which implement a convenient interface for communicating with the MessageServer process via IPC. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailMessageServer&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qmailmessageserver-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmailmessageserver.html#ErrorCode-enum">ErrorCode</a></b> { ErrNoError, ErrUnknownResponse, ErrLoginFailed, ErrCancel, ..., ErrInvalidAddress }</li>
+<li><div class="fn"/>enum <b><a href="qmailmessageserver.html#Operation-enum">Operation</a></b> { None, Send, Retrieve }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailmessageserver.html#QMailMessageServer">QMailMessageServer</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qmailmessageserver.html#dtor.QMailMessageServer">~QMailMessageServer</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#acknowledgeNewMessages">acknowledgeNewMessages</a></b> ( const QMailMessageTypeList &amp; <i>types</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#cancelSearch">cancelSearch</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#cancelTransfer">cancelTransfer</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#completeRetrieval">completeRetrieval</a></b> ( const QMailMessageIdList &amp; <i>mailList</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#deleteMessages">deleteMessages</a></b> ( const QMailMessageIdList &amp; <i>mailList</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#retrieve">retrieve</a></b> ( const QMailAccountId &amp; <i>id</i>, bool <i>foldersOnly</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#searchMessages">searchMessages</a></b> ( const QMailMessageKey &amp; <i>filter</i>, const QString &amp; <i>bodyText</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#send">send</a></b> ( const QMailMessageIdList &amp; <i>mailList</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#errorOccurred">errorOccurred</a></b> ( const QMailAccountId &amp; <i>accountId</i>, const QString &amp; <i>text</i>, int <i>errorCode</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#matchingMessageIds">matchingMessageIds</a></b> ( const QMailMessageIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#messageRetrieved">messageRetrieved</a></b> ( const QMailMessageMetaData &amp; <i>message</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#messageSent">messageSent</a></b> ( const QMailMessageId &amp; <i>id</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#newCountChanged">newCountChanged</a></b> ( const QMailMessageCountMap &amp; <i>counts</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#partialMessageRetrieved">partialMessageRetrieved</a></b> ( const QMailMessageMetaData &amp; <i>message</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#partialRetrievalCompleted">partialRetrievalCompleted</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#retrievalCompleted">retrievalCompleted</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#retrievalProgress">retrievalProgress</a></b> ( uint <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#retrievalTotal">retrievalTotal</a></b> ( uint <i>total</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#searchCompleted">searchCompleted</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#searchProgress">searchProgress</a></b> ( uint <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#searchTotal">searchTotal</a></b> ( uint <i>total</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#sendCompleted">sendCompleted</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#sendProgress">sendProgress</a></b> ( uint <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#sendTotal">sendTotal</a></b> ( uint <i>total</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageserver.html#statusChanged">statusChanged</a></b> ( QMailMessageServer::Operation <i>operation</i>, const QString &amp; <i>accountName</i>, const QString &amp; <i>text</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailMessageServer class provides signals and slots which implement a convenient interface for communicating with the MessageServer process via IPC.</p>
+<p>Qt Extended messaging applications can send and receive messages of various types by communicating with the external MessageServer application. The MessageServer application is a separate process, communicating with clients via inter-process messages. QMailMessageServer acts as a proxy object for the server process, providing an interface for communicating with the MessageServer by the use of signals and slots in the client process. It provides Qt signals corresponding to messages received from the MessageServer application, and Qt slots which send messages to the MessageServer when invoked.</p>
+<p>For most messaging client applications, the <a href="qmailserviceaction.html">QMailServiceAction</a> objects offer a simpler interface for requesting actions from the messageserver, and assessing their results.</p>
+<p>Note: the functions performed by the message server and the interface to them provided by the QMailMessageServer class are expected to change in a future release of Qt Extended, to provide a finer-grained interface for communicating with external services.</p>
+<a name="new-messages"></a>
+<h3>New Messages</h3>
+<p>When a client initiates communication with the MessageServer, the server informs the client of the number and type of 'new' messages, via the <a href="qmailmessageserver.html#newCountChanged">newCountChanged</a>() signal. 'New' messages are those that arrive without the client having first requested their retrieval. The client may choose to invalidate the 'new' status of these messages; if the <a href="qmailmessageserver.html#acknowledgeNewMessages">acknowledgeNewMessages</a>() slot is invoked, the count of 'new' messages is reset to zero for the nominated message types. If the count of 'new' messages changes while a client is active, the <a href="qmailmessageserver.html#newCountChanged">newCountChanged</a>() signal is emitted with the updated information.</p>
+<a name="sending-messages"></a>
+<h3>Sending Messages</h3>
+<p>To send messages, the client should construct instances of the <a href="qmailmessage.html">QMailMessage</a> class formulated to contain the desired content. These messages should be stored to the mail store, then submitted for transmission by their <a href="qmailmessageid.html">QMailMessageId</a> values, via the <a href="qmailmessageserver.html#send">send</a>() slot. The MessageServer will determine how to transmit each message by inspecting the account associated with the message.</p>
+<p>If the MessageServer application succeeds in sending a message, the <a href="qmailmessageserver.html#messageSent">messageSent</a>() signal is emitted to notify the client. After transmission has been attempted for each message in the list, the <a href="qmailmessageserver.html#sendCompleted">sendCompleted</a>() signal is emitted; any messages for which a <a href="qmailmessageserver.html#messageSent">messageSent</a>() signal was not emitted were not successfully transmitted.</p>
+<p>After a send operation is initiated, the MessageServer emits the <a href="qmailmessageserver.html#sendTotal">sendTotal</a>() signal to indicate the approximate extent of the transmission effort. As progress is made in performing the transmission operation, the <a href="qmailmessageserver.html#sendProgress">sendProgress</a>() signal is repeatedly emitted to report the progress toward completion of the operation.</p>
+<a name="retrieving-messages"></a>
+<h3>Retrieving Messages</h3>
+<p>To retrieve messages, the client should invoke the <a href="qmailmessageserver.html#retrieve">retrieve</a>() slot with the identifier for the account to retrieve new messages for. If new messages are discovered, the <a href="qmailmessageserver.html#messageRetrieved">messageRetrieved</a>() signal is emitted for each message. After retrieval has been attempted for all new messages, the <a href="qmailmessageserver.html#retrievalCompleted">retrievalCompleted</a>() signal is emitted.</p>
+<p>After a retrieval operation is initiated, the MessageServer emits the <a href="qmailmessageserver.html#retrievalTotal">retrievalTotal</a>() signal to indicate the approximate extent of the retrieval effort. As progress is made in performing the retrieval operation, the <a href="qmailmessageserver.html#retrievalProgress">retrievalProgress</a>() signal is repeatedly emitted to report the progress toward completion of the operation.</p>
+<a name="partial-retrieval"></a>
+<h4>Partial Retrieval</h4>
+<p>If the message type supports partial retrieval (such as with POP or IMAP email messages), the <a href="qmailmessageserver.html#partialMessageRetrieved">partialMessageRetrieved</a>() signal is emitted for each message once it has been partially retrieved. After all new messages have been partially retrieved, the <a href="qmailmessageserver.html#partialRetrievalCompleted">partialRetrievalCompleted</a>() signal is emitted.</p>
+<a name="completing-partial-retrievals"></a>
+<h4>Completing Partial Retrievals</h4>
+<p>The client must invoke the <a href="qmailmessageserver.html#completeRetrieval">completeRetrieval</a>() operation in response to receiving the <a href="qmailmessageserver.html#partialRetrievalCompleted">partialRetrievalCompleted</a>() signal, to complete the retrieval operation. A client may also invoke the <a href="qmailmessageserver.html#completeRetrieval">completeRetrieval</a>() slot without first performing a retrieval operation. If the list of messages to complete is empty, no further retrieval action will be taken. For any messages contained in the list, the MessageServer will attempt to retrieve the remainder of the message. If the message whose retrieval is requested cannot be found on the external server, the mail store message record is updated to contain the <tt>Removed</tt> status flag. After retrieval completion has been attempted for all requested messages, the <a href="qmailmessageserver.html#retrievalCompleted">retrievalCompleted</a>() signal is emitted.</p>
+<a name="folder-retrieval"></a>
+<h4>Folder Retrieval</h4>
+<p>It is possible to retrieve only the folder structure of an account rather than the messages contained by the folders, by invoking <a href="qmailmessageserver.html#retrieve">retrieve</a>() retrieve slot with the <tt>foldersOnly</tt> option set to true. When the folder retrieval operation is complete, it is not necessary to invoke the <a href="qmailmessageserver.html#completeRetrieval">completeRetrieval</a>() operation.</p>
+<a name="cancellation"></a>
+<h3>Cancellation</h3>
+<p>In order to cancel an operation previously initiated, the client can invoke the <a href="qmailmessageserver.html#cancelTransfer">cancelTransfer</a>() slot.</p>
+<a name="server-status"></a>
+<h3>Server Status</h3>
+<p>As the MessageServer application performs the operations requested of it, it indicates the tasks it is performing by emitting the <a href="qmailmessageserver.html#statusChanged">statusChanged</a>() signal. If it encounters an error that prevents an operation from being performed, the <a href="qmailmessageserver.html#errorOccurred">errorOccurred</a>() signal is emitted.</p>
+<p>See also <a href="qmailserviceaction.html">QMailServiceAction</a>, <a href="qmailmessage.html">QMailMessage</a>, and <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ErrorCode-enum"></a>enum QMailMessageServer::ErrorCode</h3>
+<p>This enum type defines error codes emitted by the MessageServer application.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrNoError</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">No error has occurred.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrUnknownResponse</tt></td><td align="center" valign="top"><tt>ErrorCodeBase</tt></td><td valign="top">The response from an external server could not be processed correctly.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrLoginFailed</tt></td><td align="center" valign="top">?</td><td valign="top">The login attempt was refused by an external server.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrCancel</tt></td><td align="center" valign="top">?</td><td valign="top">The operation was cancelled by a user action.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrFileSystemFull</tt></td><td align="center" valign="top">?</td><td valign="top">The file system does not have enough space to support the requested operation.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrNonexistentMessage</tt></td><td align="center" valign="top">?</td><td valign="top">The specified message does not exist.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrEnqueueFailed</tt></td><td align="center" valign="top">?</td><td valign="top">The supplied message could not be enqueued for transmission.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrNoConnection</tt></td><td align="center" valign="top">?</td><td valign="top">No external network connection could be selected to use for transmission.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrConnectionInUse</tt></td><td align="center" valign="top">?</td><td valign="top">The external network connection is already in use.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrConnectionNotReady</tt></td><td align="center" valign="top">?</td><td valign="top">The external network connection could not be prepared for transmission.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrConfiguration</tt></td><td align="center" valign="top">?</td><td valign="top">The account in use does not have a valid configuration.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::ErrInvalidAddress</tt></td><td align="center" valign="top">?</td><td valign="top">The supplied message does not have a conforming address specification.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Operation-enum"></a>enum QMailMessageServer::Operation</h3>
+<p>This enum type is used to indicate the type of server operation to which a status notification relates.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailMessageServer::None</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The notification is not specifically relating to a send or retrieve operation.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::Send</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The notification relates to a send operation.</td></tr>
+<tr><td valign="top"><tt>QMailMessageServer::Retrieve</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The notification relates to a retrieve operation.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailMessageServer"></a>QMailMessageServer::QMailMessageServer ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qmailmessageserver.html">QMailMessageServer</a> object with parent <i>parent</i>, and initiates communication with the MessageServer application.</p>
+<h3 class="fn"><a name="dtor.QMailMessageServer"></a>QMailMessageServer::~QMailMessageServer ()</h3>
+<p>Destroys the <a href="qmailmessageserver.html">QMailMessageServer</a> object.</p>
+<h3 class="fn"><a name="acknowledgeNewMessages"></a>void QMailMessageServer::acknowledgeNewMessages ( const QMailMessageTypeList &amp; <i>types</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer reset the counts of 'new' messages to zero, for each message type listed in <i>types</i>.</p>
+<p>See also <a href="qmailmessageserver.html#newCountChanged">newCountChanged</a>().</p>
+<h3 class="fn"><a name="cancelSearch"></a>void QMailMessageServer::cancelSearch ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer cancel any pending search operations.</p>
+<h3 class="fn"><a name="cancelTransfer"></a>void QMailMessageServer::cancelTransfer ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer cancel any pending transfer operations.</p>
+<p>See also <a href="qmailmessageserver.html#send">send</a>(), <a href="qmailmessageserver.html#retrieve">retrieve</a>(), and <a href="qmailmessageserver.html#completeRetrieval">completeRetrieval</a>().</p>
+<h3 class="fn"><a name="completeRetrieval"></a>void QMailMessageServer::completeRetrieval ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>mailList</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer complete the retrieval process for the messages in <i>mailList</i>. If the list contains messages from multiple accounts, only those from the account associated with the first message in the list will be retrieved.</p>
+<p>See also <a href="qmailmessageserver.html#partialRetrievalCompleted">partialRetrievalCompleted</a>() and <a href="qmailmessageserver.html#retrievalCompleted">retrievalCompleted</a>().</p>
+<h3 class="fn"><a name="deleteMessages"></a>void QMailMessageServer::deleteMessages ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>mailList</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer delete the messages in <i>mailList</i> from the external server, if necessary for the relevant message type.</p>
+<p>Deleting messages using this slot does not initiate communication with any external server; instead the information needed to delete the messages is recorded. Deletion from the external server will occur when messages are next retrieved from that server. Invoking this slot does not remove a message from the mail store.</p>
+<p>See also <a href="qmailstore.html#removeMessage">QMailStore::removeMessage</a>().</p>
+<h3 class="fn"><a name="errorOccurred"></a>void QMailMessageServer::errorOccurred ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>accountId</i>, const <a href="qstring.html">QString</a> &amp; <i>text</i>, int <i>errorCode</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the MessageServer encounters an error while performing an action relating to the account with id <i>accountId</i>. The error is described by <i>text</i> and <i>errorCode</i>.</p>
+<p>See also <a href="qmailmessageserver.html#statusChanged">statusChanged</a>().</p>
+<h3 class="fn"><a name="matchingMessageIds"></a>void QMailMessageServer::matchingMessageIds ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted after the successful completion of a search operation; <i>ids</i> contains the list of message identifiers located by the search.</p>
+<p>See also <a href="qmailmessageserver.html#searchMessages">searchMessages</a>().</p>
+<h3 class="fn"><a name="messageRetrieved"></a>void QMailMessageServer::messageRetrieved ( const <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> &amp; <i>message</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>message</i> has been retrieved from the external server. <i>message</i> is delivered in meta-data-only form, since the size of the entire message may be prohibitive.</p>
+<p>See also <a href="qmailmessageserver.html#retrieve">retrieve</a>().</p>
+<h3 class="fn"><a name="messageSent"></a>void QMailMessageServer::messageSent ( const <a href="qmailmessageid.html">QMailMessageId</a> &amp; <i>id</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the message identified by <i>id</i> has been transmitted to the external server.</p>
+<p>See also <a href="qmailmessageserver.html#send">send</a>().</p>
+<h3 class="fn"><a name="newCountChanged"></a>void QMailMessageServer::newCountChanged ( const QMailMessageCountMap &amp; <i>counts</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the count of 'new' messages changes; the new count is described by <i>counts</i>.</p>
+<p>See also <a href="qmailmessageserver.html#acknowledgeNewMessages">acknowledgeNewMessages</a>().</p>
+<h3 class="fn"><a name="partialMessageRetrieved"></a>void QMailMessageServer::partialMessageRetrieved ( const <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> &amp; <i>message</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when <i>message</i> has been partially retrieved from the external server. <i>message</i> is delivered in meta-data-only form, since the remainder of the message has not yet been retrieved from the server.</p>
+<p>See also <a href="qmailmessageserver.html#retrieve">retrieve</a>() and <a href="qmailmessageserver.html#completeRetrieval">completeRetrieval</a>().</p>
+<h3 class="fn"><a name="partialRetrievalCompleted"></a>void QMailMessageServer::partialRetrievalCompleted ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when all new messages have been partially retrieved.</p>
+<p>See also <a href="qmailmessageserver.html#retrieve">retrieve</a>().</p>
+<h3 class="fn"><a name="retrievalCompleted"></a>void QMailMessageServer::retrievalCompleted ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a retrieval operation is completed.</p>
+<p>See also <a href="qmailmessageserver.html#retrieve">retrieve</a>().</p>
+<h3 class="fn"><a name="retrievalProgress"></a>void QMailMessageServer::retrievalProgress ( <a href="qtglobal.html#uint-typedef">uint</a> <i>value</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted during a retrieval operation; <i>value</i> reports the progress of the current retrieval operation.</p>
+<p>See also <a href="qmailmessageserver.html#retrievalTotal">retrievalTotal</a>() and <a href="qmailmessageserver.html#retrieve">retrieve</a>().</p>
+<h3 class="fn"><a name="retrievalTotal"></a>void QMailMessageServer::retrievalTotal ( <a href="qtglobal.html#uint-typedef">uint</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a retrieval operation is initiated; <i>total</i> indicates the extent of the retrieval operation to be performed.</p>
+<p>See also <a href="qmailmessageserver.html#retrievalProgress">retrievalProgress</a>() and <a href="qmailmessageserver.html#retrieve">retrieve</a>().</p>
+<h3 class="fn"><a name="retrieve"></a>void QMailMessageServer::retrieve ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>id</i>, bool <i>foldersOnly</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer retrieve any new messages from the account with id <i>id</i>. If <i>foldersOnly</i> is true, only the folder structure of the account will be retrieved from the external service.</p>
+<p>See also <a href="qmailmessageserver.html#retrievalCompleted">retrievalCompleted</a>().</p>
+<h3 class="fn"><a name="searchCompleted"></a>void QMailMessageServer::searchCompleted ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a search operation is completed.</p>
+<p>See also <a href="qmailmessageserver.html#send">send</a>().</p>
+<h3 class="fn"><a name="searchMessages"></a>void QMailMessageServer::searchMessages ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>filter</i>, const <a href="qstring.html">QString</a> &amp; <i>bodyText</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the MessageServer search for messages that meet the criteria encoded in <i>filter</i>. If <i>bodyText</i> is non-empty, messages must also contain the specified text in their content to be considered matching. If the content of a message is not stored locally, the MessageServer may connect to the originating server to request a content search, if necessary.</p>
+<p>The identifiers of all matching messages are returned via <a href="qmailmessageserver.html#matchingMessageIds">matchingMessageIds</a>() after the search is completed.</p>
+<p>See also <a href="qmailmessageserver.html#matchingMessageIds">matchingMessageIds</a>().</p>
+<h3 class="fn"><a name="searchProgress"></a>void QMailMessageServer::searchProgress ( <a href="qtglobal.html#uint-typedef">uint</a> <i>value</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted during a search operation; <i>value</i> reports the progress of the current search operation.</p>
+<p>See also <a href="qmailmessageserver.html#searchTotal">searchTotal</a>() and <a href="qmailmessageserver.html#searchMessages">searchMessages</a>().</p>
+<h3 class="fn"><a name="searchTotal"></a>void QMailMessageServer::searchTotal ( <a href="qtglobal.html#uint-typedef">uint</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a search operation is initiated; <i>total</i> indicates the extent of the search operation to be performed.</p>
+<p>See also <a href="qmailmessageserver.html#searchProgress">searchProgress</a>() and <a href="qmailmessageserver.html#searchMessages">searchMessages</a>().</p>
+<h3 class="fn"><a name="send"></a>void QMailMessageServer::send ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>mailList</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Sends the messages in <i>mailList</i> to the MessageServer application for transmission.</p>
+<p>See also <a href="qmailmessageserver.html#sendCompleted">sendCompleted</a>().</p>
+<h3 class="fn"><a name="sendCompleted"></a>void QMailMessageServer::sendCompleted ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a send operation is completed.</p>
+<p>See also <a href="qmailmessageserver.html#send">send</a>().</p>
+<h3 class="fn"><a name="sendProgress"></a>void QMailMessageServer::sendProgress ( <a href="qtglobal.html#uint-typedef">uint</a> <i>value</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted during a send operation; <i>value</i> reports the progress of the current send operation.</p>
+<p>See also <a href="qmailmessageserver.html#sendTotal">sendTotal</a>() and <a href="qmailmessageserver.html#send">send</a>().</p>
+<h3 class="fn"><a name="sendTotal"></a>void QMailMessageServer::sendTotal ( <a href="qtglobal.html#uint-typedef">uint</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a send operation is initiated; <i>total</i> indicates the extent of the send operation to be performed.</p>
+<p>See also <a href="qmailmessageserver.html#sendProgress">sendProgress</a>() and <a href="qmailmessageserver.html#send">send</a>().</p>
+<h3 class="fn"><a name="statusChanged"></a>void QMailMessageServer::statusChanged ( <a href="qmailmessageserver.html#Operation-enum">QMailMessageServer::Operation</a> <i>operation</i>, const <a href="qstring.html">QString</a> &amp; <i>accountName</i>, const <a href="qstring.html">QString</a> &amp; <i>text</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the MessageServer performs an action that may be of interest to the client. The server status is described by <i>text</i>, and relates to <i>operation</i> performed on the account named <i>accountName</i>.</p>
+<p>See also <a href="qmailmessageserver.html#errorOccurred">errorOccurred</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

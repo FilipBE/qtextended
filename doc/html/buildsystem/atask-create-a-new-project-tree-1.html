@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Create a new project tree</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Create a new project tree<br /><span class="subtitle"></span>
+</h1>
+<p>There is an example project tree located in examples/externaltree. The example is designed to be copied outside of the source tree.</p>
+<p>The tree features a minimal qbuild.solution.</p>
+<pre>    [Solution]
+    [Solution\FilePaths]
+    size = 0</pre>
+<p>The projects to build come from <tt>src/projects.pri</tt>.</p>
+<pre>    PROJECTS+=\
+        libraries/mylib\
+        applications/myapp</pre>
+<p>The example has a library called mylib that is installed into the SDK. It has a public header that is installed into the SDK, a semi-private header that is installed into the project tree and a private header that is not available outside the library. There is a mylib.dep file written in the SDK and one written in the project tree.</p>
+<p>The library has a test case that can be executed by running <tt>qbuild test</tt>.</p>
+<p>The example has an application that depends on mylib and uses both it's public and semi-private headers.</p>
+<p>See also <a href="advancedtasks.html">Advanced Tasks</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

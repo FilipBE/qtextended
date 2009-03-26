@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailViewerFactory Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailViewerFactory Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>]</span>
+</h1>
+<p>The QMailViewerFactory class creates objects implementing the <a href="qmailviewerinterface.html">QMailViewerInterface</a> interface. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailViewerFactory&gt;</pre><ul>
+<li><a href="qmailviewerfactory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmailviewerfactory.html#PresentationType-enum">PresentationType</a></b> { AnyPresentation, StandardPresentation, ConversationPresentation, UserPresentation }</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QMailViewerInterface * <b><a href="qmailviewerfactory.html#create">create</a></b> ( const QString &amp; <i>key</i>, QWidget * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>QString <b><a href="qmailviewerfactory.html#defaultKey">defaultKey</a></b> ( QMailMessage::ContentType <i>type</i> = QMailMessage::UnknownContent, PresentationType <i>pres</i> = AnyPresentation )</li>
+<li><div class="fn"/>QStringList <b><a href="qmailviewerfactory.html#keys">keys</a></b> ( QMailMessage::ContentType <i>type</i> = QMailMessage::UnknownContent, PresentationType <i>pres</i> = AnyPresentation )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailViewerFactory class creates objects implementing the <a href="qmailviewerinterface.html">QMailViewerInterface</a> interface.</p>
+<p>The QMailViewerFactory class creates objects that are able to display mail messages, and implement the <tt>QMailViewerInterface</tt> interface. The factory chooses an implementation based on the type of message to be displayed.</p>
+<p>The <a href="qmailviewerinterface.html">QMailViewerInterface</a> class describes the interface supported by classes that can be created by the QMailViewerFactory class. To create a new class that can be created via the QMailViewerFactory, implement a plug-in that derives from <a href="qmailviewerplugin.html">QMailViewerPlugin</a>.</p>
+<p>See also <a href="qmailviewerinterface.html">QMailViewerInterface</a> and <a href="qmailviewerplugin.html">QMailViewerPlugin</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="PresentationType-enum"></a>enum QMailViewerFactory::PresentationType</h3>
+<p>This enum defines the types of presentation that message viewer components may implement.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailViewerFactory::AnyPresentation</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Do not specify the type of presentation to be employed.</td></tr>
+<tr><td valign="top"><tt>QMailViewerFactory::StandardPresentation</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Present the message in the standard fashion for the relevant content type.</td></tr>
+<tr><td valign="top"><tt>QMailViewerFactory::ConversationPresentation</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Present the message in the context of a conversation with a contact.</td></tr>
+<tr><td valign="top"><tt>QMailViewerFactory::UserPresentation</tt></td><td align="center" valign="top"><tt>64</tt></td><td valign="top">The first value that can be used for application-specific purposes.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="create"></a><a href="qmailviewerinterface.html">QMailViewerInterface</a> * QMailViewerFactory::create ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, <a href="qwidget.html">QWidget</a> * <i>parent</i> = 0 )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Creates a viewer object of the class identified by <i>key</i>, setting the returned object to have the parent widget <i>parent</i>.</p>
+<h3 class="fn"><a name="defaultKey"></a><a href="qstring.html">QString</a> QMailViewerFactory::defaultKey ( <a href="qmailmessagemetadata.html#ContentType-enum">QMailMessage::ContentType</a> <i>type</i> = QMailMessage::UnknownContent, <a href="qmailviewerfactory.html#PresentationType-enum">PresentationType</a> <i>pres</i> = AnyPresentation )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the key identifying the first class found that can display message containing <i>type</i> content, using the presentation type <i>pres</i>.</p>
+<h3 class="fn"><a name="keys"></a><a href="qstringlist.html">QStringList</a> QMailViewerFactory::keys ( <a href="qmailmessagemetadata.html#ContentType-enum">QMailMessage::ContentType</a> <i>type</i> = QMailMessage::UnknownContent, <a href="qmailviewerfactory.html#PresentationType-enum">PresentationType</a> <i>pres</i> = AnyPresentation )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of keys identifying classes that can display a message containing <i>type</i> content, using the presentation type <i>pres</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,5 @@
+#!/bin/sh
+# This says, "get the pkg-config package gstreamer-0.10 or die"
+env PACKAGE=gstreamer-0.10 $(dirname $0)/pkg_config.test >/dev/null || exit $?
+# This says, "get the pkg-config package gstreamer-0.10 and print CFLAGS and LIBS but prefix them with GSTREAMER_"
+env PACKAGE=gstreamer-0.10 $(dirname $0)/pkg_config.test | sed 's/\(CFLAGS\|LIBS\)=/GSTREAMER_\1=/'

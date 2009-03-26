@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailSearchAction Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailSearchAction Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>]</span>
+</h1>
+<p>The QMailSearchAction class provides the interface for identifying messages that match a set of search criteria. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailSearchAction&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qmailserviceaction.html">QMailServiceAction</a>.</p>
+<ul>
+<li><a href="qmailsearchaction-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailsearchaction.html#QMailSearchAction">QMailSearchAction</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>QMailMessageIdList <b><a href="qmailsearchaction.html#matchingMessageIds">matchingMessageIds</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public functions inherited from <a href="qmailserviceaction.html#public-functions">QMailServiceAction</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qmailsearchaction.html#cancelOperation">cancelOperation</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmailsearchaction.html#searchMessages">searchMessages</a></b> ( const QMailMessageKey &amp; <i>filter</i>, const QString &amp; <i>bodyText</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qmailserviceaction.html#public-slots">QMailServiceAction</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>4 signals inherited from <a href="qmailserviceaction.html#signals">QMailServiceAction</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected functions inherited from <a href="qmailserviceaction.html#protected-functions">QMailServiceAction</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailSearchAction class provides the interface for identifying messages that match a set of search criteria.</p>
+<p>QMailSearchAction provides the mechanism for messaging clients to request that the message server perform a search for messages that match the supplied search criteria. For criteria pertaining to message meta data, the message server will search within the locally held meta data. For a textual content criterion, the message server will search locally where the message content is held locally, and on the external server for messages whose content has not been retrieved (provided the external service provides a search facility).</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailSearchAction"></a>QMailSearchAction::QMailSearchAction ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new search action object with the supplied <i>parent</i>.</p>
+<h3 class="fn"><a name="cancelOperation"></a>void QMailSearchAction::cancelOperation ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Attempts to cancel the last requested search operation.</p>
+<p>Reimplemented from <a href="qmailserviceaction.html#cancelOperation">QMailServiceAction</a>.</p>
+<h3 class="fn"><a name="matchingMessageIds"></a><a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> QMailSearchAction::matchingMessageIds () const</h3>
+<p>Returns the list of message identifiers found to match the search criteria. Unless <a href="qmailserviceaction.html#activity">activity</a>() returns <a href="qmailserviceaction.html#Activity-enum">Successful</a>, an empty list is returned.</p>
+<h3 class="fn"><a name="searchMessages"></a>void QMailSearchAction::searchMessages ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>filter</i>, const <a href="qstring.html">QString</a> &amp; <i>bodyText</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests that the message server identify all messages that match the criteria specified by <i>filter</i>. If <i>bodyText</i> is non-empty, identified messages must also contain the supplied text in their content.</p>
+<p>For messages whose content is not held locally, the external service will be requested to perform the content search, if that facility is available.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

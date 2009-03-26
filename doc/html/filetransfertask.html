@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>FileTransferTask Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">FileTransferTask Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>, <a href="qtinfraredmodule.html">QtInfraredModule</a>]</span>
+</h1>
+<p>The FileTransferTask class provides an interface to receive notifications about file transfer operations. <a href="#details">More...</a></p>
+<pre>    #include &lt;FileTransferTask&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="bluetoothfilesendservice.html">BluetoothFileSendService</a>, <a href="bluetoothobexpushservice.html">BluetoothObexPushService</a>, <a href="irfilesendservice.html">IrFileSendService</a>, and <a href="irobexpushservice.html">IrObexPushService</a>.</p>
+<ul>
+<li><a href="filetransfertask-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QContentId <b><a href="filetransfertask.html#transferContentId">transferContentId</a></b> ( int <i>id</i> ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="filetransfertask.html#abortTransfer">abortTransfer</a></b> ( int <i>id</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="filetransfertask.html#incomingTransferStarted">incomingTransferStarted</a></b> ( int <i>id</i>, const QString &amp; <i>name</i>, const QString &amp; <i>mimeType</i>, const QString &amp; <i>description</i> )</li>
+<li><div class="fn"/>void <b><a href="filetransfertask.html#outgoingTransferStarted">outgoingTransferStarted</a></b> ( int <i>id</i>, const QString &amp; <i>name</i>, const QString &amp; <i>mimeType</i>, const QString &amp; <i>description</i> )</li>
+<li><div class="fn"/>void <b><a href="filetransfertask.html#transferFinished">transferFinished</a></b> ( int <i>id</i>, bool <i>error</i>, bool <i>aborted</i> )</li>
+<li><div class="fn"/>void <b><a href="filetransfertask.html#transferProgress">transferProgress</a></b> ( int <i>id</i>, qint64 <i>done</i>, qint64 <i>total</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-protected-members"></a>
+<h3>Static Protected Members</h3>
+<ul>
+<li><div class="fn"/>int <b><a href="filetransfertask.html#nextTransferId">nextTransferId</a></b> ()</li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The FileTransferTask class provides an interface to receive notifications about file transfer operations.</p>
+<p>FileTransferTask is a Qt Extended server task interface. If a class is to implement this interface, it must subclass FileTransferTask, be made into a task, and declare that it implements this interface using QTOPIA_TASK_PROVIDES. For example, if there is a subclass called <tt>MyTransferService</tt>, the code would look something similar to this:</p>
+<p>In the .h header file:</p>
+<pre>    class MyTransferService : public FileTransferTask
+    {
+        Q_OBJECT
+    public:
+        MyTransferService();
+    }</pre>
+<p>In the .cpp implementation file:</p>
+<pre>    MyTransferService::MyTransferService()
+        : FileTransferTask()
+    {
+    }
+    QTOPIA_TASK(MyTransferService, MyTransferService)
+    QTOPIA_TASK_PROVIDES(MyTransferService, FileTransferTask)</pre>
+<p>Refer to the various FileTransferTask subclasses for the various transfer tasks supported by Qtopia.</p>
+<p>Each existing FileTransferTask is automatically incorporated into the <a href="filetransferwindow.html">FileTransferWindow</a> which monitors each transfer and presents a window to the user indicating the progress.</p>
+<p>This class is part of the <a href="qtopiaserver.html">QtopiaServer</a> and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="filetransferwindow.html">FileTransferWindow</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="abortTransfer"></a>void FileTransferTask::abortTransfer ( int <i>id</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Aborts the transfer identified by <i>id</i>. Does nothing if the request cannot be identified or if it has already finished.</p>
+<p>If the transfer is successfully aborted, <a href="filetransfertask.html#transferFinished">transferFinished</a>() is emitted with <tt>aborted</tt> set to <tt>true</tt>. Due to timing issues, it is possible that the transfer has already finished. In this case, the transfer is not aborted, and <a href="filetransfertask.html#transferFinished">transferFinished</a>() is emitted as normal.</p>
+<p>The default implementation does nothing.</p>
+<h3 class="fn"><a name="incomingTransferStarted"></a>void FileTransferTask::incomingTransferStarted ( int <i>id</i>, const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qstring.html">QString</a> &amp; <i>mimeType</i>, const <a href="qstring.html">QString</a> &amp; <i>description</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal should be emitted by the subclass when an incoming file transfer has started. <i>id</i> should be a value that uniquely identifies the transfer, and <i>name</i>, <i>mimeType</i> should be set to the name and MIME type of the transferred object. <i>description</i> can be used to provide a user-friendly description of the transferred object, if necessary.</p>
+<p>See also <a href="filetransfertask.html#nextTransferId">nextTransferId</a>().</p>
+<h3 class="fn"><a name="nextTransferId"></a>int FileTransferTask::nextTransferId ()&nbsp;&nbsp;<tt> [static protected]</tt></h3>
+<p>Generates and returns a new file transfer ID.</p>
+<p>Subclasses should use this to generate a file transfer ID that is unique across all file transfer classes that implement the <a href="filetransfertask.html">FileTransferTask</a> interface. The ID can then be used to emit the signals in this class.</p>
+<h3 class="fn"><a name="outgoingTransferStarted"></a>void FileTransferTask::outgoingTransferStarted ( int <i>id</i>, const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qstring.html">QString</a> &amp; <i>mimeType</i>, const <a href="qstring.html">QString</a> &amp; <i>description</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal should be emitted by the subclass when an outgoing file transfer has started. <i>id</i> should be a value that uniquely identifies the transfer within this task, and <i>name</i>, <i>mimeType</i> should be set to the name and MIME type of the transferred object. <i>description</i> can be used to provide a user-friendly description of the transferred object, if necessary.</p>
+<p>See also <a href="filetransfertask.html#nextTransferId">nextTransferId</a>().</p>
+<h3 class="fn"><a name="transferContentId"></a><a href="qcontent.html#QContentId-typedef">QContentId</a> FileTransferTask::transferContentId ( int <i>id</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the <a href="qcontent.html">QContent</a> ID for the transfer identified by <i>id</i>, or <a href="qcontent.html#InvalidId-var">QContent::InvalidId</a> if the transfer does not have an associated <a href="qcontent.html">QContent</a> ID.</p>
+<p>This value may change over the course of a file transfer. For example, an incoming transfer may not have an associated <a href="qcontent.html">QContent</a> ID to begin with, but a file transfer task might assign a <a href="qcontent.html">QContent</a> ID to the transfer once the transfer is finished and the data has been saved into the Qt Extended document system as an identifiable <a href="qcontent.html">QContent</a> resource.</p>
+<p>The specified transfer should be one that is still in progress or has only just finished (i.e&#x2e; at the point when <a href="filetransfertask.html#transferFinished">transferFinished</a>() is emitted), as a file transfer task is not required to retain information for a transfer after <a href="filetransfertask.html#transferFinished">transferFinished</a>() has been emitted.</p>
+<p>The default implementation returns <a href="qcontent.html#InvalidId-var">QContent::InvalidId</a>.</p>
+<h3 class="fn"><a name="transferFinished"></a>void FileTransferTask::transferFinished ( int <i>id</i>, bool <i>error</i>, bool <i>aborted</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal should be emitted by the subclass when a transfer has finished. <i>id</i> is the value that identifies the transfer, <i>error</i> is <tt>true</tt> if an error occurred during the transfer (that is, the transfer was unsuccessful) and <i>aborted</i> is <tt>true</tt> if the transfer was canceled.</p>
+<h3 class="fn"><a name="transferProgress"></a>void FileTransferTask::transferProgress ( int <i>id</i>, <a href="qtglobal.html#qint64-typedef">qint64</a> <i>done</i>, <a href="qtglobal.html#qint64-typedef">qint64</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal should be emitted by the subclass when some data has been sent or received for a file transfer. <i>id</i> is the value that identifies the transfer, <i>done</i> is the number of bytes that have been transferred so far, and <i>total</i> is the total number of bytes to be transferred. <i>total</i> can be set to 0 if the total is unknown.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

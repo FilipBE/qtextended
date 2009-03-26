@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Title Bar Theme</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Title Bar Theme<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#constructing-a-system-title-bar">Constructing a System Title Bar</a></li>
+<ul><li><a href="#basic-title-bar-development">Basic Title Bar Development</a></li>
+<li><a href="#extending-the-title-bar">Extending the Title Bar</a></li>
+</ul>
+</ul>
+<a name="constructing-a-system-title-bar"></a>
+<h2>Constructing a System Title Bar</h2>
+<p>The Qt Extended theme is unique in that it has a different mode of display in the home screen versus application screens.</p>
+<p>It is important to note that there is a distinct rectangular area used by the system title bar. This area is not available to applications. It corresponds to the area set aside for the window decoration title of maximized windows. A minimal title bar theme and window decoration configuration may look like:</p>
+<pre>    &lt;page name=&quot;title&quot; base=&quot;themes/qtopia&quot; rect=&quot;0,0,0x21&quot;&gt;
+        &lt;image rect=&quot;0,0,0x21&quot; src=&quot;titlebar-gradient&quot; tile=&quot;yes&quot; color=&quot;Highlight&quot;&gt;
+        &lt;/image&gt;
+    &lt;/page&gt;</pre>
+<p>This describes a title bar, with no content, using the image &quot;titlebar-gradient&quot; to tile across the screen, tinting it the Highlight color.</p>
+<pre>    [Decoration]
+    Name = Qtopia
+    Base = themes/qtopia
+
+    [Maximized]
+    TitleHeight = 21
+
+    [Normal]
+    TitleHeight = 19</pre>
+<p>This describes the window decoration to use with this theme. The only information required is the height of the window decoration title such that the maximized title height is the same height as the system title.</p>
+<a name="basic-title-bar-development"></a>
+<h3>Basic Title Bar Development</h3>
+<p>The title bar has a number of elements that require defined positions including:</p>
+<ul>
+<li>Battery level</li>
+<li>Signal level</li>
+<li>Window caption</li>
+<li>Time</li>
+<li>Status indicators:<ul>
+<li>Roaming</li>
+<li>Messages</li>
+<li>Call active</li>
+</ul>
+</li>
+</ul>
+<p>Other items that can be displayed in the title bar are discussed later in this section. The following example title bar is designed with the above elements only:</p>
+<pre>    &lt;page name=&quot;title&quot; base=&quot;themes/qtopia&quot; rect=&quot;0,0,0x21&quot;&gt;
+        &lt;image rect=&quot;0,0,0x21&quot; src=&quot;titlebar-gradient&quot; tile=&quot;yes&quot; color=&quot;Highlight&quot;&gt;
+            &lt;text rect=&quot;4,0,-50,20&quot; name=&quot;caption&quot; size=&quot;10&quot; bold=&quot;yes&quot; shadow=&quot;200&quot; color=&quot;HighlightedText&quot; align=&quot;left,vcenter&quot; transient=&quot;yes&quot;/&gt;
+            &lt;rect name=&quot;inputmethod&quot; rect=&quot;-22,1,22x19&quot; brush=&quot;Highlight&quot; color=&quot;None&quot; transient=&quot;yes&quot; active=&quot;no&quot;/&gt;
+            &lt;image rect=&quot;-100,3,-26,17&quot; src=&quot;statusbar&quot; stretch=&quot;7,8&quot;&gt;
+                &lt;status name=&quot;roaming&quot; rect=&quot;4,3,9x9&quot; imageon=&quot;roaming&quot;/&gt;
+                &lt;status name=&quot;messages&quot; rect=&quot;16,3,9x9&quot; imageon=&quot;mailalert&quot;/&gt;
+                &lt;status name=&quot;call_active&quot; rect=&quot;28,1,5x12&quot; imageon=&quot;incall&quot;/&gt;
+                &lt;text name=&quot;time&quot; rect=&quot;-30,0,-4,12&quot; size=&quot;10&quot; align=&quot;right,vcenter&quot; color=&quot;#000000&quot;/&gt;
+            &lt;/image&gt;
+            &lt;level name=&quot;battery&quot; rect=&quot;-20,2,6x16&quot; src=&quot;battery-small&quot; count=&quot;6&quot;/&gt;
+            &lt;image rect=&quot;-12,2,3x16&quot; src=&quot;plusminus&quot;/&gt;
+            &lt;level name=&quot;signal&quot; rect=&quot;-7,2,6x16&quot; src=&quot;signal-small&quot; count=&quot;6&quot;/&gt;
+        &lt;/image&gt;
+    &lt;/page&gt;</pre>
+<p>This places the window caption to the left, then the white status area is created and populated with the status icons, and time field. Finally, the battery and signal level indicators are placed to the right of the screen. The level indicators are described by an image containing a number of frames, given by the <tt>count</tt> attribute, for example, the battery indicator image is show below:</p>
+<p align="center"><img src="images/battery-small.png" /></p><p>The <tt>inputmethod</tt> element is not mentioned above. This element is a placeholder for the input method status icon and is replaced by the IM status icon when the cursor is placed in a text input field. It is common in Qt Extended themes to place this element over the area used by the battery and/or signal level indicators to save space.</p>
+<a name="extending-the-title-bar"></a>
+<h3>Extending the Title Bar</h3>
+<p>The Qt Extended theme provides two different modes for the title bar. The mode described above is used in most screens with the home screen however, the following design is used:</p>
+<p align="center"><img src="images/qtopia_home.png" /></p><p>This version displays the following elements:</p>
+<ul>
+<li>Battery level</li>
+<li>Signal level</li>
+<li>Status indicators:<ul>
+<li>Alarm</li>
+<li>Lock</li>
+<li>Call divert</li>
+<li>Roaming</li>
+<li>Messages</li>
+<li>Call active</li>
+</ul>
+</li>
+</ul>
+<p>This can be realized using the following:</p>
+<pre>    &lt;page name=&quot;title&quot; base=&quot;themes/qtopia&quot; rect=&quot;0,0,0x21&quot;&gt;
+        &lt;image rect=&quot;0,0,0x21&quot; src=&quot;titlebar-gradient&quot; tile=&quot;yes&quot; color=&quot;Highlight&quot;&gt;
+            &lt;level name=&quot;battery&quot; rect=&quot;4,4,44x11&quot; src=&quot;battery-big&quot; count=&quot;6&quot;/&gt;
+            &lt;level name=&quot;signal&quot; rect=&quot;-48,4,44x11&quot; src=&quot;signal-big&quot; count=&quot;6&quot;/&gt;
+            &lt;rect name=&quot;inputmethod&quot; rect=&quot;-48,0,44x0&quot; brush=&quot;Highlight&quot; color=&quot;None&quot; transient=&quot;yes&quot; active=&quot;no&quot;/&gt;
+            &lt;image rect=&quot;50,3,-51,17&quot; src=&quot;statusbar&quot; stretch=&quot;7,8&quot;&gt;
+                &lt;status name=&quot;alarm&quot; rect=&quot;3,3,9x9&quot; imageon=&quot;bell_on&quot;/&gt;
+                &lt;status name=&quot;lock&quot; rect=&quot;14,3,9x9&quot; imageon=&quot;lock_on&quot;/&gt;
+                &lt;status name=&quot;calldivert&quot; rect=&quot;25,3,9x9&quot; imageon=&quot;calldivert&quot;/&gt;
+                &lt;status name=&quot;roaming&quot; rect=&quot;-36,3,9x9&quot; imageon=&quot;roaming&quot;/&gt;
+                &lt;status name=&quot;messages&quot; rect=&quot;-25,3,9x9&quot; imageon=&quot;mailalert&quot;/&gt;
+                &lt;status name=&quot;call_active&quot; rect=&quot;-14,1,5x12&quot; imageon=&quot;incall&quot;/&gt;
+            &lt;/image&gt;
+        &lt;/image&gt;
+    &lt;/page&gt;</pre>
+<p>The final task is to enable switching between the two modes. This is achieved using the <i>exclusive</i> element. The <i>exclusive</i> element will display only one of its children at a time. The caption is used to decide which state is shown since there is no caption in the home screen.</p>
+<pre>    &lt;page name=&quot;title&quot; base=&quot;themes/qtopia&quot; rect=&quot;0,0,0x21&quot;&gt;
+        &lt;image rect=&quot;0,0,0x21&quot; src=&quot;titlebar-gradient&quot; tile=&quot;yes&quot; color=&quot;Highlight&quot;&gt;
+            &lt;image rect=&quot;0,0,1x21&quot; src=&quot;titlebar-endcap&quot; color=&quot;Highlight&quot;/&gt;
+            &lt;image rect=&quot;-1,0,1x21&quot; src=&quot;titlebar-endcap&quot; color=&quot;Highlight&quot;/&gt;
+            &lt;exclusive&gt;
+                &lt;group&gt;
+                    &lt;level name=&quot;battery&quot; rect=&quot;4,4,44x11&quot; src=&quot;battery-big&quot; count=&quot;6&quot;/&gt;
+                    &lt;level name=&quot;signal&quot; rect=&quot;-48,4,44x11&quot; src=&quot;signal-big&quot; count=&quot;6&quot;/&gt;
+                    &lt;rect name=&quot;inputmethod&quot; rect=&quot;-48,0,44x0&quot; brush=&quot;Highlight&quot; color=&quot;None&quot; transient=&quot;yes&quot; active=&quot;no&quot;/&gt;
+                    &lt;image rect=&quot;50,3,-51,17&quot; src=&quot;statusbar&quot; stretch=&quot;7,8&quot;&gt;
+                        &lt;status name=&quot;alarm&quot; rect=&quot;3,3,9x9&quot; imageon=&quot;bell_on&quot;/&gt;
+                        &lt;status name=&quot;lock&quot; rect=&quot;14,3,9x9&quot; imageon=&quot;lock_on&quot;/&gt;
+                        &lt;status name=&quot;calldivert&quot; rect=&quot;25,3,9x9&quot; imageon=&quot;calldivert&quot;/&gt;
+                        &lt;status name=&quot;roaming&quot; rect=&quot;-36,3,9x9&quot; imageon=&quot;roaming&quot;/&gt;
+                        &lt;status name=&quot;messages&quot; rect=&quot;-25,3,9x9&quot; imageon=&quot;mailalert&quot;/&gt;
+                        &lt;status name=&quot;call_active&quot; rect=&quot;-14,1,5x12&quot; imageon=&quot;incall&quot;/&gt;
+                    &lt;/image&gt;
+                &lt;/group&gt;
+                &lt;group name=&quot;caption&quot; transient=&quot;yes&quot; active=&quot;no&quot;&gt;
+                    &lt;text rect=&quot;4,0,-50,20&quot; name=&quot;caption&quot; size=&quot;10&quot; bold=&quot;yes&quot; shadow=&quot;200&quot; color=&quot;HighlightedText&quot; align=&quot;left,vcenter&quot; transient=&quot;yes&quot;/&gt;
+                    &lt;rect name=&quot;inputmethod&quot; rect=&quot;-22,1,22x19&quot; brush=&quot;Highlight&quot; color=&quot;None&quot; transient=&quot;yes&quot; active=&quot;no&quot;/&gt;
+                    &lt;image rect=&quot;-100,3,-26,17&quot; src=&quot;statusbar&quot; stretch=&quot;7,8&quot;&gt;
+                        &lt;status name=&quot;roaming&quot; rect=&quot;4,3,9x9&quot; imageon=&quot;roaming&quot;/&gt;
+                        &lt;status name=&quot;messages&quot; rect=&quot;16,3,9x9&quot; imageon=&quot;mailalert&quot;/&gt;
+                        &lt;status name=&quot;call_active&quot; rect=&quot;28,1,5x12&quot; imageon=&quot;incall&quot;/&gt;
+                        &lt;text name=&quot;time&quot; rect=&quot;-30,0,-4,12&quot; size=&quot;10&quot; align=&quot;right,vcenter&quot; color=&quot;#000000&quot;/&gt;
+                    &lt;/image&gt;
+                    &lt;level name=&quot;battery&quot; rect=&quot;-20,2,6x16&quot; src=&quot;battery-small&quot; count=&quot;6&quot;/&gt;
+                    &lt;image rect=&quot;-12,2,3x16&quot; src=&quot;plusminus&quot;/&gt;
+                    &lt;level name=&quot;signal&quot; rect=&quot;-7,2,6x16&quot; src=&quot;signal-small&quot; count=&quot;6&quot;/&gt;
+                &lt;/group&gt;
+            &lt;/exclusive&gt;
+        &lt;/image&gt;
+    &lt;/page&gt;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

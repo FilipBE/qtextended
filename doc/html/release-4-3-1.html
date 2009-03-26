@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.3&#x2e;1 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.3&#x2e;1 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#deprecated-features">Deprecated Features</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.3&#x2e;1 release (also known as 4.3 Final) is a feature release of Qtopia that is based on Qt 4.3 technology. The main purposes of this release are to finalise the 4.3 feature set and to provide bug fixes and performance improvements based on both internal testing and customer feedback received for the 4.3&#x2e;0 (4.3 Beta) release.</p>
+<p>This Release Note describes only the changes made between the 4.3&#x2e;0 and 4.3&#x2e;1 releases. Please read the <a href="release-4-3-0.html">Qtopia 4.3&#x2e;0 Release Notes</a> for a list of the changes made prior to the 4.3&#x2e;0 release.</p>
+<p>The <a href="buildsystem/chlog-4-3-1-1.html">build system</a> and <a href="qtopiadesktop/chlog-4-3-1-1.html">Qtopia Sync Agent</a> changes are recorded separately.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>The Bluetooth Send/Receive Files window has been rewritten to significantly improve usability, including the ability to abort transfers, better failure handling and correct interaction with Qtopia's multitasking features.</li>
+</ul>
+</li>
+<li><b>Code Quality</b><ul>
+<li>Many compilation warnings have been eliminated.</li>
+<li>The source tree of the Qtopia Server (/src/server) has been restructured to better delineate the various modules in the server. See <a href="porting.html">Porting Between Qtopia/Qt Extended Versions</a> for more information.</li>
+</ul>
+</li>
+<li><b>Documentation</b><ul>
+<li>New documentation describing the Desktop Synchronization feature has been added.</li>
+<li>Several new tutorials have been added.</li>
+</ul>
+</li>
+<li><b>Online Help</b><ul>
+<li>The online help content has been revised to bring it in line with the current Qtopia functionality.</li>
+</ul>
+</li>
+<li><b>Safe Execution Environment (SXE)</b><ul>
+<li>The SXE domain system has been simplified. The previous set of more than 50 domains has been replaced by two domains: trusted and untrusted. SXE provides a sandbox solution for the secure download and running of games.</li>
+</ul>
+</li>
+</ol>
+<a name="deprecated-features"></a>
+<h2>Deprecated Features</h2>
+<ol type="1">
+<li><b>Help Bookmarks</b><ul>
+<li>The Bookmarks feature of the Help Browser was not considered to be very useful and did not work on touchscreen devices. It has been removed.</li>
+</ul>
+</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>[Bluetooth}</b><ul>
+<li>BUG 187455: The user was not audibly notified of an incoming pairing request. Now the device will vibrate to alert the user that a pairing PIN is required.</li>
+<li>BUG 187460: The user was not audibly notified of an incoming file transfer. Now the device will vibrate and play the message ringtone to alert the user that a file transfer is being received.</li>
+<li>BUG 189837: On touchscreen devices there was no way to backspace an incorrectly entered pairing PIN.</li>
+<li>BUG 196183: In the Bluetooth Settings application, changes to the Visibility timeout value would not be saved unless the user moved to another field before exiting the application.</li>
+<li>BUG 197384: The Bluetooth transmitter could be switched on while Airplane Safe Mode was active by attempting to send a file from the documents list.</li>
+</ul>
+</li>
+<li><b>[Build System}</b><ul>
+<li>BUG 183457: A new <tt>-no-examples</tt> configure option has been added to allow building of the examples to be skipped.</li>
+<li>BUG 185787: The <tt>-I</tt>, <tt>-i</tt>, <tt>-L</tt>, <tt>-D</tt> and <tt>-R</tt> switches passed to configure were not being passed on to Qtopia Core.</li>
+<li>BUG 188616: Qtopia could not be built with D-BUS on an x86_64 workstation.</li>
+<li>BUG 189283: Media engines that resided within a device profile tree could not be built using the <tt>-mediaengines</tt> configure switch.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 181665: Qtopia's interactive performance was very poor while importing vCard files. UI events are now processed more frequently while importing vCards.</li>
+<li>BUG 182391: The Contact Details screen was not painted correctly in right-to-left languages.</li>
+<li>BUG 183951: Selecting the <tt>Show Groups</tt> option from the menu would crash the application if the <tt>Finxi</tt> theme was in use.</li>
+<li>BUG 185612: After creating a birthday, any changes made to the associated alarm settings were not saved.</li>
+<li>BUG 190449: The Email Details dialog had incorrect input hints, making it difficult to enter a valid email address.</li>
+<li>BUG 192974: When viewing a contact, the Calls tab did not show calls made to the contact by directly entering the contact's phone number into the dialer.</li>
+<li>BUG 193132: The layout of the New Contact dialog in Arabic made the Name and Email fields to narrow to be usable.</li>
+</ul>
+</li>
+<li><b>Document Management</b><ul>
+<li>BUG 193535: If the documents database stored on removable media was invalid (e.g&#x2e; corrupted by another device), Qtopia was unable to manage documents on that media correctly. Qtopia will now replace an invalid database on removable media.</li>
+</ul>
+</li>
+<li><b>Games</b><ul>
+<li>BUG 181457: Several debugging features were incorrectly included in non-debug builds of the Asteroids game.</li>
+</ul>
+</li>
+<li><b>Greenphone</b><ul>
+<li>BUG 172654: The Greenphone's hardware volume keys did not control the audio volume on the device. This feature was previously working in Qtopia 4.2&#x2e;</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 179042: The Predictive Keyboard could incorrectly add double spaces between words.</li>
+<li>BUG 182742: The Predictive keyboard did not autocapitalize name fields correctly.</li>
+<li>BUG 184645, 190697: On combined keypad/touchscreen devices, the Predictive Keyboard did not interact well with keypad input.</li>
+<li>BUG 186153: When first displayed, the Predictive Keyboard's word list was much larger than intended, covering part of the application above it.</li>
+<li>BUG 190695: The symbol picker did not scale its font size correctly on high-resolution screens.</li>
+<li>BUG 195755: Date and Time fields would not correctly change from navigation to edit mode when data was entered on the keypad.</li>
+</ul>
+</li>
+<li><b>Look and Feel</b><ul>
+<li>BUG 181868: The leftmost and rightmost tab handles in a tab widget were drawn incorrectly when a right-to-left language was in use.</li>
+<li>BUG 193132: Tab widgets used the width of the tab handles to display title strings instead of using the width of the tab widget.</li>
+</ul>
+</li>
+<li><b>Media Player</b><ul>
+<li>BUG 180204: Qtopia did not play Midi files. The Media Player will now play Midi files when Qtopia is built with the &quot;cruxus&quot; mediaengine.</li>
+<li>BUG 183946: The Settings dialog was only accessible while a file was playing. It is now accessible from the browser menus too.</li>
+<li>BUG 191032: Media Player was ignoring interval restrictions on DRM-protected files.</li>
+</ul>
+</li>
+<li><b>Media Server</b><ul>
+<li>BUG 142927: Qtopia was unable to play media in a singleexec build.</li>
+<li>BUG 172654: Using hardware buttons to adjust audio volume did not work.</li>
+</ul>
+</li>
+<li><b>Messaging</b><ul>
+<li>BUG 181674: Performance of MMS loading was poor. This has been improved by delaying some processing until it is needed and avoiding making multiple copies of elements that are used on multiple slides.</li>
+<li>BUG 183162: No busy indication was displayed when retrieving a large message, giving the impression that the application had frozen.</li>
+<li>BUG 183395: When forwarding an SMS message, the text of the original message was not included.</li>
+<li>BUG 183661: When downloading large numbers of messages via IMAP, the performance of the preview phase degenerated significantly as it progressed.</li>
+<li>BUG 183788: Message counts were not shown for nested IMAP folders.</li>
+<li>BUG 184980: The wrong folder contents could be displayed after switching between identically named folders in the main and Email folder lists.</li>
+<li>BUG 185966: The New Message menu presented options that were impossible to complete successfully; New Email was presented when no outgoing email account was configured, and New Multimedia Message was presented when no WAP stack was present.</li>
+<li>BUG 186145: The Messages application would suffer a stack overflow crash if a socket error occured during SMTP transmission.</li>
+<li>BUG 187624: When synchronizing with an IMAP server, messages that were no longer on the server were not marked as such in the folder display.</li>
+<li>BUG 187847: The Messages application did not provide any progress indication when deleting an email account. This would give the user the impression that the application had frozen.</li>
+<li>BUG 187851: The Email folder list was not correctly updated when the account name was changed.</li>
+<li>BUG 188609: When IMAP folders were removed, the contained messages were not deleted, leaving them orphaned in the message database.</li>
+<li>BUG 188923: If a new SMS message arrived while viewing email, an email message would be displayed to the user instead of the new SMS.</li>
+<li>BUG 189455: When the user attempted to send an email with a non-conforming address, the message was silently placed into the Drafts folder without presenting an error message to the user.</li>
+<li>BUG 189642: Email messages with a signature included failed to send correctly via SMTP.</li>
+<li>BUG 189839: In the email account dialog, several fields incorrectly had autocapitalization enabled.</li>
+<li>BUG 190450: Incorrect input hints made it difficult to enter valid email addresses when sending an email.</li>
+<li>BUG 190489: When fetching IMAP messages, the Messages application incorrectly caused the server's copies of the messages to be marked as read.</li>
+<li>BUG 190490: SMTP authentication against an incoming mail server has been made optional. Previously, this was (incorrectly) mandatory.</li>
+<li>BUG 190492: When connecting to an IMAP server, the username and password were passed as literal strings instead of quoted strings, causing certain special characters to be handled incorrectly.</li>
+<li>BUG 191452: Some customer devices would incorrectly report a &quot;Mail-encoding error&quot; when sending or receiving SMS messages. This was due to shared mmap not working correctly on those devices. The Messages application now avoids this problem by not using shared mmap.</li>
+<li>BUG 197898: When downloading messages via POP, the Messages application would incorrectly indicate to the user that a message had been removed from the server by another user if the server UID was a substring of that of another message.</li>
+</ul>
+</li>
+<li><b>Neo 1973 (ficgta01 device profile)</b><ul>
+<li>BUG 178077: If the user attempted to lock the screen via the Home Screen's options menu, the keypad lock was activated instead of the touchscreen lock.</li>
+<li>BUG 180073: Spinboxes could not be driven due to the small size and close proximity of the up and down arrows. The arrows now appear on opposite sides of the spinbox.</li>
+<li>BUG 184198: Preferred GSM network settings were not saved.</li>
+<li>BUG 184376: In calendar views, the year could not be set.</li>
+<li>BUG 184588: Scrollable options menus could not be scrolled.</li>
+<li>BUG 185207: Speed Dial entries could not be activated from the Home Screen. A new &quot;Favorites&quot; button has been added to the home Screen for the <tt>Finxi</tt> theme to allow quick selection of speed dial entries.</li>
+<li>BUG 187460: Cancelling in Favourites would try to activate a Speed Dial entry.</li>
+</ul>
+</li>
+<li><b>Pictures</b><ul>
+<li>BUG 112575: Opening an image via the Documents list caused the image to be opened in edit mode instead of view mode.</li>
+<li>BUG 188436: Pressing the hangup key in Full Screen mode would corrupt parts of the theme title bar and context bar.</li>
+<li>BUG 189476: The Pictures application would freeze when attempting to load an image that was too large to fit in memory.</li>
+<li>BUG 197068: Touchscreen-only devices could not do anything in Full Screen mode (including exiting Full Screen mode). Full Screen mode is no longer supported on touchscreen-only devices.</li>
+</ul>
+</li>
+<li><b>Printing</b><ul>
+<li>BUG 182730: Attempts to print large text files would fail, with a Security Breach error being reported to the user.</li>
+</ul>
+</li>
+<li><b>Profiles</b><ul>
+<li>BUG 183219: The Message ringtone was incorrectly defaulted to &quot;none&quot; when creating a new profile.</li>
+<li>BUG 185167: Ringtones could not be previewed on touchscreen devices.</li>
+</ul>
+</li>
+<li><b>Safe Execution Environment (SXE)</b><ul>
+<li>BUG 187068: <a href="qtopia.html#sandboxDir">Qtopia::sandboxDir</a>() would incorrectly return an empty string when called by an installed package.</li>
+<li>BUG 190690: It was possible for packages to install symlinks to files outside their sandbox, and thus to attempt to execute binaries or read data belonging to other applications.</li>
+<li>BUG 190835: The Software Packages application would not connect to a package server after a communications failure had occured.</li>
+<li>BUG 191029: If a package's installation was aborted, LIDS rules for the package were not removed.</li>
+<li>BUG 191030: Packages could not access their translation files at runtime.</li>
+<li>BUG 193250: Packages could not include shared libraries.</li>
+<li>BUG 193531: A malicious attacker could attempt to delete files outside the sandbox by including relative paths (e.g&#x2e; <tt>../../mnt/documents/foo</tt>) in a package.list file.</li>
+<li>BUG 193569: It was possible for a package to contain symlinks pointing outside the sandbox. Such packages can no longer be installed.</li>
+<li>BUG 194589: Package binaries were not given permission to execute other binaries included in the package.</li>
+<li>BUG 195093: It was possible for a pacakge to install device special files. Such packages can no longer be installed.</li>
+</ul>
+</li>
+<li><b>Security</b><ul>
+<li>BUG 196191: Pressing the hangup key while the PIN Entry dialog was open would cause the PIN Entry dialog to reopen after Qtopia returned to the home screen.</li>
+</ul>
+</li>
+<li><b>Tasks</b><ul>
+<li>BUG 182946: The Task Details screen was not painted correctly when a right-to-left language was in use.</li>
+<li>BUG 183576: When a new theme was loaded, any changes to widget sizes didn't take effect until Qtopia was restarted.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 176256: If a call was active and a second call was received, the ringtone would still be played. Rather than playing the ringtone, Qtopia now relies on the phone network to insert a &quot;call waiting&quot; tone into the audio stream to indicate that a second call is being received.</li>
+<li>BUG 180319: Failure to set Call Barring options was not reported to the user.</li>
+<li>BUG 185619: The SIM PIN entry dialog would time out after two minutes, leaving Qtopia unable to register to a GSM network until restarted.</li>
+<li>BUG 186529: A memory leak occurred each time a video ringtone was played on the Call Screen.</li>
+<li>BUG 186544: Video ringtones would not play.</li>
+<li>BUG 187462: GSM Time Synchronisation didn't work when the language was set to Arabic.</li>
+<li>BUG 188017: Failure of band selection was not reported to the user.</li>
+</ul>
+</li>
+<li><b>Theming</b><ul>
+<li>BUG 176924: The text of a window title is now elided if it won't fit in the available space.</li>
+<li>BUG 184393: Wallpaper settings for secondary screens were ignored.</li>
+<li>BUG 193914: Setting an IconPath in the theme configuration file to allow overriding Qtopia's default images did not work.</li>
+<li>BUG 194742: Themes could not be installed in the updates or packages directories.</li>
+</ul>
+</li>
+<li><b>Words</b><ul>
+<li>BUG 183221: The Words application did not paint correctly in right-to-left languages.</li>
+<li>BUG 188423: Word lookup was very slow when multiple input languages were active.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Greenphone</b>:<ul>
+<li>BUG 171152: Due to a bug in the modem firmware, outgoing calls may not be canceled correctly if the user presses the hangup key while the call is in the &quot;dialing&quot; state. Qtopia attempts to work around this by attempting to cancel the call after it transitions from &quot;dialing' to &quot;alerting&quot;. This strategy fails in cases where the call transitions directly from &quot;dialing&quot; to &quot;connected&quot;.</li>
+<li>BUG 176936: Due to incorrect factory calibration, some Greenphone handsets do not perform noise cancellation correctly. This may result in significant levels of echo being heard when using the handset indoors. This level of echo can be reduced by adjusting the microphone and speaker volumes via the <b>Call Options</b> application's <b>Call Volume</b> feature.</li>
+<li>BUG 179229: The Greenphone modem does not report whether an incoming call has been diverted from another number. Thus Qtopia is unable to indicate Call Diversion to the user, and the Greenphone therefore fails to achieve GCF Standard Compliance for this function.</li>
+<li>BUG 180951: On some Greenphones, the Bluetooth subsystem regularly gets into a state where no further Bluetooth operations will succeed until the device is reset. This is believed to be a fault in the hardware and/or kernel, rather than a problem with the Qtopia software.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+</ul>
+</li>
+<li><b>Messages</b>:<ul>
+<li>BUG 142744: MMS audio doesn't play to completion if the audio track is longer than the slideshow.</li>
+</ul>
+</li>
+<li><b>Neo 1973 (ficgta01 device profile)</b><ul>
+<li>BUG 197301: SIM Applications are not supported on the Neo 1973 in this release.</li>
+</ul>
+</li>
+<li><b>Server Widgets</b>:<ul>
+<li>BUG 148987: The Task Manager list only works correctly with the Standard Qtopia server widgets.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

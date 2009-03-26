@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Device Profiles</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Device Profiles<br /><span class="subtitle"></span>
+</h1>
+<p>Device profiles are a way to minimize the hassle of configuring for a device. A single directory contains all of the configuration information necessary to build for the device.</p>
+<p>Profiles live in the devices directory in the source tree. They are activated by running <tt>configure -device foo</tt>.</p>
+<p>There are a number of features. They are described by the file that implements them.</p>
+<ul><li><a href="#configure">configure</a></li>
+<li><a href="#environment">environment</a></li>
+<ul><li><a href="#toolchain">toolchain</a></li>
+<li><a href="#pkg-config">pkg-config</a></li>
+</ul>
+<li><a href="#mkspecs">mkspecs</a></li>
+<li><a href="#custom-h-custom-cpp">custom.h/custom.cpp</a></li>
+<li><a href="#config-pri">config.pri</a></li>
+<li><a href="#projects-pri">projects.pri</a></li>
+<li><a href="#custom-pri">custom.pri</a></li>
+<li><a href="#src">src</a></li>
+<li><a href="#qconfig-h">qconfig.h</a></li>
+<li><a href="#help">help</a></li>
+<li><a href="#limitations">Limitations</a></li>
+</ul>
+<a name="configure"></a>
+<h3>configure</h3>
+<p>The single most annoying thing about compiling for a new device is that usually lots of configure arguments are required. These must be communicated to anyone wanting to compile for the device. A device profile can have a file named configure that specifies configure arguments.</p>
+<p>Actually there are 3 files for this but only configure is required.</p>
+<ul>
+<li>configure-common<p>Read for both desktop and device builds (before the other file).</p>
+</li>
+<li>configure<p>Read for device builds.</p>
+</li>
+<li>configure-qvfb<p>Read for desktop builds.</p>
+</li>
+</ul>
+<p>A desktop build is obtained by running <tt>configure -device foo -qvfb</tt>. Note that this will not work unless the configure-qvfb file exists.</p>
+<p>When you run <tt>configure [args1] -device foo [args2]</tt> configure checks for <tt>&lt;source&gt;/devices/foo/configure</tt> and if it's found, configure re-launches itself with <tt>-device foo</tt> replaced by the contents of the file.</p>
+<p>Here's a sample configure file (note that whitespace is interpreted by the shell so the newlines are not relevant).</p>
+<pre>    # lines beginning with # are ignored
+    -edition phone -xplatform mydev -arch arm -no-qvfb
+    -release -displaysize 240x320 -quicklaunch
+    -prefix /opt/Qtopia</pre>
+<p>The ordering of arguments is significant. Anything specified before -device can be overridden by the device profile while anything after -device can override the device profile.</p>
+<p>For example, the sample file above specifies -release. Here's what would happen if you passed -debug before and after -device foo.</p>
+<ul>
+<li>Before<ul>
+<li>configure -debug -device foo becomes configure -debug -release</li>
+<li>-release overrides -debug so a release build is done.</li>
+</ul>
+</li>
+<li>After<ul>
+<li>configure -device foo -debug becomes configure -release -debug</li>
+<li>-debug overrides -release so a debug build is done.</li>
+</ul>
+</li>
+</ul>
+<a name="environment"></a>
+<h3>environment</h3>
+<p>This script (if it exists) is sourced before re-running configure and before Makefile calls Makefile.target. The suggested use is to setup paths to an appropriate toolchain. The <tt>DEVICE_CONFIG_PATH</tt> variable is set to the path of the device profile so that you can locate files inside the device directory.</p>
+<a name="toolchain"></a>
+<h4>toolchain</h4>
+<p>In order to reduce duplicated code the recommended use of this file is as follows:</p>
+<pre>    #!/bin/sh
+    TOOLCHAIN=/path/to/mips/cross/compiler
+    USE_TB=1
+    TB_CC_PREFIX=mips-linux-
+    TB_CC_VER=auto
+    TB_SYS=mips:system</pre>
+<p>The following variables are recognised by the build system.</p>
+<ul>
+<li>TOOLCHAIN<p>Set the path to the toolchain such that <tt>$TOOLCHAIN/bin</tt> contains the compiler binaries. The build system will add <tt>$TOOLCHAIN/bin</tt> to your <tt>PATH</tt> if it is not already there. If this variable is not set, none of the following variables will have any effect and your <tt>PATH</tt> will not be modified.</p>
+</li>
+<li>USE_TB<p>Set to 1 to enable teambuilder support (if teambuilder can be found). The user should export <tt>TBDIR</tt> if they have not installed teambuilder into <tt>/opt/teambuilder</tt>. If this is not set (or set to 0) teambulider support will be disabled and none of the following variables will have any effect.</p>
+</li>
+<li>TB_CC_PREFIX<p>Set the prefix your compiler uses. For example, if your compiler is called <tt>arm-linux-gcc</tt> the prefix is <tt>arm-linux-</tt>.</p>
+</li>
+<li>TB_CC_VER<p>Set to <tt>auto</tt> to ask the compiler or specify an explicit version. You might want to set an explicit version if you have multiple, compatible compilers available. For example, <tt>4.1.*</tt>.</p>
+</li>
+<li>TB_SYS<p>Specify the <tt>TEAMBUILDER_SYSTEM</tt> value your toolchain requires. If this is set a set of wrapper scripts will be created so that the variable is set correctly. If you do not set this variable wrapper scripts will not be used.</p>
+</li>
+<li>TB_CC<p>Specify the compiler names your toolchain has. The default (<tt>&quot;gcc g++&quot;</tt>) is probably acceptable though some toolchains might require <tt>&quot;cc c++&quot;</tt> instead. The mkspec for the device will contain the compiler names.</p>
+</li>
+</ul>
+<a name="device-pkg-config"></a><a name="pkg-config"></a>
+<h4>pkg-config</h4>
+<p>There are variables you can set related to pkg-config. If you do not set these values pkg-config will not be used. <tt>PKG_CONFIG_PATH</tt> must point to the location where your toolchain's .pc files are. <tt>PKG_CONFIG_PREFIX</tt> must point to the location where your toolchain's libs are installed. Note that these variables must be exported.</p>
+<pre>    export PKG_CONFIG_PREFIX=$TOOLCHAIN/mips-linux
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PREFIX/lib/pkgconfig</pre>
+<p>See also the <a href="over-pkg-config-1.html">pkg-config</a> overview.</p>
+<a name="mkspecs"></a>
+<h3>mkspecs</h3>
+<p>Since a typical behavior of the configure file is to set -xplatform it is useful to have a platform spec for the device. Device profiles can contain a mkspecs directory that is checked for -platform and -xplatform spec files. This is so that you do not have to modify the Qt depot in order to ensure your device can be built (though it is possible to move a spec file to Qt without having to modify the configure line).</p>
+<p>For example, the mydev spec files are in it's configuration directory.</p>
+<pre>    devices/mydev/mkspecs/qws/linux-mydev-g++/qmake.conf
+    devices/mydev/mkspecs/qws/linux-mydev-g++/qplatformdefs.h</pre>
+<p>There are mkspecs that ship with Qt for Embedded Linux. They are in <tt>qtopiacore/qt/mkspecs/qws</tt>. You should copy one that is similar to your device (eg. linux-arm-g++) and modify it to suit. Things to check are the name of the compiler, the compiler flags (especially optimization flags). You may also want the mkspec to specify a define that you can use to enable device-specific code in Qt for Embedded Linux and Qt Extended.</p>
+<p>It is customary to define only what you need in qmake.conf and to include some common files. To do this you will need to use the <tt>MKSPECS</tt> environment variable. Here is an example of how to use this variable.</p>
+<pre>    MKSPECS=$$(MKSPECS)
+    isEmpty(MKSPECS):error(MKSPECS was not set!)
+    exists($$MKSPECS/common/linux.conf):include($$MKSPECS/common/linux.conf)
+    else:error($$MKSPECS/common/linux.conf does not exist!)</pre>
+<p>This grabs the environment variable to a local variable. It then asserts that it was set and includes one of the common files. If the file cannot be found it asserts.</p>
+<a name="custom-h-custom-cpp"></a>
+<h3>custom.h/custom.cpp</h3>
+<p>Since these files are tied to a device it is useful to have them in the device profile. If these files are not present configure will look in the traditional location, <tt>&lt;source&gt;/src/libraries/qtopia/custom-&lt;xplatform&gt;.(h|cpp)</tt>. See <a href="foo/../../custom-h.html">&lt;custom.h&gt;</a> for more information about these files.</p>
+<p>For reference implementations of these files, the existing files found in <tt>&lt;source&gt;/devices/&lt;device&gt;/custom.*</tt> and <tt>&lt;source&gt;/src/libraries/qtopiabase/custom-&lt;xplatform&gt;.*</tt> may be of assistance.</p>
+<a name="config-pri"></a>
+<h3>config.pri</h3>
+<p>Configuration tweaks can be done here. This is read just after the configure-generated config.pri, before each qbuild.pro file is read.</p>
+<a name="projects-pri"></a>
+<h3>projects.pri</h3>
+<p>This is for enabling and disabling projects as appropriate for the device. This is processed after the module includes (module_*.pri) but before custom.pri and local.pri so that the user can still override the projects.</p>
+<a name="custom-pri"></a>
+<h3>custom.pri</h3>
+<p>If present, this file overrides <tt>&lt;source&gt;/src/custom.pri</tt>. It can include the contents of that file by using the following command.</p>
+<pre>    include($$QTOPIA_DEPOT_PATH/src/custom.pri)
+    # disable one of the custom projects
+    PROJECTS-=applications/customapp</pre>
+<a name="src"></a>
+<h3>src</h3>
+<p>If the src directory exists, it is mapped to /src in the solution filesystem. Files in this directory will override files in the source tree.</p>
+<a name="qconfig-h"></a>
+<h3>qconfig.h</h3>
+<p>This file overrides the use of qconfig-qpe.h&#x2e; It can define all it's own things or it can <tt>#include &quot;qconfig-qpe.h&quot;</tt> and override settings (watch out for dependencies if you do this though!).</p>
+<a name="help"></a>
+<h3>help</h3>
+<p>This directory is used to provide device-specific help file overrides.</p>
+<a name="limitations"></a>
+<h3>Limitations</h3>
+<p>Device profiles do not currently help you with the following items.</p>
+<ul>
+<li>Applying device-specific patches to existing sources.</li>
+<li>Device-specific files for helix.</li>
+</ul>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

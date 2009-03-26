@@ -1,0 +1,107 @@
+                          INSTALLING Qt for Embedded Linux 4.4.3.
+
+1.  If you have the commercial edition of Qt, install your
+    license file as $HOME/.qt-license.
+
+    For the open source version you do not need a license file.
+
+2.  Unpack the archive if you have not done so already:
+
+        cd /tmp
+        gunzip %DISTNAME%.tar.gz        # uncompress the archive
+        tar xvf %DISTNAME%.tar          # unpack it
+
+    This creates the directory /tmp/%DISTNAME% containing the files
+    from the archive. We only support the GNU version of the tar
+    archiving utility. Note that on some systems it is called gtar.
+
+3.  Building
+
+    Before building the Qt library, run the ./configure script to
+    configure the library for your deployment architecture.
+
+    By default, Qt for Embedded Linux is configured for installation in the
+    /usr/local/Trolltech/QtEmbedded-4.4.3 directory, but this
+    can be changed by using the -prefix option. Alternatively, the
+    -prefix-install option can be used to specify a "local"
+    installation within the source directory.
+
+        cd /tmp/%DISTNAME%
+        ./configure -embedded [architecture]
+
+    Typical architectures are x86 and arm. Type "./configure -help" to
+    get a list of all available options.
+
+    To create the library and compile all the demos, examples, tools,
+    and tutorials, type:
+
+        make
+
+    On some systems the make utility is called differently, e.g. gmake.
+    The configure script tells you which make utility to use.
+
+    If you did not configure Qt using the -prefix-install option, you
+    need to install the library, demos, examples, tools, and tutorials
+    in the appropriate place. To do this, type:
+
+        su -c "make install"
+
+    and enter the root password.
+
+    Note that on some systems the make utility is named differently,
+    e.g. gmake. The configure script tells you which make utility to
+    use.
+
+    If you need to reconfigure and rebuild Qt from the same location,
+    ensure that all traces of the previous configuration are removed
+    by entering the build directory and typing
+
+        make confclean
+
+    before running the configure script again.
+
+4.  Environment variables
+
+    In order to use Qt, some environment variables needs to be
+    extended.
+
+        PATH    - to locate qmake, moc and other Qt tools
+
+    This is done like this:
+
+    In .profile (if your shell is bash, ksh, zsh or sh), add the
+    following lines:
+
+        PATH=/usr/local/Trolltech/QtEmbedded-4.4.3/bin:$PATH
+        export PATH
+
+    In .login (in case your shell is csh or tcsh), add the following line:
+
+        setenv PATH /usr/local/Trolltech/QtEmbedded-4.4.3/bin:$PATH
+
+    If you use a different shell, please modify your environment
+    variables accordingly.
+
+    For compilers that do not support rpath you must also extended the
+    LD_LIBRARY_PATH environment variable to include
+    /usr/local/Trolltech/QtEmbedded-4.4.3/lib. On Linux with GCC
+    this step is not needed.
+
+5.  That's all. Qt for Embedded Linux is now installed.
+
+    Qt for Embedded Linux needs to run on a framebuffer. You can either use the
+    Linux framebuffer or the Qt Virtual Framebuffer (qvfb). For a
+    description of how to install qvfb please consult the
+    documentation at:
+
+	http://doc.trolltech.com/4.4.3/qvfb.html
+
+    Please note that qvfb requires a Qt/X11 installation.
+
+    For more information on how to get started with Qt have a look at:
+
+        http://doc.trolltech.com/4.4.3/how-to-learn-qt.html
+        http://doc.trolltech.com/4.4.3/tutorial.html
+        http://www.trolltech.com/developer
+
+    We hope you will enjoy using Qt for Embedded Linux. Good luck!

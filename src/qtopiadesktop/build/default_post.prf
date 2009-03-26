@@ -1,0 +1,87 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(default_post.prf)
+# Setup the post processing
+
+syncqtopia {
+    # This file ensures that dependencies are correctly created between headers in a library
+    # and code in that library. It is changed when headers are installed and this change
+    # causes qmake to parse the .pro file again, this time seeing the newly-installed headers.
+    exists($$OUT_PWD/syncqtopia.pri):include($$OUT_PWD/syncqtopia.pri)
+    else:error(Missing $$OUT_PWD/syncqtopia.pri)
+}
+
+# debug_and_release breaks our build system
+CONFIG-=debug_and_release
+
+# Get Qt's version of this file
+load(default_post)
+
+# This is changed in several places so make a copy now
+ORIG_TARGET=$$TARGET
+
+# Sanity check
+!contains(PROCESSED_PRI,qtopia_project):error(You must specify the project type with qtopia_project())
+
+# Set TRANSLATIONS and ALL_TRANSLATIONS
+TRANSLATIONS=$$LANGUAGES
+TRANSLATIONS-=$$STRING_LANGUAGE
+ALL_TRANSLATIONS=$$AVAILABLE_LANGUAGES
+ALL_TRANSLATIONS-=$$STRING_LANGUAGE
+
+# Desktop projects have a different library location
+contains(PROJECT_TYPE,desktop) {
+    LIBS-=-L$$QPEDIR/lib
+    LIBS+=-L$$QPEDIR/lib/host
+}
+
+# Do we have translations? Enable i18n.
+!isEmpty(TRANSLATIONS):CONFIG+=i18n
+# If no_tr, disable i18n.
+no_tr:CONFIG-=i18n
+
+# Was installs disabled?
+no_install:CONFIG-=installs
+
+# Any embedded project can install packages (use CONFIG+=no_pkg to suppress)
+embedded:!subdirs:CONFIG+=packages
+
+# Singleexec only applies to Qtopia projects
+part_of_qtopia:!desktop:enable_singleexec:CONFIG+=singleexec
+
+# Mandatory targets
+QMAKE_EXTRA_TARGETS*=lupdate packages syncqtopia first_syncqtopia
+!equals(QTOPIA_SDKROOT,$$QPEDIR) {
+    QMAKE_EXTRA_TARGETS+=sdk
+    create_raw_dependency(.PHONY,sdk)
+}
+
+!subdirs {
+    # Set the default license
+    isEmpty(QTOPIA_LICENSE) {
+        free_package {
+            license(GPL)
+            depotProject:license(OpenSSL_COMPATIBLE)
+        } else {
+            license(COMMERCIAL)
+        }
+        echo("$$self: No LICENSE specified. Assuming $${QTOPIA_LICENSE}.")
+    }
+
+    # Ensure that all headers are seen by the build system
+    HEADERS*=$$PRIVATE_HEADERS $$SEMI_PRIVATE_HEADERS
+}
+
+# We want these items processed as early as possible
+# The order needs to be reversed so that the first entry here gets processed first
+EARLY_CONFIG=$$reverse(plugin)
+for(it,EARLY_CONFIG):contains(CONFIG,$$it) {
+    CONFIG-=$$it
+    CONFIG+=$$it
+}
+
+# We want these items processed as late as possible
+LATE_CONFIG=depends license i18n singleexec installs common packages runlast
+for(it,LATE_CONFIG):contains(CONFIG,$$it) {
+    CONFIG-=$$it
+    CONFIG=$$it $$CONFIG
+}
+

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Communications: Telephony: Dialer</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Communications: Telephony: Dialer<br><small>Functional Description</small></h1><p><strong>Dialer</strong> is the interface used to create outgoing phone calls. It is integrated with the <a href="fd-Contacts.html">Contacts</a> and <a href="fd-CallHistory.html">Call <nop>History</a> applications to make it easy to dial contacts or previous calls. Separate user interfaces are provided for the keypad and touchscreen dialers with the user able to access <strong>Dialer</strong> by typing numbers on a keypad device or pushing a button on the homescreen on a touchscreen device. On a touchscreen device <strong>Dialer</strong> also provides access to the <a href="fd-CallHistory.html">Call <nop>History</a> application.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-8394">Abbreviated Dialing Numbers</a>
+<li><a href="#QTOPIA-2136">Change of PIN</a>
+<li><a href="#QTOPIA-2140">Change of PIN2</a>
+<li><a href="#QTOPIA-433">Contact and Call History Look-up</a>
+<li><a href="#QTOPIA-7588">Deskphone style hook handling and dialing support</a>
+<li><a href="#QTOPIA-7629">Dialtone, DTMF, and Supervisory Tones</a>
+<li><a href="#QTOPIA-432">General Phone Call Set-up</a>
+<li><a href="#QTOPIA-436">Keypad Dialer User Interface</a>
+<li><a href="#QTOPIA-435">Other Application Integration</a>
+<li><a href="#QTOPIA-434">Saving to Contacts</a>
+<li><a href="#QTOPIA-437">Touchscreen Dialer User Interface</a>
+</ul><h3><a name=QTOPIA-8394>Abbreviated Dialing Numbers</a></h3>
+<p>This feature is provided as part of the Touchscreen Phone Reference Design.</p>
+<p>Numbers stored on the device or SIM can be retrieved entering the address of that number into the dialer.
+
+<p>For example, the seventh accessible number can be retrieved using <em>7#</em></p>
+
+<p>Abbreviated dialing numbers may contain wildcards, in the form of the character 'D'.  When retrieved, the user is prompted to complete this number before it can be dialed.</p>
+<h3><a name=QTOPIA-2136>Change of PIN</a></h3>
+<p>The following procedure permits the user to change the PIN in the SIM: <br/>
+	PIN:		**04*OLD_PIN*NEW_PIN*NEW_PIN#<br/>
+Note that the SEND function is not used in these procedures.<br/>
+An indication is given to the user showing whether this procedure was successful.
+
+<p>Complies with 3GPP TS 02.30-711, Section 4.6.2</p>
+<h3><a name=QTOPIA-2140>Change of PIN2</a></h3>
+<p>The following procedure permits the user to change the PIN2 in the SIM: <br/>
+	PIN2:		**042*OLD-PIN2*NEW_PIN2*NEW_PIN2#<br/>
+Note that the SEND function is not used in these procedures.<br/>
+An indication is given to the user showing whether this procedure was successful.
+
+<p>Complies with 3GPP TS 02.30, 4.6.2</p>
+<h3><a name=QTOPIA-433>Contact and Call History Look-up</a></h3>
+<p>To assist with quick-dialing <b>Dialer</b> is able to look-up <b>Contact</b> and <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> records that match the digits the user has entered.
+
+<p>It is also possible to associate <b>Contact</b> matches with a <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> record.</p>
+
+<p>A contact is deemed to match the user's numerical input if any of the following rules are true:</p>
+
+
+<ul>
+	<li>The contact's first or last name is equal to the alphabetical mapping of the user's input.</li>
+	<li>One of the contact's numbers starts with the user's input.</li>
+</ul>
+
+
+
+<p>A <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> record is deemed to match the user's input if any of the following rules are true:</p>
+
+
+<ul>
+	<li>The call record's number starts with the user's input.</li>
+</ul>
+
+
+<p>Matches display as items in a list to be called the 'look-up list' with items containing the following:</p>
+
+
+<ul>
+	<li>If the match is to a call record with no associated contact:
+	<ul>
+		<li>An image indicating the type of call record</li>
+		<li>The phone number of the call</li>
+		<li>The week day and time the call originated</li>
+	</ul>
+	</li>
+</ul>
+
+
+<ul>
+	<li>If the match is to a contact that has no associated call record:
+	<ul>
+		<li>A photo of the contact</li>
+		<li>The name of the contact</li>
+		<li>The matching phone number</li>
+		<li>The matching phone number type</li>
+	</ul>
+	</li>
+</ul>
+
+
+<ul>
+	<li>If the match is to a contact that has an associated call record:
+	<ul>
+		<li>A photo of the contact</li>
+		<li>The name of the contact</li>
+		<li>The matching phone number type</li>
+		<li>The week day and time the call originated</li>
+	</ul>
+	</li>
+</ul>
+
+
+<p>    If the contact was matched based on the name then the matching parts are indicated to the user.</p>
+
+
+<p>Selecting any item in the list begins a call to its phone number.</p>
+<h3><a name=QTOPIA-7588>Deskphone style hook handling and dialing support</a></h3>
+<p>This feature is provided as part of the Deskphone Reference Design.</p>
+<p>Deskphones will generally have a "hook", that the handset is picked up from. The hook will manifest as a button that is either pressed or released based on whether the user has lifted the handset.
+
+<ul>
+	<li>Call acceptance<br/>
+On receiving "Ring Alert", the user may lift the hand-set "Off Hook" or press the SEND-function key.</li>
+</ul>
+
+
+<ul>
+	<li>Call initiation
+	<ul>
+		<li>"Off Hook" call initiation:<br/>
+1. Lift the hand-set "Off Hook" - Dial tone is presented.<br/>
+2. Enter number. Dial tone is cancelled after entry of the first digit (including * and #).<br/>
+3. Press SEND-function key.<br/>
+4. If the unit is "Off Hook" and the SEND-function key is not pressed, call set up may be automatically initiated after expiry of a time-out of 5 seconds. The time-out shall be restarted after every digit entry.<br/>
+5. The call initiation is stopped by replacing the hand-set "On Hook".</li>
+		<li>"On Hook" call initiation<br/>
+Time-out dialing in "On Hook" mode allows the user to enter a sequence of numbers and after a moment a dial action occurs, enabling dialing without the need to look at the screen (hardware based phones).  This mode is not allowed for mobiles fitted with an "On Hook" dialing feature.</li>
+	</ul>
+	</li>
+</ul>
+
+
+<ul>
+	<li>Call termination<br/>
+The call is terminated by replacing the hand-set "On Hook" or by pressing the END-function key.</li>
+</ul>
+<h3><a name=QTOPIA-7629>Dialtone, DTMF, and Supervisory Tones</a></h3>
+<p>Only relevant for devices which have a handset or similar mechanism for indicating on/off hook state, and where users of such devices expect certain tones for certain gestures.
+
+<p>When the user picks up a desk phone handset or presses Speaker to initiate a dial, there is an expectation that they will hear a dial tone before pressing the first digit key or selecting a contact.  As they type digits into the dialer, key tones are expected to give the user audible feedback.</p>
+
+<p>Qt Extended provides the QTelephonyTones API for generating dialtones, DTMF tones, and other call-related supervisory tones outside of a call.  The telephony stack is responsible for implementing this API using the audio tone generating facilities of the device.</p>
+
+<p>During a call, the QPhoneCall class is used to generate DTMF tones, and the telephony stack is responsible for generating other supervisory tones (e.g. call waiting beeps, busy tones, etc) in response to telephony events.</p>
+
+<p>The separation between outside a call and inside a call is necessary because different hardware or software may need to be used for generating the tones in each case.  The outside a call case could by handled by normal media playback functionality.  The inside a call case is complicated by the need to overlay the tone onto the current voice traffic, or to use non-audio mechanisms like RFC 2833 DTMF signaling.  Because both situations are handled by the telephony stack, it can choose the most appropriate implementation.</p>
+
+<p>The Qt Extended dialers generate a dial tone using the QTelephonyTones API when the hook is lifted, or when some equivalent action is taken to start dialing.  If the device is not currently registered to a network, a different "No Service" tone is played in place of the dial tone.</p>
+<h3><a name=QTOPIA-432>General Phone Call Set-up</a></h3>
+<p>The dialer is accessed from the Home Screen by pressing a numerical key or tapping the dialer icon on touchscreen devices.<br/>
+The user is shown the digits they have currently entered. Pressing the Delete key removes the last entered number.  Pressing the <em>Dial</em> button dials the entered number. Pressing the <em>Hang-up</em> button exits the application.
+<h3><a name=QTOPIA-436>Keypad Dialer User Interface</a></h3>
+<p>The Keypad <b>Dialer</b> user interface consists of a number of input fields and the look-up list. When the user inputs numbers the look-up list is updated to show <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> and <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> records matching the new input.
+<h3><a name=QTOPIA-435>Other Application Integration</a></h3>
+<p>The user is able to create a Message based on the number entered or a highlighted item in the look-up list.
+
+<p>The user is able to view a contact when an item in the look-up list is highlighted and has an associated contact.</p>
+
+<h4><a name="Contacts"></a>Contacts</h4>
+
+<p><b>Dialer</b> is able to match user input with a contact's name or one of its numbers. <b>Dialer</b> provides the ability to create new contacts from user input. <b>Dialer</b> provides the ability to view the full details of matched contacts.</p>
+
+<h4><a name="Messages"></a>Messages</h4>
+
+<p><b>Dialer</b> allows the creation of Messages based on user input, <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> record matches and/or <b>Contact</b> matches with a mobile phone number.</p>
+
+<h4><a name="CallHistory"></a>Call History</h4>
+
+<p><b>Dialer</b> is able to match user input with a <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> record.</p>
+<h3><a name=QTOPIA-434>Saving to Contacts</a></h3>
+<p>When the user enters a phone number that is not associated with any contacts or highlights a match in the look-up list that is not associated with a contact then the user is given the option to save the number to an existing or new contact.
+<h3><a name=QTOPIA-437>Touchscreen Dialer User Interface</a></h3>
+<p>A touchscreen phone will typically not have its own keypad so a number pad is provided in the user interface. The number pad provides buttons for 0-9, * and #. The * button has a sub-menu where the user can select special input such as pauses.
+
+<p>The user can reasonably be expected to wish to use their fingers to input a phone number into the <b>Dialer</b>; this is taken into account, hence the number pad's button size.</p>
+
+<p>Due to the size of the number pad the look-up list can not be displayed and automatically updated on the same screen as the keypad version. The Touchscreen <b>Dialer</b> provides a button to access the look-up list that pops-up over the <b>Dialer</b>.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

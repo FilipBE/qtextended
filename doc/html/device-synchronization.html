@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Device Synchronization</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Device Synchronization<br /><span class="subtitle"></span>
+</h1>
+<p>Qt Extended supports implementing PIM synchronization on the device through functions provided by <a href="qpimmodel.html">QPimModel</a>. The functions <a href="qpimmodel.html#added">QPimModel::added</a>(), <a href="qpimmodel.html#removed">QPimModel::removed</a>() and <a href="qpimmodel.html#modified">QPimModel::modified</a>() are provided as a way of accessing the internal changelog maintained by the PIM Library. This helps determine what data has changed since a previous synchronization action so to minimize the amount of data sent over a network when enacting the next synchronization. The functions <a href="qpimmodel.html#startSyncTransaction">QPimModel::startSyncTransaction</a>(), <a href="qpimmodel.html#abortSyncTransaction">QPimModel::abortSyncTransaction</a>() and <a href="qpimmodel.html#commitSyncTransaction">QPimModel::commitSyncTransaction</a>() are provided to atomically apply changes for synchronization as well as to increase performance by virtue of the SQL transaction and reduced load on calculating changelog timestamps.</p>
+<a name="retrieving-relevant-changes"></a>
+<h3>Retrieving relevant changes.</h3>
+<p>The <a href="qpimmodel.html">QPimModel</a> functions added, removed and modified are used to retrieve relevant changes for a sync. While these functions are implemented in <a href="qpimmodel.html">QPimModel</a>, it is important to use one of the subclasses, <a href="qcontactmodel.html">QContactModel</a>, <a href="qappointmentmodel.html">QAppointmentModel</a>, or <a href="qtaskmodel.html">QTaskModel</a>, in order to specify what PIM data type is to be synced.</p>
+<p>The time used with these functions should be specified in UTC. This is because changes to the users timezone, perhaps while traveling, should impact synchronization. Generally the timestamp from the previous synchronization will be used with these functions in order to only deal with the changes between two synchronization actions. To this end these functions treat a null datetime as specifying a slow or full sync. Hence passing a null for added will return all records, and passing a null for modified or removed will return no records. For any single timestamp, a record will appear only in one of the added, removed, or modified results.</p>
+<p>It is also important to note that the filtering applied to a model, be it for completed tasks or contacts from a certain data source, also apply to the added, modified and removed functions.</p>
+<pre>    void MyTasksSync::fetchChangesSince(const QDateTime &amp;since)
+    {
+        QList&lt;QUniqueId&gt; changes = model-&gt;added(since);
+
+        foreach(const QUniqueId &amp;id, changes) {
+            QTask t = model-&gt;task(id);
+            mySendAddedTask(t);
+        }
+
+        changes = model-&gt;removed(since);
+        foreach(const QUniqueId &amp;id, changes) {
+            mySendRemovedTask(id);
+        }
+
+        changes = model-&gt;modified(since);
+        foreach(const QUniqueId &amp;id, changes) {
+            QTask t = model-&gt;task(id);
+            mySendModifiedTask(t);
+        }
+    }</pre>
+<p>Tracking any identifier mapping, the last sync time and other synchronization bookkeeping is the responsibility of the protocol implementation. If an implementation of the above behavior is required its likely Desktop Synchronization will be a preferred starting point.</p>
+<a name="applying-remote-changes"></a>
+<h3>Applying remote changes</h3>
+<p>The second half of synchronization involves applying changes from the remote device or server to the device. This could be done using the usual functions for modifying PIM records, however to aid both performance and to help keep the synchronization transaction atomic some additional functions are provided.</p>
+<p><a href="qpimmodel.html#startSyncTransaction">QPimModel::startSyncTransaction</a>() does two separate things. The first is that it starts an SQL database transaction. This allows all changes from this point onwards to be aborted or rolled back in the case that the synchronization is unsuccessful. The second thing it does is it changes the behavior of the behavior changelog to use the passed timestamp for all records added, removed or modified until the <a href="qpimmodel.html#commitSyncTransaction">QPimModel::commitSyncTransaction</a>() is called. This means all records modified as part of the sync will have the same, known, timestamp.</p>
+<p>Given limits for nested SQL transaction its important to only attempt one data storage types sync transaction at a time.</p>
+<pre>        QTaskModel tasks;
+        QContactModel contacts;
+
+        <span class="comment">// incorrect</span>
+        QDateTime syncTime = QDateTime::currentDateTime();
+        tasks.startSyncTransaction(syncTime);
+        contacts.startSyncTransaction(syncTime);
+        <span class="comment">// modify tasks</span>
+        <span class="comment">// modify contacts</span>
+        tasks.commitSyncTransaction();
+        contacts.commitSyncTransaction();
+
+        <span class="comment">// correct</span>
+        QDateTime syncTime = QDateTime::currentDateTime().toUTC();
+        tasks.startSyncTransaction(syncTime);
+        <span class="comment">// modify tasks</span>
+        tasks.commitSyncTransaction();
+        contacts.startSyncTransaction(syncTime);
+        <span class="comment">// modify contacts</span>
+        contacts.commitSyncTransaction();</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

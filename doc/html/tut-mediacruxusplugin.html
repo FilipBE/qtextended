@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Creating Plugin For Cruxus Engine</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Creating Plugin For Cruxus Engine<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>The Cruxus engine is a media engine created specifically for Qt Extended. Many plugins for this media engine already exist in the src/plugins/codecs and src/3rdparty/plugins/codecs directories including libmad (mp3), libtimidity (mid), tremor (ogg), wavplay (wav). To build using the cruxus engine use <tt>-mediaengines cruxus</tt> on the configure line to enable. Cruxus plugins are enabled and disabled by modifying src/general.pri and commenting or uncommenting before configuration.</p>
+<p>NOTE: plugin codecs not provided in the source code can be obtained from qtextended.org.</p>
+<p>It is also possible to build with multiple engines and the priority of use is determined by the order they appear in the configure line.</p>
+<p><tt>-mediaengines cruxus,helix,gstreamer</tt></p>
+<p>The following is the wav plugin used by cruxus for wav playback.</p>
+<p>The basic process is as follows:</p>
+<p>connectToInput(input) will be called to connect to the input stream.</p>
+<p>The start() function of the <a href="qmediadecoder.html">QMediaDecoder</a> is called this should start reading from the input stream and work out the playback parameter like frequency, channels and emit the signals lengthChanged(d-&gt;length), readyRead() and playerStateChanged(<a href="qtopiamedia.html#State-enum">QtopiaMedia::Playing</a>)</p>
+<p>readData() function will be called to read and decode the input stream data emitting positionChanged(d-&gt;position) when needed.</p>
+<p>Other functions required to be implemented are disconnectFromInput(), stop(), pause(), <a href="stylesheet-reference.html">length</a>(), seek(), setVolume(), volume(), setMuted(), isMuted().</p>
+<p>plugins/codecs/wavplay/wavplugin.h</p>
+<a name="qmediacodecplugin-class-definition-for-wavplay"></a>
+<h2>QMediaCodecPlugin Class Definition for wavplay</h2>
+<pre>    class WavPluginPrivate;
+
+    class WavPlugin :
+        public QObject,
+        public QMediaCodecPlugin
+    {
+        Q_OBJECT
+        Q_INTERFACES(QMediaCodecPlugin)
+
+    public:
+        WavPlugin();
+        ~WavPlugin();
+
+        QString name() const;
+        QString comment() const;
+        QStringList mimeTypes() const;
+        QStringList fileExtensions() const;
+
+        double version() const;
+
+        bool canEncode() const;
+        bool canDecode() const;
+
+        QMediaEncoder* encoder(QString const&amp; mimeType);
+        QMediaDecoder* decoder(QString const&amp; mimeType);
+
+    private:
+        WavPluginPrivate*  d;
+    };</pre>
+<p>plugins/codecs/wavplay/wavplugin.cpp</p>
+<a name="qmediacodecplugin-class-code-for-wavplay"></a>
+<h2>QMediaCodecPlugin Class Code for wavplay</h2>
+<p>see also <a href="qmediacodecplugin.html">QMediaCodecPlugin</a> plugins/codecs/wavplay/wavplugin.cpp is an implementation of this class.</p>
+<p>plugins/codecs/wavplay/wavdecoder.h</p>
+<a name="qmediadecoder-class-definition-for-wavplay"></a>
+<h2>QMediaDecoder Class Definition for wavplay</h2>
+<pre>    class WavDecoderPrivate;
+
+    class WavDecoder : public QMediaDecoder
+    {
+        Q_OBJECT
+
+    public:
+        WavDecoder();
+        ~WavDecoder();
+
+        QMediaDevice::Info const&amp; dataType() const;
+
+        bool connectToInput(QMediaDevice* input);
+        void disconnectFromInput(QMediaDevice* input);
+
+        void start();
+        void stop();
+        void pause();
+
+        quint64 length();
+        bool seek(qint64 ms);
+
+        void setVolume(int volume);
+        int volume();
+
+        void setMuted(bool mute);
+        bool isMuted();
+
+    private:
+        qint64 readData(char *data, qint64 maxlen);
+        qint64 writeData(const char *data, qint64 len);
+
+        WavDecoderPrivate* d;
+    };</pre>
+<p>plugins/codecs/wavplay/wavdecoder.cpp</p>
+<a name="qmediadecoder-class-code-for-wavplay"></a>
+<h2>QMediaDecoder Class Code for wavplay</h2>
+<p>see also <a href="qmediadecoder.html">QMediaDecoder</a> plugins/codecs/wavplay/wavdecoder.cpp is an implementation of this class.</p>
+<a name="creating-a-new-cruxus-plugin"></a>
+<h2>Creating a new Cruxus plugin</h2>
+<p>Copy an existing plugin to use as a template.</p>
+<ol type="1">
+<li>Create a new directory (eg. $HOME/src/libblah) and copy all the wavplay files to that directory.<pre>    mkdir $HOME/src/libblah
+    cd $HOME/src/libblah
+    cp -r &lt;qt-extended-source-directory&gt;/src/plugins/codecs/wavplay/* .
+    chmod +w *</pre>
+<p>Edit and change name accordingly, replace functionality of each function accordingly (look at the many examples available already).</p>
+</li>
+<li>Build the new application.<pre>    export QPEDIR=&lt;qt-extended-build-directory&gt;
+    $QPEDIR/bin/qbuild
+    $QPEDIR/bin/qbuild image</pre>
+</li>
+<li>Run Qt Extended.<pre>    $QPEDIR/bin/runqtopia</pre>
+</li>
+<li>Try playing media file that your codec decodes.</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

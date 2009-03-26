@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCategoryFilter Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCategoryFilter Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QCategoryFilter class allows consistent filtering of records or objects that have a set of categories assigned. <a href="#details">More...</a></p>
+<pre>    #include &lt;QCategoryFilter&gt;</pre><ul>
+<li><a href="qcategoryfilter-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qcategoryfilter.html#FilterType-enum">FilterType</a></b> { List, Unfiled, All }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcategoryfilter.html#QCategoryFilter">QCategoryFilter</a></b> ()</li>
+<li><div class="fn"/><b><a href="qcategoryfilter.html#QCategoryFilter-2">QCategoryFilter</a></b> ( FilterType <i>t</i> )</li>
+<li><div class="fn"/><b><a href="qcategoryfilter.html#QCategoryFilter-3">QCategoryFilter</a></b> ( const QList&lt;QString&gt; &amp; <i>set</i> )</li>
+<li><div class="fn"/><b><a href="qcategoryfilter.html#QCategoryFilter-4">QCategoryFilter</a></b> ( const QString &amp; <i>c</i> )</li>
+<li><div class="fn"/><b><a href="qcategoryfilter.html#QCategoryFilter-5">QCategoryFilter</a></b> ( const QCategoryFilter &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qcategoryfilter.html#dtor.QCategoryFilter">~QCategoryFilter</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qcategoryfilter.html#acceptAll">acceptAll</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qcategoryfilter.html#acceptUnfiledOnly">acceptUnfiledOnly</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qcategoryfilter.html#accepted">accepted</a></b> ( const QList&lt;QString&gt; &amp; <i>list</i> ) const</li>
+<li><div class="fn"/>QString <b><a href="qcategoryfilter.html#label">label</a></b> ( const QString &amp; <i>scope</i> = QString() ) const</li>
+<li><div class="fn"/>void <b><a href="qcategoryfilter.html#readConfig">readConfig</a></b> ( const QSettings &amp; <i>c</i>, const QString &amp; <i>key</i> )</li>
+<li><div class="fn"/>QList&lt;QString&gt; <b><a href="qcategoryfilter.html#requiredCategories">requiredCategories</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qcategoryfilter.html#writeConfig">writeConfig</a></b> ( QSettings &amp; <i>c</i>, const QString &amp; <i>key</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qcategoryfilter.html#operator-not-eq">operator!=</a></b> ( const QCategoryFilter &amp; <i>other</i> ) const</li>
+<li><div class="fn"/>QCategoryFilter &amp; <b><a href="qcategoryfilter.html#operator-eq">operator=</a></b> ( const QCategoryFilter &amp; <i>other</i> )</li>
+<li><div class="fn"/>bool <b><a href="qcategoryfilter.html#operator-eq-eq">operator==</a></b> ( const QCategoryFilter &amp; <i>other</i> ) const</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCategoryFilter class allows consistent filtering of records or objects that have a set of categories assigned.</p>
+<p>QCategoryFilter is used to represent selected categories. Unlike a list of category ids, QCategoryFilter handles the <tt>All</tt> and <tt>Unfiled</tt> cases so it allows unambiguous behaviour when new categories are added to the system. It is most useful when filtering items by category to create a QCategoryFilter and use the <a href="qcategoryfilter.html#accepted">accepted</a>() function.</p>
+<p>See also <a href="categories.html">Categories</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="FilterType-enum"></a>enum QCategoryFilter::FilterType</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCategoryFilter::List</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Only accepts category sets that contain all of the required categories.</td></tr>
+<tr><td valign="top"><tt>QCategoryFilter::Unfiled</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Only accepts empty category sets.</td></tr>
+<tr><td valign="top"><tt>QCategoryFilter::All</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Accepts all category sets.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCategoryFilter"></a>QCategoryFilter::QCategoryFilter ()</h3>
+<p>Constructs a <a href="qcategoryfilter.html">QCategoryFilter</a> object. By default this object will accept all category sets.</p>
+<h3 class="fn"><a name="QCategoryFilter-2"></a>QCategoryFilter::QCategoryFilter ( <a href="qcategoryfilter.html#FilterType-enum">FilterType</a> <i>t</i> )</h3>
+<p>Constructs a <a href="qcategoryfilter.html">QCategoryFilter</a> object of type <i>t</i>.</p>
+<p>See also <a href="qcategoryfilter.html#FilterType-enum">FilterType</a>.</p>
+<h3 class="fn"><a name="QCategoryFilter-3"></a>QCategoryFilter::QCategoryFilter ( const <a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; &amp; <i>set</i> )</h3>
+<p>Constructs a <a href="qcategoryfilter.html">QCategoryFilter</a> object that only accepts category sets containing all of the category ids listed in <i>set</i>. The type is set to <a href="qcategoryfilter.html#FilterType-enum">QCategoryFilter::List</a>.</p>
+<h3 class="fn"><a name="QCategoryFilter-4"></a>QCategoryFilter::QCategoryFilter ( const <a href="qstring.html">QString</a> &amp; <i>c</i> )</h3>
+<p>Constructs a <a href="qcategoryfilter.html">QCategoryFilter</a> object that only accepts category sets containing category id <i>c</i>. The type is set to <a href="qcategoryfilter.html#FilterType-enum">QCategoryFilter::List</a>.</p>
+<h3 class="fn"><a name="QCategoryFilter-5"></a>QCategoryFilter::QCategoryFilter ( const QCategoryFilter &amp; <i>other</i> )</h3>
+<p>Constructs a <a href="qcategoryfilter.html">QCategoryFilter</a> object as a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QCategoryFilter"></a>QCategoryFilter::~QCategoryFilter ()</h3>
+<p>Destroys a <a href="qcategoryfilter.html">QCategoryFilter</a> object.</p>
+<h3 class="fn"><a name="acceptAll"></a>bool QCategoryFilter::acceptAll () const</h3>
+<p>Returns true if the QCategoryFilterObject accepts all category sets. Otherwise returns false.</p>
+<p>See also <a href="qcategoryfilter.html#requiredCategories">QCategoryFilter::requiredCategories</a>().</p>
+<h3 class="fn"><a name="acceptUnfiledOnly"></a>bool QCategoryFilter::acceptUnfiledOnly () const</h3>
+<p>Returns true if the QCategoryFilterObject only accepts empty category sets. Otherwise returns false.</p>
+<h3 class="fn"><a name="accepted"></a>bool QCategoryFilter::accepted ( const <a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; &amp; <i>list</i> ) const</h3>
+<p>Returns true if the set of categories described by <i>list</i> is accepted by the <a href="qcategoryfilter.html">QCategoryFilter</a> object. Otherwise returns false.</p>
+<h3 class="fn"><a name="label"></a><a href="qstring.html">QString</a> QCategoryFilter::label ( const <a href="qstring.html">QString</a> &amp; <i>scope</i> = QString() ) const</h3>
+<p>Returns a translated string that briefly describes the <a href="qcategoryfilter.html">QCategoryFilter</a> object. If specified, <i>scope</i> specifies the scope in which to search for the label.</p>
+<p>This is useful when displaying a string describing the categories the <a href="qcategoryfilter.html">QCategoryFilter</a> allows.</p>
+<pre>    currentCategoryLabel-&gt;setText( catetoryFilter-&gt;label() );</pre>
+<h3 class="fn"><a name="readConfig"></a>void QCategoryFilter::readConfig ( const <a href="qsettings.html">QSettings</a> &amp; <i>c</i>, const <a href="qstring.html">QString</a> &amp; <i>key</i> )</h3>
+<p>Reads the <a href="qcategoryfilter.html">QCategoryFilter</a> from field <i>key</i> in <i>c</i>.</p>
+<pre>    QSettings settings(&quot;mycompany&quot;, &quot;myapp&quot;);
+    QCategoryFilter filter;
+    filter.readConfig(settings,&quot;filter&quot;);</pre>
+<p>See also <a href="qcategoryfilter.html#writeConfig">writeConfig</a>().</p>
+<h3 class="fn"><a name="requiredCategories"></a><a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; QCategoryFilter::requiredCategories () const</h3>
+<p>Returns the list of categories that must be in a set for the set to be accepted. Note that this only returns a list of the <a href="qcategoryfilter.html">QCategoryFilter</a> object is of type <a href="qcategoryfilter.html#FilterType-enum">QCategoryFilter::List</a>. To get the list of categories corresponding to <a href="qcategoryfilter.html#FilterType-enum">QCategoryFilter::All</a> you must create a <a href="qcategorymanager.html">QCategoryManager</a>.</p>
+<pre>    QStringList categories;
+    if ( filter.acceptAll() )
+        categories = QCategoryManager(scope).categoryIds();
+    else
+        categories = filter.requiredCategories(); <span class="comment">// returns empty list for Unfiled</span></pre>
+<h3 class="fn"><a name="writeConfig"></a>void QCategoryFilter::writeConfig ( <a href="qsettings.html">QSettings</a> &amp; <i>c</i>, const <a href="qstring.html">QString</a> &amp; <i>key</i> ) const</h3>
+<p>Writes the <a href="qcategoryfilter.html">QCategoryFilter</a> to field <i>key</i> in <i>c</i>.</p>
+<pre>    QCategoryFilter filter(&quot;mycategory&quot;);
+    QSettings settings(&quot;mycompany&quot;, &quot;myapp&quot;);
+    filter.writeConfig(settings,&quot;filter&quot;);</pre>
+<p>See also <a href="qcategoryfilter.html#readConfig">readConfig</a>().</p>
+<h3 class="fn"><a name="operator-not-eq"></a>bool QCategoryFilter::operator!= ( const QCategoryFilter &amp; <i>other</i> ) const</h3>
+<p>Returns true if the <a href="qcategoryfilter.html">QCategoryFilter</a> object is not equivilent to <i>other</i>. Otherwise returns false.</p>
+<h3 class="fn"><a name="operator-eq"></a>QCategoryFilter &amp; QCategoryFilter::operator= ( const QCategoryFilter &amp; <i>other</i> )</h3>
+<p>Assigns the <a href="qcategoryfilter.html">QCategoryFilter</a> object to be a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="operator-eq-eq"></a>bool QCategoryFilter::operator== ( const QCategoryFilter &amp; <i>other</i> ) const</h3>
+<p>Returns true if the <a href="qcategoryfilter.html">QCategoryFilter</a> object is equivilent to <i>other</i>. Otherwise returns false.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

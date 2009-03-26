@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>TextWidget Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">TextWidget Class Reference<br /><span class="small-subtitle">(QtUiTest::TextWidget)<br />[<a href="qtuitestmodule.html">QtUiTestModule</a>]</span>
+</h1>
+<p>The TextWidget class provides an abstract base class for all test widgets which display text to the user. <a href="#details">More...</a></p>
+<p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qtuitest-textwidget-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QString <b><a href="qtuitest-textwidget.html#selectedText">selectedText</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qtuitest-textwidget.html#text">text</a></b> () const = 0</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The TextWidget class provides an abstract base class for all test widgets which display text to the user.</p>
+<p>The QtUiTest::TextWidget interface should be implemented on any widget which shows any text at all. This is the primary interface <a href="qtuitest.html">QtUiTest</a> uses to determine text-&gt;widget mappings, and it is used to implement <a href="qsystemtest.html#getText">getText()</a>, a heavily used verification mechanism.</p>
+<p>This interface is closely related to <a href="qtuitest-inputwidget.html">QtUiTest::InputWidget</a>, which provides an interface for entering text into a widget. Any widgets which contain user-editable text will typically implement both <a href="qtuitest-inputwidget.html">QtUiTest::InputWidget</a> and QtUiTest::TextWidget.</p>
+<p>Examples of widgets suitable for this interface include <a href="qlabel.html">QLabel</a>, <a href="qabstractbutton.html">QAbstractButton</a>, <a href="qlineedit.html">QLineEdit</a>, <a href="qtextedit.html">QTextEdit</a> and many more.</p>
+<p>See also <a href="qtuitest-inputwidget.html">QtUiTest::InputWidget</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="selectedText"></a><a href="qstring.html">QString</a> TextWidget::selectedText () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the text in this widget which is currently selected / highlighted. If the widget does not support the concept of selected text, this function should return the same as <a href="qtuitest-textwidget.html#text">text</a>().</p>
+<p>The base implementation calls <a href="qtuitest-textwidget.html#text">text</a>().</p>
+<p>See also <a href="qlineedit.html#selectedText-prop">QLineEdit::selectedText</a>().</p>
+<h3 class="fn"><a name="text"></a><a href="qstring.html">QString</a> TextWidget::text () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns all of the text this widget is currently presenting to the user.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

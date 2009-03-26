@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>OTA Support</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">OTA Support<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides support for Over-The-Air (OTA) messages that arrive via SMS. Both SMS datagrams, based on a port number, and WAP Push messages are supported.</p>
+<p>Qt Extended monitors the incoming SMS message store for SMS datagrams and WAP Push messages. When such a message is encountered, Qt Extended will look for an application using <a href="datasharing.html">Qt Extended Data Sharing (QDS)</a> that can handle the message. If an application is found, the message is removed from the incoming SMS message store and passed to that application.</p>
+<a name="handling-incoming-sms-datagrams"></a>
+<h2>Handling incoming SMS datagrams</h2>
+<p>SMS datagrams arrive associated with a port number. This port number can be supplied to <a href="datasharing.html">Qt Extended Data Sharing (QDS)</a> to dispatch the datagram to the application that wishes to handle it.</p>
+<p>For example, vcard messages on port 226 are handled by a QDS service called <tt>push</tt> with the MIME type <tt>application/x-smsapp-226</tt>. When such an SMS message arrives, Qt Extended will look up the associated application and forward it on.</p>
+<p>For example, if we wanted vcard messages to be processed by the <tt>ContactsPhone</tt> service, we would place a file such as the following in the <tt>etc/qds</tt> directory:</p>
+<pre>    [Translation]
+    File=QtopiaServices
+    Context=ContactsPhone
+    [pushVCard]
+    RequestDataType=application/x-smsapp-226
+    ResponseDataType=
+    Attributes=&quot;push&quot;
+    Description[]=Receive a vcard via SMS push on port 226</pre>
+<p>We also need to place a file called <tt>ContactsPhone.service</tt> in the <tt>services</tt> directory with the following contents:</p>
+<pre>    [Translation]
+    File=QtopiaServices
+    Context=ContactsPhone
+    [Service]
+    Actions = &quot;smsBusinessCard();pushVCard(QDSActionRequest)&quot;
+    Icon = service/Contacts/AddressBook
+    Name[]=Contacts
+    [smsBusinessCard()]
+    Icon = phone/sms
+    Name[]=SMS Business Card</pre>
+<p>When the message arrives, the QCop message <tt>pushVCard(QDSActionRequest)</tt> will be sent to the <a href="contactsphoneservice.html">ContactsPhone</a> service, with the vcard data as the payload within the <a href="qdsactionrequest.html">QDSActionRequest</a> object.</p>
+<p>The <a href="qdsactionrequest.html#auxiliaryData">QDSActionRequest::auxiliaryData</a>() will contain the complete SMS message, including headers. Normally this auxiliary data can be ignored, but some applications may need to know the sender's phone number, or other information. The following code demonstrates how to do this:</p>
+<pre>    QString extractSender(const QDSActionRequest&amp; request)
+    {
+        QByteArray auxData = request.auxillaryData();
+        if (auxData.isEmpty())
+            return QString();
+        QDataStream stream(auxData);
+        QSMSMessage msg;
+        stream &gt;&gt; msg;
+        return msg.sender();
+    }</pre>
+<p>If the OTA message consists of several parts, the parts will be concatenated before the message is delivered to the application.</p>
+<p>See the documentation of <a href="qsmsmessage.html#destinationPort">QSMSMessage::destinationPort</a>() for more information.</p>
+<a name="handling-incoming-wap-push-messages"></a>
+<h2>Handling incoming WAP Push messages</h2>
+<p>WAP Push messages are handled in a similar fashion. The difference being the MIME type in the QDS definition:</p>
+<pre>    [Translation]
+    File=QtopiaServices
+    Context=ContactsPhone
+    [pushVCard]
+    RequestDataType=text/x-vcard
+    ResponseDataType=
+    Attributes=&quot;push&quot;
+    Description[]=Receive a vcard via WAP push</pre>
+<p>Several SMS datagram and WAP Push types can be registered in the same QDS definition. The following example registers SMS datagram ports 226 and 9204, together with the WAP Push MIME type <tt>text/x-vcard</tt>, and sends them all to the <tt>ContactsPhone</tt> service.</p>
+<pre>    [Translation]
+    File=QtopiaServices
+    Context=ContactsPhone
+    [QDSInformation]
+    Name[]=SMS VCard
+    [pushVCard]
+    RequestDataType=&quot;text/x-vcard;application/x-smsapp-226;application/x-smsapp-9204&quot;
+    ResponseDataType=
+    Attributes=&quot;push&quot;
+    Description[]=Receive a vcard via WAP push or SMS</pre>
+<a name="built-in-ota-message-types"></a>
+<h2>Built-in OTA message types</h2>
+<p>Qt Extended provides built-in support for:</p>
+<ul>
+<li>OTA network configuration messages with the MIME type <tt>application/vnd.wap.connectivity-wbxml</tt> which are handled by <tt>netsetup</tt> program. This is described in the WAP/OMA standards:<ul>
+<li><tt>wap-183-provcont-20010724-a.pdf</tt> and</li>
+<li><tt>OMA-WAP-ProvCont-V1_1-20021112-C.pdf</tt></li>
+</ul>
+<p>at <a href="http://www.openmobilealliance.org/tech/affiliates/wap/wapindex.html"> Open Mobile Alliance</a></p>
+</li>
+<li>Network Configuration Messages, with MIME type <tt>application/x-wap-prov.browser-settings</tt> which are handled by <tt>netsetup</tt> program. This is described in the: Nokia Over The Air Settings Specification 7.0&#x2e;</li>
+<li>MMS notifications that are sent via SMS and are handled by <tt>qtmail</tt>. These notifications have the MIME type <tt>application/vnd.wap.mms-message</tt>. This is described in the WAP/OMA standard : <tt>oma-wap-mms-enc-v1_1-20021030-c.pdf</tt>.</li>
+<li>Vcard messages are handled by <tt>addressbook</tt>. The WAP push type <tt>text/x-vcard</tt> and the two SMS datagram port numbers 226 and 9204 are supported for receiving vcards.</li>
+</ul>
+<p>Other OTA messages are handled on a type-by-type basis by vendor-supplied applications, via the <a href="datasharing.html">Qt Extended Data Sharing (QDS)</a> system.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

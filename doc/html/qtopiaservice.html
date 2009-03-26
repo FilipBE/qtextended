@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaService Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaService class allows applications to query the services provided by other applications. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaService&gt;</pre><ul>
+<li><a href="qtopiaservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QString <b><a href="qtopiaservice.html#app">app</a></b> ( const QString &amp; <i>service</i>, const QString &amp; <i>appname</i> = QString() )</li>
+<li><div class="fn"/>QString <b><a href="qtopiaservice.html#appConfig">appConfig</a></b> ( const QString &amp; <i>service</i>, const QString &amp; <i>appname</i> = QString() )</li>
+<li><div class="fn"/>QStringList <b><a href="qtopiaservice.html#apps">apps</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QString <b><a href="qtopiaservice.html#binding">binding</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QString <b><a href="qtopiaservice.html#channel">channel</a></b> ( const QString &amp; <i>service</i>, const QString &amp; <i>appname</i> = QString() )</li>
+<li><div class="fn"/>QStringList <b><a href="qtopiaservice.html#channels">channels</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QString <b><a href="qtopiaservice.html#config">config</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QStringList <b><a href="qtopiaservice.html#list">list</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qtopiaservice.html#services">services</a></b> ( const QString &amp; <i>appname</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaService class allows applications to query the services provided by other applications.</p>
+<p>A Qt Extended service is a named collection of features that an application may choose to provide. For example, web browsers providing the feature of displaying a web page given a URL will implement the <tt>WebAccess</tt> service; telephony programs providing phone call dialing support will implement the <tt>Dialer</tt> server; etc.</p>
+<p>See also <a href="services.html">Services</a> for more information on implementing and configuring services.</p>
+<p>See also <a href="services.html">Services</a> and <a href="qtopiaservicerequest.html">QtopiaServiceRequest</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="app"></a><a href="qstring.html">QString</a> QtopiaService::app ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qstring.html">QString</a> &amp; <i>appname</i> = QString() )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the application providing the <i>service</i> or a null string if there is no such service.</p>
+<p>If <i>appname</i> is provided, a specific binding to that application may be used rather than the global binding.</p>
+<p>See also <a href="qtopiaservice.html#apps">apps</a>().</p>
+<h3 class="fn"><a name="appConfig"></a><a href="qstring.html">QString</a> QtopiaService::appConfig ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qstring.html">QString</a> &amp; <i>appname</i> = QString() )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the <a href="qsettings.html">QSettings</a> file defining the facilities available from the applications providing the <i>service</i>, or a null string if there is no such service.</p>
+<p>The <a href="qsettings.html">QSettings</a> can be used to extract more detailed application-specific information about the application providing the service.</p>
+<p>Note: The application always provides at least the services defined in the <a href="qtopiaservice.html#config">config</a>() file - the information in the appConfig() is application-specific.</p>
+<p>If <i>appname</i> is provided, a specific binding to that application may be used rather than the global binding.</p>
+<p>See also <a href="qtopiaservice.html#config">config</a>().</p>
+<h3 class="fn"><a name="apps"></a><a href="qstringlist.html">QStringList</a> QtopiaService::apps ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns all applications that offer the <i>service</i>, or a null string if there is no such service offered.</p>
+<p>See also <a href="qtopiaservice.html#app">app</a>().</p>
+<h3 class="fn"><a name="binding"></a><a href="qstring.html">QString</a> QtopiaService::binding ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the name of the <a href="qsettings.html">QSettings</a> file defining the bindings which the user has selected for the <i>service</i>.</p>
+<h3 class="fn"><a name="channel"></a><a href="qstring.html">QString</a> QtopiaService::channel ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qstring.html">QString</a> &amp; <i>appname</i> = QString() )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the QCop channel for the given <i>service</i>, or a null string if there is no such service.</p>
+<p>If <i>appname</i> is provided, a specific binding to that application may be used rather than the global binding.</p>
+<p>See also <a href="qtopiaservice.html#channels">channels</a>().</p>
+<h3 class="fn"><a name="channels"></a><a href="qstringlist.html">QStringList</a> QtopiaService::channels ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the QCop channels for applications that offer <i>service</i>.</p>
+<p>See also <a href="qtopiaservice.html#channel">channel</a>().</p>
+<h3 class="fn"><a name="config"></a><a href="qstring.html">QString</a> QtopiaService::config ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the name of the <a href="qsettings.html">QSettings</a> file defining the facilities available from the applications providing the <i>service</i>, or a null string if there is no such service.</p>
+<p>Applications providing the service may have additional configuration defined in the <a href="qtopiaservice.html#appConfig">appConfig</a>() file.</p>
+<p>See also <a href="qtopiaservice.html#appConfig">appConfig</a>().</p>
+<h3 class="fn"><a name="list"></a><a href="qstringlist.html">QStringList</a> QtopiaService::list ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of available services.</p>
+<h3 class="fn"><a name="services"></a><a href="qstringlist.html">QStringList</a> QtopiaService::services ( const <a href="qstring.html">QString</a> &amp; <i>appname</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the the list of services supported by <i>appname</i>.</p>
+<p>See also <a href="qtopiaservice.html#list">list</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

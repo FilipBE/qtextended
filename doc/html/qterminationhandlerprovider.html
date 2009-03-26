@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QTerminationHandlerProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QTerminationHandlerProvider Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QTerminationHandlerProvider class provides the backend for the <a href="qterminationhandler.html">QTerminationHandler</a> class. <a href="#details">More...</a></p>
+<pre>    #include &lt;QTerminationHandlerProvider&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qterminationhandlerprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qterminationhandlerprovider.html#QTerminationHandlerProvider">QTerminationHandlerProvider</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qterminationhandlerprovider.html#dtor.QTerminationHandlerProvider">~QTerminationHandlerProvider</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qterminationhandlerprovider.html#applicationTerminated">applicationTerminated</a></b> ( const QString &amp; <i>name</i>, const QString &amp; <i>text</i>, const QPixmap &amp; <i>icon</i>, const QString &amp; <i>buttonText</i>, QtopiaServiceRequest &amp; <i>buttonAction</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QTerminationHandlerProvider class provides the backend for the <a href="qterminationhandler.html">QTerminationHandler</a> class.</p>
+<p>For termination handling to be tracked successfully, the <tt>TerminationHandler</tt> task must be running prior to starting any applications.</p>
+<p>While it is legal to have more than one concurrent instance of QTerminationHandlerProvider, it is generally discorouged.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QTerminationHandlerProvider"></a>QTerminationHandlerProvider::QTerminationHandlerProvider ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a new <a href="qterminationhandlerprovider.html">QTerminationHandlerProvider</a> instance with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QTerminationHandlerProvider"></a>QTerminationHandlerProvider::~QTerminationHandlerProvider ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qterminationhandlerprovider.html">QTerminationHandlerProvider</a> instance.</p>
+<h3 class="fn"><a name="applicationTerminated"></a>void QTerminationHandlerProvider::applicationTerminated ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qstring.html">QString</a> &amp; <i>text</i>, const <a href="qpixmap.html">QPixmap</a> &amp; <i>icon</i>, const <a href="qstring.html">QString</a> &amp; <i>buttonText</i>, <a href="qtopiaservicerequest.html">QtopiaServiceRequest</a> &amp; <i>buttonAction</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever an application that has installed a termination handler through the <a href="qterminationhandler.html">QTerminationHandler</a> class abnormally terminates.</p>
+<p><i>name</i> is set to the name or the terminating application, and <i>text</i>, <i>icon</i>, <i>buttonText</i> and <i>buttonAction</i> are set to those passed to the <a href="qterminationhandler.html">QTerminationHandler</a> class by the terminating application.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Context Bar Theme</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Context Bar Theme<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>The context bar is a rectangular area at the bottom of the screen. It usually contains three buttons corresponding to context buttons on the keypad. The context bar displays either text or icons, so it is necessary to provide elements to deal with both possibilities.</p>
+<p>The Qt Extended theme context bar definition is shown below:</p>
+<pre>    &lt;page name=&quot;contextbar&quot; base=&quot;themes/qtopia&quot; rect=&quot;0,0,0x20}{
+        &lt;image rect=&quot;0,0,0x20&quot; color=&quot;Button&quot; src=&quot;contextbar-stretch&quot; tile=&quot;yes&quot;/&gt;
+        &lt;image rect=&quot;0,0,1x20&quot; color=&quot;Button&quot; src=&quot;contextbar-capleft&quot;/&gt;
+        &lt;image rect=&quot;-1,0,1x20&quot; color=&quot;Button&quot; src=&quot;contextbar-capright&quot;/&gt;
+        &lt;layout stretch=&quot;yes}{
+            &lt;image name=&quot;button0&quot; rect=&quot;0,2,0x16&quot; interactive=&quot;yes&quot;/&gt;
+            &lt;group&gt;
+                &lt;image name=&quot;button1&quot; rect=&quot;0,2,0x16&quot; interactive=&quot;yes&quot;/&gt;
+                &lt;image rect=&quot;-1,0,1x20&quot; src=&quot;contextbar-divider&quot; color=&quot;Button&quot;/&gt;
+                &lt;image rect=&quot;0,0,1x20&quot; src=&quot;contextbar-divider&quot; color=&quot;Button&quot;/&gt;
+            &lt;/group&gt;
+            &lt;image name=&quot;button2&quot; rect=&quot;0,2,0x16&quot; interactive=&quot;yes&quot;/&gt;
+        &lt;/layout&gt;
+        &lt;layout stretch=&quot;yes}{
+            &lt;text name=&quot;button0&quot; rect=&quot;0,2,0x16&quot; size=&quot;12&quot; bold=&quot;yes&quot; align=&quot;hcenter&quot; interactive=&quot;yes&quot;/&gt;
+            &lt;text name=&quot;button1&quot; rect=&quot;0,2,0x16&quot; size=&quot;12&quot; bold=&quot;yes&quot; align=&quot;hcenter&quot; interactive=&quot;yes&quot;/&gt;
+            &lt;text name=&quot;button2&quot; rect=&quot;0,2,0x16&quot; size=&quot;12&quot; bold=&quot;yes&quot; align=&quot;hcenter&quot; interactive=&quot;yes&quot;/&gt;
+        &lt;/layout&gt;
+    &lt;/page&gt;</pre>
+<p>The first few lines display the context bar background. The first <tt>layout</tt> lays out the icon buttons and finally the text labels are specified.</p>
+<p><b>Note:</b> the <i>group</i> element used to display the divider lines at the ends of the center button.</p>
+<p>This basic design is used by most context bars.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

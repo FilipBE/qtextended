@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothScoServer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothScoServer Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothScoServer class represents a SCO server socket. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothScoServer&gt;</pre><p>Inherits <a href="qbluetoothabstractserver.html">QBluetoothAbstractServer</a>.</p>
+<ul>
+<li><a href="qbluetoothscoserver-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothscoserver.html#QBluetoothScoServer">QBluetoothScoServer</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qbluetoothscoserver.html#dtor.QBluetoothScoServer">~QBluetoothScoServer</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothscoserver.html#listen">listen</a></b> ( const QBluetoothAddress &amp; <i>local</i> )</li>
+<li><div class="fn"/>QBluetoothAddress <b><a href="qbluetoothscoserver.html#serverAddress">serverAddress</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>10 public functions inherited from <a href="qbluetoothabstractserver.html#public-functions">QBluetoothAbstractServer</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qbluetoothabstractserver.html#signals">QBluetoothAbstractServer</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothScoServer class represents a SCO server socket.</p>
+<p>This class makes it possible to accept incoming SCO connections. Synchronous Connection Oriented connections are used to transfer audio data over a Bluetooth link. The audio data is usually compressed by a lossy codec and should not be used to transfer bulk data.</p>
+<p>Call <a href="qbluetoothscoserver.html#listen">listen</a>() to make the server listen for new connections. The <a href="qbluetoothabstractserver.html#newConnection">newConnection</a>() signal will be emmited each time a client connects to the server.</p>
+<p>Call <a href="qbluetoothabstractserver.html#nextPendingConnection">nextPendingConnection</a>() to accept the pending client connection.</p>
+<p>When listening for connections, server address is available by calling <a href="qbluetoothscoserver.html#serverAddress">serverAddress</a>().</p>
+<p>Calling <a href="qbluetoothabstractserver.html#close">close</a>() will make the QBluetoothScoServer stop listening for connections and delete all pending connections.</p>
+<p>See also <a href="qbluetoothscosocket.html">QBluetoothScoSocket</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothScoServer"></a>QBluetoothScoServer::QBluetoothScoServer ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new <a href="qbluetoothscoserver.html">QBluetoothScoServer</a> with parent <i>parent</i>. The server is in the UnconnectedState.</p>
+<h3 class="fn"><a name="dtor.QBluetoothScoServer"></a>QBluetoothScoServer::~QBluetoothScoServer ()</h3>
+<p>Destroys the server.</p>
+<h3 class="fn"><a name="listen"></a>bool QBluetoothScoServer::listen ( const <a href="qbluetoothaddress.html">QBluetoothAddress</a> &amp; <i>local</i> )</h3>
+<p>Tells the server to listen for incoming connections on address <i>local</i>.</p>
+<p>Returns true on success; otherwise returns false.</p>
+<p>See also <a href="qbluetoothabstractserver.html#isListening">isListening</a>().</p>
+<h3 class="fn"><a name="serverAddress"></a><a href="qbluetoothaddress.html">QBluetoothAddress</a> QBluetoothScoServer::serverAddress () const</h3>
+<p>Returns the address the server is currently listening on. If the server is not listening, returns <a href="qbluetoothaddress.html#invalid-var">QBluetoothAddress::invalid</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

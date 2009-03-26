@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QScreenInformationProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QScreenInformationProvider Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QScreenInformationProvider class provides the back end implementation of <a href="qscreeninformation.html">QScreenInformation</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;QScreenInformationProvider&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qscreeninformationprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qscreeninformationprovider.html#QScreenInformationProvider">QScreenInformationProvider</a></b> ( int <i>screenNumber</i> = -1, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qscreeninformationprovider.html#dtor.QScreenInformationProvider">~QScreenInformationProvider</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qscreeninformationprovider.html#setLayer">setLayer</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qscreeninformationprovider.html#setSupportedLayers">setSupportedLayers</a></b> ( const QList&lt;int&gt; &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qscreeninformationprovider.html#setTransparencyColor">setTransparencyColor</a></b> ( const QColor &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qscreeninformationprovider.html#setType">setType</a></b> ( QScreenInformation::Type <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qscreeninformationprovider.html#setVisible">setVisible</a></b> ( bool <i>value</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qscreeninformationprovider.html#changeClonedScreen">changeClonedScreen</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qscreeninformationprovider.html#changeLayer">changeLayer</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qscreeninformationprovider.html#revertClonedScreen">revertClonedScreen</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qscreeninformationprovider.html#revertLayer">revertLayer</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QScreenInformationProvider class provides the back end implementation of <a href="qscreeninformation.html">QScreenInformation</a>.</p>
+<p>The following class represents a screen of type Television which by default is a clone of the primary LCD screen:</p>
+<pre>    class TvScreen : public QScreenInformationProvider
+    {
+        Q_OBJECT
+    public:
+        TvScreen(int screenNumber, QObject *parent=0);
+
+    public slots:
+        void videoCableInserted();
+        void videoCableRemoved();
+
+    protected:
+        void changeClonedScreen(int value);
+        void revertClonedScreen();
+    };
+
+    TvScreen::TvScreen(int screenNumber, QObject *parent)
+        : QScreenInformationProvider(screenNumber, parent)
+    {
+        setType(QScreenInformation::Television);
+        setVisible(false);
+        setClonedScreen(QApplication::desktop()-&gt;primaryScreen());
+    }
+
+    void TvScreen::videoCableInserted()
+    {
+        setVisible(true);
+    }
+
+    void TvScreen::videoCableRemoved()
+    {
+        setVisible(false);
+    }
+
+    void TvScreen::changeClonedScreen(int value)
+    {
+        <span class="comment">// Tell the hardware to change the clone mode.</span>
+        ...
+
+        <span class="comment">// Update the clone state as seen by client applications.</span>
+        setClonedScreen(value);
+    }
+
+    void TvScreen::revertClonedScreen()
+    {
+        <span class="comment">// Change back to cloning the primary screen.</span>
+        changeClonedScreen(QApplication::desktop()-&gt;primaryScreen());
+    }</pre>
+<p>See also <a href="qscreeninformation.html">QScreenInformation</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QScreenInformationProvider"></a>QScreenInformationProvider::QScreenInformationProvider ( int <i>screenNumber</i> = -1, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a screen information provider object for <i>screenNumber</i> and attaches it to <i>parent</i>. If <i>screenNumber</i> is -1, then the primary screen number is used.</p>
+<p>Object construction should be followed by calls to <a href="qscreeninformationprovider.html#setVisible">setVisible</a>(), <a href="qscreeninformationprovider.html#setType">setType</a>(), and <a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a>() to populate the screen's initial properties.</p>
+<p>See also <a href="qscreeninformationprovider.html#setVisible">setVisible</a>(), <a href="qscreeninformationprovider.html#setType">setType</a>(), and <a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a>().</p>
+<h3 class="fn"><a name="dtor.QScreenInformationProvider"></a>QScreenInformationProvider::~QScreenInformationProvider ()</h3>
+<p>Destroys this screen information provider object.</p>
+<h3 class="fn"><a name="changeClonedScreen"></a>void QScreenInformationProvider::changeClonedScreen ( int <i>value</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Changes the cloned screen number to <i>value</i>. The default implementation does nothing. Sub-classes should change the screen and then call <a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a>() to update the cloned screen number for clients.</p>
+<p>See also <a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a>() and <a href="qscreeninformationprovider.html#revertClonedScreen">revertClonedScreen</a>().</p>
+<h3 class="fn"><a name="changeLayer"></a>void QScreenInformationProvider::changeLayer ( int <i>value</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Changes the overlay layer number for this screen to <i>value</i>. The default implementation does nothing. Sub-classes should change the screen and then call <a href="qscreeninformationprovider.html#setLayer">setLayer</a>() to update the value for clients.</p>
+<p>Changing the layer on an overlay screen also makes it visible, so sub-classes should also call <a href="qscreeninformationprovider.html#setVisible">setVisible</a>() to update that value for clients. The layer will be made invisible again when <a href="qscreeninformationprovider.html#revertLayer">revertLayer</a>() is called.</p>
+<p>See also <a href="qscreeninformationprovider.html#revertLayer">revertLayer</a>().</p>
+<h3 class="fn"><a name="revertClonedScreen"></a>void QScreenInformationProvider::revertClonedScreen ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reverts the cloned screen number to its default value. The default implementation does nothing. Sub-classes should revert the screen and then call <a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a>() to update the cloned screen number for clients.</p>
+<p>See also <a href="qscreeninformationprovider.html#setClonedScreen">setClonedScreen</a>() and <a href="qscreeninformationprovider.html#changeClonedScreen">changeClonedScreen</a>().</p>
+<h3 class="fn"><a name="revertLayer"></a>void QScreenInformationProvider::revertLayer ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Reverts the overlay layer number for this screen to its default value and makes the layer invisible because the application that requested a layer change is no longer running. The default implementation does nothing. Sub-classes should revert the screen and then call <a href="qscreeninformationprovider.html#setLayer">setLayer</a>() to update the value for clients.</p>
+<p>See also <a href="qscreeninformationprovider.html#changeLayer">changeLayer</a>().</p>
+<h3 class="fn"><a name="setClonedScreen"></a>void QScreenInformationProvider::setClonedScreen ( int <i>value</i> )</h3>
+<p>Sets the state of <a href="qscreeninformation.html#clonedScreen">QScreenInformation::clonedScreen</a>() for this screen to <i>value</i> and cause <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>() to be emitted.</p>
+<p>The default value, as seen by <a href="qscreeninformation.html#clonedScreen">QScreenInformation::clonedScreen</a>(), will be -1.</p>
+<p>See also <a href="qscreeninformation.html#clonedScreen">QScreenInformation::clonedScreen</a>() and <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>().</p>
+<h3 class="fn"><a name="setLayer"></a>void QScreenInformationProvider::setLayer ( int <i>value</i> )</h3>
+<p>Sets the state of <a href="qscreeninformation.html#layer">QScreenInformation::layer</a>() for this screen to <i>value</i> and cause <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>() to be emitted.</p>
+<p>The default value, as seen by <a href="qscreeninformation.html#layer">QScreenInformation::layer</a>(), will be 0.</p>
+<p>See also <a href="qscreeninformation.html#layer">QScreenInformation::layer</a>() and <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>().</p>
+<h3 class="fn"><a name="setSupportedLayers"></a>void QScreenInformationProvider::setSupportedLayers ( const <a href="qlist.html">QList</a>&lt;int&gt; &amp; <i>value</i> )</h3>
+<p>Sets the state of <a href="qscreeninformation.html#supportedLayers">QScreenInformation::supportedLayers</a>() for this screen to <i>value</i> and cause <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>() to be emitted.</p>
+<p>The default value, as seen by <a href="qscreeninformation.html#supportedLayers">QScreenInformation::supportedLayers</a>(), will be an empty list.</p>
+<p>See also <a href="qscreeninformation.html#supportedLayers">QScreenInformation::supportedLayers</a>() and <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>().</p>
+<h3 class="fn"><a name="setTransparencyColor"></a>void QScreenInformationProvider::setTransparencyColor ( const <a href="qcolor.html">QColor</a> &amp; <i>value</i> )</h3>
+<p>Sets the state of <a href="qscreeninformation.html#transparencyColor">QScreenInformation::transparencyColor</a>() for this screen to <i>value</i> and cause <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>() to be emitted.</p>
+<p>The default value, as seen by <a href="qscreeninformation.html#transparencyColor">QScreenInformation::transparencyColor</a>(), will be a null <a href="qcolor.html">QColor</a> value.</p>
+<p>See also <a href="qscreeninformation.html#transparencyColor">QScreenInformation::transparencyColor</a>() and <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>().</p>
+<h3 class="fn"><a name="setType"></a>void QScreenInformationProvider::setType ( <a href="qscreeninformation.html#Type-enum">QScreenInformation::Type</a> <i>value</i> )</h3>
+<p>Sets the state of <a href="qscreeninformation.html#type">QScreenInformation::type</a>() for this screen to <i>value</i> and cause <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>() to be emitted.</p>
+<p>The default value, as seen by <a href="qscreeninformation.html#type">QScreenInformation::type</a>(), will be <a href="qscreeninformation.html#Type-enum">QScreenInformation::Normal</a>.</p>
+<p>See also <a href="qscreeninformation.html#type">QScreenInformation::type</a>() and <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>().</p>
+<h3 class="fn"><a name="setVisible"></a>void QScreenInformationProvider::setVisible ( bool <i>value</i> )</h3>
+<p>Sets the state of <a href="qscreeninformation.html#isVisible">QScreenInformation::isVisible</a>() for this screen to <i>value</i> and cause <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>() to be emitted.</p>
+<p>The default value, as seen by <a href="qscreeninformation.html#isVisible">QScreenInformation::isVisible</a>(), will be true.</p>
+<p>See also <a href="qscreeninformation.html#isVisible">QScreenInformation::isVisible</a>() and <a href="qscreeninformation.html#changed">QScreenInformation::changed</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

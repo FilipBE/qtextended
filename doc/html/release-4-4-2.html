@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended - 4.4&#x2e;2 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended - 4.4&#x2e;2 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qt Extended 4.4&#x2e;2 release is a patch release of Qt Extended that is based on Qt 4.4 technology. The main purpose of this release is to provide bug fixes and performance improvements based on both internal testing and customer feedback.</p>
+<p>The <a href="buildsystem/chlog-4-4-2-1.html">build system</a> and <a href="qtopiadesktop/chlog-4-4-2-1.html">Qtopia Sync Agent</a> changes are recorded separately.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Cleanup Wizard</b><ul>
+<li>BUG 225299: The Cleanup Wizard is no longer limited to cleaning up documents on a single filesystem per run.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 179922: The predictive keyboard has been enhanced to allow entry of accented characters from various European languages.</li>
+</ul>
+</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>BUG 228929: The Bluetooth Error dialog would not respond to the touchscreen.</li>
+<li>BUG 231204: In the Bluetooth Settings application, the Supported Services and Other Details dialogs did not display on top when executed.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 221387: The build system was unable to build a stand-alone SDK that did not depend on the source or build trees. This can now be done by running &quot;bin/qbuild sdk&quot; after a successful build.</li>
+<li>BUG 229123: &quot;qbuild test&quot; did not run tests in series.</li>
+<li>BUG 230277: Fixed several instances where public headers included private headers, breaking the SDK. The qbuild tool now generates errors for public headers that include private headers.</li>
+<li>BUG 230416: When run on reiserfs, qbuild claimed there was nothing to be done.</li>
+<li>BUG 232729: If no suitable system Qt can be found and -build-qt is passed to configure, configure will build Qt from source and then use that as the system Qt.</li>
+</ul>
+</li>
+<li><b>Calandar</b><ul>
+<li>BUG 222304: The Calendar application would launch when date or time settings were changed.</li>
+<li>BUG 228675: Received events were saved with incorrect timezone information.</li>
+<li>BUG 228676: Events in the UTC timezone were displayed with a blank timezone name.</li>
+<li>BUG 228679: Calendar sometimes showed the wrong day in Day View if an event from another timezone was received.</li>
+</ul>
+</li>
+<li><b>Camera</b><ul>
+<li>BUG 215865: In the Home UI, the icons on the &quot;applet&quot; page would move down after taking a picture.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 226400: Creating a contact on a phone would not put that contact onto the SIM.</li>
+<li>BUG 230821: The membership of groups could not be changed.</li>
+</ul>
+</li>
+<li><b>Document Management</b><ul>
+<li>BUG 229350: The Options menu in the Documents list was missing file operations (Properties, Send, Delete, etc).</li>
+</ul>
+</li>
+<li><b>Documentation</b><ul>
+<li>A number of minor corrections and amendments have been made.</li>
+</ul>
+</li>
+<li><b>Internationalization</b><ul>
+<li>BUG 229337: In singleexec builds, the translations for applications were not installed.</li>
+<li>BUG 229930: Non-latin1 languages were not rendered due to font files not being installed in the image directory.</li>
+<li>BUG 230104: The theme titlebar was not reversed in right-to-left mode.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ended, Media Player incorrectly resumed playback of a media file if the file was paused when the call was received.</li>
+<li>BUG 181447: Unused areas of the video widget were not repainted correctly when uncovered.</li>
+<li>BUG 181448: Video playback would fail after being interrupted by the Alarm Clock.</li>
+<li>BUG 182965: The Alarm Clock audio could not be heard if an audio file was already playing.</li>
+<li>BUG 198841: If interrupted by more than one incoming call while playing video, the Media Player would erroneously skip to the beginning of the next file in the playlist instead of resuming the current file.</li>
+<li>BUG 224026, 225695: The cruxus media engine would not resample audio to the correct output frequency, resulting in some files playing too quickly or too slowly.</li>
+<li>BUG 229355: Media Player would stop playing audio shortly after any other application playing audio exited.</li>
+<li>BUG 229419: On devices using OSS for audio output, a brief fragment of previously played sound would be played thirty seconds after the original sound stopped playing.</li>
+</ul>
+</li>
+<li><b>Messaging</b>:<ul>
+<li>BUG 206932: When launched by FastLoad, Messages would not exit when the Back key was pressed.</li>
+<li>BUG 228756: An SQL error was reported on the console when deleting an IMAP account with a large number of messages.</li>
+<li>BUG 229337: MMS image slides would fail to display if they followed a video slide.</li>
+<li>BUG 230069, 230100: SMS messages in the Trash folder were counted as new when a new SMS message arrived.</li>
+<li>BUG 230162: Pre-edit input text was not counted by the SMS character counter.</li>
+<li>BUG 230422: SMS messages from non-numeric sender addresses were not correctly displayed.</li>
+<li>BUG 230813: Corrected regression in perceived launch time of the Messages application. This was caused by the application waiting to connect to the message database before displaying the user-interface.</li>
+</ul>
+</li>
+<li><b>OpenMoko Neo1973/Freerunner Device</b><ul>
+<li>BUG 206072: Fixed compilation warning in the adjustVolume() function.</li>
+<li>BUG 224551: Setting the &quot;Lock screen on display off&quot; option in the Homescreen Settings application did not lock the screen.</li>
+<li>BUG 224555: Power Management settings for &quot;Plugged in&quot; mode were ignored.</li>
+<li>BUG 228889: At startup the device searched for the GSM network multiple times.</li>
+<li>BUG 228890: Press-and-hold of the power button to open the Shutdown dialog would close the dialog on release.</li>
+<li>BUG 229322: Smoothlists sometimes displayed with the wrong initial scroll position.</li>
+<li>BUG 230507: The predictive keyboard was poorly behaved due to a stale configuration file.</li>
+<li>BUG 231574: The Freerunner (ficgta02) would incorrectly report critical battery level if the &quot;dumb&quot; version of the battery was installed.</li>
+</ul>
+</li>
+<li><b>Profiles</b><ul>
+<li>BUG 211956: When a profile was auto-activated, the active profile name on the homescreen would not update.</li>
+</ul>
+</li>
+<li><b>Testing Framework</b><ul>
+<li>BUG 228663: <a href="qsystemtest.html#putFile">QSystemTest::putFile</a>() discarded permissions on transferred files.</li>
+<li>BUg 229118: Using log.js caused qtuitestrunner to consume excessive amounts of memory.</li>
+</ul>
+</li>
+<li><b>Tasks</b><ul>
+<li>BUG 195564: A task with a silent reminder set would play an audible reminder if another task with the same start time had an audible reminder set.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 215452: In the Home UI, Microphone audio of a speakerphone call was played through the speaker.</li>
+<li>BUG 229872: The telephony stack did not correctly handle a CSQ value of 99 (which indicates tower signal level is not known).</li>
+</ul>
+</li>
+<li><b>UI</b><ul>
+<li>BUG 228478, 228480: Fixed crash in <a href="qsmoothlist.html">QSmoothList</a> when an item was removed from the list while it was scrolling.</li>
+<li>BUG 229405: Tab widgets containing smoothlists could not be driven with keypad direction keys.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Build System</b><ul>
+<li>BUG 224317: Qt Extended fails to build for an x86_64 target.</li>
+<li>BUG 231178: Documentation for making a new project file is out-of-date.</li>
+</ul>
+</li>
+<li><b>GoogleTalk</b><ul>
+<li>BUG 211938: GTalk does not report connection progress and success/failure.</li>
+</ul>
+</li>
+<li><b>Internationalization</b><ul>
+<li>BUG 231783: Singleexec builds are missing translations for some plugins and tools.</li>
+</ul>
+</li>
+<li><b>Neo1973/Freerunner device</b><ul>
+<li>BUG 224035: The device does not play audio through the headset if the headset is plugged in when the device boots. Audio works correctly after the headset is disconnected and reconnected.</li>
+<li>BUG 231983: Time synchronization from the GSM network does not work.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 210972: Calls are initiated through speakerphone if the handset is not replaced after a previous call.</li>
+</ul>
+</li>
+<li><b>Test Framework</b><ul>
+<li>BUG 216389: Test functions cannot grab snapshot of <a href="qsmoothlist.html">QSmoothList</a> using <a href="qpixmap.html#grabWidget">QPixmap::grabWidget</a>().</li>
+<li>BUG 226565: TestModem().hangupAll() doesn't disconnect calls.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

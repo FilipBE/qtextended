@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaServiceRequest Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaServiceRequest Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaServiceRequest class allows applications to request services from other applications. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaServiceRequest&gt;</pre><ul>
+<li><a href="qtopiaservicerequest-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopiaservicerequest.html#QtopiaServiceRequest">QtopiaServiceRequest</a></b> ()</li>
+<li><div class="fn"/><b><a href="qtopiaservicerequest.html#QtopiaServiceRequest-2">QtopiaServiceRequest</a></b> ( const QString &amp; <i>service</i>, const QString &amp; <i>message</i> )</li>
+<li><div class="fn"/><b><a href="qtopiaservicerequest.html#QtopiaServiceRequest-3">QtopiaServiceRequest</a></b> ( const QtopiaServiceRequest &amp; <i>orig</i> )</li>
+<li><div class="fn"/><b><a href="qtopiaservicerequest.html#dtor.QtopiaServiceRequest">~QtopiaServiceRequest</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopiaservicerequest.html#addVariantArg">addVariantArg</a></b> ( const QVariant &amp; <i>var</i> )</li>
+<li><div class="fn"/>const QList&lt;QVariant&gt; &amp; <b><a href="qtopiaservicerequest.html#arguments">arguments</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtopiaservicerequest.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qtopiaservicerequest.html#message">message</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtopiaservicerequest.html#send">send</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qtopiaservicerequest.html#service">service</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qtopiaservicerequest.html#setArguments">setArguments</a></b> ( const QList&lt;QVariant&gt; &amp; <i>arguments</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaservicerequest.html#setMessage">setMessage</a></b> ( const QString &amp; <i>message</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaservicerequest.html#setService">setService</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QtopiaServiceRequest &amp; <b><a href="qtopiaservicerequest.html#operator-lt-lt">operator&lt;&lt;</a></b> ( const T &amp; <i>var</i> )</li>
+<li><div class="fn"/>QtopiaServiceRequest &amp; <b><a href="qtopiaservicerequest.html#operator-lt-lt-2">operator&lt;&lt;</a></b> ( const char * <i>var</i> )</li>
+<li><div class="fn"/>QtopiaServiceRequest &amp; <b><a href="qtopiaservicerequest.html#operator-eq">operator=</a></b> ( const QtopiaServiceRequest &amp; <i>orig</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaServiceRequest class allows applications to request services from other applications.</p>
+<p>A QtopiaServiceRequest encapsulates a Qt Extended service name and the message to be sent to that service. It is similar to <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>, but uses service names rather than direct channel names. The following example sends the <tt>editTime()</tt> request to the <tt>Time</tt> service:</p>
+<pre>    QtopiaServiceRequest req(&quot;Time&quot;, &quot;editTime()&quot;);
+    req.send();</pre>
+<p>Parameter data may be written to the request prior to sending it with <a href="qtopiaservicerequest.html#send">send</a>(). The following example requests that the <tt>WebAccess</tt> service open a specific URL:</p>
+<pre>    QtopiaServiceRequest req(&quot;WebAccess&quot;, &quot;openURL(QString)&quot;);
+    req &lt;&lt; &quot;http:<span class="comment">//www.example.com/&quot;;</span>
+    req.send();</pre>
+<p>Applications that implement services can use <a href="qtopiaabstractservice.html">QtopiaAbstractService</a> to process incoming service messages. See also {Services} for more information on implementing and configuring services.</p>
+<p>See also <a href="services.html">Services</a>, <a href="qtopiaservice.html">QtopiaService</a>, and <a href="qtopiaabstractservice.html">QtopiaAbstractService</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtopiaServiceRequest"></a>QtopiaServiceRequest::QtopiaServiceRequest ()</h3>
+<p>Construct a null service request. <a href="qtopiaservicerequest.html#setService">setService</a>() and <a href="qtopiaservicerequest.html#setMessage">setMessage</a>() must be called before <a href="qtopiaservicerequest.html#send">send</a>(), but the service may be written prior to the calls.</p>
+<h3 class="fn"><a name="QtopiaServiceRequest-2"></a>QtopiaServiceRequest::QtopiaServiceRequest ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qstring.html">QString</a> &amp; <i>message</i> )</h3>
+<p>Construct a service request that will send <i>message</i> to a <i>service</i> when <a href="qtopiaservicerequest.html#send">send</a>() is called. The service may be written prior to the calls.</p>
+<h3 class="fn"><a name="QtopiaServiceRequest-3"></a>QtopiaServiceRequest::QtopiaServiceRequest ( const QtopiaServiceRequest &amp; <i>orig</i> )</h3>
+<p>Copy constructor. Any data previously written to the <i>orig</i> service will be in the copy.</p>
+<h3 class="fn"><a name="dtor.QtopiaServiceRequest"></a>QtopiaServiceRequest::~QtopiaServiceRequest ()</h3>
+<p>Destructs the service request. Unlike <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>, the request is not automatically sent.</p>
+<h3 class="fn"><a name="addVariantArg"></a>void QtopiaServiceRequest::addVariantArg ( const <a href="qvariant.html">QVariant</a> &amp; <i>var</i> )</h3>
+<p>Adds the variant <i>var</i> to the list of arguments, so that the variant's value is serialized in <a href="qtopiaservicerequest.html#send">send</a>() rather than the variant itself.</p>
+<h3 class="fn"><a name="arguments"></a>const <a href="qlist.html">QList</a>&lt;<a href="qvariant.html">QVariant</a>&gt; &amp; QtopiaServiceRequest::arguments () const</h3>
+<p>Returns the complete list of arguments for this service request.</p>
+<p>See also <a href="qtopiaservicerequest.html#setArguments">setArguments</a>().</p>
+<h3 class="fn"><a name="isNull"></a>bool QtopiaServiceRequest::isNull () const</h3>
+<p>Returns true if either the <a href="qtopiaservicerequest.html#service">service</a>() or <a href="qtopiaservicerequest.html#message">message</a>() is not set.</p>
+<p>See also <a href="qtopiaservicerequest.html#service">service</a>() and <a href="qtopiaservicerequest.html#message">message</a>().</p>
+<h3 class="fn"><a name="message"></a><a href="qstring.html">QString</a> QtopiaServiceRequest::message () const</h3>
+<p>Returns the message of the request.</p>
+<p>See also <a href="qtopiaservicerequest.html#setMessage">setMessage</a>().</p>
+<h3 class="fn"><a name="send"></a>bool QtopiaServiceRequest::send () const</h3>
+<p>Sends the request. Returns false if there was no application that could service the request.</p>
+<h3 class="fn"><a name="service"></a><a href="qstring.html">QString</a> QtopiaServiceRequest::service () const</h3>
+<p>Returns the service to which this request will be sent.</p>
+<p>See also <a href="qtopiaservicerequest.html#setService">setService</a>().</p>
+<h3 class="fn"><a name="setArguments"></a>void QtopiaServiceRequest::setArguments ( const <a href="qlist.html">QList</a>&lt;<a href="qvariant.html">QVariant</a>&gt; &amp; <i>arguments</i> )</h3>
+<p>Sets the complete list of <i>arguments</i> for this service request.</p>
+<p>See also <a href="qtopiaservicerequest.html#arguments">arguments</a>().</p>
+<h3 class="fn"><a name="setMessage"></a>void QtopiaServiceRequest::setMessage ( const <a href="qstring.html">QString</a> &amp; <i>message</i> )</h3>
+<p>Sets the <i>message</i> to be sent to the service.</p>
+<p>See also <a href="qtopiaservicerequest.html#message">message</a>().</p>
+<h3 class="fn"><a name="setService"></a>void QtopiaServiceRequest::setService ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )</h3>
+<p>Sets the <i>service</i> to which the request will be sent.</p>
+<p>See also <a href="qtopiaservicerequest.html#service">service</a>().</p>
+<h3 class="fn"><a name="operator-lt-lt"></a>QtopiaServiceRequest &amp; QtopiaServiceRequest::operator&lt;&lt; ( const T &amp; <i>var</i> )</h3>
+<p>Adds <i>var</i> to the list of arguments for this service request.</p>
+<h3 class="fn"><a name="operator-lt-lt-2"></a>QtopiaServiceRequest &amp; QtopiaServiceRequest::operator&lt;&lt; ( const char * <i>var</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Adds <i>var</i> to the list of arguments for this service request.</p>
+<h3 class="fn"><a name="operator-eq"></a>QtopiaServiceRequest &amp; QtopiaServiceRequest::operator= ( const QtopiaServiceRequest &amp; <i>orig</i> )</h3>
+<p>Assignment operator. Any data previously written to the <i>orig</i> service will be in the copy.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

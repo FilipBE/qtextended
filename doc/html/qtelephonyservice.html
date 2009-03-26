@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QTelephonyService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QTelephonyService Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QTelephonyService class provides a convenient wrapper to create telephony services and the interfaces that they support. <a href="#details">More...</a></p>
+<pre>    #include &lt;QTelephonyService&gt;</pre><p>Inherits <a href="qabstractipcinterfacegroup.html">QAbstractIpcInterfaceGroup</a>.</p>
+<p>Inherited by <a href="qmodemservice.html">QModemService</a>.</p>
+<ul>
+<li><a href="qtelephonyservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtelephonyservice.html#QTelephonyService">QTelephonyService</a></b> ( const QString &amp; <i>service</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtelephonyservice.html#dtor.QTelephonyService">~QTelephonyService</a></b> ()</li>
+<li><div class="fn"/>QPhoneCallProvider * <b><a href="qtelephonyservice.html#callProvider">callProvider</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtelephonyservice.html#dispatchDatagram">dispatchDatagram</a></b> ( const QSMSMessage &amp; <i>msg</i> )</li>
+<li><div class="fn"/>QString <b><a href="qtelephonyservice.html#service">service</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qtelephonyservice.html#setCallProvider">setCallProvider</a></b> ( QPhoneCallProvider * <i>provider</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterfacegroup.html#public-functions">QAbstractIpcInterfaceGroup</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected functions inherited from <a href="qabstractipcinterfacegroup.html#protected-functions">QAbstractIpcInterfaceGroup</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QTelephonyService class provides a convenient wrapper to create telephony services and the interfaces that they support.</p>
+<p>This class extends <a href="qabstractipcinterfacegroup.html">QAbstractIpcInterfaceGroup</a> to add <a href="qtelephonyservice.html#service">service</a>(), <a href="qtelephonyservice.html#callProvider">callProvider</a>(), and <a href="qtelephonyservice.html#setCallProvider">setCallProvider</a>().</p>
+<p>Telephony services group together a number of related telephony interfaces, to make it more convenient to create them at service start up and to allow the interfaces to find each other easily for passing requests from one interface to another.</p>
+<p>As an example, a VoIP telephony service will typically have at least three telephony interfaces, for network registration, presence, and phone call management. The QTelephonyService object would be declared as follows:</p>
+<pre>    class VoIPService : public QTelephonyService
+    {
+        Q_OBJECT
+    public:
+        VoIPService( QObject *parent = 0 )
+            : QTelephonyService( &quot;voip&quot;, parent ) {}
+        ~VoIPService() {}
+
+        void initialize();
+    };
+
+    void VoIPService::initialize()
+    {
+        if ( !supports&lt;QNetworkRegistration&gt;() )
+            addInterface( new VoIPNetworkRegistration( this ) );
+
+        if ( !supports&lt;QCollectivePresence&gt;() )
+            addInterface( new VoIPPresenceProvider( this ) );
+
+        if ( !callProvider() )
+            setCallProvider( new VoIPCallProvider( this ) );
+
+        QTelephonyService::initialize();
+    }</pre>
+<p>The VoIP telephony service creates an instance of <tt>VoIPService</tt>, and then calls the <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>() method to complete the initialization process:</p>
+<pre>    VoIPService *service = new VoIPService();
+    service-&gt;initialize();</pre>
+<p>During <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>(), the three telephony interfaces corresponding to <a href="qnetworkregistration.html">QNetworkRegistration</a>, <a href="qcollectivepresence.html">QCollectivePresence</a>, and <a href="qphonecallprovider.html">QPhoneCallProvider</a>, are created. We first check to see if there is an existing implementation using <a href="qabstractipcinterfacegroup.html#supports">supports</a>() or <a href="qtelephonyservice.html#callProvider">callProvider</a>(), which allows the VoIP telephony service to be inherited by another VoIP service that provides greater functionality than the basic VoIP service.</p>
+<p>At the end of the function, the base <a href="qabstractipcinterfacegroup.html#initialize">QTelephonyService::initialize</a>() method is called, which completes the initialization process and advertises the telephony service and all of its interfaces to the system. <a href="qcommservicemanager.html">QCommServiceManager</a> can be used by client applications to receive notification of when telephony services enter and leave the system.</p>
+<p>See also <a href="qabstractipcinterfacegroup.html">QAbstractIpcInterfaceGroup</a>, <a href="qcommservicemanager.html">QCommServiceManager</a>, <a href="qcomminterface.html">QCommInterface</a>, <a href="qnetworkregistration.html">QNetworkRegistration</a>, <a href="qcollectivepresence.html">QCollectivePresence</a>, and <a href="qphonecallprovider.html">QPhoneCallProvider</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QTelephonyService"></a>QTelephonyService::QTelephonyService ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Create a new telephony service called <i>service</i> and attach it to <i>parent</i>.</p>
+<p>A call to the constructor should be followed by a call to <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>() to complete the initialization process.</p>
+<p>See also <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>().</p>
+<h3 class="fn"><a name="dtor.QTelephonyService"></a>QTelephonyService::~QTelephonyService ()</h3>
+<p>Destroy this telephony service.</p>
+<h3 class="fn"><a name="callProvider"></a><a href="qphonecallprovider.html">QPhoneCallProvider</a> * QTelephonyService::callProvider () const</h3>
+<p>Returns the phone call provider associated with this service. Returns null if the provider has not yet been set.</p>
+<p>See also <a href="qtelephonyservice.html#setCallProvider">setCallProvider</a>().</p>
+<h3 class="fn"><a name="dispatchDatagram"></a>bool QTelephonyService::dispatchDatagram ( const <a href="qsmsmessage.html">QSMSMessage</a> &amp; <i>msg</i> )</h3>
+<p>Dispatch the SMS datagram <i>msg</i> according to its SMS port number or WAP Push MIME type. This is used by telephony services that accept incoming SMS messages to dispatch them according to the installed services. Returns true if the message was dispatched, or false if no service exists that can handle the message.</p>
+<p>See the documentation for <a href="qsmsmessage.html#destinationPort">QSMSMessage::destinationPort</a>() for more information on how WAP push messages and SMS datagrams are dispatched.</p>
+<p>See also <a href="qsmsmessage.html#destinationPort">QSMSMessage::destinationPort</a>().</p>
+<h3 class="fn"><a name="service"></a><a href="qstring.html">QString</a> QTelephonyService::service () const</h3>
+<p>Returns the name of this telephony service, which is the same as its group name.</p>
+<h3 class="fn"><a name="setCallProvider"></a>void QTelephonyService::setCallProvider ( <a href="qphonecallprovider.html">QPhoneCallProvider</a> * <i>provider</i> )</h3>
+<p>Sets the phone call provider for this service to <i>provider</i>. If the service already has a provider, it will be deleted. Ownership of <i>provider</i> will pass to this object, so that it will be automatically deleted when the modem service is deleted.</p>
+<p>The usual way to use this method is from within an override of <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>():</p>
+<pre>    void MyService::initialize()
+    {
+        if ( !callProvider() )
+            setCallProvider( new MyCallProvider( this ) );
+        QTelephonyService::initialize();
+    }</pre>
+<p>See also <a href="qtelephonyservice.html#callProvider">callProvider</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

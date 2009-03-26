@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Identity Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Identity Class Reference<br /><span class="small-subtitle">(QNetworkConnection::Identity)<br />[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The Identity class provides an identifier for a network connection. <a href="#details">More...</a></p>
+<ul>
+<li><a href="qnetworkconnection-identity-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qnetworkconnection-identity.html#Identityx">Identity</a></b> ()</li>
+<li><div class="fn"/><b><a href="qnetworkconnection-identity.html#Identity-3">Identity</a></b> ( const Identity &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qnetworkconnection-identity.html#dtor.Identity">~Identity</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qnetworkconnection-identity.html#deviceHandle">deviceHandle</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qnetworkconnection-identity.html#isValid">isValid</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qnetworkconnection-identity.html#name">name</a></b> () const</li>
+<li><div class="fn"/>QtopiaNetwork::Type <b><a href="qnetworkconnection-identity.html#type">type</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qnetworkconnection-identity.html#operator-not-eq">operator!=</a></b> ( const Identity &amp; <i>other</i> ) const</li>
+<li><div class="fn"/>Identity &amp; <b><a href="qnetworkconnection-identity.html#operator-eq">operator=</a></b> ( const Identity &amp; <i>other</i> )</li>
+<li><div class="fn"/>bool <b><a href="qnetworkconnection-identity.html#operator-eq-eq">operator==</a></b> ( const Identity &amp; <i>other</i> ) const</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The Identity class provides an identifier for a network connection.</p>
+<p>As a physical network device can potentially connect to a variety of remote networks (usually just determined by a set of configuration parameter such as a WLAN ESSID), QNetworkConnection::Identity allows to uniquely distinguish network connections in a device independent manor.</p>
+<p>Most network connections such as LAN and all types of dial-up connections do not support more than one network connection per network device. The two types of network devices that support multiple network connections are:</p>
+<ul>
+<li>WLAN</li>
+<li>Bluetooth PAN (not supported iby Qt Extended yet)</li>
+</ul>
+<p>Each network connection has a user visible <a href="qnetworkconnection-identity.html#name">name</a>(), is associated to a <a href="qnetworkconnection-identity.html#deviceHandle">deviceHandle</a>() which identifies the network device and a <a href="qnetworkconnection-identity.html#type">type</a>(). The following example deomstrates the most common way how network identities are obtain:</p>
+<pre>    QNetworkConnectionManager manager;
+    QNetworkConnection::Identities idents = manager.connections();
+    QNetworkDevice dev( idents.at(0) ); <span class="comment">//pick first</span>
+    QtopiaNetworkInterface::Status state = dev.state();</pre>
+<p>For more information about the Qt Extended network API see <a href="qnetworkdevice.html">QNetworkDevice</a>.</p>
+<p>See also <a href="qnetworkconnection.html">QNetworkConnection</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="Identityx"></a>Identity::Identity ()</h3>
+<p>Creates an invalid identity.</p>
+<h3 class="fn"><a name="Identity-3"></a>Identity::Identity ( const Identity &amp; <i>other</i> )</h3>
+<p>Constructs a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.Identity"></a>Identity::~Identity ()</h3>
+<p>Destroys this <a href="qnetworkconnection-identity.html">QNetworkConnection::Identity</a> instance.</p>
+<h3 class="fn"><a name="deviceHandle"></a><a href="qstring.html">QString</a> Identity::deviceHandle () const</h3>
+<p>Returns the handle for this network connection. The handle allows the identification of the network device associated to this identity.</p>
+<p>Note: Several identities can have the same handle such as wireless LAN or Bluetooth PAN connections which can be managed by the same network device. This means that no two network connections with the same identity handle can be online/connected at the same time.</p>
+<h3 class="fn"><a name="isValid"></a>bool Identity::isValid () const</h3>
+<p>Returns true if this Identity object can be mapped to a valid network configuration.</p>
+<p>A network connection identity becomes invalid when the associated network configuration is deleted.</p>
+<p>Note: note The network connection identity remains the same if the configuration has been edited only. This means that the actual target network and/or the name (as returned by <a href="qnetworkconnection-identity.html#name">QNetworkConnection::Identity::name</a>() ) may change during the life time of this object.</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> Identity::name () const</h3>
+<p>Returns the user visibile name of the network connection. The returned name is empty if this identity is invalid.</p>
+<p>See also <a href="qnetworkconnection-identity.html#isValid">isValid</a>().</p>
+<h3 class="fn"><a name="type"></a><a href="qtopianetwork.html#TypeFlag-enum">QtopiaNetwork::Type</a> Identity::type () const</h3>
+<p>Returns the network connection type. An invalid identity returns <a href="qtopianetwork.html#TypeFlag-enum">QtopiaNetwork::Any</a>;</p>
+<h3 class="fn"><a name="operator-not-eq"></a>bool Identity::operator!= ( const Identity &amp; <i>other</i> ) const</h3>
+<p>Returns true if this identityis is not equal to <i>other</i>. Equality means all the fields are equivalent.</p>
+<h3 class="fn"><a name="operator-eq"></a>Identity &amp; Identity::operator= ( const Identity &amp; <i>other</i> )</h3>
+<p>Assings <i>other</i> to this</p>
+<h3 class="fn"><a name="operator-eq-eq"></a>bool Identity::operator== ( const Identity &amp; <i>other</i> ) const</h3>
+<p>Returns true if this identityis equal to <i>other</i>. Equality means all the fields are equivalent.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

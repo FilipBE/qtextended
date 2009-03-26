@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Image Viewer Tutorial: Part 6</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Image Viewer Tutorial: Part 6<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="adding-fullscreen-mode-to-image-screen"></a>
+<h2>Adding Fullscreen Mode to Image Screen</h2>
+<p>To add the full screen mode to the image screen, the fullscreen mode must be switched on in the application window. A new method <tt>toggleFullScreen()</tt>, added to the IViewer class, will do it. The IViewer is the application window class.</p>
+<pre>    void IViewer::toggleFullScreen()
+    {
+        QString title = windowTitle();
+        setWindowTitle( QLatin1String(&quot;_allow_on_top_&quot;));
+        setWindowState(windowState() ^ Qt::WindowFullScreen);
+        setWindowTitle(title);
+    }</pre>
+<p>This method toggles the fullscreen state, based on the window state flags. This method is called from the image screen. A fullscreen action must be added to our menu and connected to the <tt>onFullScreen()</tt> method.</p>
+<pre>    void ImageScreen::onFullScreen()
+    {
+        if (_viewer-&gt;isFullScreen()) {
+            QSoftMenuBar::menuFor(this)-&gt;addAction(_showInfoAction);
+        } else {
+            QSoftMenuBar::menuFor(this)-&gt;removeAction(_showInfoAction);
+        }
+        _viewer-&gt;toggleFullScreen();
+    }</pre>
+<p>The <tt>doBack()</tt> method currently comes back to the list screen. If it remains the same, pressing the back button during the fullscreen mode will come back to a list screen displayed in fullscreen mode. So the fullscreen must be disabled prior to showing the list screen: The method <tt>isFullScreen()</tt> can be used to check if the fullscreen is enabled. In that case, the method toggleFullScreen will disable the fullscreen. Then, the list screen is set as the current widget.</p>
+<pre>    void ImageScreen::doBack()
+    {
+        if (_viewer-&gt;isFullScreen())
+            onFullScreen();
+        _viewer-&gt;setCurrentWidget((QWidget*)_viewer-&gt;listScreen());
+    }</pre>
+<p>That's should do it.</p>
+<p><i>Note: The application window is by default in maximized state.</i></p>
+<p>Now, fullscreen mode can be enabled by choosing it in the menu. To disable fullscreen mode, the same action has to be selected from the menu, which is hidden by the fullscreen mode. It is not very user-friendly. So a shortcut will be provided to enable/disable the fullscreen mode. This shortcut should be the select key ( <a href="qt.html#Key-enum">Qt::Key_Select</a> ). In order to do that, the keyPressEvent method has to be modified so that it will handle the select key:</p>
+<pre>    void ImageScreen::keyPressEvent (QKeyEvent *event)
+    {
+        switch (event-&gt;key()) {
+        case Qt::Key_Back:
+            doBack();
+            break;
+        case Qt::Key_Select:
+            onFullScreen();
+            break;
+        default:
+            QWidget::keyPressEvent(event);
+            break;
+        }
+    }</pre>
+<p>Now, the select key has to be known as the fullscreen shortcut. So the text in the menu bar should be modified by adding this line in the imagescreen constructor:</p>
+<pre>    ImageScreen::ImageScreen(IViewer *viewer)
+    : QWidget(viewer), _viewer(viewer)
+    {
+        ...
+        QSoftMenuBar::setLabel(this,Qt::Key_Select,&quot;FullScreen&quot;,&quot;FullScreen&quot;);
+        ...
+    }</pre>
+<p>After that step, the image screen provides an easy way to switch between normal and fullscreen mode. But there is another problem to solve: If the fullscreen mode is enabled, image info can be asked to show. Since the fullscreen mode is always on top, the info screen will be displayed just below the fullscreen but will take the focus, so we won't be able to switch back to normal mode. The &quot;show info&quot; action must be removed from the options menu when the fullscreen mode is active.</p>
+<p>File imagescreen.cpp</p>
+<pre>    void ImageScreen::onFullScreen()
+    {
+        if (_viewer-&gt;isFullScreen()) {
+            QSoftMenuBar::menuFor(this)-&gt;addAction(_showInfoAction);
+        } else {
+            QSoftMenuBar::menuFor(this)-&gt;removeAction(_showInfoAction);
+        }
+        _viewer-&gt;toggleFullScreen();
+    }</pre>
+<p><a href="tut-iviewer-part5.html">Prev</a>|<a href="#top">Top</a>|<a href="tut-iviewer-part1.html">Start Page</a>|<a href="tut-iviewer-part7.html">Next</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

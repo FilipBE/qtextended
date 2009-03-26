@@ -1,0 +1,162 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(i18n.prf)
+# Internationalization
+
+!no_auto_translatables:TRANSLATABLES*=$$FORMS $$HEADERS $$SOURCES
+
+# Update/release translations
+isEmpty(TRTARGET) {
+    TRTARGET=$$TARGET
+    lib:TRTARGET=lib$$TRTARGET
+    plugin:!quicklaunch:TRTARGET=lib$$TRTARGET
+}
+
+# A useful define (since it's the name given to the .ts files)
+DEFINES+=QTOPIA_TRTARGET=$$LITERAL_ESCAPED_QUOTE$$TRTARGET$$LITERAL_ESCAPED_QUOTE
+
+# The "template" that can be used for multiple installations
+linstall_template=$$COMMAND_HEADER\
+    $$fixpath($$QBS_BIN/linstall)\
+        $${LITERAL_QUOTE}TRTARGET$$LITERAL_QUOTE\
+        $$LITERAL_QUOTE$$STRING_LANGUAGE $$TRANSLATIONS$$LITERAL_QUOTE\
+        $$LITERAL_QUOTE$$fixpath($(INSTALL_ROOT)$$resdir/i18n)$$LITERAL_QUOTE\
+        $${LITERAL_QUOTE}SRCDIR$$LITERAL_QUOTE
+
+!isEmpty(TRANSLATABLES) {
+    # Basic .ts to .qm conversion
+    linstall.commands="$$linstall_template"
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        linstall.commands~=s/^"//
+        linstall.commands~=s/"$//
+    }
+    linstall.commands~=s,TRTARGET,$$TRTARGET,gq
+    linstall.commands~=s,SRCDIR,$$SRCDIR,gq
+    linstall.CONFIG=no_path
+    INSTALLS+=linstall
+
+    # Update .ts files
+    real_translatables=$$TRANSLATABLES
+    resolveRelativeFiles(real_translatables,1)
+    commands=@
+    win32:commands+=if exist translatables.pro del translatables.pro
+    else:commands+=rm -f translatables.pro
+    for(t,real_translatables) {
+        s=
+        containsre($$t,\.h$):s=HEADERS
+        isEmpty(s):containsre($$t,\.ui$):s=FORMS
+        isEmpty(s):s=SOURCES
+        commands+=$$LINE_SEP_VERBOSE@\
+            "echo \"$$s += $$t\" >>translatables.pro"
+    }
+    for(lang,ALL_TRANSLATIONS) {
+        commands+=$$LINE_SEP_VERBOSE@\
+            "echo \"TRANSLATIONS += $$SRCDIR/$$TRTARGET-$${lang}.ts\" >>translatables.pro"
+    }
+    commands+=$$LINE_SEP\
+        $$fixpath($$DQTDIR/bin/lupdate) translatables.pro $$LINE_SEP_VERBOSE@\
+        # Now strip out the languages and re-run lupdate for the string language with -pluralonly
+        "grep -v '^TRANSLATIONS' translatables.pro >translatables2.pro" $$LINE_SEP_VERBOSE@\
+        "echo \"TRANSLATIONS += $$SRCDIR/$$TRTARGET-$${STRING_LANGUAGE}.ts\" >>translatables2.pro" $$LINE_SEP\
+        $$fixpath($$DQTDIR/bin/lupdate) -pluralonly translatables2.pro
+    translatables.commands=$$commands
+    QMAKE_EXTRA_TARGETS+=translatables
+    lupdate.depends+=translatables
+}
+
+# Non-code translatables
+for(it,INSTALLS) {
+    hint=$$eval($${it}.hint)
+    contains(hint,nct) {
+        trtarget=$$eval($${it}.trtarget)
+        !contains(hint,content)|!containsre($$trtarget,^Qtopia) {
+            # Convert the non-code .ts file to .qm
+            commands="$$linstall_template"
+            contains(QMAKE_BEHAVIORS,keep_quotes) {
+                commands~=s/^"//
+                commands~=s/"$//
+            }
+            commands~=s,TRTARGET,$$trtarget,gq
+            outdir=$$eval($${it}.outdir)
+            isEmpty(outdir):outdir=$$SRCDIR
+            commands~=s,SRCDIR,$$outdir,gq
+            eval(nct_linstall_$${it}.commands=\$$commands)
+            eval(nct_linstall_$${it}.CONFIG=no_path)
+            INSTALLS+=nct_linstall_$$it
+        }
+
+        # Update the non-code .ts file
+        eval(nct_lupdate_$${it}.CONFIG=no_link no_dependencies explicit_dependencies combine ignore_no_exist no_clean)
+        commands=$$COMMAND_HEADER
+        !isEmpty(outdir):commands+=cd $$outdir $$COMMAND_SEP
+        commands+=$$fixpath($$QBS_BIN/nct_lupdate)
+        contains(hint,content) {
+            containsre($$trtarget,^Qtopia):commands+=\
+                -depot $$fixpath($$QTOPIA_DEPOT_PATH)
+            commands+=\
+                -content $$trtarget
+        }
+        commands+=\
+                $$LITERAL_QUOTE$$ALL_TRANSLATIONS$$LITERAL_QUOTE\
+                $$LITERAL_QUOTE$$STRING_LANGUAGE$$LITERAL_QUOTE\
+                ${QMAKE_FILE_IN}
+        eval(nct_lupdate_$${it}.commands=\$$commands)
+        eval(nct_lupdate_$${it}.input=$${it}.files)
+        eval(nct_lupdate_$${it}.output=dummy_nct_lupdate_$$it)
+        eval(nct_lupdate_$${it}.name=nct_$$it)
+        QMAKE_EXTRA_COMPILERS+=nct_lupdate_$$it
+        lupdate.depends+=compiler_nct_lupdate_$${it}_make_all
+    }
+    contains(hint,themecfg) {
+        # Convert the theme .ts file to .qm
+        commands="$$linstall_template"
+        contains(QMAKE_BEHAVIORS,keep_quotes) {
+            commands~=s/^"//
+            commands~=s/"$//
+        }
+        commands~=s,TRTARGET,$$eval($${it}.trtarget),gq
+        outdir=$$eval($${it}.outdir)
+        isEmpty(outdir):outdir=$$SRCDIR
+        commands~=s,SRCDIR,$$outdir,gq
+        eval(theme_linstall_$${it}.commands=\$$commands)
+        eval(theme_linstall_$${it}.CONFIG=no_path)
+        INSTALLS+=theme_linstall_$$it
+
+        # Update the theme .ts file
+        eval(theme_lupdate_$${it}.CONFIG=no_link no_dependencies explicit_dependencies ignore_no_exist no_clean)
+        commands=$$COMMAND_HEADER
+        !isEmpty(outdir):commands+=cd $$outdir $$COMMAND_SEP
+        commands+=\
+            $$fixpath($$QBS_BIN/theme_lupdate)\
+                $$LITERAL_QUOTE$$ALL_TRANSLATIONS$$LITERAL_QUOTE\
+                $$LITERAL_QUOTE$$STRING_LANGUAGE$$LITERAL_QUOTE\
+                ${QMAKE_FILE_IN}
+        eval(theme_lupdate_$${it}.commands=\$$commands)
+        eval(theme_lupdate_$${it}.input=$${it}.files)
+        eval(theme_lupdate_$${it}.output=dummy_theme_lupdate_$$it)
+        eval(theme_lupdate_$${it}.name=theme_$$it)
+        QMAKE_EXTRA_COMPILERS+=theme_lupdate_$$it
+        lupdate.depends+=compiler_theme_lupdate_$${it}_make_all
+    }
+}
+
+
+# Install extra .ts files (generated by the server due to their location in /etc)
+!isEmpty(EXTRA_TS_FILES) {
+    extra_ts_files.path=/i18n
+    commands=$$COMMAND_HEADER
+    for(lang,TRANSLATIONS) {
+        !equals(commands,$$COMMAND_HEADER):commands+=$$LINE_SEP
+        commands+=\
+            mkdir -p $(INSTALL_ROOT)$$resdir/i18n/$$lang
+        for(pkg,EXTRA_TS_FILES) {
+            exists($$QTOPIA_DEPOT_PATH/i18n/$$lang/$${pkg}.ts):commands+=$$LINE_SEP\
+                $$fixpath($$DQTDIR/bin/lrelease) -compress -nounfinished -removeidentical\
+                    $$fixpath($$QTOPIA_DEPOT_PATH/i18n/$$lang/$${pkg}.ts) \
+                    -qm $$fixpath($(INSTALL_ROOT)$$resdir/i18n/$$lang/$${pkg}.qm)
+            else:commands+=$$LINE_SEP\
+                echo "WARNING: $$QTOPIA_DEPOT_PATH/i18n/$$lang/$${pkg}.ts is missing and cannot be installed."
+        }
+    }
+    extra_ts_files.commands=$$commands
+    INSTALLS+=extra_ts_files
+}
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+# get the paths
+if [ -f "$(dirname $0)/../src/build/bin/getpaths.sh" ]; then . "$(dirname $0)/../src/build/bin/getpaths.sh"; else echo "Could not find getpaths.sh"; exit 1; fi
+exec "$SDKROOT/src/build/bin/qtopiamake" "$@"

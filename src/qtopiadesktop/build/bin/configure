@@ -1,0 +1,2064 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Cwd;
+use POSIX qw(uname strftime);
+use FileHandle;
+use Sys::Hostname;
+use File::stat;
+use File::Find;
+use File::Copy;
+use File::Path;
+use File::Glob;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::Opt;
+#perl2exe_include Qtopia::Opt::Getopt
+use Qtopia::File;
+use Hash::Ordered;
+use Carp;
+#perl2exe_include Carp::Heavy
+$Carp::CarpLevel = 1;
+
+#print "\$0: $0\n";
+#print "CWD: ".getcwd()."\n";
+#print "ARGV: ".join(" ::: ", @ARGV)."\n";
+#exit -1;
+
+use constant DEBUG => 0;
+
+# Turn on autoflush (fast pipes)
+$| = 1;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/qtopiadesktop/build/bin", $ARGV[0]);
+}
+
+# In-source builds are not allowed (because they don't work)
+if ( !$shadow && !$isWindows ) {
+    my $dir = basename($depotpath);
+    die <<END;
+
+
+ERROR: Qt Extended cannot be built from the source directory. You should build
+       from a different directory.
+
+         eg.
+
+             cd ..
+             mkdir build
+             cd build
+             ../$dir/configure [options]
+
+
+END
+}
+
+my $showing_help = 0;
+for ( @ARGV ) {
+    if ( /^--?help$/ ) {
+        $showing_help = 1;
+        last;
+    }
+}
+
+if ( !$showing_help ) {
+    $ENV{RUNNING_CONFIGURE} = 1;
+    open OUT, ">$QPEDIR/.configure_not_finished" or die "Can't write $QPEDIR/.configure_not_finished";
+    print OUT "foo\n";
+    close OUT;
+}
+
+# We need Qt Extended's version
+my $qtopiaVersionStr = "0.0.0";
+my @qtopiaVersionStr = qw(0 0 0);
+getQtopiaVersion();
+
+# We need to figure out the Qt/Qt Embedded paths so that Qtopia::Paths::get_paths() can work for other scripts.
+get_qtopiacore_paths();
+# Set the MKSPECS variable so that config tests can work.
+$ENV{MKSPECS} = "$qt_depot_path/mkspecs";
+
+# Get Qt's version
+my $qtVersionStr = "0.0.0";
+my @qtVersionStr = qw(0 0 0);
+getQtVersion();
+
+my $cols = $ENV{COLUMNS};
+$cols = 80 unless ( $cols );
+# Setup the terminal-width-dependant formats;
+init_formats();
+
+# Try to locate a pre-built Qt
+$HOST_QT = undef;
+$HOST_QT_BINS = undef;
+$HOST_QT_LIBS = undef;
+my $HOST_QT_INCS = undef;
+my $hostQtVersionStr = "0.0.0";
+my @hostQtVersionStr = qw(0 0 0);
+
+#print "Qt not detected. It will be built from source.\n";
+$HOST_QT = $DQTDIR;
+$HOST_QT_LIBS = fixpath("$DQTDIR/lib");
+$HOST_QT_BINS = fixpath("$DQTDIR/bin");
+$HOST_QT_INCS = fixpath("$DQTDIR/include");
+# Use the qmake from the Qt we build for Qt Extended Sync Agent
+$HOST_QMAKE = fixpath("$DQTDIR/bin/qmake");
+$TARGET_QMAKE = fixpath("$DQTDIR/bin/qmake");
+
+# This is the engine to use as a backend to Qtopia::Opt.
+my $engine = "Getopt";
+
+# We need to check for the engine before we actually parse arguments...
+if ( configopt("depot") ) {
+    my @tmp = @ARGV;
+    for ( @tmp ) {
+        if ( /^--?opt-engine$/ ) {
+            $engine = undef;
+            next;
+        }
+        if ( !defined($engine) ) {
+            $engine = $_;
+        }
+    }
+}
+
+# Check the license
+my %licenseInfo = ();
+$licenseInfo{Product} = "Qt Extended Sync Agent";
+checkLicenseKey();
+
+# Remove any license files left over
+if ( !configopt("depot") ) {
+    for my $location ( $qt_depot_path ) {
+        for my $file ( glob("$location/LICENSE*"), glob("$location/.LICENSE*") ) {
+            unlink $file;
+        }
+        my $source = "$depotpath/".$licenseInfo{LicenseFile};
+        my $dest = "$location/".$licenseInfo{DestLicenseFile};
+        if ( -f $dest ) {
+            unlink $dest;
+        }
+        copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/".$licenseInfo{DestLicenseFile});
+        if ( $isWindows ) {
+            # configure.exe doesn't know about LICENSE.Qtopia, just put in all of the .LICENSE* files
+            copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/.LICENSE");
+            copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/.LICENSE-US");
+            copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/.LICENSE-EVALUATION");
+            copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/.LICENSE-EVALUATION-US");
+            copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/.LICENSE-DESKTOP");
+            copy("$depotpath/".$licenseInfo{LicenseFile}, "$location/.LICENSE-DESKTOP-US");
+        }
+    }
+}
+
+# Check for x86_64
+my $x86_64 = 0;
+{
+    my ( $sysname, $nodename, $release, $version, $machine ) = uname();
+    $x86_64 = ( $machine eq "x86_64" );
+}
+
+# general build stuff
+set_optvar("help", +{
+    "type" => "bool",
+    "set" => [ "%", "Print help and usage information." ],
+    "default" => 0,
+    "engine" => "nogui",
+});
+set_optvar("verbose", +{
+    "type" => "bool",
+    "set" => [ "%", "Print out extra information while configuring." ],
+    "setfunc" => sub {
+        # Turn off silent output
+        opt("silent", "default") = 0;
+    },
+    "value" => 0,
+});
+set_optvar("silent", +{
+    "type" => "bool",
+    "set" => [ "%", "Hide compiler commandlines." ],
+    "unset" => [ "no-%", "Show compiler commandlines." ],
+    "default" => 0,
+    "visible" => sub { !$isWindows },
+    "config_pri" => "CONFIG+=silent",
+});
+set_optvar("release", +{
+    "type" => "bool",
+    "set" => [ "%", "Create a release build." ],
+    "unset" => [ "debug", "Create a debug build." ],
+    "default" => 1,
+});
+set_optvar("separate_debug_info", +{
+    "type" => "bool",
+    "set" => [ "%", "Separate debug info into a .debug file." ],
+    "unset" => [ "no-%", "Do not separate debug info into a .debug file." ],
+    "default" => 0,
+});
+set_optvar("clean", +{
+    "type" => "bool",
+    "set" => [ "%", "Clean the build tree." ],
+    "unset" => [ "no-%", "Do not clean the build tree." ],
+    "default" => 1,
+    "no_keep" => 1,
+});
+set_optvar("reduce_exports", +{
+    "type" => "value",
+    "set" => [ "%=s", "Reduce symbol exports in Qt/Qt Embedded/Qt Extended (requires GCC 4)." ],
+    "available" => [ qw(auto yes no) ],
+    "default" => "auto",
+});
+add_separator();
+set_optvar("host_extraIncPaths", +{
+    "type" => "list",
+    "add" => [ "I=s", "Add an explicit include path." ],
+    "arg" => "dir",
+});
+set_optvar("host_extraLibPaths", +{
+    "type" => "list",
+    "add" => [ "L=s", "Add Add an explicit library path." ],
+    "arg" => "dir",
+});
+set_optvar("host_extraLibs", +{
+    "type" => "list",
+    "add" => [ "l=s", "Add Add an explicit library." ],
+    "arg" => "lib",
+});
+set_optvar("host_extraRPaths", +{
+    "type" => "list",
+    "add" => [ "R=s", "Add an explicit dynamic library runtime search path." ],
+    "arg" => "dir",
+});
+set_optvar("host_extraDefines", +{
+    "type" => "list",
+    "add" => [ "D=s", "Add an explicit define to the build. Use -D FOO=bar to give it a value." ],
+    "arg" => "def",
+});
+add_separator();
+set_optvar("rpath", +{
+    "type" => "bool",
+    "set" => [ "%", "Set an automatic RPATH (so LD_LIBRARY_PATH is not required to run Qt Extended).".
+                    " Note that this requires QMAKE_RPATH to be set in your selected mkspec."],
+    "unset" => [ "no-%", "Do not set an automatic RPATH." ],
+    "default" => 1,
+    "default_tested" => 1,
+    "visible" => sub { !$isWindows },
+    "config_pri" => "CONFIG+=enable_rpath",
+});
+add_separator();
+set_optvar("strict_warnings", +{
+    "type" => "bool",
+    "set" => [ "%", "Use strict compiler warning flags." ],
+    "unset" => [ "no-%", "Do not use strict compiler warning flags." ],
+    "default" => 1,
+    "default_tested" => 1,
+    "config_pri" => [ "CONFIG+=enable_strict_flags",
+                      "QTOPIA_STRICT_FLAGS=%{flags}" ],
+    "flags" => "",
+});
+set_optvar("error", +{
+    "type" => "bool",
+    "set" => [ "%", "Treat warnings as errors when compiling Qt Extended (except for code in src/3rdparty)." ],
+    "unset" => [ "no-%", "Do not treat warnings as errors." ],
+    "default" => 0,
+    "config_pri" => "CONFIG+=enable_werror",
+});
+set_optvar("ld_optimize_speed", +{
+    "type" => "bool",
+    "set" => [ "ld-optimize-speed", "Optimize the link algorithm for speed." ],
+    "unset" => [ "ld-optimize-memory", "Optimize the link algorithm for memory use. ".
+                                       "This is handy on memory-constrained systems." ],
+    "default" => 1,
+    "config_pri" => "(!)CONFIG+=ld_optimize_memory",
+});
+add_separator();
+set_optvar("allowfail", +{
+    "type" => "list",
+    "add" => [ "allow-fail=s", "Allow an option to fail. Note that this uses option names, ".
+                               "which do not match switch names. See devices/reference/configure-qvfb ".
+                               "for the options that are useful to use with this switch." ],
+    "arg" => "option",
+    "remove" => [ "no-allow-fail=s", "hidden" ],
+});
+add_note("Note that passing an option overrides any previously-declared -allow-fail for that option.");
+add_separator();
+set_optvar("qtopiadesktop", +{
+    "type" => "bool",
+    "set" => [ "qtopiasyncagent", "Build Qt Extended Sync Agent." ],
+    "visible" => 0,
+    "value" => 1,
+    "silentignore" => [ "qtopiasyncagent" ],
+    "config_pri" => "CONFIG+=build_qtopiadesktop",
+});
+add_separator();
+set_optvar("platform", +{
+    "type" => "value",
+    "set" => [ "%=s",
+        "The host platform that you are compiling on. ".
+        "If not specified, configure will attempt to autodetect the host." ],
+    "arg" => "host",
+    "config_pri" => [ "PLATFORM=%",
+                      "PLATFORM_SDK=%{sdk}",
+                      "PLATFORM_ABS=%{absolute}" ],
+});
+set_optvar("dimage", +{
+    "type" => "value",
+    "set" => [ "%=s", "Set the Qt Extended Sync Agent install location to <dir>." ],
+    "arg" => "dir",
+    "default" => fixpath("$QPEDIR/dimage"),
+    "config_pri" => "QTOPIA_DIMAGE=%",
+    "force_default" => 1,
+});
+set_optvar("dprefix", +{
+    "type" => "value",
+    "set" => [ "%=s", "Set the runtime location of Qt Extended Sync Agent to <dir>." ],
+    "arg" => "dir",
+    "default" => sub { opt("dimage") },
+    "config_pri" => "QTOPIA_DPREFIX=%",
+});
+add_separator();
+set_optvar("languages", +{
+    "type" => "list",
+    "add" => "add-language=s",
+    "addaliases" => [ "add-languages=s" ],
+    "remove" => "remove-language=s",
+    "removealiases" => [ "remove-languages=s" ],
+    "set" => [ "%=s", "Select the languages to use. Resources (translations, dictionary ".
+                      "files, icons) are updated/installed for the specified languages." ],
+    "arg" => "lang,lang",
+    "available" => sub {
+        # Figure out what languages exist
+        my @avail;
+        map { push(@avail, basename($_)) if ( -f "$_/.directory" ); } glob("$depotpath/i18n/*");
+        if ( !@avail ) {
+            warn "WARNING: Could not detect any langauges... Assuming that en_US is available.\n";
+            push(@avail, "en_US");
+        }
+        @avail;
+    },
+    "default" => sub {
+        my @def;
+        if ( configopt("depot") ) {
+            # In the depot, default to en_US, en_SU (for RTL testing), and de
+            @def = qw(en_US en_SU de);
+        } else {
+            @def = Qtopia::Opt::_resolve_to_array(opt("languages", "available"));
+        }
+        @def;
+    },
+    "config_pri" => [ "QTOPIA_LANGUAGES=%",
+                      "QTOPIA_AVAILABLE_LANGUAGES=%{available}" ],
+});
+set_optvar("iconsize", +{
+    "type" => "value",
+    "set" => [ "%=s", "Non-scalable icons are installed at the requested size. ".
+                      "Can be a single number (for square icons) or WxH. ".
+                      "Images will be scaled from one of the available sizes." ],
+    "arg" => "size",
+    "default" => "22x22",
+    "config_pri" => "QTOPIA_ICON_SIZE=%",
+});
+set_optvar("svg_format", +{
+    "type" => "value",
+    "set" => [ "%=s", "Specify the format to convert SVG files to at install time. ".
+                      "Converting to the pic (QPicture) format allows for faster image loading." ],
+    "arg" => "ext",
+    "available" => [ "svg", "pic" ],
+    "default" => "pic",
+});
+set_optvar("image_extension_order", +{
+    "type" => "list",
+    "set" => [ "%=s", "Select the priority of extensions for images that exist in multiple formats." ],
+    "arg" => "ext,ext",
+    "available" => [ "png", "gif", "xpm" ],
+    "default" => sub { Qtopia::Opt::_resolve_to_array(opt("image_extension_order", "available")); },
+    "config_pri" => "IMAGE_EXTENSION_ORDER=%",
+});
+add_note("Only one version of an image will be installed. This list determines the priority of extensions. ".
+         "An image with multiple extensions, none of which appear in this list will have the first ".
+         "(as determined by perl's glob(\"\$file.*\");) extension chosen. ".
+         "Note that you cannot force extensions other than .svg to have the highest priority with ".
+         "this option.");
+add_separator();
+set_optvar("make", +{
+    "type" => "value",
+    "set" => [ "%=s", "hidden" ],
+    "arg" => "makecmd",
+    "default" => ($isWindows?"nmake /nologo":"make"),
+});
+set_optvar("extraBuildPaths", +{
+    "type" => "list",
+    "add" => [ "build=s", "Add directory <dir> to the Qt Extended build system. ".
+                          "For example, -build /path/to/myapp will add /path/to/myapp to ".
+                          "the build system." ],
+    "arg" => "dir",
+    "visible" => 0,
+    "silentignore" => [ "build=s" ],
+});
+add_separator();
+
+
+# Qt passthrough options
+add_separator();
+set_optvar("dqt_config", +{
+    "type" => "value",
+    "set" => [ "qt-config=s", "hidden" ],
+    "setaliases" => [ "dqt-config=s", "host-qt-config=s" ],
+    "config_pri" => "DQT_CONFIG=%",
+});
+set_optvar("extra_dqt_config", +{
+    "type" => "list",
+    "add" => [ "extra-qt-config=s", "Add something to the Qt configure commandline." ],
+    "addaliases" => [ "extra-dqt-config=s", "extra-host-qt-config=s" ],
+    "arg" => '"-option arg"',
+});
+
+# These are the "hidden" options.
+set_optvar("save_options", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "value" => 1,
+    "no_keep" => 1,
+});
+set_optvar("mkconf", +{
+    "type" => "list",
+    "add" => [ "%=s", "hidden" ],
+    "no_keep" => 1,
+});
+set_optvar("skip_qt_configure", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+});
+set_optvar("skip_qt", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "setfunc" => sub { opt("skip_dqt") = 1; opt("skip_qte") = 1; },
+    "unsetfunc" => sub { opt("skip_dqt") = 0; opt("skip_qte") = 0; },
+});
+set_optvar("skip_dqt", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "config_pri" => "(!)CONFIG+=build_dqt",
+});
+set_optvar("skip_qte", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "config_pri" => "(!)CONFIG+=build_qte",
+});
+set_optvar("qmake", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "value" => 0,
+    "behaviors" => "",
+    "config_pri" => "QMAKE_BEHAVIORS=%{behaviors}",
+});
+set_optvar("qmake_debug", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+});
+set_optvar("confirm_license", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "no_keep" => 1,
+});
+set_optvar("quick", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "setfunc" => sub { opt("skip_qt_configure") = 1; opt("clean") = 0; },
+    "no_keep" => 1,
+});
+set_optvar("opt_engine", +{
+    "type" => "value",
+    "set" => [ "%=s", "hidden" ],
+});
+set_optvar("configure", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "value" => 1,
+});
+set_optvar("eval", +{
+    "type" => "list",
+    "add" => [ "%=s", "hidden" ],
+    "addfunc" => sub { eval $_[1]; },
+});
+set_optvar("qtopia_change", +{
+    "type" => "value",
+    "set" => [ "%=s", "hidden" ],
+    "config_pri" => "QTOPIA_CHANGE=%",
+});
+set_optvar("qt_change", +{
+    "type" => "value",
+    "set" => [ "%=s", "hidden" ],
+    "config_pri" => "QT_CHANGE=%",
+});
+set_optvar("phase", +{
+    "type" => "value",
+    "set" => [ "%=s", "hidden" ],
+    "setfunc" => sub { $Qtopia::Opt::phase = $_[1]; },
+});
+
+# Legacy crap. Here to prevent builds from breaking but deprecated
+set_optvar("usb_gadget", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "unset" => [ "no-%", "hidden" ],
+    "visible" => 0,
+    "silentignore" => [ "usb-gadget", "no-usb-gadget" ],
+});
+set_optvar("edition", +{
+    "type" => "value",
+    "set" => [ "%=s", "hidden" ],
+    "silentignore" => [ "edition=s" ],
+    "visible" => 0,
+});
+set_optvar("default_to_off", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+    "setfunc" => sub {
+        # Turn off features and reset the default modules.
+        for my $optname ( Qtopia::Opt::get_features() ) {
+            opt($optname) = 0;
+        }
+        opt_call("modules", "set", "");
+    },
+});
+
+# placeholders. These aren't switches but the values get propagated via config.cache
+set_optvar("compiler", +{
+    "type" => "placeholder",
+    "config_pri" => [ "QTOPIA_HOST_ENDIAN=%{host_endian}",
+                      "QTOPIA_TARGET_ENDIAN=%{target_endian}" ],
+});
+set_optvar("version", +{
+    "type" => "placeholder",
+    "qtopia" => $qtopiaVersionStr,
+    "qt" => $qtVersionStr,
+    "hostqt" => $hostQtVersionStr,
+    "config_pri" => "QTOPIA_VERSION=%{qtopia}\n".
+                    "free_package:QTOPIA_LICENSE=\"GPL v2\"\n".
+                    "else:QTOPIA_LICENSE=Commercial\n".
+                    "QTOPIA_MAINTAINER=\"Nokia, Qt Software (www.trolltech.com)\"",
+});
+set_optvar("page_size", +{
+    "type" => "placeholder",
+    "config_pri" => [ "QTOPIA_PAGE_SIZE=%{page_size}",
+                      "QTOPIA_PAGE_MASK=%{page_mask}" ],
+});
+set_optvar("builder", +{
+    "type" => "placeholder",
+    "value" => (getlogin() || getpwuid($<) || "unknown").'@'.(hostname() || "unknown"),
+    "config_pri" => "BUILDER=%",
+});
+set_optvar("libqtopiaphone", +{
+    "type" => "placeholder",
+    "config_pri" => [ "QTOPIA_LIBQTOPIAPHONE=%",
+                      "QTOPIA_LIBQTOPIAPHONE_VERSION=%{version}",
+                      "QTOPIA_LIBQTOPIAPHONE_MAJOR_VERSION=%{major_version}",
+                      "QTOPIA_LIBQTOPIAPHONE_MINOR_VERSION=%{minor_version}" ],
+});
+set_optvar("libqtopiaphonemodem", +{
+    "type" => "placeholder",
+    "config_pri" => [ "QTOPIA_LIBQTOPIAPHONEMODEM=%",
+                      "QTOPIA_LIBQTOPIAPHONEMODEM_VERSION=%{version}",
+                      "QTOPIA_LIBQTOPIAPHONEMODEM_MAJOR_VERSION=%{major_version}",
+                      "QTOPIA_LIBQTOPIAPHONEMODEM_MINOR_VERSION=%{minor_version}" ],
+});
+set_optvar("qpe_config", +{
+    "type" => "placeholder",
+});
+
+#
+# set_optvar must not be called after this line
+#
+
+# Generate the help for modules
+Qtopia::Opt::generate_module_help();
+
+# Save the command line
+my $configure;
+my $quote;
+if ( $isWindows ) {
+    $configure = fixpath("$qbs_bin/configure");
+    $quote = '"';
+} else {
+    $configure = fixpath("$depotpath/src/qtopiadesktop/build/bin/configure");
+    $quote = "'";
+}
+my @command_line = @ARGV;
+# strip out options marked with "no_keep" => 1,
+for my $optname ( keys %Qtopia::Opt::optvar_storage ) {
+    if ( opt($optname, "no_keep") ) {
+        my $setref = opt($optname, "set");
+        my $set = $setref?$setref->[0]:"";
+        my $unsetref = opt($optname, "unset");
+        my $unset = $unsetref?$unsetref->[0]:"";
+        for ( $set, $unset ) {
+            s/%/$optname/;
+            s/_/-/g;
+        }
+        if ( $set =~ s/=.*// ) {
+            my @tmp = @command_line;
+            @command_line = ();
+            my $skip = 0;
+            for ( @tmp ) {
+                if ( $skip ) {
+                    --$skip;
+                    next;
+                }
+                if ( /^--?\Q$set\E$/ ) {
+                    $skip = 1 unless ( /=/ );
+                    next;
+                }
+                push(@command_line, $_);
+            }
+        } else {
+            if ( $set || $unset ) {
+                @command_line = grep { (!$set || !/^--?\Q$set\E$/) && (!$unset || !/^--?\Q$unset\E$/) } @command_line;
+            }
+        }
+    }
+}
+my $command_line = (@command_line?$quote:"").join("$quote $quote", @command_line).(@command_line?$quote:"");
+opt("qpe_config") = $command_line;
+opt("qpe_config", "argv") = [ @ARGV ];
+if ( open IN, "$QPEDIR/config.status" ) {
+    while ( defined($_ = <IN>) ) {
+        if ( /configure/ ) {
+            chomp;
+            opt("qpe_config", "config_status") = $_;
+            last;
+        }
+    }
+    close IN;
+}
+
+# Get options and print help
+my @ARGV_SAVE = @ARGV;
+Qtopia::Opt::setEngine($engine);
+my $ok = opt_get_options( "nohelp", "noextra", "novalidate" );
+opt_call("phase", "set", "configure");
+
+{
+    my $ref = opt("allowfail");
+    for ( @$ref ) {
+        if ( /(.*),(.*)/ ) {
+            my $ref = opt($1, "auto");
+            if ( !$ref ) {
+                $ref = opt($1, "auto") = [];
+            }
+            push(@$ref, $2);
+        } else {
+            opt($_, "auto") = 1;
+        }
+    }
+}
+
+if ( !Qtopia::Opt::validate() ) {
+    $ok = 0;
+}
+
+if ( !$ok || opt("help") ) {
+    Qtopia::Opt::get_help();
+}
+
+=pod
+if ( $engine eq "Getopt" ) {
+    print_configure_line("Qt Extended (expanded commandline):", join(" ", @ARGV_SAVE));
+}
+=cut
+
+# Check license stuff
+validateLicense();
+
+    $HOST_QT = $DQTDIR;
+    $HOST_QT_LIBS = fixpath("$DQTDIR/lib");
+    $HOST_QT_BINS = fixpath("$DQTDIR/bin");
+    $HOST_QT_INCS = fixpath("$DQTDIR/include");
+
+# Write the path information to config.cache
+Qtopia::Paths::write_config_cache();
+
+# Let the user know which locations we're using
+print "Qt Extended is using the following locations:\n";
+if ( $HOST_QT eq $DQTDIR ) {
+print "Qt          SOURCE tree = $qt_depot_path\n";
+print "Qt          BUILD  tree = $DQTDIR\n";
+} else {
+print "Qt          PREFIX      = $HOST_QT\n";
+print "Qt          LIBRARIES   = $HOST_QT_LIBS\n";
+print "Qt          BINARIES    = $HOST_QT_BINS\n";
+print "Qt          HEADERS     = $HOST_QT_INCS\n";
+}
+print "Qt Embedded SOURCE tree = $qt_depot_path\n";
+print "Qt Embedded BUILD  tree = $QTEDIR\n";
+print "Qt Extended SOURCE tree = $depotpath\n";
+print "Qt Extended BUILD  tree = $QPEDIR\n";
+print "Qt Extended SDK    tree = $SDKROOT\n";
+
+# shadow build checks
+if ( $shadow ) {
+    if ( $isWindows ) {
+	die "ERROR: Shadow builds are not supported on win32\n";
+    }
+    if ( index( $QPEDIR, fixpath("$depotpath/") ) != -1 ) {
+	die "ERROR: You cannot shadow build from inside the source tree\n";
+    }
+
+    symlink_all_files("scripts");
+    symlink_all_files("tests/scripts");
+
+    symlink_all_files_only("bin", qw(assistant qtopiamake));
+    symlink_all_files_ignoring("src/qtopiadesktop/build/bin", qw(build_macosx_bundle configure makensi perlwrapper runwithvars winmake sdkcache));
+
+    if ( !configopt("depot") ) {
+        # Symlink the docs into the SDK
+        symlink_file("$depotpath/doc/html", "$SDKROOT/doc/html");
+    }
+    # Blow this away so we are sure the tests actually run
+    rmrf("$QPEDIR/config.tests");
+
+    # Clean out any builds found in the Qt Extended source tree
+    clean_qtopia_sources();
+}
+mkpath("$SDKROOT/lib/host");
+
+# Apply defaults
+opt_apply_defaults();
+
+# Host detection
+if ( !opt("platform") ) {
+    opt("platform", "auto") = 1;
+    if ( defined($ENV{QMAKESPEC}) && $ENV{QMAKESPEC} ne "" ) {
+	opt("platform") = basename($ENV{QMAKESPEC});
+	if ( ! -d $qt_depot_path."/mkspecs/".opt("platform") ) {
+	    warn "WARNING: Spec ".opt("platform")." (from \$QMAKESPEC) could not be found. Attempting autodetection.\n";
+	    opt("platform") = undef;
+	}
+    }
+    if ( !opt("platform") ) {
+	if ( $^O eq "linux" ) {
+	    opt("platform") = "linux-g++";
+	} elsif ( $isMac ) {
+	    opt("platform") = "macx-g++";
+	} else {
+            die <<END;
+ERROR: Can't autodetect the host platform. Host = $^O.
+Please explicitly set a -platform parameter.
+END
+	}
+    }
+}
+
+# Convert platform to absolute path
+opt("platform", "absolute") = opt("platform");
+chdir $cwd;
+if ( ! -d opt("platform", "absolute") ) {
+    opt("platform", "absolute") = "$qt_depot_path/mkspecs/".opt("platform");
+}
+opt("platform", "absolute") = fixpath(opt("platform", "absolute"));
+if ( ! -e opt("platform", "absolute") ) {
+    die "ERROR: ".fixpath(opt("platform", "absolute"))." does not exist, check -platform parameter is correct.\n";
+}
+if ( !$isWindows ) {
+    # When building the SDK we want to create the 'default' mkspecs... we need a path
+    # relative to the install prefix for that...
+    for my $platform ( "platform" ) {
+        $_ = opt($platform, "absolute");
+        if ( $_ ) {
+            my $qt = ($platform eq "platform")?"host":"target";
+            if ( s/^\Q$depotpath\E(\/devices)/$1/ ) {
+                # This mkspec came from a device profile...
+                symlink_file(opt($platform, "absolute"), "$SDKROOT/$_");
+            } elsif ( s/^\Q$qt_depot_path\E(\/mkspecs)/\/qtopiacore\/$qt$1/ ) {
+                # This mkspec came from Qt...
+            } else {
+                # Hmm... skip this one because we can't locate it in our sources
+                warn "Can't locate $_ relative to the Qt Extended or Qt source trees";
+                next;
+            }
+            opt($platform, "sdk") = $_;
+        }
+    }
+}
+
+# Qt assumes non-absolute paths to -platform and some tests (eg. x86_64
+# support) rely on this. If the values are in the Qt depot path then make them relative
+# again. This is better than assuming a relative path was passed to our -platform argument.
+my $qt_platform = opt("platform", "absolute");
+my $qt_mkspecs = fixpath("$qt_depot_path/mkspecs/");
+$qt_platform =~ s,^\Q$qt_mkspecs\E,,;
+
+# Don't use a relative prefix!
+for my $prefix ( opt("dprefix"), opt("dimage") ) {
+    if ( !$prefix ) {
+        next;
+    }
+    my $path = $prefix;
+    if ( !$isWindows && index($path, "/") != 0 ) {
+        my $old_prefix = $path;
+        $prefix = fixpath($cwd."/".$path);
+        warn "WARNING: Using $prefix instead of $old_prefix.\n";
+    }
+    # Remove a trailing slash (will cause problems at install time)
+    $prefix =~ s/\/$//;
+}
+
+# Early config tests (needed before we build Qt)
+print "\n";
+opt("compiler", "host_gcc4") = 0;
+opt("compiler", "host_endian") = "unknown";
+my @combinations = ( "host", opt("platform", "absolute") );
+while ( @combinations ) {
+    my $host = shift(@combinations);
+    my $plat = shift(@combinations);
+    next if ( !$plat );
+
+    # Detect gcc 4
+    open IN, "$plat/qmake.conf" or die "Can't read $plat/qmake.conf\n";
+    my @data = <IN>;
+    close IN;
+    my @old = @data;
+    @data = ();
+    for ( @old ) {
+        if ( /^\s*include\((.*)\)/ ) {
+            chdir $plat;
+            open INC, "$1" or die "Can't read $1\n";
+            push(@data, <INC>);
+            close INC;
+        } else {
+            push(@data, $_);
+        }
+    }
+    my ( $cc ) = ( (grep /^QMAKE_CC\s*\+?=/, @data)[0] =~ /=(.*)/ );
+    my ( $cxx ) = ( (grep /^QMAKE_CXX\s*\+?=/, @data)[0] =~ /=(.*)/ );
+    my ( $link ) = ( (grep /^QMAKE_LINK\s*\+?=/, @data)[0] =~ /=(.*)/ );
+    my ( $cflags ) = ( (grep /^QMAKE_CFLAGS\s*\+?=/, @data)[0] =~ /=(.*)/ );
+    my ( $cxxflags ) = ( (grep /^QMAKE_CXXFLAGS\s*\+?=/, @data)[0] =~ /=(.*)/ );
+    my ( $lflags ) = ( (grep /^QMAKE_LFLAGS\s*\+?=/, @data)[0] =~ /=(.*)/ );
+    for ( $cxx, $cflags, $cxxflags, $lflags ) {
+        chomp;
+        s/^\s+//;
+        s/\s+$//;
+    }
+    $cxxflags =~ s/\$\$QMAKE_CFLAGS/$cflags/;
+    my $envstring = "CXX='$cxx' CXXFLAGS='$cxxflags' CC='$cc' CFLAGS='$cflags' LINK='$link' LFLAGS='$lflags' ".
+                    "QPEDIR='$QPEDIR' QTOPIA_DEPOT_PATH='$depotpath' HOST='$host' ".
+                    "VERBOSE='".opt("verbose")."' DEVICE_BIN=''";
+
+    if ( !$isWindows ) {
+        print "Checking the compiler ($host): ";
+        print "\n" if ( opt("verbose") );
+        my $out;
+        my $ret = configtest("compiler", "env", $envstring, "outvar", $out);
+        if ( $ret ) {
+            my @msg;
+            if ( grep /^GCC VERSION 4/, split(/\n/, $out)) {
+                opt("compiler", $host."_gcc4") = 1;
+                push(@msg, "GCC 4");
+            } else {
+                opt("compiler", $host."_gcc4") = 0;
+            }
+            if ( grep /^LeastSignificantByteFirst/, split(/\n/, $out)) {
+                if ( opt("compiler", $host."_endian") eq "unknown" ) {
+                    opt("compiler", $host."_endian") = "little";
+                }
+                if ( opt("compiler", $host."_endian") eq "little" ) {
+                    push(@msg, "Little Endian");
+                } else {
+                    push(@msg, "Big Endian - user override");
+                }
+            } elsif ( grep /^MostSignificantByteFirst/, split(/\n/, $out)) {
+                if ( opt("compiler", $host."_endian") eq "unknown" ) {
+                    opt("compiler", $host."_endian") = "big";
+                }
+                if ( opt("compiler", $host."_endian") eq "big" ) {
+                    push(@msg, "Big Endian");
+                } else {
+                    push(@msg, "Little Endian - user override");
+                }
+            } else {
+                print "FAIL (cannot detect endianness)\n";
+                print "Please use the -little-endian or -big-endian switch.\n";
+                print "Note: Run configure -verbose for verbose errors\n";
+                exit 1;
+            }
+            print "OK ".(@msg?"(":"").join(", ",@msg).(@msg?")":"")."\n";
+        } else {
+            if ( $out =~ /CANNOT RUN BINARIES/ ) {
+                print "FAIL (cannot run binaries)\n";
+            } else {
+                print "FAIL\n";
+            }
+            print "Note: Run configure -verbose for verbose errors\n";
+            exit 1;
+        }
+    }
+}
+
+# Validate options
+
+#
+# This should be the end of the configuring stuff
+#
+
+# Write config.status
+if ( opt("save_options") ) {
+    write_config_status();
+}
+
+# Clean out any builds found in the Qt source tree
+if ( $qt_depot_path ne $DQTDIR ) {
+    clean_qt_sources();
+}
+
+# This is how we tell Qt to use our make instead of one they detect on their own
+$ENV{MAKE} = opt("make");
+
+touch_force_qmake();
+
+# Configure Qt
+setup_dqt_config($qt_platform);
+if ( $HOST_QT eq $DQTDIR ) {
+    if ( !opt("skip_dqt") ) {
+        configure_qt($DQTDIR, "Qt (host)", "dqt_config");
+        if ( -d "$qt_depot_path/tools/qdoc3" ) {
+            # for some reason Qt 4.2 no longer does the qdoc3 directory
+            mkpath("$DQTDIR/tools/qdoc3");
+            chdir("$DQTDIR/tools/qdoc3");
+            system("$DQTDIR/bin/qmake", "-o", "$DQTDIR/tools/qdoc3/Makefile", "$qt_depot_path/tools/qdoc3/qdoc3.pro");
+        }
+    }
+}
+
+Qtopia::Opt::write_config_cache();
+system("$qbs_bin/write_config_pri", "tests");
+
+# Different qmake versions have different behaviors. Detect them here so the build system can work around them.
+print "Testing for qmake behaviors: ";
+print "\n" if ( opt("verbose") );
+my $out;
+configtest("qmake_behaviors", "outvar", $out, "platform", "qmake_only");
+my @behaviors;
+my @lines = grep /QMAKE_BEHAVIORS:/, split(/\n/, $out);
+my $line = pop(@lines);
+if ( $line ) {
+    @behaviors = split(/\s+/, ($line =~ /QMAKE_BEHAVIORS: (.*)/)[0]);
+}
+if ( @behaviors ) {
+    opt("qmake", "behaviors") = lc(join(" ", @behaviors));
+    $out = uc(join(", ", @behaviors))
+} else {
+    $out = "NONE";
+}
+print "$out\n";
+my %test;
+map { $test{$_}++ } @behaviors;
+if ( $test{func_out_join} ) {
+    die "ERROR: Qt Extended cannot work around the FUNC_OUT_JOIN behavior in qmake.\n".
+        "       Please use a newer version of Qt.\n";
+}
+if ( $test{var_parse} ) {
+    die "ERROR: Qt Extended cannot work around the VAR_PARSE behavior in qmake.\n".
+        "       Please use a newer version of Qt.\n";
+}
+if ( exists($test{keep_quotes}) ) {
+    die "ERROR: Qt Extended cannot work around the KEEP_QUOTES behavior in qmake.\n".
+        "       Please use a newer version of Qt.\n";
+}
+
+if ( opt("rpath") ) {
+    print "Checking QMAKE_RPATH: ";
+    print "\n" if ( opt("verbose") );
+    my $out;
+    my $ok = configtest("rpath", "host_qmake", "qmake_only", "outvar", $out);
+    if ( $ok ) {
+        $ok = 0;
+        for ( split(/\n/, $out) ) {
+            if ( /QMAKE_RPATH (.*)/ ) {
+                print "$1\n";
+                $ok = 1;
+                last;
+            }
+        }
+    }
+    if ( !$ok ) {
+        print "FAIL\n";
+        print "Explicit RPATH is disabled.\n";
+        die_if_not_allowed("rpath");
+        opt("rpath", "auto") = 1;
+        opt("rpath") = 0;
+    }
+}
+
+#
+# config tests go here
+#
+
+Qtopia::Opt::write_config_cache();
+system("$qbs_bin/write_config_pri", "tests");
+
+if ( opt("error") ) {
+    print "Testing for -Werror: ";
+    print "\n" if ( opt("verbose") );
+    my $ok = configtest("error", "env", "PLATFORM_ABSOLUTE=".opt("platform", "absolute")." ".
+                                        "MAKECMD=".opt("make")." QMAKE=$TARGET_QMAKE QPEDIR=$QPEDIR ".
+                                        "QTOPIA_DEPOT_PATH=$depotpath FLAG=-Werror");
+    if ( $ok ) {
+        print "OK\n";
+    } else {
+        print "FAIL\n";
+        print "Use of -Werror is disabled.\n";
+        die_if_not_allowed("error");
+        opt("error", "auto") = 1;
+        opt("error") = 0;
+    }
+}
+
+print "\n";
+
+#
+# Handle project roots (src, src/qtopiadesktop and whatever was passed to -build)
+#
+
+my @projectRoots;
+my $extraBuildPathsRef = opt("extraBuildPaths");
+push(@projectRoots, fixpath("$QPEDIR"),
+                    fixpath("$QPEDIR/src"),
+                    fixpath("$QPEDIR/etc/themes"),
+                    fixpath("$QPEDIR/src/qtopiadesktop"),
+                    fixpath("$QPEDIR/tests"),
+                    fixpath("$QPEDIR/examples"),
+                    fixpath("$QPEDIR/src/plugins/designer"));
+# Cleanup the locations passed as -build
+for my $dir ( @$extraBuildPathsRef ) {
+    chdir $cwd; # in case $dir is relative!
+    chdir $dir or mkpath($dir); # this lets -build foo work (where $QPEDIR/foo doesn't exist but $depotpath/foo does)
+    chdir $dir or die "Can't enter $dir";
+    $dir = fixpath(getcwd());
+    # Relocate it to the build tree
+    $dir =~ s,\Q$depotpath\E,$QPEDIR,;
+    my @checkRoots;
+    map { push(@checkRoots, $_) unless ( $_ eq $QPEDIR ); } @projectRoots;
+    # You can make new project roots under $QPEDIR but not under any of the alread-defined project roots.
+    # For example, bad things would happen if you created a new project root in $QPEDIR/src/something.
+    my $add = 1;
+    for ( @checkRoots ) {
+        if ( $dir =~ /^\Q$_\E/ ) {
+            $add = 0;
+            last;
+        }
+    }
+    if ( $add ) {
+        push(@projectRoots, $dir);
+    }
+}
+opt("extraBuildPaths", "projectRoots") = \@projectRoots;
+
+Qtopia::Opt::write_config_cache();
+system("$qbs_bin/write_config_pri");
+
+if ( -d "$QPEDIR/include" ) {
+    rmrf("$QPEDIR/include");
+}
+
+system("$qbs_bin/qtopiamake", "-projectroots", @projectRoots);
+
+touch_force_qmake();
+
+if ( opt("qmake") ) {
+    print "Running qmake...\n";
+    my @dirs = ( $QPEDIR );
+    for my $dir ( @dirs ) {
+        chdir $dir or die "Can't enter ".fixpath($dir);
+        filter_system(opt("make")." -j1 qmake");
+    }
+}
+
+unlink "$QPEDIR/.configure_not_finished";
+exit 0;
+
+###################################################################
+
+# Helper functions
+
+sub astIf
+{
+    return $_[0] ? "*" : " ";
+}
+
+sub write_config_status
+{
+    if ( $isWindows ) {
+	my $reconf = $QPEDIR."/config.status.bat";
+	if ( -f $reconf ) {
+	    unlink $reconf or die $!;
+	}
+	open RECONF, ">".$reconf or die $!;
+	print RECONF "\@echo off\n";
+	print RECONF "$configure $command_line -confirm-license -no-clean -no-save-options %1 %2 %3 %4 %5 %6 %7 %8 %9\n";
+	close RECONF or die $!;
+    }
+}
+
+sub configure_qt
+{
+    my ( $QTDIR, $qt, $qt_config ) = @_;
+
+    # configure sets the output directory to $PWD
+    chdir($QTDIR) or die "Can't enter $QTDIR";
+
+    if ( opt("skip_qt_configure") ) {
+        return;
+    } else {
+        print_configure_line($qt, "configure ".opt($qt_config));
+    }
+
+    # Silently fix a potential problem caused by a dodgy practice we used to have
+    if ( -f "$qt_depot_path/bin/syncqt.disabled" ) {
+        move("$qt_depot_path/bin/syncqt.disabled", "$qt_depot_path/bin/syncqt");
+    }
+
+    # Hide some files
+    my @hidden_files;
+    # The GPL package has trouble when both Qt and Qt Embedded sources are located in
+    # the same directory. Hide this file from Qt so that it doesn't get confused.
+    if ( configopt("free") && $QTDIR eq $DQTDIR ) {
+        push(@hidden_files, "src/gui/kernel/qapplication_qws.cpp");
+    }
+    for ( @hidden_files ) {
+        if ( -f "$qt_depot_path/$_" ) {
+            move("$qt_depot_path/$_", "$qt_depot_path/$_.disabled");
+        }
+    }
+
+    # Clean out any crap from the build tree.
+    # This is especially important for 'Makefile' since Qt does not re-create
+    # this file if it exists and it could have stale configuration info in it.
+    if ( opt("clean") ) {
+        print "Cleaning your $qt build tree. Please wait...\n";
+        Qtopia::Opt::write_config_cache();
+        system("$qbs_bin/qtopiamake", "-clean", $QTDIR);
+    }
+
+    if ( $QTDIR ne $qt_depot_path ) {
+        # Qt's config.tests accidentally cache their results. This can have dire consequences
+        # if you've changed something about your toolchain or system libs.
+        rmrf("$QTDIR/config.tests");
+    }
+
+    if ( configopt("depot") && $QTDIR eq $DQTDIR ) {
+        # qmake can't figure out it's own dependencies properly. This is a big problem when developing
+        # against a changing Qt source tree. For now, just blow it away so we can be sure the binary
+        # we build is correct.
+        my $makefile = "Makefile";
+        my $make = opt("make");
+        if ( $isWindows ) {
+            $makefile = "Makefile.win32";
+            $make = fixpath("$qbs_bin/winmake");
+            Qtopia::Opt::write_config_cache();
+        }
+        eval {
+            filter_system("$make -C ".fixpath("$QTDIR/qmake")." -f $makefile clean 2>&1");
+        };
+    }
+
+    if ( !$isWindows && $QTDIR eq $QTEDIR && $HOST_QT eq $DQTDIR ) {
+        # qmake has already been built as part of the host build. Since it uses
+        # the same code, we can save time by copying it's .o files in to the target
+        # build tree.
+        mkpath("$QTDIR/qmake");
+        system("cp -f $DQTDIR/qmake/*.o $QTDIR/qmake");
+        # The exception to the rule above is this file, which has hardcoded paths
+        # specific to the version of Qt being built. Just remove the .o file and
+        # let it get rebuilt.
+        unlink("$QTDIR/qmake/qlibraryinfo.o");
+    }
+
+    if ( !configopt("depot") && !$isWindows ) {
+        # Our source packages don't ship with Qt headers installed but Qt ones do.
+        # As a result, Qt's configure doesn't attempt to build the source tree's
+        # include directory when run from a source package but it goes ahead
+        # and creates rules that copy files from there.
+        print "Setting up the include directory for $qt. Please wait...\n";
+        my $qtdir_backup = $ENV{QTDIR} || "";
+        $ENV{QTDIR} = $qt_depot_path;
+        filter_system("$qt_depot_path/bin/syncqt -outdir $qt_depot_path 2>&1");
+        $ENV{QTDIR} = $qtdir_backup;
+    }
+
+    # Go ahead and configure
+    my $command = fixpath("$qt_depot_path/configure")." ".opt("$qt_config")." 2>&1";
+    if ( $isWindows ) {
+        $command = fixpath("$qbs_bin/runwithvars")." PATH=\"".fixpath("$QTDIR/bin").";\%PATH\%\" ".$command;
+    }
+    filter_system($command, \&filter_qt);
+
+    # Restore the hidden files
+    push(@hidden_files, "src/gui/kernel/qapplication_qws.cpp");
+    for ( @hidden_files ) {
+        if ( -f "$qt_depot_path/$_.disabled" ) {
+            move("$qt_depot_path/$_.disabled", "$qt_depot_path/$_");
+        }
+    }
+
+    # On Windows, it seems configure can return without error despite not building qmake
+    if ( $isWindows ) {
+        my $qmake = fixpath("$QTDIR/bin/qmake.exe");
+        if ( ! -f $qmake ) {
+            die "ERROR: configure did not create qmake!\n";
+        }
+    }
+
+    # Print a banner
+    print '*'x($cols-1)."\n".
+          "$qt is configured\n".
+          '*'x($cols-1)."\n\n";
+}
+
+sub filter_system
+{
+    my ( $cmd, $subref ) = @_;
+
+    my $prog = basename((split(/\s+/, $cmd))[0]);
+
+    if ( exists($Qtopia::Opt::optvar_storage{"verbose"}) && opt("verbose") ) {
+        print "filter_system $cmd\n";
+        system($cmd);
+    } else {
+        my $pid = open IN, "$cmd |";
+        if ( !defined($pid) ) {
+            $? = -1;
+        } else {
+            my $dosub = ( ref($subref) eq "CODE" );
+            if ( $dosub ) {
+                while ( defined($_ = <IN>) ) {
+                    &$subref() and print;
+                }
+            } else {
+                # this is a quicker way to slurp it up (if we don't care about displaying it)
+                my @foo = <IN>;
+            }
+            close IN;
+        }
+    }
+    my $err = undef;
+    if ( $? == -1 ) {
+        $err = "Could not execute $prog: $!";
+    } elsif ( $?&127 ) {
+        $err = "$prog died with signal ".($?&127);
+    } elsif ( ($?>>8) != 0 ) {
+        $err = "$prog exited with value ".($?>>8);
+    }
+    if ( $err ) {
+        croak $err;
+    }
+}
+
+# Usage: configtest("test", ...);
+# "outvar", $var - stdout goes into the specified variable
+# "env", "envstring" - set environment variables
+# "platform" - do a host compile insetad of a target compile
+# "host_qmake" - use the host qmake (implied by "platform") - Ignored when using qbuild!
+# "qmake_only" - run qmake only, don't run make
+# "hacks", "hack1 hack2" - enable hacks (eg. norunwithvars)
+sub configtest
+{
+    my $test = shift(@_);
+    my $platform = "platform";
+    my $captureoutput = 0;
+    my $verbose = 0;
+    my $verbosebackup = undef;
+    if ( exists($Qtopia::Opt::optvar_storage{"verbose"}) ) {
+        $verbosebackup = opt("verbose");
+        $verbose = opt("verbose");
+    }
+    my $subref = 0;
+    my $envstring = undef;
+    my $qmake_only = 0;
+    my $qmake = $TARGET_QMAKE;
+    my %hacks;
+    while ( scalar(@_) != 0 ) {
+        if ( $_[0] eq "outvar" ) {
+            shift(@_);
+            $captureoutput = 1;
+            if ( defined($verbosebackup) ) {
+                opt("verbose") = 0;
+            }
+            my $retref = \$_[0];
+            $$retref = "";
+            $subref = sub {
+                $$retref .= $_;
+                return $verbose;
+            };
+            shift(@_);
+        } elsif ( $_[0] eq "env" ) {
+            shift(@_);
+            $envstring = shift(@_);
+        } elsif ( $_[0] eq "platform" ) {
+            shift(@_);
+            $platform = "platform";
+            $qmake = $HOST_QMAKE;
+        } elsif ( $_[0] eq "host_qmake" ) {
+            shift(@_);
+            $qmake = $HOST_QMAKE;
+        } elsif ( $_[0] eq "qmake_only" ) {
+            shift(@_);
+            $qmake_only = 1;
+        } elsif ( $_[0] eq "hacks" ) {
+            shift(@_);
+            map { $hacks{$_} = 1; } split(/\s+/, shift(@_));
+        }
+    }
+    my $source = ("$depotpath/config.tests/$test");
+    debugMsg("Running config test $test");
+    eval {
+        my $command_header = "";
+        if ( $envstring ) {
+            if ( $hacks{norunwithvars} ) {
+                $command_header .= "env $envstring ";
+            } else {
+                $command_header .= fixpath("$qbs_bin/runwithvars".($isWindows?"":".sh"))." $envstring ";
+            }
+        }
+        if ( -f "$source.test" ) {
+            my $oldpath = $ENV{PATH};
+            $ENV{PATH} = "$QPEDIR/src/qtopiadesktop/build/bin/pkgconfig:".$ENV{PATH};
+            filter_system($command_header."$source.test", $subref);
+            $ENV{PATH} = $oldpath;
+        } elsif ( -d "$source" ) {
+            if ( $isWindows ) {
+                $qmake .= ".exe";
+            }
+            if ( -f $qmake ) {
+                if ( !exists($Qtopia::Opt::optvar_storage{$platform}) ||
+                     !exists($Qtopia::Opt::optvar_storage{"make"}) ) {
+                    croak "ERROR: configtest() requires opt(\"$platform\") and opt(\"make\")!";
+                }
+                my $dest = fixpath("$QPEDIR/config.tests/$test");
+                mkpath($dest);
+                chdir $dest or die "Can't enter $dest";
+                open CACHE_FILE, ">$dest/.qmake.cache" or die "Can't write ".fixpath("$dest/.qmake.cache");
+                print CACHE_FILE "include($QPEDIR/src/config.pri)\n";
+                my $host = "HOST";
+                print CACHE_FILE "INCLUDEPATH+=\$\$${host}_INCLUDEPATH\n".
+                                 "LIBS+=\$\$${host}_LIBS\n".
+                                 "DEFINES+=\$\$${host}_DEFINES\n";
+                close CACHE_FILE;
+                filter_system($command_header.$qmake." -spec ".fixpath(opt($platform, "absolute"))." -o ".fixpath("$dest/Makefile")." ".fixpath("$source/$test.pro")." 2>&1", $subref);
+                if ( !$qmake_only ) {
+                    filter_system($command_header.opt("make")." clean >/dev/null 2>&1");
+                    filter_system($command_header.opt("make")." 2>&1", $subref);
+                }
+            } else {
+                croak "ERROR: Missing qmake $qmake";
+            }
+        } else {
+            croak "ERROR: Missing test $test";
+        }
+    };
+    if ( defined($verbosebackup) ) {
+        opt("verbose") = $verbosebackup;
+    }
+    # This means that die was called from within the eval block above
+    if ( $@ ) {
+        debugMsg($@);
+        return 0;
+    }
+    return 1;
+}
+
+sub getQtopiaVersion
+{
+    my ( $qtopiaMajorVersion, $qtopiaMinorVersion, $qtopiaRevVersion );
+    my $verfile = "$depotpath/src/libraries/qtopia/version.h";
+    $verfile = "$depotpath/src/libraries/qtopiabase/version.h" unless ( -f $verfile );
+    if ( open(IN, "$verfile" ) ) {
+        while ( defined($_ = <IN>) ) {
+            if ( /QPE_VERSION\s+"(\d+\.\d+\.\d+).*"/ ) {
+                $qtopiaVersionStr = $1;
+                ( $qtopiaMajorVersion, $qtopiaMinorVersion, $qtopiaRevVersion ) = ( $qtopiaVersionStr =~ /(\d+)\.(\d+)\.(\d+)/ );
+                $qtopiaVersionStr[0] = $qtopiaMajorVersion;
+                $qtopiaVersionStr[1] = $qtopiaMinorVersion;
+                $qtopiaVersionStr[2] = $qtopiaRevVersion;
+                last;
+            }
+        }
+        close IN;
+    }
+    if ( $qtopiaVersionStr eq "0.0.0" ) {
+        die "ERROR: Could not read version from ".fixpath("$verfile")."\n";
+    }
+}
+
+sub getQtVersion
+{
+    my ( $qtMajorVersion, $qtMinorVersion, $qtRevVersion );
+
+    if ( open(IN, "$qt_depot_path/src/corelib/global/qglobal.h" ) ) {
+        while ( defined($_ = <IN>) ) {
+            if ( /QT_VERSION_STR\s+"(\d+\.\d+\.\d+)"/ ) {
+                $qtVersionStr = $1;
+                ( $qtMajorVersion, $qtMinorVersion, $qtRevVersion ) = ( $qtVersionStr =~ /(\d+)\.(\d+)\.(\d+)/ );
+                $qtVersionStr[0] = $qtMajorVersion;
+                $qtVersionStr[1] = $qtMinorVersion;
+                $qtVersionStr[2] = $qtRevVersion;
+                last;
+            }
+        }
+        close IN;
+    }
+    if ( $qtVersionStr eq "0.0.0" ) {
+        die "ERROR: Could not read version from ".fixpath("$qt_depot_path/src/corelib/global/qglobal.h")."\n";
+    }
+
+    if ( $qtMajorVersion != 4 || ( $qtMinorVersion != 4 && $qtMinorVersion != 5 ) ) {
+        die <<END;
+ERROR: Qt Extended $qtopiaVersionStr is designed to work with Qt 4.4 and Qt 4.5.
+       Found Qt $qtMajorVersion.$qtMinorVersion.$qtRevVersion.
+END
+    }
+}
+
+sub clean_qt_sources
+{
+    my $found = 0;
+    for ( ".qmake.cache", "config.status",
+          "src/corelib/global/qconfig.cpp",
+          "src/corelib/global/qconfig.h",
+          "src/corelib/global/qconfig.h.qmake",
+          "mkspecs/qconfig.pri" ) {
+        my $file = "$qt_depot_path/$_";
+        if ( -d $file ) {
+            rmrf($file);
+            $found = 1;
+        } elsif ( -f $file ) {
+            unlink $file;
+            $found = 1;
+        }
+    }
+    if ( $found ) {
+        print "Your Qt source tree has a build in it. This must be removed. Please wait...\n";
+        Qtopia::Opt::write_config_cache();
+        system("$qbs_bin/qtopiamake", "-clean", $qt_depot_path);
+    }
+}
+
+sub clean_qtopia_sources
+{
+    my $found = 0;
+    for ( "config.cache",
+          "src/3rdparty/tools/bluez/hcid/parser.c",
+          "src/3rdparty/tools/bluez/hcid/parser.h",
+          "src/3rdparty/tools/bluez/hcid/lexer.c",
+          "src/config.pri",
+          "src/libraries/qtopiabase/custom-qtopia.h" ) {
+        my $file = "$depotpath/$_";
+        if ( -d $file ) {
+            rmrf($file);
+            $found = 1;
+        } elsif ( -f $file ) {
+            unlink $file;
+            $found = 1;
+        }
+    }
+    if ( $found ) {
+        print "Your Qt Extended source tree has a build in it. This must be removed. Please wait...\n";
+        Qtopia::Opt::write_config_cache();
+        system("$qbs_bin/qtopiamake", "-clean", $depotpath);
+    }
+}
+
+sub debugMsg
+{
+    if ( exists($Qtopia::Opt::optvar_storage{"verbose"}) && opt("verbose") ) {
+	print @_;
+        my $test = $_[scalar(@_)-1];
+        if ( chop $test ne "\n" ) {
+            print "\n";
+        }
+    }
+}
+
+my $confline_what;
+my $confline_msg;
+sub print_configure_line
+{
+    ( $confline_what, $confline_msg ) = @_;
+    format_name STDOUT "CONFLINE";
+    write;
+}
+
+my $wrapmsg_msg;
+sub print_wrapping_msg
+{
+    print "\n\n";
+    format_name STDOUT "WRAPMSG";
+    for ( @_ ) {
+        $wrapmsg_msg = $_;
+        write;
+        print "\n";
+    }
+    print "\n";
+}
+
+sub init_formats
+{
+    my $fmt = "format CONFLINE =\n\n".
+              '*'x($cols-1)."\n".
+              "Configuring @".'<'x($cols-14)."\n\$confline_what\n".
+              "^".'<'x($cols-2)."~~\n\$confline_msg\n".
+              '*'x($cols-1)."\n\n.";
+    eval $fmt;
+    die $@ if ( $@ );
+
+    $fmt = "format WRAPMSG =\n".
+              "^".'<'x($cols-2)."~~\n\$wrapmsg_msg\n.";
+    eval $fmt;
+    die $@ if ( $@ );
+
+    # Only split on spaces, not the - character
+    $: = " ";
+}
+
+sub symlink_all_files
+{
+    my ( $dir, $sdktoo ) = @_;
+
+    my @output = ( $QPEDIR );
+    if ( $sdktoo && $SDKROOT ne $QPEDIR ) {
+        push(@output, $SDKROOT);
+    }
+    for my $outdir ( @output ) {
+        if ( -l "$outdir/$dir" ) {
+            unlink "$outdir/$dir";
+        }
+        mkpath("$outdir/$dir");
+        for ( glob("$depotpath/$dir/*") ) {
+            my $filename = basename($_, "");
+            symlink_file($_, "$outdir/$dir/$filename");
+        }
+    }
+}
+sub symlink_all_files_ignoring
+{
+    my $dir = shift(@_);
+    my $sdktoo = 1;
+    my %ignore;
+    map { $ignore{$_}++; } @_;
+
+    my @output = ( $QPEDIR );
+    if ( $SDKROOT ne $QPEDIR ) {
+        push(@output, $SDKROOT);
+    }
+    for my $outdir ( @output ) {
+        if ( -l "$outdir/$dir" ) {
+            unlink "$outdir/$dir";
+        }
+        mkpath("$outdir/$dir");
+        for ( glob("$depotpath/$dir/*") ) {
+            my $filename = basename($_, "");
+            if ( !$ignore{$filename} ) {
+                symlink_file($_, "$outdir/$dir/$filename");
+            }
+        }
+    }
+}
+
+sub symlink_all_files_only
+{
+    my $dir = shift(@_);
+    my $sdktoo = 1;
+    my %only;
+    map { $only{$_}++; } @_;
+
+    my @output = ( $QPEDIR );
+    if ( $SDKROOT ne $QPEDIR ) {
+        push(@output, $SDKROOT);
+    }
+    for my $outdir ( @output ) {
+        if ( -l "$outdir/$dir" ) {
+            unlink "$outdir/$dir";
+        }
+        mkpath("$outdir/$dir");
+        for ( glob("$depotpath/$dir/*") ) {
+            my $filename = basename($_, "");
+            if ( $only{$filename} ) {
+                symlink_file($_, "$outdir/$dir/$filename");
+            }
+        }
+    }
+}
+
+sub checkLicenseKey
+{
+    #print "product = $licenseInfo{Product}\n";
+    if ( -f "$depotpath/LICENSE.GPL" && configopt("free") ) {
+        $licenseInfo{Product} .= " Open Source";
+        $licenseInfo{LicenseFile} = "LICENSE.GPL";
+        $licenseInfo{DestLicenseFile} = "LICENSE.GPL2";
+    } elsif ( -f "$depotpath/LICENSE.TROLL" && configopt("depot") ) {
+        $licenseInfo{Product} .= " Qt Software Internal";
+        $licenseInfo{LicenseFile} = "LICENSE.TROLL";
+        $licenseInfo{DestLicenseFile} = "LICENSE.TROLL";
+    } else {
+        $licenseInfo{DestLicenseFile} = "LICENSE.Qtopia";
+        # read in the license file
+        my $license = fixpath($ENV{HOME}."/.qt-license");
+        if ( -f $license and open IN, $license ) {
+            my @data = <IN>;
+            close IN;
+            for ( @data ) {
+                if ( /^([^=]+)="?(.+)"?$/ ) {
+                    $licenseInfo{$1} = $2;
+                }
+            }
+            if ( ! $licenseInfo{LicenseKeyExt} ) {
+                print <<END;
+
+You are using an old license file.
+
+Please install the license file supplied with Qt Extended,
+or install the Qt Extended Open Source Edition if you intend to
+develop free software.
+END
+                exit 1;
+            }
+            if ( ! $licenseInfo{Licensee} ) {
+                print <<END;
+
+Invalid license key. Please check the license key.
+END
+                exit 1;
+            }
+        } else {
+            print <<END;
+
+Missing file $license. Please install your license file to proceed
+END
+            exit 1;
+        }
+
+        # Key verification
+        if ( ! $licenseInfo{LicenseKeyExt} =~ /(.)....*-(.)...*-(....*)-(.)...*-.....*-.....*-..../ ) {
+            print <<END;
+
+Invalid license key. Please check the license key.
+END
+            exit 1;
+        }
+
+        my ( $ProductCode, $PlatformCode, $LicenseTypeCode, $LicenseFeatureCode ) = ( $licenseInfo{LicenseKeyExt} =~ /(.)....*-(.)...*-(....*)-(.)...*-.....*-.....*-..../ );
+
+        my $LicenseType;
+        if ( $LicenseTypeCode eq "F4M" ) {
+            $LicenseType = "Commercial";
+        } elsif ( $LicenseTypeCode eq "Z4M" ||
+                  $LicenseTypeCode eq "R4M" ||
+                  $LicenseTypeCode eq "Q4M" ) {
+            $LicenseType = "Evaluation";
+        }
+        if ( ! $LicenseType ) {
+            print <<END;
+
+Invalid license key. Please check the license key.
+END
+            exit 1;
+        }
+
+        if ( $LicenseFeatureCode eq "G" ) {
+            # US
+            if ( $LicenseType eq "Commercial" ) {
+                copy("$depotpath/.LICENSE", "$depotpath/LICENSE");
+            } else {
+                copy("$depotpath/.LICENSE-EVALUATION-US", "$depotpath/LICENSE");
+            }
+        } elsif ( $LicenseFeatureCode eq "2" ) {
+            # non-US
+            if ( $LicenseType eq "Commercial" ) {
+                copy("$depotpath/.LICENSE", "$depotpath/LICENSE");
+            } else {
+                copy("$depotpath/.LICENSE-EVALUATION", "$depotpath/LICENSE");
+            }
+        } else {
+            print <<END;
+
+Invalid license key. Please check the license key.
+END
+            exit 1;
+        }
+
+        if ( ! -f "$depotpath/LICENSE" ) {
+            print <<END;
+
+The LICENSE or LICENSE.GPL file shipped with
+this software has disappeared.
+
+Sorry, you are not licensed to use this software.
+Try re-installing.
+END
+            exit 1;
+        }
+
+        $licenseInfo{Product} .= " $LicenseType";
+        $licenseInfo{LicenseFile} = "LICENSE";
+    }
+
+}
+
+sub validateLicense
+{
+    print "\nThis is the ".$licenseInfo{Product}." Edition.\n\n";
+    if ( $licenseInfo{LicenseFile} eq "LICENSE" ) {
+        if ( $licenseInfo{ExpiryDate} ) {
+            my $ExpiryDate = $licenseInfo{ExpiryDate};
+            $ExpiryDate =~ s/-//g;
+            chomp $ExpiryDate;
+            chomp $ExpiryDate;
+            if ( ! $ExpiryDate ) {
+                $ExpiryDate = "0";
+            }
+            my $Today = strftime("%Y%m%d", localtime());
+            chop $Today;
+            if ( $Today > $ExpiryDate ) {
+                print <<END;
+
+WARNING  WARNING  WARNING  WARNING
+
+  Your support and upgrade period has expired.
+
+  You may continue to use your last licensed release
+  of Qt under the terms of your existing license
+  agreement. But you are not entitled to technical
+  support, nor are you entitled to use any more recent
+  Qt releases.
+
+  Please contact qt-sales\@nokia.com to renew your
+  support and upgrades for this license.
+
+WARNING  WARNING  WARNING  WARNING
+
+END
+                sleep 3;
+            }
+        }
+    }
+
+    if ( $licenseInfo{Product} =~ m/Evaluation/ ) {
+        if ( $licenseInfo{LicenseFile} ne "LICENSE.TROLL" ) {
+            open IN, "$depotpath/$licenseInfo{LicenseFile}" or die "Can't read $depotpath/$licenseInfo{LicenseFile}";
+            my $TheLicense = <IN>;
+            close IN;
+            chomp $TheLicense;
+            chomp $TheLicense;
+            while ( 1 ) {
+                my $acceptance = "no";
+                if ( opt("confirm_license") ) {
+                    print "You have already accepted the terms of the $TheLicense.\n";
+                    $acceptance = "yes";
+                } else {
+                    print <<END;
+You are licensed to use this software under the terms of
+the $TheLicense.
+
+Type '?' to view the $TheLicense.
+Type 'yes' to accept this license offer.
+Type 'no' to decline this license offer.
+
+END
+                    print "Do you accept the terms of the $TheLicense? ";
+                    $acceptance = <STDIN>;
+                    chomp $acceptance;
+                }
+                print "\n";
+                if ( $acceptance eq "yes" ) {
+                    last;
+                } elsif ( $acceptance eq "no" ) {
+                    print <<END;
+You are not licensed to use this software.
+
+END
+                    exit 1;
+                } elsif ( $acceptance eq "?" ) {
+                    system("more $depotpath/".$licenseInfo{LicenseFile});
+                }
+            }
+        }
+    } else {
+        if ( $licenseInfo{LicenseFile} ne "LICENSE.TROLL" ) {
+            while ( 1 ) {
+                my $acceptance = "no";
+                if ( opt("confirm_license") ) {
+                    print "Skipping confirmation of the Qt Extended license agreement.\n";
+                    $acceptance = "yes";
+                } else {
+                    if ( $licenseInfo{LicenseFile} eq "LICENSE.GPL" ) {
+                        print <<END;
+You are licensed to use this software under the terms of the GPL.
+Please see the file LICENSE.GPL for the licensing terms.
+
+Type 'yes' to accept this license offer.
+Type 'no' to decline this license offer.
+
+END
+                        print "Do you accept this license agreement? ";
+                    } else {
+                        print "------------------------------------------------------------------------\n\n";
+                        my $source = fixpath("$depotpath/".$licenseInfo{LicenseFile});
+                        open( F, "$source" );
+                        print <F>;
+                        close( F );
+                        print "\n------------------------------------------------------------------------\n";
+                        print <<END;
+
+Type 'yes' if you have a Qt Extended license agreement that is signed by you and Nokia.
+Type 'no' if you do NOT have a Qt Extended license agreement that is signed by you and Nokia.
+
+END
+                        print "Do you have a signed license agreement? ";
+                    }
+                    $acceptance = <STDIN>;
+                    chomp $acceptance;
+                }
+                print "\n";
+                if ( $acceptance eq "yes" ) {
+                    last;
+                } elsif ( $acceptance eq "no" ) {
+                    print <<END;
+You are not licensed to use this software.
+Please contact qt-sales\@nokia.com to arrange a license.
+
+END
+                    exit 1;
+                }
+            }
+        }
+    }
+}
+
+sub get_qtopiacore_paths
+{
+    # Qt/Qt Embedded stuff
+    $qt_depot_path = fixpath("$depotpath/qtopiacore/qt");
+    if ( configopt("depot") ) {
+        $qt_depot_path = fixpath("$QPEDIR/qtopiacore/qt");
+        if ( !$isWindows && ! -e $qt_depot_path ) {
+            if ( -e $ENV{HOME}."/depot/qt-git/4.4" ) {
+                print "Creating missing qtopiacore/qt as a symlink to ".$ENV{HOME}."/depot/qt-git/4.4\n";
+                symlink_file($ENV{HOME}."/depot/qt-git/4.4", "$QPEDIR/qtopiacore/qt");
+            }
+        }
+    }
+    $QTEDIR = fixpath("$QPEDIR/qtopiacore/target");
+    $DQTDIR = fixpath("$QPEDIR/qtopiacore/host");
+
+    # Since Windows doesn't support symlinks, we must provide an alternate
+    # means to connect the Qt Extended and Qt depots together. If "qt" is a file
+    # then the first line is used as the path to the Qt depot.
+    #
+    # For now we assume that only "host" Qt will be built on Windows.
+    # Ideally, Qt would support shadow builds on Windows so that both host
+    # and target Qt can be built on Windows without copying the Qt source
+    # code.
+    if ( $isWindows ) {
+        if ( -f $qt_depot_path ) {
+            open IN, $qt_depot_path or die "Can't read $qt_depot_path";
+            chomp($qt_depot_path = <IN>);
+            close IN;
+        }
+        $DQTDIR = $qt_depot_path;
+        $QTEDIR = $qt_depot_path;
+
+=pod
+        if ( -f $QTEDIR ) {
+            open IN, $QTEDIR or die "Can't read $QTEDIR";
+            $QTEDIR = <IN>;
+            warn "Using $QTEDIR for the target Qt\n";
+            close IN;
+        } elsif ( ! -d $QTEDIR ) {
+            recursive_copy($qt_depot_path, $QTEDIR);
+        }
+        $qt_depot_path = $QTEDIR;
+=cut
+    }
+
+    # Check that the Qt source and build trees exist
+    chdir($qt_depot_path) or die "ERROR: Missing $qt_depot_path\n";
+    chdir($QTEDIR) or mkpath($QTEDIR);
+    chdir($DQTDIR) or mkpath($DQTDIR);
+    # The paths might be misleading (especially if we're a depot build)
+    for ( $qt_depot_path, $QTEDIR, $DQTDIR ) {
+        chdir $_ or die "Can't enter $_";
+        $_ = fixpath(getcwd());
+    }
+}
+
+sub get_host_qt
+{
+    my ( $make, $verbose ) = @_;
+    my @locations;
+    if ( defined($ENV{PATH}) ) {
+        push(@locations, split(/:/, $ENV{PATH}));
+    }
+    if ( @locations ) {
+        $verbose and print "Looking in:\n    ".join("\n    ", @locations)."\n";
+        DIR: for my $dir ( @locations ) {
+            $HOST_QMAKE = fixpath("$dir/qmake");
+            if ( -x $HOST_QMAKE ) {
+                $verbose and print "Trying $HOST_QMAKE\n";
+                if ( open IN, "$HOST_QMAKE -version 2>&1 |" ) {
+                    my @data = <IN>;
+                    close IN;
+                    $verbose and print "---\n".join("", @data)."---\n";
+                    for ( @data ) {
+                        if ( /Qt version (\d+)\.(\d+)\.(\d+)/ ) {
+                            my $qt_maj = $1;
+                            my $qt_min = $2;
+                            my $qt_patch = $3;
+                            $hostQtVersionStr = "$qt_maj.$qt_maj.$qt_patch";
+                            $hostQtVersionStr[0] = $qt_maj;
+                            $hostQtVersionStr[1] = $qt_min;
+                            $hostQtVersionStr[2] = $qt_patch;
+                            $verbose and print "Found Qt $qt_maj.$qt_min.$qt_patch\n";
+                            if ( $qt_maj == 4 && $qt_min >= 3 ) {
+                                my $out;
+                                my $ok = configtest("bootstrap_qt", "env", "QMAKE=$HOST_QMAKE MAKE=$make QPEDIR=$QPEDIR", "hacks", "norunwithvars", "outvar", $out);
+                                if ( $ok ) {
+                                    $verbose and print "Using Qt $qt_maj.$qt_min.$qt_patch\n";
+                                    my ( $QT_PREFIX ) = ( $out =~ /QT_PREFIX=([^\s]+)/ );
+                                    my ( $QT_LIBS ) = ( $out =~ /QT_LIBS=([^\s]+)/ );
+                                    my ( $QT_BINS ) = ( $out =~ /QT_BINS=([^\s]+)/ );
+                                    my ( $QT_INCS ) = ( $out =~ /QT_INCS=([^\s]+)/ );
+                                    $HOST_QT = $QT_PREFIX;
+                                    $HOST_QT_LIBS = $QT_LIBS;
+                                    $HOST_QT_BINS = $QT_BINS;
+                                    $HOST_QT_INCS = $QT_INCS;
+                                    last DIR;
+                                } else {
+                                    $verbose and print "Failed:\n".$out;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        warn "WARNING: PATH is empty?!?!?";
+    }
+}
+
+sub touch_force_qmake
+{
+    mkpath("$QPEDIR/src/qtopiadesktop/build/qt_patch");
+    open OUT, ">$QPEDIR/src/qtopiadesktop/build/qt_patch/force_qmake.pri" or die "Can't write $QPEDIR/src/qtopiadesktop/build/qt_patch/force_qmake.pri\n";
+    print OUT "# a fake file used to force qmake to be re-run\n";
+    close OUT;
+}
+
+sub setup_dqt_config
+{
+    my ( $qt_platform ) = @_;
+    return if ( opt("dqt_config") );
+
+    my $args = "-platform $qt_platform ".
+               "-no-stl -no-exceptions -no-webkit -no-xmlpatterns -no-phonon -no-qt3support -fast ".
+               "-confirm-license";
+    map { $args .= " -no-sql-".basename($_) if ( basename($_) ne "tmp" && -d $_ ); } glob("$qt_depot_path/src/plugins/sqldrivers/*");
+    $args .= " -qt-sql-sqlite";
+    if ( !$isWindows ) {
+        $args .= " -no-dbus -no-openssl".
+                 " -nomake examples -nomake demos -nomake docs";
+        $args .= " -prefix ".fixpath("$SDKROOT/qtopiacore/host");
+    }
+    if ( opt("release") ) {
+        $args .= " -release";
+    } else {
+        $args .= " -debug";
+    }
+    if ( $isWindows ) {
+        $args .= " -no-dsp -no-vcproj";
+        $args .= " -make ".fixpath("$qbs_bin/winmake.exe");
+    } elsif ( $isMac ) {
+        $args .= " -no-framework";
+    }
+    if ( opt("verbose") ) {
+        $args .= " -verbose";
+    }
+    if ( opt("compiler", "host_gcc4") && opt("reduce_exports") ne "auto" ) {
+        $args .= " --reduce-exports=".opt("reduce_exports");
+    }
+    if ( !$isWindows ) {
+        if ( opt("silent") ) {
+            $args .= " -silent";
+        }
+        if ( !opt("separate_debug_info") ) {
+            $args .= " -no-separate-debug-info";
+        }
+    }
+    my @data = (
+        "host_extraIncPaths" => "-I",
+        "host_extraLibPaths" => "-L",
+        "host_extraLibs" => "-l",
+        "host_extraRPaths" => "-R",
+        "host_extraDefines" => "-D",
+    );
+    while ( @data ) {
+        my $var = shift(@data);
+        my $flag = shift(@data);
+        my $listref = opt($var);
+        if ( @$listref ) {
+            $args .= " $flag".join(" $flag", @$listref);
+        }
+    }
+    my $listref = opt("extra_dqt_config");
+    if ( @$listref ) {
+        $args .= " ".join(" ", @$listref);
+    }
+    opt("dqt_config") = $args;
+}
+
+sub filter_qt {
+    return 0 if ( /This is the .* Edition\./ );
+    return 0 if ( /Qt is now configured for building/ );
+    return 0 if ( /Once everything is built, you must/ );
+    return 0 if ( /Qt will be installed into/ );
+    return 0 if ( /To reconfigure, run/ );
+    return 0 if ( /^\s*[Ff]or .*\.pro/ );
+    return 0 if ( /projects\.pro/ );
+    return 0 if ( /WARNING: Using static linking will disable the use of dynamically/ );
+    return 0 if ( /loaded plugins. Make sure to import all needed static plugins,/ );
+    return 0 if ( /or compile needed modules into the library./ );
+    return 0 if ( /You have already accepted the terms of the/ );
+    return 0 if ( /^failed on dirPath=.*attic\\Makefile/ );
+    return 0 if ( /You have asked to use pkg-config and are cross-compiling./ );
+    return 0 if ( /Please make sure you have a correctly set-up pkg-config/ );
+    return 0 if ( /environment!/ );
+    return 0 if ( /Warning: PKG_CONFIG_SYSROOT has not been set. This means/ );
+    return 0 if ( /your toolchain's .pc files must contain the paths to the/ );
+    return 0 if ( /toolchain's libraries & headers. If configure tests are/ );
+    return 0 if ( /failing, please check these files./ );
+    return 0 if ( /^header.* created for/ );
+    return 0 if ( /^WARNING: .* does not include QT_/ );
+    # New for QBuild
+    return 0 if ( /Reading .*\.pro/ );
+    return 0 if ( /Unknown PROJECT: src/ );
+    return 0 if ( /^mkdir/ );
+    return 0 if ( /Failure to find.*\.\.\/skin\./ );
+    return 1;
+}
+

@@ -1,0 +1,9 @@
+TEMPLATE=app
+TARGET=testme
+TARGETDIR=.
+
+CONFIG+=qt
+
+HEADERS=foo.h
+SOURCES=main.cpp
+

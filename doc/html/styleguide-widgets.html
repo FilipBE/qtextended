@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Style Guide: Widgets</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Style Guide: Widgets<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#layout">Layout</a></li>
+<li><a href="#labels">Labels</a></li>
+<li><a href="#buttons">Buttons</a></li>
+<li><a href="#tabs">Tabs</a></li>
+<li><a href="#lists">Lists</a></li>
+<li><a href="#menus">Menus</a></li>
+<ul><li><a href="#menu-names">Menu Names</a></li>
+<li><a href="#menu-like-dialogs">Menu-like Dialogs</a></li>
+</ul>
+<li><a href="#dialogs">Dialogs</a></li>
+<li><a href="#custom-widgets">Custom Widgets</a></li>
+</ul>
+<a name="labels-lnk"></a><a name="layout"></a>
+<h2>Layout</h2>
+<p>For keypad-based devices, all widgets that can accept focus should be laid out vertically (i.e&#x2e; they should never be placed next to each other). Keypad navigation relies on the <i>Up</i> and <i>Down</i> keys to move focus between widgets, and the <i>Left</i> and <i>Right</i> keys are reserved for switching between tabs. Because of this, having two widgets that accept focus positioned side by side causes unintuitive navigation.</p>
+<a name="labels"></a>
+<h2>Labels</h2>
+<ul>
+<li>Labels should not have &quot;:&quot; at the end.</li>
+<li>All labels should conform to the <a href="styleguide-naming.html#naming-conventions">Naming conventions </a>.</li>
+<li>Text labels should have consistent alignment. Consider using <a href="qformlayout.html">QFormLayout</a> for this.</li>
+</ul>
+<a name="buttons"></a>
+<h2>Buttons</h2>
+<ul>
+<li>Button labels should follow the labeling scheme described in the <a href="#labels-lnk">Labels </a> section.</li>
+<li>For some applications it is desirable to associate keypad keys to buttons displayed in the applications (as is done in the the <tt>Clock</tt> application for the stop watch). This is not recommended however if it is necessary the label should include the associated key's label.</li>
+</ul>
+<a name="tabs"></a>
+<h2>Tabs</h2>
+<p>If the user presses the <i>Left</i> or <i>Right</i> key while in a tabbed window it should change the visible tab. To allow this, no widget may use the <i>Left</i> or <i>Right</i> keys when in navigation focus mode.</p>
+<p>The number of tabs in a tab bar should be limited so that all of the tabs can fit horizontally with no scrolling.</p>
+<p>Tabs are usually placed at the top of the screen. Other cases are supported, but not recommended (there are some drawbacks to using other configurations. For example, even if tabs are arranged vertically, left and right will still be used move between them).</p>
+<p>A tab bar should only contain tabs of the same type (i.e&#x2e; don't mix icon tabs with text tabs in the same tab bar). Recommended choices are:</p>
+<ul>
+<li>Text-only tabs</li>
+<li>Icon+text tabs</li>
+</ul>
+<a name="lists"></a>
+<h2>Lists</h2>
+<p>For keypad-based devices, the list highlight when opening a list should be the first item (or the previously selected item when returning to a list). For touchscreen devices, the list highlight should be transient: it should appear when an item is pressed, and disappear once released.</p>
+<a name="menus"></a>
+<h2>Menus</h2>
+<ul>
+<li>Menu options should be hidden when unavailable</li>
+<li>A menu should have the top-most item selected by default (for keypad-based devices)</li>
+<li>A menu separator should be used to group options that perform <i>associated</i> functionality such as <tt>New</tt>, <tt>Edit</tt> and <tt>Delete</tt>.</li>
+<li>Menu options with predefined names such as <tt>Cancel</tt> should use the appropriate icon.</li>
+</ul>
+<p>The ordering of items in a menu should be based on the following ordering:</p>
+<ul>
+<li>New</li>
+<li>Edit</li>
+<li>Modify commands, e.g&#x2e; <tt>Crop</tt></li>
+<li>Delete</li>
+<li>Action commands, e.g&#x2e; <tt>Beam</tt>, <tt>Duplicate</tt>, <tt>Copy</tt>, <tt>Paste</tt></li>
+<li>View commands, e.g&#x2e; <tt>Today</tt>, <tt>View</tt> Category..&#x2e;</li>
+<li>Options commands, e.g&#x2e; <tt>Settings</tt></li>
+<li>(separator) (added by system)</li>
+<li>Help (added by system)</li>
+<li>Cancel (added by system)</li>
+</ul>
+<p>When the selection of a menu item leads to a new dialog:</p>
+<ul>
+<li>the menu item label should only be suffixed with &quot;..&#x2e;&quot; if the command is being further refined. That is, the &quot;..&#x2e;&quot; extension should only be placed on the end of menu names when a selection of items is going to be offered or additional commands have to be specified.</li>
+<li>No space should be left between the first '.' and the last character of the menu name. Please refer to <a href="styleguide-naming.html#usingdotdotdot">Using the &quot;..&#x2e;&quot; label </a> label for a full explanation.</li>
+</ul>
+<p>Where an application is structured as a <i>list of items</i> and selecting an item shows its details, the menu for the list should <i>not</i> include any actions that are directly related to a single item. Actions that are applied to an individual item (and never to a list) should be placed in the menu that becomes available when the details of an item are shown. (Menu, Down-past-New, Select-Edit is just as many steps as Select-Item, Menu, Select-Edit).</p>
+<p>When particular widgets are selected the softkey menu may change its option list. However, promoting this functionality is not recommended.</p>
+<a name="menu-names"></a>
+<h3>Menu Names</h3>
+<p>Menu options should follow all conventions found in the <a href="styleguide-naming.html#naming-conventions">Naming conventions </a>. An acronym or abbreviation for a menu item should only be used if the label doesn't fit on the screen OR if an acronym or abbreviation already exists for the current label (as this promotes consistency in the use of text labels).</p>
+<a name="menu-like-dialogs"></a>
+<h3>Menu-like Dialogs</h3>
+<p>Some dialogs consist of a list of items, only one of which the user needs to select in order to complete an operation. In a small number of cases the user may wish to do more with the item, such as edit it via the menu.</p>
+<p>Such list dialogs are <i>Menu-like Dialogs</i>, and should behave like menus:</p>
+<ul>
+<li>Highlighting an item should have no long-term effect.</li>
+<li>Selecting an item should close the window and return to the previous view (even if that means closing the application).</li>
+<li>The soft key icon for <tt>Key_Back</tt> should be <tt>Cancel</tt>, not the usual <tt>Back</tt>.</li>
+</ul>
+<p>To assist in creating Menu-like dialogs use the function</p>
+<pre>    QtopiaApplication::setMenuLike();</pre>
+<p>which maps the soft keys and menu correctly for the dialog.</p>
+<p>If the dialog has a menu, consider having <tt>Activate</tt>, or <tt>Select</tt> in the menu, but ensure this command does <i>not</i> close the dialog.</p>
+<p>Examples include: Profile selection, Speed dial action selection.</p>
+<a name="dialogs"></a>
+<h2>Dialogs</h2>
+<p>A dialog's title should describe the process that is currently taking place in the dialog. For example, <i>Editing Event</i>, <i>Creating Event</i>. A dialog title should not have its text appended with &quot;..&#x2e;&quot;&#x2e;</p>
+<p>Dialogs are either shown full screen or at the bottom of the screen, depending upon the height of the dialog's sizeHint(). A dialog with a size hint greater than three fifths of the screen height will be shown fullscreen, otherwise it will be positioned at the bottom of the screen at its preferred height. Dialogs always use the full width of the screen.</p>
+<p>Message dialogs that allow a positive or negative response should be phrased such that the user can answer <i>Yes</i> or <i>No</i>, rather than <i>OK</i> or <i>Cancel</i>.</p>
+<p>Informative Message dialogs should only allow the <tt>Back</tt> softkey menu bar option.</p>
+<p>Message boxes should allow no more than two options. Three or more options are difficult for the user to process. If it is absolutely necessary to provide three or more options a list of options should be provided via a Menu-like Dialog.</p>
+<a name="custom-widgets"></a>
+<h2>Custom Widgets</h2>
+<p>Existing Qt widgets should always be used where possible. If a custom widget must be used, make sure that such a widget does not already exist.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Communications: Internet: 802.11 Wireless IP support</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Communications: Internet: 802.11 Wireless IP support<br><small>Functional Description</small></h1><p>Wireless IP (WLAN) support is provided by a network plug-in and allows the use of managed and ad-hoc WLAN networks .
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-2">Hardware</a>
+<li><a href="#QTOPIA-3">IP Settings</a>
+<li><a href="#QTOPIA-4">Proxy Settings</a>
+<li><a href="#QTOPIA-6">Wireless Encryption</a>
+<li><a href="#QTOPIA-5">Wireless Settings</a>
+</ul><h3><a name=QTOPIA-2>Hardware</a></h3>
+<p>The plug-in discovers PCMCIA WLAN/LAN cards automatically and allows the configuration of a wide range of settings for network cards.
+<h3><a name=QTOPIA-3>IP Settings</a></h3>
+<p><ul>
+	<li>DHCP support</li>
+	<li>IP address</li>
+	<li>DNS server</li>
+	<li>Gateway</li>
+	<li>Subnet mask</li>
+	<li>Broadcast</li>
+</ul>
+<h3><a name=QTOPIA-4>Proxy Settings</a></h3>
+<p>The following proxy settings can be specified for each WLAN connection:
+
+<ul>
+	<li>HTTP proxy (address &amp; port)</li>
+	<li>ftp proxy (address &amp; port)</li>
+	<li>proxy exceptions (don't use the proxy for these URLs)</li>
+	<li>auto configuration script</li>
+</ul>
+<h3><a name=QTOPIA-6>Wireless Encryption</a></h3>
+<p>Qt Extended supports the following wireless encryption technologies:
+
+<ul>
+	<li>WEP (40 bit and 128 bit)</li>
+	<li>WPA-PSK (TKIP &amp; AES)</li>
+	<li>WPA-EAP (TLS, TLLS and PEAP)</li>
+</ul>
+<h3><a name=QTOPIA-5>Wireless Settings</a></h3>
+<p><h4><a name="StaticConfiguration"></a>Static Configuration</h4>
+
+<p>A wide range of options can be configured to connect to WLAN networks including:</p>
+
+<ul>
+	<li>Network type</li>
+	<li>Network Name (ESSID)</li>
+	<li>Access Point</li>
+	<li>channel selection</li>
+	<li>bit rate selection</li>
+</ul>
+
+
+
+<h4><a name="Roaming"></a>Roaming</h4>
+
+<p>Todays dynamic WLAN environments require the dynamic discovery of new networks. While the user is moving new networks may become available and other networks may become obsolete/out of range. Qt Extended discovers network changes dynamically and presents a summary of found hot-spots that allows the manual change from one network to the next. The user can also choose to automatically change the network which assists in situations where the current network is out of range and the user moves into an area providing a known access point.</p>
+
+<p>The (W)LAN plug-in uses a wireless LAN scanner to scan the immediate environment and return the following information:</p>
+
+<ul>
+	<li>ESSID (list of Access Points and Ad-hoc cells)</li>
+	<li>Access point address</li>
+	<li>Bit Rates</li>
+	<li>Link quality</li>
+	<li>Frequencies</li>
+	<li>Encryption mode</li>
+</ul>
+
+
+<p>Based on this information specific configurations are created and saved. One of the most common use cases is triggered when a device returns to a familiar environment (e.g. home or office). It is possible to save and restore existing configurations.</p>
+
+<p>Optional rules can be set to dynamically determine which network is used. The minimal subset of rules/actions involves the following actions:</p>
+
+<ul>
+	<li>current network still available, if not choose new one based on rules</li>
+	<li>select a particular network based on their ESSID</li>
+	<li>select a hot spot based on its link quality and bit rate</li>
+	<li>apply a known configuration when arriving at a known location (apply configuration)</li>
+</ul>
+
+
+<p>The scanning process requires Linux Wireless Extensions version 14+.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

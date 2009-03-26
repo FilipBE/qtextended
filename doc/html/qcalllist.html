@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCallList Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCallList Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QCallList class provides an interface for recording the details of dialed, received, and missed calls. <a href="#details">More...</a></p>
+<pre>    #include &lt;QCallList&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qcalllist-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qcalllist-searchoptions.html">SearchOptions</a></b></li>
+<li><div class="fn"/>enum <b><a href="qcalllist.html#DuplicateBehaviour-enum">DuplicateBehaviour</a></b> { AllowDuplicates, OverwriteDuplicates }</li>
+<li><div class="fn"/>enum <b><a href="qcalllist.html#ListType-enum">ListType</a></b> { All, Dialed, Received, Missed }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcalllist.html#QCallList">QCallList</a></b> ( int <i>maxItemCount</i> = -1 )</li>
+<li><div class="fn"/><b><a href="qcalllist.html#dtor.QCallList">~QCallList</a></b> ()</li>
+<li><div class="fn"/>QList&lt;QCallListItem&gt; <b><a href="qcalllist.html#allCalls">allCalls</a></b> () const</li>
+<li><div class="fn"/>QCallListItem <b><a href="qcalllist.html#at">at</a></b> ( uint <i>posn</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qcalllist.html#clear">clear</a></b> ()</li>
+<li><div class="fn"/>uint <b><a href="qcalllist.html#count">count</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qcalllist.html#maxItems">maxItems</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qcalllist.html#record">record</a></b> ( QCallListItem <i>item</i>, DuplicateBehaviour <i>duplicates</i> = AllowDuplicates )</li>
+<li><div class="fn"/>void <b><a href="qcalllist.html#removeAll">removeAll</a></b> ( const QString &amp; <i>number</i> )</li>
+<li><div class="fn"/>void <b><a href="qcalllist.html#removeAll-2">removeAll</a></b> ( QCallListItem::CallType <i>type</i> )</li>
+<li><div class="fn"/>void <b><a href="qcalllist.html#removeAt">removeAt</a></b> ( uint <i>posn</i> )</li>
+<li><div class="fn"/>QList&lt;QCallListItem&gt; <b><a href="qcalllist.html#searchCalls">searchCalls</a></b> ( SearchOptions &amp; <i>options</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qcalllist.html#setMaxItems">setMaxItems</a></b> ( const int &amp; <i>l</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcalllist.html#updated">updated</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCallList class provides an interface for recording the details of dialed, received, and missed calls.</p>
+<p>See also <a href="qcalllistitem.html">QCallListItem</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="DuplicateBehaviour-enum"></a>enum QCallList::DuplicateBehaviour</h3>
+<p>Defines the duplicate handling behavior of <a href="qcalllist.html#record">QCallList::record</a>().</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCallList::AllowDuplicates</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Allow duplicate numbers in the call list.</td></tr>
+<tr><td valign="top"><tt>QCallList::OverwriteDuplicates</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Overwrite recent duplicate numbers in the call list.</td></tr>
+</table></p>
+<h3 class="fn"><a name="ListType-enum"></a>enum QCallList::ListType</h3>
+<p>Defines the type of the call list.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCallList::All</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">List of all types of calls.</td></tr>
+<tr><td valign="top"><tt>QCallList::Dialed</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">List of outgoing calls.</td></tr>
+<tr><td valign="top"><tt>QCallList::Received</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">List of incoming calls.</td></tr>
+<tr><td valign="top"><tt>QCallList::Missed</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">List of missed calls.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCallList"></a>QCallList::QCallList ( int <i>maxItemCount</i> = -1 )</h3>
+<p>Constructs a <a href="qcalllist.html">QCallList</a> with an item limit of <i>maxItemCount</i>.</p>
+<h3 class="fn"><a name="dtor.QCallList"></a>QCallList::~QCallList ()</h3>
+<p>Destructs the <a href="qcalllist.html">QCallList</a></p>
+<h3 class="fn"><a name="allCalls"></a><a href="qlist.html">QList</a>&lt;<a href="qcalllistitem.html">QCallListItem</a>&gt; QCallList::allCalls () const</h3>
+<p>Returns a <a href="qlist.html">QList</a> containing this <a href="qcalllist.html">QCallList</a>'s calls.</p>
+<h3 class="fn"><a name="at"></a><a href="qcalllistitem.html">QCallListItem</a> QCallList::at ( <a href="qtglobal.html#uint-typedef">uint</a> <i>posn</i> ) const</h3>
+<p>Returns the <a href="qcalllistitem.html">QCallListItem</a> at <i>posn</i>.</p>
+<p>See also <a href="qcalllist.html#count">count</a>().</p>
+<h3 class="fn"><a name="clear"></a>void QCallList::clear ()</h3>
+<p>Clears the <a href="qcalllist.html">QCallList</a> and saves the changes to the database. <a href="qcalllist.html#updated">updated</a>() signal is emitted.</p>
+<h3 class="fn"><a name="count"></a><a href="qtglobal.html#uint-typedef">uint</a> QCallList::count () const</h3>
+<p>Returns the number of items in the <a href="qcalllist.html">QCallList</a>.</p>
+<p>See also <a href="qcalllist.html#at">at</a>().</p>
+<h3 class="fn"><a name="maxItems"></a>int QCallList::maxItems () const</h3>
+<p>Returns the item limit of the list.</p>
+<p>See also <a href="qcalllist.html#setMaxItems">setMaxItems</a>().</p>
+<h3 class="fn"><a name="record"></a>void QCallList::record ( <a href="qcalllistitem.html">QCallListItem</a> <i>item</i>, <a href="qcalllist.html#DuplicateBehaviour-enum">DuplicateBehaviour</a> <i>duplicates</i> = AllowDuplicates )</h3>
+<p>Records the call <i>item</i>. If <i>duplicates</i> is <i>AllowDuplicates</i> (the default) duplicates of the number in <i>item</i> are allowed in the <a href="qcalllist.html">QCallList</a>, otherwise any duplicate of the number is removed. The changes are saved to disk immediately.</p>
+<p>Duplicates occur when the same number is dialed, received, or missed as a previously recorded call. The duplicate entry is stored with the new start and end times. If <i>duplicates</i> is <i>OverwriteDuplicates</i>, and the number was recently seen, then the original start and end times will be replaced with the new start and end times.</p>
+<p>The <i>OverwriteDuplicates</i> flag is primarily used to collapse several recent entries for the same number into a single entry. This is mostly useful for repeated dial attempts, or repeated missed calls, where it is only interesting when the last attempt was made, not a full log of all attempts.</p>
+<h3 class="fn"><a name="removeAll"></a>void QCallList::removeAll ( const <a href="qstring.html">QString</a> &amp; <i>number</i> )</h3>
+<p>Removes all items with the same <i>number</i> from the list. The changes a saved to the database immediately and <a href="qcalllist.html#updated">updated</a>() signal is emitted.</p>
+<p>See also <a href="qcalllist.html#removeAt">removeAt</a>().</p>
+<h3 class="fn"><a name="removeAll-2"></a>void QCallList::removeAll ( <a href="qcalllistitem.html#CallType-enum">QCallListItem::CallType</a> <i>type</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Removes all items with the same <i>type</i> from the list. The changes are recorded to the database immediately and <a href="qcalllist.html#updated">updated</a>() signal is emitted.</p>
+<p>See also <a href="qcalllist.html#removeAt">removeAt</a>().</p>
+<h3 class="fn"><a name="removeAt"></a>void QCallList::removeAt ( <a href="qtglobal.html#uint-typedef">uint</a> <i>posn</i> )</h3>
+<p>Removes the item at <i>posn</i> from the list and saves the changes to the database. <a href="qcalllist.html#updated">updated</a>() signal is emitted.</p>
+<p>See also <a href="qcalllist.html#removeAll">removeAll</a>().</p>
+<h3 class="fn"><a name="searchCalls"></a><a href="qlist.html">QList</a>&lt;<a href="qcalllistitem.html">QCallListItem</a>&gt; QCallList::searchCalls ( <a href="qcalllist-searchoptions.html">SearchOptions</a> &amp; <i>options</i> ) const</h3>
+<p>Returns a <a href="qlist.html">QList</a> containing QCallListItems that satisfy the search criteria <i>options</i>.</p>
+<h3 class="fn"><a name="setMaxItems"></a>void QCallList::setMaxItems ( const int &amp; <i>l</i> )</h3>
+<p>Sets the item limit of the list to <i>l</i>.</p>
+<p>See also <a href="qcalllist.html#maxItems">maxItems</a>().</p>
+<h3 class="fn"><a name="updated"></a>void QCallList::updated ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever call list is updated.</p>
+<p>See also <a href="qcalllist.html#clear">clear</a>(), <a href="qcalllist.html#record">record</a>(), <a href="qcalllist.html#removeAll">removeAll</a>(), and <a href="qcalllist.html#removeAt">removeAt</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

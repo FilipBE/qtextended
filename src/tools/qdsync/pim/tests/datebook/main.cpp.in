@@ -1,0 +1,26 @@
+#include "../common.h"
+#include <QSettings>
+
+class datebook: public QObject, public CommonMethods
+{
+    Q_OBJECT
+
+private slots:
+    void initTestCase()
+    {
+        INIT_BODY(
+                false, // enable trace
+                "calendar" // dataset
+                );
+    }
+
+    COMMON_TEST_CASES
+
+    void cleanupTestCase()
+    {
+        CLEANUP_BODY();
+    }
+};
+QTEST_MAIN(datebook)
+
+#include "main.moc"

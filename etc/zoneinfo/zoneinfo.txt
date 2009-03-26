@@ -1,0 +1,59 @@
+HOWTO update zoneinfo data
+--------------------------
+
+- Ideally the system integrator should add the matching zoneinfo data to match
+  the glibc version of their toolchain.  The default root file system directory
+  for zoneinfo data is /usr/share/zoneinfo.
+
+- An integrator can place the zoneinfo data in a non default place, provided
+  they set the QTOPIA_ZONEINFO_PATH environmental variable to the zoneinfo
+  directory or set the QTOPIA_ZONEINFO_PATH macro in their custom.h file.
+
+- More information about zoneinfo can be found on these websites:
+    The tz home page: http://www.twinsun.com/tz/tz-link.htm
+    Wikipedia page: http://en.wikipedia.org/wiki/Zoneinfo
+
+- To update the timezones, download and compile the zoneinfo database by
+  running the following commands:
+
+wget 'ftp://elsie.nci.nih.gov/pub/tz*.tar.gz'
+gzip -dc tzcode*.tar.gz | tar -xf -
+gzip -dc tzdata*.tar.gz | tar -xf -
+make TOPDIR=$HOME/tzdir install
+
+- To update the zoneinfo files shipped with Qtopia:
+  + Remove all files in this zoneinfo directory except this zoneinfo.txt file.
+  + Download the tzdata and tzcode packages as described above.
+  + Read the README file in tzcode.
+  + Build the packages as described above.
+  + Copy the $HOME/tzdir/etc/zoneinfo directory contents to this directory, 
+    or where they will exist on your system.
+  + Estimated size 2M
+
+- The current zoneinfo version supplied with Qtopia is 2007k.
+
+- To add Beijing timezone, apply this patch (being careful to preserve the
+  literal tab characters in the patch).
+
+--- asia~	2008-01-25 07:07:13.000000000 +1000
++++ asia	2008-01-25 07:08:26.000000000 +1000
+@@ -241,6 +241,9 @@
+ 			8:00	PRC	C%sT
+ # Zhongyuan Time ("Central plain Time")
+ # most of China
++Zone	Asia/Beijing	8:05:52	-	LMT	1928
++			8:00	Shang	C%sT	1949
++			8:00	PRC	C%sT
+ Zone	Asia/Shanghai	8:05:52	-	LMT	1928
+ 			8:00	Shang	C%sT	1949
+ 			8:00	PRC	C%sT
+--- zone.tab~	2008-01-01 01:23:09.000000000 +1000
++++ zone.tab	2008-01-25 07:00:27.000000000 +1000
+@@ -139,6 +139,7 @@
+ CL	-3327-07040	America/Santiago	most locations
+ CL	-2709-10926	Pacific/Easter	Easter Island & Sala y Gomez
+ CM	+0403+00942	Africa/Douala
++CN	+3955+11625	Asia/Beijing
+ CN	+3114+12128	Asia/Shanghai	east China - Beijing, Guangdong, Shanghai, etc.
+ CN	+4545+12641	Asia/Harbin	Heilongjiang (except Mohe), Jilin
+ CN	+2934+10635	Asia/Chongqing	central China - Sichuan, Yunnan, Guangxi, Shaanxi, Guizhou, etc.

@@ -1,0 +1,36 @@
+#!/bin/sh
+# Something in here is very broken (or QBuild itself is very broken...)
+exit 0
+
+
+rm -rf modules
+qbuild -script -j1 | tee output1
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output1 template1
+    result=$?
+fi
+[ "$result" -ne 0 ] && exit $result
+qbuild -script -j1 | tee output2
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output2 template2
+    result=$?
+fi
+[ "$result" -ne 0 ] && exit $result
+
+rm -rf modules
+qbuild -script | tee output1
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output1 template1
+    result=$?
+fi
+[ "$result" -ne 0 ] && exit $result
+qbuild -script | tee output2
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output2 template2
+    result=$?
+fi
+[ "$result" -ne 0 ] && exit $result

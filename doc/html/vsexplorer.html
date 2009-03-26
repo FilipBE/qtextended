@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>vsexplorer</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">vsexplorer<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#exploring-the-value-space-with-vsexplorer">Exploring the Value Space with vsexplorer</a></li>
+<ul><li><a href="#commands">Commands</a></li>
+<li><a href="#dump-mode">Dump Mode</a></li>
+</ul>
+</ul>
+<a name="exploring-the-value-space-with-vsexplorer"></a>
+<h2>Exploring the Value Space with vsexplorer</h2>
+<p>The vsexplorer tool is provided for diagnosing issues with the <a href="qvaluespaceitem.html">Value Space</a>. Many services write values into the value space so that they are accessible to Qt Extended libraries, applications, themes, etc.</p>
+<p>The vsexplorer tool can be used to inspect the contents of the value space on a device, to make temporary modifications, and to watch for changes in specific value space items.</p>
+<p>When run from the command-line normally, it launches an interpreter environment that can accept commands. The commands are very similar to using a Unix-style command-prompt, as shown in the current example:</p>
+<pre>    $ vsexplorer
+    / &gt; ls
+    Hardware/
+    Accessories/
+    Documents/
+    Network/
+    UI/
+    Telephony/
+    MediaServer/
+    System/
+    AudioManager/
+    Communications/
+    / &gt; cd Telephony
+    /Telephony &gt; ls
+    Status/
+    /Telephony &gt; cd Status
+    /Telephony/Status &gt; ls
+    CallDivert/                     'false' (bool)
+    Roaming/                        'false' (bool)
+    SimToolkitAvailable/            'false' (bool)
+    RegistrationState/              'Home' (QString)
+    OperatorCountry/                '' (QString)
+    SMSMemoryFull/                  '0' (int)
+    CellModemAvailable/             'true' (bool)
+    ModemStatus/                    'Ready' (QString)
+    PlaneModeAvailable/             'Yes' (QString)
+    VoIP/
+    CellLocation/                   '' (QString)
+    NetworkRegistered/              'true' (bool)
+    OperatorName/                   'Qt Extended Comm' (QString)
+    /Telephony &gt; exit
+    $ _</pre>
+<p>The tool prints the current value space directory, starting at the root. The user can use <tt>cd</tt> to change into a new directory, and <tt>ls</tt> to list the directory's contents. If the directory contains item values, their values will be listed. You can always return to the root of the value space by typing <tt>cd /</tt>. The <tt>exit</tt> command exits from the vsexplorer interpreter.</p>
+<a name="commands"></a>
+<h3>Commands</h3>
+<p>The following commands are available in vsexplorer:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>help</tt>, <tt>?</tt></td><td>Print help on the available commands.</td></tr>
+<tr valign="top" class="even"><td><tt>exit</tt>, <tt>quit</tt></td><td>Exit from vsexplorer.</td></tr>
+<tr valign="top" class="odd"><td><tt>cd</tt> <i>name</i></td><td>Change into the value space directory called <i>name</i>.</td></tr>
+<tr valign="top" class="even"><td><tt>ls</tt></td><td>List the contents of the current value space directory.</td></tr>
+<tr valign="top" class="odd"><td><tt>ls</tt> <i>name</i></td><td>List the contents of the value space directory called <i>name</i>.</td></tr>
+<tr valign="top" class="even"><td><tt>set</tt> <i>name</i> <i>value</i></td><td>Set the value space item called <i>name</i> to <i>value</i>. This can be used from vsexplorer to make temporary changes to the value space for testing other applications. The changes will be removed when vsexplorer exits.</td></tr>
+<tr valign="top" class="odd"><td><tt>clear</tt> <i>name</i></td><td>Clear the value space item called <i>name</i>. This will remove any previous values that were set on <i>name</i> using the <tt>set</tt> command. This cannot be used to clear values that were set by other applications.</td></tr>
+<tr valign="top" class="even"><td><tt>subscribe</tt>, <tt>sub</tt></td><td>Subscribe to change notifications on the current directory. Whenever a service in Qt Extended makes a change to this directory or one of its subdirectories, a message <tt>Changed: name</tt> will be printed for the directory that was subscribed to. The user can then use <tt>ls</tt> to inspect the new values.</td></tr>
+<tr valign="top" class="odd"><td><tt>unsubscribe</tt>, <tt>unsub</tt></td><td>Unsubscribe from change notifications on the current directory.</td></tr>
+<tr valign="top" class="even"><td><tt>subscriptions</tt></td><td>Print the current list of change notification subscriptions.</td></tr>
+<tr valign="top" class="odd"><td><tt>write</tt> <i>name</i> <i>value</i></td><td>Send a request to the application that controls the value space item <i>name</i> to change it to <i>value</i>. This does not actually set the value, but asks the owning application to set it. The application is free to ignore the request. This feature is not used very often in Qt Extended. The <tt>set</tt> command is more likely to be useful.</td></tr>
+<tr valign="top" class="even"><td><tt>remove</tt> <i>name</i></td><td>Send a request to the application that controls the value space item <i>name</i> to remove it from the value space. This does not actually remove the value, but asks the owning application to remove it. The application is free to ignore the request. This feature is not used very often in Qt Extended. The <tt>clear</tt> command is more likely to be useful.</td></tr>
+<tr valign="top" class="odd"><td><tt>watch</tt> <i>name</i></td><td>Watch for requests to change the value space item <i>name</i>. Requests that come from <tt>write</tt> and <tt>remove</tt> commands will activate such a watch. This feature is not used very often in Qt Extended. The <tt>subscribe</tt> command is more likely to be useful.</td></tr>
+<tr valign="top" class="even"><td><tt>unwatch</tt> <i>name</i></td><td>Remove a watch for requests to change the value space item <i>name</i>. This feature is not used very often in Qt Extended. The <tt>unsubscribe</tt> command is more likely to be useful.</td></tr>
+<tr valign="top" class="odd"><td><tt>watchers</tt></td><td>Print the current list of watchers that were installed with the <tt>watch</tt> command.</td></tr>
+<tr valign="top" class="even"><td><tt>suppress</tt></td><td>Toggle the suppression state for messages printed by watchers that were installed with the <tt>watch</tt> command. The watchers will remain installed, but the normal messages that they print will be suppressed until another <tt>suppress</tt> command is seen.</td></tr>
+</table></p>
+<a name="dump-mode"></a>
+<h3>Dump Mode</h3>
+<p>The vsexplorer tool can be run in a second mode where it dumps the entire contents of the value space instead of entering the interpreter. This dump mode is activated by typing <tt>vsexplorer -d</tt>. The following is an example of dumping all values under <tt>/Telephony/Status</tt> and writing it to the file <tt>status.out</tt>:</p>
+<pre>    $ vsexplorer -d | grep /Telephony/Status &gt;status.out</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

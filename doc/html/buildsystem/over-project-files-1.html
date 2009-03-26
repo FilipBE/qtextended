@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Project Files</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Project Files<br /><span class="subtitle"></span>
+</h1>
+<a name="introduction"></a>
+<h3>Introduction</h3>
+<p>This overview will primarily focus on applications. If you want to create a project file for a library the <a href="over-libraries-1.html">Libraries</a> page contains more relevant information.</p>
+<p>The canonical definition of a project file is the example application.</p>
+<pre>    # This is an application
+    TEMPLATE=app
+
+    # The binary name
+    TARGET=example
+
+    # This app uses Qtopia
+    CONFIG+=qtopia
+
+    # Build this app as a quicklauncher plugin
+    # You need to be using the QTOPIA_ADD_APPLICATION/QTOPIA_MAIN macros or this will not work!
+    #CONFIG+=quicklaunch
+
+    # Build this project into the singleexec binary
+    #CONFIG+=singleexec
+
+    # Specify the languages that make lupdate should produce .ts files for
+    STRING_LANGUAGE=en_US
+    LANGUAGES=en_US de
+
+    # Package information (used for qbuild packages)
+    pkg [
+        name=example
+        desc=&quot;Example Application&quot;
+        license=Commercial
+        version=1.0.0-1
+        maintainer=&quot;Qt Extended &lt;info@qtextended.org&gt;&quot;
+    ]
+
+    # These are the source files that get built to create the application
+    FORMS=\
+        examplebase.ui
+
+    HEADERS=\
+        example.h
+
+    SOURCES=\
+        main.cpp\
+        example.cpp
+
+    # SXE information
+    target [
+        hint=sxe
+        domain=untrusted
+    ]
+
+    # Install the launcher item. The metadata comes from the .desktop file
+    # and the path here.
+    desktop [
+        hint=desktop nct
+        files=example.desktop
+        path=/apps/Applications
+        trtarget=example-nct
+    ]
+
+    # Install some pictures.
+    pics [
+        hint=pics
+        files=pics/*
+        path=/pics/example
+    ]
+
+    # Install help files
+    help [
+        hint=help
+        source=help
+        files=example.html
+    ]</pre>
+<p>The following sections describe the parts of the project file.</p>
+<a name="template"></a>
+<h3>TEMPLATE</h3>
+<p>To be useful, a project must set the TEMPLATE to either app, lib or plugin.</p>
+<a name="target"></a>
+<h3>TARGET</h3>
+<p>The TARGET is the name of the binary. In Qt Extended applications must have unique names as several resources types are located using the application name.</p>
+<a name="application-configuration"></a>
+<h3>Application configuration</h3>
+<p>A project must declare if it depends on Qt (<tt>CONFIG+=qt</tt>). Likewise, a project must declare if it should be built for the target or the host (<tt>CONFIG+=embedded</tt>). Depending on Qt Extended (<tt>CONFIG+=qtopia</tt>) means your project will only be built for the target.</p>
+<p>Qt Extended applications can be built in several ways. There are flags that you should set to indicate how your app can be built. See <a href="over-applications-1.html">Applications</a> for a discussion on this.</p>
+<a name="internationalization"></a>
+<h3>Internationalization</h3>
+<p>You can specify what translations exist for your application. See <a href="foo/../../syscust-internat.html">Internationalization</a> for more information.</p>
+<a name="package-meta-data"></a>
+<h3>Package meta-data</h3>
+<p>There's some meta-data attached to a package. You can read about this in <a href="over-packages-overview-1.html">Packages (overview)</a>.</p>
+<a name="source-files"></a>
+<h3>Source files</h3>
+<p>You specify your input files using FORMS, HEADERS and SOURCES.</p>
+<a name="desktop-file"></a>
+<h3>Desktop file</h3>
+<p>Applications require a .desktop file which specifies the launcher meta-data for the application.</p>
+<a name="pictures"></a>
+<h3>Pictures</h3>
+<p>Applications will require at least an image for the launcher icon. Other images and icon can be installed too. It's best to put all images into a subdirectory so that installpic will install them correctly.</p>
+<a name="help-files"></a>
+<h3>Help files</h3>
+<p>You should install at least 1 help file for your application. You can install additional help files for context-sensitive help. Online help looks at <tt>TARGET-&lt;objname&gt;.html</tt> for context-sensitive help. The object name of the toplevel window is used.</p>
+<p>See also <a href="overviews.html">Overviews</a>, <a href="task-create-a-new-project-file-1.html">Create a new project file</a>, <a href="over-libraries-1.html">Libraries</a>, and <a href="over-applications-1.html">Applications</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

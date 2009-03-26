@@ -1,0 +1,23 @@
+diff -ur bootchart-0.9/script/bootchartd bootchart-0.9_modified/script/bootchartd
+--- bootchart-0.9/script/bootchartd	2005-11-14 03:40:01.000000000 +1000
++++ bootchart-0.9_modified/script/bootchartd	2007-08-22 12:58:51.000000000 +1000
+@@ -72,6 +72,8 @@
+ 	[ -f /proc/diskstats ] && log_output "cat /proc/diskstats" proc_diskstats.log &
+ 
+ 	log_output "cat /proc/*/stat" proc_ps.log &
++
++	[ "$QTOPIA_LOG" = "yes" ] && log_output "logread | grep Qtopia | tail" qtopia.log &
+ 	#log_output "ps -eww -o pid,ppid,s,pcpu,comm,cmd" ps.log &
+ 
+ 	if [ -n "$IN_INIT" ]; then
+diff -ur bootchart-0.9/script/bootchartd.conf bootchart-0.9_modified/script/bootchartd.conf
+--- bootchart-0.9/script/bootchartd.conf	2005-11-14 03:40:01.000000000 +1000
++++ bootchart-0.9_modified/script/bootchartd.conf	2007-08-22 12:57:09.000000000 +1000
+@@ -33,3 +33,7 @@
+ # Output directory for auto-generated boot charts
+ AUTO_RENDER_DIR="/var/log"
+ 
++# Whether or not to also log messages from Qtopia.
++# This adds additional overhead which can be significant.
++QTOPIA_LOG="no"
++

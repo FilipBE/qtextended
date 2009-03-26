@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAbstractIpcInterfaceGroup Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAbstractIpcInterfaceGroup Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QAbstractIpcInterfaceGroup class provides a convenient wrapper to create the interfaces within a server group. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAbstractIpcInterfaceGroup&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="qbluetoothhandsfreecomminterface.html">QBluetoothHandsfreeCommInterface</a>, <a href="qbluetoothheadsetcomminterface.html">QBluetoothHeadsetCommInterface</a>, and <a href="qtelephonyservice.html">QTelephonyService</a>.</p>
+<ul>
+<li><a href="qabstractipcinterfacegroup-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qabstractipcinterfacegroup.html#QAbstractIpcInterfaceGroup">QAbstractIpcInterfaceGroup</a></b> ( const QString &amp; <i>groupName</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qabstractipcinterfacegroup.html#dtor.QAbstractIpcInterfaceGroup">~QAbstractIpcInterfaceGroup</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qabstractipcinterfacegroup.html#groupName">groupName</a></b> () const</li>
+<li><div class="fn"/>virtual void <b><a href="qabstractipcinterfacegroup.html#initialize">initialize</a></b> ()</li>
+<li><div class="fn"/>T * <b><a href="qabstractipcinterfacegroup.html#interface">interface</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qabstractipcinterfacegroup.html#supports">supports</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qabstractipcinterfacegroup.html#addInterface">addInterface</a></b> ( QAbstractIpcInterface * <i>interface</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterfacegroup.html#suppressInterface">suppressInterface</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAbstractIpcInterfaceGroup class provides a convenient wrapper to create the interfaces within a server group.</p>
+<p>This class is used to collect together several related <a href="qabstractipcinterface.html">QAbstractIpcInterface</a> instances into a single logical group. It provides a standard pattern for creating all interfaces in the group via the <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>() method, and provides discovery mechanisms to allow one interface in a group to quickly locate another via the <a href="qabstractipcinterfacegroup.html#interface">interface</a>() method.</p>
+<p>The most extensive use of this class is for Qt Extended telephony services, which create a large number of related interfaces for network registration, phone call management, call forwarding settings, SIM file contents, and so on. See <a href="qtelephonyservice.html">QTelephonyService</a> for more information.</p>
+<p>It isn't necessary that <a href="qabstractipcinterface.html">QAbstractIpcInterface</a> instances be part of a group; they can be standalone.</p>
+<p>The <a href="qabstractipcinterfacegroupmanager.html">QAbstractIpcInterfaceGroupManager</a> class can be used to receive run time notification of when groups are added and removed from the system.</p>
+<p>See also <a href="qabstractipcinterface.html">QAbstractIpcInterface</a>, <a href="qabstractipcinterfacegroupmanager.html">QAbstractIpcInterfaceGroupManager</a>, and <a href="qtelephonyservice.html">QTelephonyService</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAbstractIpcInterfaceGroup"></a>QAbstractIpcInterfaceGroup::QAbstractIpcInterfaceGroup ( const <a href="qstring.html">QString</a> &amp; <i>groupName</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Create a new server interface group called <i>groupName</i> and attach it to <i>parent</i>.</p>
+<p>A call to the constructor should be followed by a call to <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>() to complete the initialization process.</p>
+<p>See also <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>().</p>
+<h3 class="fn"><a name="dtor.QAbstractIpcInterfaceGroup"></a>QAbstractIpcInterfaceGroup::~QAbstractIpcInterfaceGroup ()</h3>
+<p>Destroy this server interface group.</p>
+<h3 class="fn"><a name="addInterface"></a>void QAbstractIpcInterfaceGroup::addInterface ( <a href="qabstractipcinterface.html">QAbstractIpcInterface</a> * <i>interface</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Adds <i>interface</i> to the list of interfaces that is supported by this server interface group.</p>
+<h3 class="fn"><a name="groupName"></a><a href="qstring.html">QString</a> QAbstractIpcInterfaceGroup::groupName () const</h3>
+<p>Returns the name of this server interface group.</p>
+<h3 class="fn"><a name="initialize"></a>void QAbstractIpcInterfaceGroup::initialize ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Initializes this server interface group by creating all of the interfaces that it supports. In subclasses, interfaces should be created using the following pattern:</p>
+<pre>    if ( !supports&lt;T&gt;() )
+        addInterface( new MyT(this) );</pre>
+<p>where <tt>T</tt> is the name of the interface being created and <tt>MyT</tt> is the name of the class that implements the interface.</p>
+<p>At the end of a subclass initialize(), it must call its immediate superclass. The superclass follows the same pattern to create missing interfaces that were not explicitly overridden.</p>
+<p>The base implementation calls <a href="qabstractipcinterface.html#groupInitialized">QAbstractIpcInterface::groupInitialized</a>() on all of the interfaces that were created by subclasses.</p>
+<p>See also <a href="qabstractipcinterfacegroup.html#supports">supports</a>(), <a href="qabstractipcinterfacegroup.html#addInterface">addInterface</a>(), and <a href="qabstractipcinterface.html#groupInitialized">QAbstractIpcInterface::groupInitialized</a>().</p>
+<h3 class="fn"><a name="interface"></a>T * QAbstractIpcInterfaceGroup::interface () const</h3>
+<p>Get the object that implements the interface <tt>T</tt> on this server interface group, or null if there is no such interface.</p>
+<h3 class="fn"><a name="supports"></a>bool QAbstractIpcInterfaceGroup::supports () const</h3>
+<p>Returns true if this server interface group supports an interface with the name <tt>T</tt>; otherwise returns false.</p>
+<h3 class="fn"><a name="suppressInterface"></a>void QAbstractIpcInterfaceGroup::suppressInterface ()&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Suppresses the interface <tt>T</tt> from being created during <a href="qabstractipcinterfacegroup.html#initialize">initialize</a>(). This causes the <a href="qabstractipcinterfacegroup.html#supports">supports</a>() function to return true for <tt>T</tt> even if no interface object for <tt>T</tt> has been added yet.</p>
+<p>The main use of this method is to stop a parent class from creating a default implementation of <tt>T</tt> when the subclass does not create their own override, but the default implementation would cause problems if used.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

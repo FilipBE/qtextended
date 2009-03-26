@@ -1,0 +1,50 @@
+exists($$QPEDIR/src/build/trace_on):message(moc.prf)
+# Tweaks to how moc is run
+
+# load Qt's version of this file
+load(moc)
+
+# force the moc rules to be created even if Q_OBJECT doesn't exist
+moc_header.CONFIG-=moc_verify
+moc_source.CONFIG-=moc_verify
+
+# QMAKE_MOC is broken (it's not visible at the time $$mocCmd() is evaluated)
+# Work around this by creating a new function (I've copied this from Qt's moc.prf).
+
+defineReplace(qtopiamocCmd) {
+    win32:count($$list($$INCPATH), 40, >) {
+        EOC = $$escape_expand(\n\t)
+
+        # the VCPROJ generator will replace the \r\h with the coded \r\n: &#x0d;&#x0a;
+        # No other generator understands the \h
+        win32-msvc.net|win32-msvc2005: contains(TEMPLATE, "vc.*")|contains(TEMPLATE_PREFIX, "vc"): EOC = $$escape_expand(\r\h)
+
+        INCLUDETEMP = mocinclude.tmp
+        unset(INCFILELIST)
+        RET =
+        for(incfile, $$list($$INCPATH)) {
+            INCFILELIST = -I$$incfile
+            isEmpty(RET): RET += @echo $$INCFILELIST> $$INCLUDETEMP $$EOC
+            else:         RET += @echo $$INCFILELIST>> $$INCLUDETEMP $$EOC
+        }
+        !isEmpty(INCFILELIST):RET += @echo $$INCFILELIST>> $$INCLUDETEMP $$EOC
+        RET += $$fixpath($$QBS_BIN/qtopiamoc) $$QMAKE_MOC -nw $(DEFINES) @$$INCLUDETEMP $$join(QMAKE_COMPILER_DEFINES, " -D", -D) $$1 -o $$2
+        return($$RET)
+    }
+    return($$fixpath($$QBS_BIN/qtopiamoc) $$QMAKE_MOC -nw $(DEFINES) $(INCPATH) $$join(QMAKE_COMPILER_DEFINES, " -D", -D) $$1 -o $$2)
+}
+
+moc_header.commands = ${QMAKE_FUNC_qtopiamocCmd}
+silent:moc_header.commands = @echo moc ${QMAKE_FILE_IN} && $$moc_header.commands
+moc_source.commands = ${QMAKE_FUNC_qtopiamocCmd}
+silent:moc_source.commands = @echo moc ${QMAKE_FILE_IN} && $$moc_source.commands
+
+# Force foo.cpp : foo.moc dependencies
+for(s,SOURCES) {
+    objfile=$$OBJECTS_DIR/$$tail($$s)
+    objfile~=s/\.[^\.]+$/.o/
+    mocfile=$$MOC_DIR/$$tail($$s)
+    mocfile~=s/\.[^\.]+$/.moc/
+    create_raw_dependency($$objfile, $$mocfile)
+}
+

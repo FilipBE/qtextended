@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Making Phone Calls</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Making Phone Calls<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="tutphonecalls"></a><ul><li><a href="#making-a-voice-call">Making a Voice Call</a></li>
+<li><a href="#making-a-data-call">Making a Data Call</a></li>
+<li><a href="#watching-for-an-incoming-voice-call">Watching for an Incoming Voice Call</a></li>
+<li><a href="#monitoring-the-state-of-all-calls">Monitoring the State of All Calls</a></li>
+<li><a href="#behind-the-scenes-making-a-voice-call">Behind the Scenes: Making a Voice Call</a></li>
+</ul>
+<p>This document provides some examples of how to make phone calls within Qt Extended from within a client application. It also contains a walk-through of the code showing how a voice call request is handled by the system.</p>
+<a name="making-a-voice-call"></a>
+<h2>Making a Voice Call</h2>
+<p>The simplest way to dial a voice call is as follows:</p>
+<pre>    QPhoneCallManager *mgr;
+
+    void Caller::dial()
+    {
+        QPhoneCall call = mgr-&gt;create(&quot;Voice&quot;);
+
+        QDialOptions dialOptions;
+        dialOptions.setNumber(numberToDial-&gt;text());
+
+        call.dial(dialOptions);
+
+        call.connectStateChanged(this, SLOT(stateChanged(QPhoneCall)));
+    }</pre>
+<p>The <a href="qphonecallmanager.html">QPhoneCallManager</a> class provides access to the global list of all calls (voice, data, fax, etc) that are currently active within the system, and allows new calls to be created.</p>
+<p>The client application can connect to the state change signal to be notified about the call's progress. The following example shows a message whenever the call changes to the <tt>Connected</tt> state, or when it ends:</p>
+<pre>    void Caller::stateChanged(const QPhoneCall&amp; call)
+    {
+        if (call.state() == QPhoneCall::Connected)
+            status-&gt;setText(&quot;Call &quot; + call.number() + &quot; has connected&quot;);
+        else if ( call.dropped() )
+            status-&gt;setText(&quot;Call &quot; + call.number() + &quot; has ended&quot;);
+    }</pre>
+<p>The <a href="qphonecall.html">QPhoneCall</a> class is a reference-counted pointer to a <tt>QPhoneCallPrivate</tt> instance. The <tt>QPhoneCallPrivate</tt> instance will be deleted once the call ends and all outstanding <a href="qphonecall.html">QPhoneCall</a> references to it are removed.</p>
+<a name="making-a-data-call"></a>
+<h2>Making a Data Call</h2>
+<p>The procedure for making a data call is very similar to that for voice calls:</p>
+<pre>    void Caller::dialData()
+    {
+        QPhoneCall call = mgr-&gt;create(&quot;Data&quot;);
+
+        QDialOptions dialOptions;
+        dialOptions.setNumber(numberToDial-&gt;text());
+        dialOptions.setSpeed(9600);
+        dialOptions.setTransparentMode(QDialOptions::NonTransparent);
+
+        call.dial(dialOptions);
+
+        call.connectStateChanged(this, SLOT(dataStateChanged(QPhoneCall)));
+    }</pre>
+<p>The primary difference is the use of <tt>Data</tt> for the call type instead of <tt>Voice</tt>. There are several options within the <a href="qdialoptions.html">QDialOptions</a> class that can be set to tune the data call for the client application's specific requirements. The above example will request a 9600 bps non-transparent connection. Consult the documentation for <a href="qdialoptions.html">QDialOptions</a>, and the 3GPP TS 27.007 standard for more information on the allowable data call options.</p>
+<p>Once the data call transitions to the <tt>Connected</tt> state, the device() method can be used to gain access to the raw data on the call:</p>
+<pre>    void Caller::dataStateChanged(const QPhoneCall&amp; call)
+    {
+        if (call.callType() == &quot;Data&quot; &amp;&amp; call.state() == QPhoneCall::Connected) {
+            dataDevice = call.device();
+            connect(dataDevice, SIGNAL(readyRead()), this, SLOT(dataReady()));
+            connect(dataDevice, SIGNAL(closed()), this, SLOT(dataClosed()));
+        }
+    }
+
+    void Caller::dataReady()
+    {
+        char buffer[1024];
+        qint64 len;
+        while ( ( len = dataDevice-&gt;read( buffer, sizeof(buffer) ) ) &gt; 0 ) {
+            <span class="comment">// There is new data ready to process.</span>
+            <span class="comment">// ...</span>
+        }
+    }
+
+    void Caller::dataClosed()
+    {
+        <span class="comment">// The data call has ended - the device is now closed.</span>
+        dataDevice = 0;
+    }
+
+    void Caller::dataWrite( const char *buf, int len )
+    {
+        <span class="comment">// Send the specified data on the data call if it is still active.</span>
+        if (dataDevice)
+            dataDevice-&gt;write(buf, len);
+    }</pre>
+<a name="watching-for-an-incoming-voice-call"></a>
+<h2>Watching for an Incoming Voice Call</h2>
+<p>Client applications can watch for incoming calls by listening on the <a href="qphonecallmanager.html#newCall">QPhoneCallManager::newCall</a>() signal and checking the new call's state against <a href="qphonecall.html#State-enum">QPhoneCall::Incoming</a>:</p>
+<pre>    mgr = new QPhoneCallManager(this);
+    connect(mgr, SIGNAL(newCall(QPhoneCall)), this, SLOT(newCall(QPhoneCall)));
+
+    void Caller::newCall(const QPhoneCall&amp; call)
+    {
+        if ( call.state() == QPhoneCall::Incoming &amp;&amp;
+             call.callType() == &quot;Voice&quot; ) {
+            status-&gt;setText(&quot;Incoming call from &quot; + call.number());
+        }
+    }</pre>
+<a name="monitoring-the-state-of-all-calls"></a>
+<h2>Monitoring the State of All Calls</h2>
+<p>Programs that implement dialer functionality need to display information about all calls that are currently active within the system. The <a href="qphonecallmanager.html">QPhoneCallManager</a> class can be used for this purpose.</p>
+<p>The <a href="qphonecallmanager.html#calls">QPhoneCallManager::calls</a>() method provides a list of all currently active calls. The <a href="qphonecallmanager.html#newCall">QPhoneCallManager::newCall</a>() signal notifies listeners whenever a new call is added to the list, even if it was created by another client application.</p>
+<a name="behind-the-scenes-making-a-voice-call"></a>
+<h2>Behind the Scenes: Making a Voice Call</h2>
+<p>We will now walk through the first example in more detail, explaining what happens within Qt Extended to effect a voice call.</p>
+<pre>    QPhoneCallManager mgr;
+    QPhoneCall call = mgr.create( &quot;Voice&quot; );</pre>
+<p>The <a href="qphonecallmanager.html#create">QPhoneCallManager::create</a>() function first calls <a href="qphonecallmanager.html#services">QPhoneCallManager::services</a>() to locate a telephony service that can handle calls of the specified type, <tt>Voice</tt>. The service information is stored in the value space (see <a href="qvaluespaceitem.html">Value Space</a>) under the <tt>/Communications/QPhoneCallProvider/CallTypes</tt> directory. A typical arrangement is as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Service</th><th>Supported Call Types</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>modem</tt></td><td><tt>Voice</tt>, <tt>Data</tt>, <tt>Fax</tt>, <tt>Video</tt>, <tt>IP</tt></td></tr>
+<tr valign="top" class="even"><td><tt>voip</tt></td><td><tt>VoIP</tt></td></tr>
+</table></p>
+<p>In this case, the <tt>modem</tt> service supports the desired <tt>Voice</tt> call type. By convention, call types start with an upper case letter, and service names start with a lower case letter.</p>
+<p>If more than one service were to support a call type, then <a href="qphonecallmanager.html#services">QPhoneCallManager::services</a>() will return the first that it finds. The caller can explicitly request a particular service in the call to <a href="qphonecallmanager.html#create">QPhoneCallManager::create</a>():</p>
+<pre>    QPhoneCallManager mgr;
+    QPhoneCall call = mgr.create( &quot;Voice&quot;, &quot;modem&quot; );</pre>
+<p>Once the service has been located, <a href="qphonecallmanager.html#create">QPhoneCallManager::create</a>() calls <tt>QPhoneCallManagerPrivate::create()</tt> in <tt>qphonecallmanager.cpp</tt>. This method constructs a <tt>QPhoneCallPrivate</tt> instance, wraps it with a <a href="qphonecall.html">QPhoneCall</a> reference, and returns it to the caller.</p>
+<p>The constructor for <tt>QPhoneCallPrivate</tt> in <tt>qphonecall.cpp</tt> attaches to two <a href="qtextendedipc.html">Qt Extended IPC</a> channels:</p>
+<pre>    QPE/Communications/QPhoneCallProvider/Request
+    QPE/Communications/QPhoneCallProvider/Response</pre>
+<p>The first Qt Extended IPC channel is used to send requests to the telephony service to perform call operations. The second Qt Extended IPC channel is used to receive state information about the call back from the telephony service.</p>
+<p>The next step is to dial the call:</p>
+<pre>    void Caller::dial()
+    {
+        QPhoneCall call = mgr-&gt;create(&quot;Voice&quot;);
+
+        QDialOptions dialOptions;
+        dialOptions.setNumber(numberToDial-&gt;text());
+
+        call.dial(dialOptions);
+
+        call.connectStateChanged(this, SLOT(stateChanged(QPhoneCall)));
+    }</pre>
+<p>After initializing the local state of <tt>QPhoneCallPrivate</tt>, <a href="qphonecall.html#dial">QPhoneCall::dial</a>() sends the Qt Extended IPC message <tt>dial(QString,QString,QString,QDialOptions)</tt> to the <tt>Request</tt> channel.</p>
+<p>In the telephony service, the Qt Extended IPC message is received by QPhoneCallProvider::dial() in <tt>qphonecallprovider.cpp</tt>. It filters the message to check that it is intended for that service (all call providers listen on the same channel), and then calls <a href="qphonecallprovider.html#create">QPhoneCallProvider::create</a>() to create a <a href="qphonecallimpl.html">QPhoneCallImpl</a> object to represent the server-side instance of the phone call.</p>
+<p>The <a href="qphonecallprovider.html#create">QPhoneCallProvider::create</a>() method is implemented differently for each telephony service. For AT-based modems, it is overridden by <a href="qphonecallprovider.html#create">QModemCallProvider::create</a>() in <tt>qmodemcallprovider.cpp</tt>, which then creates a <a href="qmodemcall.html">QModemCall</a> object.</p>
+<p>Once the server-side instance has been created, QPhoneCallProvider::dial() calls <a href="qphonecallimpl.html#dial">QPhoneCallImpl::dial</a>(), which in our case is overridden by <a href="qphonecallimpl.html#dial">QModemCall::dial</a>() in <tt>qmodemcall.cpp</tt>. <a href="qphonecallimpl.html#dial">QModemCall::dial</a>() issues the <tt>ATD</tt> command to the modem and the dial starts.</p>
+<p>As the call progresses, the <a href="qmodemcall.html">QModemCall</a> class will advertise state changes by calling the <a href="qphonecallimpl.html#setState">QPhoneCallImpl::setState</a>() method. This will cause the QPhoneCallProvider::stateChanged() slot to be invoked, which in turn calls QPhoneCallProvider::sendState().</p>
+<p>The QPhoneCallProvider::sendState() method in <tt>qphonecallprovider.cpp</tt> sends a Qt Extended IPC message on the <tt>Response</tt> channel, which will return back to the client application in the <tt>QPhoneCallPrivate::callStateChanged()</tt> method in <tt>qphonecall.cpp</tt>. This will cause the <tt>stateChanged()</tt> signal to be emitted on <a href="qphonecall.html">QPhoneCall</a>, notifying the client application.</p>
+<p>See also <a href="qphonecall.html">QPhoneCall</a>, <a href="qphonecallmanager.html">QPhoneCallManager</a>, <a href="qdialoptions.html">QDialOptions</a>, <a href="qphonecallprovider.html">QPhoneCallProvider</a>, <a href="qmodemservice.html">QModemService</a>, <a href="qmodemcallprovider.html">QModemCallProvider</a>, and <a href="qmodemcall.html">QModemCall</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

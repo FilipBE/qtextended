@@ -1,0 +1,30 @@
+#include "../common.h"
+
+class datebook: public testcase
+{
+    Q_OBJECT
+private slots:
+    void initTestCase()
+    {
+        INIT_TEST_CASE_BODY(
+                "com.trolltech.plugin.outlook.sync.calendar", // plugin
+                false, // TRACE/LOG output enabled
+                false  // wait for debugger
+                )
+    }
+
+    void prepareForSync()
+    {
+        PREPARE_FOR_SYNC_BODY()
+    }
+
+    COMMON_TEST_CASES
+
+    void cleanupTestCase()
+    {
+        CLEANUP_TEST_CASE_BODY()
+    }
+};
+QTEST_MAIN(datebook)
+
+#include "main.moc"

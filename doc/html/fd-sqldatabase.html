@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Enablers: SQL Database</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Enablers: SQL Database<br><small>Functional Description</small></h1><p>An SQL database is provided for use by all applications.
+<p />
+Qt Extended applications use the database for <a href="fd-PIM.html">PIM</a> data, Categories, and the <a href="fd-DocumentManagement.html">Document <nop>Management</a> system.  Using an SQL database improves performance and flexibility of classes requiring permanent storage.
+<p />
+To integrate an alternative database engine, tasks include: <ul>
+<li> Providing a Qt SQL Driver (many already supported - see Qt documentation)
+</li> <li> Creating schema and queries to compensate for any peculiarities of the database engine, if any.
+</li></ul> 
+<p />
+Where an SQL database is used for storage in Qt Extended, non-SQL based APIs are provided for application development.  This avoids database implementation dependencies and provides faster development for commonly accessed data.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1577">Schema Migration</a>
+<li><a href="#QTOPIA-1576">SQLite Integration</a>
+</ul><h3><a name=QTOPIA-1577>Schema Migration</a></h3>
+<p>The following facilities are available for migrating to newer versions on a database schema update:
+<ul>
+	<li>a version table that records all the release versions ever installed on the device</li>
+	<li>a script that runs at start-up, and is implemented in ensureSchema(), that looks at the version table and updates the database (finally adding a row to the version table)</li>
+	<li>policy documents defining:
+	<ul>
+		<li>rules for third parties</li>
+		<li>rules for internal (ie TT developers)</li>
+	</ul>
+	</li>
+</ul>
+<h3><a name=QTOPIA-1576>SQLite Integration</a></h3>
+<p><ul>
+	<li>Qt Extended ships with the <span class="nobr"><a href="http://www.sqlite.org/">SQLite<sup></sup></a></span> database engine. It is also possible to integrate other database engines.</li>
+</ul>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

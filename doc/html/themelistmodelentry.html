@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ThemeListModelEntry Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ThemeListModelEntry Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The ThemeListModelEntry class implements a single theme list entry in a <a href="themelistmodel.html">ThemeListModel</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;ThemeListModelEntry&gt;</pre><ul>
+<li><a href="themelistmodelentry-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="themelistmodelentry.html#ThemeListModelEntry">ThemeListModelEntry</a></b> ( ThemeListModel * <i>model</i> )</li>
+<li><div class="fn"/>virtual <b><a href="themelistmodelentry.html#dtor.ThemeListModelEntry">~ThemeListModelEntry</a></b> ()</li>
+<li><div class="fn"/>ThemeListModel * <b><a href="themelistmodelentry.html#model">model</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="themelistmodelentry.html#setValue">setValue</a></b> ( const QString &amp; <i>key</i>, const QVariant &amp; <i>value</i> )</li>
+<li><div class="fn"/>ThemeTemplateInstanceItem * <b><a href="themelistmodelentry.html#templateInstance">templateInstance</a></b> ()</li>
+<li><div class="fn"/>virtual QString <b><a href="themelistmodelentry.html#type">type</a></b> () const = 0</li>
+<li><div class="fn"/>QString <b><a href="themelistmodelentry.html#uid">uid</a></b> ()</li>
+<li><div class="fn"/>QVariant <b><a href="themelistmodelentry.html#value">value</a></b> ( const QString &amp; <i>key</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ThemeListModelEntry class implements a single theme list entry in a <a href="themelistmodel.html">ThemeListModel</a>.</p>
+<p>The ThemeListModelEntry has a <a href="themelistmodelentry.html#uid">uid</a>() and a <a href="themelistmodelentry.html#type">type</a>(), which are used by <a href="themelistmodelentry.html#templateInstance">templateInstance</a>() to associate a single template instance to this entry. The ThemeListModelEntry stores this template instance internally and can be retrieved using <a href="themelistmodelentry.html#templateInstance">templateInstance</a>().</p>
+<p>This class must be subclassed and the pure virtual <a href="themelistmodelentry.html#type">type</a>() function reimplemented to return the appropriate value.</p>
+<p>See also <a href="themelistmodel.html">ThemeListModel</a>, <a href="themetemplateitem.html">ThemeTemplateItem</a>, and <a href="themetemplateinstanceitem.html">ThemeTemplateInstanceItem</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="ThemeListModelEntry"></a>ThemeListModelEntry::ThemeListModelEntry ( <a href="themelistmodel.html">ThemeListModel</a> * <i>model</i> )</h3>
+<p>Constructs a <a href="themelistmodelentry.html">ThemeListModelEntry</a> an associates it with the given <i>model</i>.</p>
+<h3 class="fn"><a name="dtor.ThemeListModelEntry"></a>ThemeListModelEntry::~ThemeListModelEntry ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="themelistmodelentry.html">ThemeListModelEntry</a>.</p>
+<h3 class="fn"><a name="model"></a><a href="themelistmodel.html">ThemeListModel</a> * ThemeListModelEntry::model () const</h3>
+<p>Returns the parent <a href="themelistmodel.html">ThemeListModel</a> instance associated with this entry.</p>
+<h3 class="fn"><a name="setValue"></a>void ThemeListModelEntry::setValue ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i> )</h3>
+<p>Sets the given <i>value</i> in the valuespace based on the given <i>key</i>. The actual key set will be <a href="themelistmodelentry.html#templateInstance">templateInstance</a>()-&gt;fullVSPath() + <i>key</i>.</p>
+<p>See also <a href="themelistmodelentry.html#value">value</a>().</p>
+<h3 class="fn"><a name="templateInstance"></a><a href="themetemplateinstanceitem.html">ThemeTemplateInstanceItem</a> * ThemeListModelEntry::templateInstance ()</h3>
+<p>Creates and returns a <a href="themetemplateinstanceitem.html">ThemeTemplateInstanceItem</a> object for this entry. This function searches all template items defined under the list item in the themed view XML file looking for an item that has a name attribute matching the return value of <a href="themelistmodelentry.html#type">type</a>(). When it finds one it calls <a href="themetemplateitem.html#createInstance">ThemeTemplateItem::createInstance</a>() passing the value of <a href="themelistmodelentry.html#uid">uid</a>(), and stores the return value in this entry. If a template instance item already exists but its name attribute does not match the value currently returned by <a href="themelistmodelentry.html#type">type</a>(), then it is deleted and a new template instance is created. If no template can be found for this entry 0 is returned, otherwise a pointer to the associated <a href="themetemplateinstanceitem.html">ThemeTemplateInstanceItem</a> is returned.</p>
+<p>See also <a href="themetemplateinstanceitem.html">ThemeTemplateInstanceItem</a>.</p>
+<h3 class="fn"><a name="type"></a><a href="qstring.html">QString</a> ThemeListModelEntry::type () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the type of this entry. Subclasses must overrride this pure virtual function and return a value that corresponds to the name attribute of a template item defined under the associated list item in the themed view XML. <a href="themelistmodelentry.html#templateInstance">templateInstance</a>() calls this function to lookup and associate this entry to a <a href="themetemplateitem.html">ThemeTemplateItem</a>. If the value that this function returns changes, either the subclass or the parent <a href="themelistmodel.html">ThemeListModel</a> implementation should instruct the view to repaint this entry, probably by calling <a href="themelistmodel.html#triggerUpdate">ThemeListModel::triggerUpdate</a>(). The internal <a href="qitemdelegate.html">QItemDelegate</a> implementation will call <a href="themelistmodelentry.html#templateInstance">templateInstance</a>() to create and associate a <a href="themetemplateinstanceitem.html">ThemeTemplateInstanceItem</a> object with this entry, based on the new return value.</p>
+<h3 class="fn"><a name="uid"></a><a href="qstring.html">QString</a> ThemeListModelEntry::uid ()</h3>
+<p>Returns a globally unique identifier for this entry. The return value of this function is used by <a href="themelistmodelentry.html#templateInstance">templateInstance</a>() in order to associate this entry with a theme template instance.</p>
+<h3 class="fn"><a name="value"></a><a href="qvariant.html">QVariant</a> ThemeListModelEntry::value ( const <a href="qstring.html">QString</a> &amp; <i>key</i> )</h3>
+<p>Retrives a value from the valuespace based on the given <i>key</i>. The actual valuespace key used to get the value will be <a href="themelistmodelentry.html#templateInstance">templateInstance</a>()-&gt;fullVSPath() + <i>key</i>.</p>
+<p>See also <a href="themelistmodelentry.html#setValue">setValue</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

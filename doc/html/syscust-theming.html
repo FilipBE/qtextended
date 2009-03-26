@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Theming</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Theming<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#creating-a-theme">Creating a Theme</a></li>
+<li><a href="#installing-an-updated-theme">Installing an Updated Theme</a></li>
+<li><a href="#installing-a-new-theme">Installing a New Theme</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended has a powerful theming engine, allowing much of the user interface to be customized and personalized.</p>
+<p>Components of the user interface such as <tt>Title Bar</tt>, <tt>Home Screen</tt>, <tt>Call Screen</tt>, <tt>Context Bar</tt> use <a href="themed-views.html">Themed Views</a> to facilitate customization.</p>
+<p>These are defined by XML files describing a hierarchical group of visual and formatting elements. Themed Views contain theme elements which define the layout and structure of components. Each of these elements is assigned attributes to customize visual appearance and placement.</p>
+<p>Refer to:</p>
+<ul>
+<li><a href="themed-views.html">Themed Views</a></li>
+<li><a href="themed-view-elements.html">Themed View Elements</a></li>
+<li><a href="theme-knownelem.html">Known Elements</a></li>
+<li><a href="theme-graphdes.html">Graphic Designer's Reference</a></li>
+</ul>
+<p>for detailed information.</p>
+<p>In addition to simple vector content, themes can conditionally contain rich <a href="qwidget.html">QWidget</a> content. The Qt Extended home screen has been enabled in this way, and widgets can be added using the HomeScreenWidgets class.</p>
+<p>It is also possible to provide color schemes and <a href="syscust-icons.html#installing-custom-icons">custom icons</a> with a theme.</p>
+<p>Theming code examples are available on the: <a href="tut-index.html">Tutorials</a> page.</p>
+<a name="creating-a-theme"></a>
+<h2>Creating a Theme</h2>
+<p>The main components required to create a theme are:</p>
+<ul>
+<li>Title Bar</li>
+<li>Home/Call Screen</li>
+<li>Context Bar</li>
+<li>Window Decorations</li>
+</ul>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><p align="center"><img src="images/qtopia_home.png" /></p></td><td><p align="center"><img src="images/qtopia-app-chooser.png" /></p></td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Title Bar</tt></td><td>Contains elements that require defined positions including:<ul>
+<li>Battery level</li>
+<li>Signal level</li>
+<li>Window caption</li>
+<li>Time</li>
+<li>Status indicators:<ul>
+<li>Roaming</li>
+<li>Messages</li>
+<li>Call active</li>
+</ul>
+</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>Home/Call Screen</tt></td><td>Displays commonly accessed information such as:<ul>
+<li>Background - default or custom background</li>
+<li>Number of missed calls</li>
+<li>Number of new messages</li>
+<li>Time and date</li>
+<li>Operator name</li>
+<li>Profile</li>
+<li>Information box</li>
+<li>Dialer button for touchscreen mode</li>
+<li>PIN entry pad for touchscreen mode</li>
+<li>Status indicators:<ul>
+<li>Alarm</li>
+<li>Lock</li>
+<li>Call divert</li>
+<li>Roaming</li>
+<li>Messages</li>
+<li>Call active</li>
+</ul>
+</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Context Bar</td><td><ul>
+<li>Rectangular area at the bottom of the screen</li>
+<li>Usually contains three buttons corresponding to context buttons on the keypad.</li>
+<li>Displays as either text or icons.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Window Decorations</td><td>Refer to: <a href="tut-winddectheme.html">Window Decoration Tutorial</a></td></tr>
+</table></p>
+<p>Widget style and icons can help to complete the effect, however since these are far more time consuming to produce it is common to use those provided by an existing theme.</p>
+<p>Code examples are available at: <a href="tut-index.html#tuttheming">Theming Tutorials</a>.</p>
+<a name="installing-an-updated-theme"></a>
+<h2>Installing an Updated Theme</h2>
+<p>To install a modified theme run :</p>
+<pre>    cd $QPEDIR
+    bin/qbuild image</pre>
+<a name="installing-a-new-theme"></a>
+<h2>Installing a New Theme</h2>
+<p>To install a new theme follow these steps :</p>
+<ol type="1">
+<li>modify <tt>$QPEDIR/src/custom.pri</tt> to have an additional <tt>THEME_PROJECT</tt> entry that states the theme directory.</li>
+<li>create the <tt>qbuild.pro</tt>, <tt>.conf</tt>, <tt>.xml</tt> and image files that define the theme</li>
+<li>run <tt>bin/qbuild image</tt> to install the theme.</li>
+</ol>
+<p>Installing a new theme also requires the following files:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>File</th><th>Location</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="tut-themefiles.html#projtheme">Theme Project File</a></td><td><tt>$QPEDIR/etc/themes/</tt></td><td>defines the files to be installed for the theme.</td></tr>
+<tr valign="top" class="even"><td><a href="tut-themefiles.html#configtheme">Theme Configuration File</a></td><td><tt>$QPEDIR/etc/themes/</tt></td><td>defines the theme.</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

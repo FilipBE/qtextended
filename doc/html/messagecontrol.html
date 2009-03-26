@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>MessageControl Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">MessageControl Class Reference<br /><span class="small-subtitle">[<a href="qtpkgmanagementmodule.html">QtPkgManagementModule</a>, <a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The MessageControl class provides message related management services. <a href="#details">More...</a></p>
+<pre>    #include &lt;MessageControl&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="messagecontrol-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="messagecontrol.html#MessageControl">MessageControl</a></b> ( QObject * <i>parent</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The MessageControl class provides message related management services.</p>
+<p>It keeps track of arriving messages and notifies the <a href="messagesservice.html">MessagesService</a> via <a href="messagesservice.html#viewNewMessages">MessagesService::viewNewMessages</a>() if required. In addition this class maintains the following value space entries:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Path</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Communications/Messages/NewMessages</tt></td><td>number of new not yet read messages</td></tr>
+<tr valign="top" class="even"><td><tt>Communications/Messages/NewSMS</tt></td><td>number of unread SMS</td></tr>
+<tr valign="top" class="odd"><td><tt>Communications/Messages/NewMMS</tt></td><td>number of unread MMS</td></tr>
+<tr valign="top" class="even"><td><tt>Communications/Messages/NewSystem</tt></td><td>number of unread system messages</td></tr>
+<tr valign="top" class="odd"><td><tt>Communications/Messages/NewInstant</tt></td><td>number of unread instant messages</td></tr>
+<tr valign="top" class="even"><td><tt>Communications/Messages/NewEmail</tt></td><td>number of unread email messages</td></tr>
+<tr valign="top" class="odd"><td><tt>Communications/Messages/SMSFull</tt></td><td>true if the sms storage is full</td></tr>
+<tr valign="top" class="even"><td><tt>Communications/Messages/SMSRejected</tt></td><td>true if an sms was rejected due to a full storage</td></tr>
+</table></p>
+<p>This task opens a message box if a message was rejected due to full SMS memory. If this is not a desired behavior or such a notification would be handled by a different class the message box can be disabled by setting the <tt>MessageControl\DisablePopup</tt> key to <tt>true</tt> in the <tt>Trolltech/Phone</tt> configuration file. If this setting is missing, MessageControl shows the above mentioned popup box by default.</p>
+<p>This class is a Qt Extended server task. It cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="MessageControl"></a>MessageControl::MessageControl ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a new instance of this class with the given <i>parent</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

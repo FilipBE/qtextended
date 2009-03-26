@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Location Services</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Location Services<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#a-simple-example">A simple example</a></li>
+<ul><li><a href="#reading-location-data-from-qwhereaboutsupdate">Reading location data from QWhereaboutsUpdate</a></li>
+</ul>
+<li><a href="#specifying-and-adding-location-data-sources">Specifying and adding location data sources</a></li>
+<ul><li><a href="#the-default-location-data-source">The default location data source</a></li>
+<li><a href="#adding-custom-location-data-sources">Adding custom location data sources</a></li>
+<ul><li><a href="#an-example">An example</a></li>
+</ul>
+</ul>
+<li><a href="#other-examples">Other examples</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qt Extended Whereabouts library provides developers of Location-Based Services with the essential components for distributing, receiving and processing location information. The library can be used to easily query and retrieve location information, and location updates can be received from either built-in or custom-added location data sources. Custom location data sources are added through Qt Extended's plugin mechanisms.</p>
+<p>The main classes in the Whereabouts library are <a href="qwhereabouts.html">QWhereabouts</a>, <a href="qwhereaboutsupdate.html">QWhereaboutsUpdate</a>, <a href="qwhereaboutsplugin.html">QWhereaboutsPlugin</a> and <a href="qwhereaboutsfactory.html">QWhereaboutsFactory</a>:</p>
+<ul>
+<li><a href="qwhereabouts.html">QWhereabouts</a> instances provides location data updates using <a href="qwhereaboutsupdate.html">QWhereaboutsUpdate</a> objects</li>
+<li><a href="qwhereaboutsplugin.html">QWhereaboutsPlugin</a> allows the addition of Whereabouts plugins to receive and process data from custom location data sources (such as AGPS sources or GPS devices with proprietary protocols)</li>
+<li><a href="qwhereaboutsfactory.html">QWhereaboutsFactory</a> allows such plugins to be loaded.</li>
+</ul>
+<p>In addition, <a href="qnmeawhereabouts.html">QNmeaWhereabouts</a> provides functionality for reading location data from NMEA data sources. Developers can use it to read NMEA data sources without the need to write NMEA parsing code in their plugin implementations.</p>
+<a name="a-simple-example"></a>
+<h2>A simple example</h2>
+<p>The <a href="whereabouts-simpledemo.html">Whereabouts Simple Demo</a> demonstrates how to create a <a href="qwhereabouts.html">QWhereabouts</a> instance and use it to retrieve location updates:</p>
+<pre>    class SimpleLocationDemo : public QObject
+    {
+        Q_OBJECT
+    public:
+        SimpleLocationDemo(QObject *parent = 0)
+            : QObject(parent)
+        {
+            QWhereabouts *whereabouts = QWhereaboutsFactory::create();
+            connect(whereabouts, SIGNAL(updated(QWhereaboutsUpdate)),
+                    SLOT(updated(QWhereaboutsUpdate)));
+
+            whereabouts-&gt;startUpdates();
+        }
+
+    private slots:
+        void updated(const QWhereaboutsUpdate &amp;update)
+        {
+            <span class="comment">// respond to update here</span>
+        }
+    };</pre>
+<p>The application simply calls <a href="qwhereabouts.html#startUpdates">QWhereabouts::startUpdates</a>() to begin to receive regular location updates through the <a href="qwhereabouts.html#updated">QWhereabouts::updated</a>() signal.</p>
+<p>Where does the location data come from? That depends on the <a href="qwhereabouts.html">QWhereabouts</a> instance returned from <a href="qwhereaboutsfactory.html#create">QWhereaboutsFactory::create</a>(). In this example, <a href="qwhereaboutsfactory.html#create">create()</a> is called without any arguments, so the returned instance receives location data from the default data source. See below for details on using the default and custom data sources.</p>
+<a name="reading-location-data-from-qwhereaboutsupdate"></a>
+<h3>Reading location data from QWhereaboutsUpdate</h3>
+<p><a href="qwhereaboutsupdate.html">QWhereaboutsUpdate</a> contains the various types of data that can be retrieved in a location update. At a minimum, an update includes a global coordinate position specified by a <a href="qwhereaboutscoordinate.html">QWhereaboutsCoordinate</a> object, and a timestamp specified by <a href="qwhereaboutsupdate.html#updateDateTime">QWhereaboutsUpdate::updateDateTime</a>() that indicates when the update was received. The update may also include other information such as altitude, ground speed and bearing. <a href="qwhereaboutsupdate.html#dataValidityFlags">QWhereaboutsUpdate::dataValidityFlags</a>() indicates the types of data contained in a particular update.</p>
+<p>Coordinates are expected to be in the WGS84 datum, which is the most commonly used datum for GPS devices and is a standard datum for worldwide use. Also note that location data generally uses metric units; altitude is measured in metres and speed is measured in kilometres/hour.</p>
+<a name="specifying-and-adding-location-data-sources"></a>
+<h2>Specifying and adding location data sources</h2>
+<p>The Whereabouts API uses Qt Extended's plugin mechanisms to allow location data to be retrieved from arbitrary sources, such as custom GPS hardware devices, AGPS sources, or previously logged location data. Developers can write plugins that retrieve data from their desired data source and then distribute this data through the Whereabouts API classes.</p>
+<p>The desired location data source is specified by the argument to <a href="qwhereaboutsfactory.html#create">QWhereaboutsFactory::create</a>(). If no argument is provided, the default data source is used. Otherwise, the argument can be set to the class name of the plugin that provides the location data.</p>
+<p>As a convenience, the Whereabouts library has a built-in plugin, &quot;gpsd&quot;, that retrieves data from <a href="http://gpsd.berlios.de">GPSd</a> daemons. <a href="http://gpsd.berlios.de">GPSd</a> is an open-source service daemon that connects to a specified GPS device and distributes the GPS data over a TCP port. The gpsd plugin connects to this daemon and then provides access to the data through the Whereabouts API. Naturally, the system integrator must ensure a GPSd daemon has been started on the defined GPSd port (2947) or else this plugin will not be able to receive any location data.</p>
+<a name="the-default-location-data-source"></a>
+<h3>The default location data source</h3>
+<p>A default location data source can be specified through the &quot;Plugins/Default&quot; value in the <tt>$QPEDIR/etc/Settings/Trolltech/Whereabouts.conf</tt> settings file. For most Qt Extended device configurations, the default plugin is set to the built-in plugin, &quot;gpsd&quot;. However, if your device has a supported Qt Extended device configuration and also has built-in GPS hardware, this default value may already be set to a plugin that can read from that hardware.</p>
+<p>To use the default plugin, call <a href="qwhereaboutsfactory.html#create">QWhereaboutsFactory::create</a>() without any arguments.</p>
+<a name="adding-custom-location-data-sources"></a>
+<h3>Adding custom location data sources</h3>
+<p>Whereabouts plugins can easily be added to retrieve location data from custom sources.</p>
+<p>To add a Whereabouts plugin:</p>
+<ol type="1">
+<li>Create a subclass of <a href="qwhereabouts.html">QWhereabouts</a> that connects to and distributes data from your custom data source. (Or, if the data source provides location data in the form of NMEA sentences, you can use <a href="qnmeawhereabouts.html">QNmeaWhereabouts</a> instead of writing your own subclass.)</li>
+<li>Create a subclass of <a href="qwhereaboutsplugin.html">QWhereaboutsPlugin</a> that is declared with the QTOPIA_PLUGIN_EXPORT macro, and when implementing <a href="qwhereaboutsplugin.html#create">QWhereaboutsPlugin::create</a>(), return an instance of your QWhereaboutsSubclass. Also, export the plugin using the QTOPIA_EXPORT_PLUGIN macro.</li>
+</ol>
+<p>Once the plugin is installed, you can use it by calling <a href="qwhereaboutsfactory.html#create">QWhereaboutsFactory::create</a>() with the plugin class name.</p>
+<a name="an-example"></a>
+<h4>An example</h4>
+<p>The <a href="whereabouts-sampleplugin-locationplugin.html">Whereabouts Sample Plugin</a> demonstrates the integration of a custom Whereabouts plugin. The <tt>examples/sampleplugin/locationplugin</tt> directory contains the plugin, and <tt>examples/sampleplugin/mylocationapp</tt> contains an application that uses the plugin to retrieve location updates.</p>
+<p>First, we create a <a href="qwhereabouts.html">QWhereabouts</a> subclass called <tt>LocationProvider</tt>:</p>
+<pre>    class LocationProvider : public QWhereabouts
+    {
+        Q_OBJECT
+    public:
+        LocationProvider(QObject *parent = 0);
+
+        void requestUpdate();
+        void startUpdates();
+        void stopUpdates();
+
+    private:
+        QTimer *m_timer;
+    };</pre>
+<p>This <tt>LocationProvider</tt> class simply produces updates with the current date/time and latitude-longitude coordinates of (0, 0). It uses <a href="qtimer.html">QTimer</a> to implement timed updates for <a href="qwhereabouts.html#startUpdates">QWhereabouts::startUpdates</a>() and <a href="qwhereabouts.html#stopUpdates">QWhereabouts::stopUpdates</a>(). Here is the implementation:</p>
+<pre>    LocationProvider::LocationProvider(QObject *parent)
+        : QWhereabouts(QWhereabouts::TerminalBasedUpdate, parent),
+          m_timer(new QTimer(this))
+    {
+        connect(m_timer, SIGNAL(timeout()), SLOT(requestUpdate()));
+    }
+
+    void LocationProvider::requestUpdate()
+    {
+        QWhereaboutsUpdate update;
+        update.setCoordinate(QWhereaboutsCoordinate(0.0, 0.0));
+        update.setUpdateDateTime(QDateTime::currentDateTime());
+        emitUpdated(update);
+    }
+
+    void LocationProvider::startUpdates()
+    {
+        if (updateInterval() &gt; 0)
+            m_timer-&gt;start(updateInterval());
+        else
+            m_timer-&gt;start(1000);
+    }
+
+    void LocationProvider::stopUpdates()
+    {
+        m_timer-&gt;stop();
+    }</pre>
+<p>Then we create a Whereaboutsplugin called <tt>LocationPlugin</tt> that is able to create and return instances of <tt>LocationProvider</tt>. Here is the class definition:</p>
+<pre>    class QTOPIA_PLUGIN_EXPORT LocationPlugin : public QWhereaboutsPlugin
+    {
+        Q_OBJECT
+    public:
+        LocationPlugin(QObject *parent = 0);
+
+        QWhereabouts *create(const QString &amp;source);
+    };</pre>
+<p>In the <tt>locationplugin.cpp</tt> file, we implement <tt>create()</tt> to return an instance of <tt>LocationProvider</tt>, and export the plugin using the QTOPIA_EXPORT_PLUGIN macro:</p>
+<pre>    LocationPlugin::LocationPlugin(QObject *parent)
+        : QWhereaboutsPlugin(parent)
+    {
+    }
+
+    QWhereabouts *LocationPlugin::create(const QString &amp;source)
+    {
+        Q_UNUSED(source);
+        return new LocationProvider;
+    }
+
+    QTOPIA_EXPORT_PLUGIN(LocationPlugin)</pre>
+<p>Then, once the plugin has been installed with <tt>qbuild image</tt>, you can use it by passing the class name to <a href="qwhereaboutsfactory.html#create">QWhereaboutsFactory::create</a>(). (The class name argument is not case-sensitive.) So in the <tt>examples/sampleplugin/mylocationapp</tt> project, we create a <tt>MyLocationApp</tt> class that uses our custom plugin, like this:</p>
+<pre>    MyLocationApp::MyLocationApp(QWidget *parent, Qt::WFlags flags)
+        : QMainWindow(parent, flags)
+    {
+        QWhereabouts *whereabouts = QWhereaboutsFactory::create(&quot;locationplugin&quot;);
+        connect(whereabouts, SIGNAL(updated(QWhereaboutsUpdate)),
+                SLOT(updated(QWhereaboutsUpdate)));
+
+        whereabouts-&gt;startUpdates();
+    }
+
+    void MyLocationApp::updated(const QWhereaboutsUpdate &amp;update)
+    {
+        <span class="comment">// Respond to update here</span>
+    }</pre>
+<p>So <tt>MyLocationApp</tt> now receives updates through the <tt>LocationProvider</tt> we created.</p>
+<p>To make this the default plugin to be returned if <a href="qwhereaboutsfactory.html#create">QWhereaboutsFactory::create</a>() is called without any arguments, set the &quot;Plugins/Default&quot; value in <tt>$QPEDIR/etc/Settings/Trolltech/Whereabouts.conf</tt> to &quot;locationplugin&quot;.</p>
+<a name="other-examples"></a>
+<h2>Other examples</h2>
+<p>The <a href="whereabouts-mappingdemo.html">Whereabouts Mapping Demo</a> uses the Whereabouts API together with Google Maps to either track the user's current location, or provide a simulation of a previous journey using a NMEA data log.</p>
+<p align="center"><img src="images/location-mappingdemo.png" /></p><p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

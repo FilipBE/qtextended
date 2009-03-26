@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QContentPlugin Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QContentPlugin Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QContentPlugin class provides an interface for the Qt Extended Document System to discover detailed information about a file. <a href="#details">More...</a></p>
+<pre>    #include &lt;QContentPlugin&gt;</pre><ul>
+<li><a href="qcontentplugin-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="qcontentplugin.html#dtor.QContentPlugin">~QContentPlugin</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="qcontentplugin.html#installContent">installContent</a></b> ( const QString &amp; <i>fileName</i>, QContent * <i>content</i> ) = 0</li>
+<li><div class="fn"/>virtual QStringList <b><a href="qcontentplugin.html#keys">keys</a></b> () const = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qcontentplugin.html#updateContent">updateContent</a></b> ( QContent * <i>content</i> )</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcontentplugin.html#preloadPlugins">preloadPlugins</a></b> ()</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QContentPlugin class provides an interface for the Qt Extended Document System to discover detailed information about a file.</p>
+<p>Content plug-ins are used by the document system to read meta-data from files that may be used to index the content or better describe it to the user. When a new file is first discovered by the document system its extension is used to identify possible plug-ins that may be able to identify the file. If any such plug-in is found the plug-in's <a href="qcontentplugin.html#installContent">installContent</a>() method is called with the file name and the destination <a href="qcontent.html">QContent</a> as arguments. The document system will keep trying potential content plug-ins until one is found that identifies itself as having successfully processed the file by returning true.</p>
+<p>The content plug-ins are also invoked when a content record is found to be out of date, but in this case the <a href="qcontentplugin.html#updateContent">updateContent</a>() method of the plug-in is called. A content record is determined to be out of date when the backing file's last modified date is more recent than the content records last update date.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.QContentPlugin"></a>QContentPlugin::~QContentPlugin ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys a <a href="qcontentplugin.html">QContentPlugin</a>.</p>
+<h3 class="fn"><a name="installContent"></a>bool QContentPlugin::installContent ( const <a href="qstring.html">QString</a> &amp; <i>fileName</i>, <a href="qcontent.html">QContent</a> * <i>content</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Populates <i>content</i> with data from the file with the file name <i>fileName</i>. Returns true if the content plug-in successfully populated the <a href="qcontent.html">QContent</a>.</p>
+<p>Installation is only performed when the content is first identified by the content system, if the file changes after installation <a href="qcontentplugin.html#updateContent">updateContent</a>() will be called to ensure the content data is up to date; otherwise returns false</p>
+<h3 class="fn"><a name="keys"></a><a href="qstringlist.html">QStringList</a> QContentPlugin::keys () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns a list of the file extensions the <a href="qcontentplugin.html">QContentPlugin</a> instance can report on.</p>
+<h3 class="fn"><a name="preloadPlugins"></a>void QContentPlugin::preloadPlugins ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Initializes the content plug-in manager.</p>
+<p>This should not normally not be necessary as the plug-in manager is loaded on demand.</p>
+<h3 class="fn"><a name="updateContent"></a>bool QContentPlugin::updateContent ( <a href="qcontent.html">QContent</a> * <i>content</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Refreshes the content data of <i>content</i> following a change to the file it references.</p>
+<p>Returns true if the content data has been ensured to be up to date; otherwise returns false.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

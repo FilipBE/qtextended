@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>UIApplicationMonitor Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">UIApplicationMonitor Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The UIApplicationMonitor class monitors the running state of UI applications. <a href="#details">More...</a></p>
+<pre>    #include &lt;UIApplicationMonitor&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="uiapplicationmonitor-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="uiapplicationmonitor.html#ApplicationState-enum">ApplicationState</a></b> { NotRunning, Starting, Running, NotResponding, ..., StateMask }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="uiapplicationmonitor.html#UIApplicationMonitor">UIApplicationMonitor</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="uiapplicationmonitor.html#dtor.UIApplicationMonitor">~UIApplicationMonitor</a></b> ()</li>
+<li><div class="fn"/>ApplicationState <b><a href="uiapplicationmonitor.html#applicationState">applicationState</a></b> ( const QString &amp; <i>application</i> ) const</li>
+<li><div class="fn"/>QStringList <b><a href="uiapplicationmonitor.html#busyApplications">busyApplications</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="uiapplicationmonitor.html#notRespondingApplications">notRespondingApplications</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="uiapplicationmonitor.html#runningApplications">runningApplications</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="uiapplicationmonitor.html#applicationStateChanged">applicationStateChanged</a></b> ( const QString &amp; <i>application</i>, UIApplicationMonitor::ApplicationState <i>newState</i> )</li>
+<li><div class="fn"/>void <b><a href="uiapplicationmonitor.html#busy">busy</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="uiapplicationmonitor.html#notBusy">notBusy</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>int <b><a href="uiapplicationmonitor.html#notRespondingTimeout">notRespondingTimeout</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="uiapplicationmonitor.html#setNotRespondingTimeout">setNotRespondingTimeout</a></b> ( int <i>timeout</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The UIApplicationMonitor class monitors the running state of UI applications.</p>
+<p>The UI application monitor provides a friendly interface to monitoring the state of UI applications. The UIApplicationMonitor class uses the following messages to monitor application state.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>To Application</th><th>From Application</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>raise()</tt></td><td><tt>QPE/QtopiaApplication:appRaised(QString)</tt></td><td>Used to raise, and confirm the raise of, the application UI.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>QPE/QtopiaApplication:busy(QString)</tt></td><td>The application has notified the system that it is busy.</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>QPE/QtopiaApplication:notBusy(QString)</tt></td><td>The application has notified the system that it is not busy.</td></tr>
+</table></p>
+<p>Additionally the UIApplicationMonitor class uses the following value space keys to monitor application state.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Value Space Key</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>/System/Applications/&lt;app name&gt;/Tasks/UI</tt></td><td>True when the application is showing UI, false if not.</td></tr>
+</table></p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ApplicationState-enum"></a>enum UIApplicationMonitor::ApplicationState</h3>
+<p>The ApplicationState enum represents the current state of a UI application.</p>
+<p>Every application will have at least on of the following states:</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::NotRunning</tt></td><td align="center" valign="top"><tt>0x0000</tt></td><td valign="top">The application is not currently running, does not appear to be a UI application, or is not currently showing a UI. An application is considered not running whenever the value space key <tt>/System/Applications/&lt;application&gt;/Tasks/UI</tt> is false.</td></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::Starting</tt></td><td align="center" valign="top"><tt>0x0001</tt></td><td valign="top">The application is currently starting, in response to a <tt>raise()</tt> message. The busy flag is automatically set for applications in the Starting state. It is unset when they enter the Running state or terminate.</td></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::Running</tt></td><td align="center" valign="top"><tt>0x0002</tt></td><td valign="top">The application is running and displaying a UI. An application is considered running whenever the value space key <tt>/System/Applications/&lt;application&gt;/Tasks/UI</tt> is true.</td></tr>
+</table></p>
+<p>Additionally, zero or more of the following flags may be applied to any application in the Starting or Running state.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::NotResponding</tt></td><td align="center" valign="top"><tt>0x0100</tt></td><td valign="top">The application is not responding. An application is marked as not responding if it does not send an <tt>appRaised(QString)</tt> message in response to a <tt>raise()</tt> message within the <a href="uiapplicationmonitor.html#notRespondingTimeout">notRespondingTimeout</a>() time limit.</td></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::Busy</tt></td><td align="center" valign="top"><tt>0x0200</tt></td><td valign="top">The application is busy.</td></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::Active</tt></td><td align="center" valign="top"><tt>0x0400</tt></td><td valign="top">The application is active. The active application is the application that created the currently active window.</td></tr>
+</table></p>
+<p>The following masks are also supported.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>UIApplicationMonitor::StateMask</tt></td><td align="center" valign="top"><tt>0x00FF</tt></td><td valign="top">Masks the enumeration bits used by application states.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="UIApplicationMonitor"></a>UIApplicationMonitor::UIApplicationMonitor ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a new <a href="uiapplicationmonitor.html">UIApplicationMonitor</a> instance with the provided <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.UIApplicationMonitor"></a>UIApplicationMonitor::~UIApplicationMonitor ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroy the <a href="uiapplicationmonitor.html">UIApplicationMonitor</a> instance.</p>
+<h3 class="fn"><a name="applicationState"></a><a href="uiapplicationmonitor.html#ApplicationState-enum">ApplicationState</a> UIApplicationMonitor::applicationState ( const <a href="qstring.html">QString</a> &amp; <i>application</i> ) const</h3>
+<p>Returns the current state of <i>application</i>.</p>
+<h3 class="fn"><a name="applicationStateChanged"></a>void UIApplicationMonitor::applicationStateChanged ( const <a href="qstring.html">QString</a> &amp; <i>application</i>, <a href="uiapplicationmonitor.html#ApplicationState-enum">UIApplicationMonitor::ApplicationState</a> <i>newState</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever <i>application</i>'s state changes. <i>newState</i> will be set to the application's new state.</p>
+<h3 class="fn"><a name="busy"></a>void UIApplicationMonitor::busy ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when any application is busy.</p>
+<h3 class="fn"><a name="busyApplications"></a><a href="qstringlist.html">QStringList</a> UIApplicationMonitor::busyApplications () const</h3>
+<p>Return a list of all busy applications.</p>
+<h3 class="fn"><a name="notBusy"></a>void UIApplicationMonitor::notBusy ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when no applications are busy.</p>
+<h3 class="fn"><a name="notRespondingApplications"></a><a href="qstringlist.html">QStringList</a> UIApplicationMonitor::notRespondingApplications () const</h3>
+<p>Return a list of all not responding applications.</p>
+<h3 class="fn"><a name="notRespondingTimeout"></a>int UIApplicationMonitor::notRespondingTimeout ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the current not responding timeout in milliseconds.</p>
+<p>See also <a href="uiapplicationmonitor.html#setNotRespondingTimeout">setNotRespondingTimeout</a>().</p>
+<h3 class="fn"><a name="runningApplications"></a><a href="qstringlist.html">QStringList</a> UIApplicationMonitor::runningApplications () const</h3>
+<p>Return a list of all running UI applications. An application is &quot;running&quot; if it is showing a UI.</p>
+<h3 class="fn"><a name="setNotRespondingTimeout"></a>void UIApplicationMonitor::setNotRespondingTimeout ( int <i>timeout</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Set the not responding timeout to <i>timeout</i> milliseconds.</p>
+<p>See also <a href="uiapplicationmonitor.html#notRespondingTimeout">notRespondingTimeout</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

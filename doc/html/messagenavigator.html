@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>MessageNavigator Example</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">MessageNavigator Example<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="messagenavigator-foldermodel-cpp.html">messagenavigator/foldermodel.cpp</a></li>
+<li><a href="messagenavigator-foldermodel-h.html">messagenavigator/foldermodel.h</a></li>
+<li><a href="messagenavigator-messagenavigator-cpp.html">messagenavigator/messagenavigator.cpp</a></li>
+<li><a href="messagenavigator-messagenavigator-h.html">messagenavigator/messagenavigator.h</a></li>
+<li><a href="messagenavigator-messagenavigatorbase-ui.html">messagenavigator/messagenavigatorbase.ui</a></li>
+<li><a href="messagenavigator-pics-messagenavigator-svg.html">messagenavigator/pics/MessageNavigator.svg</a></li>
+<li><a href="messagenavigator-main-cpp.html">messagenavigator/main.cpp</a></li>
+<li><a href="messagenavigator-qbuild-pro.html">messagenavigator/qbuild.pro</a></li>
+</ul>
+<p>The MessageNavigator example shows how to create a Qt Extended application which displays messages stored by the Qt Extended Messaging library. The example application allows the user to browse for messages using a tree view to expose the hierarchical structure of email accounts that use folders. It displays the messages in each folder in a list, and when a message is selected, it uses Qt Extended services to delegate the display of the message to another application.</p>
+<p align="center"><img src="images/messagenavigator-example.png" alt="Screenshot of the MessageNavigator example" /></p><p>The application is structured as a stack of widgets, contained by a <a href="qstackedwidget.html">QStackedWidget</a>. We need two widgets in our stack: one to select a folder from a tree, and another to select a message from a list.</p>
+<p>The example application uses the Qt Extended Messaging library's <a href="qmailmessagesetmodel.html">QMailMessageSetModel</a> class to build a model of the messages in the Qt Extended mail store. It divides all the messages into groups, first by the account to which they belong, and within an account, by the folder where they are located. This task is performed by subclassing the <a href="qmailmessagesetmodel.html">QMailMessageSetModel</a> class to create our FolderModel class:</p>
+<pre>    class FolderModel : public QMailMessageSetModel
+    {
+        Q_OBJECT
+
+    public:
+        explicit FolderModel(QObject* parent = 0);
+        virtual ~FolderModel();
+
+        virtual QVariant data(QMailMessageSet* item, int role, int column) const;
+    };</pre>
+<p>The base class is specialized in two ways. The content of the model is determined by adding the necessary items in the constructor, and the data elements that are displayed for each item are augmented with an icon by overriding the <a href="qmailmessagesetmodel.html#data">data</a> function.</p>
+<p>The content of the model is configured by appending the items we want to display to the model, in the constructor. To the empty model, we successively append a new <a href="qmailaccountmessageset.html">QMailAccountMessageSet</a> item for each account in the mail store:</p>
+<pre>    FolderModel::FolderModel(QObject *parent)
+        : QMailMessageSetModel(parent)
+    {
+        <span class="comment">// Add an entry for each account, that will maintain its own tree of folders</span>
+        foreach (const QMailAccountId &amp;id, QMailStore::instance()-&gt;queryAccounts())
+            append(new QMailAccountMessageSet(this, id, true));
+    }</pre>
+<p>The <a href="qmailaccountmessageset.html">QMailAccountMessageSet</a> class represents a message set defined by selecting all messages associated with the account the item is configured with. The constructor for <a href="qmailaccountmessageset.html">QMailAccountMessageSet</a> takes a parent container to which it should be appended, and the identifier of the account that it should represent. It also takes a third parameter, which is used to specify the optional <tt>hierarchical</tt> property. If <tt>hierarchical</tt> is true, then the <a href="qmailaccountmessageset.html">QMailAccountMessageSet</a> class will automatically maintain a tree of <a href="qmailfoldermessageset.html">QMailFolderMessageSet</a> items as child items, corresponding to the folders belonging to the relevant account in the mail store. This determines the entire content of our model.</p>
+<p>In order to customize the display of the items in our tree view, the FolderModel class overrides the <a href="qmailmessagesetmodel.html#data">data</a> function of <a href="qmailmessagesetmodel.html">QMailMessageSetModel</a> and provides data for the <a href="qt.html#ItemDataRole-enum">Qt::DecorationRole</a> value used by <a href="qtopiaitemdelegate.html">QtopiaItemDelegate</a>:</p>
+<pre>    QVariant FolderModel::data(QMailMessageSet* item, int role, int column) const
+    {
+        if (role == Qt::DecorationRole) {
+            if (qobject_cast&lt;QMailAccountMessageSet*&gt;(item)) {
+                <span class="comment">// This item is an account message set</span>
+                return QIcon(&quot;:icon/qtmail/account&quot;);
+            } else {
+                <span class="comment">// This item is a folder message set</span>
+                return QIcon(&quot;:icon/folder&quot;);
+            }
+        } else {
+            return QMailMessageSetModel::data(item, role, column);
+        }
+    }</pre>
+<p>For our application, we create a FolderSelector widget which uses a <a href="qtreeview.html">QTreeView</a> to present our folder model:</p>
+<pre>    class FolderSelector : public QWidget
+    {
+        Q_OBJECT
+
+    public:
+        FolderSelector(QWidget* parent = 0)
+            : QWidget(parent),
+              label(new QLabel),
+              treeView(new QTreeView)
+        {
+            label-&gt;setText(tr(&quot;Select a folder:&quot;));
+
+            treeView-&gt;setModel(&amp;model);
+            treeView-&gt;setItemDelegate(new QtopiaItemDelegate(this));
+            treeView-&gt;setSelectionMode(QAbstractItemView::SingleSelection);
+            treeView-&gt;header()-&gt;setVisible(false);
+            treeView-&gt;installEventFilter(this);
+
+            connect(treeView, SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+
+            QVBoxLayout* layout = new QVBoxLayout(this);
+            layout-&gt;addWidget(label);
+            layout-&gt;addWidget(treeView);
+        }
+
+    signals:
+        void folderSelected(const QMailMessageSet* folder);
+        void done();
+
+    protected slots:
+        void activated(const QModelIndex&amp; index);
+
+    protected:
+        virtual bool eventFilter(QObject* obj, QEvent* event);
+
+    private:
+        FolderModel model;
+        QLabel* label;
+        QTreeView* treeView;
+    };</pre>
+<p>When we select an item from the tree view, we extract the <a href="qmailmessageset.html">QMailMessageSet</a> object represented by the selected item, and emit that data to our MessageSelector object:</p>
+<pre>    void FolderSelector::activated(const QModelIndex&amp; index)
+    {
+        emit folderSelected(model.itemFromIndex(index));
+    }</pre>
+<p>Once we have selected a message set, we will display a listing of the messages defined by that message set. For this, we need a stackable widget to list messages.</p>
+<p>The MessageSelector uses a <a href="qlistview.html">QListView</a> to present a listing of messages associated with a specific contact. To do this, we need to create a model of message data that the <a href="qlistview.html">QListView</a> will present. Our class therefore contains a <a href="qmailmessagelistmodel.html">QMailMessageListModel</a> object, and a <a href="qmailmessagedelegate.html">QMailMessageDelegate</a> object, whose responsibility is to render each element in the list view using the data of each message.</p>
+<pre>    class MessageSelector : public QWidget
+    {
+        Q_OBJECT
+
+    public:
+        MessageSelector(QWidget* parent = 0)
+            : QWidget(parent),
+              label(new QLabel),
+              listView(new QListView),
+              delegate(new QMailMessageDelegate(QMailMessageDelegate::AddressbookMode, this))
+        {
+            label-&gt;setWordWrap(true);
+
+            listView-&gt;setModel(&amp;model);
+            listView-&gt;setItemDelegate(delegate);
+            listView-&gt;setSelectionMode(QAbstractItemView::SingleSelection);
+            listView-&gt;installEventFilter(this);
+
+            connect(listView, SIGNAL(activated(QModelIndex)), this, SLOT(activated(QModelIndex)));
+
+            QVBoxLayout* layout = new QVBoxLayout(this);
+            layout-&gt;addWidget(label);
+            layout-&gt;addWidget(listView);
+        }
+
+    signals:
+        void listPrepared();
+        void messageSelected(const QMailMessageId&amp; id);
+        void done();
+
+    public slots:
+        void listMessages(const QMailMessageSet* folder);
+
+    protected slots:
+        void activated(const QModelIndex&amp; index);
+
+    protected:
+        virtual bool eventFilter(QObject* obj, QEvent* event);
+
+    private:
+        QMailMessageListModel model;
+        QLabel* label;
+        QListView* listView;
+        QMailMessageDelegate* delegate;
+    };</pre>
+<p>Now that we have widgets to display our folder model and a message list, we simply need to connect them together:</p>
+<pre>    MessageNavigator::MessageNavigator(QWidget *parent, Qt::WFlags f)
+        : QWidget(parent, f),
+          folderSelector(new FolderSelector),
+          messageSelector(new MessageSelector)
+    {
+        setupUi(this);
+
+        <span class="comment">// Connect our components</span>
+        connect(folderSelector, SIGNAL(folderSelected(const QMailMessageSet*)), messageSelector, SLOT(listMessages(const QMailMessageSet*)));
+        connect(folderSelector, SIGNAL(done()), qApp, SLOT(quit()));
+
+        connect(messageSelector, SIGNAL(listPrepared()), this, SLOT(showMessageList()));
+        connect(messageSelector, SIGNAL(messageSelected(QMailMessageId)), this, SLOT(viewMessage(QMailMessageId)));
+        connect(messageSelector, SIGNAL(done()), this, SLOT(showFolderTree()));
+
+        widgetStack-&gt;addWidget(folderSelector);
+        widgetStack-&gt;addWidget(messageSelector);
+
+        QVBoxLayout* layout = new QVBoxLayout(this);
+        layout-&gt;addWidget(widgetStack);
+
+        showFolderTree();
+    }
+
+    void MessageNavigator::showFolderTree()
+    {
+        widgetStack-&gt;setCurrentWidget(folderSelector);
+    }</pre>
+<p>When we have a folder selected from our folder tree, we create a list of messages corresponding to that folder. The <a href="qmailmessagelistmodel.html">QMailMessageListModel</a> provides the setKey() function, which allows the caller to specify the messages to be listed by providing a <a href="qmailmessagekey.html">QMailMessageKey</a> object that selects them from the mail store. We can use the messageKey() function of the <a href="qmailmessageset.html">QMailMessageSet</a> object selected in the FolderSelector to acquire a message key for our model:</p>
+<pre>    void MessageSelector::listMessages(const QMailMessageSet* folder)
+    {
+        model.setKey(folder-&gt;messageKey());
+
+        if (model.isEmpty()) {
+            label-&gt;setText(tr(&quot;No messages in %1&quot;).arg(folder-&gt;displayName()));
+        } else {
+            listView-&gt;selectionModel()-&gt;select(model.index(0, 0), QItemSelectionModel::Select);
+            listView-&gt;scrollToTop();
+            label-&gt;setText(tr(&quot;Select a message to view the content:&quot;));
+        }
+
+        emit listPrepared();
+    }</pre>
+<p>When the message list has been prepared, we move our message list to the top of the widget stack, in MessageNavigator::showMessageList():</p>
+<pre>    void MessageNavigator::showMessageList()
+    {
+        widgetStack-&gt;setCurrentWidget(messageSelector);
+    }</pre>
+<p>Finally, we handle the event where the user selects a message from our list. Rather than displaying the message ourself, we will use the <a href="qtopiaservicerequest.html">QtopiaServiceRequest</a> mechanism to request that another application handle this task for us. The <tt>Messages</tt> service exports a <tt>viewMessage</tt> function, which takes a <a href="qmailmessageid.html">QMailMessageId</a> object as a parameter; we respond to the user's selection by invoking this service with the identifier of the message that they selected:</p>
+<pre>    void MessageNavigator::viewMessage(const QMailMessageId&amp; id)
+    {
+        <span class="comment">// Request that some application display the selected message</span>
+        QtopiaServiceRequest req( &quot;Messages&quot;, &quot;viewMessage(QMailMessageId)&quot; );
+        req &lt;&lt; id;
+        req.send();
+    }</pre>
+<p>See also <a href="messageviewer.html">MessageViewer Example</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

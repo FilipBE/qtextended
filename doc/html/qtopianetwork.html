@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaNetwork Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaNetwork Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaNetwork class provides functions for starting/stopping of network devices/interfaces. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaNetwork&gt;</pre><ul>
+<li><a href="qtopianetwork-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>flags <b><a href="qtopianetwork.html#TypeFlag-enum">Type</a></b></li>
+<li><div class="fn"/>enum <b><a href="qtopianetwork.html#TypeFlag-enum">TypeFlag</a></b> { LAN, WirelessLAN, Dialup, GPRS, ..., BluetoothPAN }</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QStringList <b><a href="qtopianetwork.html#availableNetworkConfigs">availableNetworkConfigs</a></b> ( QtopiaNetwork::Type <i>type</i> = QtopiaNetwork::Any, const QString &amp; <i>path</i> = QString() )</li>
+<li><div class="fn"/>QPointer&lt;QtopiaNetworkInterface&gt; <b><a href="qtopianetwork.html#loadPlugin">loadPlugin</a></b> ( const QString &amp; <i>handle</i> )</li>
+<li><div class="fn"/>bool <b><a href="qtopianetwork.html#online">online</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopianetwork.html#setDefaultGateway">setDefaultGateway</a></b> ( const QString &amp; <i>handle</i> )</li>
+<li><div class="fn"/>QString <b><a href="qtopianetwork.html#settingsDir">settingsDir</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopianetwork.html#shutdown">shutdown</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopianetwork.html#startInterface">startInterface</a></b> ( const QString &amp; <i>handle</i>, const QVariant &amp; <i>options</i> = QVariant() )</li>
+<li><div class="fn"/>void <b><a href="qtopianetwork.html#stopInterface">stopInterface</a></b> ( const QString &amp; <i>handle</i>, bool <i>deleteIface</i> = false )</li>
+<li><div class="fn"/>void <b><a href="qtopianetwork.html#unsetDefaultGateway">unsetDefaultGateway</a></b> ( const QString &amp; <i>handle</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaNetwork class provides functions for starting/stopping of network devices/interfaces.</p>
+<p>In general it allows the managing of existing network configurations. The management functions include the starting and stopping of interfaces and other functions which may be useful for applications which want to influence the connectivity state of Qtopia.</p>
+<p>The <a href="qtopianetworkserver.html">QtopiaNetworkServer</a> synchronizes network interface operations across all Qt Extended applications. Client applications can request network operations via the static methods provided by this class. The following functions are thin wrapper functions encapsulating IPC calls to the <a href="qtopianetworkserver.html">QtopiaNetworkServer</a> which then acts on behalf of the caller:</p>
+<ul>
+<li><a href="qtopianetwork.html#startInterface">startInterface</a>()</li>
+<li><a href="qtopianetwork.html#stopInterface">stopInterface</a>()</li>
+<li><a href="qtopianetwork.html#setDefaultGateway">setDefaultGateway</a>()</li>
+<li><a href="qtopianetwork.html#unsetDefaultGateway">unsetDefaultGateway</a>()</li>
+<li><a href="qtopianetwork.html#shutdown">shutdown</a>()</li>
+</ul>
+<p>The second set of static functions relates to the management of network configuration files. By default Qt Extended saves network configurations in the directory returned by <a href="qtopianetwork.html#settingsDir">settingsDir</a>(). Network interfaces are identified via a handle which is the absolute path and name of the network configuration file containing the parameters for that interface. The network server will choose and load the appropriate network plug-in based on the configuration handle. <a href="qnetworkstate.html#deviceType">QNetworkState::deviceType</a>() can be used to determine the type of a network handle. In order to obtain a list of network handles of a particular type <a href="qtopianetwork.html#availableNetworkConfigs">availableNetworkConfigs</a>() should be used.</p>
+<p><a href="qtopianetwork.html#loadPlugin">loadPlugin</a>() finds and loads the Qt Extended network plug-in that is suitable for a given network handle. However to avoid multiple access to the same network interface the returned <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a> instance should be carefully managed. The most common reason for instanciating a <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a> from outside of the network server would be the need to allow the user to configure the interface via <a href="qtopianetworkinterface.html#configuration">QtopiaNetworkInterface::configuration</a>(). The internet application would be an example for such a use case.</p>
+<p>QtopiaNetwork only provides a minimum level of monitoring functionality via <a href="qtopianetwork.html#online">online</a>(). If more detailed monitoring is required one of the following classes should be used:</p>
+<ul>
+<li><a href="qnetworkstate.html">QNetworkState</a> - very generic connectivity information related to Qtopia</li>
+<li><a href="qnetworkdevice.html">QNetworkDevice</a> - specific information about the state of a particular hardware device</li>
+<li><a href="qnetworkconnection.html">QNetworkConnection</a> - information beyond the device level such as the remote partner</li>
+</ul>
+<p>See also <a href="qtopianetworkserver.html">QtopiaNetworkServer</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="flags"><a name="TypeFlag-enum"></a>enum QtopiaNetwork::TypeFlag<br />flags QtopiaNetwork::Type</h3>
+<p>This enum is used to describe the type of a network connection.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::LAN</tt></td><td align="center" valign="top"><tt>0x00000001</tt></td><td valign="top">Ethernet based network.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::WirelessLAN</tt></td><td align="center" valign="top"><tt>0x00000002</tt></td><td valign="top">Wireless network.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::Dialup</tt></td><td align="center" valign="top"><tt>0x00000004</tt></td><td valign="top">The connection is established via a dial-up connection.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::GPRS</tt></td><td align="center" valign="top"><tt>0x00000008</tt></td><td valign="top">The connection is established via GPRS/UMTS/EDGE.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::Bluetooth</tt></td><td align="center" valign="top"><tt>0x00001000</tt></td><td valign="top">The network is based on Bluetooth.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::Hidden</tt></td><td align="center" valign="top"><tt>0x10000000</tt></td><td valign="top">This interface is hidden from the user.</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::Custom</tt></td><td align="center" valign="top"><tt>0x20000000</tt></td><td valign="top">This network plugin must exactly match the network configuration. For more details see <a href="qtopianetworkfactoryiface.html#customID">QtopiaNetworkFactoryIface::customID</a>().</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::Any</tt></td><td align="center" valign="top"><tt>0x00000000</tt></td><td valign="top">A place holder for any arbitrary network type.</td></tr>
+</table></p>
+<p>These sub types are used in conjunction with QtopiaNetwork::GPRS and QtopiaNetwork::Dialup only:</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::PhoneModem</tt></td><td align="center" valign="top"><tt>0x00000010</tt></td><td valign="top">The network connection is established via the internal phone modem (this flag is defined for <a href="qtcellmodule.html">Cell</a> module only).</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::NamedModem</tt></td><td align="center" valign="top"><tt>0x00000020</tt></td><td valign="top">A serial network connection using a specific device such as /dev/ttyS0 is established. The device name is given in the configuration file.</td></tr>
+</table></p>
+<p>These sub types specify the type of the external device which is used to establish the connection.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::PCMCIA</tt></td><td align="center" valign="top"><tt>0x00000040</tt></td><td valign="top">The network device is an attached PCMCIA card.</td></tr>
+</table></p>
+<p>These sub types are used in conjunction with QtopiaNetwork::Bluetooth only.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::BluetoothDUN</tt></td><td align="center" valign="top"><tt>0X00002000</tt></td><td valign="top">The network connection is established via a local bluetooth device. The remote Bluetooth device acts as Internet gateway as specified by the Dial-up Networking Profile (DNP).</td></tr>
+<tr><td valign="top"><tt>QtopiaNetwork::BluetoothPAN</tt></td><td align="center" valign="top"><tt>0x00004000</tt></td><td valign="top">This value is reserved for future use in Qtopia.</td></tr>
+</table></p>
+<p>The Type type is a typedef for <a href="qflags.html">QFlags</a>&lt;TypeFlag&gt;. It stores an OR combination of TypeFlag values.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="availableNetworkConfigs"></a><a href="qstringlist.html">QStringList</a> QtopiaNetwork::availableNetworkConfigs ( <a href="qtopianetwork.html#TypeFlag-enum">QtopiaNetwork::Type</a> <i>type</i> = QtopiaNetwork::Any, const <a href="qstring.html">QString</a> &amp; <i>path</i> = QString() )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of all known Qt Extended network interface handles which match <i>type</i>. A handle uniquely identifies a Qt Extended network interfaces and is the absolute path to the configuration file that contains the settings for a particular <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a>. <i>path</i> specifies the directory where the lookup takes place.</p>
+<p>Note that the lookup is independent of the state of an interface. It always returns all Qt Extended network interfaces which are online and offline.</p>
+<p>If <i>type</i> is set to <tt>QtopiaNetwork::Any</tt> it returns all known NetworkInterfaces. If <i>path</i> is empty the lookup will take place in <a href="qtopianetwork.html#settingsDir">settingsDir</a>().</p>
+<h3 class="fn"><a name="loadPlugin"></a><a href="qpointer.html">QPointer</a>&lt;<a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a>&gt; QtopiaNetwork::loadPlugin ( const <a href="qstring.html">QString</a> &amp; <i>handle</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Loads the appropriate network plug-in for the interface with <i>handle</i>; or 0 if no suitable plug-in can be found.</p>
+<p>Only use this function if you intend to configure the returned <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a> via <a href="qtopianetworkinterface.html#configuration">QtopiaNetworkInterface::configuration</a>(). Any other use may trigger undesired behaviour whereby the loaded network interface instance may overshadow the instance created by the <a href="qtopianetworkserver.html">QtopiaNetworkServer</a>. For more details see the <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a> general class documentation.</p>
+<h3 class="fn"><a name="online"></a>bool QtopiaNetwork::online ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if any known network interface is online/connected. This can be used to check the general connectivity status of the Qt Extended environment. A device is considered to be online if it is in the state <tt>QtopiaNetwork::Up</tt>, <tt>QtopiaNetwork::Demand</tt> or <tt>QtopiaNetwork::Pending</tt>.</p>
+<p>More detailed state updates on a per device base can be obtained by using <a href="qnetworkdevice.html">QNetworkDevice</a> and overal state change notifications across all network devices are provided by <a href="qnetworkstate.html">QNetworkState</a>.</p>
+<h3 class="fn"><a name="setDefaultGateway"></a>void QtopiaNetwork::setDefaultGateway ( const <a href="qstring.html">QString</a> &amp; <i>handle</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>The network interface identified by <i>handle</i> becomes the new default gateway. If the device is connected to more than one network at a time this can be used to choose a preferred network for data transfers.</p>
+<h3 class="fn"><a name="settingsDir"></a><a href="qstring.html">QString</a> QtopiaNetwork::settingsDir ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the default directory for network interface configurations; <tt>$HOME/Applications/Network/config</tt>.</p>
+<h3 class="fn"><a name="shutdown"></a>void QtopiaNetwork::shutdown ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Stops all active network interfaces.</p>
+<h3 class="fn"><a name="startInterface"></a>void QtopiaNetwork::startInterface ( const <a href="qstring.html">QString</a> &amp; <i>handle</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>options</i> = QVariant() )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Starts that the network interface identified by <i>handle</i>. If the interface is running already this function does nothing.</p>
+<p><i>options</i> is used internally by some network plug-ins. It allows to specify additional parameters which are specific to particular network plug-ins. Otherwise this parameter can safely be ignored.</p>
+<h3 class="fn"><a name="stopInterface"></a>void QtopiaNetwork::stopInterface ( const <a href="qstring.html">QString</a> &amp; <i>handle</i>, bool <i>deleteIface</i> = false )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Stops the network interface identified by <i>handle</i>. If <i>deleteIface</i> is true the server will delete all configuration information associated to this interface.</p>
+<h3 class="fn"><a name="unsetDefaultGateway"></a>void QtopiaNetwork::unsetDefaultGateway ( const <a href="qstring.html">QString</a> &amp; <i>handle</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Qt Extended will set the default gateway to an interface that is not equal to <i>handle</i>. This is useful if <i>handle</i> goes offline and the caller doesn't care what interface should become the new default gateway.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Keypad Architecture</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Keypad Architecture<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#keypad-architecture">Keypad Architecture</a></li>
+<ul><li><a href="#default-scan-codes-for-qt-extended-keys">Default Scan-codes for Qt Extended Keys</a></li>
+<li><a href="#defining-the-power-button">Defining the Power Button</a></li>
+<li><a href="#overriding-the-keyboard-handler-qt-extended-keys">Overriding the Keyboard Handler Qt Extended Keys</a></li>
+<li><a href="#key-interception">Key Interception</a></li>
+</ul>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<a name="keypad-architecture"></a><a name="keypad-architecture"></a>
+<h3>Keypad Architecture</h3>
+<p>For an overview on character input in Qt for Embedded Linux see : <a href="qt-embedded-charinput.html">Qt for Embedded Linux Character Input</a>.</p>
+<p>For a tutorial discussing adding a keyboard driver plug-in see : <a href="tut-deviceexample.html">Tutorial: Implementing a Device Plug-in</a></p>
+<a name="default-scan-codes-for-qt-extended-keys"></a>
+<h4>Default Scan-codes for Qt Extended Keys</h4>
+<p>Nearly all Phones and PDAs have keys that are not found on a regular computer keyboard. In order for Qt Extended to function correctly when installed on a device, it needs these keys to be defined. The easiest way to do this is to have the keyboard driver for the device emit the scancodes for the existing mapping for Qt Extended.</p>
+<p>In addition to the mapping for a PC US-101 keyboard, the following table defines the codes that are either <i>required</i>, <i>available</i> or <i>optional</i>:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Scancode</th><th>Qt Key Code</th><th>Description</th><th>Keypad Mode</th><th>no keypad mode</th></tr></thead>
+<tr valign="top" class="odd"><td>65</td><td>Key_Menu</td><td>Application menu key</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="even"><td>67</td><td>Key_Back</td><td>Accept/Close dialog key</td><td>Required</td><td>Not Available</td></tr>
+<tr valign="top" class="odd"><td>68</td><td>Key_Yes</td><td>Yes</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="even"><td>69</td><td>Key_No</td><td>No</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="odd"><td>87</td><td>Key_Call</td><td>Start call, accept incoming call</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="even"><td>88</td><td>Key_Hangup</td><td>End call, reject incoming call</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="odd"><td>116</td><td>Key_Select</td><td>Select menu option, checkbox, pressbutton</td><td>Required</td><td>Not Available</td></tr>
+<tr valign="top" class="even"><td>120</td><td>F31</td><td>Toggle input method</td><td>Optional</td><td>Optional</td></tr>
+<tr valign="top" class="odd"><td>121</td><td>F32</td><td>Sync device</td><td>Optional</td><td>Optional</td></tr>
+<tr valign="top" class="even"><td>123</td><td>F35</td><td>Toggle backlight</td><td>Optional</td><td>Optional</td></tr>
+<tr valign="top" class="odd"><td>124</td><td>Context1</td><td>First Context button</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="even"><td>125</td><td>Context2</td><td>Second Context button</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="odd"><td>126</td><td>Context3</td><td>Third Context button</td><td>Optional</td><td>Not Available</td></tr>
+<tr valign="top" class="even"><td>127</td><td>Context4</td><td>Fourth Context button</td><td>Optional</td><td>Not Available</td></tr>
+</table></p>
+<p>The following keys are listed below for reasons of compatibility. They do not have default mappings, but should not be used for other purposes.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Qt key code</th><th>Description</th><th>Keypad Mode</th><th>No Keypad Mode</th></tr></thead>
+<tr valign="top" class="odd"><td>Key_F30</td><td>maps to space on widgets that need a select key</td><td>Not Applicable</td><td>Optional</td></tr>
+<tr valign="top" class="even"><td>Key_F33</td><td>maps to enter on widgets that need an <i>Ok</i> key</td><td>Not Applicable</td><td>Optional</td></tr>
+<tr valign="top" class="odd"><td>Key_F34</td><td>Power/Sleep, see also <a href="#defining-the-power-button">Defining the Power Button</a></td><td>Optional</td><td>Required</td></tr>
+</table></p>
+<p>Qt Extended is designed to be flexible in terms of the keys required, the default mapping for Qt Extended has the following keys:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Key Name</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Key_Select</tt></td><td>selects/activates/toggles/edits the currently highlighted item.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Context1</tt></td><td>soft key 1; mapped to <tt>Key_Menu</tt> in default mapping.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Back</tt></td><td>leave dialog, or <tt>Key_Backspace</tt> while editing text and no real Key_Backspace.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Call</tt></td><td>answer or make a call.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Hangup</tt></td><td>hang up a call or return to home screen.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Up</tt></td><td>navigate to previous item, or up one line.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Down</tt></td><td>navigate to next item, or down one line.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Left</tt></td><td>navigate to previous page in Tab Widget, or left one character.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Right</tt></td><td>navigate to next page in Tab Widget, or left one character.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Flip</tt></td><td>pressed and held while the display is <i>closed</i> (eg. Clamshell phone), released when open. Answers calls (on release) and hangs up (on press).</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Backspace</tt></td><td>deletes character/item.</td></tr>
+</table></p>
+<p><b>Note:</b> Qt Extended can operate with <tt>Key_Menu</tt> rather than <tt>Key_Context1</tt> and without:</p>
+<ul>
+<li><tt>Key_Call</tt> and <tt>Key_Hangup</tt></li>
+<li><tt>Key_Left</tt> and <tt>Key_Right</tt></li>
+</ul>
+<a name="definingpowerbutton"></a><a name="defining-the-power-button"></a>
+<h4>Defining the Power Button</h4>
+<p>A device may specify in its defaultbutton.conf a power button, see <a href="syscust-keypadbutt.html">Keypad Button Behavior</a></p>
+<a name="overridingscancode"></a><a name="overriding-the-keyboard-handler-qt-extended-keys"></a>
+<h4>Overriding the Keyboard Handler Qt Extended Keys</h4>
+<p>If your device does not already have a Qt keyboard driver or it does not emit standard system scancodes then a custom Qt keyboard driver will be required.</p>
+<p>Drivers can be added by deriving from the <a href="qwskeyboardhandler.html">QWSKeyboardHandler</a> and <a href="qkbddriverplugin.html">QKbdDriverPlugin</a> classes, using Qt's plug-in mechanism. See the <a href="plugins-howto.html">How to Create Qt Plugins</a> documentation and the <a href="tools-plugandpaint.html">Plug &amp; Paint</a> example for details.</p>
+<a name="key-interception"></a>
+<h4>Key Interception</h4>
+<p>Sometimes keys are intercepted by the server and so do not reach applications as key events. For example, while the screen lock is active, such as when a SIM card PIN is required, the applications will only be allowed keys such as <tt>Key_Back</tt> and <tt>Key_No</tt>. This is to reduce the chance of anyone accessing the phone's data while the SIM-card PIN is still required.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

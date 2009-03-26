@@ -1,0 +1,58 @@
+/****************************************************************************
+**
+** This file is part of the Qt Extended Opensource Package.
+**
+** Copyright (C) 2009 Trolltech ASA.
+**
+** Contact: Qt Extended Information (info@qtextended.org)
+**
+** This file may be used under the terms of the GNU General Public License
+** version 2.0 as published by the Free Software Foundation and appearing
+** in the file LICENSE.GPL included in the packaging of this file.
+**
+** Please review the following information to ensure GNU General Public
+** Licensing requirements will be met:
+**     http://www.fsf.org/licensing/licenses/info/GPLv2.html.
+**
+**
+****************************************************************************/
+
+#ifndef THEMEDHOMESCREEN_H
+#define THEMEDHOMESCREEN_H
+
+#include "basichomescreen.h"
+
+class MessageBoard;
+class PhoneThemedView;
+class ThemeItem;
+class QValueSpaceObject;
+
+class ThemedHomeScreen : public BasicHomeScreen
+{
+    Q_OBJECT
+
+public:
+    ThemedHomeScreen(QWidget *parent = 0, Qt::WFlags flags = 0);
+    ~ThemedHomeScreen();
+
+public Q_SLOTS:
+    void updateHomeScreenImage();
+    void updateBackground();
+    void exportBackground();
+
+private Q_SLOTS:
+    void updateHomeScreenInfo();
+    void updateInformation();
+    void themeLoaded();
+    void themeItemClicked(ThemeItem *item);
+    void themeChanged();
+    void sysMessage(const QString& message, const QByteArray &data);
+    void showPinboxInformation(bool enable, const QString &pix, const QString &text);
+
+private:
+    PhoneThemedView     *themedView;
+    QValueSpaceObject   *vsObject;
+    MessageBoard        *board;
+};
+
+#endif

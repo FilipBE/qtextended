@@ -1,0 +1,5 @@
+TEMPLATE=app
+CONFIG+=embedded
+TARGET=error
+SOURCES=main.cpp
+MKSPEC.CXXFLAGS+=$$(FLAG)

@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Test Plan for component 'src/libraries/qtopiapim'</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Test Plan for component 'src/libraries/qtopiapim'<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#environment-setup">Environment Setup</a></li>
+<li><a href="#component-test-strategy">Component Test Strategy</a></li>
+<li><a href="#test-details">Test Details</a></li>
+<ul><li><a href="#tst-qtask-testsetpercent">tst_QTask::testSetPercent</a></li>
+<li><a href="#tst-qtask-testsetstarteddate">tst_QTask::testSetStartedDate</a></li>
+<li><a href="#tst-qtask-testsetcompleteddate">tst_QTask::testSetCompletedDate</a></li>
+<li><a href="#tst-qtask-testsetstatus">tst_QTask::testSetStatus</a></li>
+<li><a href="#tst-qtask-testprogressequality">tst_QTask::testProgressEquality</a></li>
+<li><a href="#tst-qappointmentmodel-addnotify">tst_QAppointmentModel::addNotify</a></li>
+<li><a href="#tst-qappointmentmodel-updatenotify">tst_QAppointmentModel::updateNotify</a></li>
+<li><a href="#tst-qappointmentmodel-addappointment">tst_QAppointmentModel::addAppointment</a></li>
+<li><a href="#tst-qappointmentmodel-replaceoccurrence">tst_QAppointmentModel::replaceOccurrence</a></li>
+<li><a href="#tst-qappointmentmodel-replaceoccurrencenotify">tst_QAppointmentModel::replaceOccurrenceNotify</a></li>
+<li><a href="#tst-qappointmentmodel-removeoccurrence">tst_QAppointmentModel::removeOccurrence</a></li>
+<li><a href="#tst-qappointmentmodel-removeoccurrencenotify">tst_QAppointmentModel::removeOccurrenceNotify</a></li>
+<li><a href="#tst-qappointmentmodel-appointmentfield">tst_QAppointmentModel::appointmentField</a></li>
+<li><a href="#tst-qcontact-copy">tst_QContact::copy</a></li>
+<li><a href="#tst-qcontact-addresssetget">tst_QContact::addressSetGet</a></li>
+<li><a href="#tst-qcontact-match">tst_QContact::match</a></li>
+<li><a href="#tst-qtaskmodel-addnotify">tst_QTaskModel::addNotify</a></li>
+<li><a href="#tst-qtaskmodel-addtask">tst_QTaskModel::addTask</a></li>
+<li><a href="#tst-qtaskmodel-checkdependentevents">tst_QTaskModel::checkDependentEvents</a></li>
+<li><a href="#tst-qtaskmodel-taskfield">tst_QTaskModel::taskField</a></li>
+<li><a href="#tst-qcontactmodel-addnotify">tst_QContactModel::addNotify</a></li>
+<li><a href="#tst-qcontactmodel-changelog">tst_QContactModel::changeLog</a></li>
+<li><a href="#tst-qcontactmodel-addcontact">tst_QContactModel::addContact</a></li>
+<li><a href="#tst-qcontactmodel-checkdependentevents">tst_QContactModel::checkDependentEvents</a></li>
+<li><a href="#tst-qcontactmodel-contactfield">tst_QContactModel::contactField</a></li>
+<li><a href="#tst-qcontactmodel-matchphonenumber">tst_QContactModel::matchPhoneNumber</a></li>
+<li><a href="#tst-qcontactmodel-match">tst_QContactModel::match</a></li>
+<li><a href="#tst-qcontactmodel-sort">tst_QContactModel::sort</a></li>
+<li><a href="#tst-qcontactmodel-label">tst_QContactModel::label</a></li>
+<li><a href="#tst-qcontactmodel-matchemailaddress">tst_QContactModel::matchEmailAddress</a></li>
+<li><a href="#tst-qcontactmodel-containschat">tst_QContactModel::containsChat</a></li>
+<li><a href="#tst-qcontactmodel-matchchat">tst_QContactModel::matchChat</a></li>
+<li><a href="#tst-qcontactmodel-presence">tst_QContactModel::presence</a></li>
+<li><a href="#tst-qcontactmodel-perf">tst_QContactModel::perf</a></li>
+<li><a href="#tst-qcontactmodel-labelperf">tst_QContactModel::labelPerf</a></li>
+<li><a href="#tst-qcontactmodel-presperf">tst_QContactModel::presPerf</a></li>
+<li><a href="#tst-qappointment-repeatdaily">tst_QAppointment::repeatDaily</a></li>
+<li><a href="#tst-qappointment-repeatweekly">tst_QAppointment::repeatWeekly</a></li>
+<li><a href="#tst-qappointment-repeatmonthly">tst_QAppointment::repeatMonthly</a></li>
+<li><a href="#tst-qappointment-repeatyearly">tst_QAppointment::repeatYearly</a></li>
+<li><a href="#tst-qappointment-showonnearest">tst_QAppointment::showOnNearest</a></li>
+<li><a href="#tst-qappointment-timezone">tst_QAppointment::timeZone</a></li>
+<li><a href="#tst-qappointment-setalarm">tst_QAppointment::setAlarm</a></li>
+<li><a href="#tst-qappointment-setget">tst_QAppointment::setGet</a></li>
+<li><a href="#tst-qappointment-readvcal">tst_QAppointment::readVCal</a></li>
+<li><a href="#tst-qappointment-transferasvcal">tst_QAppointment::transferAsVCal</a></li>
+<li><a href="#tst-qappointment-startendctor">tst_QAppointment::startEndCtor</a></li>
+<li><a href="#tst-qappointment-ctor">tst_QAppointment::ctor</a></li>
+</ul>
+</ul>
+<a name="environment-setup"></a>
+<h2>Environment Setup</h2>
+<p><a href="qt-extended-test-plan.html#general-environment-setup">General Environment Setup</a> procedures apply for this component.</p>
+<a name="component-test-strategy"></a>
+<h2>Component Test Strategy</h2>
+<p>The <a href="qt-extended-test-plan.html#general-test-strategy">general test strategy</a> applies for this component.</p>
+<a name="test-details"></a>
+<h2>Test Details</h2>
+<a name="tst-qtask-testsetpercent"></a>
+<h3>tst_QTask::testSetPercent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtask.html">QTask</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtask/tst_qtask.cpp</td></tr>
+</table></p>
+<a name="tst-qtask-testsetstarteddate"></a>
+<h3>tst_QTask::testSetStartedDate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtask.html">QTask</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtask/tst_qtask.cpp</td></tr>
+</table></p>
+<a name="tst-qtask-testsetcompleteddate"></a>
+<h3>tst_QTask::testSetCompletedDate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtask.html">QTask</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtask/tst_qtask.cpp</td></tr>
+</table></p>
+<a name="tst-qtask-testsetstatus"></a>
+<h3>tst_QTask::testSetStatus</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtask.html">QTask</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtask/tst_qtask.cpp</td></tr>
+</table></p>
+<a name="tst-qtask-testprogressequality"></a>
+<h3>tst_QTask::testProgressEquality</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtask.html">QTask</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtask/tst_qtask.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-addnotify"></a>
+<h3>tst_QAppointmentModel::addNotify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-updatenotify"></a>
+<h3>tst_QAppointmentModel::updateNotify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-addappointment"></a>
+<h3>tst_QAppointmentModel::addAppointment</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-replaceoccurrence"></a>
+<h3>tst_QAppointmentModel::replaceOccurrence</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-replaceoccurrencenotify"></a>
+<h3>tst_QAppointmentModel::replaceOccurrenceNotify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-removeoccurrence"></a>
+<h3>tst_QAppointmentModel::removeOccurrence</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-removeoccurrencenotify"></a>
+<h3>tst_QAppointmentModel::removeOccurrenceNotify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointmentmodel-appointmentfield"></a>
+<h3>tst_QAppointmentModel::appointmentField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointmentmodel.html">QAppointmentModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointmentmodel/tst_qappointmentmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontact-copy"></a>
+<h3>tst_QContact::copy</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontact.html">QContact</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontact/tst_qcontact.cpp</td></tr>
+</table></p>
+<a name="tst-qcontact-addresssetget"></a>
+<h3>tst_QContact::addressSetGet</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontact.html">QContact</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontact/tst_qcontact.cpp</td></tr>
+</table></p>
+<a name="tst-qcontact-match"></a>
+<h3>tst_QContact::match</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontact.html">QContact</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontact/tst_qcontact.cpp</td></tr>
+</table></p>
+<a name="tst-qtaskmodel-addnotify"></a>
+<h3>tst_QTaskModel::addNotify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtaskmodel.html">QTaskModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtaskmodel/tst_qtaskmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qtaskmodel-addtask"></a>
+<h3>tst_QTaskModel::addTask</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtaskmodel.html">QTaskModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtaskmodel/tst_qtaskmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qtaskmodel-checkdependentevents"></a>
+<h3>tst_QTaskModel::checkDependentEvents</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtaskmodel.html">QTaskModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtaskmodel/tst_qtaskmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qtaskmodel-taskfield"></a>
+<h3>tst_QTaskModel::taskField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qtaskmodel.html">QTaskModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qtaskmodel/tst_qtaskmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-addnotify"></a>
+<h3>tst_QContactModel::addNotify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-changelog"></a>
+<h3>tst_QContactModel::changeLog</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-addcontact"></a>
+<h3>tst_QContactModel::addContact</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-checkdependentevents"></a>
+<h3>tst_QContactModel::checkDependentEvents</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-contactfield"></a>
+<h3>tst_QContactModel::contactField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-matchphonenumber"></a>
+<h3>tst_QContactModel::matchPhoneNumber</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-match"></a>
+<h3>tst_QContactModel::match</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-sort"></a>
+<h3>tst_QContactModel::sort</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-label"></a>
+<h3>tst_QContactModel::label</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-matchemailaddress"></a>
+<h3>tst_QContactModel::matchEmailAddress</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-containschat"></a>
+<h3>tst_QContactModel::containsChat</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-matchchat"></a>
+<h3>tst_QContactModel::matchChat</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-presence"></a>
+<h3>tst_QContactModel::presence</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-perf"></a>
+<h3>tst_QContactModel::perf</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-labelperf"></a>
+<h3>tst_QContactModel::labelPerf</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qcontactmodel-presperf"></a>
+<h3>tst_QContactModel::presPerf</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qcontactmodel.html">QContactModel</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qcontactmodel/tst_qcontactmodel.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-repeatdaily"></a>
+<h3>tst_QAppointment::repeatDaily</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-repeatweekly"></a>
+<h3>tst_QAppointment::repeatWeekly</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-repeatmonthly"></a>
+<h3>tst_QAppointment::repeatMonthly</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-repeatyearly"></a>
+<h3>tst_QAppointment::repeatYearly</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-showonnearest"></a>
+<h3>tst_QAppointment::showOnNearest</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-timezone"></a>
+<h3>tst_QAppointment::timeZone</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-setalarm"></a>
+<h3>tst_QAppointment::setAlarm</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-setget"></a>
+<h3>tst_QAppointment::setGet</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-readvcal"></a>
+<h3>tst_QAppointment::readVCal</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-transferasvcal"></a>
+<h3>tst_QAppointment::transferAsVCal</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-startendctor"></a>
+<h3>tst_QAppointment::startEndCtor</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<a name="tst-qappointment-ctor"></a>
+<h3>tst_QAppointment::ctor</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qappointment.html">QAppointment</a>,<a href="qpimrecord.html">QPimRecord</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiapim/tests/tst_qappointment/tst_qappointment.cpp</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

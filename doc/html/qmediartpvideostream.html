@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaRtpVideoStream Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaRtpVideoStream Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaRtpVideoStream class manages a single video stream in an RTP session. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaRtpVideoStream&gt;</pre><p>Inherits <a href="qmediartpstream.html">QMediaRtpStream</a>.</p>
+<ul>
+<li><a href="qmediartpvideostream-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmediartpvideostream.html#QMediaRtpVideoStream">QMediaRtpVideoStream</a></b> ( Direction <i>direction</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qmediartpvideostream.html#dtor.QMediaRtpVideoStream">~QMediaRtpVideoStream</a></b> ()</li>
+<li><div class="fn"/>virtual QCameraPreviewCapture * <b><a href="qmediartpvideostream.html#camera">camera</a></b> () const = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpvideostream.html#setCamera">setCamera</a></b> ( QCameraPreviewCapture * <i>camera</i> ) = 0</li>
+<li><div class="fn"/>virtual QList&lt;uint&gt; <b><a href="qmediartpvideostream.html#supportedVideoFormats">supportedVideoFormats</a></b> ( const QMediaRtpPayload &amp; <i>payload</i> ) const = 0</li>
+<li><div class="fn"/>virtual QVideoSurface * <b><a href="qmediartpvideostream.html#videoSurface">videoSurface</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>15 public functions inherited from <a href="qmediartpstream.html#public-functions">QMediaRtpStream</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>4 public slots inherited from <a href="qmediartpstream.html#public-slots">QMediaRtpStream</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>9 signals inherited from <a href="qmediartpstream.html#signals">QMediaRtpStream</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>9 protected functions inherited from <a href="qmediartpstream.html#protected-functions">QMediaRtpStream</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaRtpVideoStream class manages a single video stream in an RTP session.</p>
+<p>Outbound video data is sourced from a <a href="qcameradevice.html">QCameraDevice</a> set with the <a href="qmediartpvideostream.html#setCamera">setCamera</a>() function. Depending on the payload the video stream may not be able to accept all video formats output by the camera, a list of formats the stream can accept for a payload is given by the <a href="qmediartpvideostream.html#supportedVideoFormats">supportedVideoFormats</a>() function.</p>
+<p>Inbound video data is rendered to a QVideoSurface given by the <a href="qmediartpvideostream.html#videoSurface">videoSurface</a>() function.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMediaRtpVideoStream"></a>QMediaRtpVideoStream::QMediaRtpVideoStream ( <a href="qmediartpstream.html#Direction-enum">Direction</a> <i>direction</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Contructs a new RTP video stream with the given <i>parent</i> which sends and/or receives data according to <i>direction</i>.</p>
+<h3 class="fn"><a name="dtor.QMediaRtpVideoStream"></a>QMediaRtpVideoStream::~QMediaRtpVideoStream ()</h3>
+<p>Destroys an RTP video stream.</p>
+<h3 class="fn"><a name="camera"></a><a href="qcamerapreviewcapture.html">QCameraPreviewCapture</a> * QMediaRtpVideoStream::camera () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the camera the RTP stream sources video data from.</p>
+<p>See also <a href="qmediartpvideostream.html#setCamera">setCamera</a>().</p>
+<h3 class="fn"><a name="setCamera"></a>void QMediaRtpVideoStream::setCamera ( <a href="qcamerapreviewcapture.html">QCameraPreviewCapture</a> * <i>camera</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Sets the <i>camera</i> the RTP stream sources video data from.</p>
+<p>See also <a href="qmediartpvideostream.html#camera">camera</a>().</p>
+<h3 class="fn"><a name="supportedVideoFormats"></a><a href="qlist.html">QList</a>&lt;<a href="qtglobal.html#uint-typedef">uint</a>&gt; QMediaRtpVideoStream::supportedVideoFormats ( const <a href="qmediartppayload.html">QMediaRtpPayload</a> &amp; <i>payload</i> ) const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns a list of video formats that an RTP stream can accept as input for a <i>payload</i>.</p>
+<h3 class="fn"><a name="videoSurface"></a>QVideoSurface * QMediaRtpVideoStream::videoSurface () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the video surface received video data is painted to.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

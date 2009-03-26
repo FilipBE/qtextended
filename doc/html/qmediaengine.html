@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaEngine Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaEngine Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaEngine class is a base class to be used in the creation of a Media Engine. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaEngine&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qmediaengine-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="qmediaengine.html#dtor.QMediaEngine">~QMediaEngine</a></b> ()</li>
+<li><div class="fn"/>virtual QMediaEngineInformation const * <b><a href="qmediaengine.html#engineInformation">engineInformation</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediaengine.html#initialize">initialize</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediaengine.html#resume">resume</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediaengine.html#start">start</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediaengine.html#stop">stop</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediaengine.html#suspend">suspend</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaEngine class is a base class to be used in the creation of a Media Engine.</p>
+<p>The QMediaEngine is a base class for Media Engines within the Media Server. To create a Media Engine capable of playing content with the system, QMediaEngine should be subclassed and the functions implemented.</p>
+<p>See also <a href="qmediaenginefactory.html">QMediaEngineFactory</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.QMediaEngine"></a>QMediaEngine::~QMediaEngine ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destruct a <a href="qmediaengine.html">QMediaEngine</a>.</p>
+<h3 class="fn"><a name="engineInformation"></a><a href="qmediaengineinformation.html">QMediaEngineInformation</a> const * QMediaEngine::engineInformation ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return information about this Media Engine.</p>
+<p>See also <a href="qmediaengineinformation.html">QMediaEngineInformation</a>.</p>
+<h3 class="fn"><a name="initialize"></a>void QMediaEngine::initialize ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This function is called before any other function on the Media Engine, it is an opportunity to perform any initialisation required by the Media Engine.</p>
+<h3 class="fn"><a name="resume"></a>void QMediaEngine::resume ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>The resume() function is called only after a <a href="qmediaengine.html#suspend">suspend</a>() has been issued. The Engine should reallocate any resources freed during the <a href="qmediaengine.html#suspend">suspend</a>(). Both resume() and <a href="qmediaengine.html#suspend">suspend</a>() should be light calls not requiring significat time to execute.</p>
+<h3 class="fn"><a name="start"></a>void QMediaEngine::start ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This function is called to start the Media Engine. After the call to this function it is expected that the Media Engine is in a state such that any of its QMediaSessionBuilders are able to create sessions.</p>
+<p>See also <a href="qmediasessionbuilder.html">QMediaSessionBuilder</a>.</p>
+<h3 class="fn"><a name="stop"></a>void QMediaEngine::stop ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This function is called to stop the Media Engine. After the call to stop the Media Engine will no longer actively participate in the Media Server. Most resources should be freed at this time. Including resources such as unix devices, files, threads and temporary storage related to the Media Engines state.</p>
+<h3 class="fn"><a name="suspend"></a>void QMediaEngine::suspend ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This function is called when the Media Engine is going to be suspended. Typically the Media Engine should only release resources that are cheaply reallocated. The Media Engine must give up access to any unix device in this call.</p>
+<p>The suspend() function can be called when another engine needs access to a device or optionally when a timeout is reached, the length of the timeout is provided by the <a href="qmediaengineinformation.html">QMediaEngineInformation</a> class.</p>
+<p>See also <a href="qmediaengineinformation.html">QMediaEngineInformation</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

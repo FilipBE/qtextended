@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QScreenInformation Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QScreenInformation Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QScreenInformation class provides additional information about screens beyond that from <a href="qdesktopwidget.html">QDesktopWidget</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;QScreenInformation&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qscreeninformation-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qscreeninformation.html#Type-enum">Type</a></b> { Normal, Television, Overlay }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qscreeninformation.html#QScreenInformation">QScreenInformation</a></b> ( int <i>screenNumber</i> = -1, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qscreeninformation.html#QScreenInformation-2">QScreenInformation</a></b> ( QScreenInformation::Type <i>type</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qscreeninformation.html#dtor.QScreenInformation">~QScreenInformation</a></b> ()</li>
+<li><div class="fn"/>int <b><a href="qscreeninformation.html#clonedScreen">clonedScreen</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qscreeninformation.html#isVisible">isVisible</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qscreeninformation.html#layer">layer</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qscreeninformation.html#screenNumber">screenNumber</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qscreeninformation.html#setClonedScreen">setClonedScreen</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qscreeninformation.html#setLayer">setLayer</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>QList&lt;int&gt; <b><a href="qscreeninformation.html#supportedLayers">supportedLayers</a></b> () const</li>
+<li><div class="fn"/>QColor <b><a href="qscreeninformation.html#transparencyColor">transparencyColor</a></b> () const</li>
+<li><div class="fn"/>QScreenInformation::Type <b><a href="qscreeninformation.html#type">type</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qscreeninformation.html#changed">changed</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QScreenInformation class provides additional information about screens beyond that from <a href="qdesktopwidget.html">QDesktopWidget</a>.</p>
+<p>Some devices have multiple output screens. For example, a device might have a primary LCD screen plus a TV composite video output socket. The TV output can display what is on the LCD screen (known as &quot;cloning&quot;), or it can provide a separate framebuffer for displaying a second image that is different from that on the LCD.</p>
+<p>The following code finds the first screen of type Television and then directs that it be a clone of the primary screen:</p>
+<pre>    QScreenInformation tv(QScreenInformation::Television);
+    tv.setClonedScreen(QApplication::desktop()-&gt;primaryScreen());</pre>
+<p>The television screen can be separated from the LCD for separate display as follows:</p>
+<pre>    tv.setClonedScreen(-1);</pre>
+<p>When the <tt>tv</tt> object is deleted, or the application exits, the clone state will revert to its default setting.</p>
+<p>Some devices have multiple screens that can be visible at the same time, overlaid on each other. Transparency colors are used to &quot;poke holes&quot; in one layer to allow lower layers to be partially or completely revealed.</p>
+<p>Overlay screens are marked with the type <a href="qscreeninformation.html#Type-enum">QScreenInformation::Overlay</a>. Such screens will typically return a list of layers from <a href="qscreeninformation.html#supportedLayers">supportedLayers</a>() that indicates the layer numbers that can be set for the overlay.</p>
+<p>Layer numbers are always relative to zero, which indicates the main GUI layer. Layer numbers less than zero indicate a layer that is below the main GUI layer and numbers greater than zero indicate a layer that is above the main GUI layer.</p>
+<p>When a client application calls <a href="qscreeninformation.html#setLayer">setLayer</a>(), a request is sent to the screen's <a href="qscreeninformationprovider.html">QScreenInformationProvider</a> object to change the layer number and make the screen visible. When the QScreenInformation object is deleted, or the application exits, the overlay is made invisible and reverted to its default layer ordering.</p>
+<p>See also <a href="qscreeninformationprovider.html">QScreenInformationProvider</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Type-enum"></a>enum QScreenInformation::Type</h3>
+<p>This enum defines the type of a screen.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QScreenInformation::Normal</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The screen is a normal display; e.g&#x2e; an LCD or CRT.</td></tr>
+<tr><td valign="top"><tt>QScreenInformation::Television</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The screen outputs a television signal.</td></tr>
+<tr><td valign="top"><tt>QScreenInformation::Overlay</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The screen is a normal display overlaid over one of the other screens.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QScreenInformation"></a>QScreenInformation::QScreenInformation ( int <i>screenNumber</i> = -1, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a screen information object for <i>screenNumber</i> and attaches it to <i>parent</i>. If <i>screenNumber</i> is -1, then the primary screen number will be used. Otherwise, if the <i>screenNumber</i> is invalid, then <a href="qscreeninformation.html#screenNumber">screenNumber</a>() on the constructed object will be -1.</p>
+<p>See also <a href="qscreeninformation.html#screenNumber">screenNumber</a>().</p>
+<h3 class="fn"><a name="QScreenInformation-2"></a>QScreenInformation::QScreenInformation ( <a href="qscreeninformation.html#Type-enum">QScreenInformation::Type</a> <i>type</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a screen information object for the first screen with the specified <i>type</i> and attaches it to <i>parent</i>. If there is no such screen, then <a href="qscreeninformation.html#screenNumber">screenNumber</a>() on the constructed object will return -1.</p>
+<p>See also <a href="qscreeninformation.html#screenNumber">screenNumber</a>().</p>
+<h3 class="fn"><a name="dtor.QScreenInformation"></a>QScreenInformation::~QScreenInformation ()</h3>
+<p>Destroys this screen information object. If the clone state was changed with <a href="qscreeninformation.html#setClonedScreen">setClonedScreen</a>(), then the system will revert the screen to its previous clone mode.</p>
+<p>See also <a href="qscreeninformation.html#setClonedScreen">setClonedScreen</a>().</p>
+<h3 class="fn"><a name="changed"></a>void QScreenInformation::changed ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when one of <a href="qscreeninformation.html#isVisible">isVisible</a>(), <a href="qscreeninformation.html#type">type</a>(), <a href="qscreeninformation.html#clonedScreen">clonedScreen</a>(), <a href="qscreeninformation.html#layer">layer</a>(), <a href="qscreeninformation.html#supportedLayers">supportedLayers</a>(), or <a href="qscreeninformation.html#transparencyColor">transparencyColor</a>() changes.</p>
+<p>See also <a href="qscreeninformation.html#isVisible">isVisible</a>(), <a href="qscreeninformation.html#type">type</a>(), <a href="qscreeninformation.html#clonedScreen">clonedScreen</a>(), <a href="qscreeninformation.html#layer">layer</a>(), <a href="qscreeninformation.html#supportedLayers">supportedLayers</a>(), and <a href="qscreeninformation.html#transparencyColor">transparencyColor</a>().</p>
+<h3 class="fn"><a name="clonedScreen"></a>int QScreenInformation::clonedScreen () const</h3>
+<p>Returns the number of the screen that this screen is cloning. The output on the other screen will also be sent to this screen. If the value is -1, then this screen is separated from all the others.</p>
+<p>See also <a href="qscreeninformation.html#setClonedScreen">setClonedScreen</a>() and <a href="qscreeninformation.html#changed">changed</a>().</p>
+<h3 class="fn"><a name="isVisible"></a>bool QScreenInformation::isVisible () const</h3>
+<p>Returns true if the screen is expected to be visible to the user at the present time. In the case of Television screens, this may be false if the video cable is not connected.</p>
+<p>See also <a href="qscreeninformation.html#changed">changed</a>().</p>
+<h3 class="fn"><a name="layer"></a>int QScreenInformation::layer () const</h3>
+<p>Returns the overlay layer that this screen currently occupies. A value of zero indicates the normal GUI layer. A value less than zero indicates that the overlay is currently below the normal GUI layer. A value greater than zero indicates that the overlay is currently above the normal GUI layer. The default value is zero.</p>
+<p>See also <a href="qscreeninformation.html#setLayer">setLayer</a>(), <a href="qscreeninformation.html#supportedLayers">supportedLayers</a>(), and <a href="qscreeninformation.html#transparencyColor">transparencyColor</a>().</p>
+<h3 class="fn"><a name="screenNumber"></a>int QScreenInformation::screenNumber () const</h3>
+<p>Returns the screen number that this object pertains to. Returns -1 if this object was constructed using an invalid screen number, or it was constructed using a <a href="qscreeninformation.html#Type-enum">QScreenInformation::Type</a> and there was no screen with that type.</p>
+<h3 class="fn"><a name="setClonedScreen"></a>void QScreenInformation::setClonedScreen ( int <i>value</i> )</h3>
+<p>Sets the number of the screen that this screen is cloning to <i>value</i>. The output on screen <i>value</i> will also be sent to this screen. If <i>value</i> is -1, then this screen should be separated from all others.</p>
+<p>When this <a href="qscreeninformation.html">QScreenInformation</a> object is deleted, the requested clone operation will be reverted. This permits the system to revert the clone state to the default when an application crashes.</p>
+<p>The value of <a href="qscreeninformation.html#clonedScreen">clonedScreen</a>() will remain at its previous value until the <a href="qscreeninformation.html#changed">changed</a>() signal is emitted. The system is free to ignore the request if the requested clone operation is not supported.</p>
+<p>See also <a href="qscreeninformation.html#clonedScreen">clonedScreen</a>() and <a href="qscreeninformation.html#changed">changed</a>().</p>
+<h3 class="fn"><a name="setLayer"></a>void QScreenInformation::setLayer ( int <i>value</i> )</h3>
+<p>Sets the overlay layer for this screen to <i>value</i>. A <i>value</i> of zero indicates the normal GUI layer. A <i>value</i> less than zero indicates that the overlay is currently below the normal GUI layer. A <i>value</i> greater than zero indicates that the overlay is currently above the normal GUI layer.</p>
+<p>The layer can only be set to one of the values in the list returned by <a href="qscreeninformation.html#supportedLayers">supportedLayers</a>(). Requests to change the layer to something else will be ignored.</p>
+<p>Setting the layer value for an overlay screen will also make it visible. The layer will be made invisible again once the <a href="qscreeninformation.html">QScreenInformation</a> object is deleted, or the application exits. The <a href="qscreeninformation.html#isVisible">isVisible</a>() function can be used to determine if the layer is currently visible.</p>
+<p>See also <a href="qscreeninformation.html#layer">layer</a>(), <a href="qscreeninformation.html#supportedLayers">supportedLayers</a>(), and <a href="qscreeninformation.html#isVisible">isVisible</a>().</p>
+<h3 class="fn"><a name="supportedLayers"></a><a href="qlist.html">QList</a>&lt;int&gt; QScreenInformation::supportedLayers () const</h3>
+<p>Returns the list of overlay layer numbers that are supported for this screen. This can be used by the client application to locate an overlay layer that can be placed above or below the normal GUI layer.</p>
+<p>As an example, if the list contains -1, 1, and 2, then the layer can be placed one step below the main GUI layer, or either one or two steps above the main GUI layer.</p>
+<p>If the returned list is empty, then the overlay position is fixed at the value returned by <a href="qscreeninformation.html#layer">layer</a>().</p>
+<p>See also <a href="qscreeninformation.html#layer">layer</a>() and <a href="qscreeninformation.html#setLayer">setLayer</a>().</p>
+<h3 class="fn"><a name="transparencyColor"></a><a href="qcolor.html">QColor</a> QScreenInformation::transparencyColor () const</h3>
+<p>Returns the color to fill an area of this screen with to cause layers below this one to be visible through the transparency gaps.</p>
+<p>See also <a href="qscreeninformation.html#layer">layer</a>().</p>
+<h3 class="fn"><a name="type"></a><a href="qscreeninformation.html#Type-enum">QScreenInformation::Type</a> QScreenInformation::type () const</h3>
+<p>Returns the type of screen.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

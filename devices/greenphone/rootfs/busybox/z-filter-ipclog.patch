@@ -1,0 +1,78 @@
+--- busybox-1.2.1/sysklogd/syslogd.c	2007-09-18 12:02:41.000000000 +1000
++++ busybox-1.2.1/sysklogd/syslogd.c	2007-10-22 11:42:05.000000000 +1000
+@@ -127,6 +127,7 @@
+ static int s_semid = -1;	// ipc semaphore id
+ static int shm_size = ((CONFIG_FEATURE_IPC_SYSLOG_BUFFER_SIZE)*1024);	// default shm size
+ static int circular_logging = FALSE;
++static int circular_facility = -1;
+ 
+ /*
+  * sem_up - up()'s a semaphore.
+@@ -480,6 +481,7 @@
+     alt_log_spec_t *spec = 0;
+     int fac_code = -1;
+ #endif
++    int saved_circular_logging = FALSE;
+ 
+ 	if (pri != 0) {
+ 		for (c_fac = facilitynames;
+@@ -546,6 +548,14 @@
+             }
+         }
+ #endif
++
++        if (circular_logging == TRUE && circular_facility != -1) {
++            if (LOG_FAC(pri) != circular_facility) {
++                saved_circular_logging = circular_logging;
++                circular_logging = FALSE;
++            }
++        }
++
+ 		/* now spew out the message to wherever it is supposed to go */
+ 		if (small)
+ 			message("%s %s\n", timestamp, msg);
+@@ -556,6 +566,9 @@
+         if ( saveLogFilePath )
+             logFilePath = saveLogFilePath;
+ #endif
++
++        if (saved_circular_logging)
++            circular_logging = TRUE;
+ 	}
+ }
+ 
+@@ -762,10 +775,22 @@
+ #ifdef CONFIG_FEATURE_IPC_SYSLOG
+ 		case 'C':
+ 			if (optarg) {
+-				int buf_size = atoi(optarg);
++                char *endptr;
++                int buf_size = strtol(optarg, &endptr, 10);
+ 				if (buf_size >= 4) {
+ 					shm_size = buf_size * 1024;
+ 				}
++
++                if (*endptr == ':') {
++                    endptr++;
++                    CODE *c_fac;
++                    for (c_fac = facilitynames;
++                            c_fac->c_name && strcmp( c_fac->c_name, endptr ); c_fac++);
++                    if ( c_fac->c_name == NULL )
++                        bb_show_usage();
++
++                    circular_facility = LOG_FAC(c_fac->c_val);
++                }
+ 			}
+ 			circular_logging = TRUE;
+ 			break;
+--- busybox-1.2.1/include/usage.h	2007-09-18 12:02:41.000000000 +1000
++++ busybox-1.2.1/include/usage.h	2007-10-22 11:45:27.000000000 +1000
+@@ -2878,7 +2878,7 @@
+ 	"\n\t-R HOST[:PORT]\tLog to IP or hostname on PORT (default PORT=514/UDP)\n" \
+ 	"\t-L\t\tLog locally and via network logging (default is network only)") \
+ 	USAGE_IPC_LOG( \
+-	"\n\t-C [size(KiB)]\tLog to a circular buffer (read the buffer using logread)")
++	"\n\t-C [size(KiB)][:FACILITY]\tLog to a circular buffer (read the buffer using logread)")
+ #define syslogd_example_usage \
+ 	"$ syslogd -R masterlog:514\n" \
+ 	"$ syslogd -R 192.168.1.1:601\n"

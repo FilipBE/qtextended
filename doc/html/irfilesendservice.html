@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>IrFileSendService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">IrFileSendService Class Reference<br /><span class="small-subtitle">[<a href="qtinfraredmodule.html">QtInfraredModule</a>]</span>
+</h1>
+<p>The IrFileSendService class runs the InfraredBeaming service and provides updates regarding the progress of each file transfer request that is sent through the service. <a href="#details">More...</a></p>
+<pre>    #include &lt;IrFileSendService&gt;</pre><p>Inherits <a href="filetransfertask.html">FileTransferTask</a>.</p>
+<ul>
+<li><a href="irfilesendservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="irfilesendservice.html#IrFileSendService">IrFileSendService</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="irfilesendservice.html#dtor.IrFileSendService">~IrFileSendService</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="filetransfertask.html#public-functions">FileTransferTask</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="irfilesendservice.html#outgoingTransferStarted">outgoingTransferStarted</a></b> ( int <i>id</i>, const QString &amp; <i>name</i>, const QString &amp; <i>mimeType</i>, const QString &amp; <i>description</i> )</li>
+<li><div class="fn"/>void <b><a href="irfilesendservice.html#transferFinished">transferFinished</a></b> ( int <i>id</i>, bool <i>error</i>, bool <i>aborted</i> )</li>
+<li><div class="fn"/>void <b><a href="irfilesendservice.html#transferProgress">transferProgress</a></b> ( int <i>id</i>, qint64 <i>done</i>, qint64 <i>total</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 signals inherited from <a href="filetransfertask.html#signals">FileTransferTask</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="filetransfertask.html#public-slots">FileTransferTask</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+<li><div class="fn"/>1 static protected member inherited from <a href="filetransfertask.html#static-protected-members">FileTransferTask</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The IrFileSendService class runs the InfraredBeaming service and provides updates regarding the progress of each file transfer request that is sent through the service.</p>
+<p>A unique ID is generated for each request that is sent through the InfraredBeaming service. This ID is used to provide transfer updates through the <a href="irfilesendservice.html#outgoingTransferStarted">outgoingTransferStarted</a>(), <a href="irfilesendservice.html#transferProgress">transferProgress</a>() and <a href="irfilesendservice.html#transferFinished">transferFinished</a>() signals. The ID can also be used to cancel transfers using <a href="filetransfertask.html#abortTransfer">abortTransfer</a>().</p>
+<p><b>Note:</b> This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="IrFileSendService"></a>IrFileSendService::IrFileSendService ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a service with parent object <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.IrFileSendService"></a>IrFileSendService::~IrFileSendService ()</h3>
+<p>Destroys the service.</p>
+<h3 class="fn"><a name="outgoingTransferStarted"></a>void IrFileSendService::outgoingTransferStarted ( int <i>id</i>, const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qstring.html">QString</a> &amp; <i>mimeType</i>, const <a href="qstring.html">QString</a> &amp; <i>description</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when a transfer request begins. The <i>id</i> uniquely identifies the transfer, as provided by FileTransferTask::IrFileSendService::nextTransferId(). The <i>name</i>, <i>mimeType</i> and <i>description</i> are respectively set to the Name, Type and Description metadata values that will be sent in the request.</p>
+<h3 class="fn"><a name="transferFinished"></a>void IrFileSendService::transferFinished ( int <i>id</i>, bool <i>error</i>, bool <i>aborted</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the transfer identified by <i>id</i> is finished. <i>error</i> is <tt>true</tt> if the transfer failed, and <i>aborted</i> is <tt>true</tt> if the transfer was aborted following a call to abortRequest().</p>
+<h3 class="fn"><a name="transferProgress"></a>void IrFileSendService::transferProgress ( int <i>id</i>, <a href="qtglobal.html#qint64-typedef">qint64</a> <i>done</i>, <a href="qtglobal.html#qint64-typedef">qint64</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted to indicate the progress of the transfer identified by <i>id</i>. <i>done</i> is the amount of data that has already been sent, and <i>total</i> is the total amount of data to be sent. If the total amount cannot be determined, <i>total</i> is set to 0.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

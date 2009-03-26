@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Chapter 3: Data driven testing</title>
+  <link rel="prev" href="qtuitest-tutorial2.html" />
+  <link rel="contents" href="qtuitest-tutorial.html" />
+  <link rel="next" href="qtuitest-tutorial4.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtuitest-tutorial2.html">Chapter 2</a>]
+[<a href="qtuitest-tutorial.html">Contents</a>]
+[Next: <a href="qtuitest-tutorial4.html">Chapter 4</a>]
+</p>
+<h1 class="title">Chapter 3: Data driven testing<br /><span class="subtitle"></span>
+</h1>
+<p>The first page of this tutorial gave an example of testing creation of a contact:</p>
+<pre>    creating_a_contact: function()
+    {
+        <span class="comment">// Start the application</span>
+        startApplication( &quot;Contacts&quot; );
+
+        <span class="comment">// Open the options menu and choose &quot;New contact&quot;</span>
+        select( &quot;New contact&quot;, optionsMenu() );
+
+        <span class="comment">// Enter some details in the &quot;Name&quot; and &quot;Emails&quot; fields</span>
+        enter( &quot;Frank Grimes&quot;, &quot;Name&quot; );
+        enter( &quot;frank@example.com&quot;, &quot;Emails&quot; );
+
+        <span class="comment">// Select 'Back' from the softkey menu to commit changes</span>
+        select( &quot;Back&quot;, softMenu() );
+
+        <span class="comment">// We should now be at the contacts list.</span>
+        <span class="comment">// Verify that we can select the contact we just created.</span>
+        select( &quot;Frank Grimes&quot; );
+
+        <span class="comment">// We should now be viewing the contact.</span>
+        <span class="comment">// Move to &quot;Details&quot; tab.</span>
+        select( &quot;Details&quot;, tabBar() );
+
+        <span class="comment">// Now verify that the details screen contains</span>
+        <span class="comment">// the expected details.</span>
+        var text = getText();
+        verify( text.contains(&quot;Frank Grimes&quot;) );
+        verify( text.contains(&quot;frank@example.com&quot;) );
+    }</pre>
+<p>One problem with this test function is that only one set of values is tested. If we want to test additional values, the best way to do it is with <a href="qtuitest.html">QtUiTest</a>'s built-in support for data driven testing.</p>
+<p>We create a new object, named the same as our testfunction with '_data' appended, and we make the object consist of a series of arrays:</p>
+<pre>    creating_a_contact_data: {
+        simple:          [ &quot;Frank Grimes&quot;,        &quot;frank@example.com&quot;, &quot;+61 0321 FRANK&quot; ],
+        no_email:        [ &quot;Bob Jones&quot;,           undefined,          &quot;+61 0321 BOB&quot;   ],
+        with_middlename: [ &quot;Jane Middlename Doe&quot;, &quot;jmd@example.com&quot;,      undefined        ]
+    }</pre>
+<p><tt>testcase.creating_a_contact_data</tt> is a table of test data with rows <tt>simple</tt>, <tt>no_email</tt> and <tt>with_middlename</tt>. Each row has 3 columns, and these are passed to the <tt>creating_a_contact</tt> test function as the arguments <tt>name</tt>, <tt>email</tt>, <tt>homephone</tt> in the example below:</p>
+<pre>    creating_a_contact: function(name, email, homephone)
+    {
+        <span class="comment">// Start the application</span>
+        startApplication( &quot;Contacts&quot; );
+
+        <span class="comment">// Open the options menu and choose &quot;New contact&quot;</span>
+        select( &quot;New contact&quot;, optionsMenu() );
+
+        <span class="comment">// Enter details</span>
+        enter( name, &quot;Name&quot; );
+        enter( email, &quot;Emails&quot; );
+        enter( homephone, &quot;Home Phone&quot; );
+
+        <span class="comment">// Select 'Back' from the softkey menu to commit changes</span>
+        select( &quot;Back&quot;, softMenu() );
+
+        <span class="comment">// We should now be at the contacts list.</span>
+        <span class="comment">// Verify that we can select the contact we just created.</span>
+        select( name );
+
+        <span class="comment">// We should now be viewing the contact.</span>
+        <span class="comment">// Move to &quot;Details&quot; tab.</span>
+        select( &quot;Details&quot;, tabBar() );
+
+        <span class="comment">// Now verify that the details screen contains</span>
+        <span class="comment">// the expected details.</span>
+        var text = getText();
+        if (name != undefined)      verify( text.contains(name) );
+        if (email != undefined)     verify( text.contains(email) );
+        if (homephone != undefined) verify( text.contains(homephone) );
+    }</pre>
+<p>This test is now much more extensible. New test cases can simply be added as new rows to the testdata table and will automatically be tested without needing to add further logic to the test function.</p>
+<p>
+[Previous: <a href="qtuitest-tutorial2.html">Chapter 2</a>]
+[<a href="qtuitest-tutorial.html">Contents</a>]
+[Next: <a href="qtuitest-tutorial4.html">Chapter 4</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

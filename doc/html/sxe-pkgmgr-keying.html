@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Package Keying and Manifest</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Package Keying and Manifest<br /><span class="subtitle"></span>
+</h1>
+<p>There are two registry files governing the operation of the SXE with respect to packages and programs.</p>
+<p>All registry files for SXE must be writable and are stored in the directory given by <a href="qpackageregistry.html#sxeConfPath">QPackageRegistry::sxeConfPath</a>(). This directory is normally <tt>Qtopia::qtopiaDir() + &quot;etc&quot;</tt> and the <b>File</b> entry in the tables below are relative to this path.</p>
+<p>The table below summarizes the operations of SXE with respect to these files.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Name</th><th>File</th><th>Runtime Access</th><th>Format</th><th>Function</th></tr></thead>
+<tr valign="top" class="odd"><td>Manifest</td><td><tt>manifest</tt></td><td><tt>packagemanager</tt>, <tt>qpe</tt></td><td>Binary file (sorted by <tt>dev_id</tt>, <tt>inode</tt>):<ul>
+<li>0-7: int64 dev_id</li>
+<li>8-15: int64 inode</li>
+<li>16: uchar progId</li>
+<li>17: pad</li>
+<li>18-19: ushort install_id</li>
+<li>20-23: uint key offset (not used)</li>
+<li>20-27: int64 (time_t) install_time (not used)</li>
+</ul>
+</td><td><ul>
+<li>adding new programs to <tt>Keyfile</tt> (<tt>qpe</tt>: read only)</li>
+<li>recording new programs for policy and uninstall (<tt>packagemanager</tt>: read-write)</li>
+<li>several binaries may have the same <tt>progId</tt> (and key)</li>
+<li>one-to-one mapping between binary file on storage &amp; install_id</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Installs</td><td><tt>installs</tt></td><td><tt>packagemanager</tt>, <tt>qpe</tt></td><td>Text file (fields ':' separated, records LF separated):<ul>
+<li>install_id</li>
+<li>full path</li>
+</ul>
+</td><td><ul>
+<li>recording for uninstall (<tt>packagemanager</tt>: read-write)</li>
+<li>note the path may be a symlink or hard link so one install_id may have several paths</li>
+</ul>
+</td></tr>
+</table></p>
+<a name="process-keys-and-program-identities"></a>
+<h2>Process keys and Program Identities</h2>
+<p>In order to decide which policy to apply when a service is requested, the <b>Program Identity</b> or <tt>progId</tt> is used. The <tt>progId</tt> is a key into the policy lookup table.</p>
+<p>Conceptually a program is a binary (or binaries) on disk. When a package is installed its program binaries are copied into place in a directory on disk (or flash) storage to later be launched. One <tt>progId</tt> is used by all binaries of a package, since all binaries in the package have the same set of security domains.</p>
+<p>When a program binary is launched as an instance, it is a process in execution. At that point it has a Unix process id or <tt>pid</tt>.</p>
+<p>The process must transmit a <b>Program Identity</b> to request a service.</p>
+<p>So that the server providing the service can know that the process is authorized to use that <tt>progId</tt>, the process must also transmit the <b>Process Key</b> or <tt>key</tt>.</p>
+<p>The server can lookup to see if the <tt>key</tt> matches one of the keys allocated to that <tt>progId</tt>. This constitutes authenticating the process.</p>
+<a name="key-propagation"></a>
+<h2>Key Propagation</h2>
+<p>In order for keys to work as an authentication mechanism, they must be a shared secret between the process, which is executing a given program, and the server, which is doing the authentication.</p>
+<p>Here <b>shared secret</b> means that no other process can have the key; but both the client and server of the service must have it.</p>
+<p>Achieving this state is not a trivial problem, but when it is achieved it makes authentication secure, simple and fast. No further lookup is required, since possession of the key guarantees authentication.</p>
+<p>SXE achieves key propagation by relying on the LIDS kernel patch as modified for Qt Extended.</p>
+<p>The client can read its key from <tt>/proc/1234/lids_key</tt> where 1234 is the Unix <tt>pid</tt> of that process. Keys are created in these pseudo files when the process is launched, and the kernel enforces that <b>only the process itself</b> (in this case process pid 1234) can read its own key.</p>
+<p>This technique means that no LIDS rules are required to protect each key, since it is automatically exclusive to the process. Also problems relating to read only file systems are solved.</p>
+<p>The server can read the keys for all processes from <tt>/proc/lids/keys</tt>. This pseudo file is updated by the kernel will the keys, and the device id and inode number of the binary. The pseudo file is protected by a LIDS MAC rule to prevent untrusted processes from reading it.</p>
+<a name="the-development-case"></a>
+<h2>The Development Case</h2>
+<p>On the desktop development environment, the <tt>/proc/lids/keys</tt> pseudo file is not available, and nor are the per-process pseudo files, obviously because the desktop machine does not have the Qt Extended LIDS kernel patch.</p>
+<p>In this case, a fallback method simulates the pseudo files by using on-disk files with the exact same format. These disk files are read by the server.</p>
+<p>This is similar in concept to how instead of <tt>/dev/fb0</tt> the virtual frame buffer is used on the desktop.</p>
+<p>The files used in the development case are:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Name</th><th>File</th><th>Runtime Access</th><th>Format</th><th>Function</th></tr></thead>
+<tr valign="top" class="odd"><td>Key sequence file</td><td><tt>keyfile.sequence</tt></td><td><tt>packagemanager</tt>, <tt>qpe</tt></td><td>Binary file (sorted by <tt>progId</tt><ul>
+<li>uchar key[QSXE_KEY_LEN]</li>
+<li>uchar pad</li>
+<li>uchar progId</li>
+<li>int64 (time_t) install_time (not used)</li>
+</ul>
+</td><td><ul>
+<li>generating a new progId</li>
+<li>mapping keys to progId</li>
+<li>adding new programs to <tt>Keyfile</tt> (<tt>qpe</tt>: read only)</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Process key file</td><td><tt>keyfile</tt></td><td><tt>packagemanager</tt>, <tt>qpe</tt></td><td>Binary file<ul>
+<li>char key[QSXE_KEY_LEN]</li>
+<li>ino_t ino</li>
+<li>dev_t dev</li>
+</ul>
+</td><td><ul>
+<li><b>Mirrors function of /proc/lids/keys file</b></li>
+<li>mapping binaries to keys</li>
+</ul>
+</td></tr>
+</table></p>
+<p>For the clients to each know their key, in the development (not in the live) case, the key is embedded into the binary image of the file.</p>
+<p>In general this method is not suitable to be used on the device, since in the case of read-only devices, the key is not able to be changed from the ROM image.</p>
+<p>A malicious hacker who obtains a copy of the ROM image (eg by manually cracking a phone in his possession) can then know the keys for a large number of devices.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

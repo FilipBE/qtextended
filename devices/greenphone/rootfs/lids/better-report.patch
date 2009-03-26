@@ -1,0 +1,32 @@
+--- lids-1.2.2-2.4.28/lidstools-0.5.6/src/lidsconf.c	2004-09-15 18:52:33.000000000 +1000
++++ lids-1.2.2-2.4.28.modified/lidstools-0.5.6/src/lidsconf.c	2007-03-19 10:21:13.000000000 +1000
+@@ -515,7 +515,7 @@
+ 			curr_state = state;
+ 	}
+ 
+-	printf("\t effective capability = 0x%.8x\n\n", lids_caps);
++	/* printf("\t effective capability = 0x%.8x\n\n", lids_caps); */
+ 
+ }
+ 
+@@ -1053,7 +1053,7 @@
+ 		       strlen(acl_type_str));
+ 		exit_error(2, "Must be BOOT, POSTBOOT , SHUTDOWN or NULL");
+ 	}
+-	printf("Using ACL FILE: %s\n", acl_conf_file);
++	/* printf("Using ACL FILE: %s\n", acl_conf_file); */
+ }
+ 
+ static char shortopts[] = "U::A::D::Z::L::CPs:o::j:i:dehHt:vV";
+@@ -1310,7 +1310,10 @@
+ 
+ 	switch (command) {
+ 	case LIDS_ADD:
+-		printf("ADD\n");
++                if (subject_file[0] == 0) /* no subject */
++                    printf("ADD %s: object %s\n", lids_type_desc[get_type_str(abs(type))], object_file);
++                else
++                    printf("ADD %s: subject %s -> object %s\n", lids_type_desc[get_type_str(abs(type))], subject_file, object_file);
+ 		lids_add_file(subject_file, object_file, type, inherit,
+ 			      timescale);
+ 		break;

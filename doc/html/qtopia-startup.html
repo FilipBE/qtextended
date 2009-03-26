@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended startup</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended startup<br /><span class="subtitle"></span>
+</h1>
+<p>The Qtopia server consists of a variety of components and widgets which are loaded and executed during the startup phase of Qtopia.</p>
+<pre>    main( int argc, char **argv )
+    {
+        <span class="comment">//...</span>
+        <span class="comment">// step 1</span>
+        QtopiaServerApplication::startup( argc, argv, QList&lt;ByteArray&gt; &lt;&lt; &quot;startup&quot; );
+
+        <span class="comment">//...</span>
+        <span class="comment">// step 2</span>
+        QAbstractServerInterface *interface =
+                qtopiaWidget&lt;QAbstractServerInterface&gt;(0,Qt::FramelessWindowHint);
+        if ( interface )
+            interface-&gt;show();
+
+        <span class="comment">//...</span>
+        <span class="comment">// step 3</span>
+        QtopiaApplication::exec();
+        <span class="comment">//...</span>
+    }</pre>
+<p>The above main function gives a brief summary what the server is doing. This function is not complete and does not reflect the actual implementation. However it demonstrates the general order during the startup phase.</p>
+<ol type="1">
+<li>Starting server tasks<p>The <a href="qtopiaserverapplication.html#qt-extended-server-tasks">server task documentation</a> provides a detailed introduction into the concept of server tasks. The call to <tt>QtopiaServerApplication::startup(..)</tt> will call the constructor of each task. The order of tasks is dynamically calculated based on parameters provided in <tt>$QPEDIR/etc/Tasks.cfg</tt>. The Qt Extended logging mechanism should be used to obtain the actual order of execution at runtime. The <tt>QtopiaServer</tt> logging channel should be used. The subsequent log is an example how this log may look like (note that for simplification reasons some output has been removed):</p>
+<pre>    QtopiaServer :  Starting task &quot;ApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;QtopiaServerApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;BuiltinApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;QuickExeApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;ConsoleApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;SandboxedExeApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;SimpleExeApplicationLauncher&quot;
+    QtopiaServer :  Starting task &quot;PhoneServer&quot;
+    ...
+    QtopiaServer :  Starting task &quot;QtopiaNetworkServer&quot;
+    QtopiaServer :  Starting task &quot;QtopiaVpnManager&quot;
+    QtopiaServer :  Starting task &quot;DocumentServer&quot;
+    QtopiaServer :  Starting task &quot;DefaultBluetoothPassKeyAgent&quot;
+    QtopiaServer :  Starting task &quot;BluetoothServiceManager&quot;
+    QtopiaServer :  Starting task &quot;StandardDeviceFeatures&quot;
+    QtopiaServer :  Starting task &quot;BtHandsfreeServiceTask&quot;
+    QtopiaServer :  Starting task &quot;ShutdownSplashScreen&quot;
+    QtopiaServer :  Starting task &quot;GenericMemoryMonitor&quot;
+    QtopiaServer :  Starting task &quot;BtHeadsetServiceTask&quot;
+    ...
+    QtopiaServer :  Starting task &quot;InputDeviceSettings&quot;
+    QtopiaServer :  Starting task &quot;BtDialupServiceTask&quot;
+    QtopiaServer :  Starting task &quot;TerminationHandler&quot;
+    QtopiaServer :  Starting task &quot;DummyVolumeService&quot;
+    QtopiaServer :  Starting task &quot;TimeUpdateService&quot;
+    QtopiaServer :  Starting task &quot;QtopiaApplication&quot;
+    QtopiaServer :  Starting task &quot;PhonePowerManager&quot;
+    QtopiaServer :  Starting task &quot;MediaServicesTask&quot;
+    QtopiaServer :  Starting task &quot;WindowManagement&quot;
+    QtopiaServer :  Starting task &quot;EnvironmentSetup&quot;
+    QtopiaServer :  Starting task &quot;BtFtpServiceTask&quot;
+    QtopiaServer :  Starting task &quot;VirtualKeyboard&quot;
+    QtopiaServer :  Starting task &quot;StandardDialogs&quot;
+    QtopiaServer :  Starting task &quot;SecurityMonitor&quot;
+    QtopiaServer :  Starting task &quot;StorageMonitor&quot;
+    QtopiaServer :  Starting task &quot;IrPowerService&quot;
+    QtopiaServer :  Starting task &quot;ExternalAccess&quot;
+    QtopiaServer :  Starting task &quot;DefaultBattery&quot;
+    QtopiaServer :  Starting task &quot;BtPowerService&quot;
+    QtopiaServer :  Starting task &quot;WaitIndicator&quot;
+    QtopiaServer :  Starting task &quot;SystemSuspend&quot;
+    QtopiaServer :  Starting task &quot;PhoneProfiles&quot;
+    QtopiaServer :  Starting task &quot;LowMemoryTask&quot;
+    QtopiaServer :  Starting task &quot;DefaultSignal&quot;
+    QtopiaServer :  Starting task &quot;ContentServer&quot;
+    QtopiaServer :  Starting task &quot;DeviceButton&quot;
+    QtopiaServer :  Starting task &quot;AlertService&quot;
+    QtopiaServer :  Starting task &quot;TimeMonitor&quot;
+    QtopiaServer :  Starting task &quot;StabMonitor&quot;
+    QtopiaServer :  Starting task &quot;RingControl&quot;
+    QtopiaServer :  Starting task &quot;MediaServer&quot;
+    ...
+    QtopiaServer :  Starting task &quot;GPRSMonitor&quot;
+    QtopiaServer :  Starting task &quot;QDSyncTask&quot;
+    QtopiaServer :  Starting task &quot;APMBattery&quot;
+    QtopiaServer :  Starting task &quot;IpcRouter&quot;
+    QtopiaServer :  Starting task &quot;DBMigrate&quot;
+    QtopiaServer :  Starting task &quot;CellModem&quot;
+    QtopiaServer :  Starting task &quot;Asterisk&quot;
+    QtopiaServer :  Starting task &quot;VoIP&quot;
+    QtopiaServer :  Starting task &quot;StartupApplications&quot;</pre>
+</li>
+<li>Showing the main widget<p>Once all server tasks in the prestartup and startup groups are loaded the main server widget will be found, loaded and shown. The main Qtopia widget is a subclass of <a href="qabstractserverinterface.html">QAbstractServerInterface</a> and it is responsible for the loading of all other widgets. The <a href="qtopiaserverapplication.html#qt-extended-server-widgets">server widget documentation</a> provides more detailed documentation on how to use widgets in the server and the <a href="integration-guide.html#server-widgets">Integration Guide</a> provides a summary of existing server widgets and how they interact with each other.</p>
+</li>
+<li>Entering Qt's event loop by calling <tt>QtopiaApplication::exec()</tt><p>The last step is to enter the event loop. From this point on every subsequent execution of code is event-driven.</p>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

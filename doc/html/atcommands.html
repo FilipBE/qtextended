@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>AT Commands</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">AT Commands<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#general-commands-3gpp-ts-27-007-section-5">General commands (3GPP TS 27.007, section 5)</a></li>
+<li><a href="#call-control-commands-3gpp-ts-27-007-section-6">Call control commands (3GPP TS 27.007, section 6)</a></li>
+<li><a href="#network-service-related-commands-3gpp-ts-27-007-section-7">Network service related commands (3GPP TS 27.007, section 7)</a></li>
+<li><a href="#mobile-termination-control-and-status-commands-3gpp-ts-27-007-section-8">Mobile termination control and status commands (3GPP TS 27.007, section 8)</a></li>
+<li><a href="#mobile-termination-errors-3gpp-ts-27-007-section-9">Mobile termination errors (3GPP TS 27.007, section 9)</a></li>
+<li><a href="#commands-for-packet-domain-gprs-3gpp-ts-27-007-section-10">Commands for packet domain, GPRS (3GPP TS 27.007, section 10)</a></li>
+<li><a href="#sms-commands-3gpp-ts-27-005">SMS commands (3GPP TS 27.005)</a></li>
+<li><a href="#multiplexing-commands-3gpp-ts-07-10">Multiplexing commands (3GPP TS 07.10)</a></li>
+<li><a href="#other-commands-3gpp-ts-27-007-appendix-c">Other commands (3GPP TS 27.007, Appendix C)</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The following lists the AT control commands that a device is expected to support. However, a device may support more commands than listed. For example, some modems support both <tt>AT+CGMI</tt> and <tt>AT+GMI</tt> to retrieve the manufacturer name, while only <tt>AT+CGMI</tt> is required.</p>
+<p>In the future, additional commands from the GSM specifications 3GPP TS 27.005 and 3GPP TS 27.007 may be required, so it is recommended that all device manufacturers fully comply with these 3GPP specifications.</p>
+<a name="general-commands-3gpp-ts-27-007-section-5"></a>
+<h3>General commands (3GPP TS 27.007, section 5)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CGMI</tt></td><td>Request manufacturer information</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CGMM</tt></td><td>Request model identification</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CGMR</tt></td><td>Request revision identification</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CGSN</tt></td><td>Request product serial number identification (of the device, not SIM card)</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSCS</tt></td><td>Select TE character set</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CIMI</tt></td><td>Request international mobile subscriber identity</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMUX</tt></td><td>Multiplexing mode</td></tr>
+</table></p>
+<a name="call-control-commands-3gpp-ts-27-007-section-6"></a>
+<h3>Call control commands (3GPP TS 27.007, section 6)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATDnnn;</tt></td><td>Dial &quot;nnn&quot; in voice mode</td></tr>
+<tr valign="top" class="even"><td><tt>ATDnnn</tt></td><td>Dial &quot;nnn&quot; in data mode</td></tr>
+<tr valign="top" class="odd"><td><tt>ATH</tt></td><td>Hangup the current call</td></tr>
+<tr valign="top" class="even"><td><tt>ATA</tt></td><td>Answer an incoming call</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CBST</tt></td><td>Select bearer service type</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CRC</tt></td><td>Cellular result codes</td></tr>
+<tr valign="top" class="odd"><td><tt>RING</tt>, <tt>+CRING</tt></td><td>Unsolicited result codes for incoming ring notifications</td></tr>
+<tr valign="top" class="even"><td><tt>NO CARRIER</tt>, <tt>NO ANSWER</tt>, <tt>NO DIALTONE</tt>, <tt>BUSY</tt></td><td>Unsolicited result codes that indicate call termination</td></tr>
+</table></p>
+<p><b>Note:</b> When the <tt>ATD</tt> command is used with a trailing '<b>;</b>', it is highly recommended that it immediately return to command mode after command processing. Some modems have been known to wait until the receiving party answers the call, or busy is detected, before returning to command mode. Such modems are not compliant with the 3GPP specification but can still be supported by overriding <a href="qmodemcallprovider.html#atdBehavior">QModemCallProvider::atdBehavior</a>() in the modem vendor plug-in.</p>
+<p>The 3GPP TS specification permits <tt>ATD</tt> to be used in a special mode for dialing directly from phone books. This mode is not required as Qt Extended implements its own algorithm for converting phone book entries to numbers.</p>
+<p>It is important that <tt>ATD</tt> recognize numbers starting with <tt>+</tt> as international, and all other numbers as being local.</p>
+<a name="network-service-related-commands-3gpp-ts-27-007-section-7"></a>
+<h3>Network service related commands (3GPP TS 27.007, section 7)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CNUM</tt></td><td>Subscriber number</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CREG</tt></td><td>Network registration</td></tr>
+<tr valign="top" class="odd"><td><tt>+CREG</tt></td><td>Unsolicited result code for network registration events</td></tr>
+<tr valign="top" class="even"><td><tt>AT+COPS</tt></td><td>Operator (PLMN) selection</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CLCK</tt></td><td>Facility lock</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPWD</tt></td><td>Change password</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CLIP</tt></td><td>Calling line identification presentation</td></tr>
+<tr valign="top" class="even"><td><tt>+CLIP</tt></td><td>Unsolicited result code for caller identification presentation</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CLIR</tt></td><td>Calling line identification restriction</td></tr>
+<tr valign="top" class="even"><td><tt>AT+COLP</tt></td><td>Connected line identification presentation</td></tr>
+<tr valign="top" class="odd"><td><tt>+COLP</tt></td><td>Unsolicited result code for connected line identification presentation</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CCFC</tt></td><td>Call forwarding number and conditions</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CCWA</tt></td><td>Call waiting</td></tr>
+<tr valign="top" class="even"><td><tt>+CCWA</tt></td><td>Unsolicited result code for call waiting</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CHLD</tt></td><td>Call related supplementary services</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CTFR</tt></td><td>Call deflection</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CUSD</tt></td><td>Unstructured supplementary service data</td></tr>
+<tr valign="top" class="even"><td><tt>+CUSB</tt></td><td>Unsolicited result code for unstructured supplementary service events</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CAOC</tt></td><td>Advice of charge</td></tr>
+<tr valign="top" class="even"><td><tt>+CCCM</tt></td><td>Unsolicited result code for advice of charge indications</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSSN</tt></td><td>Supplementary service notifications</td></tr>
+<tr valign="top" class="even"><td><tt>+CSSI</tt></td><td>Unsolicited result code for mobile-originated call setup supplementary services</td></tr>
+<tr valign="top" class="odd"><td><tt>+CSSU</tt></td><td>Unsolicited result code for mobile-terminated call setup supplementary services</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CLCC</tt></td><td>List current calls</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CPOL</tt></td><td>Preferred PLMN list</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPLS</tt></td><td>Selection of preferred PLMN list</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+COPN</tt></td><td>Read operator names</td></tr>
+</table></p>
+<a name="mobile-termination-control-and-status-commands-3gpp-ts-27-007-section-8"></a>
+<h3>Mobile termination control and status commands (3GPP TS 27.007, section 8)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CFUN</tt></td><td>Set phone functionality</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPIN</tt></td><td>Enter PIN</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CBC</tt></td><td>Battery charge</td></tr>
+<tr valign="top" class="even"><td><tt>+CBC</tt></td><td>Unsolicited result code for battery charge notifications</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSQ</tt></td><td>Signal quality</td></tr>
+<tr valign="top" class="even"><td><tt>+CSQ</tt></td><td>Unsolicited result code for signal quality notifications</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CIND</tt></td><td>Indicator control</td></tr>
+<tr valign="top" class="even"><td><tt>+CIEV</tt></td><td>Unsolicited result code for indicator control events</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMER</tt></td><td>Mobile termination event reporting</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPBS</tt></td><td>Select phone book memory storage</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CPBR</tt></td><td>Read phone book entries</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPBW</tt></td><td>Write phone book entry</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSIM</tt></td><td>Generic SIM access</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CRSM</tt></td><td>Restricted SIM access</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CVIB</tt></td><td>Vibrator mode</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CACM</tt></td><td>Accumulated call meter</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CAMM</tt></td><td>Accumulated call meter maximum</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPUC</tt></td><td>Price per unit and currency table</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CCWE</tt></td><td>Call meter maximum event</td></tr>
+<tr valign="top" class="even"><td><tt>+CCWV</tt></td><td>Unsolicited result code for call meter maximum events</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSVM</tt></td><td>Set voice mail number</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CTZR</tt></td><td>Time zone reporting</td></tr>
+<tr valign="top" class="odd"><td><tt>+CTZV</tt></td><td>Unsolicited result code for time zone change events</td></tr>
+</table></p>
+<p>The phone book commands are intended for accessing phone books stored on SIM cards, typically the <tt>SM</tt> phone book. Qt Extended provides its own mechanisms for managing phone books stored within the phone memory.</p>
+<a name="mobile-termination-errors-3gpp-ts-27-007-section-9"></a>
+<h3>Mobile termination errors (3GPP TS 27.007, section 9)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMEE</tt></td><td>Report mobile termination error</td></tr>
+</table></p>
+<a name="commands-for-packet-domain-gprs-3gpp-ts-27-007-section-10"></a>
+<h3>Commands for packet domain, GPRS (3GPP TS 27.007, section 10)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CGDCONT</tt></td><td>Define PDP context</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CGATT</tt></td><td>PS attach or detach</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CGREG</tt></td><td>GPRS network registration status</td></tr>
+<tr valign="top" class="even"><td><tt>+CGREG</tt></td><td>Unsolicited result code for GPRS network registration status</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CGSMS</tt></td><td>Select service for MO SMS messages</td></tr>
+<tr valign="top" class="even"><td><tt>ATD*99*...</tt></td><td>Request packet domain service</td></tr>
+</table></p>
+<a name="sms-commands-3gpp-ts-27-005"></a>
+<h3>SMS commands (3GPP TS 27.005)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPMS</tt></td><td>Preferred message storage</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGF</tt></td><td>Message format (we use format 0: PDU)</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSCA</tt></td><td>Service centre address</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSCB</tt></td><td>Select cell broadcast message types</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CNMI</tt></td><td>New message indications to TE</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGL</tt></td><td>List messages</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMGR</tt></td><td>Read message</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMGS</tt></td><td>Send message</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMGD</tt></td><td>Delete message</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMMS</tt></td><td>More messages to send</td></tr>
+<tr valign="top" class="odd"><td><tt>+CMTI</tt></td><td>Notification of SMS message delivery</td></tr>
+<tr valign="top" class="even"><td><tt>+CMT</tt></td><td>Notification of a directly delievered SMS message</td></tr>
+<tr valign="top" class="odd"><td><tt>+CDSI</tt></td><td>Notification of an SMS status report message</td></tr>
+<tr valign="top" class="even"><td><tt>+CBM</tt></td><td>Notification of a directly delivered cell broadcast message</td></tr>
+</table></p>
+<p>It is assumed that incoming SMS messages are stored in a temporary storage area on the device and that Qt Extended will retrieve the messages using the <tt>AT+CMGL</tt> and <tt>AT+CMGR</tt> commands.</p>
+<a name="multiplexing-commands-3gpp-ts-07-10"></a>
+<h3>Multiplexing commands (3GPP TS 07.10)</h3>
+<p>Qt Extended expects to use 3GPP TS 07.10 multiplexing to establish multiple communications paths with the modem. The modem needs to support the <tt>AT+CMUX</tt> command plus the basic packet mode in 3GPP TS 07.10. If the modem supports some other form of multiplexing, then it is necessary to implement a <a href="tut-multiplexing.html">multiplexer plug-in</a>.</p>
+<a name="other-commands-3gpp-ts-27-007-appendix-c"></a>
+<h3>Other commands (3GPP TS 27.007, Appendix C)</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+FCLASS</tt></td><td>Select mode</td></tr>
+<tr valign="top" class="even"><td><tt>AT+VGR</tt></td><td>Receive gain selection</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+VGT</tt></td><td>Transmit gain selection</td></tr>
+<tr valign="top" class="even"><td><tt>AT+VTS</tt></td><td>DTMF and tone generation</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

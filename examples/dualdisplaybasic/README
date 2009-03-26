@@ -1,0 +1,23 @@
+This is an example of a simple status display for a dual screen phone. It
+provides a small display, similar to a monochrome LCD display that displays
+the state of the phone. It illustrates use of the phone status library.
+There are two possibilities for displaying the display.
+
+1. Using one Qtopia display
+
+In this case, the status display will appear as a floating display in the
+Qtopia display.  This would be the common case for a LCD display which
+does not need the complete Qtopia graphics engine to drive it.  To view in
+this mode, simply run the application.
+
+2. Using a separate display
+
+In this case, the status display appears in a separate framebuffer.  This
+case would be desireable on a larger, full color secondary display.
+To view in this mode create a separate framebuffer and
+start the application in this framebuffer. For example:
+
+qvfb -width 83 -height 46 -qwsdisplay :2
+./dualdisplaybasic -qws -display :2
+
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia4SyncPlugin Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia4SyncPlugin Class Reference</h1>
+<p>The Qtopia4SyncPlugin class handles synchronization of a single dataset. <a href="#details">More...</a></p>
+<pre>    #include &lt;Qtopia4SyncPlugin&gt;</pre><p>Inherits <a href="foo/../../qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qtopia4syncplugin-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopia4syncplugin.html#Qtopia4SyncPlugin">Qtopia4SyncPlugin</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qtopia4syncplugin.html#dtor.Qtopia4SyncPlugin">~Qtopia4SyncPlugin</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#abortTransaction">abortTransaction</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#beginTransaction">beginTransaction</a></b> ( const QDateTime &amp; <i>timestamp</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#commitTransaction">commitTransaction</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#createServerRecord">createServerRecord</a></b> ( const QByteArray &amp; <i>record</i> ) = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qtopia4syncplugin.html#dataset">dataset</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#fetchChangesSince">fetchChangesSince</a></b> ( const QDateTime &amp; <i>timestamp</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#removeServerRecord">removeServerRecord</a></b> ( const QString &amp; <i>identifier</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopia4syncplugin.html#replaceServerRecord">replaceServerRecord</a></b> ( const QByteArray &amp; <i>record</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="foo/../../qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtopia4syncplugin.html#clientChangesCompleted">clientChangesCompleted</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopia4syncplugin.html#clientError">clientError</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopia4syncplugin.html#createClientRecord">createClientRecord</a></b> ( const QByteArray &amp; <i>record</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopia4syncplugin.html#mappedId">mappedId</a></b> ( const QString &amp; <i>serverId</i>, const QString &amp; <i>clientId</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopia4syncplugin.html#removeClientRecord">removeClientRecord</a></b> ( const QString &amp; <i>identifier</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopia4syncplugin.html#replaceClientRecord">replaceClientRecord</a></b> ( const QByteArray &amp; <i>record</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="foo/../../qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="foo/../../qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="foo/../../qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="foo/../../qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="foo/../../qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="foo/../../qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="foo/../../qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The Qtopia4SyncPlugin class handles synchronization of a single dataset.</p>
+<p>This class is called to fetch and apply changes. It is controlled by Qtopia4Sync, which remotes the API over QCop messages.</p>
+<p>Here is a message flow diagram showing how the class is used.</p>
+<p align="center"><img src="images/qtopia4syncplugin.png" alt="Qtopia4SyncPlugin message flow." /></p><p>See also <a href="qtopia4syncpluginfactory.html">Qtopia4SyncPluginFactory</a> and <a href="task-add-a-new-device-plugin-1.html">Add a new device plugin</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="Qtopia4SyncPlugin"></a>Qtopia4SyncPlugin::Qtopia4SyncPlugin ( <a href="foo/../../qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a <a href="qtopia4syncplugin.html">Qtopia4SyncPlugin</a> with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.Qtopia4SyncPlugin"></a>Qtopia4SyncPlugin::~Qtopia4SyncPlugin ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="abortTransaction"></a>void Qtopia4SyncPlugin::abortTransaction ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Abort the transaction started with <a href="qtopia4syncplugin.html#beginTransaction">beginTransaction</a>().</p>
+<h3 class="fn"><a name="beginTransaction"></a>void Qtopia4SyncPlugin::beginTransaction ( const <a href="foo/../../qdatetime.html">QDateTime</a> &amp; <i>timestamp</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Begin a transaction. The <i>timestamp</i> may be ignored.</p>
+<p>See also <a href="qtopia4syncplugin.html#abortTransaction">abortTransaction</a>() and <a href="qtopia4syncplugin.html#commitTransaction">commitTransaction</a>().</p>
+<h3 class="fn"><a name="clientChangesCompleted"></a>void Qtopia4SyncPlugin::clientChangesCompleted ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emit this signal in response to <a href="qtopia4syncplugin.html#fetchChangesSince">fetchChangesSince</a>() when all changes have been reported.</p>
+<h3 class="fn"><a name="clientError"></a>void Qtopia4SyncPlugin::clientError ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emit this signal any time if an error is encountered and the sync will be aborted.</p>
+<h3 class="fn"><a name="commitTransaction"></a>void Qtopia4SyncPlugin::commitTransaction ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Commit the transaction started with <a href="qtopia4syncplugin.html#beginTransaction">beginTransaction</a>().</p>
+<h3 class="fn"><a name="createClientRecord"></a>void Qtopia4SyncPlugin::createClientRecord ( const <a href="foo/../../qbytearray.html">QByteArray</a> &amp; <i>record</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emit this signal in response to <a href="qtopia4syncplugin.html#fetchChangesSince">fetchChangesSince</a>() to send a new <i>record</i>.</p>
+<p>See also <a href="qtopia4syncplugin.html#replaceClientRecord">replaceClientRecord</a>(), <a href="qtopia4syncplugin.html#removeClientRecord">removeClientRecord</a>(), and <a href="qtopia4syncplugin.html#clientChangesCompleted">clientChangesCompleted</a>().</p>
+<h3 class="fn"><a name="createServerRecord"></a>void Qtopia4SyncPlugin::createServerRecord ( const <a href="foo/../../qbytearray.html">QByteArray</a> &amp; <i>record</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Create the item specified in <i>record</i>. Emit <a href="qtopia4syncplugin.html#mappedId">mappedId</a>() so that the server record can be matched to the client record.</p>
+<h3 class="fn"><a name="dataset"></a><a href="foo/../../qstring.html">QString</a> Qtopia4SyncPlugin::dataset ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the dataset that this plugin handles.</p>
+<h3 class="fn"><a name="fetchChangesSince"></a>void Qtopia4SyncPlugin::fetchChangesSince ( const <a href="foo/../../qdatetime.html">QDateTime</a> &amp; <i>timestamp</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Fetch changes since <i>timestamp</i>. Data and progress should be reported by emitting signals. This funtion can return before the fetching is completed.</p>
+<p><b>Note</b> that <i>timestamp</i> is in UTC time.</p>
+<p>See also <a href="qtopia4syncplugin.html#createClientRecord">createClientRecord</a>(), <a href="qtopia4syncplugin.html#replaceClientRecord">replaceClientRecord</a>(), <a href="qtopia4syncplugin.html#removeClientRecord">removeClientRecord</a>(), and <a href="qtopia4syncplugin.html#clientChangesCompleted">clientChangesCompleted</a>().</p>
+<h3 class="fn"><a name="mappedId"></a>void Qtopia4SyncPlugin::mappedId ( const <a href="foo/../../qstring.html">QString</a> &amp; <i>serverId</i>, const <a href="foo/../../qstring.html">QString</a> &amp; <i>clientId</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emit this signal in response to <a href="qtopia4syncplugin.html#createServerRecord">createServerRecord</a>(). It maps server id <i>serverId</i> to client id <i>clientId</i>.</p>
+<h3 class="fn"><a name="removeClientRecord"></a>void Qtopia4SyncPlugin::removeClientRecord ( const <a href="foo/../../qstring.html">QString</a> &amp; <i>identifier</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emit this signal in response to <a href="qtopia4syncplugin.html#fetchChangesSince">fetchChangesSince</a>() to send a delete of <i>identifier</i>.</p>
+<p>See also <a href="qtopia4syncplugin.html#createClientRecord">createClientRecord</a>(), <a href="qtopia4syncplugin.html#replaceClientRecord">replaceClientRecord</a>(), and <a href="qtopia4syncplugin.html#clientChangesCompleted">clientChangesCompleted</a>().</p>
+<h3 class="fn"><a name="removeServerRecord"></a>void Qtopia4SyncPlugin::removeServerRecord ( const <a href="foo/../../qstring.html">QString</a> &amp; <i>identifier</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Remove the item indicated by <i>identifier</i>.</p>
+<h3 class="fn"><a name="replaceClientRecord"></a>void Qtopia4SyncPlugin::replaceClientRecord ( const <a href="foo/../../qbytearray.html">QByteArray</a> &amp; <i>record</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emit this signal in response to <a href="qtopia4syncplugin.html#fetchChangesSince">fetchChangesSince</a>() to send a modified <i>record</i>.</p>
+<p>See also <a href="qtopia4syncplugin.html#createClientRecord">createClientRecord</a>(), <a href="qtopia4syncplugin.html#removeClientRecord">removeClientRecord</a>(), and <a href="qtopia4syncplugin.html#clientChangesCompleted">clientChangesCompleted</a>().</p>
+<h3 class="fn"><a name="replaceServerRecord"></a>void Qtopia4SyncPlugin::replaceServerRecord ( const <a href="foo/../../qbytearray.html">QByteArray</a> &amp; <i>record</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Update the item specified in <i>record</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

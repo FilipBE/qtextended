@@ -1,0 +1,21 @@
+#!/bin/sh
+
+splash -p + "Checking for" "Qtopia update"
+
+if grep mmca1 /proc/partitions >/dev/null; then
+    mount /dev/mmca1 /media/sdcard 2>/dev/null
+elif grep mmca$ /proc/partitions >/dev/null; then
+    mount /dev/mmca /media/sdcard 2>/dev/null
+fi
+
+/bin/updateqtopiahelper unmountqtopia
+
+# If you don't want the flash process to ask questions
+# uncomment the following line.
+UPDATEQTOPIA_OPTIONS="--no-questions"
+/bin/updateqtopia $UPDATEQTOPIA_OPTIONS /media/sdcard
+
+umount /media/sdcard 2>/dev/null
+
+mount /opt/Qtopia
+

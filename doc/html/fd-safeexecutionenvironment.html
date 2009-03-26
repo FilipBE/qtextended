@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Content: Installed Software: Safe Execution Environment</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Content: Installed Software: Safe Execution Environment<br><small>Functional Description</small></h1><p>The Safe Execution Environment provides a level of security to enable 
+downloading, installing and running third-party native applications; by 
+addressing the risk of compromising the operation of the device, or its data, 
+when running such applications. <p/> 
+<strong>The Safe Execution Environment for Qt Extended 4.3 Final only supports the 
+download and secure execution of games</strong> <p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1598">Game Download</a>
+<li><a href="#QTOPIA-1595">Safe Execution Package Manager</a>
+<li><a href="#QTOPIA-1594">Safe Execution Policy Implementation</a>
+<li><a href="#QTOPIA-1596">Sample Integration</a>
+<li><a href="#QTOPIA-1599">Sand-boxing</a>
+<li><a href="#QTOPIA-1601">Security Monitor</a>
+<li><a href="#QTOPIA-7752">Two tier domain model</a>
+</ul><h3><a name=QTOPIA-1598>Game Download</a></h3>
+<p>End-users may safely download and run <b>games</b>.  Here <em>games</em> refers to restricted applications which do not require access to the full range of Qt Extended features (such as networking and document access).
+
+<p>These applications are restricted to</p>
+<ul>
+	<li>write-only display access</li>
+	<li>a specific location on the file-system</li>
+	<li>play audio</li>
+</ul>
+<h3><a name=QTOPIA-1595>Safe Execution Package Manager</a></h3>
+<p>Refer to the <span class="nobr"><a href="fd-PackageManager.html">Package Manager<sup></sup></a></span> spec for details of the SXE related features of the Package Manager.
+<h3><a name=QTOPIA-1594>Safe Execution Policy Implementation</a></h3>
+<p><h4><a name="ApplicationLevelPolicy"></a>Application Level Policy</h4>
+
+<p>A policy file can be used to regulate the communication between applications and the server that take place along Qt Extended IPC.  The policy file consists of a set of domains, each of which consists of a set of request strings.  There are currently 2 domains, untrusted and trusted.</p>
+
+<p>Through application policy,  requests can be allowed for applications in the trusted domain while denied for those in the untrusted domain.</p>
+
+<h4><a name="OSLevelPolicy"></a>OS Level Policy</h4>
+
+<p>Application level policy is supplemented by Operating System level policy provided by a number of scripts.  These scripts are used specify the policy of a Mandatory Access Control implementation ( such as LIDS from <span class="nobr"><a href="http://www.lids.org">http://www.lids.org<sup></sup></a></span>).  Mandatory Access Control can, for example, prevent a program accessing the network or modem device directly.</p>
+<h3><a name=QTOPIA-1596>Sample Integration</a></h3>
+<p>An example integration of MAC rules, SXE file-system and Qt Extended is provided as part of the Greenphone image. Scripts to build modified versions of the kernel, and the image are available. Generic script templates are also provided so that system customization can be performed for other platforms.
+<h3><a name=QTOPIA-1599>Sand-boxing</a></h3>
+<p>Untrusted applications run under a sandbox MAC rule set which inverts the usual system of <em>allow, unless specifically denied</em> to instead be <em>deny, unless specifically allowed</em>.  This ensures that downloaded applications are not able to access any exploitable system resources.
+
+<p>The sandbox restricts the application to a specific subset of the file-system for its read-write access.  </p>
+
+<p>This feature includes a complete integration of the the SANDBOX rule into the 2.4 kernel based file-system on the Greenphone.  It also caters for read-only filesystems such as cramfs.</p>
+
+<p>The sandbox implementation is provided as a set of kernel patches and file-system tools, which builders of an SXE Qt Extended device must apply during integration.</p>
+<h3><a name=QTOPIA-1601>Security Monitor</a></h3>
+<p>SxeMonitor is a Qt Extended system process, which monitors breaches in SXE policy.  The following action is taken upon detection of a policy breach:
+<ul>
+	<li>Alert dialog on application attempting unauthorized action</li>
+	<li>Alert SMS on application attempting unauthorized action</li>
+	<li>Downloaded application prevented from relaunching, ie disabled, after attempting unauthorized action.  (Application can be re-enabled using Package Manager)</li>
+	<li>All running instances of the downloaded application are terminated when attempting an unauthorized action.</li>
+	<li>All downloaded applications are terminated and disabled if a brute force attack on binary keys is detected.</li>
+</ul>
+<h3><a name=QTOPIA-7752>Two tier domain model</a></h3>
+<p>This feature is provided as part of the Touchscreen Phone Reference Design.</p>
+<p>SXE adopts a two tier domain model, all applications must declare whether they belong into the trusted or untrusted domains.  Application and OS level policy files have been developed so that untrusted applications will run under sandbox conditions while trusted applications are unrestricted. 
+
+<p>All system applications are trusted while downloaded applications are may either be untrusted or trusted.  (SXE may be configured so that downloaded applications must always declare themselves untrusted).</p>
+
+<p>SXE only supports the running of games within the untrusted domain.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

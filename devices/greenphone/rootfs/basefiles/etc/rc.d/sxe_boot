@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# This is the base script which initializes the
+# SXE database files.
+
+# This script should only need to be run on first-boot, not every boot.
+
+# Change this value for install location
+export QTOPIA_DIR=/opt/Qtopia
+
+# Change this value for install location
+export UPDATE_DIR=/home/Updates
+
+# Change this value for install location
+export SXE_DATABASE=$UPDATE_DIR/etc/sxe
+
+# This should be correct for base scripts, change if not
+export BASE_DIR=/etc/lids
+
+export PATH=/sbin:/bin
+
+# Zero out any rules currently in force
+lidsconf -Z
+lidsconf -Z BOOT
+lidsconf -Z POSTBOOT
+lidsconf -Z SHUTDOWN
+
+#run rules for root filesystem
+$BASE_DIR/sxe_bounding
+
+#Set up update directory
+/bin/mkdir -p $UPDATE_DIR/bin
+
+#Set up SXE database
+/bin/mkdir -p $SXE_DATABASE
+
+#Set up location for sxe log files
+mkdir -p /mnt/documents/.log
+
+#Set up sxe database files
+$QTOPIA_DIR/etc/sxe_qtopia/sxe_qtopia

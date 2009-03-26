@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ApplicationTypeLauncher Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ApplicationTypeLauncher Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The ApplicationTypeLauncher class provides an interface to control a particular application type in the system. <a href="#details">More...</a></p>
+<pre>    #include &lt;ApplicationTypeLauncher&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="builtinapplicationlauncher.html">BuiltinApplicationLauncher</a>, <a href="consoleapplicationlauncher.html">ConsoleApplicationLauncher</a>, <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a>, and <a href="qtopiaserverapplicationlauncher.html">QtopiaServerApplicationLauncher</a>.</p>
+<ul>
+<li><a href="applicationtypelauncher-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="applicationtypelauncher.html#ApplicationState-enum">ApplicationState</a></b> { NotRunning, Starting, Running }</li>
+<li><div class="fn"/>enum <b><a href="applicationtypelauncher.html#TerminationReason-enum">TerminationReason</a></b> { Normal, Killed, FailedToStart, Crashed, Unknown }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="applicationtypelauncher.html#dtor.ApplicationTypeLauncher">~ApplicationTypeLauncher</a></b> ()</li>
+<li><div class="fn"/>virtual ApplicationState <b><a href="applicationtypelauncher.html#applicationState">applicationState</a></b> ( const QString &amp; <i>application</i> ) = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="applicationtypelauncher.html#canLaunch">canLaunch</a></b> ( const QString &amp; <i>application</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="applicationtypelauncher.html#kill">kill</a></b> ( const QString &amp; <i>application</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="applicationtypelauncher.html#launch">launch</a></b> ( const QString &amp; <i>application</i> ) = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="applicationtypelauncher.html#name">name</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="applicationtypelauncher.html#applicationStateChanged">applicationStateChanged</a></b> ( const QString &amp; <i>application</i>, ApplicationTypeLauncher::ApplicationState <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="applicationtypelauncher.html#pidStateChanged">pidStateChanged</a></b> ( const QString &amp; <i>application</i>, Q_PID <i>pid</i> )</li>
+<li><div class="fn"/>void <b><a href="applicationtypelauncher.html#terminated">terminated</a></b> ( const QString &amp; <i>application</i>, ApplicationTypeLauncher::TerminationReason <i>reason</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ApplicationTypeLauncher class provides an interface to control a particular application type in the system.</p>
+<p>The ApplicationTypeLauncher provides a Qt Extended Server Task interface. Qt Extended Server Tasks are documented in full in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class documentation.</p>
+<p><b>Note:</b> This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>ApplicationTypeLauncher implementers are used by the <a href="applicationlauncher.html">ApplicationLauncher</a> to control a specific type of application. An overview of the application launcher mechanism is given in the documentation of the <a href="applicationlauncher.html">ApplicationLauncher</a> class.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ApplicationState-enum"></a>enum ApplicationTypeLauncher::ApplicationState</h3>
+<p>Represents the state of an application.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::NotRunning</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The application is not running.</td></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::Starting</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The application is starting.</td></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::Running</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The application is running.</td></tr>
+</table></p>
+<h3 class="fn"><a name="TerminationReason-enum"></a>enum ApplicationTypeLauncher::TerminationReason</h3>
+<p>Represents the reason an application terminated.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::Normal</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The application terminated normally.</td></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::Killed</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">The application was killed by the system.</td></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::FailedToStart</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The application failed to start.</td></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::Crashed</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The application crashed.</td></tr>
+<tr><td valign="top"><tt>ApplicationTypeLauncher::Unknown</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The application terminated for an unknown reason.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.ApplicationTypeLauncher"></a>ApplicationTypeLauncher::~ApplicationTypeLauncher ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destruct the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> instance.</p>
+<h3 class="fn"><a name="applicationState"></a><a href="applicationtypelauncher.html#ApplicationState-enum">ApplicationState</a> ApplicationTypeLauncher::applicationState ( const <a href="qstring.html">QString</a> &amp; <i>application</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the current state of the <i>application</i>.</p>
+<h3 class="fn"><a name="applicationStateChanged"></a>void ApplicationTypeLauncher::applicationStateChanged ( const <a href="qstring.html">QString</a> &amp; <i>application</i>, <a href="applicationtypelauncher.html#ApplicationState-enum">ApplicationTypeLauncher::ApplicationState</a> <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the <i>application</i> state changes. <i>state</i> will be the application's new state.</p>
+<h3 class="fn"><a name="canLaunch"></a>bool ApplicationTypeLauncher::canLaunch ( const <a href="qstring.html">QString</a> &amp; <i>application</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return true if this <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> can launch the <i>application</i>.</p>
+<h3 class="fn"><a name="kill"></a>void ApplicationTypeLauncher::kill ( const <a href="qstring.html">QString</a> &amp; <i>application</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Kill the <i>application</i>.</p>
+<h3 class="fn"><a name="launch"></a>void ApplicationTypeLauncher::launch ( const <a href="qstring.html">QString</a> &amp; <i>application</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Attempt to launch the <i>application</i>.</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> ApplicationTypeLauncher::name ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return a descriptive name for the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> type.</p>
+<h3 class="fn"><a name="pidStateChanged"></a>void ApplicationTypeLauncher::pidStateChanged ( const <a href="qstring.html">QString</a> &amp; <i>application</i>, <a href="qprocess.html#Q_PID-typedef">Q_PID</a> <i>pid</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is used by the memory monitor. If <i>pid</i> is empty the Qtopia <i>application</i> exited; otherwise pid is greater than zero. Most server classes should use the <a href="applicationtypelauncher.html#terminated">terminated</a>() or <a href="applicationtypelauncher.html#applicationStateChanged">applicationStateChanged</a>() signal.</p>
+<h3 class="fn"><a name="terminated"></a>void ApplicationTypeLauncher::terminated ( const <a href="qstring.html">QString</a> &amp; <i>application</i>, <a href="applicationtypelauncher.html#TerminationReason-enum">ApplicationTypeLauncher::TerminationReason</a> <i>reason</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the <i>application</i> terminates. <i>reason</i> represents the cause of the termination.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

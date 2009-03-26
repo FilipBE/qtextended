@@ -1,0 +1,1925 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Test Plan for component 'src/libraries/qtopiamail'</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Test Plan for component 'src/libraries/qtopiamail'<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#environment-setup">Environment Setup</a></li>
+<li><a href="#component-test-strategy">Component Test Strategy</a></li>
+<li><a href="#test-details">Test Details</a></li>
+<ul><li><a href="#tst-python-email-test-get-all">tst_python_email::test_get_all</a></li>
+<li><a href="#tst-python-email-test-get-charsets">tst_python_email::test_get_charsets</a></li>
+<li><a href="#tst-python-email-test-get-filename">tst_python_email::test_get_filename</a></li>
+<li><a href="#tst-python-email-test-get-filename-with-name-parameter">tst_python_email::test_get_filename_with_name_parameter</a></li>
+<li><a href="#tst-python-email-test-get-boundary">tst_python_email::test_get_boundary</a></li>
+<li><a href="#tst-python-email-test-set-boundary">tst_python_email::test_set_boundary</a></li>
+<li><a href="#tst-python-email-test-get-decoded-payload">tst_python_email::test_get_decoded_payload</a></li>
+<li><a href="#tst-python-email-test-decoded-generator">tst_python_email::test_decoded_generator</a></li>
+<li><a href="#tst-python-email-test-as-string">tst_python_email::test_as_string</a></li>
+<li><a href="#tst-python-email-test-get-params">tst_python_email::test_get_params</a></li>
+<li><a href="#tst-python-email-test-get-param-liberal">tst_python_email::test_get_param_liberal</a></li>
+<li><a href="#tst-python-email-test-get-param">tst_python_email::test_get_param</a></li>
+<li><a href="#tst-python-email-test-get-param-funky-continuation-lines">tst_python_email::test_get_param_funky_continuation_lines</a></li>
+<li><a href="#tst-python-email-test-get-param-with-semis-in-quotes">tst_python_email::test_get_param_with_semis_in_quotes</a></li>
+<li><a href="#tst-python-email-test-has-key">tst_python_email::test_has_key</a></li>
+<li><a href="#tst-python-email-test-del-param">tst_python_email::test_del_param</a></li>
+<li><a href="#tst-python-email-test-get-content-type-from-message-implicit">tst_python_email::test_get_content_type_from_message_implicit</a></li>
+<li><a href="#tst-python-email-test-get-content-type-from-message-explicit">tst_python_email::test_get_content_type_from_message_explicit</a></li>
+<li><a href="#tst-python-email-test-get-content-type-from-message-text-plain-implicit">tst_python_email::test_get_content_type_from_message_text_plain_implicit</a></li>
+<li><a href="#tst-python-email-test-get-content-type-from-message-text-plain-explicit">tst_python_email::test_get_content_type_from_message_text_plain_explicit</a></li>
+<li><a href="#tst-python-email-test-get-content-maintype-from-message-implicit">tst_python_email::test_get_content_maintype_from_message_implicit</a></li>
+<li><a href="#tst-python-email-test-get-content-maintype-from-message-explicit">tst_python_email::test_get_content_maintype_from_message_explicit</a></li>
+<li><a href="#tst-python-email-test-get-content-maintype-from-message-text-plain-implicit">tst_python_email::test_get_content_maintype_from_message_text_plain_implicit</a></li>
+<li><a href="#tst-python-email-test-get-content-maintype-from-message-text-plain-explicit">tst_python_email::test_get_content_maintype_from_message_text_plain_explicit</a></li>
+<li><a href="#tst-python-email-test-get-content-subtype-from-message-implicit">tst_python_email::test_get_content_subtype_from_message_implicit</a></li>
+<li><a href="#tst-python-email-test-get-content-subtype-from-message-explicit">tst_python_email::test_get_content_subtype_from_message_explicit</a></li>
+<li><a href="#tst-python-email-test-get-content-subtype-from-message-text-plain-implicit">tst_python_email::test_get_content_subtype_from_message_text_plain_implicit</a></li>
+<li><a href="#tst-python-email-test-get-content-subtype-from-message-text-plain-explicit">tst_python_email::test_get_content_subtype_from_message_text_plain_explicit</a></li>
+<li><a href="#tst-python-email-test-replace-header">tst_python_email::test_replace_header</a></li>
+<li><a href="#tst-python-email-test-broken-base64-payload">tst_python_email::test_broken_base64_payload</a></li>
+<li><a href="#tst-python-email-test-default-cte">tst_python_email::test_default_cte</a></li>
+<li><a href="#tst-python-email-test-long-nonstring">tst_python_email::test_long_nonstring</a></li>
+<li><a href="#tst-python-email-test-long-header-encode">tst_python_email::test_long_header_encode</a></li>
+<li><a href="#tst-python-email-test-no-semis-header-splitter">tst_python_email::test_no_semis_header_splitter</a></li>
+<li><a href="#tst-python-email-test-no-split-long-header">tst_python_email::test_no_split_long_header</a></li>
+<li><a href="#tst-python-email-test-splitting-multiple-long-lines">tst_python_email::test_splitting_multiple_long_lines</a></li>
+<li><a href="#tst-python-email-test-splitting-first-line-only-is-long">tst_python_email::test_splitting_first_line_only_is_long</a></li>
+<li><a href="#tst-python-email-test-long-8bit-header">tst_python_email::test_long_8bit_header</a></li>
+<li><a href="#tst-python-email-test-long-to-header">tst_python_email::test_long_to_header</a></li>
+<li><a href="#tst-python-email-test-long-field-name">tst_python_email::test_long_field_name</a></li>
+<li><a href="#tst-python-email-test-string-headerinst-eq">tst_python_email::test_string_headerinst_eq</a></li>
+<li><a href="#tst-python-email-test-another-long-multiline-header">tst_python_email::test_another_long_multiline_header</a></li>
+<li><a href="#tst-python-email-test-long-lines-with-different-header">tst_python_email::test_long_lines_with_different_header</a></li>
+<li><a href="#tst-python-email-testmimeaudio">tst_python_email::TestMIMEAudio</a></li>
+<li><a href="#tst-python-email-testmimeimage">tst_python_email::TestMIMEImage</a></li>
+<li><a href="#tst-python-email-test-hierarchy">tst_python_email::test_hierarchy</a></li>
+<li><a href="#tst-python-email-test-empty-multipart-idempotent">tst_python_email::test_empty_multipart_idempotent</a></li>
+<li><a href="#tst-python-email-test-no-parts-in-a-multipart-with-none-epilogue">tst_python_email::test_no_parts_in_a_multipart_with_none_epilogue</a></li>
+<li><a href="#tst-python-email-test-no-parts-in-a-multipart-with-empty-epilogue">tst_python_email::test_no_parts_in_a_multipart_with_empty_epilogue</a></li>
+<li><a href="#tst-python-email-test-one-part-in-a-multipart">tst_python_email::test_one_part_in_a_multipart</a></li>
+<li><a href="#tst-python-email-test-message-external-body">tst_python_email::test_message_external_body</a></li>
+<li><a href="#tst-python-email-test-double-boundary">tst_python_email::test_double_boundary</a></li>
+<li><a href="#tst-python-email-test-nested-inner-contains-outer-boundary">tst_python_email::test_nested_inner_contains_outer_boundary</a></li>
+<li><a href="#tst-python-email-test-nested-with-same-boundary">tst_python_email::test_nested_with_same_boundary</a></li>
+<li><a href="#tst-python-email-test-boundary-in-non-multipart">tst_python_email::test_boundary_in_non_multipart</a></li>
+<li><a href="#tst-python-email-test-boundary-with-leading-space">tst_python_email::test_boundary_with_leading_space</a></li>
+<li><a href="#tst-python-email-test-boundary-without-trailing-newline">tst_python_email::test_boundary_without_trailing_newline</a></li>
+<li><a href="#tst-python-email-test-parse-missing-minor-type">tst_python_email::test_parse_missing_minor_type</a></li>
+<li><a href="#tst-python-email-test-same-boundary-inner-outer">tst_python_email::test_same_boundary_inner_outer</a></li>
+<li><a href="#tst-python-email-test-multipart-no-boundary">tst_python_email::test_multipart_no_boundary</a></li>
+<li><a href="#tst-python-email-test-invalid-content-type">tst_python_email::test_invalid_content_type</a></li>
+<li><a href="#tst-python-email-test-no-start-boundary">tst_python_email::test_no_start_boundary</a></li>
+<li><a href="#tst-python-email-test-no-separating-blank-line">tst_python_email::test_no_separating_blank_line</a></li>
+<li><a href="#tst-python-email-test-lying-multipart">tst_python_email::test_lying_multipart</a></li>
+<li><a href="#tst-python-email-test-missing-start-boundary">tst_python_email::test_missing_start_boundary</a></li>
+<li><a href="#tst-python-email-test-whitespace-eater-unicode">tst_python_email::test_whitespace_eater_unicode</a></li>
+<li><a href="#tst-python-email-test-whitespace-eater-unicode-2">tst_python_email::test_whitespace_eater_unicode_2</a></li>
+<li><a href="#tst-python-email-test-rfc2047-without-whitespace">tst_python_email::test_rfc2047_without_whitespace</a></li>
+<li><a href="#tst-python-email-test-rfc2047-with-whitespace">tst_python_email::test_rfc2047_with_whitespace</a></li>
+<li><a href="#tst-python-email-test-generate">tst_python_email::test_generate</a></li>
+<li><a href="#tst-python-email-test-parse-message-rfc822">tst_python_email::test_parse_message_rfc822</a></li>
+<li><a href="#tst-python-email-test-dsn">tst_python_email::test_dsn</a></li>
+<li><a href="#tst-python-email-test-epilogue">tst_python_email::test_epilogue</a></li>
+<li><a href="#tst-python-email-test-default-type">tst_python_email::test_default_type</a></li>
+<li><a href="#tst-python-email-test-default-type-with-explicit-container-type">tst_python_email::test_default_type_with_explicit_container_type</a></li>
+<li><a href="#tst-python-email-testidempotent">tst_python_email::TestIdempotent</a></li>
+<li><a href="#tst-python-email-test-crlf-separation">tst_python_email::test_crlf_separation</a></li>
+<li><a href="#tst-python-email-test-rfc2231-get-param">tst_python_email::test_rfc2231_get_param</a></li>
+<li><a href="#tst-python-email-test-rfc2231-set-param">tst_python_email::test_rfc2231_set_param</a></li>
+<li><a href="#tst-python-email-test-rfc2231-no-language-or-charset">tst_python_email::test_rfc2231_no_language_or_charset</a></li>
+<li><a href="#tst-python-email-test-rfc2231-no-language-or-charset-in-filename">tst_python_email::test_rfc2231_no_language_or_charset_in_filename</a></li>
+<li><a href="#tst-python-email-test-rfc2231-partly-encoded">tst_python_email::test_rfc2231_partly_encoded</a></li>
+<li><a href="#tst-python-email-test-rfc2231-no-language-or-charset-in-boundary">tst_python_email::test_rfc2231_no_language_or_charset_in_boundary</a></li>
+<li><a href="#tst-python-email-test-rfc2231-no-language-or-charset-in-charset">tst_python_email::test_rfc2231_no_language_or_charset_in_charset</a></li>
+<li><a href="#tst-python-email-test-rfc2231-bad-encoding-in-filename">tst_python_email::test_rfc2231_bad_encoding_in_filename</a></li>
+<li><a href="#tst-python-email-test-rfc2231-bad-encoding-in-charset">tst_python_email::test_rfc2231_bad_encoding_in_charset</a></li>
+<li><a href="#tst-python-email-test-rfc2231-bad-character-in-charset">tst_python_email::test_rfc2231_bad_character_in_charset</a></li>
+<li><a href="#tst-python-email-test-rfc2231-bad-character-in-filename">tst_python_email::test_rfc2231_bad_character_in_filename</a></li>
+<li><a href="#tst-python-email-test-rfc2231-single-tick-in-filename-extended">tst_python_email::test_rfc2231_single_tick_in_filename_extended</a></li>
+<li><a href="#tst-python-email-test-rfc2231-tick-attack-extended">tst_python_email::test_rfc2231_tick_attack_extended</a></li>
+<li><a href="#tst-python-email-test-rfc2231-no-extended-values">tst_python_email::test_rfc2231_no_extended_values</a></li>
+<li><a href="#tst-python-email-test-rfc2231-encoded-then-unencoded-segments">tst_python_email::test_rfc2231_encoded_then_unencoded_segments</a></li>
+<li><a href="#tst-python-email-test-rfc2231-unencoded-then-encoded-segments">tst_python_email::test_rfc2231_unencoded_then_encoded_segments</a></li>
+<li><a href="#tst-qmailaddress-constructor1">tst_QMailAddress::constructor1</a></li>
+<li><a href="#tst-qmailaddress-constructor2">tst_QMailAddress::constructor2</a></li>
+<li><a href="#tst-qmailaddress-name">tst_QMailAddress::name</a></li>
+<li><a href="#tst-qmailaddress-address">tst_QMailAddress::address</a></li>
+<li><a href="#tst-qmailaddress-isgroup">tst_QMailAddress::isGroup</a></li>
+<li><a href="#tst-qmailaddress-groupmembers">tst_QMailAddress::groupMembers</a></li>
+<li><a href="#tst-qmailaddress-notgroup">tst_QMailAddress::notGroup</a></li>
+<li><a href="#tst-qmailaddress-tostring">tst_QMailAddress::toString</a></li>
+<li><a href="#tst-qmailaddress-isphonenumber">tst_QMailAddress::isPhoneNumber</a></li>
+<li><a href="#tst-qmailaddress-isemailaddress">tst_QMailAddress::isEmailAddress</a></li>
+<li><a href="#tst-qmailaddress-tostringlist">tst_QMailAddress::toStringList</a></li>
+<li><a href="#tst-qmailaddress-fromstringlist1">tst_QMailAddress::fromStringList1</a></li>
+<li><a href="#tst-qmailaddress-fromstringlist2">tst_QMailAddress::fromStringList2</a></li>
+<li><a href="#tst-qmailaddress-removecomments">tst_QMailAddress::removeComments</a></li>
+<li><a href="#tst-qmailaddress-removewhitespace">tst_QMailAddress::removeWhitespace</a></li>
+<li><a href="#tst-qmailstore-addfolder">tst_QMailStore::addFolder</a></li>
+<li><a href="#tst-qmailstore-addmessage">tst_QMailStore::addMessage</a></li>
+<li><a href="#tst-qmailstore-updatefolder">tst_QMailStore::updateFolder</a></li>
+<li><a href="#tst-qmailstore-updatemessage">tst_QMailStore::updateMessage</a></li>
+<li><a href="#tst-qmailstore-removefolder">tst_QMailStore::removeFolder</a></li>
+<li><a href="#tst-qmailstore-removemessage">tst_QMailStore::removeMessage</a></li>
+<li><a href="#tst-qmailstore-queryfolders">tst_QMailStore::queryFolders</a></li>
+<li><a href="#tst-qmailstore-querymessages">tst_QMailStore::queryMessages</a></li>
+<li><a href="#tst-qmailstore-countfolders">tst_QMailStore::countFolders</a></li>
+<li><a href="#tst-qmailstore-countmessages">tst_QMailStore::countMessages</a></li>
+<li><a href="#tst-qmailstore-folder">tst_QMailStore::folder</a></li>
+<li><a href="#tst-qmailstore-message">tst_QMailStore::message</a></li>
+<li><a href="#tst-qmailstore-messageheader">tst_QMailStore::messageHeader</a></li>
+<li><a href="#tst-qmailmessagepart-contentid">tst_QMailMessagePart::contentID</a></li>
+<li><a href="#tst-qmailmessagepart-setcontentid">tst_QMailMessagePart::setContentID</a></li>
+<li><a href="#tst-qmailmessagepart-contentlocation">tst_QMailMessagePart::contentLocation</a></li>
+<li><a href="#tst-qmailmessagepart-setcontentlocation">tst_QMailMessagePart::setContentLocation</a></li>
+<li><a href="#tst-qmailmessagepart-contentdescription">tst_QMailMessagePart::contentDescription</a></li>
+<li><a href="#tst-qmailmessagepart-setcontentdescription">tst_QMailMessagePart::setContentDescription</a></li>
+<li><a href="#tst-qmailmessagepart-contentdisposition">tst_QMailMessagePart::contentDisposition</a></li>
+<li><a href="#tst-qmailmessagepart-setcontentdisposition">tst_QMailMessagePart::setContentDisposition</a></li>
+<li><a href="#tst-qmailmessagepart-contentlanguage">tst_QMailMessagePart::contentLanguage</a></li>
+<li><a href="#tst-qmailmessagepart-setcontentlanguage">tst_QMailMessagePart::setContentLanguage</a></li>
+<li><a href="#tst-qmailmessagepart-headerfield">tst_QMailMessagePart::headerField</a></li>
+<li><a href="#tst-qmailmessagepart-headerfieldtext">tst_QMailMessagePart::headerFieldText</a></li>
+<li><a href="#tst-qmailmessagepart-headerfields">tst_QMailMessagePart::headerFields</a></li>
+<li><a href="#tst-qmailmessagepart-headerfieldstext">tst_QMailMessagePart::headerFieldsText</a></li>
+<li><a href="#tst-qmailmessagepart-setheaderfield">tst_QMailMessagePart::setHeaderField</a></li>
+<li><a href="#tst-qmailmessagepart-appendheaderfield">tst_QMailMessagePart::appendHeaderField</a></li>
+<li><a href="#tst-qmailmessagepart-removeheaderfield">tst_QMailMessagePart::removeHeaderField</a></li>
+<li><a href="#tst-qmailmessagepart-testserialization">tst_QMailMessagePart::testSerialization</a></li>
+<li><a href="#tst-qmailmessageheaderfield-constructor1">tst_QMailMessageHeaderField::constructor1</a></li>
+<li><a href="#tst-qmailmessageheaderfield-constructor2">tst_QMailMessageHeaderField::constructor2</a></li>
+<li><a href="#tst-qmailmessageheaderfield-id">tst_QMailMessageHeaderField::id</a></li>
+<li><a href="#tst-qmailmessageheaderfield-setid">tst_QMailMessageHeaderField::setId</a></li>
+<li><a href="#tst-qmailmessageheaderfield-content">tst_QMailMessageHeaderField::content</a></li>
+<li><a href="#tst-qmailmessageheaderfield-setcontent">tst_QMailMessageHeaderField::setContent</a></li>
+<li><a href="#tst-qmailmessageheaderfield-parameter">tst_QMailMessageHeaderField::parameter</a></li>
+<li><a href="#tst-qmailmessageheaderfield-setparameter">tst_QMailMessageHeaderField::setParameter</a></li>
+<li><a href="#tst-qmailmessageheaderfield-isparameterencoded">tst_QMailMessageHeaderField::isParameterEncoded</a></li>
+<li><a href="#tst-qmailmessageheaderfield-setparameterencoded">tst_QMailMessageHeaderField::setParameterEncoded</a></li>
+<li><a href="#tst-qmailmessageheaderfield-parameters">tst_QMailMessageHeaderField::parameters</a></li>
+<li><a href="#tst-qmailmessageheaderfield-tostring">tst_QMailMessageHeaderField::toString</a></li>
+<li><a href="#tst-qmailmessageheaderfield-decodedcontent">tst_QMailMessageHeaderField::decodedContent</a></li>
+<li><a href="#tst-qmailmessageheaderfield-encodeword">tst_QMailMessageHeaderField::encodeWord</a></li>
+<li><a href="#tst-qmailmessageheaderfield-decodeword">tst_QMailMessageHeaderField::decodeWord</a></li>
+<li><a href="#tst-qmailmessageheaderfield-encodeparameter">tst_QMailMessageHeaderField::encodeParameter</a></li>
+<li><a href="#tst-qmailmessageheaderfield-decodeparameter">tst_QMailMessageHeaderField::decodeParameter</a></li>
+<li><a href="#tst-qmailmessageheaderfield-encodecontent">tst_QMailMessageHeaderField::encodeContent</a></li>
+<li><a href="#tst-qmailmessageheaderfield-decodecontent">tst_QMailMessageHeaderField::decodeContent</a></li>
+<li><a href="#tst-qmailmessageheaderfield-removecomments">tst_QMailMessageHeaderField::removeComments</a></li>
+<li><a href="#tst-qmailmessageheaderfield-removewhitespace">tst_QMailMessageHeaderField::removeWhitespace</a></li>
+<li><a href="#tst-qmailmessageheaderfield-output">tst_QMailMessageHeaderField::output</a></li>
+<li><a href="#tst-qmailmessagebody-fromqbytearray">tst_QMailMessageBody::fromQByteArray</a></li>
+<li><a href="#tst-qmailmessagebody-fromqstring">tst_QMailMessageBody::fromQString</a></li>
+<li><a href="#tst-qmailmessagebody-fromfile">tst_QMailMessageBody::fromFile</a></li>
+<li><a href="#tst-qmailmessagebody-tofile">tst_QMailMessageBody::toFile</a></li>
+<li><a href="#tst-qmailcodec-encode">tst_QMailCodec::encode</a></li>
+<li><a href="#tst-qmailcodec-decode">tst_QMailCodec::decode</a></li>
+<li><a href="#tst-qmailcodec-line-lengths">tst_QMailCodec::line_lengths</a></li>
+<li><a href="#tst-qmailcodec-buffer-sizes">tst_QMailCodec::buffer_sizes</a></li>
+<li><a href="#tst-qmailcodec-embedded-newlines">tst_QMailCodec::embedded_newlines</a></li>
+<li><a href="#tst-qmailmessage-torfc2822">tst_QMailMessage::toRfc2822</a></li>
+<li><a href="#tst-qmailmessage-fromrfc2822">tst_QMailMessage::fromRfc2822</a></li>
+<li><a href="#tst-qmailmessage-id">tst_QMailMessage::id</a></li>
+<li><a href="#tst-qmailmessage-setid">tst_QMailMessage::setId</a></li>
+<li><a href="#tst-qmailmessage-parentfolderid">tst_QMailMessage::parentFolderId</a></li>
+<li><a href="#tst-qmailmessage-setparentfolderid">tst_QMailMessage::setParentFolderId</a></li>
+<li><a href="#tst-qmailmessage-messagetype">tst_QMailMessage::messageType</a></li>
+<li><a href="#tst-qmailmessage-setmessagetype">tst_QMailMessage::setMessageType</a></li>
+<li><a href="#tst-qmailmessage-from">tst_QMailMessage::from</a></li>
+<li><a href="#tst-qmailmessage-setfrom">tst_QMailMessage::setFrom</a></li>
+<li><a href="#tst-qmailmessage-subject">tst_QMailMessage::subject</a></li>
+<li><a href="#tst-qmailmessage-setsubject">tst_QMailMessage::setSubject</a></li>
+<li><a href="#tst-qmailmessage-date">tst_QMailMessage::date</a></li>
+<li><a href="#tst-qmailmessage-setdate">tst_QMailMessage::setDate</a></li>
+<li><a href="#tst-qmailmessage-to">tst_QMailMessage::to</a></li>
+<li><a href="#tst-qmailmessage-setto">tst_QMailMessage::setTo</a></li>
+<li><a href="#tst-qmailmessage-cc">tst_QMailMessage::cc</a></li>
+<li><a href="#tst-qmailmessage-setcc">tst_QMailMessage::setCc</a></li>
+<li><a href="#tst-qmailmessage-bcc">tst_QMailMessage::bcc</a></li>
+<li><a href="#tst-qmailmessage-setbcc">tst_QMailMessage::setBcc</a></li>
+<li><a href="#tst-qmailmessage-replyto">tst_QMailMessage::replyTo</a></li>
+<li><a href="#tst-qmailmessage-recipients">tst_QMailMessage::recipients</a></li>
+<li><a href="#tst-qmailmessage-hasrecipients">tst_QMailMessage::hasRecipients</a></li>
+<li><a href="#tst-qmailmessage-setreplyto">tst_QMailMessage::setReplyTo</a></li>
+<li><a href="#tst-qmailmessage-inreplyto">tst_QMailMessage::inReplyTo</a></li>
+<li><a href="#tst-qmailmessage-setinreplyto">tst_QMailMessage::setInReplyTo</a></li>
+<li><a href="#tst-qmailmessage-frommailbox">tst_QMailMessage::fromMailbox</a></li>
+<li><a href="#tst-qmailmessage-setfrommailbox">tst_QMailMessage::setFromMailbox</a></li>
+<li><a href="#tst-qmailmessage-serveruid">tst_QMailMessage::serverUid</a></li>
+<li><a href="#tst-qmailmessage-setserveruid">tst_QMailMessage::setServerUid</a></li>
+<li><a href="#tst-qmailmessage-multimultipart">tst_QMailMessage::multiMultipart</a></li>
+<li><a href="#tst-qmailmessage-copyandassign">tst_QMailMessage::copyAndAssign</a></li>
+<li><a href="#tst-longstring-indexof">tst_LongString::indexOf</a></li>
+<li><a href="#tst-longstring-left">tst_LongString::left</a></li>
+<li><a href="#tst-longstring-right">tst_LongString::right</a></li>
+<li><a href="#tst-longstring-mid">tst_LongString::mid</a></li>
+<li><a href="#tst-longstring-length">tst_LongString::length</a></li>
+<li><a href="#tst-longstring-isempty">tst_LongString::isEmpty</a></li>
+<li><a href="#tst-longstring-toqbytearray">tst_LongString::toQByteArray</a></li>
+<li><a href="#tst-longstring-datastream">tst_LongString::dataStream</a></li>
+</ul>
+</ul>
+<a name="environment-setup"></a>
+<h2>Environment Setup</h2>
+<p><a href="qt-extended-test-plan.html#general-environment-setup">General Environment Setup</a> procedures apply for this component.</p>
+<a name="component-test-strategy"></a>
+<h2>Component Test Strategy</h2>
+<p>The <a href="qt-extended-test-plan.html#general-test-strategy">general test strategy</a> applies for this component.</p>
+<a name="test-details"></a>
+<h2>Test Details</h2>
+<a name="tst-python-email-test-get-all"></a>
+<h3>tst_python_email::test_get_all</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-charsets"></a>
+<h3>tst_python_email::test_get_charsets</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-filename"></a>
+<h3>tst_python_email::test_get_filename</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-filename-with-name-parameter"></a>
+<h3>tst_python_email::test_get_filename_with_name_parameter</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-boundary"></a>
+<h3>tst_python_email::test_get_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-set-boundary"></a>
+<h3>tst_python_email::test_set_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-decoded-payload"></a>
+<h3>tst_python_email::test_get_decoded_payload</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-decoded-generator"></a>
+<h3>tst_python_email::test_decoded_generator</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-as-string"></a>
+<h3>tst_python_email::test_as_string</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-params"></a>
+<h3>tst_python_email::test_get_params</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-param-liberal"></a>
+<h3>tst_python_email::test_get_param_liberal</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-param"></a>
+<h3>tst_python_email::test_get_param</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-param-funky-continuation-lines"></a>
+<h3>tst_python_email::test_get_param_funky_continuation_lines</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-param-with-semis-in-quotes"></a>
+<h3>tst_python_email::test_get_param_with_semis_in_quotes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-has-key"></a>
+<h3>tst_python_email::test_has_key</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-del-param"></a>
+<h3>tst_python_email::test_del_param</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-type-from-message-implicit"></a>
+<h3>tst_python_email::test_get_content_type_from_message_implicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-type-from-message-explicit"></a>
+<h3>tst_python_email::test_get_content_type_from_message_explicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-type-from-message-text-plain-implicit"></a>
+<h3>tst_python_email::test_get_content_type_from_message_text_plain_implicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-type-from-message-text-plain-explicit"></a>
+<h3>tst_python_email::test_get_content_type_from_message_text_plain_explicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-maintype-from-message-implicit"></a>
+<h3>tst_python_email::test_get_content_maintype_from_message_implicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-maintype-from-message-explicit"></a>
+<h3>tst_python_email::test_get_content_maintype_from_message_explicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-maintype-from-message-text-plain-implicit"></a>
+<h3>tst_python_email::test_get_content_maintype_from_message_text_plain_implicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-maintype-from-message-text-plain-explicit"></a>
+<h3>tst_python_email::test_get_content_maintype_from_message_text_plain_explicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-subtype-from-message-implicit"></a>
+<h3>tst_python_email::test_get_content_subtype_from_message_implicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-subtype-from-message-explicit"></a>
+<h3>tst_python_email::test_get_content_subtype_from_message_explicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-subtype-from-message-text-plain-implicit"></a>
+<h3>tst_python_email::test_get_content_subtype_from_message_text_plain_implicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-get-content-subtype-from-message-text-plain-explicit"></a>
+<h3>tst_python_email::test_get_content_subtype_from_message_text_plain_explicit</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-replace-header"></a>
+<h3>tst_python_email::test_replace_header</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-broken-base64-payload"></a>
+<h3>tst_python_email::test_broken_base64_payload</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-default-cte"></a>
+<h3>tst_python_email::test_default_cte</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-long-nonstring"></a>
+<h3>tst_python_email::test_long_nonstring</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-long-header-encode"></a>
+<h3>tst_python_email::test_long_header_encode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-no-semis-header-splitter"></a>
+<h3>tst_python_email::test_no_semis_header_splitter</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-no-split-long-header"></a>
+<h3>tst_python_email::test_no_split_long_header</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-splitting-multiple-long-lines"></a>
+<h3>tst_python_email::test_splitting_multiple_long_lines</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-splitting-first-line-only-is-long"></a>
+<h3>tst_python_email::test_splitting_first_line_only_is_long</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-long-8bit-header"></a>
+<h3>tst_python_email::test_long_8bit_header</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-long-to-header"></a>
+<h3>tst_python_email::test_long_to_header</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-long-field-name"></a>
+<h3>tst_python_email::test_long_field_name</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-string-headerinst-eq"></a>
+<h3>tst_python_email::test_string_headerinst_eq</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-another-long-multiline-header"></a>
+<h3>tst_python_email::test_another_long_multiline_header</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-long-lines-with-different-header"></a>
+<h3>tst_python_email::test_long_lines_with_different_header</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-testmimeaudio"></a>
+<h3>tst_python_email::TestMIMEAudio</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-testmimeimage"></a>
+<h3>tst_python_email::TestMIMEImage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-hierarchy"></a>
+<h3>tst_python_email::test_hierarchy</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-empty-multipart-idempotent"></a>
+<h3>tst_python_email::test_empty_multipart_idempotent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-no-parts-in-a-multipart-with-none-epilogue"></a>
+<h3>tst_python_email::test_no_parts_in_a_multipart_with_none_epilogue</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-no-parts-in-a-multipart-with-empty-epilogue"></a>
+<h3>tst_python_email::test_no_parts_in_a_multipart_with_empty_epilogue</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-one-part-in-a-multipart"></a>
+<h3>tst_python_email::test_one_part_in_a_multipart</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-message-external-body"></a>
+<h3>tst_python_email::test_message_external_body</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-double-boundary"></a>
+<h3>tst_python_email::test_double_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-nested-inner-contains-outer-boundary"></a>
+<h3>tst_python_email::test_nested_inner_contains_outer_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-nested-with-same-boundary"></a>
+<h3>tst_python_email::test_nested_with_same_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-boundary-in-non-multipart"></a>
+<h3>tst_python_email::test_boundary_in_non_multipart</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-boundary-with-leading-space"></a>
+<h3>tst_python_email::test_boundary_with_leading_space</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-boundary-without-trailing-newline"></a>
+<h3>tst_python_email::test_boundary_without_trailing_newline</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-parse-missing-minor-type"></a>
+<h3>tst_python_email::test_parse_missing_minor_type</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-same-boundary-inner-outer"></a>
+<h3>tst_python_email::test_same_boundary_inner_outer</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-multipart-no-boundary"></a>
+<h3>tst_python_email::test_multipart_no_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-invalid-content-type"></a>
+<h3>tst_python_email::test_invalid_content_type</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-no-start-boundary"></a>
+<h3>tst_python_email::test_no_start_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-no-separating-blank-line"></a>
+<h3>tst_python_email::test_no_separating_blank_line</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-lying-multipart"></a>
+<h3>tst_python_email::test_lying_multipart</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-missing-start-boundary"></a>
+<h3>tst_python_email::test_missing_start_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-whitespace-eater-unicode"></a>
+<h3>tst_python_email::test_whitespace_eater_unicode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-whitespace-eater-unicode-2"></a>
+<h3>tst_python_email::test_whitespace_eater_unicode_2</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2047-without-whitespace"></a>
+<h3>tst_python_email::test_rfc2047_without_whitespace</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2047-with-whitespace"></a>
+<h3>tst_python_email::test_rfc2047_with_whitespace</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-generate"></a>
+<h3>tst_python_email::test_generate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-parse-message-rfc822"></a>
+<h3>tst_python_email::test_parse_message_rfc822</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-dsn"></a>
+<h3>tst_python_email::test_dsn</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-epilogue"></a>
+<h3>tst_python_email::test_epilogue</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-default-type"></a>
+<h3>tst_python_email::test_default_type</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-default-type-with-explicit-container-type"></a>
+<h3>tst_python_email::test_default_type_with_explicit_container_type</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-testidempotent"></a>
+<h3>tst_python_email::TestIdempotent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-crlf-separation"></a>
+<h3>tst_python_email::test_crlf_separation</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-get-param"></a>
+<h3>tst_python_email::test_rfc2231_get_param</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-set-param"></a>
+<h3>tst_python_email::test_rfc2231_set_param</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-no-language-or-charset"></a>
+<h3>tst_python_email::test_rfc2231_no_language_or_charset</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-no-language-or-charset-in-filename"></a>
+<h3>tst_python_email::test_rfc2231_no_language_or_charset_in_filename</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-partly-encoded"></a>
+<h3>tst_python_email::test_rfc2231_partly_encoded</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-no-language-or-charset-in-boundary"></a>
+<h3>tst_python_email::test_rfc2231_no_language_or_charset_in_boundary</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-no-language-or-charset-in-charset"></a>
+<h3>tst_python_email::test_rfc2231_no_language_or_charset_in_charset</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-bad-encoding-in-filename"></a>
+<h3>tst_python_email::test_rfc2231_bad_encoding_in_filename</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-bad-encoding-in-charset"></a>
+<h3>tst_python_email::test_rfc2231_bad_encoding_in_charset</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-bad-character-in-charset"></a>
+<h3>tst_python_email::test_rfc2231_bad_character_in_charset</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-bad-character-in-filename"></a>
+<h3>tst_python_email::test_rfc2231_bad_character_in_filename</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-single-tick-in-filename-extended"></a>
+<h3>tst_python_email::test_rfc2231_single_tick_in_filename_extended</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-tick-attack-extended"></a>
+<h3>tst_python_email::test_rfc2231_tick_attack_extended</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-no-extended-values"></a>
+<h3>tst_python_email::test_rfc2231_no_extended_values</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-encoded-then-unencoded-segments"></a>
+<h3>tst_python_email::test_rfc2231_encoded_then_unencoded_segments</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-python-email-test-rfc2231-unencoded-then-encoded-segments"></a>
+<h3>tst_python_email::test_rfc2231_unencoded_then_encoded_segments</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_python_email/tst_python_email.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-constructor1"></a>
+<h3>tst_QMailAddress::constructor1</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-constructor2"></a>
+<h3>tst_QMailAddress::constructor2</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-name"></a>
+<h3>tst_QMailAddress::name</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-address"></a>
+<h3>tst_QMailAddress::address</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-isgroup"></a>
+<h3>tst_QMailAddress::isGroup</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-groupmembers"></a>
+<h3>tst_QMailAddress::groupMembers</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-notgroup"></a>
+<h3>tst_QMailAddress::notGroup</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-tostring"></a>
+<h3>tst_QMailAddress::toString</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-isphonenumber"></a>
+<h3>tst_QMailAddress::isPhoneNumber</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-isemailaddress"></a>
+<h3>tst_QMailAddress::isEmailAddress</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-tostringlist"></a>
+<h3>tst_QMailAddress::toStringList</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-fromstringlist1"></a>
+<h3>tst_QMailAddress::fromStringList1</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-fromstringlist2"></a>
+<h3>tst_QMailAddress::fromStringList2</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-removecomments"></a>
+<h3>tst_QMailAddress::removeComments</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailaddress-removewhitespace"></a>
+<h3>tst_QMailAddress::removeWhitespace</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailaddress.html">QMailAddress</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailaddress/tst_qmailaddress.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-addfolder"></a>
+<h3>tst_QMailStore::addFolder</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-addmessage"></a>
+<h3>tst_QMailStore::addMessage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-updatefolder"></a>
+<h3>tst_QMailStore::updateFolder</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-updatemessage"></a>
+<h3>tst_QMailStore::updateMessage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-removefolder"></a>
+<h3>tst_QMailStore::removeFolder</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-removemessage"></a>
+<h3>tst_QMailStore::removeMessage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-queryfolders"></a>
+<h3>tst_QMailStore::queryFolders</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-querymessages"></a>
+<h3>tst_QMailStore::queryMessages</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-countfolders"></a>
+<h3>tst_QMailStore::countFolders</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-countmessages"></a>
+<h3>tst_QMailStore::countMessages</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-folder"></a>
+<h3>tst_QMailStore::folder</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-message"></a>
+<h3>tst_QMailStore::message</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailstore-messageheader"></a>
+<h3>tst_QMailStore::messageHeader</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailstore.html">QMailStore</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailstore/tst_qmailstore.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-contentid"></a>
+<h3>tst_QMailMessagePart::contentID</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-setcontentid"></a>
+<h3>tst_QMailMessagePart::setContentID</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-contentlocation"></a>
+<h3>tst_QMailMessagePart::contentLocation</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-setcontentlocation"></a>
+<h3>tst_QMailMessagePart::setContentLocation</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-contentdescription"></a>
+<h3>tst_QMailMessagePart::contentDescription</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-setcontentdescription"></a>
+<h3>tst_QMailMessagePart::setContentDescription</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-contentdisposition"></a>
+<h3>tst_QMailMessagePart::contentDisposition</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-setcontentdisposition"></a>
+<h3>tst_QMailMessagePart::setContentDisposition</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-contentlanguage"></a>
+<h3>tst_QMailMessagePart::contentLanguage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-setcontentlanguage"></a>
+<h3>tst_QMailMessagePart::setContentLanguage</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-headerfield"></a>
+<h3>tst_QMailMessagePart::headerField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-headerfieldtext"></a>
+<h3>tst_QMailMessagePart::headerFieldText</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-headerfields"></a>
+<h3>tst_QMailMessagePart::headerFields</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-headerfieldstext"></a>
+<h3>tst_QMailMessagePart::headerFieldsText</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-setheaderfield"></a>
+<h3>tst_QMailMessagePart::setHeaderField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-appendheaderfield"></a>
+<h3>tst_QMailMessagePart::appendHeaderField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-removeheaderfield"></a>
+<h3>tst_QMailMessagePart::removeHeaderField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagepart-testserialization"></a>
+<h3>tst_QMailMessagePart::testSerialization</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagepart.html">QMailMessagePart</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagepart/tst_qmailmessagepart.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-constructor1"></a>
+<h3>tst_QMailMessageHeaderField::constructor1</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-constructor2"></a>
+<h3>tst_QMailMessageHeaderField::constructor2</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-id"></a>
+<h3>tst_QMailMessageHeaderField::id</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-setid"></a>
+<h3>tst_QMailMessageHeaderField::setId</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-content"></a>
+<h3>tst_QMailMessageHeaderField::content</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-setcontent"></a>
+<h3>tst_QMailMessageHeaderField::setContent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-parameter"></a>
+<h3>tst_QMailMessageHeaderField::parameter</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-setparameter"></a>
+<h3>tst_QMailMessageHeaderField::setParameter</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-isparameterencoded"></a>
+<h3>tst_QMailMessageHeaderField::isParameterEncoded</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-setparameterencoded"></a>
+<h3>tst_QMailMessageHeaderField::setParameterEncoded</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-parameters"></a>
+<h3>tst_QMailMessageHeaderField::parameters</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-tostring"></a>
+<h3>tst_QMailMessageHeaderField::toString</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-decodedcontent"></a>
+<h3>tst_QMailMessageHeaderField::decodedContent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-encodeword"></a>
+<h3>tst_QMailMessageHeaderField::encodeWord</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-decodeword"></a>
+<h3>tst_QMailMessageHeaderField::decodeWord</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-encodeparameter"></a>
+<h3>tst_QMailMessageHeaderField::encodeParameter</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-decodeparameter"></a>
+<h3>tst_QMailMessageHeaderField::decodeParameter</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-encodecontent"></a>
+<h3>tst_QMailMessageHeaderField::encodeContent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-decodecontent"></a>
+<h3>tst_QMailMessageHeaderField::decodeContent</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-removecomments"></a>
+<h3>tst_QMailMessageHeaderField::removeComments</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-removewhitespace"></a>
+<h3>tst_QMailMessageHeaderField::removeWhitespace</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessageheaderfield-output"></a>
+<h3>tst_QMailMessageHeaderField::output</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessageheaderfield.html">QMailMessageHeaderField</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessageheader/tst_qmailmessageheader.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagebody-fromqbytearray"></a>
+<h3>tst_QMailMessageBody::fromQByteArray</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagebody.html">QMailMessageBody</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagebody/tst_qmailmessagebody.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagebody-fromqstring"></a>
+<h3>tst_QMailMessageBody::fromQString</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagebody.html">QMailMessageBody</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagebody/tst_qmailmessagebody.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagebody-fromfile"></a>
+<h3>tst_QMailMessageBody::fromFile</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagebody.html">QMailMessageBody</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagebody/tst_qmailmessagebody.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessagebody-tofile"></a>
+<h3>tst_QMailMessageBody::toFile</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessagebody.html">QMailMessageBody</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessagebody/tst_qmailmessagebody.cpp</td></tr>
+</table></p>
+<a name="tst-qmailcodec-encode"></a>
+<h3>tst_QMailCodec::encode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailcodec.html">QMailCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailcodec/tst_qmailcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qmailcodec-decode"></a>
+<h3>tst_QMailCodec::decode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailcodec.html">QMailCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailcodec/tst_qmailcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qmailcodec-line-lengths"></a>
+<h3>tst_QMailCodec::line_lengths</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailcodec.html">QMailCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailcodec/tst_qmailcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qmailcodec-buffer-sizes"></a>
+<h3>tst_QMailCodec::buffer_sizes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailcodec.html">QMailCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailcodec/tst_qmailcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qmailcodec-embedded-newlines"></a>
+<h3>tst_QMailCodec::embedded_newlines</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailcodec.html">QMailCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailcodec/tst_qmailcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-torfc2822"></a>
+<h3>tst_QMailMessage::toRfc2822</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-fromrfc2822"></a>
+<h3>tst_QMailMessage::fromRfc2822</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-id"></a>
+<h3>tst_QMailMessage::id</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setid"></a>
+<h3>tst_QMailMessage::setId</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-parentfolderid"></a>
+<h3>tst_QMailMessage::parentFolderId</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setparentfolderid"></a>
+<h3>tst_QMailMessage::setParentFolderId</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-messagetype"></a>
+<h3>tst_QMailMessage::messageType</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setmessagetype"></a>
+<h3>tst_QMailMessage::setMessageType</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-from"></a>
+<h3>tst_QMailMessage::from</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setfrom"></a>
+<h3>tst_QMailMessage::setFrom</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-subject"></a>
+<h3>tst_QMailMessage::subject</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setsubject"></a>
+<h3>tst_QMailMessage::setSubject</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-date"></a>
+<h3>tst_QMailMessage::date</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setdate"></a>
+<h3>tst_QMailMessage::setDate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-to"></a>
+<h3>tst_QMailMessage::to</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setto"></a>
+<h3>tst_QMailMessage::setTo</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-cc"></a>
+<h3>tst_QMailMessage::cc</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setcc"></a>
+<h3>tst_QMailMessage::setCc</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-bcc"></a>
+<h3>tst_QMailMessage::bcc</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setbcc"></a>
+<h3>tst_QMailMessage::setBcc</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-replyto"></a>
+<h3>tst_QMailMessage::replyTo</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-recipients"></a>
+<h3>tst_QMailMessage::recipients</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-hasrecipients"></a>
+<h3>tst_QMailMessage::hasRecipients</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setreplyto"></a>
+<h3>tst_QMailMessage::setReplyTo</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-inreplyto"></a>
+<h3>tst_QMailMessage::inReplyTo</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setinreplyto"></a>
+<h3>tst_QMailMessage::setInReplyTo</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-frommailbox"></a>
+<h3>tst_QMailMessage::fromMailbox</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setfrommailbox"></a>
+<h3>tst_QMailMessage::setFromMailbox</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-serveruid"></a>
+<h3>tst_QMailMessage::serverUid</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-setserveruid"></a>
+<h3>tst_QMailMessage::setServerUid</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-multimultipart"></a>
+<h3>tst_QMailMessage::multiMultipart</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-qmailmessage-copyandassign"></a>
+<h3>tst_QMailMessage::copyAndAssign</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qmailmessage.html">QMailMessage</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_qmailmessage/tst_qmailmessage.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-indexof"></a>
+<h3>tst_LongString::indexOf</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-left"></a>
+<h3>tst_LongString::left</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-right"></a>
+<h3>tst_LongString::right</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-mid"></a>
+<h3>tst_LongString::mid</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-length"></a>
+<h3>tst_LongString::length</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-isempty"></a>
+<h3>tst_LongString::isEmpty</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-toqbytearray"></a>
+<h3>tst_LongString::toQByteArray</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<a name="tst-longstring-datastream"></a>
+<h3>tst_LongString::dataStream</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td>LongString</td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiamail/tests/tst_longstring/tst_longstring.cpp</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

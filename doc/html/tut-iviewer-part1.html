@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Image Viewer Tutorial: Part 1</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Image Viewer Tutorial: Part 1<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>Welcome to the Image Viewer Tutorial.</p>
+<p>Image Viewer Tutorial Contents</p>
+<ul>
+<li><a href="#top">Part 1: UI Specification and starting the implementation</a></li>
+<li><a href="tut-iviewer-part2.html">Part 2: Extending the List Screen</a></li>
+<li><a href="tut-iviewer-part3.html">Part 3: Creating the Image Screen</a></li>
+<li><a href="tut-iviewer-part4.html">Part 4: Enhancing the List Screen</a></li>
+<li><a href="tut-iviewer-part5.html">Part 5: The Info Screen</a></li>
+<li><a href="tut-iviewer-part6.html">Part 6: Enhancements</a></li>
+<li><a href="tut-iviewer-part7.html">Part 7: Application Architecture</a></li>
+</ul>
+<a name="ui-specification"></a>
+<h2>UI Specification</h2>
+<p>The Image Viewer application will run on a Greenphone SDK 4.3&#x2e; The application consists of several screens.</p>
+<a name="list-screen"></a>
+<h3>List Screen</h3>
+<p>The list Screen shows a list of images. Each list item contains:</p>
+<ul>
+<li>image thumbnail(32x32)</li>
+<li>image name (without image format extension)</li>
+</ul>
+<p>It shows all images available on the content system.</p>
+<p><b>Actions</b></p>
+<ul>
+<li>Left Soft Key: Options Menu</li>
+<li>Central Soft Key: Open</li>
+<li>Right Soft Key: Exit application</li>
+<li>Options Menu: Show Options menu<ul>
+<li>Open : Opens current image in Image Screen</li>
+<li>Rename: Rename image (no extension) with dialog</li>
+<li>Delete: Delete image with dialog</li>
+<li>Show Info: Show image info dialog</li>
+</ul>
+</li>
+</ul>
+<p><b>Key-Actions</b></p>
+<ul>
+<li>none</li>
+</ul>
+<a name="image-screen"></a>
+<h3>Image Screen</h3>
+<p>The image screen shows the selected image. If the image is smaller than the screen, the image is not zoomed in. If the image is larger than the screen the image is fitted.</p>
+<p><b>Actions</b></p>
+<ul>
+<li>Left Soft Key: Options Menu</li>
+<li>Central Soft Key: Fullscreen</li>
+<li>Right Soft Key: Back to List Screen</li>
+<li>Options Menu: Show Options menu<ul>
+<li>Rotate: Show Rotate sub-menu<ul>
+<li>Left: Rotates image 90° counter clock-wise</li>
+<li>Right: Rotate image 90° clock-wise</li>
+</ul>
+</li>
+<li>Zoom Shows Zoom sub-menu<ul>
+<li>In: Zoom image 2 times in</li>
+<li>Out: Zoom image 0.5 time out</li>
+</ul>
+</li>
+<li>Fullscreen: Show image in fullscreen</li>
+</ul>
+</li>
+</ul>
+<p><b>Key-Actions</b></p>
+<ul>
+<li>none</li>
+</ul>
+<a name="info-dialog"></a>
+<h3>Info Dialog</h3>
+<p>The info dialog displays information about the current image. The following informations shall be displayed:</p>
+<ul>
+<li>Name</li>
+<li>Mime-Type</li>
+<li>Size (kB)</li>
+<li>Last Modified</li>
+<li>Size (Pixel)</li>
+</ul>
+<p><b>Actions</b></p>
+<ul>
+<li>Left Soft Key: -</li>
+<li>Central Soft Key: -</li>
+<li>Right Soft Key: Back</li>
+</ul>
+<p><b>Key-Actions</b></p>
+<ul>
+<li>none</li>
+</ul>
+<a name="screenshots"></a>
+<h3>Screenshots</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>List Screen</th><th>Image Screen</th><th>Info Screen</th><th>Rename Dialog</th></tr></thead>
+<tr valign="top" class="odd"><td><p align="center"><img src="images//listscreen.png" alt="&quot;ListScreen&quot;" /></p></td><td><p align="center"><img src="images//imagescreen.png" alt="&quot;ImageScreen&quot;" /></p></td><td><p align="center"><img src="images//infoscreen.png" alt="&quot;InfoScreen&quot;" /></p></td><td><p align="center"><img src="images//rename.png" alt="&quot;RenameDialog&quot;" /></p></td></tr>
+</table></p>
+<a name="implementation"></a>
+<h2>Implementation</h2>
+<p>For the parts 1-7 the source code can be found in examples/imageviewer</p>
+<a name="initial-setup"></a>
+<h3>Initial Setup</h3>
+<p>First the project file has to be created (qbuild.pro) for the <a href="buildsystem/index.html">Qt Extended build system</a>.</p>
+<p>File: qbuild.pro</p>
+<pre>    TEMPLATE=app
+    CONFIG+=qtopia
+    TARGET=iviewer
+
+    CONFIG+=quicklaunch
+
+    HEADERS += iviewer.h
+    SOURCES += main.cpp iviewer.cpp</pre>
+<p>Here a Qt Extended application is declared (iviewer). The start code will be in main and the application in iviewer{.h,.cpp}.</p>
+<p>File: main.cpp</p>
+<pre>    #include &quot;iviewer.h&quot;
+    #include &lt;qtopiaapplication.h&gt;
+
+    QTOPIA_ADD_APPLICATION(QTOPIA_TARGET, IViewer)
+    QTOPIA_MAIN</pre>
+<p>&quot;IViewer&quot; is the class name and &quot;iviewer&quot; is the executable name. The syntax is described here.</p>
+<p>Classes: <a href="qtopiaapplication.html">QtopiaApplication</a></p>
+<p>File: iviewer.h</p>
+<pre>    #ifndef IVIEWER_H
+    #define IVIEWER_H
+
+    #include &lt;QStackedWidget&gt;
+    #include &lt;QWidget&gt;
+
+    class IViewer : public QStackedWidget
+    {
+        Q_OBJECT
+    public:
+        IViewer(QWidget *parent=0, Qt::WFlags f=0);
+    };
+
+    #endif</pre>
+<p>Classes: <a href="qstackedwidget.html">QStackedWidget</a>, <a href="qwidget.html">QWidget</a></p>
+<p>The IViewer should be a <a href="qstackedwidget.html">QStackedWidget</a> derived class. The widget stack will be used later to manage our screens. The constructor needs to have the <a href="qwidget.html">QWidget</a> and <a href="qt.html#WindowFlags-typedef">Qt::WindowFlags</a> as parameters, due to the QTOPIA macros in main.cpp.</p>
+<p>File: iviewer.cpp</p>
+<pre>    #include &quot;iviewer.h&quot;
+    IViewer::IViewer(QWidget *parent, Qt::WFlags <span class="comment">/*f*/</span>)
+    : QStackedWidget(parent)
+    {
+        _listScreen  = 0;
+        _imageScreen = 0;
+        setCurrentWidget(listScreen());
+        setWindowTitle(&quot;Image Viewer&quot;);
+    }</pre>
+<p>Namespace: <a href="qt.html">Qt</a></p>
+<p>It is now time for the first run. qbuild must be called. When the QVFB emulator is running, the application can be started with ./iviewer. This should display an empty application in the emulator. Great!</p>
+<a name="the-list-screen"></a>
+<h3>The List Screen</h3>
+<p>The list screen will be derived from the <a href="qlistwidget.html">QListWidget</a> for convenience.</p>
+<p>File: listscreen.h</p>
+<pre>    #ifndef LISTSCREEN_H
+    #define LISTSCREEN_H
+
+    #include &lt;QListWidget&gt;
+    class IViewer;
+    class QContentSet;
+    class QContentSetModel;
+    class QAction;
+    class QKeyEvent;
+    class ImageScreen;
+    class InfoScreen;
+
+    class ListScreen : public QListWidget
+    {
+        Q_OBJECT
+    public:
+        ListScreen(IViewer *viewer);
+    private:
+        IViewer          *_viewer;
+    };
+
+    #endif</pre>
+<p>Classes: <a href="qlistwidget.html">QListWidget</a></p>
+<p>As parent, the iviewer is passed and the pointer is stored in _iviewer. The forward declaration (class IViewer) is used to avoid dependency with the created header files. Dependencies to Qt/Qt Extended header files do not have to be handled.</p>
+<p>File: listscreen.cpp</p>
+<pre>    #include &quot;listscreen.h&quot;
+    #include &quot;iviewer.h&quot;
+    ListScreen::ListScreen(IViewer *viewer)
+    : QListWidget(viewer), _viewer(viewer)
+    {
+    }</pre>
+<p>The list widget is constructed and the _viewer is initialized. The project (qbuild.pro) should know about the new class. The following lines must be added to the qbuild.pro file:</p>
+<p>File: qbuild.pro</p>
+<pre>    SOURCES += listscreen.cpp
+    HEADERS += listscreen.h</pre>
+<p>Now, qbuild can be run again. The application should still display an empty screen. To see something useful, the screen in the iviewer has to be created and the list must be populated with some content. This will be the next step.</p>
+<p><a href="#top">Top</a>|<a href="tut-iviewer-part2.html">Next</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

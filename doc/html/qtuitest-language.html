@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtUiTest Scripting Language</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtUiTest Scripting Language<br /><span class="subtitle"></span>
+</h1>
+<p>The <a href="qtuitest.html">QtUiTest</a> language is based upon QtScipt which is based upon the JavaScript (ECMA-262) standard. To use <a href="qtuitest.html">QtUiTest</a> only a brief knowledge about JavaScript should be sufficient to write 95% of the testcases. When more specific functions are required a book or Internet search is the next step to take.</p>
+<p>This document introduces the basic concepts of the <a href="qtuitest.html">QtUiTest</a> scripting language and should be read by a novice with no previous (or minor) knowledge of scripting languages. If you already know how to write JavaScript it is probably safe to skip this document and just focus on the <a href="qtuitest.html">QtUiTest</a> API which introduces new functions that are used to write tests.</p>
+<p>This manual contains: <ul><li><a href="#grammar">Grammar</a></li>
+<ul><li><a href="#variables">Variables</a></li>
+<li><a href="#operators">Operators</a></li>
+<li><a href="#expressions">Expressions</a></li>
+<li><a href="#statements">Statements</a></li>
+<li><a href="#objects">Objects</a></li>
+<li><a href="#functions-and-methods">Functions and Methods</a></li>
+</ul>
+<li><a href="#variables-and-data-types">Variables and data types</a></li>
+<ul><li><a href="#scope">Scope</a></li>
+<li><a href="#type">Type</a></li>
+</ul>
+<li><a href="#operators">Operators</a></li>
+<ul><li><a href="#arithmetic-or-computational">Arithmetic or computational</a></li>
+<li><a href="#comparison">Comparison</a></li>
+<li><a href="#boolean">boolean</a></li>
+<li><a href="#string">string</a></li>
+<li><a href="#assignment">assignment</a></li>
+<li><a href="#special">special</a></li>
+</ul>
+<li><a href="#statements">Statements</a></li>
+<ul><li><a href="#conditionals">Conditionals</a></li>
+<ul><li><a href="#if-else">if..&#x2e;else</a></li>
+<li><a href="#switch">switch</a></li>
+<li><a href="#loops">Loops</a></li>
+<ul><li><a href="#for">for</a></li>
+<li><a href="#do-while">do..&#x2e;while</a></li>
+<li><a href="#while">while</a></li>
+<li><a href="#break-and-continue">break and continue</a></li>
+</ul>
+<li><a href="#object-manipulation">Object manipulation</a></li>
+<ul><li><a href="#for-in">for..&#x2e;in</a></li>
+<li><a href="#with">with</a></li>
+</ul>
+<li><a href="#comments">Comments</a></li>
+</ul>
+<li><a href="#functions">Functions</a></li>
+<ul><li><a href="#defining-functions">Defining functions</a></li>
+<li><a href="#calling-functions">calling functions</a></li>
+</ul>
+<li><a href="#objects">Objects</a></li>
+<ul><li><a href="#properties">Properties</a></li>
+<li><a href="#methods">Methods</a></li>
+<li><a href="#creating-objects">Creating Objects</a></li>
+<ul><li><a href="#direct-instance-of-an-object">direct instance of an object</a></li>
+<li><a href="#prototype-of-an-object">prototype of an object</a></li>
+</ul>
+</ul>
+</ul>
+</ul>
+</p>
+<a name="grammar"></a>
+<h2>Grammar</h2>
+<p>QtScript code, much like other programming languages, is made up of statements which serve to make assignments, compare values, and execute other sections of code. By and large, programmers will already be familiar with JavaScript's usage of variables, operators, and statements. Following, we will look at each of these elements in a bit more detail.</p>
+<a name="variables"></a>
+<h3>Variables</h3>
+<p>Labels which refer to a changeable value.</p>
+<p>Example: total may possess a value of 100.</p>
+<a name="operators"></a>
+<h3>Operators</h3>
+<p>Actors which can be used to calculate or compare values.</p>
+<p>Example 1: Two values may be summed using the addition operator (+); total+tax</p>
+<p>Example 2: Two values may be compared using the greater-than operator (&gt;); total&gt;200</p>
+<a name="expressions"></a>
+<h3>Expressions</h3>
+<p>Any combination of variables, operators, and statements which evaluate to some result. In English parlance this might be termed a &quot;sentence&quot; or even a &quot;phrase&quot;, in that grammatical elements are combined into a cogent meaning.</p>
+<p>Example 1: total=100;</p>
+<p>Example 2: if (total&gt;100)</p>
+<a name="statements"></a>
+<h3>Statements</h3>
+<p>As in English, a statement pulls all grammatical elements together into a full thought. JavaScript statements may take the form of conditionals, loops, or object manipulations. It is good form to separate statements by semicolons, although this is only mandatory if multiple statements reside on the same line.</p>
+<p>Example 1: if (total&gt;100) {statements;} else {statements;}</p>
+<p>Example 2: while (clicks&lt;10) {statements;}</p>
+<a name="objects"></a>
+<h3>Objects</h3>
+<p>Containing constructs which possess a set of values, each value reflected into an individual property of that object. Objects are a critical concept and feature of JavaScript. A single object may contain many properties, each property which acts like a variable reflecting a certain value. JavaScript can reference a large number of &quot;built-in&quot; objects which refer to characteristics of a Web document. For instance, the document object contains properties which reflect the background color of the current document, its title, and many more.</p>
+<a name="functions-and-methods"></a>
+<h3>Functions and Methods</h3>
+<p>A JavaScript function is quite similar to a &quot;procedure&quot; or &quot;subroutine&quot; in other programming languages. A function is a discrete set of statements which perform some action. It may accept incoming values (parameters), and it may return an outgoing value. A function is &quot;called&quot; from a JavaScript statement to perform its duty. A method is simply a function which is contained in an object. For instance, a function which closes the current window, named close(), is part of the window object; thus, window.close() is known as a method.</p>
+<a name="variables-and-data-types"></a>
+<h2>Variables and data types</h2>
+<p>Variables store and retrieve data, also known as &quot;values&quot;. A variable can refer to a value which changes or is changed. Variables are referred to by name, although the name you give them must conform to certain rules. A JavaScript identifier, or name, must start with a letter or underscore (&quot;<a href="qtopiadesktop/src-tools-qdsync-task-xsd.html">_</a>&quot;); subsequent characters can also be digits (0-9). Because JavaScript is case sensitive, letters include the characters &quot;A&quot; through &quot;Z&quot; (uppercase) and the characters &quot;a&quot; through &quot;z&quot; (lowercase). Typically, variable names are chosen to be meaningful regarding the value they hold. For example, a good variable name for containing the total price of goods orders would be total.</p>
+<a name="scope"></a>
+<h3>Scope</h3>
+<p>When you assign a new variable to an initial value, you must consider the issue of scope. A variable may be scoped as either global or local. A global variable may be accessed from any JavaScript on the page. A local variable may only be accessed from within the function in which it was assigned.</p>
+<p>Commonly, you create a new global variable by simply assigning it a value:</p>
+<pre>    newVariable=5;</pre>
+<p>However, if you are coding within a function and you want to create a local variable which only scopes within that function you must declare the new variable using the var statement:</p>
+<pre>    function myFunction()
+    {
+        var loop=1;
+        total=0;
+        ...additional statements...
+    }</pre>
+<p>In the example above, the variable <tt>loop</tt> will be local to newFunction(), while total will be global to the entire page.</p>
+<a name="type"></a>
+<h3>Type</h3>
+<p>A value, the data assigned to a variable, may consist of any sort of data. However, JavaScript considers data to fall into several possible types. Depending on the type of data, certain operations may or may not be able to be performed on the values. For example, you cannot arithmetically multiply two string values. Variables can be these types:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>Numbers</td><td>3 or 7.987, Integer and floating-point numbers.<ul>
+<li>Integers can be positive, 0, or negative; Integers can be expressed in decimal (base 10), hexadecimal (base 16), and octal (base 8). A decimal integer literal consists of a sequence of digits without a leading 0 (zero). A leading 0 (zero) on an integer literal indicates it is in octal; a leading 0x (or 0X) indicates hexadecimal. Hexadecimal integers can include digits (0-9) and the letters a-f and A-F. Octal integers can include only the digits 0-7.</li>
+<li>A floating-point number can contain either a decimal point, an &quot;e&quot; (uppercase or lowercase), which is used to represent &quot;ten to the power of&quot; in scientific notation, or both. The exponent part is an &quot;e&quot; or &quot;E&quot; followed by an integer, which can be signed (preceded by &quot;+&quot; or &quot;-&quot;). A floating-point literal must have at least one digit and either a decimal point or &quot;e&quot; (or &quot;E&quot;).</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Booleans</td><td>True or False. The possible Boolean values are true and false. These are special values, and are not usable as 1 and 0. In a comparison, any expression that evaluates to 0 is taken to be false, and any statement that evaluates to a number other than 0 is taken to be true.</td></tr>
+<tr valign="top" class="odd"><td>Strings</td><td>&quot;Hello World !&quot; Strings are delineated by single or double quotation marks. (Use single quotes to type strings that contain quotation marks.)</td></tr>
+<tr valign="top" class="even"><td>Objects</td><td>myObj = new Object();</td></tr>
+<tr valign="top" class="odd"><td>Null</td><td>Not the same as zero - no value at all. A null value is one that has no value and means nothing.</td></tr>
+<tr valign="top" class="even"><td>Undefined</td><td>A value that is undefined is a value held by a variable after it has been created, but before a value has been assigned to it.</td></tr>
+</table></p>
+<p>That said, JavaScript is a loosely typed language -- you do not have to specify the data type of a variable when you declare it, and data types are converted automatically as needed during script execution. By and large, you may simply assign any type of data to any variable. The only time data typing matters is when you need to perform operations on the data. Certain operators behave differently depending on the type of data being dealt with. For example, consider the + operator:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>&quot;5&quot; + &quot;10&quot;</td><td>yields</td><td>&quot;510&quot; (string concatenation)</td></tr>
+<tr valign="top" class="even"><td>5 + 10</td><td>yields</td><td>15 (arithmetic sum)</td></tr>
+</table></p>
+<a name="operators"></a>
+<h2>Operators</h2>
+<p>Operators take one or more variables or values (operands) and return a new value; e.g&#x2e; the '+' operator can add two numbers to produce a third. You use operators in expressions to relate values, whether to perform arithmetic or compare quantities. Operators are divided into several classes depending on the relation they perform:</p>
+<a name="arithmetic-or-computational"></a>
+<h3>Arithmetic or computational</h3>
+<p>Arithmetic operators take numerical values (either literals or variables) as their operands and return a single numerical value. The standard arithmetic operators are:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>+</td><td>Addition</td></tr>
+<tr valign="top" class="even"><td>-</td><td>Subtraction</td></tr>
+<tr valign="top" class="odd"><td>*</td><td>Multiplication</td></tr>
+<tr valign="top" class="even"><td>/</td><td>Division</td></tr>
+<tr valign="top" class="odd"><td>%</td><td>Modulus: the remainder after division; e.g&#x2e; 10 % 3 yields 1.</td></tr>
+<tr valign="top" class="even"><td>++</td><td>Unary increment: this operator only takes one operand. The operand's value is increased by 1. The value returned depends on whether the ++ operator is placed before or after the operand; e.g&#x2e; ++x will return the value of x following the increment whereas x++ will return the value of x prior to the increment.</td></tr>
+<tr valign="top" class="odd"><td>--</td><td>Unary decrement: this operator only takes one operand. The operand's value is decreased by 1. The value returned depends on whether the -- operator is placed before or after the operand; e.g&#x2e; --x will return the value of x following the decrement whereas x-- will return the value of x prior to the decrement.</td></tr>
+<tr valign="top" class="even"><td>-</td><td>Unary negation: returns the negation of operand.</td></tr>
+</table></p>
+<a name="comparison"></a>
+<h3>Comparison</h3>
+<p>A comparison operator compares its operands and returns a logical value based on whether the comparison is true or not. The operands can be numerical or string values. When used on string values, the comparisons are based on the standard lexicographical (alphabetic) ordering.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>==</td><td>&quot;Equal to&quot; returns true if operands are equal.</td></tr>
+<tr valign="top" class="even"><td>!=</td><td>&quot;Not equal to&quot; returns true if operands are not equal.</td></tr>
+<tr valign="top" class="odd"><td>&gt;</td><td>&quot;Greater than&quot; returns true if left operand is greater than right operand.</td></tr>
+<tr valign="top" class="even"><td>&gt;=</td><td>&quot;Greater than or equal to&quot; returns true if left operand is greater than or equal to right operand.</td></tr>
+<tr valign="top" class="odd"><td>&lt;</td><td>&quot;Less than&quot; returns true if left operand is less than right operand.</td></tr>
+<tr valign="top" class="even"><td>&lt;=</td><td>&quot;Less than or equal to&quot; returns true if left operand is less than or equal to right operand.</td></tr>
+</table></p>
+<a name="boolean"></a>
+<h3>boolean</h3>
+<p>Boolean operators are typically used to combine multiple comparisons into a conditional expression. For example, you might want to test whether (total&gt;100) AND (stateTax=true). A boolean operator takes two operands, each of which is a true or false value, and returns a true or false result.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>&amp;&amp;</td><td>&quot;And&quot; returns true if both operands are true.</td></tr>
+<tr valign="top" class="even"><td>||</td><td>&quot;Or&quot; returns true if either operand is true.</td></tr>
+<tr valign="top" class="odd"><td>!</td><td>&quot;Not&quot; returns true if the negation of the operand is true (e.g&#x2e; the operand is false).</td></tr>
+</table></p>
+<a name="string"></a>
+<h3>string</h3>
+<p>Strings can be compared using the comparison operators. Additionally, you can concatenate strings using the + operator.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>&quot;dago&quot; + &quot;bert&quot;</td><td>yields</td><td>&quot;dagobert&quot;</td></tr>
+</table></p>
+<a name="assignment"></a>
+<h3>assignment</h3>
+<p>The assignment operator (=) lets you assign a value to a variable. You can assign any value to a variable, including another variable (whose value will be assigned). Several shorthand assignment operators allow you to perform an operation and assign its result to a variable in one step.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>=</td><td>Assigns the value of the righthand operand to the variable on the left. Example: total=100; Example: total=(price+tax+shipping)</td></tr>
+<tr valign="top" class="even"><td>+=</td><td>(also -=, *=, /=) Adds the value of the righthand operand to the lefthand variable and stores the result in the lefthand variable. Example: total+=shipping (adds value of shipping to total and assigned result to total)</td></tr>
+<tr valign="top" class="odd"><td>&amp;=</td><td>(also |=) Assigns result of (lefthand operand &amp;&amp; righthand operand) to lefthand operand.</td></tr>
+</table></p>
+<a name="special"></a>
+<h3>special</h3>
+<p>Several JavaScript operators, rarely used, fall into no particular category. These operators are summarized below.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>Conditional operator (condition) ? trueVal : falseVal</td><td>Assigns a specified value to a variable if a condition is true, otherwise assigns an alternate value if condition is false. Example: preferredPet = (cats &gt; dogs) ? &quot;felines&quot; : &quot;canines&quot; If (cats&gt;dogs), preferredPet will be assigned the string value &quot;felines,&quot; otherwise it will be assigned &quot;canines&quot;.</td></tr>
+<tr valign="top" class="even"><td>typeof operand</td><td>Returns the data type of operand. Example -- test a variable to determine if it contains a number: if (typeof total==&quot;number&quot;) ..&#x2e;</td></tr>
+</table></p>
+<a name="statements"></a>
+<h2>Statements</h2>
+<p>Statements define the flow of a script, known as &quot;program flow.&quot; A statement, like a fully grammatical English sentence, is made up of smaller expressions which, altogether, evaluate into a cogent meaning. In JavaScript, statements are organized as either conditionals, loops, object manipulations, and comments.</p>
+<p>Good practice suggests that each JavaScript statements should be terminated with a semicolon (;). This is often not strictly necessary, as a new line also serves to separate statements, but when multiple statements reside on the same line the semicolon delimiter is mandatory.</p>
+<p>A set of statements that is surrounded by braces is called a block. Blocks of statements are used, for example, in functions and conditionals.</p>
+<p>Normally statements are executed sequentially: x = 1; y = 2; z = x + y; but this can be altered by some statements which test a condition and branch or loop according to the result.</p>
+<a name="conditionals"></a>
+<h3>Conditionals</h3>
+<p>Conditional statements direct program flow in specified directions depending upon the outcomes of specified conditions. These tests are a major influence on the order of execution in a program.</p>
+<a name="if-else"></a>
+<h4>if..&#x2e;else</h4>
+<p>As seen in many programming languages, if the condition evaluates to true then the block of statements1 is executed. Optionally, an else clause specifies a block of statements2 which are executed otherwise. You may omit the else clause if there are no statements which need to be executed if the condition is false.</p>
+<pre>    if (condition)
+     { statements1; }
+    else
+     { statements2; }</pre>
+<a name="switch"></a>
+<h4>switch</h4>
+<p>Commonly known as a &quot;case statement,&quot; switch matches an expression with a specified case, and executes the statements defined for that case. In essence, the switch statement is a sort of shorthand for combining many implied if statements together.</p>
+<pre>    switch (expression){
+       case label :
+          statement;
+          break;
+       case label :
+          statement;
+          break;
+       ...
+       default : statement;
+    }</pre>
+<p>For example, imagine that you wanted to execute different sets of statements depending on whether favoritePet was &quot;dog,&quot; &quot;cat,&quot; or &quot;iguana.&quot; Note that the break; statement prevents any cases below the match from being executed. The default case is matched if none of the cases match the expression.</p>
+<pre>    switch (favoritePet){
+       case &quot;dog&quot; :
+          statements;
+          break;
+       case &quot;cat&quot; :
+          statements;
+          break;
+       case &quot;iguana&quot; :
+          statements;
+          break;
+       default : statements;
+    }</pre>
+<a name="loops"></a>
+<h4>Loops</h4>
+<a name="for"></a>
+<h5>for</h5>
+<p>The venerable for loop repeatedly cycles through a block of statements until a test condition is false. Typically, the number of times a loop is repeated depends on a counter. The JavaScript for syntax incorporates the counter and its increments:</p>
+<pre>    for (initial-statement; test; increment)
+     { statements; }</pre>
+<p>The initial-statement is executed first, and once only. Commonly, this statement is used to initialize a counter variable. Then the test is applied and if it succeeds then the statements are executed. The increment is applied to the counter variable and then the loop starts again. For instance, consider a loop which executes 10 times:</p>
+<pre>    for (i=0; i&lt;10; i++)
+     { statements; }</pre>
+<a name="do-while"></a>
+<h5>do..&#x2e;while</h5>
+<p>Another loop, a do..&#x2e;while statement executes a block of statements repeatedly until a condition becomes false. Due to its structure, this loop necessarily executes the statement at least once.</p>
+<pre>    do
+     { statements;}
+    while (condition)</pre>
+<a name="while"></a>
+<h5>while</h5>
+<p>In similar fashion as the do..&#x2e;while statement, the while statement executes its statement block as long as the condition is true. The main difference between while and do..&#x2e;while, aside from the fact that only while is supported in all JavaScript versions, is that a while loop may not execute the statements even once if the condition is initially false.</p>
+<pre>    while (condition)
+     { statements; }</pre>
+<a name="break-and-continue"></a>
+<h5>break and continue</h5>
+<p>Both of these statements may be used to &quot;jump the tracks&quot; of an iterating loop. When used within the statement block of a loop, each statement behaves slightly differently:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>break</td><td>Aborts execution of the loop, drops out of loop to the next statement following the loop.</td></tr>
+<tr valign="top" class="even"><td>continue</td><td>Aborts this single iteration of the loop, returns execution to the loop control, meaning the condition specified by the loop statement. Loop may execute again if condition is still true.</td></tr>
+</table></p>
+<a name="object-manipulation"></a>
+<h4>Object manipulation</h4>
+<a name="for-in"></a>
+<h5>for..&#x2e;in</h5>
+<p>The sometimes confusing for..&#x2e;in statement is used to cycle through each property of an object or each element of an array. The idea is that you may want to execute a statement block which operates on every property or element.</p>
+<pre>    for (variable in object)
+     { statements; }</pre>
+<p>Imagine, for example, that an object named wine1 has five properties: vineyard, year, varietal, alcohol, and color. You want to output the value of each property, as if producing a record from a database.</p>
+<pre>    var record = &quot;Wine 1&lt;br&gt;&lt;br&gt;&quot;
+    for (var prop in wine1)
+     {record += prop + &quot; = &quot; + wine1[prop] + &quot;&lt;BR&gt;&quot;}
+    record += &quot;&lt;br&gt;&quot;
+    document.write(record)</pre>
+<a name="with"></a>
+<h5>with</h5>
+<p>The with statement serves as a sort of shorthand, allowing you to execute a series of statement who all assume a specified object as the reference. In other words, the object specified in the with statement is used as the default object whenever a property is encountered with no object specified.</p>
+<pre>    with (object)
+     { statements; }</pre>
+<a name="comments"></a>
+<h4>Comments</h4>
+<p>Despite the fact that comments are purely optional, they can easily be a crucial part of your program. Comments can explain the action, like a color commentary, which can be a great help in understanding the code. Whether as a teaching tool or to simply remind yourself what the code does, comments are best sprinkled liberally throughout a program. Remember, comments are for humans, so write them that way!</p>
+<p>Comments can also be used for debugging -- you can comment &quot;out&quot; sections of code to prevent them from being executed. In doing so you may learn more about why a certain problem is occurring in your program.</p>
+<p>Because JavaScript must ignore comments, there is an appropriate syntax for demarcating text as a comment. For single line comments, simply precede the line with two backslashes. For multi-line comment blocks, begin the comment with / * and close with * /.</p>
+<pre>    / / A lonely ol' single line comment</pre>
+<pre><span class="comment">    /* A dense thicket of commentary, spanning many captivating lines
+    of explanation and intrigue. */</span></pre>
+<a name="functions"></a>
+<h3>Functions</h3>
+<p>A function groups together a set of statements under a named subroutine. This allows you to conveniently &quot;call&quot; the function whenever its action is required. Functions are a fundamental building block of most JavaScript programs, so you'll become quite familiar with their use. Before you can call on a function, of course, you must first create it. We can break down the use of functions, then, into two logical categories: defining functions and calling functions.</p>
+<a name="defining-functions"></a>
+<h4>Defining functions</h4>
+<p>The function definition is a statement which describes the function: its name, any values (known as &quot;arguments&quot;) which it accepts incoming, and the statements of which the function is comprised.</p>
+<pre>    function funcName(argument1,argument2,etc)
+    { statements; }</pre>
+<p>A function doesn't necessarily require arguments, in which case you need only write out the parenthesis; e.g&#x2e; funcName(). If you do specify arguments, those arguments will be variables within the function body (the statements which make up the function). The initial values of those variables will be any values passed on by the function call.</p>
+<p>Some functions may return a value to the calling expression. The following function accepts two arguments, x and y, and returns the result of x raised to the y power:</p>
+<pre>    function raiseP(x,y)
+    {
+        total=1;
+        for (j=0; j&lt;y; j++)
+        {
+            total*=x;
+        }
+        return total; <span class="comment">//result of x raised to y power</span>
+    }</pre>
+<a name="calling-functions"></a>
+<h4>calling functions</h4>
+<p>A function waits in the wings until it is called onto the stage. You call a function simply by specifying its name followed by a parenthetical list of arguments, if any:</p>
+<pre>    clearPage();</pre>
+<pre>    boldblink(&quot;Call me gaudy!&quot;);</pre>
+<p>Functions which return a result should be called from within an expression:</p>
+<pre>    total=raiseP(2,8);</pre>
+<pre>    if (raiseP(tax,2)&lt;100) ...</pre>
+<a name="objects"></a>
+<h3>Objects</h3>
+<p>An object is a &quot;package&quot; of data; a collection of properties (variables) and methods (functions) all classed under a single name. For example, imagine that there was an object named car. We could say that the car object possesses several properties: make, model, year, and color, for example. We might even say that car possesses some methods: go(), stop(), and reverse(). Although car is obviously fictional, you can see that its properties and methods all relate to a common theme.</p>
+<p>In JavaScript you may create your own objects for storing data. More commonly, though, you will use the many &quot;built-in&quot; objects which allow you to work with, manipulate, and access the Web page and Web browser. This set of pre-existing objects is known as the &quot;Document Object Model&quot;.</p>
+<a name="properties"></a>
+<h4>Properties</h4>
+<p>Access the properties of an object with a simple notation: objectName.propertyName. Both the object name and property name are case sensitive, so watch your typing. Because a property is essentially a variable, you can create new properties by simply assigning it a value. Assuming, for instance, that carObj already exists (we'll learn to create a new object shortly), you can give it properties named make, model, and year as follows:</p>
+<pre>    carObj.make=&quot;Toyota&quot;;
+    carObj.model=&quot;Camry&quot;;
+    carObj.year=1990;
+    document.write(carObj.year);</pre>
+<p>A JavaScript object, basically, is an array. If you're familiar with other languages you probably recognize an array as a collection of values residing within a single named data structure. You can access an object's properties either using the objectName.propertyName syntax illustrated above, or by using an array syntax:</p>
+<pre>    carObj[&quot;make&quot;]=&quot;Toyota&quot;;
+    carObj[&quot;model&quot;]=&quot;Camry&quot;;
+    document.write(carObj[&quot;year&quot;]);</pre>
+<a name="methods"></a>
+<h4>Methods</h4>
+<p>Unlike a basic data array, an object can also contain functions, which are known as methods when part of an object. You call a method using the basic syntax: objectName.methodName(). Any arguments required for the method are passed between the parentheses, just like a normal function call.</p>
+<p>For example, the window object possesses a method named close(), which simply closes the specified browser window:</p>
+<pre>    window.close();</pre>
+<a name="creating-objects"></a>
+<h4>Creating Objects</h4>
+<p>Most of the time you will be referencing objects which are built-in to the DOM. However, you may want to create your own objects for storing data within a JavaScript program. There are several ways to create a new object, but we'll look at two: creating a direct instance of an object and creating an object prototype.</p>
+<a name="direct-instance-of-an-object"></a>
+<h5>direct instance of an object</h5>
+<p>Despite the awkward sound name, a &quot;direct instance of an object&quot; simply means creating a new single object, such as myPetDog:</p>
+<pre>     myPetDog=new Object();
+     myPetDog.name=&quot;Barney&quot;;
+     myPetDog.breed=&quot;beagle&quot;;
+     myPetDog.year=1981;</pre>
+<p>Assigning a method to your new object is also simple. Assume that you already have coded a function named woof(), which causes a barking sound to play:</p>
+<pre>    myPetDog.woof=woof;</pre>
+<a name="prototype-of-an-object"></a>
+<h5>prototype of an object</h5>
+<p>Sometimes, you'll want to create a &quot;template&quot; or prototype of an object. This does not create an actual instance of the object, but defines the structure of the object. In the future, then, you can quickly stamp out a particular instance of the object. Suppose that instead of myPetDog, you created a prototype object named petDog. This object could then be a template for a particular pet dog object. First, create a function which defines the petDog structure:</p>
+<pre>    function petDog(name, breed, year)
+    { this.name = name;
+      this.breed = breed;
+      this.year = year;
+    }</pre>
+<p>Now that the petDog prototype has been set, you can quickly create single instances of a new object based on the petDog structure:</p>
+<pre>    myPetDog=new petDog(&quot;barney&quot;,&quot;beagle&quot;,1981);
+    yourPetDog=new petDog(&quot;max&quot;,&quot;terrier&quot;,1990);</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

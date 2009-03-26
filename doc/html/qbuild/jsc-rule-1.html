@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Rule Javascript Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Rule Javascript Class Reference<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#running-a-rule">Running a rule</a></li>
+<li><a href="#modifiers">Modifiers</a></li>
+<li><a href="#properties">Properties</a></li>
+<ul><li><a href="#name-string">name: string</a></li>
+<li><a href="#help-string">help: string</a></li>
+<li><a href="#inputfiles-list-string">inputFiles: list&lt;string&gt;</a></li>
+<li><a href="#outputfiles-list-string">outputFiles: list&lt;string&gt;</a></li>
+<li><a href="#prerequisiteactions-list-string">prerequisiteActions: list&lt;string&gt;</a></li>
+<li><a href="#commands-list-string">commands: list&lt;string&gt;</a></li>
+<li><a href="#tests-list-string">tests: list&lt;string&gt;</a></li>
+<li><a href="#other-list-string">other: list&lt;string&gt;</a></li>
+<li><a href="#serial-boolean">serial: boolean</a></li>
+<li><a href="#category-list-string">category: list&lt;string&gt;</a></li>
+<li><a href="#set-object">set: object</a></li>
+</ul>
+</ul>
+<a name="running-a-rule"></a>
+<h3>Running a rule</h3>
+<p>Each rule that is examined, ultimately ends up in one of three states: Succeeded, Failed, or NothingToDo.</p>
+<p>Rules are examined in three stages: Priming, Testing and Executing. During priming, the following steps occur:</p>
+<ol type="1">
+<li>The prerequisite actions are expanded.<ul>
+<li>If a prerequisite is marked as evaluatable it is evaluated and the result is recursively expanded.</li>
+<li>If a prerequisite is marked as a function it is invoked and the result is recursively expanded.</li>
+</ul>
+<p>If evaluating or invoking fails, the rule fails immediately. If an expanded prerequisite that is not marked as optional cannot be found, the rule fails immediately.</p>
+</li>
+<li>The input files are expanded.<ul>
+<li>If an input file is marked as evaluatable it is evaluatated and the result is recursively expanded.</li>
+<li>If an input file is marked as a function it is invoked and the result is recursively expanded.</li>
+</ul>
+<p>If evaluating or invoking fails, the rule fails immediately.</p>
+</li>
+<li>For each input file, its freshen rule is added to the list of prerequisites.<p>A freshen rule is one that has the input file as one of its output files. If a freshen rule is found, it is added as a prerequisite of the current rule. If a freshen rule cannot be found and the input file does not already exist, the rule fails immediately. If a freshen rule cannot be found and the input file already exists, the rule processing continues.</p>
+</li>
+</ol>
+<p>Following priming, further processing of the rule is queued until all of the prerequisite rules have completed. Once this has occured, the rule enters the testing stage. The testing stage determines whether this rule has to execute its commands.</p>
+<ol type="1">
+<li>If any non-optional prerequisite rules have failed, this rule fails immediately.</li>
+<li>If any test functions exist, they are evaluated.<ul>
+<li>If <i>any</i> test function returns true, the rule <i>will</i> execute its commands.</li>
+<li>If <i>all</i> test functions return false, the rule <i>will not</i> execute its commands.</li>
+</ul>
+<p><i>If</i> they exist, test functions always override the rest of the test stage steps.</p>
+</li>
+<li>If there are no output files, the rule <i>will</i> execute its commands.</li>
+<li>If any input file is newer than any output file, the rule <i>will</i> execute its commands.</li>
+<li>If any output file does not exist, the rule <i>will</i> execute its commands.</li>
+<li>Otherwise, the rule <i>will not</i> execute its commands.</li>
+</ol>
+<p>Once testing is complete, the rule begins executing.</p>
+<ol type="1">
+<li>If the testing stage determined that the rule will execute its commands, the commands are executed.<ul>
+<li>If a command is marked as evaluatable and evaluation fails, the rule fails immediately.</li>
+<li>If a command is marked as a function and invoking it fails, the rule fails immediately.</li>
+<li>If a command not marked as no-fail fails, the rule fails immediately.</li>
+</ul>
+</li>
+<li>The rule is set to the Succeeded state if:<p><i>Any</i> prerequisite not marked as hidden is set to Succeeded. <i>Any</i> command non marked as hidden was run.</p>
+</li>
+<li>Otherwise, the rule is set to the NothingToDo state.</li>
+</ol>
+<a name="modifiers"></a>
+<h3>Modifiers</h3>
+<p>Rule properties, such as input files, prerequisite actions and the like, are simple string lists. To pass more information about each, such as when a prerequisite is optional, modifiers are used. Modifiers are included at the start of the appropriate string by enclosing them in an &quot;#(..&#x2e;)&quot; identifier. For example, when used as an input file property,</p>
+<pre>    #(fo)$$MY_FILES</pre>
+<p>will evaluate <tt>$$MY_FILES</tt> and set each returned file as an optional input file. The complete list of modifiers and their meaning in each context is outlined below.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Applies to</th><th>Modifier</th><th>Effect</th></tr></thead>
+<tr valign="top" class="odd"><td><i>Input Files (recursive)</i></td><td><tt>f</tt></td><td>Evaluate string. The returned list&lt;string&gt; is treated as additional input files.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>n</tt></td><td>If freshening of this file fails, the rule doesn't necessarily fail.</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>v</tt></td><td>Do not evaluate string (<i>default</i>).</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>o</tt></td><td>Optional. If the input file does not exist and a rule cannot be found to freshen it, the rule will run. However, if a rule can be found and freshening fails the rule will still value (assuming <tt>n</tt> isn't on).</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>s</tt></td><td>Combime with <i>o</i> to trigger the rule if the file does not exist. Useful for rules that change their input files after they run (eg. &#x2e;d files).</td></tr>
+<tr valign="top" class="even"><td><i>Commands</i></td><td><tt>f</tt></td><td>Evaluate string. The returned list&lt;string&gt; is joined with &quot; &quot;'s and treated as a single command (<i>default</i>).</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>e</tt></td><td>Do not echo the command before running it.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>E</tt></td><td>Only echo the command if there is output from it.</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>h</tt></td><td>Run the command, but this command is not counted towards the rules ran commands count.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>n</tt></td><td>If this command fails, the rule doesn't necessarily fail.</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>v</tt></td><td>Do not evaluate the string.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>t</tt></td><td>Run the command in a virtual TTy. This allows programs to output in color (isatty() returns true instead of false).</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>s</tt></td><td>Cancel the rest of the commands if this command fails.</td></tr>
+<tr valign="top" class="even"><td><i>Tests</i></td><td><tt>f</tt></td><td>Evaluate string (<i>default</i>). The test fails if the returned string is empty or is equal to <tt>false</tt>. The test passes in all other cases. Note that shell commands cannot be run.</td></tr>
+<tr valign="top" class="odd"><td><i>Prerequisite actions (recursive)</i></td><td><tt>f</tt></td><td>Evaluate string. The returned list&lt;string&gt; is treated as additional prerequisites.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>h</tt></td><td>Run the prerequisite, but don't use the prerequisite running as reason to run this rule.</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>n</tt></td><td>If the prerequisite fails, the rule doesn't necessarily fail.</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>v</tt></td><td>Do not evaluate the string (<i>default</i>).</td></tr>
+<tr valign="top" class="odd"><td></td><td><tt>o</tt></td><td>Optional. If the rule cannot be found, the rule will continue processing. However, if a rule can be found, and running the rule fails, the rule will still fail (assuming <tt>n</tt> isn't on).</td></tr>
+<tr valign="top" class="even"><td></td><td><tt>c</tt></td><td>Call the function, passing the rule name as an argument. The returned list&lt;string&gt; is treated as additional prerequisite actions.</td></tr>
+</table></p>
+<a name="properties"></a>
+<h3>Properties</h3>
+<a name="target-rule-javascript-class-reference-name-string"></a><a name="name-string"></a>
+<h4>name: string</h4>
+<p>The rule name. This name will appear in the actions list in the cases where the rule has help, and is the name that other rules use to refer to the rule. The name is set when a rule is requested through the Project::rule() method.</p>
+<a name="target-rule-javascript-class-reference-help-string"></a><a name="help-string"></a>
+<h4>help: string</h4>
+<p>The help description associated with this rule. Rules with help are displayed to the user when they run &quot;qbuild -actions&quot;. Internal rules need not (and should not) have help associated with them.</p>
+<a name="target-rule-javascript-class-reference-inputfiles-list-string"></a><a name="inputfiles-list-string"></a>
+<h4>inputFiles: list&lt;string&gt;</h4>
+<p>List of files that form the input files for this rule.</p>
+<a name="target-rule-javascript-class-reference-outputfiles-list-string"></a><a name="outputfiles-list-string"></a>
+<h4>outputFiles: list&lt;string&gt;</h4>
+<p>List of files this rule generates.</p>
+<a name="target-rule-javascript-class-reference-prerequisiteactions-list-string"></a><a name="prerequisiteactions-list-string"></a>
+<h4>prerequisiteActions: list&lt;string&gt;</h4>
+<p>List of prerequite rules for this rule. This list of rules will complete before this rule executes.</p>
+<a name="target-rule-javascript-class-reference-commands-list-string"></a><a name="commands-list-string"></a>
+<h4>commands: list&lt;string&gt;</h4>
+<p>List of commands to be executed by this rule.</p>
+<a name="target-rule-javascript-class-reference-tests-list-string"></a><a name="tests-list-string"></a>
+<h4>tests: list&lt;string&gt;</h4>
+<p>Tests to determine if this rule should be executed.</p>
+<a name="target-rule-javascript-class-reference-other-list-string"></a><a name="other-list-string"></a>
+<h4>other: list&lt;string&gt;</h4>
+<p>List of properties associated with this rule for use in the commands evaluation.</p>
+<a name="target-rule-javascript-class-reference-serial-boolean"></a><a name="serial-boolean"></a>
+<h4>serial: boolean</h4>
+<p>Set to true if the prerequisite actions of this rule should be executed sequentially. This should generally not be needed, and defaults to false.</p>
+<a name="target-rule-javascript-class-reference-category-list-string"></a><a name="category-list-string"></a>
+<h4>category: list&lt;string&gt;</h4>
+<p>This is used to group rules that use the same utilities. The user can define throttling to ensure that their system does not become bogged down due to excessive processes being run.</p>
+<p>For example, with teambuilder, compiling code is relatively cheap but linking remains expensive so while it might be fine to have 50 compile jobs running at the same time it is probably not acceptable to have 40 linker jobs running.</p>
+<p>This property is a list. The first value is what the GUI will display. Additional values are used for throttling matching but are not displayed in the GUI.</p>
+<p>A basic compiler category might look like this.</p>
+<pre>            rule.category = &quot;Compiler&quot;;</pre>
+<p>To allow throttling of the host (native) and target (cross) compilers independantly the following might be used instead.</p>
+<pre>            rule.category = [&quot;Compiler&quot;, &quot;Host Compiler&quot;];
+            rule.category = [&quot;Compiler&quot;, &quot;Target Compiler&quot;];</pre>
+<p>Note that a rule will be matched on any value. If you have a throttle limit of <tt>Compiler:5</tt> and <tt>Host Compiler:3</tt> and you have 5 target compiler instances running no new host compiler jobs will be run.</p>
+<a name="target-rule-javascript-class-reference-set-object"></a><a name="set-object"></a>
+<h4>set: object</h4>
+<p>Used as a quick way to set multiple rule properties. Assigning a property map to the set property causes just the mapped properties to be set in the rule. For example, to set the inputFiles and help properties of a rule &quot;example_rule&quot; one might:</p>
+<pre>            project.rule(&quot;example_rule&quot;).set = { inputFiles: [&quot;inputFile1.txt&quot;, &quot;inputFile2.txt&quot;],
+                                                 help: &quot;This is an example rule&quot; };</pre>
+<p>If the example_rule already existed, its other properties would be left untouched.</p>
+<p>See also <a href="javascript.html">Javascript Binding</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

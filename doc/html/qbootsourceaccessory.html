@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBootSourceAccessory Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBootSourceAccessory Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QBootSourceAccessory class provides an interface for querying the event which triggered the last boot sequence. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBootSourceAccessory&gt;</pre><p>Inherits <a href="qhardwareinterface.html">QHardwareInterface</a>.</p>
+<p>Inherited by <a href="qbootsourceaccessoryprovider.html">QBootSourceAccessoryProvider</a>.</p>
+<ul>
+<li><a href="qbootsourceaccessory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qbootsourceaccessory.html#Source-enum">Source</a></b> { Unknown, PowerKey, Charger, Alarm, Watchdog, Software }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbootsourceaccessory.html#QBootSourceAccessory">QBootSourceAccessory</a></b> ( const QString &amp; <i>id</i> = QString(), QObject * <i>parent</i> = 0, QAbstractIpcInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qbootsourceaccessory.html#dtor.QBootSourceAccessory">~QBootSourceAccessory</a></b> ()</li>
+<li><div class="fn"/>QBootSourceAccessory::Source <b><a href="qbootsourceaccessory.html#bootSource">bootSource</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qbootsourceaccessory.html#bootSourceModified">bootSourceModified</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBootSourceAccessory class provides an interface for querying the event which triggered the last boot sequence.</p>
+<p>QBootSourceAccessory can be used to query the event which triggered the last boot using <a href="qbootsourceaccessory.html#bootSource">bootSource</a>(). For example the following code checks if the device was booted by plugging in the charger:</p>
+<pre>    QBootSourceAccessory bsa;
+    if (bsa.bootSource() == QBootSourceAccessory::Charger) {
+        ...
+    }</pre>
+<p>Boot source implementations should inherit from <a href="qbootsourceaccessoryprovider.html">QBootSourceAccessoryProvider</a>.</p>
+<p>See also <a href="qbootsourceaccessoryprovider.html">QBootSourceAccessoryProvider</a> and <a href="qhardwareinterface.html">QHardwareInterface</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Source-enum"></a>enum QBootSourceAccessory::Source</h3>
+<p>Defines the events which can trigger a boot sequence</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QBootSourceAccessory::Unknown</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Boot was triggered by an unknown event</td></tr>
+<tr><td valign="top"><tt>QBootSourceAccessory::PowerKey</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Boot was triggered by pressing the power-on key</td></tr>
+<tr><td valign="top"><tt>QBootSourceAccessory::Charger</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Boot was triggered by plugging in the battery charger</td></tr>
+<tr><td valign="top"><tt>QBootSourceAccessory::Alarm</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Boot was triggered by an RTC alarm</td></tr>
+<tr><td valign="top"><tt>QBootSourceAccessory::Watchdog</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Boot was triggered by the expiration of the watchdog timer</td></tr>
+<tr><td valign="top"><tt>QBootSourceAccessory::Software</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Boot was triggered by software, e.g&#x2e; via a software reboot.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBootSourceAccessory"></a>QBootSourceAccessory::QBootSourceAccessory ( const <a href="qstring.html">QString</a> &amp; <i>id</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new boot source accessory object for the given provider <i>id</i> and attaches it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>id</i> is empty, this class will use the default boot source provider that supports the boot source interface. If there is more than one service that supports the boot source interface, the caller should enumerate them with <a href="qhardwaremanager.html#providers">QHardwareManager::providers</a>() and create separate <a href="qbootsourceaccessory.html">QBootSourceAccessory</a> objects for each.</p>
+<p>See also <a href="qhardwaremanager.html#providers">QHardwareManager::providers</a>().</p>
+<h3 class="fn"><a name="dtor.QBootSourceAccessory"></a>QBootSourceAccessory::~QBootSourceAccessory ()</h3>
+<p>Destroys the boot source hardware abstraction.</p>
+<h3 class="fn"><a name="bootSource"></a><a href="qbootsourceaccessory.html#Source-enum">QBootSourceAccessory::Source</a> QBootSourceAccessory::bootSource () const</h3>
+<p>Returns the event which triggered the last boot sequence.</p>
+<h3 class="fn"><a name="bootSourceModified"></a>void QBootSourceAccessory::bootSourceModified ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when <a href="qbootsourceaccessory.html#bootSource">bootSource</a>() changes.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

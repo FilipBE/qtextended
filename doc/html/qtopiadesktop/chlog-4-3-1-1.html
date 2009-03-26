@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia Sync Agent changes for 4.3&#x2e;1</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia Sync Agent changes for 4.3&#x2e;1<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>This page describes changes to Qtopia Sync Agent 4.3&#x2e;1&#x2e;</p>
+<ul>
+<li>Fixed some data corruption bugs and implemented test cases for the Qtopia side of the connection.</li>
+<li>Documentation has been significantly updated.</li>
+<li>Corrected issues that impacted building Qtopia Sync Agent from source code.</li>
+<li>The connection timeout code was removed due to problems it was causing with the Greenphone.</li>
+</ul>
+<a name="known-issues"></a>
+<h3>Known issues</h3>
+<ul>
+<li>Appointments starting and ending at midnight are mis-reported as all day events.</li>
+<li>An obvious crash bug somehow made it through our QA process.</li>
+<li>Records are being duplicated when synchronizing multiple times.</li>
+<li>Tasks does not sync due to an error handling the low-level protocol.</li>
+<li>Objects of an unexpected type returned from Outlook can cause problems. For example, a distribution list in the Contacts folder is not ignored and is accessed like a Contact, potentially causing problems.</li>
+<li>Items created in Outlook are duplicated at every sync.</li>
+<li>Tasks modified on the server are not changed on the device.</li>
+<li>Appointments with no alarms are not read correctly (Repeat, Notes, Categories and Custom Fields from Outlook are not seen by Qtopia).</li>
+<li>Certain characters appearing in text (eg. the elipsis character) can cause Qtopia Sync Agent to crash due to a text encoding bug.</li>
+<li>Long notes are not transferred in full (the beginning part of the note is cut off).</li>
+<li>The clocks on the desktop and device must match or some items may not be synchronized.</li>
+<li>All day events do not synchronize correctly between Qtopia and Outlook.</li>
+<li>Outlook items that are not known to Qtopia Sync Agent but have a last modified timestamp that is before the sync timestamp are not transferred. This can be observed by importing items from a .pst file (they may not sync).</li>
+<li>Changing a recurring event in Qtopia to a non-recurring event causes Qtopia Sync Agent to crash.</li>
+<li>Birthdays and anniversaries are duplicated in the calendar.</li>
+</ul>
+<p>See also <a href="changes.html">What's New?</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

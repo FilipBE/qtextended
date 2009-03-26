@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBandSelection Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBandSelection Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QBandSelection class provides an interface to select a GSM band for the phone to operate on. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBandSelection&gt;</pre><p>Inherits <a href="qcomminterface.html">QCommInterface</a>.</p>
+<ul>
+<li><a href="qbandselection-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qbandselection.html#BandMode-enum">BandMode</a></b> { Automatic, Manual }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbandselection.html#QBandSelection">QBandSelection</a></b> ( const QString &amp; <i>service</i> = QString(), QObject * <i>parent</i> = 0, QCommInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qbandselection.html#dtor.QBandSelection">~QBandSelection</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qbandselection.html#requestBand">requestBand</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qbandselection.html#requestBands">requestBands</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qbandselection.html#setBand">setBand</a></b> ( QBandSelection::BandMode <i>mode</i>, const QString &amp; <i>value</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qbandselection.html#band">band</a></b> ( QBandSelection::BandMode <i>mode</i>, const QString &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qbandselection.html#bands">bands</a></b> ( const QStringList &amp; <i>list</i> )</li>
+<li><div class="fn"/>void <b><a href="qbandselection.html#setBandResult">setBandResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBandSelection class provides an interface to select a GSM band for the phone to operate on.</p>
+<p>Bands are identified by string identifiers such as the following:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>GSM 850</tt></td><td>GSM at 850 MHz</td></tr>
+<tr valign="top" class="even"><td><tt>GSM 900</tt></td><td>GSM at 900 MHz</td></tr>
+<tr valign="top" class="odd"><td><tt>GSM 1800</tt></td><td>DCS at 1800 MHz</td></tr>
+<tr valign="top" class="even"><td><tt>GSM 1900</tt></td><td>PCS at 1900 MHz</td></tr>
+<tr valign="top" class="odd"><td><tt>Dual 900/1800</tt></td><td>Dual 900 MHz and 1800 MHz bands</td></tr>
+<tr valign="top" class="even"><td><tt>Dual 850/1900</tt></td><td>Dual 950 MHz and 1900 MHz bands</td></tr>
+</table></p>
+<p>Telephony services should report dual bands separately from the single constituent bands, to allow the user to select either a specific band, or one of a set of supported bands.</p>
+<p>Not all modems support band selection. The <a href="qabstractipcinterface.html#available">available</a>() method should be used by client applications to determine if band selection is possible.</p>
+<p>See also <a href="qcomminterface.html">QCommInterface</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="BandMode-enum"></a>enum QBandSelection::BandMode</h3>
+<p>This enum defines the mode of band selection to be used.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QBandSelection::Automatic</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Use an explicit band selection if possible, but fall back to any available band otherwise.</td></tr>
+<tr><td valign="top"><tt>QBandSelection::Manual</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Use only the explicitly specified band.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBandSelection"></a>QBandSelection::QBandSelection ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new band selection object for <i>service</i> and attach it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports band selection. If there is more than one service that supports band selection, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qbandselection.html">QBandSelection</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QBandSelection"></a>QBandSelection::~QBandSelection ()</h3>
+<p>Destroy this band selection object.</p>
+<h3 class="fn"><a name="band"></a>void QBandSelection::band ( <a href="qbandselection.html#BandMode-enum">QBandSelection::BandMode</a> <i>mode</i>, const <a href="qstring.html">QString</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted in response to <a href="qbandselection.html#requestBand">requestBand</a>(), to report the currently selected <i>mode</i> and band <i>value</i>.</p>
+<p>See also <a href="qbandselection.html#setBand">setBand</a>() and <a href="qbandselection.html#requestBand">requestBand</a>().</p>
+<h3 class="fn"><a name="bands"></a>void QBandSelection::bands ( const <a href="qstringlist.html">QStringList</a> &amp; <i>list</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the supported <i>list</i> of bands.</p>
+<p>See also <a href="qbandselection.html#requestBands">requestBands</a>().</p>
+<h3 class="fn"><a name="requestBand"></a>void QBandSelection::requestBand ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the currently selected band. The result is reported via the <a href="qbandselection.html#band">band</a>() signal.</p>
+<p>See also <a href="qbandselection.html#band">band</a>() and <a href="qbandselection.html#requestBands">requestBands</a>().</p>
+<h3 class="fn"><a name="requestBands"></a>void QBandSelection::requestBands ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request a list of all bands that can be selected from. The result is reported via the <a href="qbandselection.html#bands">bands</a>() signal.</p>
+<p>See also <a href="qbandselection.html#bands">bands</a>() and <a href="qbandselection.html#requestBand">requestBand</a>().</p>
+<h3 class="fn"><a name="setBand"></a>void QBandSelection::setBand ( <a href="qbandselection.html#BandMode-enum">QBandSelection::BandMode</a> <i>mode</i>, const <a href="qstring.html">QString</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Sets the current band <i>mode</i> and <i>value</i>. If <i>value</i> is null, and <i>mode</i> is <tt>Automatic</tt>, then any available band will be used. The result of setting the band is reported via the <a href="qbandselection.html#setBandResult">setBandResult</a>() signal.</p>
+<p>See also <a href="qbandselection.html#band">band</a>(), <a href="qbandselection.html#setBandResult">setBandResult</a>(), and <a href="qbandselection.html#requestBand">requestBand</a>().</p>
+<h3 class="fn"><a name="setBandResult"></a>void QBandSelection::setBandResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of calling <a href="qbandselection.html#setBand">setBand</a>().</p>
+<p>See also <a href="qbandselection.html#setBand">setBand</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

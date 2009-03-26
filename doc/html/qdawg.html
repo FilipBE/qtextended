@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDawg Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDawg Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDawg class provides storage of words in a Directed Acyclic Word Graph. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDawg&gt;</pre><ul>
+<li><a href="qdawg-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qdawg-node.html">Node</a></b></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdawg.html#QDawg">QDawg</a></b> ()</li>
+<li><div class="fn"/><b><a href="qdawg.html#dtor.QDawg">~QDawg</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qdawg.html#allWords">allWords</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdawg.html#contains">contains</a></b> ( const QString &amp; <i>s</i> ) const</li>
+<li><div class="fn"/>int <b><a href="qdawg.html#countWords">countWords</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qdawg.html#createFromWords">createFromWords</a></b> ( const QStringList &amp; <i>list</i> )</li>
+<li><div class="fn"/>bool <b><a href="qdawg.html#createFromWords-2">createFromWords</a></b> ( QIODevice * <i>dev</i> )</li>
+<li><div class="fn"/>bool <b><a href="qdawg.html#read">read</a></b> ( QIODevice * <i>dev</i> )</li>
+<li><div class="fn"/>bool <b><a href="qdawg.html#readFile">readFile</a></b> ( const QString &amp; <i>filename</i> )</li>
+<li><div class="fn"/>const Node * <b><a href="qdawg.html#root">root</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdawg.html#write">write</a></b> ( QIODevice * <i>dev</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qdawg.html#writeByteSwapped">writeByteSwapped</a></b> ( QIODevice * <i>dev</i> ) const</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDawg class provides storage of words in a Directed Acyclic Word Graph.</p>
+<p>A DAWG provides very fast look-up of words in a word list given incomplete or ambiguous letters in those words.</p>
+<p>In Qtopia, global DAWGs are maintained for the current locale. See <a href="qtopia.html#dawg">Qtopia::dawg</a>(). Various Qt Extended components use these DAWGs, most notably input methods, such as handwriting recognition that use the word lists to choose among the likely interpretations of the user input.</p>
+<p>To create your own a QDawg, construct an empty one with the default constructor, then add all the required words to it by a single call to <a href="qdawg.html#createFromWords">createFromWords</a>().</p>
+<p>Created QDawgs can be stored with <a href="qdawg.html#write">write</a>() and retrieved with <a href="qdawg.html#read">read</a>() or <a href="qdawg.html#readFile">readFile</a>().</p>
+<p>The data structure is such that adding words incrementally is not an efficient operation and can only be done by creating a new QDawg, using <a href="qdawg.html#allWords">allWords</a>() to get the existing words.</p>
+<p>The structure of a DAWG is a graph of <a href="qdawg-node.html">Nodes</a>, each representing a letter (retrieved by <a href="qdawg-node.html#letter">QDawg::Node::letter</a>()). Paths through the graph represent partial or whole words. Nodes on paths that are whole words are flagged as such by <a href="qdawg-node.html#isWord">QDawg::Node::isWord</a>(). Nodes are connected to a list of other nodes. The alphabetically first such node is retrieved by <a href="qdawg-node.html#jump">QDawg::Node::jump</a>() and subsequent nodes are retrieved from the earlier by <a href="qdawg-node.html#next">QDawg::Node::next</a>(), with the last child returning 0 for that (and false for <a href="qdawg-node.html#isLast">QDawg::Node::isLast</a>()).</p>
+<p>There are no cycles in the graph as there are no inifinitely repeating words.</p>
+<p>For example, the DAWG below represents the word list: ban, band, can, cane, cans, pan, pane, pans.</p>
+<p align="center"><img src="images/qdawg.png" /></p><p>In the graph above, the <tt>root()</tt> node has the letter 'b', the <tt>root()-&gt;jump()</tt> node has the letter 'a', and the <tt>root()-&gt;next()</tt> node has the letter 'c'. Also, the <a href="qdawg.html#root">root</a>() node is not a word - <tt>!Node::isWord()</tt>, but <tt>root()-&gt;next()-&gt;jump()-&gt;jump()</tt> is a word (the word &quot;can&quot;).</p>
+<p>This structuring not only provides O(1) look-up of words in the word list, but also produces a smaller compressed storage file than a plain text file word list.</p>
+<p>A simple algorithm that traverses the QDawg to see if a word is included would be:</p>
+<pre>    bool isWord(const QDawg::Node *n, const QString&amp; s, int index)
+    {
+        int i=0;
+        if ( index &lt; (int)s.length() ) {
+            while (n) {
+                if ( s[index] == n-&gt;letter() ) {
+                    if ( n-&gt;isWord() &amp;&amp; index == (int)s.length()-1 )
+                        return true;
+                    return isWord(n-&gt;jump(),s,index+1);
+                }
+                n = n-&gt;next();
+            }
+        }
+        return false;
+    }</pre>
+<p>In addition to simple look-up of a single word, the QDawg can be traversed to find lists of words with certain sets of characters, such as the characters associated with phone keys or handwriting. For example, given a <a href="qstringlist.html">QStringList</a> where each string is a list of letter in decreasing order of likelihood, an efficient algorithm could be written for finding the best word by traversing the QDawg just once.</p>
+<p>The QDawg graph can have a value() stored at each node. This can be used for example for tagging words with frequency information.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDawg"></a>QDawg::QDawg ()</h3>
+<p>Constructs a new empty <a href="qdawg.html">QDawg</a>. The next step is usually to add all words with <a href="qdawg.html#createFromWords">createFromWords</a>() or use <a href="qdawg.html#readFile">readFile</a>() to retrieve existing words.</p>
+<h3 class="fn"><a name="dtor.QDawg"></a>QDawg::~QDawg ()</h3>
+<p>Destroys the <a href="qdawg.html">QDawg</a>. If it was attached to a file with <a href="qdawg.html#readFile">readFile</a>(), it is detached.</p>
+<h3 class="fn"><a name="allWords"></a><a href="qstringlist.html">QStringList</a> QDawg::allWords () const</h3>
+<p>Returns a list of all the words in the <a href="qdawg.html">QDawg</a>, in alphabetical order.</p>
+<h3 class="fn"><a name="contains"></a>bool QDawg::contains ( const <a href="qstring.html">QString</a> &amp; <i>s</i> ) const</h3>
+<p>Returns true if the <a href="qdawg.html">QDawg</a> contains the word <i>s</i>; otherwise returns false.</p>
+<h3 class="fn"><a name="countWords"></a>int QDawg::countWords () const</h3>
+<p>Iterates over the whole graph and returns the total number of words found in the <a href="qdawg.html">QDawg</a>.</p>
+<h3 class="fn"><a name="createFromWords"></a>void QDawg::createFromWords ( const <a href="qstringlist.html">QStringList</a> &amp; <i>list</i> )</h3>
+<p>Replaces all the words in the <a href="qdawg.html">QDawg</a> with the words in the <i>list</i>.</p>
+<p>In addition to single words, <a href="qdawg.html">QDawg</a> also allows prefixes and node values.</p>
+<p>Prefixes are described by words with a trailing &quot;*&quot;; any necessary nodes are added to the <a href="qdawg.html">QDawg</a>, but the final node is not marks as <a href="qdawg-node.html#isword">isWord</a>().</p>
+<p>Node values are integers appended to the word (or prefix) following a space. The values are accessible via the value() function. The value must be in the range 0 to QDawg::Node::MaxValue.</p>
+<p>Note that storing a wide range of values will increase the size of the generated dawg since suffixes with different values cannot be merged.</p>
+<h3 class="fn"><a name="createFromWords-2"></a>bool QDawg::createFromWords ( <a href="qiodevice.html">QIODevice</a> * <i>dev</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Replaces all the words in the <a href="qdawg.html">QDawg</a> with words read by <a href="qiodevice.html#readLine">QIODevice::readLine</a>() from <i>dev</i>. The text in <i>dev</i> must be in UTF8 format.</p>
+<h3 class="fn"><a name="read"></a>bool QDawg::read ( <a href="qiodevice.html">QIODevice</a> * <i>dev</i> )</h3>
+<p>Replaces all the words in the <a href="qdawg.html">QDawg</a> with the <a href="qdawg.html">QDawg</a> read from <i>dev</i>. The file is <i>not</i> memory-mapped. Use <a href="qdawg.html#readFile">readFile</a>() wherever possible, for better performance.</p>
+<p>Returns true if successful. If not successful, the <a href="qdawg.html">QDawg</a> is left unchanged and false is returned.</p>
+<p>See also <a href="qdawg.html#write">write</a>().</p>
+<h3 class="fn"><a name="readFile"></a>bool QDawg::readFile ( const <a href="qstring.html">QString</a> &amp; <i>filename</i> )</h3>
+<p>Replaces all the words in the <a href="qdawg.html">QDawg</a> with the <a href="qdawg.html">QDawg</a> in <i>filename</i>. Note that the file is memory-mapped if possible.</p>
+<p>Returns true if successful. If not successful, the <a href="qdawg.html">QDawg</a> is left unchanged and false is returned.</p>
+<p>See also <a href="qdawg.html#write">write</a>().</p>
+<h3 class="fn"><a name="root"></a>const <a href="qdawg-node.html">Node</a> * QDawg::root () const</h3>
+<p>Returns the root <a href="qdawg-node.html">Node</a> of the <a href="qdawg.html">QDawg</a>, or 0 if the <a href="qdawg.html">QDawg</a> is empty.</p>
+<p>The root is the starting point for all traversals.</p>
+<p>Note that this root node has a <a href="qdawg-node.html#letter">Node::letter</a>(), and subsequent nodes returned by <a href="qdawg-node.html#next">Node::next</a>(), just like any other Node.</p>
+<h3 class="fn"><a name="write"></a>bool QDawg::write ( <a href="qiodevice.html">QIODevice</a> * <i>dev</i> ) const</h3>
+<p>Writes the <a href="qdawg.html">QDawg</a> to <i>dev</i>, in a custom QDAWG format.</p>
+<p>Returns true if successful.</p>
+<p><b>Warning:</b> <a href="qdawg.html">QDawg</a> memory maps QDAWG files. The safe method for writing to QDAWG files is to write the data to a new file and move the new file to the old file name. <a href="qdawg.html">QDawg</a> objects using the old file will continue using that file.</p>
+<h3 class="fn"><a name="writeByteSwapped"></a>bool QDawg::writeByteSwapped ( <a href="qiodevice.html">QIODevice</a> * <i>dev</i> ) const</h3>
+<p>Writes the <a href="qdawg.html">QDawg</a> to <i>dev</i>, in a custom QDAWG format, with bytes reversed from the endianness of the host. This allows a host of one endianness to write a QDAWG file readable on a target device with reverse endianness.</p>
+<p>Returns true if successful.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Using prelink</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Using prelink<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#process">Process</a></li>
+<li><a href="#example-configuration-file">Example Configuration File</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>A significant portion of application startup time is spent in the dynamic linker performing relocations and resolving symbols from shared libraries. This process is performed every time a program loads. Performing this process ahead-of-time and caching the results, such that it does not need to be done on program load is known as prelinking. For an in depth description of the prelinking process see <a href="http://people.redhat.com/jakub/prelink/prelink.pdf">http://people.redhat.com/jakub/prelink/prelink.pdf</a>.</p>
+<p>Due to the way prelinking works it is incompatible with any per process address space randomization security features of the Linux kernel. You should be aware of the security implications this has on your device. Because of this, prelink can be configured to randomly assign the base address at which shared libraries are loaded into a processes address space.</p>
+<p>This tutorial describes how to use <tt>prelink</tt> to optimize programs and shared libraries on an embedded ARM device.</p>
+<a name="prerequisites"></a>
+<h2>Prerequisites</h2>
+<p>This tutorial assumes that</p>
+<ul>
+<li>You can successfully build and run Qt Extended on your device.</li>
+<li>You have the prelink binaries compiled for your device.</li>
+<li>All file systems containing Qt Extended and system libraries are writable.</li>
+</ul>
+<a name="process"></a>
+<h2>Process</h2>
+<p>The process of preparing your device for prelinking is as follows:</p>
+<ol type="1">
+<li>Build Qt Extended using the <tt>-fPIC</tt> compiler flag.</li>
+<li>Install Qt Extended onto your device.</li>
+<li>Copy <tt>prelink</tt> and <tt>prelink-rtld</tt> binaries to <tt>/usr/bin</tt> on your device.</li>
+<li>Copy <tt>prelink.conf</tt> to <tt>/etc</tt> on your device.</li>
+</ol>
+<p>Once the above steps have been completed run the following commands on your device to prelink all programs and libraries:</p>
+<pre>    export LD_LIBRARY_PATH=/opt/Qtopia/lib:/lib:/usr/lib
+    prelink -amR</pre>
+<p>This will take some time to run so be patient! Once it has completed check that <tt>/etc/prelink.cache</tt> exists and contains information.</p>
+<p>The <tt>prelink</tt> command should be rerun each time programs and shared libraries (including plug-ins) are updated.</p>
+<p>To undo the prelinking, run the command:</p>
+<pre>    prelink -au</pre>
+<a name="example-configuration-file"></a>
+<h2>Example Configuration File</h2>
+<p>The following is an example <tt>prelink.conf</tt> file which is appropriate for most system:</p>
+<pre>    # This config file contains a list of directories both with binaries
+    # and libraries prelink should consider by default.
+    # If a directory name is prefixed with `-l ', the directory hierarchy
+    # will be walked as long as filesystem boundaries are not crossed.
+    # If a directory name is prefixed with `-h ', symbolic links in a
+    # directory hierarchy are followed.
+
+    # System libraries
+    -l /lib
+    -l /usr/lib
+    -l /usr/local/lib
+
+    # System binaries
+    -l /bin
+    -l /usr/bin
+    -l /usr/local/bin
+    -l /sbin
+    -l /usr/sbin
+    -l /usr/local/sbin
+
+    # Qt Extended
+    -l /opt/Qtopia/lib
+    -l /opt/Qtopia/bin
+    -l /opt/Qtopia/plugins
+    -l /opt/Qtopia/qt_plugins</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

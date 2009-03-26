@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ffmpegurisessionbuilder.cpp Example File (ffmpeg/ffmpegurisessionbuilder.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ffmpegurisessionbuilder.cpp Example File<br /><span class="small-subtitle">ffmpeg/ffmpegurisessionbuilder.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &lt;QUrl&gt;
+    #include &lt;QSettings&gt;
+    #include &lt;QMediaSessionRequest&gt;
+    #include &lt;QDebug&gt;
+
+    #include &quot;ffmpegengine.h&quot;
+    #include &quot;ffmpegplaybinsession.h&quot;
+    #include &quot;ffmpegurisessionbuilder.h&quot;
+
+    namespace ffmpeg
+    {
+
+<span class="comment">    // {{{ UriSessionBuilderPrivate</span>
+    class UriSessionBuilderPrivate
+    {
+    public:
+        Engine*                             engine;
+        QMediaSessionBuilder::Attributes    attributes;
+        QMediaDevice*                       outputDevice;
+    };
+<span class="comment">    // }}}</span>
+
+<span class="comment">    // {{{ UriSessionBuilder</span>
+
+<span class="comment">    /*!
+        \class ffmpeg::UriSessionBuilder
+        \internal
+    */</span>
+
+    UriSessionBuilder::UriSessionBuilder(Engine* engine):
+        d(new UriSessionBuilderPrivate)
+    {
+        d-&gt;engine = engine;
+
+        <span class="comment">// ffmpeg does not support dynamically discovering the mime types and</span>
+        <span class="comment">// uri schemes.  Grab them from QSettings</span>
+        QSettings   settings(&quot;Trolltech&quot;, &quot;ffmpeg&quot;);
+        settings.beginGroup(&quot;Simple&quot;);
+
+        <span class="comment">// Supported URI Schemes</span>
+        d-&gt;attributes.insert(&quot;uriSchemes&quot;, settings.value(&quot;UriSchemes&quot;).toStringList());
+
+        <span class="comment">// Supported mime types</span>
+        d-&gt;attributes.insert(&quot;mimeTypes&quot;, settings.value(&quot;MimeTypes&quot;).toStringList());
+        d-&gt;outputDevice = 0;
+    }
+
+    UriSessionBuilder::~UriSessionBuilder()
+    {
+        delete d;
+    }
+
+    QString UriSessionBuilder::type() const
+    {
+        return &quot;com.trolltech.qtopia.uri&quot;;
+    }
+
+    QMediaSessionBuilder::Attributes const&amp; UriSessionBuilder::attributes() const
+    {
+        qWarning()&lt;&lt;d-&gt;attributes;
+        return d-&gt;attributes;
+    }
+
+    QMediaServerSession* UriSessionBuilder::createSession(QMediaSessionRequest sessionRequest)
+    {
+        QUrl            url;
+        PlaybinSession* mediaSession = 0;
+
+        sessionRequest &gt;&gt; url;
+
+        if (url.isValid())
+        {
+            mediaSession = new PlaybinSession(d-&gt;engine,
+                                              sessionRequest.id(),
+                                              url,d-&gt;outputDevice);
+
+            if (!mediaSession-&gt;isValid())
+            {
+                delete mediaSession;
+                mediaSession = 0;
+            } else {
+                QMediaServerSession* session;
+                session = static_cast&lt;QMediaServerSession*&gt;(mediaSession);
+                d-&gt;engine-&gt;registerSession(session);
+            }
+        }
+
+        return mediaSession;
+    }
+
+    void UriSessionBuilder::destroySession(QMediaServerSession* mediaSession)
+    {
+        delete mediaSession;
+    }
+<span class="comment">    // }}}</span>
+
+    }   <span class="comment">// ns ffmpeg</span></pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

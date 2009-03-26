@@ -1,0 +1,154 @@
+#!/usr/bin/perl
+
+# Usage:
+#     this [-z] [-de] /usr/dict/words /usr/share/man/man1/*
+# OR
+#     this -f [-z] [-de] /usr/dict/words words-in-decreasing-frequency.txt
+#
+# dict must be ordered in default choice order
+# -de = Ignore German conflict
+#  -z = Skip 'conflicts' that are resolved by default choice order
+#  -v = Give extra explanations
+#  -r = Restrict to words in dictionary
+
+while ( $ARGV[0] =~ /^-/ ) {
+    if ( $ARGV[0] eq "-f" ) {
+	$preordered=1;
+    } elsif ( $ARGV[0] eq "-de" ) {
+	$de_mode=1;
+    } elsif ( $ARGV[0] eq "-z" ) {
+	$skip_trivialresolved=1;
+    } elsif ( $ARGV[0] eq "-v" ) {
+	$verbose=1;
+    } elsif ( $ARGV[0] eq "-r" ) {
+	$restricted=1;
+    }
+    shift;
+}
+
+sub phonekeys
+{
+	my $w = @_[0];
+	$w =~ s/[2abc¿¡¬√ƒ≈∆«‡·‚„‰ÂÊÁ]/2/ig;
+	$w =~ s/[3def»… ÀËÈÍÎ]/3/ig;
+	$w =~ s/[4ghiÃÕŒœÏÌÓÔ]/4/ig;
+	$w =~ s/[5jkl]/5/ig;
+	$w =~ s/[6mno—“”‘’÷ÿÒÚÛÙıˆ¯]/6/ig;
+	$w =~ s/[7pqrsﬂ]/7/ig;
+	$w =~ s/[8tuvŸ⁄€‹˘˙˚¸]/8/ig;
+	$w =~ s/[9wxyz›˝ˇ]/9/ig;
+	return $w;
+}
+
+open D, shift @ARGV or die;
+
+$n=0;
+while (<D>) {
+	chomp;
+	$w=$_;
+	$word{$w}++;
+	$freq{$w}=$preordered ? 999999 : 0;
+	$p = phonekeys $w;
+	$patt{$p}++;
+	if ( $de_mode ) {
+	    next,{print "skip $w\n"} if $w =~ /(.*)er$/ && grep(/^$1es$/, @{$p});
+	    next,{print "skip $w\n"} if $w =~ /(.*)es$/ && grep(/^$1er$/, @{$p});
+	    next,{print "skip $w\n"} if $w =~ /(.*)em$/ && grep(/^$1en$/, @{$p});
+	    next,{print "skip $w\n"} if $w =~ /(.*)en$/ && grep(/^$1em$/, @{$p});
+	}
+	push @{$p}, $w;
+	#print "$w -> ",phonekeys($w),"\n";
+	$n++;
+}
+
+#print "$n words\n";
+
+$order=1; # kludge to default to order for frequency
+for $file ( @ARGV ) {
+	open FILE, $file =~ /\.gz$/ ? "zcat $file |" : "$file";
+	#print "$file\n";
+	while (<FILE>) {
+		tr/a-zA-Z\177-\377/ /cs;
+		for $w ( split " ", $_ ) {
+			next if $restricted && !$word{$w};
+			if ( $preordered ) {
+			    $freq{$w}=$order;
+			    $order++;
+			} else {
+			    $freq{$w}++;
+			}
+		}
+	}
+}
+
+sub aeq {   # compare two list values
+   my(@a) = splice(@_,0,shift);
+   my(@b) = splice(@_,0,shift);
+   return 0 unless @a == @b;       # same len?
+   while (@a) {
+       return 0 if pop(@a) ne pop(@b);
+   }
+   return 1;
+}
+
+for $p ( keys %patt ) {
+	@w = @{$p} =
+	    sort {
+		$preordered
+		    ? $freq{$a} <=> $freq{$b}
+		    : $freq{$b} <=> $freq{$a}
+	    }
+	    @{$p};
+	next if $#w==0;
+	@sw = sort { $a cmp $b } @w;
+	next if $skip_trivialresolved && aeq(0+@sw,@sw,0+@w,@w);
+	$bestchoice{$w[0]}++;
+	if ( $preordered ) {
+	    $i = -$freq{$w[0]}; #$i = 0; $d=1; map { $i-=$freq{$w[$_]}/$d; $d/=100; } (0..$#w);
+	} else {
+	    $i = 0; map { $i+=$freq{$w[$_]}; } (1..$#w);
+	}
+	$importance{$w[0]}=$i;
+	$conflict{$w[0]}=join(", ",
+	    map { "$_($freq{$_})"; }
+	    @w);
+}
+
+for $c ( sort { $importance{$b} <=> $importance{$a} } keys %importance ) {
+	$pk=phonekeys $c;
+	@w = @{$pk};
+	print $conflict{$c},"\n";
+	$conflicts++;
+	$unresolved++ if $freq{$w[0]} == $freq{$w[1]};
+}
+
+exit unless $verbose;
+
+$newwords=0;
+for $f ( keys %freq ) {
+	$inputwords+=$freq{$f};
+	if ( $word{$f} ) {
+		$pk = phonekeys $f;
+		if ( $#{$pk} && ${$pk}[0] ne $f ) {
+print "$freq{$f} occurrences of $f where ${$pk}[0] was default\n";
+			$inputconf += $freq{$f};
+		}
+	} else {
+		$newwords++;
+	}
+}
+for $w ( keys %word ) {
+	$pk = phonekeys $w;
+	$unusedwords++ if !$freq{$w};
+}
+
+$confrate = sprintf("%.1f",$inputconf*100/$inputwords);
+$unuserate = sprintf("%.1f",$unusedwords*100/$n);
+
+print "\n";
+print "With a dictionary of $n words, a sample of $inputwords words had "
+	."$inputconf words ($confrate\%) for which the best-choice was "
+	."incorrect and $newwords words not in the dictionary. The sample "
+	."did not contain $unusedwords ($unuserate\%) words from the "
+	."dictionary, and $unresolved of the $conflicts conflicting words "
+	."were not resolved.";

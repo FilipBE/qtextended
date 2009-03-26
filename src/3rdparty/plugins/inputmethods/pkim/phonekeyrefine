@@ -1,0 +1,67 @@
+#!/usr/bin/perl
+
+# Usage:
+#     this /usr/dict/words /usr/share/man/man1/*
+
+sub phonekeys
+{
+	my $w = @_[0];
+	$w =~ s/[2abc]/2/ig;
+	$w =~ s/[3def]/3/ig;
+	$w =~ s/[4ghi]/4/ig;
+	$w =~ s/[5jkl]/5/ig;
+	$w =~ s/[6mno]/6/ig;
+	$w =~ s/[7pqrs]/7/ig;
+	$w =~ s/[8tuv]/8/ig;
+	$w =~ s/[9wxyz]/9/ig;
+	return $w;
+}
+
+open D, shift @ARGV or die;
+
+$n=0;
+while (<D>) {
+	chomp;
+	$word{$_}++;
+	$freq{$_}=0;
+	push @{$patt{phonekeys $_}}, $_;
+	#print "$_ -> ",phonekeys($_),"\n";
+	$n++;
+}
+
+#print "$n words\n";
+
+open FILE, shift @ARGV or die;
+
+#print "$file\n";
+$fakefreq = 1000000;
+while (<FILE>) {
+    $w = $_;
+    chomp $w;
+    $freq{$w} = $fakefreq;
+    $fakefreq--;
+}
+$resolved = 0;
+for $p ( keys %patt ) {
+	@w = @{$patt{$p}} = sort { $freq{$b} <=> $freq{$a} } @{$patt{$p}};
+	# @w, words that confilict may
+	next if $#w==0;
+	
+	#$i=0; map { $i+=$freq{$w[$_]}; } (1..$#w);
+	#$importance{$w[0]}=$i;
+	#$ambiguity{$w[0]}=$i/($freq{$w[0]}+1);
+	undef $found;
+	$highest = 0;
+	foreach $key (@w) {
+	    if ($freq{$key} > $highest) {
+		$highest = $freq{$key};
+		$found = $key;
+	    }
+	}
+	if (defined $found) {
+	    print "$found\n";
+	    $resolved++;
+	}
+}
+
+exit;

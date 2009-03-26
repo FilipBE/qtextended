@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaRtpStream Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaRtpStream Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaRtpStream class manages a single stream in an RTP session. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaRtpStream&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="qmediartpaudiostream.html">QMediaRtpAudioStream</a> and <a href="qmediartpvideostream.html">QMediaRtpVideoStream</a>.</p>
+<ul>
+<li><a href="qmediartpstream-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmediartpstream.html#Direction-enum">Direction</a></b> { SendOnly, ReceiveOnly, SendReceive }</li>
+<li><div class="fn"/>enum <b><a href="qmediartpstream.html#State-enum">State</a></b> { Connecting, Connected, Disconnecting, Disconnected }</li>
+<li><div class="fn"/>enum <b><a href="qmediartpstream.html#Type-enum">Type</a></b> { Audio, Video }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmediartpstream.html#QMediaRtpStream">QMediaRtpStream</a></b> ( Type <i>type</i>, Direction <i>direction</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qmediartpstream.html#dtor.QMediaRtpStream">~QMediaRtpStream</a></b> ()</li>
+<li><div class="fn"/>Direction <b><a href="qmediartpstream.html#direction">direction</a></b> () const</li>
+<li><div class="fn"/>QHostAddress <b><a href="qmediartpstream.html#inboundAddress">inboundAddress</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmediartpstream.html#inboundErrorString">inboundErrorString</a></b> () const</li>
+<li><div class="fn"/>QMediaRtpPayload <b><a href="qmediartpstream.html#inboundPayload">inboundPayload</a></b> () const</li>
+<li><div class="fn"/>virtual QList&lt;QMediaRtpPayload&gt; <b><a href="qmediartpstream.html#inboundPayloads">inboundPayloads</a></b> () const = 0</li>
+<li><div class="fn"/>qint16 <b><a href="qmediartpstream.html#inboundPort">inboundPort</a></b> () const</li>
+<li><div class="fn"/>State <b><a href="qmediartpstream.html#inboundState">inboundState</a></b> () const</li>
+<li><div class="fn"/>QHostAddress <b><a href="qmediartpstream.html#outboundAddress">outboundAddress</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmediartpstream.html#outboundErrorString">outboundErrorString</a></b> () const</li>
+<li><div class="fn"/>virtual QMediaRtpPayload <b><a href="qmediartpstream.html#outboundPayload">outboundPayload</a></b> () const = 0</li>
+<li><div class="fn"/>qint16 <b><a href="qmediartpstream.html#outboundPort">outboundPort</a></b> () const</li>
+<li><div class="fn"/>State <b><a href="qmediartpstream.html#outboundState">outboundState</a></b> () const</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpstream.html#setInboundPayloads">setInboundPayloads</a></b> ( const QList&lt;QMediaRtpPayload&gt; &amp; <i>payloads</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpstream.html#setOutboundPayload">setOutboundPayload</a></b> ( const QMediaRtpPayload &amp; <i>payload</i> ) = 0</li>
+<li><div class="fn"/>Type <b><a href="qmediartpstream.html#type">type</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qmediartpstream.html#connectInbound">connectInbound</a></b> ( const QHostAddress &amp; <i>address</i>, qint16 <i>port</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpstream.html#connectOutbound">connectOutbound</a></b> ( const QHostAddress &amp; <i>address</i>, qint16 <i>port</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpstream.html#disconnectInbound">disconnectInbound</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpstream.html#disconnectOutbound">disconnectOutbound</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#inboundConnected">inboundConnected</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#inboundDisconnected">inboundDisconnected</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#inboundError">inboundError</a></b> ( const QString &amp; <i>error</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#inboundPayloadChanged">inboundPayloadChanged</a></b> ( const QMediaRtpPayload &amp; <i>payload</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#inboundStateChanged">inboundStateChanged</a></b> ( QMediaRtpStream::State <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#outboundConnected">outboundConnected</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#outboundDisconnected">outboundDisconnected</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#outboundError">outboundError</a></b> ( const QString &amp; <i>error</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#outboundStateChanged">outboundStateChanged</a></b> ( QMediaRtpStream::State <i>state</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setInboundAddress">setInboundAddress</a></b> ( const QHostAddress &amp; <i>address</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setInboundError">setInboundError</a></b> ( const QString &amp; <i>error</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setInboundPayload">setInboundPayload</a></b> ( const QMediaRtpPayload &amp; <i>payload</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setInboundPort">setInboundPort</a></b> ( qint16 <i>port</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setInboundState">setInboundState</a></b> ( State <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setOutboundAddress">setOutboundAddress</a></b> ( const QHostAddress &amp; <i>address</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setOutboundError">setOutboundError</a></b> ( const QString &amp; <i>error</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setOutboundPort">setOutboundPort</a></b> ( qint16 <i>port</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpstream.html#setOutboundState">setOutboundState</a></b> ( State <i>state</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaRtpStream class manages a single stream in an RTP session.</p>
+<p>A QMediaRtpStream is composed of an inbound data stream, an outbound data stream or a combined inbound and outbound stream. The inbound and outbound connections are established separately so it is possible for example to start a stream listening for incoming data and start sending sometime later.</p>
+<p>The payload of an outbound stream must be set with <a href="qmediartpstream.html#setOutboundPayload">setOutboundPayload</a>() before it can be connected.</p>
+<p>The payload of an inbound streams is determined from the stream data. When the payload changes the stream will emit the <a href="qmediartpstream.html#inboundPayloadChanged">inboundPayloadChanged</a>() signal.</p>
+<p>RTP streams can be created using <a href="qmediartpsession.html">QMediaRtpSession</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Direction-enum"></a>enum QMediaRtpStream::Direction</h3>
+<p>Identifies the direction of an RTP stream.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::SendOnly</tt></td><td align="center" valign="top"><tt>0x01</tt></td><td valign="top">The stream sends data.</td></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::ReceiveOnly</tt></td><td align="center" valign="top"><tt>0x02</tt></td><td valign="top">The stream receives data.</td></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::SendReceive</tt></td><td align="center" valign="top"><tt>SendOnly | ReceiveOnly</tt></td><td valign="top">The stream both sends and receives data.</td></tr>
+</table></p>
+<h3 class="fn"><a name="State-enum"></a>enum QMediaRtpStream::State</h3>
+<p>Identifies the current state of an RTP stream.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::Connecting</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The stream is in the process of establishing a connection.</td></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::Connected</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The stream is connected.</td></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::Disconnecting</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The stream is in the process of tearing down a connection.</td></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::Disconnected</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The stream is disconnected.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Type-enum"></a>enum QMediaRtpStream::Type</h3>
+<p>Identifies the type of an RTP stream.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::Audio</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The stream is an audio stream.</td></tr>
+<tr><td valign="top"><tt>QMediaRtpStream::Video</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The stream is a video stream.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMediaRtpStream"></a>QMediaRtpStream::QMediaRtpStream ( <a href="qmediartpstream.html#Type-enum">Type</a> <i>type</i>, <a href="qmediartpstream.html#Direction-enum">Direction</a> <i>direction</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <i>type</i> RTP stream with the given <i>parent</i> which sends and/or receives data according to <i>direction</i>.</p>
+<h3 class="fn"><a name="dtor.QMediaRtpStream"></a>QMediaRtpStream::~QMediaRtpStream ()</h3>
+<p>Destroys a stream.</p>
+<h3 class="fn"><a name="connectInbound"></a>void QMediaRtpStream::connectInbound ( const <a href="qhostaddress.html">QHostAddress</a> &amp; <i>address</i>, <a href="qtglobal.html#qint16-typedef">qint16</a> <i>port</i> )&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Starts the inbound stream listening for data on the given <i>address</i> and <i>port</i>.</p>
+<p>See also <a href="qmediartpstream.html#inboundAddress">inboundAddress</a>(), <a href="qmediartpstream.html#inboundPort">inboundPort</a>(), <a href="qmediartpstream.html#inboundState">inboundState</a>(), <a href="qmediartpstream.html#disconnectInbound">disconnectInbound</a>(), and <a href="qmediartpstream.html#connectOutbound">connectOutbound</a>().</p>
+<h3 class="fn"><a name="connectOutbound"></a>void QMediaRtpStream::connectOutbound ( const <a href="qhostaddress.html">QHostAddress</a> &amp; <i>address</i>, <a href="qtglobal.html#qint16-typedef">qint16</a> <i>port</i> )&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Starts the outbound stream sending data to a host with the given <i>address</i> and <i>port</i>.</p>
+<p>See also <a href="qmediartpstream.html#outboundAddress">outboundAddress</a>(), <a href="qmediartpstream.html#outboundPort">outboundPort</a>(), <a href="qmediartpstream.html#outboundState">outboundState</a>(), <a href="qmediartpstream.html#disconnectOutbound">disconnectOutbound</a>(), and <a href="qmediartpstream.html#connectInbound">connectInbound</a>().</p>
+<h3 class="fn"><a name="direction"></a><a href="qmediartpstream.html#Direction-enum">Direction</a> QMediaRtpStream::direction () const</h3>
+<p>Returns the direction of a stream.</p>
+<h3 class="fn"><a name="disconnectInbound"></a>void QMediaRtpStream::disconnectInbound ()&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Stops the inbound stream receiving data.</p>
+<h3 class="fn"><a name="disconnectOutbound"></a>void QMediaRtpStream::disconnectOutbound ()&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Stops the outbound stream sending data.</p>
+<h3 class="fn"><a name="inboundAddress"></a><a href="qhostaddress.html">QHostAddress</a> QMediaRtpStream::inboundAddress () const</h3>
+<p>Returns the address the inbound stream is receiving data at.</p>
+<p>See also <a href="qmediartpstream.html#setInboundAddress">setInboundAddress</a>().</p>
+<h3 class="fn"><a name="inboundConnected"></a>void QMediaRtpStream::inboundConnected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the inbound stream has been connected.</p>
+<h3 class="fn"><a name="inboundDisconnected"></a>void QMediaRtpStream::inboundDisconnected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the inbound stream has been disconnected.</p>
+<h3 class="fn"><a name="inboundError"></a>void QMediaRtpStream::inboundError ( const <a href="qstring.html">QString</a> &amp; <i>error</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that an <i>error</i> occurred in the inbound stream.</p>
+<p>See also <a href="qmediartpstream.html#setInboundError">setInboundError</a>().</p>
+<h3 class="fn"><a name="inboundErrorString"></a><a href="qstring.html">QString</a> QMediaRtpStream::inboundErrorString () const</h3>
+<p>Returns a string describing the last error to occur to the inbound stream.</p>
+<h3 class="fn"><a name="inboundPayload"></a><a href="qmediartppayload.html">QMediaRtpPayload</a> QMediaRtpStream::inboundPayload () const</h3>
+<p>Returns the payload of the inbound stream.</p>
+<p>See also <a href="qmediartpstream.html#setInboundPayload">setInboundPayload</a>().</p>
+<h3 class="fn"><a name="inboundPayloadChanged"></a>void QMediaRtpStream::inboundPayloadChanged ( const <a href="qmediartppayload.html">QMediaRtpPayload</a> &amp; <i>payload</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the <i>payload</i> of the incoming stream has changed.</p>
+<h3 class="fn"><a name="inboundPayloads"></a><a href="qlist.html">QList</a>&lt;<a href="qmediartppayload.html">QMediaRtpPayload</a>&gt; QMediaRtpStream::inboundPayloads () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns a list of payloads the inbound stream can expect to receive.</p>
+<p>See also <a href="qmediartpstream.html#setInboundPayloads">setInboundPayloads</a>().</p>
+<h3 class="fn"><a name="inboundPort"></a><a href="qtglobal.html#qint16-typedef">qint16</a> QMediaRtpStream::inboundPort () const</h3>
+<p>Returns the port number the inbound stream is receiving data on.</p>
+<p>See also <a href="qmediartpstream.html#setInboundPort">setInboundPort</a>().</p>
+<h3 class="fn"><a name="inboundState"></a><a href="qmediartpstream.html#State-enum">State</a> QMediaRtpStream::inboundState () const</h3>
+<p>Returns the state of the inbound stream.</p>
+<p>See also <a href="qmediartpstream.html#setInboundState">setInboundState</a>().</p>
+<h3 class="fn"><a name="inboundStateChanged"></a>void QMediaRtpStream::inboundStateChanged ( <a href="qmediartpstream.html#State-enum">QMediaRtpStream::State</a> <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the <i>state</i> of the inbound stream has changed.</p>
+<h3 class="fn"><a name="outboundAddress"></a><a href="qhostaddress.html">QHostAddress</a> QMediaRtpStream::outboundAddress () const</h3>
+<p>Returns the address the outbound stream is sending to.</p>
+<p>See also <a href="qmediartpstream.html#setOutboundAddress">setOutboundAddress</a>().</p>
+<h3 class="fn"><a name="outboundConnected"></a>void QMediaRtpStream::outboundConnected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the outbound streamm has been connected.</p>
+<h3 class="fn"><a name="outboundDisconnected"></a>void QMediaRtpStream::outboundDisconnected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the outbound stream has been disconnected.</p>
+<h3 class="fn"><a name="outboundError"></a>void QMediaRtpStream::outboundError ( const <a href="qstring.html">QString</a> &amp; <i>error</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that an <i>error</i> occurred in the outbound stream.</p>
+<p>See also <a href="qmediartpstream.html#setOutboundError">setOutboundError</a>().</p>
+<h3 class="fn"><a name="outboundErrorString"></a><a href="qstring.html">QString</a> QMediaRtpStream::outboundErrorString () const</h3>
+<p>Returns a string describing the last error to occur to the outbound stream.</p>
+<h3 class="fn"><a name="outboundPayload"></a><a href="qmediartppayload.html">QMediaRtpPayload</a> QMediaRtpStream::outboundPayload () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the payload used for outbound data.</p>
+<p>See also <a href="qmediartpstream.html#setOutboundPayload">setOutboundPayload</a>().</p>
+<h3 class="fn"><a name="outboundPort"></a><a href="qtglobal.html#qint16-typedef">qint16</a> QMediaRtpStream::outboundPort () const</h3>
+<p>Returns the port number the outbound stream is sending to.</p>
+<p>See also <a href="qmediartpstream.html#setOutboundPort">setOutboundPort</a>().</p>
+<h3 class="fn"><a name="outboundState"></a><a href="qmediartpstream.html#State-enum">State</a> QMediaRtpStream::outboundState () const</h3>
+<p>Returns the current state of the outbound stream.</p>
+<p>See also <a href="qmediartpstream.html#setOutboundState">setOutboundState</a>().</p>
+<h3 class="fn"><a name="outboundStateChanged"></a>void QMediaRtpStream::outboundStateChanged ( <a href="qmediartpstream.html#State-enum">QMediaRtpStream::State</a> <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the <i>state</i> of the outbound stream has changed.</p>
+<h3 class="fn"><a name="setInboundAddress"></a>void QMediaRtpStream::setInboundAddress ( const <a href="qhostaddress.html">QHostAddress</a> &amp; <i>address</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the <i>address</i> the inbound stream listens for data at.</p>
+<p>See also <a href="qmediartpstream.html#inboundAddress">inboundAddress</a>().</p>
+<h3 class="fn"><a name="setInboundError"></a>void QMediaRtpStream::setInboundError ( const <a href="qstring.html">QString</a> &amp; <i>error</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets a string describing the last <i>error</i> to the inbound stream.</p>
+<p>This will emit the <a href="qmediartpstream.html#inboundError">inboundError</a>() signal.</p>
+<p>See also <a href="qmediartpstream.html#inboundError">inboundError</a>().</p>
+<h3 class="fn"><a name="setInboundPayload"></a>void QMediaRtpStream::setInboundPayload ( const <a href="qmediartppayload.html">QMediaRtpPayload</a> &amp; <i>payload</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the <i>payload</i> of the inbound stream.</p>
+<p>See also <a href="qmediartpstream.html#inboundPayload">inboundPayload</a>().</p>
+<h3 class="fn"><a name="setInboundPayloads"></a>void QMediaRtpStream::setInboundPayloads ( const <a href="qlist.html">QList</a>&lt;<a href="qmediartppayload.html">QMediaRtpPayload</a>&gt; &amp; <i>payloads</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Sets a list of <i>payloads</i> the inbound stream can expect to receive.</p>
+<p>See also <a href="qmediartpstream.html#inboundPayloads">inboundPayloads</a>().</p>
+<h3 class="fn"><a name="setInboundPort"></a>void QMediaRtpStream::setInboundPort ( <a href="qtglobal.html#qint16-typedef">qint16</a> <i>port</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the <i>port</i> the inbound stream listens for data on.</p>
+<p>See also <a href="qmediartpstream.html#inboundPort">inboundPort</a>().</p>
+<h3 class="fn"><a name="setInboundState"></a>void QMediaRtpStream::setInboundState ( <a href="qmediartpstream.html#State-enum">State</a> <i>state</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the current <i>state</i> of the inbound stream.</p>
+<p>This emits the <a href="qmediartpstream.html#inboundStateChanged">inboundStateChanged</a>() signal.</p>
+<p>See also <a href="qmediartpstream.html#inboundState">inboundState</a>().</p>
+<h3 class="fn"><a name="setOutboundAddress"></a>void QMediaRtpStream::setOutboundAddress ( const <a href="qhostaddress.html">QHostAddress</a> &amp; <i>address</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the <i>address</i> the outbound stream sends data to.</p>
+<p>See also <a href="qmediartpstream.html#outboundAddress">outboundAddress</a>().</p>
+<h3 class="fn"><a name="setOutboundError"></a>void QMediaRtpStream::setOutboundError ( const <a href="qstring.html">QString</a> &amp; <i>error</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets a string describing the last <i>error</i> to occur the the outbound stream.</p>
+<p>See also <a href="qmediartpstream.html#outboundError">outboundError</a>().</p>
+<h3 class="fn"><a name="setOutboundPayload"></a>void QMediaRtpStream::setOutboundPayload ( const <a href="qmediartppayload.html">QMediaRtpPayload</a> &amp; <i>payload</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Sets the <i>payload</i> to used for outbound data.</p>
+<p>Returns true if the payload could be set and false otherwise.</p>
+<p>Setting the payload will fail if the session does not support any equivalent outbound payload.</p>
+<p>See also <a href="qmediartpstream.html#outboundPayload">outboundPayload</a>(), <a href="qmediartpsession.html#supportedOutboundPayloads">QMediaRtpSession::supportedOutboundPayloads</a>(), and <a href="qmediartppayload.html#isEquivalent">QMediaRtpPayload::isEquivalent</a>().</p>
+<h3 class="fn"><a name="setOutboundPort"></a>void QMediaRtpStream::setOutboundPort ( <a href="qtglobal.html#qint16-typedef">qint16</a> <i>port</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the <i>port</i> the outbound stream sends data to.</p>
+<p>See also <a href="qmediartpstream.html#outboundPort">outboundPort</a>().</p>
+<h3 class="fn"><a name="setOutboundState"></a>void QMediaRtpStream::setOutboundState ( <a href="qmediartpstream.html#State-enum">State</a> <i>state</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the <i>state</i> of the outbound stream.</p>
+<p>This will emit the <a href="qmediartpstream.html#outboundStateChanged">outboundStateChanged</a>() signal.</p>
+<p>See also <a href="qmediartpstream.html#outboundState">outboundState</a>().</p>
+<h3 class="fn"><a name="type"></a><a href="qmediartpstream.html#Type-enum">Type</a> QMediaRtpStream::type () const</h3>
+<p>Returns the type of a stream.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>USB Gadget Support</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">USB Gadget Support<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="usb-conf"></a>
+<h2>Usb.conf</h2>
+<p>The <tt>Usb.conf</tt> configuration file is used to specify what USB gadgets are supported, what composite configurations are allowed and any gadget parameters. The <tt>PeripheralController</tt> group is used to define the supported gadgets and composite configurations.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Settings</th><th>Description</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td>Path</td><td>Device path of the peripheral controller hardware in <tt>sysfs</tt>.</td><td>string</td><td>/sys/devices/platform/dummy_udc</td></tr>
+<tr valign="top" class="even"><td>SupportedGadgets</td><td>List of supported USB gadgets. Settings for each gadget are stored in a separate settings group.</td><td>string</td><td>Ethernet,Storage,Serial</td></tr>
+<tr valign="top" class="odd"><td>DefaultGadget</td><td>Name of the default gadget. The gadget specified by this configuration value will be automatically activated at start up.</td><td>string</td><td>Ethernet</td></tr>
+<tr valign="top" class="even"><td>CompositeGadgets</td><td>List of supported composite gadget configurations. Some hardware can support multiple active USB gadgets at the same time. For example a device can appear as both an Ethernet and a Mass Storage device. If no composite configurations are specified only one gadget can be active at a time. <a href="qusbmanager.html#canActivate">QUsbManager::canActivate</a>() uses composite configurations to determine if it is possible for a gadget to activate.</td><td>string</td><td>Composite0,Composite1</td></tr>
+</table></p>
+<p>Each composite configuration specified in <tt>PeripheralController/CompositeGadgets</tt> must have a corresponding composite group.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Settings</th><th>Description</th><th>Value Type</th><th>Example</th></tr></thead>
+<tr valign="top" class="odd"><td>Gadgets</td><td>List of gadgets that can be active at the same time in this composite configuration.</td><td>string</td><td>Ethernet,Storage</td></tr>
+</table></p>
+<p>Gadget settings are stored in a group with the same name as the gadget. Allowable settings are gadget specific. Valid keys are documented in the gadget provider classes.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+. /etc/syslog.conf
+
+eval exec nice -n 19 /sbin/syslogd -n $ALTLOG $LOGOPT $IPCLOG $LOCALLOG $REMOTELOG >/dev/null 2>/dev/null
+

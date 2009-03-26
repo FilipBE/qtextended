@@ -1,0 +1,68 @@
+#!/bin/sh
+
+update_resolv_conf()
+{
+	[ -n "$domain" ] && echo search $domain > /etc/resolvconf/$interface
+
+	for i in $dns; do
+		echo nameserver $i >> /etc/resolvconf/$interface
+	done
+}
+
+update_hosts()
+{
+    TMPHOSTS=$(mktemp /etc/hosts.XXXXXX)
+    awk -v interface=$1 -v ipaddress=$2 '
+        BEGIN {done = 0}
+        $2 == interface {printf "%s\t%s\n", ipaddress, $2 ; done = 1}
+        $2 != interface {print $0}
+        END { if (done == 0) printf "%s\t%s\n", ipaddress, interface }' /etc/hosts > $TMPHOSTS
+    mv -f $TMPHOSTS /etc/hosts
+}
+
+case $1 in
+	deconfig)
+		/sbin/ifconfig $interface 0.0.0.0
+		;;
+	bound)
+		/sbin/ifconfig $interface $ip broadcast $broadcast netmask $subnet
+
+        # add host route to the gateway
+        /sbin/route add $router dev $interface
+
+        # add a net route for the subnet if subnet != 255.255.255.255
+        if [ "$subnet" != "255.255.255.255" ]; then
+            eval $(/bin/ipcalc -s -n $ip $subnet)
+            /sbin/route add $NETWORK dev $interface
+        fi
+
+        # only update the default route if no default route is defined
+        if ! route -n | grep '^0\.0\.0\.0 *[^ ]* *0\.0\.0\.0 *UG' >/dev/null; then
+            /sbin/route add default gw $router
+            update_resolv_conf
+        fi
+
+        update_hosts greenphone $ip
+
+        /etc/rc.d/rc.inetd reload
+		;;
+	renew)
+		/sbin/ifconfig $interface $ip broadcast $broadcast netmask $subnet
+
+        # only update the default route if it is over this interface
+        if ! route -n | grep '^0\.0\.0\.0 *[^ ]* *0\.0\.0\.0 *UG.*'$interface'$' >/dev/null; then
+            /sbin/route delete default 2>/dev/null
+            /sbin/route add default gw $router
+        fi
+
+        update_resolv_conf
+
+        update_hosts greenphone $ip
+
+        /etc/rc.d/rc.inetd reload
+		;;
+	nak)
+		echo NAK:$message
+		;;
+esac
+

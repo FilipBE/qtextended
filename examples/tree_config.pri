@@ -1,0 +1,1 @@
+CONFIG+=disabled_deps_are_non_fatal

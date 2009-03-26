@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Hardware Abstraction</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Hardware Abstraction<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>A hardware interface is a particular hardware feature that needs to expose its state and functionality to other parts of Qt Extended. Inter-process messages and the valuespace are used to allow the separation of client and provider. Examples for such interfaces are the battery, the keypad light or the vibration device of a mobile phone.</p>
+<p>The Hardware Abstraction API is split into two sets of classes. The first set provides the backend for a hardware feature (also called provider). It usually monitors the state of the hardware and reports its change. The second set of classes represents the client API. Each provider instance can have multiple client instances through which other Qt Extended components/applications can discover and control the hardware feature.</p>
+<p>Some hardware features such as the keypad light may only exist once, while other features, such as the battery, may have several provider instances. In the case of the battery, the device may have a default battery and a secondary battery. All batteries are exposed via the same hardware interface class (<a href="qpowersource.html">QPowerSource</a>) but Qt Extended would manages two accessory providers, one for the primary battery and one for the secondary battery.</p>
+<p>The following example assumes that several LEDs have to be controlled. In addition, each of these LEDs is controlled by different processes. To keep it simple each LED has only two states, on and off.</p>
+<p align="center"><img src="images/AccessoryUML.png" /></p><p>The LedProvider class is instanciated by the LED controlling process. To distinguish several LedProvider instances each instance requires a unique ID. This ID is used by <tt>LedControl</tt> to identify a particular instance. The <tt>LEDProvider::setOn()</tt> function contains the required code to set the state of the LED. Once the state has changed it emits the <tt>stateChanged()</tt> signal, which notifies all <tt>LEDControl</tt> instances of the change.</p>
+<p>The LedControl class represents the client side. A process can identify an LED provider via its ID or can choose to iterate over the list of all <tt>LEDProvider</tt> instances via <a href="qhardwaremanager.html">QHardwareManager</a>. The subsequent diagram demonstrates this:</p>
+<p align="center"><img src="images/AccessoryUML2.png" /></p><p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

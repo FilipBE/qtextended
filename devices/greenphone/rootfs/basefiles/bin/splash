@@ -1,0 +1,67 @@
+#!/bin/sh
+
+progress=0
+y=
+now=0
+
+if [ -r /tmp/splash-heading ]; then
+    heading=$(head -1 /tmp/splash-heading)
+else
+    heading=
+fi
+
+while :; do
+    opt="$1"
+    case $opt in
+    -p)
+        shift
+        progress="$1"
+        if [ "$progress" = "+" ]; then
+            progress=$(( $(cat /tmp/progress 2>/dev/null) + 1 ))
+        elif [ "$progress" = "-" ]; then
+            progress=$(cat /tmp/progress 2>/dev/null)
+        fi
+        echo "$progress" >/tmp/progress
+        ;;
+    -y)
+        shift
+        y="$1"
+        ;;
+    -h)
+        shift
+        heading="$1"
+        ;;
+    -now)
+        now=1
+        ;;
+    --)
+        shift
+        break
+        ;;
+    *)
+        break
+        ;;
+    esac
+    shift
+done
+
+if [ -z "$y" ]; then
+    if [ "$#" = 1 ]; then
+        y=170
+    elif [ "$#" = 2 ]; then
+        y=155
+    elif [ "$#" = 3 ]; then
+        y=135
+    fi
+fi
+
+if [ -z "$heading" ]; then
+    /bin/addtext p $progress $y "$@" </usr/share/bootprogress/blank.gif >/dev/fb 2>/dev/null &
+else
+    /bin/addtext p $progress 53 "$heading" $y "$@" </usr/share/bootprogress/blank_heading.gif >/dev/fb 2>/dev/null &
+fi
+
+if [ "$now" = 1 ]; then
+    wait
+fi
+

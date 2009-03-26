@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Modem Emulator - Call Control</title>
+  <link rel="prev" href="modem-emulator.html" />
+  <link rel="next" href="modememulator-controlandstatus.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="modem-emulator.html">Modem Emulator</a>]
+[Next: <a href="modememulator-controlandstatus.html">Modem Emulator - Control and Status</a>]
+</p>
+<h1 class="title">Modem Emulator - Call Control<br /><span class="subtitle"></span>
+</h1>
+<p>The AT commands in this section are used for dialing, accepting, and manipulating voice and data calls.</p>
+<p><b>AT+BLDN Bluetooth Last Dialed Number</b></p>
+<p>The <tt>AT+BLDN</tt> command is used by Bluetooth hands-free (HF) devices to request that the last number dialed be re-dialed.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+BLDN</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+BLDN</tt></td><td><tt>ERROR</tt> if the device is not a Bluetooth hands-free unit.</td></tr>
+</table></p>
+<p>Conforms with: Bluetooth Hands-Free Profile 1.5</p>
+<p><b>ATA Answer Incoming Call</b></p>
+<p>The <tt>ATA</tt> command answers an incoming voice or data call.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATA</tt></td><td><ul>
+<li><tt>CONNECT [&lt;rate&gt;]</tt>: Data call has connected at <tt>rate</tt>.</li>
+<li><tt>OK</tt>: Voice call has connected.</li>
+<li><tt>NO CARRIER</tt>: Connection could not be established.</li>
+<li><tt>ERROR</tt>: Command issues when already connected.</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATH Hangup Call</b></p>
+<p>The <tt>ATH</tt> command hangs up the current connected, dialing, or incoming call. The <tt>AT+CHLD</tt> command is recommended instead for voice calls.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATH[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>ERROR</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>If the parameter <tt>&lt;n&gt;</tt> is present, it must be zero.</p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>ATO Return to Online Data State</b></p>
+<p>The <tt>ATO</tt> command returns to the online data state if a data call is currently in progress.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATO[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>ERROR</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The parameter <tt>&lt;n&gt;</tt> is ignored in this implementation. If it is present, it should be zero according to Recommendation V.250.</p>
+<p>Conforms with: Recommendation V.250.</p>
+<p><b>AT+CBST Select Bearer Service Type</b></p>
+<p>The <tt>AT+CBST</tt> command is used to select the GSM data bearer.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CBST=[&lt;speed&gt;[,&lt;name&gt;[,&lt;ce&gt;]]]</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CBST?</tt></td><td><tt>+CBST: &lt;speed&gt;,&lt;name&gt;,&lt;ce&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CBST=?</tt></td><td><tt>+CBST: (list of supported &lt;speed&gt;s), (list of supported &lt;name&gt;s), (list of supported &lt;ce&gt;s)</tt></td></tr>
+</table></p>
+<p>Set command selects bearer <tt>&lt;name&gt;</tt> with data rate <tt>&lt;speed&gt;</tt>, and the connection element <tt>&lt;ce&gt;</tt> to be used when data calls are originated. See 3GPP TS 27.007 for more information on the valid values for these parameters.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CLCC List Current Calls</b></p>
+<p>The <tt>AT+CLCC</tt> command lists the calls that are currently active within the system.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CLCC</tt></td><td><pre>    +CLCC: &lt;id1&gt;,&lt;dir&gt;,&lt;stat&gt;,&lt;mode&gt;,&lt;mpty&gt;[,&lt;number&gt;,&lt;type&gt;[,&lt;alpha&gt;[,&lt;priority&gt;]]]
+    +CLCC: &lt;id2&gt;,&lt;dir&gt;,&lt;stat&gt;,&lt;mode&gt;,&lt;mpty&gt;[,&lt;number&gt;,&lt;type&gt;[,&lt;alpha&gt;[,&lt;priority&gt;]]]
+    ...</pre>
+</td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>&lt;id&gt;</td><td>Integer identifier for the call.</td></tr>
+<tr valign="top" class="even"><td>&lt;dir&gt;</td><td>Direction of the call: 0 = outgoing MO, 1 = incoming MT.</td></tr>
+<tr valign="top" class="odd"><td>&lt;stat&gt;</td><td>State of the call:<ul>
+<li>0 active</li>
+<li>1 held</li>
+<li>2 dialing (MO call)</li>
+<li>3 alerting (MO call)</li>
+<li>4 incoming (MT call)</li>
+<li>5 waiting (MT call)</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>&lt;mode&gt;</td><td>Bearer/teleservice:<ul>
+<li>0 voice</li>
+<li>1 data</li>
+<li>2 reserved for future use: fax</li>
+<li>3 voice followed by data, voice mode</li>
+<li>4 alternating voice/data, voice mode</li>
+<li>5 reserved for future use: alternating voice/fax, voice mode</li>
+<li>6 voice followed by data, data mode</li>
+<li>7 alternating voice/data, data mode</li>
+<li>8 reserved for future use: alternating voice/fax, fax mode</li>
+<li>9 unknown - used to indicate video calls</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>&lt;mpty&gt;</td><td>Multiparty indicator: 1 = multi-party, 0 = no multi-party.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;number&gt;</tt></td><td>String type phone number of calling address in format specified by <tt>&lt;type&gt;</tt>.</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td>Type of address octet in integer format (refer 3GPP TS 24.008).</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;alpha&gt;</tt></td><td>String indicating the name of a phonebook entry corresponding to <tt>&lt;number&gt;</tt>. Usually this is empty.</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;priority&gt;</tt></td><td>Digit indicating eMLPP priority level of incoming call (refer 3GPP TS 22.067).</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CHLD Call Hold And Multiparty</b></p>
+<p>The <tt>AT+CHLD</tt> command is used to control call hold, release, and multiparty states.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CHLD=[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CHLD=?</tt></td><td><tt>+CHLD: (0-4,11-19,21-29)</tt></td></tr>
+</table></p>
+<p>The parameter <tt>&lt;n&gt;</tt> is an integer value in accordance to 3GPP TS 22.030:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th><tt>&lt;n&gt;</tt></th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>0</td><td>Release all held calls or set the busy state for the waiting call.</td></tr>
+<tr valign="top" class="even"><td>1</td><td>Release all active calls.</td></tr>
+<tr valign="top" class="odd"><td>1x</td><td>Release only call <tt>x</tt>.</td></tr>
+<tr valign="top" class="even"><td>2</td><td>Put active calls on hold and activate the waiting or held call.</td></tr>
+<tr valign="top" class="odd"><td>2x</td><td>Put active calls on hold and activate call <tt>x</tt>.</td></tr>
+<tr valign="top" class="even"><td>3</td><td>Add the held calls to the active conversation.</td></tr>
+<tr valign="top" class="odd"><td>4</td><td>Add the held calls to the active conversation, and then detach the local subscriber from the conversation.</td></tr>
+</table></p>
+<p>GSM modems typically cannot support more than 7 or 8 calls at once. This implementation can support up to 99 calls using two-digit call identifiers for <tt>x</tt> between 10 and 99. Test command only reports 9 call identifiers for backwards compatibility with existing client software.</p>
+<p>Conforms with: 3GPP TS 27.007, 22.030.</p>
+<p><b>AT+CHUP Hangup Call</b></p>
+<p>The <tt>AT+CHUP</tt> command is an alias for <tt>ATH</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CHUP</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>ERROR</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CMOD Call Mode</b></p>
+<p>The <tt>AT+CMOD</tt> command is used to select the call mode of further dialing commands (<tt>D</tt>) or for the next answering command (<tt>A</tt>). The mode can be either single or alternating.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CMOD=[&lt;mode&gt;]</tt></td><td></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CMOD?</tt></td><td><tt>+CMOD: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CMOD=?</tt></td><td><tt>CMOD:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</td></tr>
+</table></p>
+<p><tt>+CMOD</tt> shall be set to zero after a successfully completed alternating mode call. It shall be set to zero also after a failed answering. The power-up, factory (<tt>&amp;F</tt>) and user-reset (<tt>Z</tt>) commands shall also set teh value to zero. This reduces the possibility that an alternating mode call could be originated or answered accidentally.</p>
+<p>Possible values for <tt>&lt;mode&gt;</tt> are:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0</td><td>Single mode (default)</td></tr>
+<tr valign="top" class="even"><td>1</td><td>Reserved for future use: Alternating voice/fax (teleservice 61)</td></tr>
+<tr valign="top" class="odd"><td>2</td><td>Alternating voice/data (bearer service 61)</td></tr>
+<tr valign="top" class="even"><td>3</td><td>Voice followed by data (bearer service 81)</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSDF Settings Date Format</b></p>
+<p>The <tt>AT+CSDF</tt> command sets the date format via MMI of the date information presented to the user. It also sets the date format of the TE-TA interface, and therefore affects the <tt>&lt;time&gt;</tt> of +CCLK and +CALA.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSDF=[[&lt;mode&gt;][,&lt;auxmode&gt;]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSDF?</tt></td><td><ul>
+<li><tt>+CSDF:&lt;mode&gt;[,&lt;auxmode&gt;]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSDF=?</tt></td><td><tt>+CSDF:</tt>(list of supported <tt>&lt;mode&gt;</tt>s) <tt>[,</tt>(list of supported <tt>&lt;auxmode&gt;</tt>s)<tt>]</tt></td></tr>
+</table></p>
+<p>The <tt>&lt;mode&gt;</tt> parameter can take the following values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Value</th><th>Date Format</th></tr></thead>
+<tr valign="top" class="odd"><td>1</td><td>DD-MMM-YYYY</td></tr>
+<tr valign="top" class="even"><td>2</td><td>DD-MM-YY</td></tr>
+<tr valign="top" class="odd"><td>3</td><td>MM/DD/YY</td></tr>
+<tr valign="top" class="even"><td>4</td><td>DD/MM/YY</td></tr>
+<tr valign="top" class="odd"><td>5</td><td>DD.MM.YY</td></tr>
+<tr valign="top" class="even"><td>6</td><td>YYMMDD</td></tr>
+<tr valign="top" class="odd"><td>7</td><td>YY-MM-DD</td></tr>
+<tr valign="top" class="even"><td>8</td><td>DDD/MMM/YY</td></tr>
+<tr valign="top" class="odd"><td>9</td><td>DDD/MMM/YYYY</td></tr>
+</table></p>
+<p>The <tt>&lt;auxmode&gt;</tt> parameter can take the following values:</p>
+<ul>
+<li>1 yy/MM/dd (default)</li>
+<li>2 yyyy/MM/dd</li>
+</ul>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p>/sa AT+CCLK, AT+CALA</p>
+<p><b>AT+CSIL Silence Command</b></p>
+<p>The <tt>AT+CSIL</tt> command enables or disables silent mode. When the phone is in silent mode, all sounds from MT are suppressed except voice.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSIL=[&lt;mode&gt;]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSIL?</tt></td><td><ul>
+<li><tt>+CSIL: &lt;mode&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSIL=?</tt></td><td><ul>
+<li><tt>+CSIL:</tt>(list of supported <tt>&lt;mode?</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p><tt>&lt;mode&gt;</tt> can be either 0 (silent mode off) or 1 (silent mode on).</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSNS Single Number Scheme</b></p>
+<p>The <tt>AT+CSNS</tt> command queries or selects the bearer or teleservice to be used when a mobile terminated, single numbering scheme call is established. If <tt>&lt;mode&gt;</tt> equals 4 (&quot;data service&quot;), the parameter values set with <tt>AT+CBST</tt> command shall be used.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSNS=[&lt;mode&gt;]</tt></td><td></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSNS?</tt></td><td><tt>+CSNS: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSNS=?</tt></td><td><tt>+CSNS:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</td></tr>
+</table></p>
+<p>The following values are defined for <tt>&lt;mode&gt;</tt>:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0</td><td>Voice (default)</td></tr>
+<tr valign="top" class="even"><td>1</td><td>Reserved for future use: Alternating voice/fax - voice first</td></tr>
+<tr valign="top" class="odd"><td>2</td><td>Reserved for future use: Facsimile</td></tr>
+<tr valign="top" class="even"><td>3</td><td>Alternating voice/data - voice first</td></tr>
+<tr valign="top" class="odd"><td>4</td><td>Data</td></tr>
+<tr valign="top" class="even"><td>5</td><td>Reserved for future use: Alternating voice/fax - fax first</td></tr>
+<tr valign="top" class="odd"><td>6</td><td>Alternating voice/data - data first</td></tr>
+<tr valign="top" class="even"><td>7</td><td>Voice followed by Data</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSTA Select type of address</b></p>
+<p>The <tt>AT+CSTA</tt> command selects the type of number for dialing with the <tt>ATD</tt> command. This implementation only supports 129. If a dial string starts with <tt>+</tt>, then 145 will be implicitly selected. No other dial number types are supported.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSTA=[&lt;type&gt;]</tt></td><td><tt>OK</tt>, <tt>+CME ERROR: 3</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSTA?</tt></td><td><tt>+CSTA: 129</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSTA=?</tt></td><td><tt>+CSTA: (129)</tt></td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CSTF Settings Time Format</b></p>
+<p>The <tt>AT+CSTF</tt> command sets the time format of the time information presented to the user.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CSTF=[&lt;mode&gt;]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CSTF?</tt></td><td><ul>
+<li><tt>+CSTF: &lt;mode&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CSTF=?</tt></td><td><ul>
+<li><tt>+CSTF:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>This command has no effect in our current implementation.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+VTD Tone Duration</b></p>
+<p>The <tt>AT+VTD</tt> command can be used to define the length of tones emitted as a result of the <tt>AT+VTS</tt> command.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+VTD=&lt;n&gt;</tt></td><td><tt>+CME ERROR: 3</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+VTD?</tt></td><td><tt>+VTD: &lt;n&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+VTD=?</tt></td><td><tt>+VTD: (0-255)</tt></td></tr>
+</table></p>
+<p>According to 3GPP TS 27.007, section C.2&#x2e;12, the tone duration can only be queried, and never set. This implementation always returns zero to indicate &quot;manufacturer specific&quot;.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+VTS DTMF and Tone Generation</b></p>
+<p>The <tt>AT+VTS</tt> command can be used to generate DTMF tones during a voice call.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+VTS=&lt;tones&gt;</tt></td><td><tt>OK</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+VTS=?</tt></td><td><tt>+VTS: (0-9,*,#,A,B,C,D)</tt></td></tr>
+</table></p>
+<p>The <tt>&lt;tones&gt;</tt> parameter is a string containing the digits to be sent as DTMF tones. The dual tone frequencies and tone duration parameters from 3GPP TS 27.007 are not supported.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+COPN Read Operator Names</b></p>
+<p>This command returns the list of operator names from the MT. Each operator code that has an alphanumeric equivalent in the MT memory shall be returned.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+COPN</tt></td><td><tt>+COPN: &lt;numeric1&gt;,&lt;alpha1&gt;</tt> <tt>[&lt;CR&gt;&lt;LF&gt;+COPN: &lt;number2&gt;&lt;alpha2&gt;</tt> <tt>[...]]</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+COPN=?</tt></td><td></td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>ATD Dial Call</b></p>
+<p>The <tt>ATD</tt> command initiates a dial for a voice or data call.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ATDdialstring[i][;]</tt></td><td><ul>
+<li><tt>CONNECT [&lt;rate&gt;]</tt>: Data call has connected at <tt>rate</tt>.</li>
+<li><tt>OK</tt>: Voice call has connected.</li>
+<li><tt>NO CARRIER</tt>: Connection could not be established.</li>
+<li><tt>BUSY</tt>: Called party is busy.</li>
+<li><tt>ERROR</tt>: Command issues when already connected.</li>
+</ul>
+</td></tr>
+</table></p>
+<p>The command name is followed by a string of digits and control characters, according to the following table:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>0-9, *, #, +, A, B, C, D</tt></td><td>Digits to be dialed. In GSM networks, <tt>D</tt> is ignored, in accordance with 3GPP TS 27.007.</td></tr>
+<tr valign="top" class="even"><td><tt>,</tt></td><td>Insert a pause into the dialing sequence.</td></tr>
+<tr valign="top" class="odd"><td><tt>T</tt>, <tt>P</tt></td><td>Select tone or pulse dialing. These are ignored.</td></tr>
+<tr valign="top" class="even"><td><tt>!</tt></td><td>Insert a hook flash into the dialing sequence. This is ignored in GSM networks.</td></tr>
+<tr valign="top" class="odd"><td><tt>W</tt></td><td>Wait for dial tone. This is ignored in GSM networks.</td></tr>
+<tr valign="top" class="even"><td><tt>@</tt></td><td>Wait for quiet answer. This is ignored in GSM networks.</td></tr>
+<tr valign="top" class="odd"><td><tt>;</tt></td><td>This must be last character in the dialing string, and indicates a voice call rather than a data call. The system will issue <tt>OK</tt> and immediately return to command mode.</td></tr>
+<tr valign="top" class="even"><td><tt>i</tt></td><td>Allow the local user's caller ID information to be presented to the called party.</td></tr>
+<tr valign="top" class="odd"><td><tt>I</tt></td><td>Suppress the local user's caller ID information from being presented to the called party.</td></tr>
+</table></p>
+<p>If the dialing sequence begins with <tt>&gt;</tt>, then the rest of the sequence, up until the semi-colon, is interpreted as a name in a direct-dialing phonebook. This will only work with GSM modems that support the feature. Dialing by explicit number is recommended.</p>
+<p>If the system has been configured with support for VoIP, then VoIP calls can be placed with the <tt>ATD</tt> command by using the full URI of the called party. For example: <tt>ATDsip:fred@example.com;</tt>.</p>
+<p>Conforms with: Recommendation V.250, 3GPP TS 27.007.</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p>
+[Previous: <a href="modem-emulator.html">Modem Emulator</a>]
+[Next: <a href="modememulator-controlandstatus.html">Modem Emulator - Control and Status</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,61 @@
+#!/usr/bin/vmware
+config.version = "8"
+virtualHW.version = "4"
+scsi0.present = "TRUE"
+scsi0.virtualDev = "buslogic"
+memsize = "512"
+MemAllowAutoScaleDown = "FALSE"
+scsi0:0.present = "TRUE"
+scsi0:0.fileName = "toolchain.vmdk"
+ide1:0.present = "TRUE"
+ide1:0.fileName = "qtextended.iso"
+ide1:0.deviceType = "cdrom-image"
+floppy0.fileName = "A:"
+ethernet0.present = "TRUE"
+ethernet0.connectionType = "nat"
+usb.present = "TRUE"
+sound.present = "TRUE"
+sound.virtualDev = "es1371"
+sound.fileName = "-1"
+sound.autodetect = "TRUE"
+guestOS = "other26xlinux"
+nvram = "qtopiasdk.nvram"
+
+ide0:0.present = "TRUE"
+ide0:0.fileName = "rootfs.vmdk"
+
+ide0:0.redo = ""
+ethernet0.addressType = "generated"
+ide1:0.autodetect = "TRUE"
+tools.syncTime = "FALSE"
+
+scsi0:1.present = "TRUE"
+scsi0:1.fileName = "qtopia.vmdk"
+scsi0:2.present = "TRUE"
+scsi0:2.fileName = "home.vmdk"
+scsi0:3.present = "TRUE"
+scsi0:3.fileName = "qtopiasrc.vmdk"
+
+scsi0:0.redo = ""
+scsi0:1.redo = ""
+scsi0:2.redo = ""
+scsi0:3.redo = ""
+
+floppy0.present = "FALSE"
+
+uuid.action = "create"
+
+checkpoint.vmState = ""
+
+ide0:1.present = "FALSE"
+ide0:1.fileName = "auto detect"
+ide0:1.redo = ""
+ide0:1.deviceType = "cdrom-raw"
+
+usb.autoConnect.device0 = ""
+
+tools.upgrade.policy = "manual"
+
+extendedConfigFile = "sdk.vmxf"
+
+ide0:1.autodetect = "TRUE"

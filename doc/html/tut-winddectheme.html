@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Window Decoration Theme</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Window Decoration Theme<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="tutwinddec"></a><a name="window-decorations"></a>
+<h2>Window Decorations</h2>
+<p>A title theme is positioned over the window title of maximised windows. If the window title size and the system title size do not match, some of the application window will be obscured, or there will be an empty area at the top of the application. Therefore it is essential that the window decoration metrics match the title theme.</p>
+<p>The two window states available are:</p>
+<ul>
+<li>maximized</li>
+<li>normal.</li>
+</ul>
+<p>In each state the following metrics are supported:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Metric</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>TitleHeight</tt></td><td>The height of the title</td></tr>
+<tr valign="top" class="even"><td><tt>LeftBorder</tt></td><td>The width of the left border</td></tr>
+<tr valign="top" class="odd"><td><tt>RightBorder</tt></td><td>The width of the right border</td></tr>
+<tr valign="top" class="even"><td><tt>TopBorder</tt></td><td>The height of the top border (above the title)</td></tr>
+<tr valign="top" class="odd"><td><tt>BottomBorder</tt></td><td>The height of the bottom border</td></tr>
+<tr valign="top" class="even"><td><tt>CornerGrabSize</tt></td><td>The length of the region in each corner that can be used to resize the window</td></tr>
+</table></p>
+<p>The following pixmaps may be supplied:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Pixmap</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>TitlePixmap</tt></td><td>The pixmap to be drawn at the top of the window</td></tr>
+<tr valign="top" class="even"><td><tt>OverlayPixmap</tt></td><td>Drawn over the top of the TitlePixmap. This allows an area of the title to be tinted a different color. An example of this is the highlight colored area in the portal theme.</td></tr>
+<tr valign="top" class="odd"><td><tt>LeftPixmap</tt></td><td>The pixmap to be drawn to the left of the window</td></tr>
+<tr valign="top" class="even"><td><tt>RightPixmap</tt></td><td>The pixmap to be drawn to the right of the window</td></tr>
+<tr valign="top" class="odd"><td><tt>BottomPixmap</tt></td><td>The pixmap to be drawn at the bottom of the window</td></tr>
+</table></p>
+<p>For each pixmap the following properties may be set:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Property</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>&lt;Title|Overlay|Left|Right|Bottom&gt;;Offsets</tt></td><td>Specifies the position of the tileable area of the image. For example, &quot;TitleOffsets=16,48&quot; says that the image to be used for the title should place the first 16 pixels at the left, the pixels from 48 on the right, and tile the pixels in between.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;Title|Overlay|Left|Right|Bottom&gt;;Color</tt></td><td>Specifies the color to tint the image. May be a rgb color spec (#FFFFFF) or a Qt palette color name.</td></tr>
+</table></p>
+<p>The following example illustrates the format of the decoration configuration file:</p>
+<pre>    [Decoration]
+    Name = Portal
+    Base = themes/portal
+
+    [Maximized]
+    TitleHeight = 34
+    TitlePixmap = titlebg_0
+    TitleOffsets = 87,88
+
+    [Normal]
+    TitleHeight = 19
+    TitlePixmap = titlebox
+    TitleOffsets = 8,56
+    OverlayPixmap = titlebox_overlay
+    OverlayOffsets = 16,48</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

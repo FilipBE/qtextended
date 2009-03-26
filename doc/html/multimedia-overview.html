@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Multimedia</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Multimedia<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#media-engines">Media Engines</a></li>
+<li><a href="#cruxus-engine">Cruxus Engine</a></li>
+<li><a href="#media-player">Media Player</a></li>
+<li><a href="#audio-management">Audio Management</a></li>
+<ul><li><a href="#rules-on-access-for-audio-system">Rules on Access for Audio System</a></li>
+</ul>
+<li><a href="#tutorials">Tutorials</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qt Extended Multimedia Framework provides a generic API to manage audio/video playback, handling priority requests, suspending and resuming as needed automatically.</p>
+<p align="center"><img src="images/multimedia-blockdiagram.png" alt="Multimedia Block Diagram" /></p><a name="features"></a>
+<h2>Features</h2>
+<p>Features provided by the Qt Extended Multimedia Framework include:</p>
+<ul>
+<li>Automatic suspend and resume of playback sessions based on priority.</li>
+<li>Access control to audio sub-system (oss, alsa) <a href="qaudiointerface.html">QAudioInterface</a>.</li>
+<li>Generic audio mixer control class (oss, alsa) <a href="qaudiomixer.html">QAudioMixer</a>.</li>
+<li><a href="qsound.html">QSound</a> class emulation.</li>
+</ul>
+<a name="media-engines"></a>
+<h2>Media Engines</h2>
+<p>On startup the Qt Extended Media Server loads plugin media engines installed, these engines are implementations of 3rd party multimedia engines like helix and gstreamer using <a href="qmediaengine.html">QMediaEngine</a>. The video rendering is done using a <a href="qwsembedwidget.html">QWSEmbedWidget</a> in the player see QMediaVideoWidget ::createVideoWidget() for details on this. On the server side a <a href="qvideoframe.html">QVideoFrame</a> allows the media server to render the video to the screen. For details on implementation of the engine API refer to the <a href="ffmpeg.html">Simple Media Engine</a> example used in the tutorial.</p>
+<a name="cruxus-engine"></a>
+<h2>Cruxus Engine</h2>
+<p>Cruxus is a light weight media engine that supports audio only playback allowing the developer to add support for audio codecs without having to write there own media engine, instead just implementing <a href="qmediadecoder.html">QMediaDecoder</a>. Currently cruxus has plugins for wav, ogg (tremor), mp3 (libmad) and midi (libtimidity). See (src/plugins/codecs/wavplay, src/3rdparty/plugins/codecs/libmad,tremor,libtimidity for implementations.</p>
+<p>Note: libmad is not enabled by default due to licensing issues. When fast response times on playback are required it is recommended that cruxus engine is used for wav support.</p>
+<a name="media-player"></a>
+<h2>Media Player</h2>
+<p>For details on implementation of the player side API refer to the <a href="simpleplayer.html">Simple Media Player</a> example used in the tutorial.</p>
+<a name="audio-management"></a>
+<h2>Audio Management</h2>
+<p>As of 4.4&#x2e;1 release <a href="qaudiointerface.html">QAudioInterface</a> provides an easy way for the application developer to allow Qt Extended to control the audio of there applications.</p>
+<ul>
+<li>Control is implemented in the mediaserver (src/tools/mediaserver/qaudiointerfaceserver.cpp)</li>
+<li>Each <a href="qaudiointerface.html">QAudioInterface</a> connects to this server instance running as part of the mediaserver</li>
+</ul>
+<p>For Example:</p>
+<pre>    QAudioInput      *audio;
+    QAudioInterface  *audiomgr;</pre>
+<p>First we create out audio input class.</p>
+<pre>    audio = new QAudioInput(this);</pre>
+<p>Then we create out control class using the default Media as the domain.</p>
+<pre>    audiomgr = new QAudioInterface(&quot;Media&quot;, this);</pre>
+<p>Then we tell the control class what audio it has to control, if you are not using a <a href="qaudioinput.html">QAudioInput</a> or <a href="qaudiooutput.html">QAudioOutput</a> class then you will need to connect to the <a href="qaudiointerface.html#audioStarted">QAudioInterface::audioStarted</a>() and <a href="qaudiointerface.html#audioStopped">QAudioInterface::audioStopped</a>() signals to implement the open and close functionality.</p>
+<pre>    audiomgr-&gt;setInput(audio);</pre>
+<p>User requests to start recording.</p>
+<pre>    audiomgr-&gt;audioStart();</pre>
+<p>When all the handshaking is done, conflicting instances are stopped or paused and audio state is changed to support audio request <a href="qaudiointerface.html#audioStarted">QAudioInterface::audioStarted</a>() signal is emitted to begin reading the input.</p>
+<a name="rules-on-access-for-audio-system"></a>
+<h3>Rules on Access for Audio System</h3>
+<p>On play request:</p>
+<ul>
+<li>If OSS, pause all Active instances before playing.</li>
+</ul>
+<p>On record request:</p>
+<ul>
+<li>Recording is exclusive access, stop all Active instances before recording.</li>
+</ul>
+<a name="tutorials"></a>
+<h2>Tutorials</h2>
+<ul>
+<li><a href="simpleplayer.html">Simple Media Player</a></li>
+<li><a href="tut-mediacruxusplugin.html">Creating Plugin For Cruxus Engine</a></li>
+<li><a href="ffmpeg.html">Simple Media Engine</a></li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

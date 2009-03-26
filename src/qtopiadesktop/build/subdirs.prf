@@ -1,0 +1,221 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(subdirs.prf)
+# Subdirs procesing
+
+# this function is used to get all the projects below this directory
+defineTest(getAllDirs) {
+    for(cwd,TO_PROCESS) {
+        contains(PROCESSED_DIRS,$$cwd):next()
+        echo(Searching $$cwd)
+        PROCESSED_DIRS+=$$cwd
+        export(PROCESSED_DIRS)
+
+        FILES=$$files($$cwd/*)
+        for(f,FILES) {
+            f=$$fixpath($$f)
+            # Check for a directory (with a .pro file in it)
+            base=$$basename(f)
+            pro=$$fixpath($$f/$${base}.pro)
+            exists($$pro):echo(Found $$pro)
+            else:next()
+
+            # Behaviour depends on project type
+            cachedinfo($$pro,PROJECT_TYPE)
+            type=$$cache.PROJECT_TYPE
+            contains(type,subdirs) {
+                TO_PROCESS+=$$f
+                export(TO_PROCESS)
+            } else {
+                addname=$$f
+                addname~=s,$$fixpath($$SRCDIR/),,q
+                echo(Adding $$addname to SUBDIRS)
+                SUBDIRS+=$$addname
+                export(SUBDIRS)
+            }
+        }
+    }
+}
+
+defineReplace(maketarget) {
+    target=sub-$$1
+    target~=s,/,-,g
+    target~=s,\.\.-,,g
+    return($$target)
+}
+
+build_all_dirs {
+    # Don't do things more than once
+    PROCESSED_DIRS=
+    isEmpty(SUBDIRS) {
+        TO_PROCESS=$$SRCDIR
+    } else {
+        TO_PROCESS=
+        for(s,SUBDIRS) {
+            TO_PROCESS+=$$SRCDIR/$$s
+        }
+        SUBDIRS=
+    }
+
+    getAllDirs()
+    for(l,forever) {
+        equals(PROCESSED_DIRS,$$TO_PROCESS):break()
+        getAllDirs()
+    }
+}
+
+# If SUBDIRS isn't set try to build part of the tree
+search=
+isEmpty(SUBDIRS) {
+    search=$$fixpath($$QTOPIA_ID/)
+    win32:search~=s,\\\,/,g
+    echo(Looking for $$search)
+    for(it,PROJECTS) {
+        containsre($$it,^$$search) {
+            it~=s,^$$search,,
+            echo(adding $$it)
+            SUBDIRS+=$$it
+        }
+    }
+}
+
+# IMPORTANT: These targets must match with what configure has
+SYNCQTOPIA=syncqtopia first_syncqtopia
+QMAKE_TARGETS=first all clean distclean install uninstall
+TARGETS=\
+    $$SYNCQTOPIA $$QMAKE_TARGETS regenerate_all test install_tests checkp4 lupdate packages\
+    install_target remove_target nodeps mocables printdependrules qmake_check
+!equals(QTOPIA_SDKROOT,$$QPEDIR):TARGETS+=sdk
+qtopia_depot:TARGETS+=auto_docs
+ORDERED_TARGETS=
+
+# Create the "Qtopia wrappers" to the qmake targets
+for(t,QMAKE_TARGETS) {
+    QMAKE_EXTRA_TARGETS*=qtopia_$$t
+}
+
+ordered:ORDERED_TARGETS=$$TARGETS
+# Ordered is easy
+for(t,ORDERED_TARGETS) {
+    qt=$$t
+    contains(QMAKE_TARGETS,$$t):qt=qtopia_$$t
+    commands=
+    for(s,SUBDIRS) {
+        # FIXME handle non-qtopia projects
+        #!exists($$QTOPIA_DEPOT_PATH/src/$$s/Makefile):next()
+        !isEmpty(commands):commands+=$$LINE_SEP_VERBOSE
+
+        # first_syncqtopia has a dot printed (it runs at configure time)
+        equals(t,first_syncqtopia):commands+=$$PRINTDOT $$LINE_SEP_VERBOSE
+
+        equals(t,all) {
+            commands+=@$$MAKE -C $$fixpath($$s)
+        } else {
+            # We should only do syncqtopia for projects with CONFIG+=syncqtopia (ie. libs and subdirs)
+            # However, for ordered stuff we don't bother to read .pro files so we don't know
+            # what the CONFIG value is. Since "make [first_]syncqtopia" is guaranteed to work anyway, just do it.
+            # special case for the server in singleexec mode
+            !contains(SYNCQTOPIA,$$t)|!equals(s,src/server/main) {
+                commands+=@$$MAKE -C $$fixpath($$s) $$t
+            }
+        }
+        ignore_subdir_errors:commands+=|| $$DUMMY_COMMAND
+    }
+    eval($${qt}.commands+=\$$commands)
+    QMAKE_EXTRA_TARGETS*=$$qt
+}
+
+!ordered {
+    printsubdirsdependrules.commands=$$COMMAND_HEADER
+
+    # We don't actually do unordered building
+    # Dependency information is used to impose some order
+    TARGETS-=$$ORDERED_TARGETS
+    PREV_SUBDIRS=$$SUBDIRS
+    PROCESSED_SUBDIRS=
+    include(subdirs_block.pri)
+    !equals(PREV_SUBDIRS,$$SUBDIRS) {
+        for(l,forever) {
+            PREV_SUBDIRS=$$PROCESSED_SUBDIRS
+            include(subdirs_block.pri)
+            equals(PREV_SUBDIRS,$$PROCESSED_SUBDIRS):break()
+        }
+    }
+
+    # Remove any that are going to kill us (dependencies for things outside our tree)
+    for(s,SUBDIRS) {
+        target=$$maketarget($$s)
+        deps=$$eval($${target}.depends)
+        for(dep,deps) {
+            !contains(QMAKE_EXTRA_TARGETS,$$dep) {
+                echo(Cannot see $$dep from here (required by $$target))
+                # make foo -> sub-[dir]_foo
+                eval($${target}.depends-=\$$dep)
+                for(t,TARGETS) {
+                    qt=$$t
+                    contains(QMAKE_TARGETS,$$t):qt=qtopia_$$t
+
+                    equals(t,all) {
+                        thisrule=$$target
+                        deprule=$$dep
+                    } else {
+                        thisrule=$${target}_$$qt
+                        deprule=$${dep}_$$qt
+                    }
+                    # sub-[dir]_foo -> sub-[dep]_foo
+                    eval($${thisrule}.depends-=\$$deprule)
+                }
+            }
+        }
+    }
+
+    QMAKE_EXTRA_TARGETS*=$$TARGETS printsubdirsdependrules
+}
+
+THE_SUBDIRS=$$SUBDIRS
+# Since we are overriding the qmake rules, we need to stop it from doing anything
+SUBDIRS=
+
+
+# test integration
+dirname=$$tail($$QTOPIA_ID)
+equals(dirname,tests) {
+    LITERAL_SPACE=" "
+
+    win32 {
+        echonull=echo.
+        quote=
+        equote=$$LITERAL_QUOTE
+    } else {
+        echonull=echo
+        quote=$$LITERAL_QUOTE
+        equote=$$LITERAL_ESCAPED_QUOTE
+    }
+
+    listtests.commands=$$COMMAND_HEADER\
+        $$echonull $$LINE_SEP\
+        $$echonull $$LINE_SEP\
+        echo The available tests are: $$LINE_SEP
+    for(s,THE_SUBDIRS) {
+        listtests.commands+="echo $$quote $$LITERAL_SPACE $$LITERAL_SPACE $$s$$quote" $$LINE_SEP
+    }
+    listtests.commands+=\
+        $$echonull $$LINE_SEP\
+        $$echonull
+    QMAKE_EXTRA_TARGETS+=listtests
+
+    !win32 {
+        listtests.commands+=$$LINE_SEP\
+            echo $${LITERAL_QUOTE}To run specific tests use: make test TESTS=$${LITERAL_ESCAPED_QUOTE}test1 test2$$LITERAL_ESCAPED_QUOTE$$LITERAL_QUOTE $$LINE_SEP\
+            echo $$LINE_SEP\
+            echo
+
+        test.commands=$$COMMAND_HEADER\
+            tests=$$LITERAL_QUOTE$(TESTS)$$LITERAL_QUOTE;\
+            if [ -z $$LITERAL_QUOTE\$$tests$$LITERAL_QUOTE ]; then\
+                tests=$$LITERAL_QUOTE$$THE_SUBDIRS$$LITERAL_QUOTE;\
+            fi;\
+            for dir in \$$tests; do\
+                $$MAKE -C \$$dir test;\
+            done
+        test.depends=
+    }
+}

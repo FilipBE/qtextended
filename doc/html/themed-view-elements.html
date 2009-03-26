@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Themed View Elements</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Themed View Elements<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>Themed View elements define the layout and structure of components. For example, the <tt>page</tt> element is a top-level element that specifies the size and shape of the view of a component such as <tt>Title Bar</tt>.</p>
+<p>The following tables define each of the Themed View elements together with attributes that may be applied to those elements.</p>
+<a name="common-attributes"></a>
+<h2>Common attributes</h2>
+<a name="themecommonattributes"></a><p>Some attributes are common to all theme elements. Functionality for these attributes are implemented by the <a href="themeitem.html">ThemeItem</a> class. These attributes are listed below.</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>active</tt></td><td>The active state of the element. The value of this may be an expression. See <a href="themed-views.html#showing-hiding-elements">Showing/Hiding Elements</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>expanding</tt></td><td>Whether this element may expand to fill any available space. Only applies when element is within a layout element. See the documentation of <a href="designer-editing-mode.html">layout</a> for details.</td></tr>
+<tr valign="top" class="odd"><td><tt>interactive</tt></td><td>See <a href="themed-views.html#interactive-elements">Interactive Elements</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>message</tt></td><td>Sends a specified message to a specified channel or service. Currently only supported for interactive elements through the onlick attribute. See <a href="themed-views.html#interactive-elements">Interactive Elements</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>name</tt></td><td>The name of the element.</td></tr>
+<tr valign="top" class="even"><td><tt>rect</tt></td><td>The size and position of the element. See <a href="themed-views.html#positioning-elements">Positioning Elements</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>transient</tt></td><td>If set to &quot;yes&quot; the item can change. See <a href="themed-views.html#showing-hiding-elements">Showing/Hiding Elements</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>vspath</tt></td><td>The valuespace path for which expressions appearing in this element are relative to. See <a href="themed-views.html#themeexpressions">Expressions and Valuespace</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>onclick</tt></td><td>Changes the value of attributes when the item is clicked. See <a href="themed-views.html#interactive-elements">Interactive Elements</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>onfocus</tt></td><td>Changes the value of attributes when the item has the focus. See <a href="themed-views.html#interactive-elements">Interactive Elements</a>.</td></tr>
+</table></p>
+<a name="page"></a>
+<h2>page</h2>
+<a name="themepageelement"></a><p>The top-level element. Specifies the size and shape of the view. The page element is implemented by the <a href="themepageitem.html">ThemePageItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>background</tt></td><td>The image used as the background.</td></tr>
+<tr valign="top" class="even"><td><tt>base</tt></td><td>The base directory where the image data can be found relative to <tt>$QPEDIR/pics</tt>.</td></tr>
+<tr valign="top" class="odd"><td><tt>keypad</tt></td><td>If true, the item is active in keypad mode.</td></tr>
+<tr valign="top" class="even"><td><tt>mask</tt></td><td>The mask used to set the widget shape. This is useful for the title and context bar.</td></tr>
+<tr valign="top" class="odd"><td><tt>orientation</tt></td><td>The page direction (&quot;vertical&quot; or &quot;horizontal&quot;).</td></tr>
+<tr valign="top" class="even"><td><tt>rect</tt></td><td>The size of the view. The <tt>x</tt> and <tt>y</tt> coordinates are ignored.</td></tr>
+<tr valign="top" class="odd"><td><tt>color</tt></td><td>See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>stretch</tt></td><td>The stretch points for the mask. See <a href="themed-views.html#stretching-images">Stretching Images</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>transparent</tt></td><td>Set to &quot;yes&quot; if the page is transparent.</td></tr>
+</table></p>
+<a name="rect"></a>
+<h2>rect</h2>
+<a name="themerectelement"></a><p>Draws a rectangle which may be filled. The rect element is implemented by the <a href="themerectitem.html">ThemeRectItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>alpha</tt></td><td>Add an alpha channel with value in the range 0-255</td></tr>
+<tr valign="top" class="even"><td><tt>brush</tt></td><td>The color to fill the interior with. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>color</tt></td><td>The color of the line. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>keypad</tt></td><td>If true, the item is active in keypad mode.</td></tr>
+<tr valign="top" class="odd"><td><tt>transparent</tt></td><td>Set to &quot;yes&quot; if the item is transparent.</td></tr>
+</table></p>
+<a name="line"></a>
+<h2>line</h2>
+<a name="themelineelement"></a><p>The line element is implemented by the <a href="themelineitem.html">ThemeLineItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>color</tt></td><td>The color of the line. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+</table></p>
+<a name="text"></a>
+<h2>text</h2>
+<a name="themetextelement"></a><p>Displays a string of text to the user.</p>
+<p>The text element is implemented by the <a href="themetextitem.html">ThemeTextItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>align</tt></td><td>The text alignment. See <a href="themed-views.html#themealignment">Alignment</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>bold</tt></td><td>When set to &quot;yes&quot; the text will be bold.</td></tr>
+<tr valign="top" class="odd"><td><tt>color</tt></td><td>The color of the text. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>elided</tt></td><td>Specifies where the ellipsis should appear when displaying a text that doesn't fit. The value can be &quot;left&quot;, &quot;middle&quot; or &quot;right&quot;.</td></tr>
+<tr valign="top" class="odd"><td><tt>font</tt></td><td>The font used to display the text.</td></tr>
+<tr valign="top" class="even"><td><tt>format</tt></td><td>When set to &quot;RichText&quot; the text will be rendered as richtext (Qt HTML subset). When set to &quot;PlainText&quot; the text will be rendered as plain text. If unspecified, the format will be detected automatically based on the presence of html tags.</td></tr>
+<tr valign="top" class="odd"><td><tt>outline</tt></td><td>The color to draw the outline around the text. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>shadow</tt></td><td>Paints a shadow under the text to make it more visible when the background is textured. The value is a number in the range 0 - 255.</td></tr>
+<tr valign="top" class="odd"><td><tt>short</tt></td><td>When set to &quot;yes&quot; Qt Extended will supply a short version of the text, for example instead of &quot;3 new messages&quot;, only &quot;3&quot; will be set.</td></tr>
+<tr valign="top" class="even"><td><tt>size</tt></td><td>The font size in points.</td></tr>
+</table></p>
+<a name="content"></a>
+<h3>Content</h3>
+<p>The text element's content may be a literal string or an expression that returns a string which is used as the text for the element.</p>
+<pre>    &lt;text name=&quot;literal&quot;&gt;Hello, World!&lt;/text&gt; &lt;-- displays Hello, World!
+    &lt;text name=&quot;expression&quot;&gt;@/My/Valuespace/Path/Text&lt;/text&gt; &lt;-- displays the text returned by the valuespace key /My/Valuespace/Path/Text</pre>
+<a name="image"></a>
+<h2>image</h2>
+<a name="themeimageelement"></a><p>The image element is implemented by the <a href="themeimageitem.html">ThemeImageItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>alpha</tt></td><td>Add an alpha channel with value in the range 0-255.</td></tr>
+<tr valign="top" class="even"><td><tt>color</tt></td><td>A color to blend with the image. This allows images to be colored to match the selected color scheme. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>keypad</tt></td><td>If true, the item is active in keypad mode.</td></tr>
+<tr valign="top" class="even"><td><tt>orientation</tt></td><td>The direction to stretch the image (&quot;vertical&quot; or &quot;horizontal&quot;).</td></tr>
+<tr valign="top" class="odd"><td><tt>scale</tt></td><td>If set to &quot;yes&quot;, scale the image to fit the rect. It is possible to scale in one direction only with &quot;vertical&quot; or &quot;horizontal&quot;.</td></tr>
+<tr valign="top" class="even"><td><tt>src</tt></td><td>The image to be drawn. This may be a literal reference to a file or an expression returning a string which is a reference to a file.</td></tr>
+<tr valign="top" class="odd"><td><tt>stretch</tt></td><td>The stretch points for the image. See <a href="themed-views.html#stretching-images">Stretching Images</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>tile</tt></td><td>If set to &quot;yes&quot;, tiles the entire rect with the image. This attribute is ignored if <tt>scale</tt> is set.</td></tr>
+<tr valign="top" class="odd"><td><tt>transparent</tt></td><td>Set to &quot;yes&quot; if the image is transparent.</td></tr>
+</table></p>
+<a name="anim"></a>
+<h2>anim</h2>
+<a name="themeanimelement"></a><p>Shows an animation. Animations are costly in CPU and therefore power, so they must be used sparingly and only for transient elements with short active periods. The animation is defined by an image with frames layed out horizontally next to each other.</p>
+<p>The anim element is implemented by the <a href="themeanimationitem.html">ThemeAnimationItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>alpha</tt></td><td>Add an alpha channel with value in the range 0-255.</td></tr>
+<tr valign="top" class="even"><td><tt>color</tt></td><td>A color to blend with the animation. This allows images to be colored to match the selected color scheme. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>count</tt></td><td>The number of frame in the image.</td></tr>
+<tr valign="top" class="even"><td><tt>delay</tt></td><td>The delay between frames.</td></tr>
+<tr valign="top" class="odd"><td><tt>loop</tt></td><td>The frame to loop back to when the last frame is reached.</td></tr>
+<tr valign="top" class="even"><td><tt>looprev</tt></td><td>The frame to loop back to, in reverse order, when the last frame is reached.</td></tr>
+<tr valign="top" class="odd"><td><tt>play</tt></td><td>Whether the animation should play. The default is &quot;no&quot;, but if a literal &quot;yes&quot; is specified the animation starts playing immediately. If an expression is specified, the animation will play whenever the return value of the expression is true.</td></tr>
+<tr valign="top" class="even"><td><tt>scale</tt></td><td>If set to &quot;yes&quot;, scale the animation to fit the rect. It is possible to scale in one direction only with &quot;vertical&quot; or &quot;horizontal&quot;.</td></tr>
+<tr valign="top" class="odd"><td><tt>src</tt></td><td>The image containing the frames.</td></tr>
+<tr valign="top" class="even"><td><tt>width</tt></td><td>The width of a frame.</td></tr>
+</table></p>
+<a name="status"></a>
+<h2>status</h2>
+<a name="themestatuselement"></a><p>Displays an on/off status icon.</p>
+<p>The status element is implemented by the <a href="themestatusitem.html">ThemeStatusItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>alphaon</tt></td><td>The alpha level of the image in the on state (0-255).</td></tr>
+<tr valign="top" class="even"><td><tt>alphaoff</tt></td><td>The alpha level of the image in the off state (0-255).</td></tr>
+<tr valign="top" class="odd"><td><tt>coloron</tt></td><td>A color to blend with the image in the on state. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>coloroff</tt></td><td>A color to blend with the image in the off state. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>imageon</tt></td><td>The filename of the image representing the on state.</td></tr>
+<tr valign="top" class="even"><td><tt>imageoff</tt></td><td>The filename of the image representing the off state.</td></tr>
+<tr valign="top" class="odd"><td><tt>on</tt></td><td>Whether the item is on or off. The default is &quot;on&quot;, but if a literal &quot;off&quot; is specified the status item is off by default. If an expression is specified, the status item is on when the result of the expression is true and off when the result is false.</td></tr>
+<tr valign="top" class="even"><td><tt>scale</tt></td><td>If set to &quot;yes&quot;, scale the status to fit the rect. It is possible to scale in one direction only with &quot;vertical&quot; or &quot;horizontal&quot;.</td></tr>
+</table></p>
+<a name="level"></a>
+<h2>level</h2>
+<a name="themelevelelement"></a><p>Displays a level such as battery charge. The different levels are represented by an image with frames layed out horizontally next to each other. As the level element is an extension of the anim element, all of anim's attributes also apply.</p>
+<p>The level element is implemented by the <a href="themelevelitem.html">ThemeLevelItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>alpha</tt></td><td>Add an alpha channel with value in the range 0-255.</td></tr>
+<tr valign="top" class="even"><td><tt>color</tt></td><td>A color to blend with the level. This allows images to be colored to match the selected color scheme. See <a href="themed-views.html#specifying-colors">Specifying Colors</a>.</td></tr>
+<tr valign="top" class="odd"><td><tt>count</tt></td><td>The number of frames.</td></tr>
+<tr valign="top" class="even"><td><tt>delay</tt></td><td>The delay between frames.</td></tr>
+<tr valign="top" class="odd"><td><tt>loop</tt></td><td>The frame to loop back to when the last frame is reached.</td></tr>
+<tr valign="top" class="even"><td><tt>looprev</tt></td><td>The frame to loop back to, in reverse order, when the last frame is reached.</td></tr>
+<tr valign="top" class="odd"><td><tt>play</tt></td><td>Whether the animation should play. The default is &quot;no&quot;, but if a literal &quot;yes&quot; is specified the animation starts playing immediately. If an expression is specified, the animation will play whenever the return value of the expression is true.</td></tr>
+<tr valign="top" class="even"><td><tt>max</tt></td><td>The maximum value of the level.</td></tr>
+<tr valign="top" class="odd"><td><tt>min</tt></td><td>The minimum value of the level.</td></tr>
+<tr valign="top" class="even"><td><tt>scale</tt></td><td>If set to &quot;yes&quot;, scale the animation to fit the rect. It is possible to scale in one direction only with &quot;vertical&quot; or &quot;horizontal&quot;.</td></tr>
+<tr valign="top" class="odd"><td><tt>src</tt></td><td>The image containing the frames for the levels.</td></tr>
+<tr valign="top" class="even"><td><tt>width</tt></td><td>The width of a frame.</td></tr>
+</table></p>
+<a name="content"></a>
+<h3>Content</h3>
+<p>Either a literal value or an expression can be specified for the content of the level attribute. If an expression is specified, the return value of the expression is used as the level's current value.</p>
+<a name="plugin"></a>
+<h2>plugin</h2>
+<a name="themepluginelement"></a><p>This is a special element which loads a plug-in to do the drawing. This is currently only used to display custom backgrounds in the home screen.</p>
+<p>The plugin element is implemented by the <a href="themepluginitem.html">ThemePluginItem</a> class.</p>
+<a name="layout"></a>
+<h2>layout</h2>
+<a name="themelayoutelement"></a><p>This element does not do any drawing itself. Its role is to layout its child elements in a horizontal or vertical orientation. The default orientation is horizontal. If any of the child elements are shown/hidden then the remaining children will be laid out again.</p>
+<p>The layout element is implemented by the <a href="themelayoutitem.html">ThemeLayoutItem</a> class.</p>
+<a name="attributes"></a>
+<h3>Attributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>align</tt></td><td>Set the alignment of the elements. See <a href="themed-views.html#themealignment">Alignment</a>.</td></tr>
+<tr valign="top" class="even"><td><tt>keypad</tt></td><td>If true, the item is active in keypad mode.</td></tr>
+<tr valign="top" class="odd"><td><tt>orientation</tt></td><td>The direction to layout the elements (&quot;vertical&quot; or &quot;horizontal&quot;).</td></tr>
+<tr valign="top" class="even"><td><tt>spacing</tt></td><td>The space left between elements.</td></tr>
+<tr valign="top" class="odd"><td><tt>stretch</tt></td><td>When set to &quot;yes&quot;, stretch the elements to use all available space.</td></tr>
+</table></p>
+<a name="exclusive"></a>
+<h2>exclusive</h2>
+<a name="themeexclusiveelement"></a><p>This element will display only one of its children. The children must be transient. The last child that is active will be displayed. All other children will be hidden. This is useful for sharing an area in different states. The exclusive element is implemented by the <a href="themeexclusiveitem.html">ThemeExclusiveItem</a> class.</p>
+<a name="group"></a>
+<h2>group</h2>
+<a name="themegroupelement"></a><p>This element groups its children into a logical group. It primary role is to propagate mouse button (or stylus) clicks to all children.</p>
+<p>The group element is implemented by the <a href="themegroupitem.html">ThemeGroupItem</a> class.</p>
+<a name="widget"></a>
+<h2>widget</h2>
+<a name="themewidgetelement"></a><p>This is a special purpose element. It is a place-holder for a custom widget in the user interface, such as a text input field.</p>
+<p>The widget element is implemented by the <a href="themewidgetitem.html">ThemeWidgetItem</a> class.</p>
+<a name="list"></a>
+<h2>list</h2>
+<a name="themelistelement"></a><p>This is a special purpose element from the widget element. It contains functionality that extends the widget element to specifically support lists in themeing. template items can be defined under the list element to represent the appearance of the list's items.</p>
+<p>The list element is implemented by the <a href="themelistitem.html">ThemeListItem</a> class.</p>
+<a name="template"></a>
+<h2>template</h2>
+<a name="themetemplateelement"></a><p>This is a special purpose element. It allows a hiearchy of theme items representing a visual look to be declared without actually creating an instance of them. Then, an actual instance of that hierarchy can be created dynamically and used to draw the visual look to some user interface component eg. a custom widget.</p>
+<pre>    &lt;page&gt;
+        &lt;text&gt;This is my standard theme&lt;/text&gt;
+        &lt;image src=&quot;hello&quot;/&gt;
+        &lt;template name=&quot;button&quot;&gt;
+            &lt;image rect=&quot;0,0,0,0&quot; src=&quot;buttonbg&quot;/&gt;
+            &lt;text rect=&quot;0,0,0,0&quot; align=&quot;hcenter,vcenter&quot;&gt;Click me.&lt;/text&gt;
+        &lt;/template&gt;
+    &lt;/page&gt;</pre>
+<p>In the above example a template &quot;button&quot; is defined that declares a visual look consisting of an image and some text. The button template is not drawn as part of the theme, it just exists in its hierarchy as a convenient way to access it. You could create an instance of the &quot;button&quot; template using <a href="themetemplateitem.html#createInstance">ThemeTemplateItem::createInstance</a>() and then draw it to a custom widget using <a href="themedview.html#paint">ThemedView::paint</a>().</p>
+<p>For more information also see the <a href="themed-views.html#templates">Themed Views: Templates</a> documentation.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

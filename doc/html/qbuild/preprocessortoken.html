@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PreprocessorToken Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PreprocessorToken Class Reference</h1>
+<pre>    #include &lt;PreprocessorToken&gt;</pre><ul>
+<li><a href="preprocessortoken-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-variables"></a>
+<h3>Public Variables</h3>
+<ul>
+<li><div class="fn"/>const char * <b><a href="preprocessortoken.html#cStr-var">cStr</a></b></li>
+<li><div class="fn"/>unsigned int <b><a href="preprocessortoken.html#cStrLen-var">cStrLen</a></b></li>
+<li><div class="fn"/>int <b><a href="preprocessortoken.html#line-var">line</a></b></li>
+<li><div class="fn"/>int <b><a href="preprocessortoken.html#offset-var">offset</a></b></li>
+<li><div class="fn"/>Token <b><a href="preprocessortoken.html#token-var">token</a></b></li>
+</ul>
+<a name="related-non-members"></a>
+<h3>Related Non-Members</h3>
+<ul>
+<li><div class="fn"/>QList&lt;PreprocessorToken&gt; <b><a href="preprocessortoken.html#preprocess">preprocess</a></b> ( const char * <i>document</i>, const QList&lt;LexerToken&gt; &amp; <i>_tokens</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<hr />
+<h2>Member Variable Documentation</h2>
+<h3 class="fn"><a name="cStr-var"></a>const char * PreprocessorToken::cStr</h3>
+<h3 class="fn"><a name="cStrLen-var"></a>unsigned int PreprocessorToken::cStrLen</h3>
+<h3 class="fn"><a name="line-var"></a>int PreprocessorToken::line</h3>
+<h3 class="fn"><a name="offset-var"></a>int PreprocessorToken::offset</h3>
+<h3 class="fn"><a name="token-var"></a><a href="tokens-h.html#Token-enum">Token</a> PreprocessorToken::token</h3>
+<hr />
+<h2>Related Non-Members</h2>
+<h3 class="fn"><a name="preprocess"></a>QList&lt;PreprocessorToken&gt; preprocess ( const char * <i>document</i>, const QList&lt;<a href="lexertoken.html">LexerToken</a>&gt; &amp; <i>_tokens</i> )</h3>
+<p>Returns a list of preprocessor tokens in <i>document</i>. The <i>_tokens</i> value must the list of tokens as returned by <a href="lexertoken.html#tokenize">tokenize</a>().</p>
+<p>The logic used the preprocessing works like this.</p>
+<p>Enter/Leave string when &lt;QUOTE&gt;. Everything is preserved within a string. When not in string:</p>
+<ul>
+<li>Remove all tokens between &lt;HASH&gt; and &lt;NEWLINE&gt;</li>
+<li>Simplify &lt;WHITESPACE&gt; such that it is replaced with a &lt;<a href="tokens-h.html#Token-enum">SINGLE_SPACE</a>&gt; except around NEWLINE's</li>
+<li>Replace all &lt;CHARACTER&gt;[&lt;DIGIT&gt;|&lt;CHARACTER&gt;]* with &lt;NAME&gt;</li>
+<li>Remove multiple &lt;NEWLINE&gt;s</li>
+<li>Remove all &lt;BACKSLASH&gt;&lt;WHITESPACE&gt;*[&lt;NEWLINE&gt;]</li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

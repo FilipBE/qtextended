@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="callscreen" base="themes/finxi">
+    <layout orientation="vertical" rect="0,0,0,0">
+        <list expanding="yes" name="callscreen" rect="0,0,0x215" vspath="/UI/CallScreen" separator="1" size="7">
+                <template name="active" rect="0,0,0x21pt">
+                <image name="active_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="#50D914"/>
+                <status name="conference" rect="0,0,16x16" imageon="conference" on="expr:@Conference"/>
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+		    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="incoming" rect="0,0,0x21pt">
+                <image name="incoming_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="Base" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="outgoing" rect="0,0,0x21pt">
+                <image name="outgoing_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="Background" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="onhold" rect="0,0,0x21pt">
+                <image name="onhold_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="#A3A10E" />
+                <status name="conference" rect="0,0,16x16" imageon="conference" on="expr:@Conference == true" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="dropped" rect="0,0,0x21pt">
+                <image name="dropped_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="#AA2222" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="selected" rect="0,0,0x21pt">
+                <image name="selected_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="Highlight" />
+                <status name="conference" rect="0,0,16x16" imageon="conference" on="expr:@Conference == true"/>
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+	</list>
+    <rect name="menu-box" rect="0,0,0x275" active="yes" interactive="yes" transient="yes">
+      <image rect="0,0,0x91" name="show_keypad" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes">
+        <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">Show Keypad</text>
+      </image>
+      <exclusive rect="0,91,0x91">
+        <image name="hold" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes">
+          <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">Hold</text>
+        </image>
+        <image name="resume" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes">
+          <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">Resume</text>
+        </image>
+        <image name="sendbusy" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes">
+          <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">Send Busy</text>
+        </image>
+      </exclusive>
+      <exclusive rect="0,182,0x91">
+        <image name="endcall" src="buttonendcall.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes">
+          <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">End Call</text>
+        </image>
+        <image name="answer" src="buttoncall.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" active="yes">
+          <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">Answer</text>
+        </image>
+      </exclusive>
+    </rect>
+    <rect name="keypad-box" rect="0,0,0x275" interactive="yes" transient="yes" active="no">
+	    <layout name="keypad" rect="0,0,0x0" orientation="vertical" spacing="0" separator="1">
+		<layout name="horizontal" rect="0,0,0x55" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="0,0,160x0" name="one" interactive="yes">
+              <image rect="0,0,0,0" name="one_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">1</text>
+		    </group>
+		    <group rect="0,0,160x0" name="two" interactive="yes">
+              <image rect="0,0,0,0" name="two_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">2</text>
+		    </group>
+		    <group rect="0,4,160x0" name="three" interactive="yes">
+              <image rect="0,0,0,0" name="three_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">3</text>
+		    </group>
+		</layout>
+		<layout rect="0,0,0x55" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="00,0,160x0" name="four" interactive="yes">
+              <image rect="0,0,0,0" name="four_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">4</text>
+		    </group>
+		    <group rect="0,0,160x0" name="five" interactive="yes">
+              <image rect="0,0,0,0" name="five_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">5</text>
+		    </group>
+		    <group rect="0,0,160x0" name="six" interactive="yes">
+              <image rect="0,0,0,0" name="six_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">6</text>
+		    </group>
+		</layout>
+		<layout rect="0,0,0x55" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="0,0,160x0" name="seven" interactive="yes">
+              <image rect="0,0,0,0" name="seven_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">7</text>
+		    </group>
+		    <group rect="0,0,160x0" name="eight" interactive="yes">
+              <image rect="0,0,0,0" name="eight_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">8</text>
+		    </group>
+		    <group rect="0,0,160x0" name="nine" interactive="yes">
+              <image rect="0,0,0,0" name="nine_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+              <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">9</text>
+		    </group>
+		</layout>
+        <layout rect="0,0,0x55" orientation="horizontal" spacing="-1" align="hcenter">
+          <group rect="0,0,160x0" name="star" interactive="yes">
+            <image rect="0,0,0,0" name="star_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+            <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">*</text>
+          </group>
+          <group rect="0,0,160x0" name="zero" interactive="yes">
+            <image rect="0,0,0,0" name="zero_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+            <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">0</text>
+          </group>
+          <group rect="0,0,160x0" name="hash" interactive="yes">
+            <image rect="0,0,0,0" name="hash_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+            <text rect="0,0,0,0" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">#</text>
+          </group>
+        </layout>
+        <layout rect="0,0,0x55" orientation="horizontal" spacing="-1" align="hcenter">
+            <image rect="0,0,0,0" name="hide_keypad" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes">
+              <text bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">Hide Keypad</text>
+          </image>
+        </layout>
+	    </layout>
+	</rect>
+    <widget name="callscreennumber" rect="0,0,0x50" bold="yes" color="Text" size="12"/>
+    </layout>
+</page>

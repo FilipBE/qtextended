@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Document System: Document Server</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Document System: Document Server<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#security">Security</a></li>
+<li><a href="#document-selector-service">Document Selector Service</a></li>
+<li><a href="#document-scanning">Document Scanning</a></li>
+<ul><li><a href="#removable-media">Removable media</a></li>
+</ul>
+<li><a href="#directly-accessing-the-document-system">Directly Accessing the Document System</a></li>
+</ul>
+<p>The document server provides a centralized service through which access to the document system is managed in a secure manner. Through the document server applications may create, manipulate and delete user documents, as well as query the document system for content matching a variety of criteria.</p>
+<p>The functionality provided by the document server is accessed through the Content (<a href="qcontent.html">QContent</a>, <a href="qcontentset.html">QContentSet</a>) API. Connections to the document server are made implicitly so no set up is required to utilize the document server.</p>
+<a name="security"></a>
+<h2>Security</h2>
+<p>The document server forms part of the Qt Extended <a href="sxe.html">Safe Execution Environment (SXE)</a> and the functionality an application can utilize is restricted according to the SXE profiles it has been awarded. All applications are able to look-up content by file name or ID and view the content meta-data, doing anything more requires one or more of the SXE profiles below:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Profile</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>doc_read</tt></td><td>Allows an application to open user documents in read-only mode.</td></tr>
+<tr valign="top" class="even"><td><tt>doc_write</tt></td><td>Allows an application to open user documents in read-write mode and edit content meta-data.</td></tr>
+<tr valign="top" class="odd"><td><tt>doc_server</tt></td><td>Allows an application to create content sets and search user documents.</td></tr>
+<tr valign="top" class="even"><td><tt>doc_mimetypes</tt></td><td>Allows an application to manage application to MIME type associations.</td></tr>
+<tr valign="top" class="odd"><td><tt>doc_install</tt></td><td>Allows an application to install other applications.</td></tr>
+<tr valign="top" class="even"><td><tt>categories</tt></td><td>Allows an application to edit categories. No profile is required to view categories.</td></tr>
+<tr valign="top" class="odd"><td><tt>drm</tt></td><td>Allows an application access to DRM protected content.</td></tr>
+</table></p>
+<a name="document-selector-service"></a>
+<h2>Document Selector Service</h2>
+<p>The document selector service allows applications to open only documents selected by the user. Using the <a href="qdocumentselectorservice.html">QDocumentSelectorService</a> class an application can request the server display a document selector and return a read-only file handle to the document selected by the user. If the application wishes to save changes to the opened document it can then request the server display a confirmation dialog which if accepted will re-open the document in write-only mode. The service also allows saving new documents, in this case the application specifies a suggested document name and a list of possible types, the user can then edit the name and select from the types before accepting the dialog and creating a new document.</p>
+<p>The document selector service allows applications to provide document viewing and editing capabilities without requiring the <tt>doc_read</tt> and <tt>doc_write</tt> SXE profiles which give access to all user documents. To open documents using the document selector service the <tt>doc_open</tt> profile is required, and to save documents the <tt>doc_save</tt> profile is required.</p>
+<a name="document-scanning"></a>
+<h2>Document Scanning</h2>
+<p>The document server is also responsible for scanning document directories to ensure the information kept by the document system is up to date. Changes made to documents using the document system are updated immediately so scanning is only required to detect changes which are external to Qt Extended as such is done sparingly. Typically scans are only performed when starting Qt Extended and after external media has been inserted, if needed a document scan on a directory can be started explicitly with <a href="qcontentset.html#scan">QContentSet::scan</a>().</p>
+<a name="removable-media"></a>
+<h3>Removable media</h3>
+<p>Where possible the database containing the meta-data for documents on removable media is stored on the media itself, this allows meta-data to be preserved when the media is removed and can reduce the amount of scanning that needs to be done when inserting media that has already been scanned. See <a href="syscust-docstorage.html">Document Storage</a> for information on configuring removable media.</p>
+<a name="directly-accessing-the-document-system"></a>
+<h2>Directly Accessing the Document System</h2>
+<p>Applications can access the document system in two ways; directly or through the document server. By default applications use the document server but if direct access is desired this can be achieved by changing the document system connection with <a href="qcontent.html#setDocumentSystemConnection">QContent::setDocumentSystemConnection</a>() before connecting to the document system. Because connections are made implicitly this must be done immediately after constructing the application's <a href="qtopiaapplication.html">QtopiaApplication</a>, when using the <a href="qtopiaapplication.html#QTOPIA_MAIN">QTOPIA_MAIN</a> macro this can be set by adding the define <tt>QTOPIA_DIRECT_DOCUMENT_SYSTEM_CONNECTION</tt> in the application's qbuild.pro file.</p>
+<pre>    DEFINES+=QTOPIA_DIRECT_DOCUMENT_SYSTEM_CONNECTION</pre>
+<p>An application must also have the <tt>docapi</tt> SXE profile in order to connect directly to the document system.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

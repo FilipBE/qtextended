@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCollectiveMessenger Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCollectiveMessenger Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QCollectiveMessenger class defines a generic interface to P2P instant messaging. <a href="#details">More...</a></p>
+<pre>    #include &lt;QCollectiveMessenger&gt;</pre><p>Inherits <a href="qabstractipcinterface.html">QAbstractIpcInterface</a>.</p>
+<ul>
+<li><a href="qcollectivemessenger-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcollectivemessenger.html#QCollectiveMessenger">QCollectiveMessenger</a></b> ( const QString &amp; <i>service</i> = QString(), QObject * <i>parent</i> = 0, QAbstractIpcInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qcollectivemessenger.html#dtor.QCollectiveMessenger">~QCollectiveMessenger</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qcollectivemessenger.html#registerIncomingHandler">registerIncomingHandler</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qcollectivemessenger.html#sendMessage">sendMessage</a></b> ( const QCollectiveSimpleMessage &amp; <i>message</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qcollectivemessenger.html#unregisterIncomingHandler">unregisterIncomingHandler</a></b> ( const QString &amp; <i>service</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcollectivemessenger.html#messageFailed">messageFailed</a></b> ( const QCollectiveSimpleMessage &amp; <i>message</i> )</li>
+<li><div class="fn"/>void <b><a href="qcollectivemessenger.html#messageSent">messageSent</a></b> ( const QCollectiveSimpleMessage &amp; <i>message</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCollectiveMessenger class defines a generic interface to P2P instant messaging.</p>
+<p>The QCollectiveMessenger class inherits <a href="qabstractipcinterface.html">QAbstractIpcInterface</a> which provides client/server communications framework.</p>
+<p>The QCollectiveMessenger in Server mode parses the received instant messages from the network and informs the rest of the system. It is also responsible for sending instant messages to the remote peers.</p>
+<p>For example, to implement the server mode provider that provides presence interface in &quot;voip&quot; service, create a class that inherits QCollectiveMessenger class and override public slots.</p>
+<pre>    class IMProvider : public QCollectiveMessenger
+    {
+        Q_OBJECT
+    public:
+        IMProvider( QObject *parent=0 )
+            : QCollectiveMessenger( &quot;voip&quot;, parent, Server )
+        {
+            ...
+        }
+    public slots:
+        virtual void sendMessage(const QCollectiveSimpleMessage &amp;msg)
+        {
+            ...
+        }
+        ...
+    };</pre>
+<p>The QCollectiveMessenger in Client mode is used by client applications to access the incoming and outgoing instant message data.</p>
+<pre>    QCollectiveMessenger *provider = new QCollectiveMessenger( &quot;voip&quot; );
+    provider-&gt;registerIncomingHandler(&quot;MyIncomingMessageService&quot;);</pre>
+<p>See also <a href="qcollectivesimplemessage.html">QCollectiveSimpleMessage</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCollectiveMessenger"></a>QCollectiveMessenger::QCollectiveMessenger ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Constructs a <a href="qcollectivemessenger.html">QCollectiveMessenger</a> object for <i>service</i> and attaches it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports the <a href="qcollectivemessenger.html">QCollectiveMessenger</a> interface. If there is more than one service that supports this interface, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qcollectivemessenger.html">QCollectiveMessenger</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QCollectiveMessenger"></a>QCollectiveMessenger::~QCollectiveMessenger ()</h3>
+<p>Destroys the <a href="qcollectivemessenger.html">QCollectiveMessenger</a> object.</p>
+<h3 class="fn"><a name="messageFailed"></a>void QCollectiveMessenger::messageFailed ( const <a href="qcollectivesimplemessage.html">QCollectiveSimpleMessage</a> &amp; <i>message</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever <i>message</i> could not be delivered successfully.</p>
+<p>See also <a href="qcollectivemessenger.html#sendMessage">sendMessage</a>().</p>
+<h3 class="fn"><a name="messageSent"></a>void QCollectiveMessenger::messageSent ( const <a href="qcollectivesimplemessage.html">QCollectiveSimpleMessage</a> &amp; <i>message</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever a <i>message</i> has been successfully sent.</p>
+<p>See also <a href="qcollectivemessenger.html#sendMessage">sendMessage</a>().</p>
+<h3 class="fn"><a name="registerIncomingHandler"></a>void QCollectiveMessenger::registerIncomingHandler ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Registers an incoming message handler <i>service</i>.</p>
+<p>The service must implement a service method with the following signature:</p>
+<pre>    void incomingMessages(const QList&lt;QCollectiveSimpleMessage&gt; &amp;);</pre>
+<p>If multiple handlers are registered, then all registered handlers will be called with the incoming text messages.</p>
+<p>If no handlers are registered, then the messages will queue up to a certain implementation defined limit. If that limit is exceeded, then further messages can be lost.</p>
+<h3 class="fn"><a name="sendMessage"></a>void QCollectiveMessenger::sendMessage ( const <a href="qcollectivesimplemessage.html">QCollectiveSimpleMessage</a> &amp; <i>message</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Attempts to send the <i>message</i> to the remote peer specified in the message's to field. The <a href="qcollectivemessenger.html#messageSent">messageSent</a>() signal will be emitted once the message has been sent, and the messageError() signal will be emitted if the message could not be delivered.</p>
+<h3 class="fn"><a name="unregisterIncomingHandler"></a>void QCollectiveMessenger::unregisterIncomingHandler ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Unregisters an incoming message handler <i>service</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

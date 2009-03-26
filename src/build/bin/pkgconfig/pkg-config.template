@@ -1,0 +1,29 @@
+#!/bin/sh
+PKGCONFIG=/usr/bin/pkg-config
+
+if [ -z "$PKG_CONFIG_PREFIX" ]; then
+    echo "ERROR: PKG_CONFIG_PREFIX is not set!" >&2
+    exit 1
+fi
+
+# Dodgy, assume all arguments without a - as the first char are package names
+PACKAGES=
+for arg in "$@"; do
+    arg="$(echo "$arg" | grep -v '^-')"
+    if [ -n "$arg" ]; then
+        PACKAGES="$PACKAGES $arg"
+        break
+    fi
+done
+for PACKAGE in $PACKAGES; do
+    # Test that each package uses a prefix
+    $PKGCONFIG --define-variable=prefix=__insert_prefix_here__ --cflags $PACKAGE | grep __insert_prefix_here__ >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+done
+
+# This lets the device profile override the prefix value in the .pc file
+PKGCONFIG="$PKGCONFIG --define-variable=prefix=$PKG_CONFIG_PREFIX --define-variable=exec_prefix=$PKG_CONFIG_PREFIX"
+
+exec $PKGCONFIG "$@"

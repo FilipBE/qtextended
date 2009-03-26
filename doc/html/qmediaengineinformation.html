@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaEngineInformation Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaEngineInformation Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaEngineInformation class is a base class used to provide information about a Media Engine. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaEngineInformation&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qmediaengineinformation-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="qmediaengineinformation.html#dtor.QMediaEngineInformation">~QMediaEngineInformation</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="qmediaengineinformation.html#hasExclusiveDeviceAccess">hasExclusiveDeviceAccess</a></b> () const = 0</li>
+<li><div class="fn"/>virtual int <b><a href="qmediaengineinformation.html#idleTime">idleTime</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qmediaengineinformation.html#name">name</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QMediaSessionBuilderList <b><a href="qmediaengineinformation.html#sessionBuilders">sessionBuilders</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QString <b><a href="qmediaengineinformation.html#version">version</a></b> () const = 0</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaEngineInformation class is a base class used to provide information about a Media Engine.</p>
+<p>Media Engines derive a class from QMediaEngineInformation to provide information about the Engine to the Media Server</p>
+<pre>    Example
+    {
+        class Info : public QMediaEngineInformation
+        {
+        public:
+            Info()
+            {
+                <span class="comment">// do stuff, make sessionbuilders</span>
+            }
+
+            ~Info() {}
+
+            QString name() const { return &quot;Example&quot;; }
+            QString version() const { return &quot;1.0.0&quot;; }
+
+            int idleTime() const return { 10 * 1000; }  <span class="comment">// 10 seconds</span>
+
+            QMediaSessionBuilderList sessionBuilders() const { return m_sessionBuilderList; }
+
+        private:
+            QMediaSessionBuilderList    m_sessionBuilderList;
+        }:
+    }</pre>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.QMediaEngineInformation"></a>QMediaEngineInformation::~QMediaEngineInformation ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destruct a <a href="qmediaengineinformation.html">QMediaEngineInformation</a>.</p>
+<h3 class="fn"><a name="hasExclusiveDeviceAccess"></a>bool QMediaEngineInformation::hasExclusiveDeviceAccess () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if the engine uses a audio output device that is not able to be shared with other engines or processes.</p>
+<h3 class="fn"><a name="idleTime"></a>int QMediaEngineInformation::idleTime () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the number of milliseconds before the engine should be suspended. Suspension based on idle time is optional, a value of -1 will indicate to the Media Server that this Engine should never be suspended based on a timeout.</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> QMediaEngineInformation::name () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the name of the Media Engine.</p>
+<h3 class="fn"><a name="sessionBuilders"></a>QMediaSessionBuilderList QMediaEngineInformation::sessionBuilders () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Return the list of QMediaSessionBuilders that are used by this Engine. The Media Server uses the type of the builders to appropriately route session creation requests to Media Engines.</p>
+<p>See also <a href="qmediasessionbuilder.html">QMediaSessionBuilder</a>.</p>
+<h3 class="fn"><a name="version"></a><a href="qstring.html">QString</a> QMediaEngineInformation::version () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the version string of the Media Engine.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

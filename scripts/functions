@@ -1,0 +1,22 @@
+# Does nothing by itself, pulled in by other scripts
+
+#if [ -z $QTOPIA_DEPOT_PATH ]; then
+    REAL_PATH=`pwd`
+#else
+#    REAL_PATH=$QTOPIA_DEPOT_PATH
+#fi
+
+version()
+{
+    cat $QTOPIA_DEPOT_PATH/src/libraries/qtopiabase/version.h | grep QPE_VERSION |awk '{print $3}'|sed 's/"//g'
+}
+
+qt_version()
+{
+    if [ -f $REAL_PATH/qtopiacore/qt/src/corelib/global/qglobal.h ]; then
+        cat $REAL_PATH/qtopiacore/qt/src/corelib/global/qglobal.h | grep QT_VERSION_STR |awk '{print $3}'|sed 's/"//g'
+    elif [ -f $QT_DEPOT/src/corelib/global/qglobal.h ]; then
+        cat $QT_DEPOT/src/corelib/global/qglobal.h | grep QT_VERSION_STR |awk '{print $3}'|sed 's/"//g'
+    fi
+}
+

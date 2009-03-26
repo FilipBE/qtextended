@@ -1,0 +1,67 @@
+#!/bin/sh
+
+kill_qtopia()
+{
+    # kill Qtopia
+    kill $( pidof qpe.sh ) >/dev/null 2>&1
+    kill $( pidof qpe ) >/dev/null 2>&1
+
+    # make sure that no process is using /opt/Qtopia
+    if grep ' /opt/Qtopia ' /proc/mounts >/dev/null 2>&1; then
+        kill -9 $(fuser -m /opt/Qtopia) >/dev/null 2>&1
+
+        # fuser fails to kill all processes using /opt/Qtopia even
+        # though it is sending SIGKILL to all of them. Try again to
+        # make sure.
+        sleep 1
+        kill -9 $(fuser -m /opt/Qtopia) >/dev/null 2>&1
+        [ "x$(fuser -m /opt/Qtopia)" = "x" ]
+    fi    
+}
+
+case "$1" in
+    respawn)
+        while [ -f /tmp/disable-qtopia ]; do
+            sleep 5
+        done
+
+        splash -p + "Starting Qtopia"
+
+        UPDATE_DIR=/home/Updates
+        QTOPIA_DIR=/opt/Qtopia
+
+        # Source Qtopia environment
+        if [ -r $UPDATE_DIR/qpe.env ]; then
+            . $UPDATE_DIR/qpe.env
+        elif [ -r $QTOPIA_DIR/qpe.env ]; then
+            . $QTOPIA_DIR/qpe.env
+        fi
+
+        # Run Qtopia
+        if [ -r $UPDATE_DIR/qpe.sh ]; then
+            exec $UPDATE_DIR/qpe.sh
+        elif [ -r $QTOPIA_DIR/qpe.sh ]; then
+            exec $QTOPIA_DIR/qpe.sh
+        fi
+        ;;
+    start)
+        # enable Qtopia
+        rm -f /tmp/disable-qtopia
+        ;;
+    stop)
+        # disable Qtopia
+        touch /tmp/disable-qtopia
+
+        kill_qtopia
+        ;;
+    restart)
+        # enable Qtopia
+        rm -f /tmp/disable-qtopia
+
+        kill_qtopia
+        ;;
+    *)
+        echo "Usage: $0 [start|stop|restart]"
+        ;;
+esac
+

@@ -1,0 +1,36 @@
+This sample project shows how to create a QtExtended SXE program
+and package it for delivery via an SXE Server.
+
+The steps are:
+1) Create QtExtended source code files as normal, eg main.cpp, mywidget.cpp
+2) Create .pro file as normal, eg mywidget.pro
+3) In the .pro file, do "pkg.domain=untrusted" 
+4) Do "qbuild && qbuild packages"
+5) Use the mkPackages script to install the packages in your feed
+
+The script "genpackages.pl" included in this example uses the one set of
+source files to create a set of sample packages for testing the packagemanager,
+which can be installed in a web server for testing purposes.
+
+Assuming Qtopia has been shadow built, to use the script
+do something like:
+
+$ mkdir $HOME/build/malpkg && cd $HOME/build
+
+# linking the files in will avoid messing up the source tree
+# ($QTOPIA_DEPOT_PATH refers to the qtopia source tree)
+$ lndir $QTOPIA_DEPOT_PATH/examples/sxe_sample malpkg
+
+$ cd malpkg
+
+$ export QPEDIR=$HOME/path/to/qtopia/build/tree
+$ export PATH=$QPEDIR/bin:$PATH
+$ export LD_LIBRARY_PATH=$QPEDIR/lib:$LD_LIBRARY_PATH
+
+# set up a bunch of similarly named packages and build them
+# will make all the packages listed in malpkg.pro under pkg.multi
+./genpackages.pl
+
+#install them in this machines http server root
+sudo mkdir -p /srv/www/htdocs/feed
+$QTOPIA_DEPOT_PATH/bin/mkPackages /srv/www/htdocs/feed

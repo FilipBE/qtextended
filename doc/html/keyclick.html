@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>KeyClick Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">KeyClick Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The KeyClick class enables an audible clicking sound whenever keys are pressed. <a href="#details">More...</a></p>
+<pre>    #include &lt;KeyClick&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="keyclick-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="keyclick.html#KeyClickx">KeyClick</a></b> ()</li>
+<li><div class="fn"/>virtual <b><a href="keyclick.html#dtor.KeyClick">~KeyClick</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="keyclick.html#keyClick">keyClick</a></b> ( int <i>unicode</i>, int <i>keycode</i>, int <i>modifiers</i>, bool <i>press</i>, bool <i>repeat</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The KeyClick class enables an audible clicking sound whenever keys are pressed.</p>
+<p>The KeyClick class is not a true task. Instead, a real task should derive from the KeyClick baseclass and implement the <a href="keyclick.html#keyClick">KeyClick::keyClick</a>() virtual method.</p>
+<p>For example, an implementation may look like this:</p>
+<pre>    class MyKeyClick : public KeyClick
+    {
+    protected:
+        virtual void keyClick(int unicode, int keycode, int modifiers,
+                              bool press, bool repeat)
+        {
+            <span class="comment">// Make click noise</span>
+        }
+    };
+    QTOPIA_TASK(MyKeyClick, MyKeyClick);</pre>
+<p>Key clicking will only occur when the <tt>Trolltech/Sound/System/Key</tt> configuration variable is true, otherwise <a href="keyclick.html#keyClick">KeyClick::keyClick</a>() will not be called. If a settings application updates this variable it should send the message &quot;updateAudibleKeyClick()&quot; on the &quot;QPE/System&quot; channel to allow the value to be reread. Creating this class automatically enables the &quot;AudibleKeyClick&quot; QtopiaFeature.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="screenclick.html">ScreenClick</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="KeyClickx"></a>KeyClick::KeyClick ()</h3>
+<p>Construct a new <a href="keyclick.html">KeyClick</a> instance.</p>
+<h3 class="fn"><a name="dtor.KeyClick"></a>KeyClick::~KeyClick ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="keyclick.html">KeyClick</a> instance.</p>
+<h3 class="fn"><a name="keyClick"></a>void KeyClick::keyClick ( int <i>unicode</i>, int <i>keycode</i>, int <i>modifiers</i>, bool <i>press</i>, bool <i>repeat</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Called whenever a key event is generated by the system. <i>unicode</i> is set to the unicode value of the key, <i>keycode</i> to the key code of the key, <i>modifiers</i> to the currently depressed modifiers, <i>press</i> will be true if this is a key press and false if it is a key release and <i>repeat</i> will be true if this key event was generated in as a key press repeat.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

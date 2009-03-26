@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Impact and Implications</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Impact and Implications<br /><span class="subtitle"></span>
+</h1>
+<p>The SXE policy has a number of impacts and implications for the following:</p>
+<ul><li><a href="#developers">Developers</a></li>
+<li><a href="#oems">OEMs</a></li>
+<li><a href="#integrators">Integrators</a></li>
+<li><a href="#operators">Operators</a></li>
+<li><a href="#performance-effects">Performance Effects</a></li>
+</ul>
+<p>These are discussed in detail in the following sections.</p>
+<a name="developers"></a>
+<h2>Developers</h2>
+<p>SXE will impact developers of 3rd party downloadable applications. Because downloaded applications will operate in a sandbox environment, resources and services available will be limited. Given the current support only for games, developers will need to ensure their applications adhere to those capabilities outlined in <a href="sxe-requirements.html">Aims and Limitations</a></p>
+<p>In addition, the custom qpk package format must be used, however this is automated on the SDK. Some very limited provision will be provided for legacy <tt>.ipkg</tt> format, but this will not be formally supported and will likely work for only very simple applications.</p>
+<a name="oems"></a>
+<h2>OEMs</h2>
+<p>There should be little impact for OEMS. The intention is that the integrators and OEMs work with a Qt Extended 4 SDK the same way they work with current SDKs.</p>
+<p>OEMS may wish to provide a support framework to receive any end-user reports of security violations; or they may wish for this to be the responsibility of the network provider.</p>
+<a name="integrators"></a>
+<h2>Integrators</h2>
+<p>The design and build of the Linux kernel and file-system must now include the Mandatory Access Control(MAC) kernel and its associate user-space binaries: <tt>lidsconf</tt> and <tt>lidsadm</tt>. Development of such kernels and file-systems is straightforward and is described in the documentation for <a href="http://www.lids.org">LIDS</a>. Integrators will also need to apply a custom patch to LIDS, made for Qt Extended, which contains various enhancements and requisite kernel modifications specific to SXE.</p>
+<a name="operators"></a>
+<h2>Operators</h2>
+<p>Operators require a higher level of confidence in the integrity of the phone software stack, in the face of downloadable application scenarios, and virus activity.</p>
+<p>With respect to content provision, placement of packages for download will operate with little change, that is, it is OEM configurable.</p>
+<p>Violations are detailed in a synthesized <i>email</i> message in the <tt>SMS Inbox</tt>. Notification of the <i>arrival</i> of the message is as for any other message. The text of the message describes the violation and includes technical data pertaining to the violation. This can then be forwarded to a support number for analysis of the violation.</p>
+<a name="performance-effects"></a>
+<h2>Performance Effects</h2>
+<ul>
+<li>The proposal for a MAC kernel implementation involves the use of Linux Intrusion Detection System (LIDS).</li>
+<li>The Security Enhanced Linux (SELinux) MAC kernel is currently integrated with 2.6 official Linus kernel sources. It has broad support despite indications of performance decrements of 7% over the normal kernel. SELinux uses file-system extended attributes, such as JFFS and YAFFS, that are not available for embedded file-systems at the time of writing. LIDS is much simpler than SELinux and is expected to perform well.</li>
+<li>Program Identification overheads are only a consideration when asynchronous IPC is being carried out; at which point some overhead is expected and accepted. The marginal or incremental overhead introduced by Program Identification is minimal.<p>In many cases Simple authentication can be used, and optimizations are possible such that if key-based identification is required for complex scenarios the incremental addition to IPC end-to-end time is minimal and not noticeable.</p>
+</li>
+<li>The server process table is in memory and will usually contain less than 10 entries. The installation table exists on storage but is read entirely into memory at run-time. It contains an entry for each currently installed package and one for each Qt Extended system binary: entries will be in an order of magnitude of 10^1.</li>
+<li>For trusted transports, eg QCop messaging on Unix Domain Sockets where the endpoints are protected by MAC rules, simple message authentication only occurs at the time of initial socket connect.</li>
+<li>The current implementation for message authentication is HMAC-MD5 with an option to switch to HMAC-SHA1 for greater security at performance cost. These algorithms are built into the Linux kernel and accessible to Qt Extended via a userspace framework; or are shipped with a vendor supplied accelerated cryptographic solution. As a generalization HMAC-MD5 for short messages like QCop is very fast.<p>This is only required if an untrusted transport is used, for example if a UDP socket or similar system.</p>
+</li>
+<li>The application rule-set contains a row for request allowed by the untrusted domain, entries will be in the magnitude of 10^2.<p>To mitigate performance impact from the application rule-set, rule set lookups are cached and the caching policy may be adjusted for better performance if memory resources are available.</p>
+</li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

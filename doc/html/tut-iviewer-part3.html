@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Image Viewer Tutorial: Part 3</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Image Viewer Tutorial: Part 3<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="the-image-screen"></a>
+<h2>The Image Screen</h2>
+<p>In this part, the image screen will be introduced. Navigation from the list screen can be done by selecting an image. From the image screen, navigating back to the list screen is possible. The image screen will show the selected image. Later rotating and zooming functions will be added to this screen.</p>
+<a name="setup-the-image-screen"></a>
+<h3>Setup the Image Screen</h3>
+<p>In order to set up the image screen, a similar pattern as for the first screen is used. Instead of deriving from a <a href="qlistwidget.html">QListWidget</a>, the Image Screen derives from a <a href="qwidget.html">QWidget</a> for displaying the image.</p>
+<p>File: imagescreen.h</p>
+<pre>    #ifndef IMAGESCREEN_H
+    #define IMAGESCREEN_H
+
+    #include &lt;QWidget&gt;
+    #include &lt;QKeyEvent&gt;
+    #include &lt;QContent&gt;
+    #include &lt;QImage&gt;
+
+    class IViewer;
+    class QSlider;
+
+    class ImageScreen : public QWidget
+    {
+        Q_OBJECT
+    public:
+        ImageScreen(IViewer *viewer);
+        void setImage(const QContent &amp;content);
+    private:
+        void createActions();
+        void createMenu();
+    protected:
+        void keyPressEvent (QKeyEvent *event);
+    private:
+        IViewer *_viewer;
+        QContent _content;
+    };
+
+    #endif</pre>
+<p>The skeleton to create actions, menu methods and to receive key events has already been added. As a parent, the IViewer class is passed. A reference to IViewer is also held in the _viewer field.</p>
+<p>The setImage() method will be used to set the image file path to this widget.</p>
+<p>File:imagescreen.cpp</p>
+<pre>    #include &quot;imagescreen.h&quot;
+    #include &quot;iviewer.h&quot;
+    ImageScreen::ImageScreen(IViewer *viewer)
+    : QWidget(viewer), _viewer(viewer)
+    {
+        createActions();
+        createMenu();
+
+        QSoftMenuBar::setLabel(this,Qt::Key_Select,&quot;FullScreen&quot;,&quot;FullScreen&quot;);
+    }
+
+    void ImageScreen::keyPressEvent (QKeyEvent *event)
+    {
+        switch (event-&gt;key()) {
+        default:
+            QWidget::keyPressEvent(event);
+            break;
+        }
+    }</pre>
+<p>The screen has to be added to our <a href="qstackedwidget.html">QStackedWidget</a> to be able to switch between the screens. This screen will also get lazily created. For that purpose, a <tt>imageScreen()</tt> method is added to the IViewer class.</p>
+<pre>    ImageScreen* IViewer::imageScreen()
+    {
+        if (!_imageScreen) {
+            _imageScreen = new ImageScreen(this);
+            addWidget(_imageScreen);
+        }
+        return _imageScreen;
+    }</pre>
+<p>The _imageScreen needs to be initialized with 0 in the IViewer constructor. Before giving it a run, a way to go back to the list screen from the image screen is needed. The <a href="qt.html#Key-enum">Qt::Key_Back</a> key will be used to come back to the list screen.</p>
+<p>The <tt>doBack()</tt> method is added in that purpose:</p>
+<pre>    void ImageScreen::doBack()
+    {
+        _viewer-&gt;setCurrentWidget((QWidget*)_viewer-&gt;listScreen());
+    }</pre>
+<p>Here, there is a new dependency to the list screen and the list screen header file has to be included. To react to the key, the <tt>keyPressEvent()</tt> method is modified to add this case:</p>
+<pre>        case Qt::Key_Back:
+            doBack();
+            break;</pre>
+<p>Now the image screen is ready for a first run. it just needs to be called from the list screen. The ListScreen openImage() method should be created to show the image screen. The content is retrieved from the content set and the content object contains a reference to the file path in the system. This file will be used to set it to the image screen. This is later used to load an image and paint it on the widget.</p>
+<pre>    void ListScreen::openImage(int row)
+    {
+        QContent c     = _cs-&gt;content(row);
+        ImageScreen *s = _viewer-&gt;imageScreen();
+        s-&gt;setImage(c);
+        _viewer-&gt;setCurrentWidget(s);
+    }</pre>
+<p>Finally the screen is shown by using the <tt>setCurrentWidget</tt> on the <a href="qstackedwidget.html">QStackedWidget</a>.</p>
+<p>Now its time to compile and launch the application. When an image is selected and the select key is pressed, a new screen should be opened, but nothing will be painted yet. The back key returns to the list screen.</p>
+<p>Great! Well done.</p>
+<a name="drawing-the-image"></a>
+<h3>Drawing the image</h3>
+<p>The way to draw the image is to load a <a href="qimage.html">QImage</a> from a file and to paint it with a <a href="qpainter.html">QPainter</a> on the <a href="qwidget.html">QWidget</a>. The image should be centred on the screen. To centre the image, the centre of the widget is calculated and half the image's width and height are subtracted.</p>
+<p>File: imagescreen.cpp</p>
+<pre>    void ImageScreen::paintEvent(QPaintEvent* event)
+    {
+        _image = new QImage(_content.file());
+
+        int x  = width()/2-_image-&gt;width()/2;
+        int y  = height()/2-_image-&gt;height()/2;
+        painter.drawImage(QPoint(x, y), *_image);
+        painter.end();
+    }</pre>
+<p>Now, if the application is tested, the image should be printed on the screen! Yeah!</p>
+<p>Now, it is time to add some functionality to this screen, like rotating and zooming.</p>
+<a name="adding-rotate-functions"></a>
+<h3>Adding Rotate Functions</h3>
+<p>To rotate the image to the left and right, two actions are needed. These will be arranged in a sub menu.</p>
+<pre>    void ImageScreen::createActions()
+    {
+
+        _rotateLeftAction = new QAction(&quot;Left&quot;, this);
+        connect(_rotateLeftAction, SIGNAL(triggered()),
+                this, SLOT(onRotateRight()));
+
+        _rotateRightAction = new QAction(&quot;Right&quot;, this);
+        connect(_rotateRightAction, SIGNAL(triggered()),
+    }</pre>
+<p>The rotate left and rotate right actions are connected to the onRotateLeft and onRotateRight slots. In the rotate slots, the rotation by 90 degres counter clockwise or clockwise is changed and an update is triggered.</p>
+<p>To see the actions in the menu, they have to be added to the options menu. The left and right rotation actions will appear in the rotate sub-menu.</p>
+<pre>    void ImageScreen::createMenu()
+    {
+        QMenu* menu = QSoftMenuBar::menuFor(this);
+
+        QMenu* rotateMenu = menu-&gt;addMenu(&quot;Rotate&quot;);
+        rotateMenu-&gt;addAction(_rotateLeftAction);
+        rotateMenu-&gt;addAction(_rotateRightAction);
+
+        QMenu* zoomMenu = menu-&gt;addMenu(&quot;Zoom&quot;);
+    }</pre>
+<p>The onRotateLeft/Right methods are quite simple.</p>
+<pre>    void ImageScreen::onRotateLeft()
+    {
+        _rotation -= 90.0;
+        update();
+    }
+
+    void ImageScreen::onRotateRight()
+    {
+        _rotation += 90.0;
+        update();
+    }</pre>
+<p>The <a href="syscust-rotation.html">_rotation</a> field is a qreal field, which holds our current rotation. Every time the roation is called, 90 degres is added/substracted on the rotation. The <a href="syscust-rotation.html">_rotation</a> field must be initialized to 0 in the constructor.</p>
+<p>Now the paintEvent method needs some changes in order to reflect the rotation.</p>
+<pre>    void ImageScreen::paintEvent(QPaintEvent* event)
+    {
+        _image = new QImage(_content.file());
+
+        int x  = width()/2-_image-&gt;width()/2;
+        int y  = height()/2-_image-&gt;height()/2;
+        int x2 = width()/2;
+        int y2 = height()/2;
+
+        QPointF c(x2, y2);
+        QPainter painter(this);
+        painter.translate(c);
+        painter.rotate(_rotation);
+        painter.translate(-c);
+        painter.drawImage(QPoint(x, y), *_image);
+        painter.end();
+    }</pre>
+<p>The <tt>translate()</tt> methods are used to translate every x-y coordinates to the center of the widget. Otherwise the image would rotate around the top-left corner ( <a href="qpoint.html">QPoint</a>(0,0) ). Now, the image can be rotated with the rotate method. The second <tt>translate()</tt> call translates every call back to the top left corner of the now rotated x-y coordinate system. The image is then painted on the top-left corner of this coordination system.</p>
+<p>Instead of calculating the center of the screen manually, the <a href="qrect.html">QRect</a>.<a href="qtextstream.html#center">center</a>() method of the <a href="qwidget.html">QWidget</a>.<a href="themed-view-elements.html#rect">rect</a>() could also have been used. This would also be the preferred way. The documentation provides useful information about the translation and rotation.</p>
+<p>After a compilation, the application can be run. Now the rotate actions are available from the rotate menu in the options menu of the image screen.</p>
+<a name="zooming-in-and-out"></a>
+<h3>Zooming in and out</h3>
+<p>The zoom functionality is similarly structured to the rotate functionality. The creation of the zoom in and out actions and the addition to a zoom sub-menu are left to the reader.</p>
+<p>The implementation of the zoom in/out functions just add/substract a 0.5 value to the zoom level.</p>
+<pre>    void ImageScreen::onZoomOut()
+    {
+        _zoom -= 0.5;
+        update();
+    }
+
+    void ImageScreen::onZoomIn()
+    {
+        _zoom += 0.5;
+        update();
+    }</pre>
+<p>Again the _zoom field is a qreal, which needs to be initialized in the constructor to 1 this time.</p>
+<p>In the paint method, the zooming functionalities are added by modifying the scale.</p>
+<pre>    void ImageScreen::paintEvent(QPaintEvent* event)
+    {
+        ...
+        QPainter painter(this);
+        painter.translate(c);
+        painter.rotate(_rotation);
+        painter.scale(_zoom, _zoom);
+        painter.translate(-c);
+        ...
+    }</pre>
+<p>We scale the image symetrically by width and height.</p>
+<p>Now, in the options menu of the image screen, the Zoom sub-menu with in and out sub-menu items is available. Pressing the In action should zoom in the image by 50%.</p>
+<a name="summary"></a>
+<h3>Summary</h3>
+<p>This part of the tutorial has described how to paint an image on the screen and how to use the rotate, scale and translate functionalities of the painter. The painter is a very powerful object. Moreover, some repeating patterns in designing screens for mobile phones have been shown. These patterns will repeat for each screen. The screens are lazily created and added to our stacked widget. Currently if a screen is created, it will only be destroyed when the application closes.</p>
+<p><i>Note: The images in paintEvent will never be destroyed. if(_image) delete _image should be added in the front of the paintEvent method to get rid of an old image.</i></p>
+<p>The next part will introduce some actions to the list screen, like rename and delete.</p>
+<p><a href="tut-iviewer-part2.html">Prev</a>|<a href="#top">Top</a>|<a href="tut-iviewer-part1.html">Start Page</a>|<a href="tut-iviewer-part4.html">Next</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

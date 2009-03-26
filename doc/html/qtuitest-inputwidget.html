@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>InputWidget Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">InputWidget Class Reference<br /><span class="small-subtitle">(QtUiTest::InputWidget)<br />[<a href="qtuitestmodule.html">QtUiTestModule</a>]</span>
+</h1>
+<p>The InputWidget class provides an abstract base class for all test widgets which allow the user to input text. <a href="#details">More...</a></p>
+<p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qtuitest-inputwidget-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-inputwidget.html#canEnter">canEnter</a></b> ( const QVariant &amp; <i>item</i> ) const = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-inputwidget.html#enter">enter</a></b> ( const QVariant &amp; <i>item</i>, bool <i>noCommit</i> ) = 0</li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtuitest-inputwidget.html#entered">entered</a></b> ( const QVariant &amp; <i>item</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The InputWidget class provides an abstract base class for all test widgets which allow the user to input text.</p>
+<p>QtUiTest::InputWidget encapsulates a widget in which a user may enter and remove text. This is closely related to <a href="qtuitest-textwidget.html">QtUiTest::TextWidget</a>, which provides an interface for retrieving text from a widget. Any widgets which contain user-editable text will typically implement both QtUiTest::InputWidget and <a href="qtuitest-textwidget.html">QtUiTest::TextWidget</a>.</p>
+<p>Examples of widgets suitable for this interface include <a href="qlineedit.html">QLineEdit</a> and <a href="qtextedit.html">QTextEdit</a>.</p>
+<p>See also <a href="qtuitest-textwidget.html">QtUiTest::TextWidget</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="canEnter"></a>bool InputWidget::canEnter ( const <a href="qvariant.html">QVariant</a> &amp; <i>item</i> ) const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if <i>item</i> can possibly be entered into this widget.</p>
+<p>For example, for a <a href="qlineedit.html">QLineEdit</a>, <a href="qlineedit.html#validator">QLineEdit::validator</a>() would be used to ensure that <a href="qvariant.html#toString">item.toString()</a> constitutes valid input for this line edit.</p>
+<h3 class="fn"><a name="enter"></a>bool InputWidget::enter ( const <a href="qvariant.html">QVariant</a> &amp; <i>item</i>, bool <i>noCommit</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Simulates the user input necessary to enter <i>item</i> into this widget. Returns true on success.</p>
+<p><i>item</i> can potentially be any type representable in a <a href="qvariant.html">QVariant</a>. Most widgets will only be interested in text, in which case <a href="qvariant.html#toString">item.toString()</a> can be called to retrieve a string. Examples of widgets which may handle types other than text are <a href="qdateedit.html">QDateEdit</a> and <a href="qtimeedit.html">QTimeEdit</a>, which may handle dates and times.</p>
+<p>If <i>noCommit</i> is true, no attempt is made to commit the input (for example, by clicking the Select key). Normally this value will be false, which will result in the input being committed. This value is not applicable to all widget types.</p>
+<p>If <a href="qtuitest-inputwidget.html#canEnter">canEnter</a>() returns true and this function returns false, an error has occurred and this widget is left in an undefined state.</p>
+<h3 class="fn"><a name="entered"></a>void InputWidget::entered ( const <a href="qvariant.html">QVariant</a> &amp; <i>item</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when <i>item</i> is entered into the widget by the user.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

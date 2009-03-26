@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDLLink Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDLLink Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDLLink class fully describes a QDL link. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDLLink&gt;</pre><ul>
+<li><a href="qdllink-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdllink.html#QDLLink">QDLLink</a></b> ()</li>
+<li><div class="fn"/><b><a href="qdllink.html#QDLLink-2">QDLLink</a></b> ( const QString &amp; <i>service</i>, const QByteArray &amp; <i>data</i>, const QString &amp; <i>description</i>, const QString &amp; <i>icon</i> )</li>
+<li><div class="fn"/><b><a href="qdllink.html#QDLLink-3">QDLLink</a></b> ( const QDLLink &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qdllink.html#QDLLink-4">QDLLink</a></b> ( const QDSData &amp; <i>dataObject</i> )</li>
+<li><div class="fn"/><b><a href="qdllink.html#dtor.QDLLink">~QDLLink</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qdllink.html#activate">activate</a></b> () const</li>
+<li><div class="fn"/>QByteArray <b><a href="qdllink.html#data">data</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qdllink.html#description">description</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qdllink.html#icon">icon</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdllink.html#isBroken">isBroken</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qdllink.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qdllink.html#service">service</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qdllink.html#setBroken">setBroken</a></b> ( const bool <i>broken</i> = true )</li>
+<li><div class="fn"/>void <b><a href="qdllink.html#setData">setData</a></b> ( const QByteArray &amp; <i>data</i> )</li>
+<li><div class="fn"/>void <b><a href="qdllink.html#setDescription">setDescription</a></b> ( const QString &amp; <i>description</i> )</li>
+<li><div class="fn"/>void <b><a href="qdllink.html#setIcon">setIcon</a></b> ( const QString &amp; <i>icon</i> )</li>
+<li><div class="fn"/>void <b><a href="qdllink.html#setService">setService</a></b> ( const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QDSData <b><a href="qdllink.html#toQDSData">toQDSData</a></b> () const</li>
+<li><div class="fn"/>QDLLink &amp; <b><a href="qdllink.html#operator-eq">operator=</a></b> ( const QDLLink &amp; <i>other</i> )</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QMimeType <b><a href="qdllink.html#listMimeType">listMimeType</a></b> ()</li>
+<li><div class="fn"/>QMimeType <b><a href="qdllink.html#mimeType">mimeType</a></b> ()</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDLLink class fully describes a QDL link.</p>
+<p>The QDLLink class contains all the information for a QDL link. It allows the link to be activated on the source, contains a description and icon for the presentation of a link, and a flag to determine if the link is broken.</p>
+<p>A QDL link is activated by the <a href="qdllink.html#activate">QDLLink::activate</a>() method. The application specific data required to activate the link is then transfered to the QDL source through the Qt Extended service.</p>
+<p>When the QDL source needs to delete the linked data <a href="qdllink.html#setBroken">QDLLink::setBroken</a>() should be called to inform clients that link activation will not succeed. The client can then decide how, or if broken links should be displayed.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDLLink"></a>QDLLink::QDLLink ()</h3>
+<p>Constructs a Null <a href="qdllink.html">QDLLink</a></p>
+<p>See also <a href="qdllink.html#isNull">isNull</a>().</p>
+<h3 class="fn"><a name="QDLLink-2"></a>QDLLink::QDLLink ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>data</i>, const <a href="qstring.html">QString</a> &amp; <i>description</i>, const <a href="qstring.html">QString</a> &amp; <i>icon</i> )</h3>
+<p>Constructs a <a href="qdllink.html">QDLLink</a> with <i>description</i> and an <i>icon</i> name. The Qt Extended service <i>service</i> contains a QDS service for activating the <a href="qdllink.html">QDLLink</a> on the QDL source and application specific data for the activation is stored in <i>data</i>.</p>
+<h3 class="fn"><a name="QDLLink-3"></a>QDLLink::QDLLink ( const QDLLink &amp; <i>other</i> )</h3>
+<p>Constructs a <a href="qdllink.html">QDLLink</a> by deep copying <i>other</i>.</p>
+<h3 class="fn"><a name="QDLLink-4"></a>QDLLink::QDLLink ( const <a href="qdsdata.html">QDSData</a> &amp; <i>dataObject</i> )</h3>
+<p>Constructs a <a href="qdllink.html">QDLLink</a> from the data in <i>dataObject</i></p>
+<h3 class="fn"><a name="dtor.QDLLink"></a>QDLLink::~QDLLink ()</h3>
+<p>Destroy a QDL Link object.</p>
+<h3 class="fn"><a name="activate"></a>void QDLLink::activate () const</h3>
+<p>Activates the link on the QDL source.</p>
+<h3 class="fn"><a name="data"></a><a href="qbytearray.html">QByteArray</a> QDLLink::data () const</h3>
+<p>Returns the application specific data used to activate the link on the QDL source.</p>
+<p>See also <a href="qdllink.html#setData">setData</a>().</p>
+<h3 class="fn"><a name="description"></a><a href="qstring.html">QString</a> QDLLink::description () const</h3>
+<p>Returns the description of the link.</p>
+<p>See also <a href="qdllink.html#setDescription">setDescription</a>().</p>
+<h3 class="fn"><a name="icon"></a><a href="qstring.html">QString</a> QDLLink::icon () const</h3>
+<p>Returns the icon name for the link.</p>
+<p>See also <a href="qdllink.html#setIcon">setIcon</a>().</p>
+<h3 class="fn"><a name="isBroken"></a>bool QDLLink::isBroken () const</h3>
+<p>Returns true if the link is broken; otherwise returns false. This usually occurs when the QDL data source deletes the linked data item.</p>
+<p>See also <a href="qdllink.html#setBroken">setBroken</a>().</p>
+<h3 class="fn"><a name="isNull"></a>bool QDLLink::isNull () const</h3>
+<p>Returns true if the link is null; otherwise returns false.</p>
+<h3 class="fn"><a name="listMimeType"></a><a href="qmimetype.html">QMimeType</a> QDLLink::listMimeType ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the MIME type used for a list of QDLLinks stored in <a href="qdsdata.html">QDSData</a> objects.</p>
+<p>See also <a href="qdllink.html#mimeType">mimeType</a>().</p>
+<h3 class="fn"><a name="mimeType"></a><a href="qmimetype.html">QMimeType</a> QDLLink::mimeType ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the MIME type used for QDLLinks stored in <a href="qdsdata.html">QDSData</a> objects.</p>
+<p>See also <a href="qdllink.html#listMimeType">listMimeType</a>().</p>
+<h3 class="fn"><a name="service"></a><a href="qstring.html">QString</a> QDLLink::service () const</h3>
+<p>Returns the Qt Extended service which contains the QDS service to activate the link.</p>
+<p>See also <a href="qdllink.html#setService">setService</a>().</p>
+<h3 class="fn"><a name="setBroken"></a>void QDLLink::setBroken ( const bool <i>broken</i> = true )</h3>
+<p>Set the link's broken state to <i>broken</i>.</p>
+<p>See also <a href="qdllink.html#isBroken">isBroken</a>().</p>
+<h3 class="fn"><a name="setData"></a>void QDLLink::setData ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>data</i> )</h3>
+<p>Sets the application specific data for link activation to <i>data</i>.</p>
+<p>See also <a href="qdllink.html#data">data</a>().</p>
+<h3 class="fn"><a name="setDescription"></a>void QDLLink::setDescription ( const <a href="qstring.html">QString</a> &amp; <i>description</i> )</h3>
+<p>Sets the link description to <i>description</i>.</p>
+<p>See also <a href="qdllink.html#description">description</a>().</p>
+<h3 class="fn"><a name="setIcon"></a>void QDLLink::setIcon ( const <a href="qstring.html">QString</a> &amp; <i>icon</i> )</h3>
+<p>Sets the link icon name to <i>icon</i>.</p>
+<p>See also <a href="qdllink.html#icon">icon</a>().</p>
+<h3 class="fn"><a name="setService"></a>void QDLLink::setService ( const <a href="qstring.html">QString</a> &amp; <i>service</i> )</h3>
+<p>Sets the Qt Extended service which contains the QDS service for link activation to <i>service</i>.</p>
+<p>See also <a href="qdllink.html#service">service</a>().</p>
+<h3 class="fn"><a name="toQDSData"></a><a href="qdsdata.html">QDSData</a> QDLLink::toQDSData () const</h3>
+<p>Converts the link to a <a href="qdsdata.html">QDSData</a> object. The object is only stored temporarily, if prelonged storage is required <a href="qdsdata.html#store">QDSData::store</a>() should be called on the returned object.</p>
+<h3 class="fn"><a name="operator-eq"></a>QDLLink &amp; QDLLink::operator= ( const QDLLink &amp; <i>other</i> )</h3>
+<p>Deep copies <i>other</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

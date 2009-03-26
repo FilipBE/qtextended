@@ -1,0 +1,38 @@
+The locale-archive file contains the following locales:
+
+en_US.UTF-8
+zh_CN.UTF-8
+ja.UTF-8
+de.UTF-8
+ko.UTF-8
+ar.UTF-8
+en_SU.UTF-8
+en_GB.UTF-8
+
+The following commands were used to generate locale-archive:
+
+export BASE=/opt/toolchains/greenphone/gcc-4.1.1-glibc-2.3.6/arm-linux/arm-linux/share/i18n
+Copy and extract $BASE/charmaps/UTF-8.gz to Greenphone
+Copy $BASE/{en_US,zh_CN,ja_JP,de_DE,ko_KR,ar_SA,en_GB} to Greenphone
+Copy $BASE/share/i18n/locale/translit_* to Greenphone
+Copy $BASE/share/i18n/locale/i18n to Greenphone
+Copy $BASE/share/i18n/locale/iso14651_t1
+
+localedef -f UTF-8 -i en_US /usr/lib/locale/en_US.UTF-8
+localedef -f UTF-8 -i zh_CN /usr/lib/locale/zh_CN.UTF-8
+localedef -f UTF-8 -i ja_JP /usr/lib/locale/ja.UTF-8
+localedef -f UTF-8 -i de_DE /usr/lib/locale/de.UTF-8
+localedef -f UTF-8 -i ko_KR /usr/lib/locale/ko.UTF-8
+localedef -f UTF-8 -i ar_SA /usr/lib/locale/ar.UTF-8
+localedef -f UTF-8 -i en_US /usr/lib/locale/en_SU.UTF-8
+localedef -f UTF-8 -i en_GB /usr/lib/locale/en_GB.UTF-8
+
+localedef --add-to-archive /usr/lib/locale/en_US.UTF-8
+localedef --add-to-archive /usr/lib/locale/zh_CN.UTF-8
+localedef --add-to-archive /usr/lib/locale/ja.UTF-8
+localedef --add-to-archive /usr/lib/locale/de.UTF-8
+localedef --add-to-archive /usr/lib/locale/ko.UTF-8
+localedef --add-to-archive /usr/lib/locale/ar.UTF-8
+localedef --add-to-archive /usr/lib/locale/en_SU.UTF-8
+localedef --add-to-archive /usr/lib/locale/en_GB.UTF-8
+

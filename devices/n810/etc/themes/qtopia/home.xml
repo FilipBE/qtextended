@@ -1,0 +1,115 @@
+<?xml version = '1.0'?>
+<page xmlns="http://www.trolltech.com" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" base="themes/qtopia" name="home" >
+  <group xmlns="http://www.trolltech.com" name="background" >
+    <image xmlns="http://www.trolltech.com" rect="0,0,0,0" name="background" src="ladybug" tile="yes" />
+    <plugin xmlns="http://www.trolltech.com" name="bgplugin" />
+  </group>
+  <rect xmlns="http://www.trolltech.com" rect="0,13%,0x12pt" >
+    <text xmlns="http://www.trolltech.com" size="5" outline="#000000" rect="0,0,50%x12pt" bold="yes" active="expr:@/UI/HomeScreen/ShowLocation" transient="yes" name="location" color="#ffffff" align="left,vcenter" >
+      expr:&quot; &quot; . @/Telephony/Status/CellLocation
+    </text>
+    <text xmlns="http://www.trolltech.com" size="5" outline="#000000" rect="50%,0,0x12pt" bold="yes" active="expr:@/UI/HomeScreen/ShowProfile &amp;&amp; !@/UI/Profile/Default" transient="yes" name="profile" color="#ffffff" align="right,vcenter" >
+      expr:@/UI/Profile/Name . &quot; &quot;
+    </text>
+  </rect>
+  <layout xmlns="http://www.trolltech.com" rect="0,78,0x96" align="hcenter" >
+    <rect xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,88x0" brush="None" active="expr:@/Communications/Calls/MissedCalls > 0" transient="yes" name="calls" color="None" >
+      <image xmlns="http://www.trolltech.com" scale="yes" rect="18,1,50x50" src="call.svg" />
+      <text xmlns="http://www.trolltech.com" outline="#000000" rect="6,56,90%x40" bold="yes" name="calls" color="#ffffff" align="hcenter" >
+        <tr xmlns="http://www.trolltech.com">
+          <trtext xmlns="http://www.trolltech.com">%1 missed</trtext>
+          <trarg xmlns="http://www.trolltech.com">@/Communications/Calls/MissedCalls</trarg>
+        </tr>
+      </text>
+    </rect>
+    <rect xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,88x0" brush="None" active="expr:@/Communications/Messages/NewMessages > 0" transient="yes" name="messages" color="None" >
+      <image xmlns="http://www.trolltech.com" scale="yes" rect="19,4,50x50" src="message.svg" />
+      <text xmlns="http://www.trolltech.com" outline="#000000" rect="6,56,90%x40" bold="yes" name="messages" color="#ffffff" align="hcenter" >
+        <tr xmlns="http://www.trolltech.com">
+          <trtext xmlns="http://www.trolltech.com">%1 new</trtext>
+          <trarg xmlns="http://www.trolltech.com">@/Communications/Messages/NewMessages</trarg>
+        </tr>
+      </text>
+    </rect>
+  </layout>
+  <text xmlns="http://www.trolltech.com" outline="#000000" rect="0,74%,0x9pt" bold="yes" active="expr:@/UI/HomeScreen/ShowOperator" transient="yes" name="operator" color="#ffffff" align="hcenter,vcenter" >
+      expr:@/Telephony/Status/OperatorName
+    </text>
+  <layout xmlns="http://www.trolltech.com" rect="0,81%,0x9pt" align="hcenter" >
+    <text xmlns="http://www.trolltech.com" outline="#000000" rect="0,0,100x0" bold="yes" active="expr:@/UI/HomeScreen/ShowDate" transient="yes" name="date" color="#ffffff" align="hcenter" >
+          expr:@/UI/DisplayTime/Date
+        </text>
+    <text xmlns="http://www.trolltech.com" outline="#000000" rect="0,0,100x0" bold="yes" active="expr:@/UI/HomeScreen/ShowTime" transient="yes" name="time" color="#ffffff" align="hcenter" >
+          expr:@/UI/DisplayTime/Time
+        </text>
+  </layout>
+  <rect xmlns="http://www.trolltech.com" rect="5%,20%,90%x20%" brush="Background" active="no" alpha="150" transient="yes" name="infobox" color="Text" >
+    <image xmlns="http://www.trolltech.com" rect="0,0,40x100%" name="infobox" />
+    <text xmlns="http://www.trolltech.com" size="6" rect="40,0,-3,-1" bold="yes" name="infobox" color="Text" align="hcenter,vcenter" />
+  </rect>
+  <image xmlns="http://www.trolltech.com" interactive="yes" scale="no" rect="329,-242,142x160" keypad="yes" onclick="src=default/dialerbuttonp;color=Highlight" name="dialer" src="default/dialerbutton" />
+  <layout xmlns="http://www.trolltech.com" rect="0,21,0,0" keypad="no" active="no" orientation="vertical" transient="yes" name="pinbox" >
+    <rect xmlns="http://www.trolltech.com" rect="0,0,0,40" brush="Base" name="pinbox" color="#72715a" >
+      <image xmlns="http://www.trolltech.com" rect="0,0,40x40" name="pinbox" />
+      <text xmlns="http://www.trolltech.com" size="7" rect="40,0,-3,50" name="pinbox" color="Text" align="hcenter,vcenter" />
+    </rect>
+    <layout xmlns="http://www.trolltech.com" rect="22,0,132x132" spacing="-1" orientation="vertical" name="vertical" align="hcenter" >
+      <layout xmlns="http://www.trolltech.com" rect="0,0,0x33" spacing="-1" orientation="horizontal" name="horizontal" align="hcenter" >
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="one" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r1p" name="one_bg" src="default/r1" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="one_fg" src="default/1" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="two" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r1p" name="two_bg" src="default/r1" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="two_fg" src="default/2" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="three" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r1p" name="three_bg" src="default/r1" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="three_fg" src="default/3" />
+        </group>
+      </layout>
+      <layout xmlns="http://www.trolltech.com" rect="0,0,0x33" spacing="-1" orientation="horizontal" align="hcenter" >
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="four" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r2p" name="four_bg" src="default/r2" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="four_fg" src="default/4" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="five" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r2p" name="five_bg" src="default/r2" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="five_fg" src="default/5" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="six" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r2p" name="six_bg" src="default/r2" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="six_fg" src="default/6" />
+        </group>
+      </layout>
+      <layout xmlns="http://www.trolltech.com" rect="0,0,0x33" spacing="-1" orientation="horizontal" align="hcenter" >
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="seven" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r3p" name="seven_bg" src="default/r3" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="seven_fg" src="default/7" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="eight" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r3p" name="eight_bg" src="default/r3" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="eight_fg" src="default/8" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="nine" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r3p" name="nine_bg" src="default/r3" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="nine_fg" src="default/9" />
+        </group>
+      </layout>
+      <layout xmlns="http://www.trolltech.com" rect="0,0,0x33" spacing="-1" orientation="horizontal" align="hcenter" >
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="star" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r4p" name="star_bg" src="default/r4" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="star_fg" src="default/star" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="zero" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r4p" name="zero_bg" src="default/r4" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="zero_fg" src="default/0" />
+        </group>
+        <group xmlns="http://www.trolltech.com" interactive="yes" rect="0,0,44x33" name="hash" >
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="0,0,0,0" onclick="src=default/r4p" name="hash_bg" src="default/r4" />
+          <image xmlns="http://www.trolltech.com" scale="yes" rect="5,6,-5,-5" name="hash_fg" src="default/hash" />
+        </group>
+      </layout>
+    </layout>
+  </layout>
+</page>

@@ -1,0 +1,56 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Path;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::File;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/qtopiadesktop/build/bin", $ARGV[0]);
+} else {
+    # This file is not maintained for non-Windows platforms
+    die "This script is not maintained for non-Windows platforms. Use runwithvars.sh instead.";
+}
+
+
+use constant OUTPUT => 0;
+use constant DEBUG => 0;
+
+my $command = "\@echo off\r\n";
+
+while ( @ARGV ) {
+    my $bit = shift @ARGV;
+    DEBUG and print "bit $bit\n";
+    if ( index($bit, "=") == -1 ) {
+        unshift(@ARGV, $bit);
+        last;
+    }
+    $command .= "set $bit\r\n";
+}
+my @args = @ARGV;
+for ( @args ) {
+    if ( index($_, " ") != -1 ) {
+        $_ = '"'.$_.'"';
+    }
+}
+$command .= join(" ", @args)."\r\n";
+# Without this the batch files do not propogate errors
+$command .= "if errorlevel 1 return 1\r\n";
+
+mkpath("$QPEDIR/src/qtopiadesktop/build/bin/tmp");
+my $tmpbat = fixpath("$QPEDIR/src/qtopiadesktop/build/bin/tmp/").$$.".bat";
+open OUT, ">$tmpbat" or die "Can't write $tmpbat";
+print OUT $command;
+close OUT;
+my $ret = system($tmpbat);
+$ret = $ret >> 8;
+unlink $tmpbat;
+exit $ret;
+

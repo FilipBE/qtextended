@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Main Document Widget</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Main Document Widget<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>Applications that view or edit a particular type or types of files are called <i>document-oriented</i> applications. Qt Extended has framework support to invoking these applications to open specific documents.</p>
+<a name="implementation"></a>
+<h2>Implementation</h2>
+<p>The top-level widget of a document-oriented application must have a <tt>setDocument()</tt> slot declared:</p>
+<pre>    public slot:
+        void setDocument( const QString&amp; filename );</pre>
+<p>This slot is invoked by Qt Extended with the file name of the document to open. It should be implemented to save the application's current document (if any) and to show (and possibly edit) the specified document. An example implementation is:</p>
+<pre>    void Main::setDocument( const QString&amp; filename )
+    {
+        if ( !current.isNull() ) {
+            if ( !current.save( data ) ) {
+                <span class="comment">// error</span>
+                return;
+            }
+        }
+
+        current = QContent( filename );
+
+        if ( !current.load( data ) ) {
+            <span class="comment">// error</span>
+        }
+    }</pre>
+<a name="registering-mime-types"></a>
+<h3>Registering MIME types</h3>
+<p>Document-oriented applications declare the MIME types that they support by adding a line to their <tt>.desktop</tt> file specifying each supported type separated by commas. A list may alternately be separated by semi-colons, but if this is done the list must be enclosed in double quotes otherwise a semi-colon will be interpreted as a comment character.</p>
+<pre>        MimeType=type/subtype,type/subtype,...</pre>
+<p>The subtype can be &quot;*&quot;, indicating that this application can process all forms of the given type. Such an application is only invoked if no other more specific application is available.</p>
+<p>Optionally an icon and a DRM permission may be specified for a MIME type when registering it. This is done by adding the <tt>MimeTypeIcons</tt> and <tt>MimeTypePermissions</tt> lines to the <tt>.desktop</tt> file.</p>
+<p>The <tt>MimeTypeIcons</tt> line is a comma separated list of icon paths, the list must contain either a single icon path or the same number of paths as MIME types on the MimeType line. If a single icon path is given it is repeated for each MIME type, otherwise the icons are paired with MIME type according to their positions in the list.</p>
+<p>The <tt>MimeTypePermissions</tt> line has the same semantics as the <tt>MimeTypeIcons</tt> line but defines a DRM permission that must be verified before an application is invoked to open a document. The possible permission values are the names of the primary enumeration values in <a href="qdrmrights.html#Permission-enum">QDrmRights::Permission</a>. The <tt>MimeTypePermissions</tt> line is part of the <tt>DRM</tt> group.</p>
+<p>An example of an application with only one icon and open permission for multiple MIME types:</p>
+<pre>        MimeType=image/jpeg,image/png
+        MimeTypeIcons=imageviewer/ImageViewer
+        [DRM]
+        MimeTypePermissions=Display</pre>
+<p>An example of an application with multiple MIME type icons and open permissions:</p>
+<pre>        MimeType=audio/mpeg,video/mpeg,image/jpeg,image/png
+        MimeTypeIcons=mediaviewer/AudioPlayer,mediaviewer/VideoPlayer,mediaviewer/ImageViewer
+        [DRM]
+        MimeTypePermissions=Play,Play,Display,Display</pre>
+<p>A complete listing of .desktop file entries can be found in the <a href="desktopfiles.html">Desktop File Standard</a></p>
+<a name="run-time-registration"></a>
+<h3>Run-time registration</h3>
+<p>An application may also associate itself with a MIME type at run-time using <a href="qmimetype.html#addAssociation">QMimeType::addAssociation</a>(), and remove an association with <a href="qmimetype.html#removeAssociation">QMimeType::removeAssociation</a>(). <a href="qmimetype.html">QMimeType</a> may also be used to query existing associations between applications and MIME types.</p>
+<a name="opening-a-document-in-another-application"></a>
+<h2>Opening a document in another application</h2>
+<p>To open a document in an associated application execute the document with <a href="qcontent.html#execute">QContent::execute</a>(). This will determine the appropriate application to open the document, start it, and call the <tt>setDocument()</tt> slot of its top-most widget:</p>
+<pre>        QContent document( fileName );
+
+        document.execute();</pre>
+<a name="selecting-a-document-within-an-application"></a>
+<h2>Selecting a document within an application</h2>
+<p>The <a href="qdocumentselector.html">QDocumentSelector</a>(<a href="qdocumentselectordialog.html">Dialog</a>) and <a href="qimagedocumentselector.html">QImageDocumentSelector</a>(<a href="qimagedocumentselectordialog.html">Dialog</a>) widgets can be used to browse and select documents from within an application. For an example of using the <a href="qdocumentselector.html">QDocumentSelector</a> widget see the <a href="content-notesdemo.html">Notes Application</a> tutorial.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

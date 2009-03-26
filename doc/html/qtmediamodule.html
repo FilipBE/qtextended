@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Media Module</title>
+  <link rel="prev" href="qtlocationmodule.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="qtmessagingmodule.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtlocationmodule.html">Qt Location Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtmessagingmodule.html">Qt Messaging Module</a>]
+</p>
+<h1 class="title">Qt Media Module<br /><span class="subtitle"></span>
+</h1>
+<a name="qtmediamodule"></a><p>The Qt Media module offers media related features such as video/sound player. It is based on the <a href="qtbasemodule.html">Base module</a>.</p>
+<p>The following configure line can be used to build the Base and Media module only:</p>
+<pre>    ./configure -modules media -device xyz</pre>
+<p>Note that not specifying a device profile would result in the reference device being build. The <tt>-qtopiamedia</tt> option is equivalent to the <tt>-modules media</tt> option.</p>
+<a name="feature-description"></a>
+<h2>Feature description</h2>
+<p>The Qt Extended <a href="multimedia-overview.html">Media Support</a> is provided by this module. The media server controls the media engine via plug-in mechanism. This enables a flexible approach when it comes to the choice if media engine. The engine can be a software based engine such as gstreamer or a hardware engine if the target device has special purpose media hardware. Currently three media engines are supported:</p>
+<ul>
+<li><a href="http://www.helixcommunity.org">Helix</a></li>
+<li><a href="http://www.gstreamer.net">GStreamer</a></li>
+<li><a href="multimedia-overview.html#cruxus-engine">Cruxus</a></li>
+</ul>
+<p>The <i>qtopiamedia</i> library provides Client API's for simplified media client applications. An example is given by the simple <a href="simpleplayer.html">mediaplayer tutorial</a>.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Details</th></tr></thead>
+<tr valign="top" class="odd"><td>Media engine control</td><td>The media server provides a plug-in system which allows the incorporation of arbitrary media engines. At this stage three media engines are supported. This module includes the plug-ins to utilize the various engines. In addition <a href="multimedia-overview.html#audio-management">audio management</a> can be used to control priorities among multiple audio streams.</td></tr>
+<tr valign="top" class="even"><td>Media Client API</td><td>The media client API enables classes for rapid media client development. The provided API incorporates the required IPC mechanism to interface with the media server.</td></tr>
+<tr valign="top" class="odd"><td>Other features</td><td>The following features are included in this module:<ul>
+<li>Codecs for Cruxus engine</li>
+<li>Volume Control</li>
+<li>Support for audio alerts.</li>
+<li>ID3 and 3gpp <a href="docsys-metadata.html#content-plug-ins">meta data recognition</a></li>
+</ul>
+</td></tr>
+</table></p>
+<a name="software-components"></a>
+<h2>Software components</h2>
+<p>The Media module includes the following major software components:</p>
+<ul>
+<li><tt>libraries/qtopiaaudio</tt></li>
+<li><tt>libraries/qtopiamedia</tt></li>
+<li><tt>libraries/qtopiavideo</tt></li>
+<li><tt>tools/mediaserver</tt></li>
+<li>various media engine plug-ins (see <tt>plugins/mediaengines/</tt>)</li>
+<li>media related server components (e.g&#x2e; volume control)</li>
+<li>3rdparty codecs</li>
+</ul>
+<p>The exact list of components included in this module can be found in <tt>$QPEDIR/src/module_media.pri</tt>.</p>
+<p>The <a href="tp-module-media.html">test plan</a> for the Media module summarizes the Quality Assurance procedures for this module. The results of these test are available <a href="qt-extended-test-results.html">here</a>.</p>
+<p>The following table contains all classes and services which are part of this module:</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="alertservice.html">Alert</a></th><td>The </td></tr>
+<tr valign="top" class="even"><th><a href="alertservicetask.html">AlertServiceTask</a></th><td>WAV file implementation of the Alert service</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediadevice-info.html">QMediaDevice::Info</a></th><td>Contains information on the type and characteristics of the media stream that this QMediaDevice produces</td></tr>
+<tr valign="top" class="even"><th><a href="keyclick.html">KeyClick</a></th><td>Enables an audible clicking sound whenever keys are pressed</td></tr>
+<tr valign="top" class="odd"><th><a href="mediaservercontroltask.html">MediaServerControlTask</a></th><td>Launcher for the Media Server</td></tr>
+<tr valign="top" class="even"><th><a href="playmediaservice.html">PlayMedia</a></th><td>The </td></tr>
+<tr valign="top" class="odd"><th><a href="poweralertdialogtask.html">PowerAlertDialogTask</a></th><td>Alert dialog that notifies the user when the battery is running low</td></tr>
+<tr valign="top" class="even"><th><a href="qabstractmediamenuitem.html">QAbstractMediaMenuItem</a></th><td>Base class for QMediaMenuItem</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudio.html">QAudio</a></th><td>Container for miscellaneous Audio functionality</td></tr>
+<tr valign="top" class="even"><th><a href="qaudioelement.html">QAudioElement</a></th><td>Manages an element of the audio mixer</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudioinput.html">QAudioInput</a></th><td>Interface to read raw audio data from a microphone input</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiointerface.html">QAudioInterface</a></th><td>Way of managing access to the audio system</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiomixer.html">QAudioMixer</a></th><td>Way of accessing the audio systems mixer controls</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiooutput.html">QAudioOutput</a></th><td>Interface for sending live audio samples to the default audio output device</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiostate.html">QAudioState</a></th><td>Encapsulates an audio device state</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiostateconfiguration.html">QAudioStateConfiguration</a></th><td>Defines a read-only view to the current audio device configuration</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiostateinfo.html">QAudioStateInfo</a></th><td>Point of access to information about an audio state</td></tr>
+<tr valign="top" class="even"><th><a href="qaudiostatemanager.html">QAudioStateManager</a></th><td>Manages QAudioStatePlugin objects</td></tr>
+<tr valign="top" class="odd"><th><a href="qaudiostateplugin.html">QAudioStatePlugin</a></th><td>Way of managing the underlying audio system</td></tr>
+<tr valign="top" class="even"><th><a href="qcameracontrol.html">QCameraControl</a></th><td>Represents a user controlled feature on the camera device e.g Saturation, Brightness</td></tr>
+<tr valign="top" class="odd"><th><a href="qcameradevice.html">QCameraDevice</a></th><td>Represents a simple camera device. For the user it is a thin interface for accessing camera functionality</td></tr>
+<tr valign="top" class="even"><th><a href="qcameradeviceloader.html">QCameraDeviceLoader</a></th><td>Provide acccess to camera devices through a plugin mechanism</td></tr>
+<tr valign="top" class="odd"><th><a href="qcameradeviceplugin.html">QCameraDevicePlugin</a></th><td>Plugin mechanism for the camera device</td></tr>
+<tr valign="top" class="even"><th><a href="qcameraplugininterface.html">QCameraPluginInterface</a></th><td>Interface class for the camera device plugin</td></tr>
+<tr valign="top" class="odd"><th><a href="qcamerapreviewcapture.html">QCameraPreviewCapture</a></th><td>Allows the user to stream view finder data from the device</td></tr>
+<tr valign="top" class="even"><th><a href="qcamerastillcapture.html">QCameraStillCapture</a></th><td>Handles capturing of still images</td></tr>
+<tr valign="top" class="odd"><th><a href="qcamerastreaminterface.html">QCameraStreamInterface</a></th><td>Interface class for camera device modes that stream data</td></tr>
+<tr valign="top" class="even"><th><a href="qcameravideocapture.html">QCameraVideoCapture</a></th><td>Allows the user to capture video data from a camera device</td></tr>
+<tr valign="top" class="odd"><th><a href="qcamerazoominterface.html">QCameraZoomInterface</a></th><td>Interface class for zooming When implementing this functionality, Zooming should affect preview, still and video capture</td></tr>
+<tr valign="top" class="even"><th><a href="qcontrolinterface.html">QControlInterface</a></th><td>Interface for camera device modes that have controls</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediaabstractcontrolserver.html">QMediaAbstractControlServer</a></th><td>Used as a base class for media server control classes to make then available to clients</td></tr>
+<tr valign="top" class="even"><th><a href="qmediacodecplugin.html">QMediaCodecPlugin</a></th><td>Represents a codec factory in the Media Engine</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediacontent.html">QMediaContent</a></th><td>Used to prepare a media resource for playing in Qtopia</td></tr>
+<tr valign="top" class="even"><th><a href="qmediacontentcontext.html">QMediaContentContext</a></th><td>Allows multiple related player objects to be grouped together</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediacontrol.html">QMediaControl</a></th><td>Used to manipulate a media resource in the Qt Extended media system</td></tr>
+<tr valign="top" class="even"><th><a href="qmediacontrolnotifier.html">QMediaControlNotifier</a></th><td>Watches a media content object for the availability of a given media control</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediadecoder.html">QMediaDecoder</a></th><td>Abstraction for decoders written for the Media Engine</td></tr>
+<tr valign="top" class="even"><th><a href="qmediadevice.html">QMediaDevice</a></th><td>Abstraction for Audio devices written for Qtopia'a media engine</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediaengine.html">QMediaEngine</a></th><td>Base class to be used in the creation of a Media Engine</td></tr>
+<tr valign="top" class="even"><th><a href="qmediaenginefactory.html">QMediaEngineFactory</a></th><td>Factory used by the Media Server to construct Media Engines loaded from libraries</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediaengineinformation.html">QMediaEngineInformation</a></th><td>Base class used to provide information about a Media Engine</td></tr>
+<tr valign="top" class="even"><th><a href="qmediahelixsettingscontrol.html">QMediaHelixSettingsControl</a></th><td>Used to alter settings of the helix engine</td></tr>
+<tr valign="top" class="odd"><th><a href="qmedialist.html">QMediaList</a></th><td>Filtered list of media content</td></tr>
+<tr valign="top" class="even"><th><a href="qmediamenu.html">QMediaMenu</a></th><td>Menu system for browsing media content</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediamenuitem.html">QMediaMenuItem</a></th><td>Used with QMediaMenu to provide Multimedia menus</td></tr>
+<tr valign="top" class="even"><th><a href="qmediaplaylist.html">QMediaPlaylist</a></th><td>The basics for playlist handling of media content</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediaprogresslabel.html">QMediaProgressLabel</a></th><td>Displays the current progress of a playing media content as a text label</td></tr>
+<tr valign="top" class="even"><th><a href="qmediaprogresswidget.html">QMediaProgressWidget</a></th><td>Displays the current progress of a playing media content as a progress bar</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediartpaudiostream.html">QMediaRtpAudioStream</a></th><td>Manages a single audio stream in an RTP session</td></tr>
+<tr valign="top" class="even"><th><a href="qmediartpengine.html">QMediaRtpEngine</a></th><td>Interface for implementing backends to QMediaRtpSession</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediartpenginefactory.html">QMediaRtpEngineFactory</a></th><td>Plug-in interface for creating instances of QMediaRtpEngine</td></tr>
+<tr valign="top" class="even"><th><a href="qmediartppayload.html">QMediaRtpPayload</a></th><td>Describes an RTP payload type</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediartpsession.html">QMediaRtpSession</a></th><td>Means establishing remote media connections</td></tr>
+<tr valign="top" class="even"><th><a href="qmediartpstream.html">QMediaRtpStream</a></th><td>Manages a single stream in an RTP session</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediartpvideostream.html">QMediaRtpVideoStream</a></th><td>Manages a single video stream in an RTP session</td></tr>
+<tr valign="top" class="even"><th><a href="qmediaseekwidget.html">QMediaSeekWidget</a></th><td>Allows the user to seek within a media content object</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediaserversession.html">QMediaServerSession</a></th><td>Used to represent and control a session registered in the Media Server</td></tr>
+<tr valign="top" class="even"><th><a href="qmediasessionbuilder.html">QMediaSessionBuilder</a></th><td>Base class to be used by Media Engines which need to create sessions within the Media Server</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediasessionrequest.html">QMediaSessionRequest</a></th><td>Object that is passed by clients to the Media Server to start a new media session</td></tr>
+<tr valign="top" class="even"><th><a href="qmediastatelabel.html">QMediaStateLabel</a></th><td>Displays icons for the various states of media playback</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediavideocontrol.html">QMediaVideoControl</a></th><td>Interface to videos playing through the Qt Extended Media System</td></tr>
+<tr valign="top" class="even"><th><a href="qmediavideocontrolserver.html">QMediaVideoControlServer</a></th><td>Used by Media Engines to inform clients that video is available for the associated media session</td></tr>
+<tr valign="top" class="odd"><th><a href="qmediavolumelabel.html">QMediaVolumeLabel</a></th><td>Displays icons for the various levels of volume</td></tr>
+<tr valign="top" class="even"><th><a href="qmediavolumewidget.html">QMediaVolumeWidget</a></th><td>Displays the current volume level of a media content object as a progress bar</td></tr>
+<tr valign="top" class="odd"><th><a href="qplaylisthandlerinterface.html">QPlaylistHandlerInterface</a></th><td>Abstract base class that must be subclassed when implementing new playlist load/save handlers</td></tr>
+<tr valign="top" class="even"><th><a href="qvideoframe.html">QVideoFrame</a></th><td>Represents a single frame of displayable data</td></tr>
+<tr valign="top" class="odd"><th><a href="qtopiacamera.html">QtopiaCamera</a></th><td>Common camera definitions</td></tr>
+<tr valign="top" class="even"><th><a href="qtopiamedia.html">QtopiaMedia</a></th><td>Container for general media types</td></tr>
+<tr valign="top" class="odd"><th><a href="qtopiavideo.html">QtopiaVideo</a></th><td>Common video definitions</td></tr>
+<tr valign="top" class="even"><th><a href="screenclick.html">ScreenClick</a></th><td>Enables an audible clicking sound whenever the stylus is used</td></tr>
+<tr valign="top" class="odd"><th><a href="volumecontroltask.html">VolumeControlTask</a></th><td>Task that manages services related to Media in Qt Extended This class is used to manage media related facilities in Qtopia. It watches media key events and forwards them to the appropriate party</td></tr>
+<tr valign="top" class="even"><th><a href="volumedialogtask.html">VolumeDialogTask</a></th><td>Volume dialog that gives feedback on volume changes</td></tr>
+</table></p>
+<p>
+[Previous: <a href="qtlocationmodule.html">Qt Location Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtmessagingmodule.html">Qt Messaging Module</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

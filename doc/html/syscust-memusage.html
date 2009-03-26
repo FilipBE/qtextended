@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Managing Memory Usage</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Managing Memory Usage<br /><span class="subtitle"></span>
+</h1>
+<a name="shared-memory-cache"></a>
+<h2>Shared Memory Cache</h2>
+<p>Qt Extended performs adequately with 64 MB RAM; however a system using half this amount on say, shared memory cache and backing store will not have acceptable performance. A constant: <a href="custom-h.html#QGLOBAL_PIXMAP_CACHE_LIMIT">QGLOBAL_PIXMAP_CACHE_LIMIT</a> is provided to aid memory management for systems with large, high bit per pixel(bpp) screens. This constant should be defined for the target device in custom.h&#x2e;</p>
+<p>This constant determines the size of the shared memory cache that Qt Extended uses and depends on the user device. The shared memory cache holds pixmaps that are common between applications with the most important being the background image. The size of the background image depends on the size and depth of the screen, for example:</p>
+<ul>
+<li>the Greenphone is 240x320x16 bpp which means it requires 150 KB to store the background image</li>
+<li>a system with a 640x480x32 bpp screen requires 1.2 MB to store the background which is greater than the constant as defined above, so it will fail and Qt Extended will crash.</li>
+</ul>
+<p>Considering that more than just the background image is in the shared memory cache, for example, it also holds other images, the shared memory buffer must be resized relative to the size of the display resolution. So, for example, a 640x480x32 bpp system needs to allocate 1.2 MB plus some additional space. A potential rule-of-thumb is that a shared memory cache twice as large as the background image should suffice.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

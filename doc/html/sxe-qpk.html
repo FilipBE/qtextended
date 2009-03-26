@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qpk Packages</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qpk Packages<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#package-project-elements">Package Project Elements</a></li>
+<li><a href="#quickstart">Quickstart</a></li>
+<li><a href="#creating-and-deploying-packages">Creating and deploying packages</a></li>
+<li><a href="#using-the-resource-system">Using the Resource System</a></li>
+<li><a href="#using-the-help-system">Using the Help System</a></li>
+<li><a href="#internationalization">Internationalization</a></li>
+<li><a href="#settings-files">Settings Files</a></li>
+<li><a href="#troubleshooting-package-installation">Troubleshooting package installation</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended uses a custom .qpk format for installable packages. Each .qpk file consists of program files organized in a specific directory structure that has been compressed.</p>
+<p>It should be stressed that the qpk installation system was not meant to be a general purpose package installation system like ipkg. Packages installed with the qpk format have a number of limitations:</p>
+<ul>
+<li>They are not quicklaunchable. The project must not specify CONFIG+=quicklaunch. (see <a href="buildsystem/over-packages-overview-1.html">Packages (overview)</a>)</li>
+<li>New <a href="services.html">Services</a> cannot be installed as qpk packages</li>
+<li>Packages should effectively be self contained applications with dependencies only on Qt Extended. A package cannot be for example just a plugin or library to be used by other applications, it <i>must</i> have an executable and corresponding desktop file.</li>
+<li>Packages are installed into a specific directory as specified in <tt>Storage.conf</tt>. Each package is allocated its own individual file tree when installed as shown in the image below.</li>
+</ul>
+<p align="center"><img src="images/package.png" /></p><a name="package-project-elements"></a>
+<h2>Package Project Elements</h2>
+<p>Typically there are 5 elements make up a package project</p>
+<ul>
+<li>project(qbuild.pro) files</li>
+<li>source code files</li>
+<li>.desktop files</li>
+<li>resources such as sounds, images and translations</li>
+<li>help files</li>
+</ul>
+<p>The project file describes the contents and configuration of a project. It typically specifies such things as where the source and headers come from, dependencies and the output file name, amongst a host of other options that the build system uses to build an application. Details on these options can be found at <a href="buildsystem/index.html">Qt Extended Build System Documentation</a>. A project file may be generated using</p>
+<pre>    qbuild -project</pre>
+<p>A sample project file that can be found in the <a href="application.html">example application</a>.</p>
+<p>A package for an sxe-enabled phone will need a couple of <a href="sxe-app-checklist.html">special requirements</a> to the source code and the project file.</p>
+<p>The <a href="desktopfiles.html">.desktop file</a> is used to create an entry in the launcher for the application. The icon and user-visible name of the program is specified here. Note the <tt>Exec</tt> field of the .desktop file is assumed to refer to a binary in the <tt>bin</tt> directory of the package.</p>
+<p>The structure of the package's directories in the final qpk file is generally automatically handled by the build system. There are various <a href="buildsystem/installhints.html">install hints</a> that tell the build system what to do. Other sections of this documentation details how to make use of these install hints to make use of various resources and help files.</p>
+<a name="quickstart"></a>
+<h2>Quickstart</h2>
+<p>The <a href="application.html">tutorial</a> for creating a new application may be used as quickstart example for building a package. The steps are exactly the same except that <tt>qbuild packages</tt> should be used instead of <tt>qbuild image</tt>. After the <tt>qbuild packages</tt> step no further steps are required the qpk file will have been generated in a pkg subdirectory.</p>
+<a name="creating-and-deploying-packages"></a>
+<h2>Creating and deploying packages</h2>
+<p>To make a package available for download and installation follow these steps:</p>
+<ol type="1">
+<li>To build a package use the <tt>qbuild packages</tt> command. This will create a pkg subdirectory containing the qpk package.</li>
+<li>Identify the directory your web server is serving from and create a feed directory there. The feed directory should by owned by the user who will publish packages.<p><b>Note</b>: For a default apache2 installation, content will be served from <tt>/srv/www/htdocs</tt>.</p>
+<p>You will likely need root privileges to create the feed directory and set the desired ownership. For example:</p>
+<pre>    sudo mkdir -p /srv/www/htdocs/feed
+    sudo chown user.group /srv/www/htdocs/feed</pre>
+<p>where <tt>user</tt> and <tt>group</tt> are the user name and group name of the user who will publish packages.</p>
+</li>
+<li>Run the <tt>mkPackages</tt> script to genrate the <a href="sxe-pkgmgr-ctlfile.html#packages-list">packages.list</a> file.<pre>    sudo $QTOPIA_DEPOT_PATH/bin/mkPackages /srv/www/htdocs/feed</pre>
+<p>From the current directory, this will recursively search for any packages and copy them into the feed directory /srv/www/htdocs/feed. A packages.list file will be created in the feed directory, listing all the packages found in it.</p>
+<p>If the feed directory is not supplied, the current directory is considered the feed directory and no recursive searching occurs. In this particular case one would do the following:</p>
+<pre>    sudo cp myappp.qpk /srv/www/htdocs/feed
+    cd /srv/www/htdocs/feed
+    sudo $QTOPIA_DEPOT_PATH/bin/mkPackages</pre>
+</li>
+<li>Set up the device to point to the package server feed. There are two ways to do this:<ul>
+<li>Add the package server to a running Qt Extended device by using the <tt>Settings-&gt;Software Packages</tt> application on the device. Navigate to the <tt>Downloads</tt> tab, invoke the <tt>Options</tt> context menu and choose the <tt>Edit Servers</tt> option. Invoke <tt>Options-&gt;New...</tt> and enter in the server details</li>
+<li>Add a package server by editing/creating the <tt>$HOME/Applications/packagemanager/ServersList.conf</tt> file on the device with an entry similar to that below:<pre>        [My packages]
+        URL=http:<span class="comment">//10.10.10.21/feed</span></pre>
+</li>
+</ul>
+</li>
+<li>Install package on to the device using <tt>Software Packages</tt>. The context menu of the <tt>Downloads</tt> tab allows the user to connect to a server. Once connected, the <tt>Software Packages</tt> application will communicate via HTTP with the server and download the <tt>packages.list</tt> file. It will then offer packages which are suitable for download. Any packages that don't match the device and/or version of Qt Extended will not be presented for download. Packages that are already installed will be gray-ed out in the list.</li>
+</ol>
+<a name="using-the-resource-system"></a>
+<h2>Using the Resource System</h2>
+<p>To take advantage of the resource system, resources such as images and sounds should be installed into specific directories.</p>
+<p>To register images, the <a href="buildsystem/hint-pics-1.html">pics install hint</a> should be used in the project file. Be aware that the install task .path must be /pics/&lt;appname&gt; where &lt;appname&gt; refers to the application executable filename. Icons and images which depend on the language need to be placed in particular directories as outlined in the <a href="buildsystem/over-installpic-algorithm-1.html">installpic Algorithm</a>.</p>
+<p>Assuming that there is a image called foobar.png and an icon called foobaricon.png, then the following code can be used to access those resources:</p>
+<pre>    QPixmap myPic(&quot;:image/foobar&quot;);
+    QIcon myIcon(&quot;:icon/foobaricon&quot;);</pre>
+<p>The icon that associated with the application needs to be specified in a <a href="desktopfiles.html">.desktop</a> file. The Icon field should look something like:</p>
+<pre>    [DesktopEntry]
+    ...
+    Icon=&lt;appname&gt;/iconfile
+    ...</pre>
+<p>To register sounds an install task should be specified like so:</p>
+<pre>    foo.hint=image
+    foo.files=sounds/*
+    foo.path=/sounds/&lt;appname&gt;</pre>
+<p>Assuming that there is a sound called foobar.wav, then the following code can be used to access that sound:</p>
+<pre>    QSound mySound(&quot;:sound/foobar&quot;);</pre>
+<a name="using-the-help-system"></a>
+<h2>Using the Help System</h2>
+<p>To provide help information to users, the <a href="buildsystem/hint-help-1.html">help install hint</a> should be used. Bear in mind that the help files are placed in &lt;helproot&gt;/html or &lt;helproot&gt;/&lt;lang&gt;/html and not directly in the &lt;helproot&gt; directory.</p>
+<p>At least one help file should be provided called &lt;appname&gt;.html where &lt;appname&gt; is the application binary name. This is the first help file that is presented to the user when the help option in the soft menu is invoked. Any other help files should be of the form &lt;appname&gt;-suffix.html eg. myapplication-howto.html.</p>
+<p>As a side note, you may use <a href="qsoftmenubar.html#menuFor">QSoftMenuBar::menuFor</a>() to generate a context menu which has a help option.</p>
+<a name="internationalization"></a>
+<h2>Internationalization</h2>
+<p>By default packages will be set to be internationalized to the same languages that Qt Extended has been configured for. To modify which languages are targeted, the <a href="buildsystem/var-available-languages-1.html">AVAILABLE_LANGUAGES</a> and <a href="buildsystem/var-languages-1.html">LANGUAGES</a> variables in the qbuild.pro file can be modified to something similar to below:</p>
+<pre>    # Specify the languages that make lupdate should produce .ts files for
+    STRING_LANGUAGE=en_US
+    LANGUAGES=en_US de</pre>
+<p>To generate an initial set of .ts files, in the package source directory run</p>
+<pre>    qbuild lupdate</pre>
+<p>The .ts files can then be used in conjunction with linguist to generate the translations. Running <tt>qbuild packages</tt>, will create a qpk file with the .qm files appropriately placed in the qpk's package directory structure.</p>
+<p>See Also <a href="syscust-internat.html">Internationalization</a></p>
+<a name="qpk-settings"></a><a name="settings-files"></a>
+<h2>Settings Files</h2>
+<p>Any settings files used by the package should not correspond with any organizations listed under the RestrictedOrganizations parameter in the <a href="sxe-pkgmgr.html#packagemanager-conf">PackageManager.conf</a> file. On an SXE configured Qt Extended, packages won't have write access to these settings files and so should use other organizations to avoid any problems. For similar reasons, packages should use <a href="qsettings.html">QSettings</a> objects at user scope.</p>
+<p>Creating a settings file using <a href="qsettings.html">QSettings</a> will automatically (on both SXE and non-SXE enabled devices) place the settings files in the package sandbox directory.</p>
+<p>Pre-generated settings files that should be placed in the Settings directory in a similar manner to that shown below:</p>
+<pre>    foo.hint=image
+    foo.files=mysettings/*
+    foo.path=/Settings/</pre>
+<p>where the configuration files have been positioned as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>organization</th><th>application</th><th>location</th></tr></thead>
+<tr valign="top" class="odd"><td>foo</td><td>bar</td><td>mysettings/foo/bar.conf</td></tr>
+<tr valign="top" class="even"><td>foo</td><td>none</td><td>mysettings/foo.conf</td></tr>
+</table></p>
+<p>A package that contains a settings file whose organization is in the RestrictedOrganizations list will not be installable.</p>
+<a name="troubleshooting-package-installation"></a>
+<h2>Troubleshooting package installation</h2>
+<p>If there are issues that occur during package installation, the <tt>Package Manager/Software Installer</tt> will show up a simple dialog mentioning that the package could not be installed but provide very little detail. Details of why the package did not install are presented in the Qt Extended log/console output.</p>
+<p>For extra information, turn on Package Management logging either via the <tt>Settings-&gt;Logging</tt> application or by editing the <tt>Log.conf</tt> file and then restart Qt Extended. The log output will provide more detailed information on what is happening during package installation.</p>
+<p>The logging out put can be viewed in a number of ways</p>
+<ul>
+<li>use the <tt>Settings-&gt;Logging</tt> application</li>
+<li>view the QtopiaLog.log file on the device, the location of this file depends on how the device is configured. On the greenphone this file is located at: /mnt/documents/QtopiaLog.log</li>
+<li>use the logread facility on the device</li>
+<li>Depending on the device, it may be possible to forward the log output to a host machine.</li>
+<li>If working on a desktop with qvfb then logging can be seen on the console output.</li>
+</ul>
+<a name="faq"></a>
+<h2>FAQ</h2>
+<p><b>Q</b>: My packages are in the feed directory but why I can't see them with <tt>Software Packages</tt>?</p>
+<p><b>A</b>: Ensure that you have re-generated the packages.list file with <tt>mkPackages</tt>. Also ensure that the package is compatible with the version of Qt Extended on the device and the device itself, otherwise they will not be visible and cannot be installed. Turning on Package Management logging will give more details.</p>
+<p><b>Q</b>: I have a package from Qt Extended version x but i want to use it on Qt Extended version y but I can't because x and y are not binary compatible.</p>
+<p><b>A</b>: If you want to try a package that is not compatible with the version of Qt Extended on the device you can use the <tt>modqpk</tt> script to modify the package's QtopiaVersion field. QtopiaVersion consists of a comma delimited list of versions which can include ranges eg, 4.1,4.2&#x2e;0-4.2&#x2e;4&#x2e; Generally, it is not recommended that this be done.</p>
+<p><b>Q</b>: I've made a qpk package for the desktop and am running Qt Extended with qvfb and it works fine, but when I try the same qpk on another desktop machine, the package doesn't run.</p>
+<p><b>A</b>: The runtime library path is hardcoded into the package executable at compile time. On a device this isn't a problem since all the devices will have the same file system structure. For the desktop, the situation is different since on one machine the path may be /home/bob/QtExtended/lib while on another it's /home/bert/QtExtended/lib; a workaround may be to modify the LD_LIBRARY_PATH or just recompile the package for the other machine.</p>
+<p><b>Q</b>: I made a package called Bloxx and have installed it on my device. Someone else has also made a package co-incidentally called Bloxx, when I try to download their package from their server the package manager says it's already installed.</p>
+<p><b>A</b>: Two packages of the same name cannot be installed at the same time; if two packages have the same name and same icon, the user cannot distinguish between them in the application launcher. Packages that share the same md5sum are also considered to be the same package.</p>
+<p><b>Q</b>: I have a desktop file that refers to a binary which is in the package's <tt>etc</tt> directory. The package does not install because it says the desktop file does not reference a binary.</p>
+<p><b>A</b>: All desktop files can only reference binaries that get placed in the package's <tt>bin</tt> directory. Also the desktop file must actually reference a binary and <i>not</i> a symlink in the <tt>bin</tt> directory. Be aware that the <tt>bin</tt> directory itself <i>must not</i> be a symlink. If these conditions are not met, installation of the package will be prevented. Most of the time the build system automatically handles placement of executables in the <tt>bin</tt> directory, the developer usually does not have to concern him/herself with this.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

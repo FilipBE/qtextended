@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>ScreenClick Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">ScreenClick Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The ScreenClick class enables an audible clicking sound whenever the stylus is used. <a href="#details">More...</a></p>
+<pre>    #include &lt;ScreenClick&gt;</pre><p>Inherits <a href="qobject.html">QObject</a> and <a href="qtopiaserverapplication-qwseventfilter.html">QtopiaServerApplication::QWSEventFilter</a>.</p>
+<ul>
+<li><a href="screenclick-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="screenclick.html#ScreenClick">ScreenClick</a></b> ()</li>
+<li><div class="fn"/>virtual <b><a href="screenclick.html#dtor.ScreenClick">~ScreenClick</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 public function inherited from <a href="qtopiaserverapplication-qwseventfilter.html#public-functions">QtopiaServerApplication::QWSEventFilter</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="screenclick.html#screenClickx">screenClick</a></b> ( bool <i>pressed</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The ScreenClick class enables an audible clicking sound whenever the stylus is used.</p>
+<p>The ScreenClick class is not a true task. Instead, a real task should derive from the ScreenClick baseclass and implement the <a href="screenclick.html#screenClickx">ScreenClick::screenClick</a>() virtual method.</p>
+<p>For example, an implementation may look like this:</p>
+<pre>    class MyScreenClick : public ScreenClick
+    {
+    protected:
+        virtual void screenClick(bool pressed)
+        {
+            <span class="comment">// Make click noise</span>
+        }
+    };
+    QTOPIA_TASK(MyScreenClick, MyScreenClick);</pre>
+<p>Screen clicking will only occur when the <tt>Trolltech/Sound/System/Touch</tt> configuration variable is true, otherwise <a href="screenclick.html#screenClickx">ScreenClick::screenClick</a>() will not be called. If a settings application updates this variable it should send the message &quot;updateAudibleScreenClick()&quot; on the &quot;QPE/System&quot; channel to allow the value to be reread. Creating this class automatically enables the &quot;AudibleScreenClick&quot; QtopiaFeature.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="keyclick.html">KeyClick</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="ScreenClick"></a>ScreenClick::ScreenClick ()</h3>
+<p>Construct a new <a href="screenclick.html">ScreenClick</a> instance.</p>
+<h3 class="fn"><a name="dtor.ScreenClick"></a>ScreenClick::~ScreenClick ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="screenclick.html">ScreenClick</a> instance.</p>
+<h3 class="fn"><a name="screenClickx"></a>void ScreenClick::screenClick ( bool <i>pressed</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Called whenever the user taps or releases the screen. <i>pressed</i> will be true when the user taps the screen, and false when they release.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

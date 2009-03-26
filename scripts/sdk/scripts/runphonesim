@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. /opt/Qtopia/SDK/scripts/devel-x86.sh
+
+runproc()
+{
+    pid=`pidof phonesim`
+    #echo $pid
+    if [ -z "$pid" ] ;then 
+        phonesim -gui /opt/Qtopia/SDK/scripts/troll.xml &
+    fi
+}
+
+runproc
+

@@ -1,0 +1,46 @@
+DEFINES+=QTOPIA_TEST
+ALL_SOURCES=$$SOURCES
+SOURCES=
+for(s,ALL_SOURCES) {
+    containsre($$s,\.js$):JS_SOURCES+=$$s
+    else:SOURCES+=$$s
+}
+isEmpty(SOURCES):CONFIG+=stub
+
+!isEmpty(JS_SOURCES):!equals(QPEDIR,$$QTOPIA_DEPOT_PATH) {
+    commands=
+    for(s,JS_SOURCES) {
+        !isEmpty(commands):commands+=$$LINE_SEP
+        # FIXME this conditional should be expressed in qmake, if possible
+        commands+=if [ $$LITERAL_SQUOTE$$SRCDIR$$LITERAL_SQUOTE != $$LITERAL_SQUOTE$$OUT_PWD$$LITERAL_SQUOTE ]; then ln -sf $$SRCDIR/$$s $$OUT_PWD/$$s; fi
+    }
+    js_symlink.commands=$$commands
+    QMAKE_EXTRA_TARGETS+=js_symlink
+    ALL_DEPS+=js_symlink
+    create_raw_dependency(.PHONY,js_symlink)
+}
+
+stub {
+    runner.commands=$$COMMAND_HEADER\
+        rm -f $$OUT_PWD/$$TARGET $$LINE_SEP\
+        echo $$LITERAL_QUOTE$$LITERAL_HASH!/bin/sh$$LITERAL_QUOTE >>$$OUT_PWD/$$TARGET $$LINE_SEP\
+        echo $$LITERAL_QUOTE$$QPEDIR/bin/qtuitestrunner $$JS_SOURCES$$LITERAL_QUOTE $$LITERAL_SQUOTE$$LITERAL_QUOTE\$$@$$LITERAL_QUOTE$$LITERAL_SQUOTE >>$$OUT_PWD/$$TARGET $$LINE_SEP\
+        chmod 755 $$OUT_PWD/$$TARGET
+    QMAKE_EXTRA_TARGETS+=runner
+    ALL_DEPS+=runner
+    create_raw_dependency(.PHONY,runner)
+
+    # Syntax check for the test.
+    syntax_check.commands=$$COMMAND_HEADER\
+        $$QPEDIR/bin/qtuitestrunner -c -auto $$LITERAL_SQUOTE$$JS_SOURCES$$LITERAL_SQUOTE
+    QMAKE_EXTRA_TARGETS+=syntax_check
+    ALL_DEPS+=syntax_check
+}
+
+# Run the test (ignore errors so that all the tests can run)
+test.commands=$$COMMAND_HEADER\
+    export QPEHOME=\$\$(mktemp -d /tmp/qtopia_maketest_XXXXXX);\
+    $$OUT_PWD/$$TARGET $(ARGS);\
+    rm -rf \$\$QPEHOME
+test.depends+=all
+QMAKE_EXTRA_TARGETS+=test

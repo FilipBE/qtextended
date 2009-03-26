@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QServiceNumbers Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QServiceNumbers Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QServiceNumbers class provides access to GSM service numbers such as voice mail and SMS service center. <a href="#details">More...</a></p>
+<pre>    #include &lt;QServiceNumbers&gt;</pre><p>Inherits <a href="qcomminterface.html">QCommInterface</a>.</p>
+<p>Inherited by <a href="qmodemservicenumbers.html">QModemServiceNumbers</a>.</p>
+<ul>
+<li><a href="qservicenumbers-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qservicenumbers.html#NumberId-enum">NumberId</a></b> { VoiceMail, SmsServiceCenter, SubscriberNumber }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qservicenumbers.html#QServiceNumbers">QServiceNumbers</a></b> ( const QString &amp; <i>service</i> = QString(), QObject * <i>parent</i> = 0, QCommInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qservicenumbers.html#dtor.QServiceNumbers">~QServiceNumbers</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qservicenumbers.html#requestServiceNumber">requestServiceNumber</a></b> ( QServiceNumbers::NumberId <i>id</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qservicenumbers.html#setServiceNumber">setServiceNumber</a></b> ( QServiceNumbers::NumberId <i>id</i>, const QString &amp; <i>number</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qservicenumbers.html#serviceNumber">serviceNumber</a></b> ( QServiceNumbers::NumberId <i>id</i>, const QString &amp; <i>number</i> )</li>
+<li><div class="fn"/>void <b><a href="qservicenumbers.html#setServiceNumberResult">setServiceNumberResult</a></b> ( QServiceNumbers::NumberId <i>id</i>, QTelephony::Result <i>result</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QServiceNumbers class provides access to GSM service numbers such as voice mail and SMS service center.</p>
+<p>The value of service numbers may be queried with <a href="qservicenumbers.html#requestServiceNumber">requestServiceNumber</a>(). The telephony service will respond by emitting the <a href="qservicenumbers.html#serviceNumber">serviceNumber</a>() signal.</p>
+<p>The value of service numbers may be changed with <a href="qservicenumbers.html#setServiceNumber">setServiceNumber</a>(). The telephony service will respond by emitting the <a href="qservicenumbers.html#setServiceNumberResult">setServiceNumberResult</a>() signal, indicating whether the request succeeded or failed.</p>
+<p>See also <a href="qcomminterface.html">QCommInterface</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="NumberId-enum"></a>enum QServiceNumbers::NumberId</h3>
+<p>This enum defines the service number to query or set with <a href="qservicenumbers.html">QServiceNumbers</a>.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QServiceNumbers::VoiceMail</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Query or set the voice mail number on the SIM.</td></tr>
+<tr><td valign="top"><tt>QServiceNumbers::SmsServiceCenter</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Query or set the SMS service center number.</td></tr>
+<tr><td valign="top"><tt>QServiceNumbers::SubscriberNumber</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Query or set the subscriber's number in the SIM.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QServiceNumbers"></a>QServiceNumbers::QServiceNumbers ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new service number object for <i>service</i> and attach it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports service numbers. If there is more than one service that supports service numbers, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qservicenumbers.html">QServiceNumbers</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QServiceNumbers"></a>QServiceNumbers::~QServiceNumbers ()</h3>
+<p>Destroy this service number object.</p>
+<h3 class="fn"><a name="requestServiceNumber"></a>void QServiceNumbers::requestServiceNumber ( <a href="qservicenumbers.html#NumberId-enum">QServiceNumbers::NumberId</a> <i>id</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Request the current value of service number <i>id</i>. The service responds by emitting the <a href="qservicenumbers.html#serviceNumber">serviceNumber</a>() signal.</p>
+<p>See also <a href="qservicenumbers.html#serviceNumber">serviceNumber</a>() and <a href="qservicenumbers.html#setServiceNumber">setServiceNumber</a>().</p>
+<h3 class="fn"><a name="serviceNumber"></a>void QServiceNumbers::serviceNumber ( <a href="qservicenumbers.html#NumberId-enum">QServiceNumbers::NumberId</a> <i>id</i>, const <a href="qstring.html">QString</a> &amp; <i>number</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted in response to <a href="qservicenumbers.html#requestServiceNumber">requestServiceNumber</a>(), to report the <i>number</i> associated with <i>id</i>. If <i>number</i> is empty, then the number is not set.</p>
+<p>See also <a href="qservicenumbers.html#requestServiceNumber">requestServiceNumber</a>() and <a href="qservicenumbers.html#setServiceNumber">setServiceNumber</a>().</p>
+<h3 class="fn"><a name="setServiceNumber"></a>void QServiceNumbers::setServiceNumber ( <a href="qservicenumbers.html#NumberId-enum">QServiceNumbers::NumberId</a> <i>id</i>, const <a href="qstring.html">QString</a> &amp; <i>number</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Sets the value of service number <i>id</i> to <i>number</i>. The service responds by emitting the <a href="qservicenumbers.html#setServiceNumberResult">setServiceNumberResult</a>() signal.</p>
+<p>See also <a href="qservicenumbers.html#setServiceNumberResult">setServiceNumberResult</a>(), <a href="qservicenumbers.html#requestServiceNumber">requestServiceNumber</a>(), and <a href="qservicenumbers.html#serviceNumber">serviceNumber</a>().</p>
+<h3 class="fn"><a name="setServiceNumberResult"></a>void QServiceNumbers::setServiceNumberResult ( <a href="qservicenumbers.html#NumberId-enum">QServiceNumbers::NumberId</a> <i>id</i>, <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of calling <a href="qservicenumbers.html#setServiceNumber">setServiceNumber</a>() for <i>id</i>.</p>
+<p>See also <a href="qservicenumbers.html#setServiceNumber">setServiceNumber</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

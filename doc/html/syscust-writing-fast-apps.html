@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Writing Applications that Start Quickly</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Writing Applications that Start Quickly<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#delaying-code-execution">Delaying code execution.</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Application startup time is critical on consumer devices. This document describes techniques for making Qt Extended applications start as quickly as possible.</p>
+<a name="delaying-code-execution"></a>
+<h2>Delaying code execution.</h2>
+<p>Making an application start quickly is closely related to how much code is executed during the startup process. Some of the common operations that can affect startup time are:</p>
+<ul>
+<li>loading/parsing configuration files</li>
+<li>creating user interface components (dialogs, etc.)</li>
+<li>reading data files.</li>
+</ul>
+<p>The simplest way to improve startup time is to defer some of these operations until after the user interface is visible. If possible, perform the operation on demand, for example, do not create a dialog until it is actually needed:</p>
+<pre>    MainWidget::MainWidget( QWidget *parent, Qt::WFlags f )
+        : QMainWindow( parent, f ), settingsDialog(0)
+    {
+    }
+
+    void MainWidget::showSettings()
+    {
+        <span class="comment">// If settingsDialog has not yet been created, create it now.</span>
+        if ( !settingsDialog )
+            settingsDialog = new SettingsDialog( this );
+        settingsDialog-&gt;exec();
+    }</pre>
+<p>If the operation is required immediately after the application is visible, a single shot timer may be used to start the processing after the main widget is visible:</p>
+<pre>    MainWidget::MainWidget( QWidget *parent, Qt::WFlags f )
+        : QMainWindow( parent, f ), settingsDialog(0)
+    {
+        <span class="comment">// After the event queue has been processed and the mainwindow is</span>
+        <span class="comment">// visible, load the data.</span>
+        QTimer::singleShot(0, this, SLOT(loadData()));
+    }
+
+    void MainWidget::loadData()
+    {
+        <span class="comment">// Open data file and populate data view.</span>
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

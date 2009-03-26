@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Porting to QBuild</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Porting to QBuild<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#syntax">Syntax</a></li>
+<ul><li><a href="#variable-expansion">Variable Expansion</a></li>
+<li><a href="#embedded-quotes">Embedded Quotes</a></li>
+<li><a href="#group-notation">Group notation</a></li>
+</ul>
+<li><a href="#projects">Projects</a></li>
+<ul><li><a href="#implicit-variables">Implicit Variables</a></li>
+<li><a href="#explicit-variables">Explicit Variables</a></li>
+<li><a href="#qtopia-project">qtopia_project()</a></li>
+<li><a href="#qtopia-main">qtopia_main</a></li>
+<li><a href="#depends">depends()</a></li>
+<li><a href="#dep-idep">dep/idep</a></li>
+<li><a href="#i18n">i18n</a></li>
+<li><a href="#plugins">plugins</a></li>
+<li><a href="#installs">INSTALLS</a></li>
+</ul>
+<li><a href="#complete-examples">Complete examples</a></li>
+<ul><li><a href="#application">Application</a></li>
+<li><a href="#third-party-library-stub">Third-party library stub</a></li>
+</ul>
+</ul>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>See <a href="bas-introduction-to-qbuild-1.html">Introduction to QBuild</a> for an introduction to QBuild. This guide shows how to port projects to QBuild.</p>
+<p>One of the philosophies of QBuild is to make everything opt-in. Things are off by default and turned on only because the project requested them (directly or indirectly). Part of porting will involve turning on features your project had by default before.</p>
+<a name="syntax"></a>
+<h3>Syntax</h3>
+<p>QBuild is not 100% syntax-compatible with qmake.</p>
+<a name="variable-expansion"></a>
+<h4>Variable Expansion</h4>
+<p>QBuild does not expand variables inside strings. You must</p>
+<pre>    #VAR=&quot;FOO is \$$FOO&quot;
+    VAR=&quot;FOO is $$FOO&quot;
+
+    #VAR=&quot;FOO is $$FOO, demonstrate catenation&quot;
+    VAR=&quot;FOO is &quot;$$FOO&quot;, demonstrate catenation&quot;</pre>
+<a name="embedded-quotes"></a>
+<h4>Embedded Quotes</h4>
+<p>To embed a quote character in a quoted string you must escape the character with itself (like in SQL). This compares to qmake's use of backslash as an escape character. These statements are equivalent.</p>
+<pre>    #VAR=one two three
+    VAR=one two three
+
+    #VAR=&quot;one two&quot; three
+    VAR=&quot;one two&quot; three
+
+    #VAR=&quot;one \&quot;two\&quot;&quot; three
+    VAR=&quot;one &quot;&quot;two&quot;&quot;&quot; three</pre>
+<p>For ease of embedding quotes in shell scripts and defines, there are several functions available. See shellQuote(), define_string() and define_value().</p>
+<a name="group-notation"></a>
+<h4>Group notation</h4>
+<p>QBuild allows a group notation that is handy when defining objects.</p>
+<pre>    #FOO.TYPE=object
+    #FOO.FOO=foo
+    #FOO.BAR=bar
+    FOO [
+        TYPE=object
+        FOO=foo
+        BAR=bar
+    ]</pre>
+<a name="projects"></a>
+<h3>Projects</h3>
+<p>There are a number of changes that must be made. They are described by name or by topic.</p>
+<a name="implicit-variables"></a>
+<h4>Implicit Variables</h4>
+<p>None of the implicit variables exposed by qmake are available. The two most used of these have replacements.</p>
+<pre>    #VAR=$$PWD
+    VAR=$$path(.,project)
+
+    #VAR=$$OUT_PWD
+    VAR=$$path(.,generated)</pre>
+<a name="explicit-variables"></a>
+<h4>Explicit Variables</h4>
+<p>A number of variables are no longer set by the build system.</p>
+<pre>    #VAR=$$QPEDIR
+    VAR=$$path(/,generated) # only for projects inside the Qt Extended tree
+    VAR=$$path(QtopiaSdk:/,generated) # for all projects
+
+    #VAR=$$QTOPIA_DEPOT_PATH
+    VAR=$$path(/,project) # only for projects inside the Qt Extended tree
+
+    #VAR=$$QTDIR
+    CONFIG+=qt embedded
+    qt_get_qtdir()
+    VAR=$$QTDIR # returns the path to Qt Embedded in the SDK
+
+    #VAR=$$QT_DEPOT_PATH
+    VAR=$$path(/qtopiacore/qt,existing) # only for projects inside the Qt Extended tree</pre>
+<a name="qtopia-project"></a>
+<h4>qtopia_project()</h4>
+<p>This function achieved several things at once so there is no simple mapping. In general, the QBuild commands required to replace this function call are a straightforward combinations of options.</p>
+<p>The keywords app, lib, plugin and subdirs become the TEMPLATE of the project.</p>
+<pre>    #qtopia_project(app)
+    TEMPLATE=app
+
+    #qtopia_project(lib)
+    TEMPLATE=lib
+
+    #qtopia_project(plugin)
+    TEMPLATE=plugin
+
+    #qtopia_project(subdirs)
+    TEMPLATE=subdirs</pre>
+<p>See too the note on <a href="var-subdirs-1.html">subdirs</a> below.</p>
+<p>The keyword qtopia becomes a CONFIG value.</p>
+<pre>    #qtopia_project(qtopia app)
+    TEMPLATE=app
+    CONFIG+=qtopia</pre>
+<p>Qt and Qt Embedded apps use CONFIG values too.</p>
+<pre>    #qtopia_project(desktop app)
+    TEMPLATE=app
+    CONFIG+=qt
+
+    #qtopia_project(embedded app)
+    TEMPLATE=app
+    CONFIG+=qt embedded</pre>
+<p>Non-Qt projects simply omit that CONFIG value.</p>
+<pre>    #qtopia_project(desktop external app)
+    TEMPLATE=app
+
+    #qtopia_project(external app)
+    TEMPLATE=app
+    CONFIG+=embedded</pre>
+<p>The default project type in QBuild is the same as a stub project. Theme projects are no longer special.</p>
+<pre>    #qtopia_project(stub)
+
+    #qtopia_project(theme)</pre>
+<p>The core keyword has no direct replacement. Required Qt and Qt Extended libs are set vi the QT and QTOPIA variables.</p>
+<pre>    # QtCore only
+    QT=core
+
+    # libqtopiabase only
+    QTOPIA=base</pre>
+<p>The test keywords are now CONFIG values.</p>
+<pre>    #qtopia_project(unittest)
+    CONFIG+=unittest
+
+    #qtopia_project(integrationtest)
+    CONFIG+=integrationtest
+
+    #qtopia_project(systemtest)
+    CONFIG+=systemtest</pre>
+<p>There is no replacement for the server_lib keyword. Server projects are directly included into a single project for building.</p>
+<a name="qtopia-main"></a>
+<h4>qtopia_main</h4>
+<p>There is no <a href="#qtopia-main">qtopia_main</a> CONFIG value. Instead, an application specifies that they support quicklauncher or singleexec by adding them to CONFIG.</p>
+<pre>    # Using QTOPIA_MAIN, quicklaunch compatible
+    CONFIG+=qtopia quicklaunch
+
+    # Using QTOPIA_MAIN, quicklaunch and singleexec compatible
+    CONFIG+=qtopia quicklaunch singleexec</pre>
+<p>If the CONFIG value does not include quickalunch then the singleexec CONFIG value indicates the app has a singleexec_main function (instead of using the <a href="foo/../../qtopiaapplication.html#QTOPIA_MAIN">QTOPIA_MAIN</a> macro).</p>
+<pre>    # A non-quicklaunchable Qtopia app that is singleexec compatible
+    CONFIG+=qtopia singleexec
+
+    # A Qt app that is singleexec compatible
+    CONFIG+=qt embedded singleexec
+
+    # An app that is singleexec compatible
+    CONFIG+=embedded singleexec</pre>
+<p>Embedded apps that do not link to Qt and do not have CONFIG+=singleexec will be built as standalone binaries. Apps that link to Qt will not be built unless they have CONFIG+=singleexec (they would end up very large due to the static linking).</p>
+<a name="depends"></a>
+<h4>depends()</h4>
+<p>The replacement for <a href="#depends">depends</a>() is MODULES. Generally, the last part of the name is what is required. The exact value is whatever the project you depend on specifies as its <a href="var-module-name-1.html">MODULE_NAME</a>.</p>
+<pre>    #depends(libraries/handwriting)
+    MODULES+=handwriting</pre>
+<p>Fake dependencies are not supported. In most cases, this was to support using headers. A selector notation allows this to work in QBuild.</p>
+<pre>    #INCLUDEPATH+=.../handwriting
+    #depends(libraries/handwriting,fake)
+    MODULES+=handwriting::headers</pre>
+<p>See <a href="foo/../../selectingmodules.html">MODULES</a> for the complete reference on what can be specified using the selector notation and how this is implemented.</p>
+<p>Note that is is preferred to use the QTOPIA variable for Qt Extended libs (it matches the QT variable used for Qt libs). Also, some modules will have different names (since there were some name clashes.</p>
+<pre>    #depends(libraries/qtopiamail)
+    CONFIG+=qtopia
+    QTOPIA+=mail</pre>
+<a name="dep-idep"></a>
+<h4>dep/idep</h4>
+<p>These commands are replaced by an object with a list of commands to be run. Note that the name of the object can be used as a selector. See <a href="foo/../../selectingmodules.html">MODULES</a> for the complete reference on what can be specified using the selector notation and how this is implemented.</p>
+<pre>    #dep(CONFIG+=foo)
+    myobj.TYPE=DEPENDS
+    myobj.EVAL=&quot;CONFIG+=foo&quot;</pre>
+<p>Multiple values can be on separate objects or on the same object.</p>
+<pre>    #dep(CONFIG+=foo)
+    #dep(CONFIG+=bar)
+    myobj.TYPE=DEPENDS
+    myobj.EVAL=\
+        &quot;CONFIG+=foo&quot;\
+        &quot;CONFIG+=bar&quot;
+
+    #dep(CONFIG+=foo)
+    myobj.foo.TYPE=DEPENDS
+    myobj.foo.EVAL=&quot;CONFIG+=foo&quot;
+    #dep(CONFIG+=bar)
+    myobj.bar.TYPE=DEPENDS
+    myobj.bar.EVAL=&quot;CONFIG+=bar&quot;</pre>
+<p>QBuild recognizes two kinds of persisted dependencies. Those that apply only to the current build tree and those that persist into the SDK.</p>
+<pre>    #idep(CONFIG+=foo)
+    myobj.TYPE=DEPENDS PERSISTED
+    myobj.EVAL=&quot;CONFIG+=foo&quot;
+
+    #idep(CONFIG+=foo)
+    myobj.TYPE=DEPENDS PERSISTED SDK
+    myobj.EVAL=&quot;CONFIG+=foo&quot;</pre>
+<p>The awkward alternate form where the command is to be run in the same project is simpler.</p>
+<pre>    #idep(CONFIG+=foo,CONFIG)
+    myobj.TYPE=DEPENDS PERSISTED METOO
+    myobj.EVAL=&quot;CONFIG+=foo&quot;</pre>
+<a name="i18n"></a>
+<h4>i18n</h4>
+<p>The no_tr CONFIG value is gone. Instead, all projects must register their ability to be translated by setting <a href="var-string-language-1.html">STRING_LANGUAGE</a> and LANGUAGES. If the <a href="var-string-language-1.html">STRING_LANGUAGE</a> is included in LANGUAGES a plural-only translation file is created.</p>
+<pre>    STRING_LANGUAGE=en_US
+    LANGUAGES=en_US de</pre>
+<p>The optional variable <a href="var-available-languages-1.html">AVAILABLE_LANGUAGES</a> allows <tt>qbuild lupdate</tt> to operate on a larger list of languages than is installed. This is primarily aimed at Qt Extended which creates translations for a large number of languages but installs translations for a smaller set.</p>
+<pre>    STRING_LANGUAGE=en_US
+    LANGUAGES=$$QTOPIA_LANGUAGES
+    AVAILABLE_LANGUAGES=$$QTOPIA_AVAILABLE_LANGUAGES</pre>
+<p>The TRANSLATABLES variable is gone. In its place is a conditional sources mechanism.</p>
+<pre>    #TRANSLATABLES+=foo.cpp
+    #condition:SOURCES+=foo.cpp
+    mycond.TYPE=CONDITIONAL_SOURCES
+    mycond.CONDITION=condition
+    mycond.SOURCES=foo.cpp</pre>
+<p>There are caveats to the conditional sources mechanism. See <i>conditional_sources Extension</i> for more information.</p>
+<a name="plugins"></a>
+<h4>plugins</h4>
+<p>The build system no longer guesses what system a plugin is for and what type it is. These must be explicitly stated.</p>
+<pre>    PLUGIN_FOR=qt
+    PLUGIN_TYPE=kbddrivers
+
+    PLUGIN_FOR=qtopia
+    PLUGIN_TYPE=mediaengines</pre>
+<p>A plugin that is loaded by Qt can depend on Qt Extended (eg. to get <a href="foo/../../debug-qtextended.html">qLog</a>) as long as the app that loads the plugin also depends on Qt Extended.</p>
+<a name="installs"></a>
+<h4>INSTALLS</h4>
+<p>The INSTALLS variable is no longer used. The .hint values are used to locate the install objects. One consequence of this is that some objects need .hint=image added.</p>
+<pre>    #INSTALLS+=foo
+    foo.hint=image
+    foo.files=foo.txt
+    foo.path=/foo</pre>
+<a name="complete-examples"></a>
+<h3>Complete examples</h3>
+<a name="application"></a>
+<h4>Application</h4>
+<p>Here is an example .pro file before porting.</p>
+<pre>    qtopia_project(qtopia app)
+    TARGET=example
+    CONFIG+=qtopia_main
+
+    AVAILABLE_LANGUAGES=en_US
+    LANGUAGES=$$AVAILABLE_LANGUAGES
+
+    FORMS=examplebase.ui
+    HEADERS=example.h
+    SOURCES=main.cpp example.cpp
+
+    desktop.files=example.desktop
+    desktop.path=/apps/Applications
+    desktop.trtarget=example-nct
+    desktop.hint=nct desktop
+    INSTALLS+=desktop
+
+    pics.files=pics/*
+    pics.path=/pics/example
+    pics.hint=pics
+    INSTALLS+=pics
+
+    help.source=help
+    help.files=example.html
+    help.hint=help
+    INSTALLS+=help
+
+    target.hint=sxe
+    target.domain=untrusted
+
+    pkg.name=example
+    pkg.desc=Example Application
+    pkg.version=1.0.0-1
+    pkg.maintainer=Qt Extended &lt;info@qtextended.org&gt;
+    pkg.license=Commercial</pre>
+<p>Here are the bits that have changed.</p>
+<pre>    #qtopia_project(qtopia app)
+    TEMPLATE=app
+    CONFIG+=qtopia
+
+    #CONFIG+=qtopia_main
+    CONFIG+=quicklaunch singleexec
+
+    #AVAILABLE_LANGUAGES=en_US
+    #LANGUAGES=$$AVAILABLE_LANGUAGES
+    STRING_LANGUAGE=en_US
+    LANGUAGES=en_US de
+
+    #INSTALLS+=desktop
+
+    #INSTALLS+=pics
+
+    #INSTALLS+=help</pre>
+<p>Here is the complete exmple application after porting.</p>
+<pre>    TARGET=example
+    CONFIG+=qtopia
+    CONFIG+=quicklaunch
+    CONFIG+=singleexec
+
+    STRING_LANGUAGE=en_US
+    LANGUAGES=en_US de
+
+    pkg.name=example
+    pkg.desc=Example Application
+    pkg.version=1.0.0-1
+    pkg.maintainer=Qt Extended &lt;info@qtextended.org&gt;
+    pkg.license=Commercial
+
+    FORMS=examplebase.ui
+    HEADERS=example.h
+    SOURCES=main.cpp example.cpp
+
+    desktop.hint=nct desktop
+    desktop.files=example.desktop
+    desktop.path=/apps/Applications
+    desktop.trtarget=example-nct
+
+    pics.hint=pics
+    pics.files=pics/*
+    pics.path=/pics/example
+
+    help.hint=help
+    help.source=help
+    help.files=example.html
+
+    target.hint=sxe
+    target.domain=untrusted</pre>
+<a name="third-party-library-stub"></a>
+<h4>Third-party library stub</h4>
+<p>Here is a third-party library stub.</p>
+<pre>    qtopia_project(stub)
+    idep(LIBS+=-lasound)</pre>
+<p>Here is the ported project.</p>
+<pre>    MODULE_NAME=alsa
+    DEP.libs [
+        TYPE=DEPENDS PERSISTED SDK
+        EVAL=&quot;LIBS+=-lasound&quot;
+    ]</pre>
+<p>See also <a href="tasks.html">Tasks</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

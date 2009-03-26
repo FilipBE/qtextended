@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>220</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">220<br /><span class="subtitle"></span>
+</h1>
+<a name="usage"></a>
+<h3>Usage</h3>
+<p>This command contains 2 arguments. The first argument is <tt>Qtopia</tt>. The second argument contains a list of key/value pairs separated by <tt>;</tt> and preceded by the version number.</p>
+<pre>    220 Qtopia 4.3.0;challenge={96020319-e076-954f-bf78-25b615c682c5};loginname=root;displayname=Device owner;protocol=2;system=Qtopia;model=Greenphone;hexversion=0x040300</pre>
+<a name="description"></a>
+<h3>Description</h3>
+<p>This command is sent from the device to the desktop when the connection is detected. For some connection types this will only be after the <a href="qdsync-helper-init-1.html">HELPER_INIT</a> command is received.</p>
+<p>Qt Extended Sync Agent expects the following key/value pairs to be sent:</p>
+<ul>
+<li>challenge<p>A value that is unique to each device.</p>
+</li>
+<li>loginname<p>The name that should be passed with the <a href="qdsync-user-1.html">USER</a> command.</p>
+</li>
+<li>displayname<p>This is the owner name, as reported by <a href="foo/../../qtopia.html#ownerName">Qtopia::ownerName</a>(). It may be displayed to the user.</p>
+</li>
+<li>protocol<p>This must be set to 2.</p>
+</li>
+<li>system<p>This is a string describing the system installed on the device.</p>
+</li>
+<li>model<p>This is a string describing the device that may be displayed to the user.</p>
+</li>
+<li>hexversion<p>This is the version number as a hexadecimal number. It should be comparable to the <a href="foo/../../version-h.html#QTOPIA_VERSION">QTOPIA_VERSION</a> macro.</p>
+</li>
+</ul>
+<p>Additionally, the <tt>qtopia4</tt> plugin expects to see:</p>
+<ul>
+<li>datasets<p>A list of datasets the device supports (proxy <a href="qdclientsyncplugin.html">QDClientSyncPlugin</a> instances will be created for them).</p>
+</li>
+</ul>
+<p>After this command is sent the device expects to receive a <a href="qdsync-user-1.html">USER</a> command.</p>
+<p>See also <a href="qdsync-commands.html">qdsync Protocol</a> and <a href="qdsync-user-1.html">USER</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

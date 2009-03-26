@@ -1,0 +1,18 @@
+#!/bin/sh
+
+case $1 in
+start)
+    splash -p + "Starting inetd"
+    /usr/sbin/inetd
+    ;;
+stop)
+    splash -p + "Stopping inetd"
+    kill $(pidof inetd)
+    ;;
+reload)
+    kill -SIGHUP $(pidof inetd) 2>/dev/null
+    ;;
+*)
+    echo "usage: $0 [start|stop|reload]";
+    ;;
+esac

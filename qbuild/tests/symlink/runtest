@@ -1,0 +1,10 @@
+#!/bin/sh
+rm -f bar
+ln -s foo/bar bar
+qbuild -script >output
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output template
+    result=$?
+fi
+exit $result

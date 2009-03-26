@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Solution Filesystem</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Solution Filesystem<br /><span class="subtitle"></span>
+</h1>
+<p>QBuild builds a single, virtual filesystem into which it maps one or more real locations.</p>
+<p>For example, it is typical to have a solution filesystem with mounts like this:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Real path</th><th>Solution path</th></tr></thead>
+<tr valign="top" class="odd"><td>/home/user/build/qtopia/4.4</td><td>/</td></tr>
+<tr valign="top" class="even"><td>/home/user/src/qtopia/4.4/devices/mydevice/src</td><td>/src</td></tr>
+<tr valign="top" class="odd"><td>/home/user/src/qtopia/4.4</td><td>/</td></tr>
+<tr valign="top" class="even"><td>/home/user/src/qtopia/4.4/qbuild/extensions</td><td>/extensions</td></tr>
+</table></p>
+<p>Files in QBuild are specified using their solution path. Using a test like <tt>exists(/src/foo)</tt> searches for the file in the following real locations:</p>
+<ul>
+<li>/home/user/build/qtopia/4.4/src/foo</li>
+<li>/home/user/src/qtopia/4.4/devices/mydevice/src/foo</li>
+<li>/home/user/src/qtopia/4.4/src/foo</li>
+</ul>
+<p>The order of the mounts is important because files will be returned from the first location that they exist in. This means that &quot;override&quot; locations should appear before &quot;fallback&quot; locations. It also means that the &quot;output&quot; location is always listed first.</p>
+<p>Note that QBuild can reference files that do not live within the solution filesystem. These files are handled by the <a href="solutionfile.html">SolutionFile</a> class.</p>
+<p>See also <a href="overviews.html">Overviews</a> and <a href="file-qbuild-solution-1.html">qbuild.solution</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

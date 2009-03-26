@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>InputMethodService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">InputMethodService Class Reference<br /><span class="small-subtitle">[<a href="qtinputmethodsmodule.html">QtInputMethodsModule</a>]</span>
+</h1>
+<p>The InputMethodService class provides the InputMethod service. <a href="#details">More...</a></p>
+<pre>    #include &lt;InputMethodService&gt;</pre><p>Inherits <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</p>
+<ul>
+<li><a href="inputmethodservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#changeInputMethod">changeInputMethod</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#hideInputMethod">hideInputMethod</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#inputMethodHint">inputMethodHint</a></b> ( int <i>hint</i>, int <i>windowId</i> )</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#inputMethodHint-2">inputMethodHint</a></b> ( const QString &amp; <i>hint</i>, int <i>windowId</i> )</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#inputMethodPasswordHint">inputMethodPasswordHint</a></b> ( bool <i>passwordFlag</i>, int <i>windowId</i> )</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#setInputMethod">setInputMethod</a></b> ( const QString &amp; <i>inputMethodName</i> )</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#setNextInputMethod">setNextInputMethod</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="inputmethodservice.html#showInputMethod">showInputMethod</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>6 public functions inherited from <a href="qtopiaipcadaptor.html#public-functions">QtopiaIpcAdaptor</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>1 static public member inherited from <a href="qtopiaipcadaptor.html#static-public-members">QtopiaIpcAdaptor</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>5 protected functions inherited from <a href="qtopiaipcadaptor.html#protected-functions">QtopiaIpcAdaptor</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The InputMethodService class provides the InputMethod service.</p>
+<p>The <i>InputMethod</i> service enables applications to adjust the input method that is being used on text entry fields.</p>
+<p>The messages in this service are sent as ordinary QtopiaIpc messages on the <tt>QPE/InputMethod</tt> channel. The service is provided by the Qt Extended server.</p>
+<p>Normally applications won't need to send these messages directly, as they are handled by methods in the <a href="qtopiaapplication.html">QtopiaApplication</a> class.</p>
+<p>See also <a href="qtopiaapplication.html">QtopiaApplication</a> and <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="changeInputMethod"></a>void InputMethodService::changeInputMethod ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Activate the input method selector choice pop-up (a menu of available input methods), and give it keyboard focus.</p>
+<h3 class="fn"><a name="hideInputMethod"></a>void InputMethodService::hideInputMethod ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Explicitly hide the current input method.</p>
+<p>The current input method may still indicated in the taskbar, but no longer takes up screen space, and can no longer be interacted with.</p>
+<p>This slot corresponds to the <a href="qtextendedipc.html">IPC</a> message <tt>hideInputMethod()</tt> on the <tt>QPE/InputMethod</tt> channel.</p>
+<p>See also <a href="inputmethodservice.html#showInputMethod">showInputMethod</a>().</p>
+<h3 class="fn"><a name="inputMethodHint"></a>void InputMethodService::inputMethodHint ( int <i>hint</i>, int <i>windowId</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the input method <i>hint</i> for <i>windowId</i>. The valid values for <i>hint</i> are specified in <a href="qtopiaapplication.html#InputMethodHint-enum">QtopiaApplication::InputMethodHint</a>. This method should not be used if the <tt>Named</tt> hint is requested.</p>
+<p>This slot corresponds to the <a href="qtextendedipc.html">IPC</a> message <tt>inputMethodHint(int,int)</tt> on the <tt>QPE/InputMethod</tt> channel.</p>
+<h3 class="fn"><a name="inputMethodHint-2"></a>void InputMethodService::inputMethodHint ( const <a href="qstring.html">QString</a> &amp; <i>hint</i>, int <i>windowId</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Set the input method <i>hint</i> for <i>windowId</i>. This method should be used for <tt>Named</tt> hints.</p>
+<p>This slot corresponds to the <a href="qtextendedipc.html">IPC</a> message <tt>inputMethodHint(QString,int)</tt> on the <tt>QPE/InputMethod</tt> channel.</p>
+<h3 class="fn"><a name="inputMethodPasswordHint"></a>void InputMethodService::inputMethodPasswordHint ( bool <i>passwordFlag</i>, int <i>windowId</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the input method <i>passwordFlag</i> for <i>windowId</i>.</p>
+<h3 class="fn"><a name="setInputMethod"></a>void InputMethodService::setInputMethod ( const <a href="qstring.html">QString</a> &amp; <i>inputMethodName</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Change to the input method named <i>inputMethodName</i> if it exists.</p>
+<h3 class="fn"><a name="setNextInputMethod"></a>void InputMethodService::setNextInputMethod ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Cycle to the next input method.</p>
+<h3 class="fn"><a name="showInputMethod"></a>void InputMethodService::showInputMethod ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Explicitly show the current input method.</p>
+<p>Input methods may be indicated in the taskbar by a small icon. If the input method is activated (shown) then it takes up some proportion of the bottom of the screen, to allow the user to interact (input characters) with it.</p>
+<p>This slot corresponds to the <a href="qtextendedipc.html">IPC</a> message <tt>showInputMethod()</tt> on the <tt>QPE/InputMethod</tt> channel.</p>
+<p>See also <a href="inputmethodservice.html#hideInputMethod">hideInputMethod</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

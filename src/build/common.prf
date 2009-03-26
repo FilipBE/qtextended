@@ -1,0 +1,237 @@
+exists($$QPEDIR/src/build/trace_on):message(common.prf)
+# Common stuff that's loaded for all projects
+
+# Default destinations
+depotProject:!no_dest:isEmpty(DESTDIR) {
+    desktop:app:DESTDIR=$$QPEDIR/bin
+    lib {
+        contains(PROJECT_TYPE,desktop):DESTDIR=$$QPEDIR/lib/host
+        else:DESTDIR=$$QPEDIR/lib
+    }
+}
+
+# Windows lib stuff
+lib:win32:!static:CONFIG+=dll
+
+# Depend on all the stuff in the include path
+DEPENDPATH+=$$INCLUDEPATH
+
+# Fairly useless define
+DEFINES+=QTOPIA_TARGET=$$LITERAL_ESCAPED_QUOTE$$ORIG_TARGET$$LITERAL_ESCAPED_QUOTE
+
+# Indicate host mode when compiling desktop apps and libs.
+desktop:app:DEFINES+=QTOPIA_HOST
+desktop:lib:DEFINES+=QTOPIA_HOST
+
+# This macro used to be defined by Qt in debug mode
+qt:CONFIG(debug,debug|release):DEFINES+=DEBUG
+
+# This library must be loaded for Qt apps and libs on Mac OS
+qt:mac:!no_carbon {
+    app|lib:LIBS+=-framework Carbon
+    QMAKE_INCREMENTAL=1
+}
+
+# Hide symbols
+qtopia_visibility:contains(QTE_CONFIG,reduce_exports) {
+   CONFIG+=hide_symbols
+}
+
+# Force all this to use $$QTDIR so it can change between Qt versions
+QMAKE_MOC       = $$QTDIR/bin/moc
+QMAKE_UIC       = $$QTDIR/bin/uic
+QMAKE_UIC3      = $$QTDIR/bin/uic3
+QMAKE_RCC       = $$QTDIR/bin/rcc
+QMAKE_INCDIR_QT = $$QTDIR/include
+QMAKE_LIBDIR_QT = $$QTDIR/lib
+
+!no_cleaninstall {
+    # By popular demand this now works everywhere
+    win32:RMRF=rmdir /s /q
+    else:RMRF=rm -rf
+    cleaninstall.commands=$$COMMAND_HEADER
+    PREFIXES=$(IMAGE) $(DIMAGE)
+    for(prefix,PREFIXES) {
+        win32:cleaninstall.commands+=if exist $$prefix
+        cleaninstall.commands+=$$RMRF $$prefix $$LINE_SEP
+    }
+    cleaninstall.commands+=$$MAKE install
+    QMAKE_EXTRA_TARGETS+=cleaninstall
+    cinstall.commands=
+    cinstall.depends=cleaninstall
+    QMAKE_EXTRA_TARGETS+=cinstall
+}
+
+!subdirs {
+    # Test integration
+    !unittest:!systemtest {
+        destProject=$$OUT_PWD/tests
+        exists($$destProject) {
+            test.commands=$$MAKE -C $$destProject test TESTS=$$LITERAL_QUOTE$(TESTS)$$LITERAL_QUOTE
+            listtests.commands=$$MAKE -C $$destProject listtests
+            install_tests.commands=$$MAKE -C $$destProject install_tests
+        } else {
+            test.commands=$$COMMAND_HEADER\
+                echo No tests exist for $${QTOPIA_ID}. $$LINE_SEP\
+                echo Please add some tests to $$SRCDIR/tests
+            listtests.commands=$$test.commands
+            install_tests.commands=$$test.commands
+        }
+        QMAKE_EXTRA_TARGETS*=test listtests install_tests
+    }
+
+    # checkp4 helps us to find not-checked-in files
+    ALL_SRC_FILES=$$FORMS $$HEADERS $$SOURCES
+    !isEmpty(ALL_SRC_FILES) {
+        runcheckp4.CONFIG=no_link no_dependencies explicit_dependencies no_build combine ignore_no_exist no_clean
+        runcheckp4.commands=$$COMMAND_HEADER\
+            $$fixpath($$QTOPIA_DEPOT_PATH/scripts/checkp4) $$PROJECT_ROOT/$$QTOPIA_ID/$$self ${QMAKE_FILE_IN}
+        runcheckp4.input=ALL_SRC_FILES
+        runcheckp4.output=dummy_checkp4
+        runcheckp4.name=checkp4
+        QMAKE_EXTRA_COMPILERS+=runcheckp4
+        checkp4.depends=compiler_runcheckp4_make_all
+    }
+    QMAKE_EXTRA_TARGETS+=checkp4
+
+    # remove_target removes the TARGET file
+    tg=$(DESTDIR)$(TARGET)
+    remove_target.commands=-$(DEL_FILE) $$tg
+    QMAKE_EXTRA_TARGETS+=remove_target
+
+    QMAKE_EXTRA_TARGETS*=printdependrules qmake_check
+
+    # Don't let this fail
+    !contains(INSTALLS,target) {
+        QMAKE_EXTRA_TARGETS+=install_target
+        build_target.commands=@$$DUMMY_COMMAND
+        build_target.CONFIG=no_path
+        build_target.depends=all
+        INSTALLS+=build_target
+    }
+
+    # Desktop apps (not Qtopia Sync Agent) get an RPATH to the host Qt lib directory
+    # so they can run without LD_LIBRARY_PATH.
+    desktop:app:!qtopiadesktop:!isEmpty(QTOPIA_RPATH) {
+        dqt=$$DQTDIR
+        !equals(QTOPIA_SDKROOT,$$QPEDIR) {
+            dqt=$$QTOPIA_SDKROOT/qtopiacore/host
+        }
+        LIBS+=$${QTOPIA_RPATH}$$fixpath($$dqt/lib)
+        # This is where the test libs go
+        LIBS+=$${QTOPIA_RPATH}$$fixpath($$QTOPIA_SDKROOT/lib/host)
+    }
+
+    # Qtopia Sync Agent gets an RPATH to the dprefix
+    #qtopiadesktop:!isEmpty(QTOPIA_RPATH) {
+    #    LIBS+=$${QTOPIA_RPATH}$$fixpath($$QTOPIA_DPREFIX/lib)
+    #}
+
+    QMAKE_EXTRA_TARGETS*=regenerate regenerate_all
+
+    # make first_syncqtopia just runs make syncqtopia but it prints out dots in subdirs (used by configure)
+    first_syncqtopia.depends=syncqtopia
+
+    # Add the implicit RPATH to embedded targets
+    enable_rpath:!desktop:!isEmpty(EMBEDDED_RPATH) {
+        rpath=0
+        contains(PROJECT_TYPE,external):!desktop:rpath=1
+        contains(PROJECT_TYPE,embedded)|qtopia:rpath=1
+        equals(rpath,1):LIBS+=$$EMBEDDED_RPATH
+    }
+
+    qtopia_depot:!win32 {
+        # make docs builds docs for this dir (and warns if this dir isn't in qtopia.qdocconf)
+        docs.commands=$$COMMAND_HEADER\
+            $$QPEDIR/scripts/mkdocs -onlydir $$SRCDIR $$OUT_PWD/docs
+        QMAKE_EXTRA_TARGETS+=docs
+        create_raw_dependency(.PHONY,docs)
+
+        # make auto_docs builds docs for this dir if it's listed in qtopia.qdocconf
+        auto_docs.commands=$$docs.commands -ignoreinvaliddir
+        QMAKE_EXTRA_TARGETS+=auto_docs
+        create_raw_dependency(.PHONY,auto_docs)
+
+        # make auto_docs is run automatically if the -qdoc switch is passed to configure
+        qdoc:ALL_DEPS+=auto_docs
+    }
+
+    embedded:qtopia:app:CONFIG+=sxe_test
+    quicklaunch:plugin:CONFIG+=sxe_test
+    no_sxe_test|!enable_sxe:CONFIG-=sxe_test
+
+    sxe_test {
+        sxe_test.commands+=$$COMMAND_HEADER\
+            echo sxe_test $(TARGET) $$LINE_SEP\
+            if strings $(TARGET) | grep XOXOXOauthOXOXOX99 >/dev/null 2>&1; then\
+                :;\
+            else\
+                echo $${LITERAL_QUOTE}ERROR: $(TARGET) does not have the required SXE symbols.$${LITERAL_QUOTE};\
+                echo $${LITERAL_QUOTE}Please see the QSXE_APP_KEY documentation for details.$${LITERAL_QUOTE};\
+                echo $${LITERAL_QUOTE}Hint: Type QSXE_APP_KEY into assistant's index box.$${LITERAL_QUOTE};\
+                exit 1;\
+            fi
+        sxe_test.depends=$(TARGET)
+        QMAKE_EXTRA_TARGETS+=sxe_test
+        ALL_DEPS+=sxe_test
+    }
+
+    win32:CONFIG(debug,debug|release) {
+        copypdb=0
+        lib:copypdb=1
+        app:equals(TARGET,qtopiasyncagent):copypdb=1
+        equals(copypdb,1) {
+            isEmpty(DESTDIR):pdb=$${TARGET}.pdb
+            else:pdb=$$DESTDIR/$${TARGET}.pdb
+            pdb.commands=$$QMAKE_COPY $$fixpath($$pdb) $(INSTALL_ROOT)
+            pdb.CONFIG=no_path
+            pdb.depends=install_target
+            INSTALLS+=pdb
+        }
+    }
+
+    # Prevent dynamic_cast from being used in embedded builds (we disable rtti so it will
+    # always fail or worse, succeed without checking)
+    embedded:no_dynamic_cast:DEFINES+=dynamic_cast=dynamic_cast_not_allowed
+
+    # Optimize linker algorithm for memory use. Handy on memory-constrained systems.
+    ld_optimize_memory:QMAKE_LFLAGS+=-Wl,-no-keep-memory
+
+    build_qtopia:embedded {
+        singleexec:enable_singleexec:!no_singleexec {
+            # Force -fPIC off for singleexec
+            QMAKE_CFLAGS-=-fPIC
+            QMAKE_CXXFLAGS-=-fPIC
+        } else:staticlib {
+            # Force -fPIC on for static libs in dynamic builds
+            QMAKE_CFLAGS*=-fPIC
+            QMAKE_CXXFLAGS*=-fPIC
+        }
+    }
+}
+
+# Print out the "make sdk" warning everywhere, not just the top of the tree
+equals(QTOPIA_SDKROOT,$$QPEDIR) {
+    check_sdk.commands=$$COMMAND_HEADER\
+        echo $${LITERAL_QUOTE}$${LITERAL_QUOTE} $$LINE_SEP\
+        echo $${LITERAL_QUOTE}You did not pass -sdk /path to configure so you cannot run make sdk.$${LITERAL_QUOTE} $$LINE_SEP\
+        echo $${LITERAL_QUOTE}Qtopia has been configured to use the build directory as the SDK location.$${LITERAL_QUOTE} $$LINE_SEP\
+        echo $${LITERAL_QUOTE}The build directory is $$QPEDIR$${LITERAL_QUOTE} $$LINE_SEP\
+        echo $${LITERAL_QUOTE}$${LITERAL_QUOTE}
+} else {
+    check_sdk.commands=$$COMMAND_HEADER\
+        $$MAKE -f Makefile.target sdk
+}
+QMAKE_EXTRA_TARGETS+=check_sdk
+
+# relink does a remove_target and then a make (so that everything is relinked)
+relink.commands=$$COMMAND_HEADER\
+    $$MAKE
+relink.depends=remove_target
+QMAKE_EXTRA_TARGETS+=relink
+
+stub:QMAKE_EXTRA_TARGETS+=mocables
+
+# On windows, stop all the deprecation warnings
+win:DEFINES+=_CRT_SECURE_NO_DEPRECATE
+

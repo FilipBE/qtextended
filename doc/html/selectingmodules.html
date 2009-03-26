@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module concept</title>
+  <link rel="prev" href="modules-index.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="buildsystem-integration.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="modules-index.html">Qt Extended Modules</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="buildsystem-integration.html">Building modules</a>]
+</p>
+<h1 class="title">Module concept<br /><span class="subtitle"></span>
+</h1>
+<a name="modules"></a>
+<h2>Modules</h2>
+<p>A module is a selection of projects (also called components) which form a logical group based on a limited number of features to which they contribute. A module can contain libraries, plug-ins, applications and server components.</p>
+<p>To ensure binary compatibility libraries have not been broken up into smaller parts than what was already possible in previous versions of Qt Extended. Therefore some libraries contain classes for which the actual backend implementation is part of another module. The most noteable examples are classes (such as <a href="qsoftmenubar.html">QSoftMenuBar</a>) in <tt>libqtopia</tt> which is part of the <a href="qtbasemodule.html">Base</a> module (and therefore is part of all builds). The <a href="qsoftmenubar.html">QSoftMenuBar</a> backend is provided by <a href="qsoftmenubarprovider.html">QSoftMenuBarProvider</a> which is part of the <a href="qtuimodule.html">UI</a> module. The underlying assumption is that if a device wouldn't require the UI module there would either not be a use for <a href="qsoftmenubar.html">QSoftMenuBar</a> or a new backend would be provided.</p>
+<p>The content of each module is defined by a <i>module_&lt;name-of-module&gt;.pri</i> project file in <i>&lt;qt-extended-dir&gt;/src</i>. The class documentation has been extended to indicate a classes membership.</p>
+<p>The smallest possible out-of-the-box configuration that can be created via the Qt Extended configure script looks like this:</p>
+<pre>    $QPEDIR/configure -device xyz</pre>
+<p>The above command line assumes that the device <tt>xyz</tt> doesn't add any additional modules. If the -device parameter is left out the build system automatically selects the reference device profile (see <tt>&lt;qt-extended-dir&gt;/devices/reference</tt>) which enables almost every single module.</p>
+<p>Such a base build only includes Qt and the <a href="qtbasemodule.html">Base</a> module. It has a significantly reduced footprint compared to previous Qtopia platform builds. With the exception of the Help application it does not contain any applications and provides a basis for most embedded multiprocess solutions. Please note that even a base build can be further minimized if required.</p>
+<a name="server-components"></a>
+<h3>Server components</h3>
+<p>As part of the modularization effort in Qt Extended 4.4 the server has been split up into several subprojects. This enables a more flexible configuration when it comes to selecting only necessary components. Each server subproject forms an independent component and can be defined and selected like any other type of project. Examples of such server subprojects and their inclusion into the various modules can be found in the <i>module_&lt;name-of-module&gt;*.pri</i> project selection files.</p>
+<p>The Qt Extended build system builds each server component into a (static) library. During the final linking of the server binary all existing server component libraries are merged into one single binary. The most minimalistic Qt Extended server build must contain <i>$QPEDIR/src/server/core_server</i> and <i>$QPEDIR/src/server/main</i>.</p>
+<a name="module-summary"></a>
+<h3>Module summary</h3>
+<p>The subsequent picture gives a visual summary of all modules. Note that although the <a href="qtcellmodule.html">Cell</a> and <a href="qtipcommsmodule.html">IPComms</a> are technically based on the <a href="qttelephonymodule.html">Telephony</a> module it is not required to select Telephony when selecting the Cell or IPComms module. The Qt Extended build system resolves those dependencies automatically and thus presents a simplified selection mechanism.</p>
+<p align="center"><img src="images/module_overview.png" alt="&quot;Module Overview&quot;" /></p><p>The <a href="qtdevtoolsmodule.html">Development Tools</a> and <a href="qtuitestmodule.html">QtUiTest</a> module contribute towards the Qt Extended development environment (debugging and testing purposes) and wouldn't usually be part of the device image.</p>
+<a name="cross-dependencies"></a>
+<h3>Cross-dependencies</h3>
+<p>As mentioned earlier modules do not depend on each other. Each module can function independently. However the presence of one module can influence the content of another module. An example of such cross-dependency can be found in the Pim module which provides the Contacts application. If Qt Extended would be configured to use the Pim module only the Contact application would manage the user's list of contacts. However together with the Telephony module the Contacts application enables additional features such as the ability to directly dial a contact phone number. This is possible because the <a href="dialerservice.html">Dialer</a> service is part of the Telephony module. If for instance the Bluetooth module were to be enabled the Contact application can transfer PIM entries to other devices via Bluetooth.</p>
+<p>To facilitate the above mentioned selection process some components are members of several modules. An example would be <tt>libqtopiapim</tt> which is part of the <a href="qtpimmodule.html">Pim</a>, <a href="qttelephonymodule.html">Telephony</a>, <a href="qtuimodule.html">UI</a> and <a href="qtmessagingmodule.html">Messaging</a> module. The documentation for each class states to which module it belongs.</p>
+<a name="applications"></a>
+<h3>Applications</h3>
+<p>Each module contains a set of applications. This section presents a matrix of the most common Qt Extended applications and how they are sorted into the various modules:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Application</th><th>Module</th><th>Application</th><th>Module</th></tr></thead>
+<tr valign="top" class="odd"><td>Appearance</td><td><a href="qtuimodule.html">UI</a></td><td>Messages (qtmail)</td><td><a href="qtmessagingmodule.html">Messaging</a></td></tr>
+<tr valign="top" class="even"><td>Bluetooth applications</td><td><a href="qtbluetoothmodule.html">Bluetooth</a></td><td>MessageServer</td><td><a href="qtmessagingmodule.html">Messaging</a></td></tr>
+<tr valign="top" class="odd"><td>Calculator</td><td><a href="qtessentialsmodule.html">Essentials</a></td><td>PackageManager</td><td><a href="qtpkgmanagementmodule.html">PkgManagement</a></td></tr>
+<tr valign="top" class="even"><td>Calendar</td><td><a href="qtpimmodule.html">Pim</a></td><td>PhoneNetworks</td><td><a href="qtcellmodule.html">Cell</a></td></tr>
+<tr valign="top" class="odd"><td>CallForwarding</td><td><a href="qtcellmodule.html">Cell</a></td><td>Phone simulator</td><td><a href="qtdevtoolsmodule.html">Development Tools</a></td></tr>
+<tr valign="top" class="even"><td>Camera</td><td><a href="qtessentialsmodule.html">Essentials</a></td><td>PhotoEdit</td><td><a href="qtessentialsmodule.html">Essentials</a></td></tr>
+<tr valign="top" class="odd"><td>Clock</td><td><a href="qtessentialsmodule.html">Essentials</a></td><td>PIM Synchronization</td><td><a href="qtpimmodule.html">Pim</a></td></tr>
+<tr valign="top" class="even"><td>Contacts</td><td><a href="qtpimmodule.html">Pim</a></td><td>Powermanagement</td><td><a href="qtessentialsmodule.html">Essentials</a></td></tr>
+<tr valign="top" class="odd"><td>DRM browser</td><td><a href="qtdrmmodule.html">Drm</a></td><td>Qt Extended Server</td><td><a href="qtbasemodule.html">Base</a></td></tr>
+<tr valign="top" class="even"><td>Games</td><td><a href="qtgamesmodule.html">Games</a></td><td>RingProfile</td><td><a href="qttelephonymodule.html">Telephony</a></td></tr>
+<tr valign="top" class="odd"><td>GTalkSettings</td><td><a href="qtipcommsmodule.html">IPComms</a></td><td>SecurityMonitor</td><td><a href="qtpkgmanagementmodule.html">PkgManagement</a></td></tr>
+<tr valign="top" class="even"><td>HelpBrowser</td><td><a href="qtbasemodule.html">Base</a></td><td>SystemInformation</td><td><a href="qtessentialsmodule.html">Essentials</a></td></tr>
+<tr valign="top" class="odd"><td>HomeScreen</td><td><a href="qtuimodule.html">UI</a></td><td>SystemTime</td><td><a href="qtessentialsmodule.html">Essentials</a></td></tr>
+<tr valign="top" class="even"><td>Infrared file transfer</td><td><a href="qtinfraredmodule.html">Infrared</a></td><td>Tasks</td><td><a href="qtpimmodule.html">Pim</a></td></tr>
+<tr valign="top" class="odd"><td>Internet</td><td><a href="qtconnectivitymodule.html">Connectivity</a></td><td>TelepathyAgent</td><td><a href="qtipcommsmodule.html">IPComms</a></td></tr>
+<tr valign="top" class="even"><td>Language</td><td><a href="qtessentialsmodule.html">Essentials</a></td><td>Theme editior</td><td><a href="qtbasemodule.html">Base</a></td></tr>
+<tr valign="top" class="odd"><td>Logging</td><td><a href="qtdevtoolsmodule.html">Development Tools</a></td><td>TextEdit</td><td><a href="qtessentialsmodule.html">Essentials</a></td></tr>
+<tr valign="top" class="even"><td>Mediaplayer</td><td><a href="qtmediamodule.html">Media</a></td><td>Value Space explorer</td><td><a href="qtdevtoolsmodule.html">Development Tools</a></td></tr>
+<tr valign="top" class="odd"><td>MediaRecorder</td><td><a href="qtpimmodule.html">Pim</a></td><td>Words</td><td><a href="qtinputmethodsmodule.html">InputMethods</a></td></tr>
+<tr valign="top" class="even"><td>MediaServer</td><td><a href="qtmediamodule.html">Media</a></td><td>WorldTime</td><td><a href="qtessentialsmodule.html">Essentials</a></td></tr>
+</table></p>
+<p>
+[Previous: <a href="modules-index.html">Qt Extended Modules</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="buildsystem-integration.html">Building modules</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

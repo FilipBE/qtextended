@@ -1,0 +1,5 @@
+MODULE_NAME=Xtst
+DEP.libs [
+    TYPE=DEPENDS PERSISTED SDK
+    EVAL="LIBS+=-lXtst"
+]

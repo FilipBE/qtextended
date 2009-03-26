@@ -1,0 +1,32 @@
+#!/bin/sh
+HELIX_CONFIG="$1"
+OUTPUT="$2"
+QTEDIR="$3"
+SDKROOT="$4"
+RPATHVALUE="$5"
+BUILD_RC="$6"
+LOGGING="$7"
+INPUT="$OUTPUT.helixconf"
+
+# extract the options
+echo $HELIX_CONFIG | grep 'atomic' >/dev/null 2>&1 && atomic=1 || atomic=0
+echo $HELIX_CONFIG | grep 'alsa' >/dev/null 2>&1 && alsa=1 || alsa=0
+
+# start by clobbering the output file
+cp -f $INPUT $OUTPUT
+
+# set the configuration-dependant stuff
+[ $atomic = 0 ] && echo "project.AddDefines('HELIX_CONFIG_DISABLE_ATOMIC_OPERATORS')" >>$OUTPUT
+[ $alsa   = 1 ] && echo "project.AddDefines('HELIX_FEATURE_ALSA')" >>$OUTPUT
+if [ $LOGGING = "yes" ]; then
+    echo "project.AddDefines('HELIX_FEATURE_LOGLEVEL_ALL')" >>$OUTPUT
+else
+    echo "project.AddDefines('HELIX_FEATURE_LOGLEVEL_NONE')" >>$OUTPUT
+fi
+[ -n $RPATHVALUE ] && echo "project.qtopia_rpath_opt = '$RPATHVALUE'" >>$OUTPUT
+
+# generate buildrc
+echo "SetSDKPath('qt','$QTEDIR')" >$BUILD_RC
+echo "SetSDKPath('qtopia','$SDKROOT')" >> $BUILD_RC
+
+exit 0

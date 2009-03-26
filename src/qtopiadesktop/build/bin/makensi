@@ -1,0 +1,357 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Glob;
+use File::Copy;
+use File::Path;
+use File::Find;
+use Cwd;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::File;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/qtopiadesktop/build/bin", $ARGV[0]);
+}
+
+
+# This is where the script is supposed to be run from
+chdir "$QPEDIR/src/qtopiadesktop/dist";
+
+use constant DEBUG => 0;
+use constant OUTPUT => 1;
+
+my $extras = 1;
+my @extraFile = ();
+my @skip = ();
+my %VARIABLES;
+$VARIABLES{QPEDIR} = $QPEDIR;
+
+$VARIABLES{COMPRESS} = ";SetCompressor lzma";
+$VARIABLES{USE_COMPONENTS} = ";";
+$VARIABLES{EXTRA_COMPONENTS} = "";
+$VARIABLES{DEBUG} = ";";
+$VARIABLES{NDEBUG} = "";
+
+while ( @ARGV ) {
+    if ( $ARGV[0] eq "-h" ) {
+	usage();
+    } elsif ( $ARGV[0] eq "-q" ) {
+	shift(@ARGV);
+	$VARIABLES{COMPRESS} = "SetCompress off";
+	$VARIABLES{DEBUG} = "";
+	$VARIABLES{NDEBUG} = ";";
+    } elsif ( $ARGV[0] eq "-no-extras" ) {
+        shift(@ARGV);
+        $extras = 0;
+    } elsif ( $ARGV[0] eq "-extra" ) {
+	shift(@ARGV);
+	my $extraFile = shift(@ARGV) or usage();
+	push(@extraFile, $extraFile);
+    } elsif ( $ARGV[0] eq "-skip" ) {
+	shift(@ARGV);
+	my $skip = shift(@ARGV) or usage();
+	DEBUG and print "Skipping $skip\n";
+	push(@skip, $skip);
+    } else {
+	last;
+    }
+}
+
+# Check for compiler redistributables
+my @compiler_dlls = glob("$QPEDIR/src/qtopiadesktop/dist/redist/*");
+if ( scalar(@compiler_dlls) == 0 ) {
+    die "ERROR: You must place your compiler's dll files (eg. msvcrtxx.dll) in:\n".
+        "       ".fixpath("$QPEDIR/src/qtopiadesktop/dist/redist")."\n";
+}
+
+# Get the extras
+if ( $extras ) {
+    my @files = findFiles( 'extra\.nsi$', "$QPEDIR/src/qtopiadesktop/dist/extras" );
+    if ( @files ) {
+        push(@extraFile, @files);
+    }
+}
+
+DEBUG and print "Creating file list\n";
+my $version;
+my $verfile = "$QPEDIR/src/config.pri";
+open(IN, "<$verfile") or die "open $verfile : $!\n";
+while ( defined($_ = <IN>) ) {
+    chomp;
+    if ( /QPE_VERSION=(.*)/ ) {
+	$version = $1;
+	last;
+    }
+}
+close IN;
+if ( !defined($version) ) {
+    die "Can't determine version!\n";
+}
+$VARIABLES{VERSION} = $version;
+
+# Version for the installer
+my $iversion = $version;
+#$iversion =~ s,\.,,g;
+$VARIABLES{IVERSION} = $iversion;
+
+my $dimage;
+open(IN, "<$QPEDIR/config.cache") or die "Can't determine dimage location!\n";
+while ( defined($_ = <IN>) ) {
+    chomp;
+    if ( /opt\.dimage\.value=(.*)/ ) {
+	$dimage = $1;
+	last;
+    }
+}
+close IN;
+if ( !defined($dimage) ) {
+    die "Can't determine dimage location!\n";
+}
+$VARIABLES{DIMAGE} = $dimage;
+
+my @data = ( [ "ROOT", "", [ "$dimage/*",
+                             "$QPEDIR/src/qtopiadesktop/dist/redist/*" ] ] );
+
+# Install bits
+$VARIABLES{FILES} = "; The files to install\n";
+foreach ( @data ) {
+    my ( $group, $subdir, $globs ) = @$_;
+    next if ( grep(/$group/i, @skip) );
+    my $FILES = "    ; Section $group\n";
+    DEBUG and print "group $group\n";
+    foreach my $glob ( @$globs ) {
+	$FILES .= recursiveBit(1, $glob, $subdir, "    File \"", "\"\n");
+    }
+    $VARIABLES{FILES} .= $FILES."\n";
+}
+
+# Uninstall bits
+$VARIABLES{UN_FILES} = "; The files to uninstall\n";
+foreach ( @data ) {
+    my ( $group, $subdir, $globs ) = @$_;
+    next if ( grep(/$group/i, @skip) );
+    my $FILES = "    ; Section $group\n";
+    DEBUG and print "group $group\n";
+    foreach my $glob ( @$globs ) {
+	$FILES .= recursiveBit(0, $glob, $subdir, "    Delete /rebootok \"\$INSTDIR", "\"\n");
+    }
+    if ( $subdir ne "" ) {
+	$FILES .= "    RMDir \"\$INSTDIR".$subdir."\"\n";
+	while ( $subdir =~ s,(.*)\\.*,$1, ) {
+	    last if ($subdir eq "");
+	    $FILES .= "    RMDir \"\$INSTDIR".$subdir."\"\n";
+	}
+    }
+    $VARIABLES{UN_FILES} .= $FILES."\n";
+}
+
+
+# "Upgrade" bits
+@data = (
+#    +{
+#        "page" => "pre_171",
+#        "check_key" => 'Software\Microsoft\Windows\CurrentVersion\Uninstall\InstallShield_{9F4330A6-B358-4018-86FC-AE665F3FC864}',
+#        "check_value" => "DisplayName",
+#        "check_eq" => "eq",
+#        "check_comp" => "Qtopia Desktop",
+#        "oldver" => "Trolltech's Qtopia Desktop (<=1.7.0)",
+#        "uninst" => 'Software\Microsoft\Windows\CurrentVersion\Uninstall\InstallShield_{9F4330A6-B358-4018-86FC-AE665F3FC864}',
+#        "uninstargs" => "",
+#    },
+#    +{
+#        "page" => "171_22x",
+#        "check_key" => 'Software\Microsoft\Windows\CurrentVersion\App Paths\qtopiadesktop.exe'
+#        "check_value" => "",
+#        "check_eq" => "ne",
+#        "check_comp" => "",
+#        "oldver" => "Qtopia Desktop (1.7.1 - 2.2.x)",
+#        "uninst" => 'Software\Microsoft\Windows\CurrentVersion\Uninstall\Qtopia Desktop'
+#        "uninstargs" => "/NESTED",
+#    },
+    +{
+        "page" => "qd4x",
+        "check_key" => 'Software\Trolltech\Qtopia Desktop\installdir',
+        "check_value" => "",
+        "check_eq" => "ne",
+        "check_comp" => "",
+        "oldver" => "Qtopia Desktop (4.x)",
+        "uninst" => 'Software\Microsoft\Windows\CurrentVersion\Uninstall\Qtopia Desktop 4',
+        "uninstargs" => "/NESTED",
+    },
+    +{
+        "page" => "qsa430",
+        "check_key" => 'Software\Trolltech\Qtopia Sync Agent\installdir',
+        "check_value" => "",
+        "check_eq" => "ne",
+        "check_comp" => "",
+        "oldver" => "Qtopia Sync Agent",
+        "uninst" => 'Software\Microsoft\Windows\CurrentVersion\Uninstall\Qtopia Sync Agent',
+        "uninstargs" => "/NESTED",
+    },
+);
+foreach ( @data ) {
+    my $name = $$_{page};
+    my $ch_key = $$_{check_key};
+    my $ch_val = $$_{check_value};
+    my $ch_eq = $$_{check_eq};
+    my $ch_comp = $$_{check_comp};
+    my $oldver = $$_{oldver};
+    my $uninst = $$_{uninst};
+    my $uninstargs = $$_{uninstargs};
+    DEBUG and print "Page$name\n";
+    my $jump_cmd = ($ch_eq eq "eq") ? "+2" : "0 +2";
+    my $section .= <<END;
+Function Page$name
+    ReadRegStr \$R0 HKLM "$ch_key" "$ch_val"
+    StrCmp \$R0 "$ch_comp" $jump_cmd
+    Abort
+
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ioPrevInst.ini" "Field 1" "Text" "Detected $oldver installed on your system. It is recommended that you uninstall it before continuing. Select the operation you want to perform and click Next to continue."
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ioPrevInst.ini" "Field 2" "Text" "Uninstall before installing"
+    !insertmacro MUI_INSTALLOPTIONS_WRITE "ioPrevInst.ini" "Field 3" "Text" "Do not uninstall"
+    !insertmacro MUI_HEADER_TEXT "Already Installed" "$oldver detected."
+    StrCpy \$R0 "1"
+    !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ioPrevInst.ini"
+FunctionEnd
+
+Function PageLeave$name
+    !insertmacro MUI_INSTALLOPTIONS_READ \$R1 "ioPrevInst.ini" "Field 2" "State"
+
+    StrCmp \$R0 "1" 0 +2
+    StrCmp \$R1 "1" reinst_uninstall reinst_done
+
+    StrCmp \$R0 "2" 0 +3
+    StrCmp \$R1 "1" reinst_done reinst_uninstall
+
+    reinst_uninstall:
+    ReadRegStr \$R0 HKLM "$ch_key" "$ch_val"
+    ReadRegStr \$R1 HKLM "$uninst" "UninstallString"
+
+    ;Run uninstaller
+    HideWindow
+
+    ClearErrors
+    ExecWait "\$R1 $uninstargs _?=\$R0" \$R3
+    ;MessageBox MB_OK "return code \$R3"
+    IfErrors no_remove_uninstaller
+
+    ClearErrors
+    Delete \$R1
+    RMDir \$R0
+    IfErrors 0 +3
+	MessageBox MB_OK|MB_ICONEXCLAMATION "Can't remove '\$R0'. Please remove this directory before installing \${PRODUCT_NAME}."
+	Quit
+
+    no_remove_uninstaller:
+
+    StrCmp \$R0 "1" 0 +3
+	; ignore the error if we got an exit status of 0
+	StrCmp \$R3 "0" +2
+	    Quit
+
+    BringToFront
+
+    reinst_done:
+FunctionEnd
+
+END
+    $VARIABLES{"UpgradePages"} .= "Page custom Page$name PageLeave$name\n";
+    $VARIABLES{"UpgradeFunctions"} .= $section;
+}
+OUTPUT or exit;
+
+DEBUG and print "Processing Extras\n";
+for my $extraFile ( @extraFile ) {
+    open EXTRA, "<".$extraFile or die "Could not open ".$extraFile."\n";
+    my @data = <EXTRA>;
+    close EXTRA or die $!;
+    # Replace variables
+    $VARIABLES{PWD} = dirname($extraFile);
+    for ( @data ) { s/\$\${(\w+)}/$VARIABLES{$1}/g; }
+    $VARIABLES{EXTRA_COMPONENTS} .= join("", @data);
+    if ( $VARIABLES{EXTRA_COMPONENTS} ) { $VARIABLES{USE_COMPONENTS} = ""; }
+}
+
+DEBUG and print "Creating installer\n";
+open(TEMPLATE, "template.nsi") or die "Can't open template.nsi\n";
+open(INST, ">qd.nsi") or die "Can't open qd.nsi\n";
+while ( defined($_ = <TEMPLATE>) ) {
+    s/\$\${(\w+)}/$VARIABLES{$1}/g;
+    print INST;
+}
+close INST;
+close TEMPLATE;
+my $r = system("c:\\Program Files\\NSIS\\makensis", "/Omakensis.log", "qd.nsi");
+if ( $r != 0 ) {
+    open IN, "makensis.log" or die "Can't open makensis.log\n";
+    print <IN>;
+    close IN;
+    exit 1;
+}
+if ( DEBUG ) {
+    open IN, "makensis.log" or die "Can't open makensis.log\n";
+    print <IN>;
+    close IN;
+}
+exit 0;
+
+
+sub usage
+{
+    die "Usage: makensi.pl [-q] [-skip <section>] [-extra <filename>]\n";
+}
+
+sub recursiveBit
+{
+    my ( $inst, $glob, $subdir, $prefix, $suffix ) = @_;
+    DEBUG and print "recursiveBit($inst, $glob, $subdir)\n";
+    my $FILES;
+    my @dirs;
+    if ( $inst ) {
+	$FILES = "    SetOutPath \"\$INSTDIR".$subdir."\"\n";
+    }
+    for my $file ( glob($glob) ) {
+	$file =~ s,\\,/,g;
+	DEBUG and print "file $file\n";
+	if ( -f $file ) {
+	    if ( !$inst ) {
+		$file = $subdir."/".basename($file);
+	    }
+	    $file =~ s,/,\\,g;
+	    DEBUG and print "file $file\n";
+	    $FILES .= $prefix.$file.$suffix;
+	} else {
+	    push(@dirs, $file);
+	}
+    }
+    for my $dir ( @dirs ) {
+	$FILES .= recursiveBit($inst, "$dir/*", $subdir."\\".basename($dir), $prefix, $suffix);
+	if ( !$inst ) {
+	    $FILES .= "    RMDir \"\$INSTDIR".$subdir."\\".basename($dir)."\"\n";
+	}
+    }
+    return $FILES;
+}
+
+sub findFiles
+{
+    my ( $re, $dir ) = @_;
+    my @found = ();
+    find(
+	sub {
+	    my $file = $File::Find::name;
+	    if ( $file =~ $re ) {
+		push( @found, $file );
+	    }
+	}, $dir );
+    return @found;
+}
+

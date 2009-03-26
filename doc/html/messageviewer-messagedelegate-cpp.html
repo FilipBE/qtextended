@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>messagedelegate.cpp Example File (messageviewer/messagedelegate.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">messagedelegate.cpp Example File<br /><span class="small-subtitle">messageviewer/messagedelegate.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;qtopialog.h&quot;
+
+    #include &quot;messagedelegate.h&quot;
+    #include &lt;QFont&gt;
+    #include &lt;QFontMetrics&gt;
+    #include &lt;QIcon&gt;
+    #include &lt;QModelIndex&gt;
+    #include &lt;QPainter&gt;
+    #include &lt;QPixmap&gt;
+    #include &lt;QPixmapCache&gt;
+    #include &lt;QtopiaApplication&gt;
+
+    MessageDelegate::MessageDelegate(QObject* parent)
+        : QAbstractItemDelegate(parent)
+    {
+    }
+
+    MessageDelegate::~MessageDelegate()
+    {
+    }
+
+    QSize MessageDelegate::sizeHint(const QStyleOptionViewItem&amp; option, const QModelIndex&amp; index) const
+    {
+        Q_UNUSED(index)
+
+        static const int iconSize(qApp-&gt;style()-&gt;pixelMetric(QStyle::PM_ListViewIconSize));
+        static const int smallIconSize(qApp-&gt;style()-&gt;pixelMetric(QStyle::PM_SmallIconSize));
+
+        QFont main(option.font);
+        main.setWeight(QFont::Bold);
+
+        QFont sub(main);
+        sub.setPointSize(main.pointSize() - 2);
+
+        QFontMetrics fm(main);
+        QFontMetrics sfm(sub);
+
+        return QSize(iconSize + 8 + smallIconSize, qMax((fm.lineSpacing() + 1 + sfm.lineSpacing()), iconSize) + 2);
+    }
+
+    void MessageDelegate::paint(QPainter* painter, const QStyleOptionViewItem&amp; option, const QModelIndex&amp; index) const
+    {
+        static const bool rtl(qApp-&gt;layoutDirection() == Qt::RightToLeft);
+        static const int iconSize(qApp-&gt;style()-&gt;pixelMetric(QStyle::PM_ListViewIconSize));
+        static const int smallIconSize(qApp-&gt;style()-&gt;pixelMetric(QStyle::PM_SmallIconSize));
+
+        <span class="comment">// Find the paintable elements of the item</span>
+        QIcon icon(qvariant_cast&lt;QIcon&gt;(index.model()-&gt;data(index, Qt::DecorationRole)));
+        QIcon typeIcon(qvariant_cast&lt;QIcon&gt;(index.model()-&gt;data(index, SecondaryDecorationRole)));
+        QString headerText(qvariant_cast&lt;QString&gt;(index.model()-&gt;data(index, Qt::DisplayRole)));
+        QString subText(qvariant_cast&lt;QString&gt;(index.model()-&gt;data(index, SubLabelRole)));
+
+        <span class="comment">// Find the painting properties we need</span>
+        const bool sel((option.state &amp; QStyle::State_Selected) == QStyle::State_Selected);
+        QBrush baseBrush(sel ? option.palette.highlight() : option.palette.base());
+        QBrush textBrush(sel ? option.palette.highlightedText() : option.palette.text());
+
+        QFont main(option.font);
+        main.setWeight(QFont::Bold);
+
+        QFont sub(main);
+        sub.setPointSize(main.pointSize() - 2);
+
+        painter-&gt;save();
+        painter-&gt;setClipRect(option.rect);
+
+        <span class="comment">// Draw the background gradient if selected</span>
+        if (sel)
+        {
+            QPalette::ColorGroup cg((option.state &amp; QStyle::State_Enabled) ? QPalette::Normal : QPalette::Disabled);
+
+            QString key = QLatin1String(&quot;_MSGD_&quot;);
+            key += QString::number(option.rect.width());
+            key += QString::number(option.rect.height());
+            key += QString::number(int(option.palette.color(cg, QPalette::Highlight).rgba()));
+
+            QPixmap pm;
+            if (!QPixmapCache::find(key, pm)) {
+                QSize size = option.rect.size();
+                QImage img(size, QImage::Format_ARGB32_Premultiplied);
+                img.fill(0x00000000);
+                QPainter pp(&amp;img);
+                pp.setRenderHint(QPainter::Antialiasing);
+                QColor color = option.palette.color(cg, QPalette::Highlight);
+                pp.setPen(color);
+
+                QLinearGradient bgg(QPoint(0,0), QPoint(0, size.height()));
+                bgg.setColorAt(0.0f, color.lighter(175));
+                bgg.setColorAt(0.49f, color.lighter(105));
+                bgg.setColorAt(0.5f, color);
+                pp.setBrush(bgg);
+                pp.drawRoundRect(QRect(QPoint(0,0),size), 800/size.width(),800/size.height());
+                pm = QPixmap::fromImage(img);
+                QPixmapCache::insert(key, pm);
+            }
+            painter-&gt;drawPixmap(option.rect.topLeft(), pm);
+        }
+
+        <span class="comment">// Find the icon rectangles for this item</span>
+        QRect textRect(option.rect);
+        QRect iconRect(option.rect);
+        QRect secondaryRect(option.rect);
+
+        if (rtl)
+        {
+            iconRect.setLeft(iconRect.right() - iconSize - 8);
+            secondaryRect.setRight(smallIconSize);
+
+            textRect.setRight(iconRect.left());
+            textRect.setLeft(secondaryRect.right());
+        }
+        else
+        {
+            iconRect.setRight(iconSize + 8);
+            secondaryRect.setLeft(secondaryRect.right() - smallIconSize - 8);
+
+            textRect.setLeft(iconRect.right());
+            textRect.setRight(secondaryRect.left());
+        }
+
+        <span class="comment">// Find the text rectangles</span>
+        QFontMetrics fm(main);
+        QRect headerRect(textRect);
+        headerRect.setTop(headerRect.top() + 1);
+        headerRect.setHeight(fm.lineSpacing());
+
+        QFontMetrics sfm(sub);
+        QRect subRect(textRect);
+        subRect.setTop(subRect.bottom() - sfm.lineSpacing() + 1);
+        subRect.setHeight(sfm.lineSpacing());
+
+        <span class="comment">// Paint the icons</span>
+        QPoint drawOffset(iconRect.left() + ((iconRect.width() - iconSize)/2), iconRect.top() + ((iconRect.height() - iconSize) / 2));
+        painter-&gt;drawPixmap(drawOffset, icon.pixmap(QSize(iconSize, iconSize)));
+
+        drawOffset = QPoint(secondaryRect.left() + ((secondaryRect.width() - smallIconSize)/2), secondaryRect.top() + ((secondaryRect.height() - smallIconSize) / 2));
+        painter-&gt;drawPixmap(drawOffset, typeIcon.pixmap(QSize(smallIconSize, smallIconSize)));
+
+        <span class="comment">// Paint the text elements</span>
+        painter-&gt;setBrush(baseBrush);
+        painter-&gt;setPen(textBrush.color());
+
+        painter-&gt;setFont(main);
+        painter-&gt;drawText(headerRect, Qt::AlignLeading, fm.elidedText(headerText, option.textElideMode, headerRect.width()));
+
+        painter-&gt;setFont(sub);
+        painter-&gt;drawText(subRect, Qt::AlignLeading, sfm.elidedText(subText, option.textElideMode, subRect.width()));
+
+        painter-&gt;restore();
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

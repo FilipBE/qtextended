@@ -1,0 +1,17 @@
+# /etc/profile: system-wide .profile file for sh.
+
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+
+export HOSTNAME="$(hostname)"
+
+export PS1="[\u@\h \W]\$"
+
+export LANG=en_US.UTF-8
+
+umask 022
+
+#This fixes the backspace when telnetting in.
+if [ "$(tty)" != "not a tty" ] && [ "$TERM" != "linux" ]; then
+        stty erase ^H
+fi
+

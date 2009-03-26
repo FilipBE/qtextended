@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Customizing a Skin for QVFb</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Customizing a Skin for QVFb<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#qvfb-skin-format">QVFb Skin Format</a></li>
+<ul><li><a href="#coordinates">Coordinates</a></li>
+<li><a href="#defaultbuttons-conf">defaultbuttons.conf</a></li>
+</ul>
+<li><a href="#specifying-screen-size-independent-of-skin">Specifying Screen Size Independent of Skin</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This document explains how to customize the QVFb skin for a specific project.</p>
+<p>The virtual framebuffer is located in <tt>$QTDIR/tools/qvfb</tt>.</p>
+<p>QVFb is a development tool only. No security issues have been considered in the virtual framebuffer design. It should not be used in a production environment and Qt for Embedded Linux should be configured with <tt>-no-gfx-qvfb</tt> in production libraries.</p>
+<a name="qvfb-skin-format"></a>
+<h2>QVFb Skin Format</h2>
+<p>The files comprising a QVFb skin are placed in a directory with a <tt>.skin</tt> extension, for example <tt>devices/greenphone/Greenphone.skin/</tt> in the Qt Extended source.</p>
+<p>The file defining the skin has the same name as the directory containing it - <tt>Greenphone.skin</tt> in the above example.</p>
+<p>The <tt>.skin</tt> file consists of the following:</p>
+<ul>
+<li>[SkinFile] - this must be the first line.</li>
+<li>The name of the images specifying the appearance of the device in different states. The states supported are:<ul>
+<li>Up - The normal appearance of the device with no buttons pressed.</li>
+<li>Down - The appearance of the device with all buttons pressed.</li>
+<li>Closed - For devices that have a closed state, such as a clamshell phone.</li>
+</ul>
+</li>
+<li>The size and position of the screen(s):<ul>
+<li>Screen - The position and size of the screen in the format <tt>x y w h</tt></li>
+<li>ClosedScreen - The position and size of the screen visible when the device is closed in the format <tt>x y w h</tt></li>
+</ul>
+</li>
+<li>Last comes the button definition. The &quot;Area&quot; value specifies how many buttons are available followed by the buttons. The format is:<pre>    &quot;name&quot; keycode &lt;x y&gt; &lt;x y&gt; [&lt;x y&gt; ...]}</pre>
+</li>
+</ul>
+<a name="coordinates"></a>
+<h3>Coordinates</h3>
+<p>The coordinates are a list of at least 2 points in a clockwise order that define a shape for the button. If only two points are provided they are treated as opposite corners of a rectangle. Any click inside the points will be treated as a click on that button. While pressed, the pixels for the button are redrawn from the &quot;Down&quot; image.</p>
+<p>You can examine <tt>Trolltech-Keypad.skin</tt> and <tt>Trolltech-Touchscreen.skin</tt> in $QTDIR/tools/QVFb as examples.</p>
+<a name="defaultbuttons-conf"></a>
+<h3>defaultbuttons.conf</h3>
+<p>You can also include a <tt>defaultbuttons.conf</tt> file. This file customizes the launch screen applications and the ordering of the soft keys. There are also input method hints in this file.</p>
+<p>See <a href="syscust-keypadbutt.html">Keypad Button Behavior</a> for more detailed documentation for <tt>defaultbuttons.conf</tt></p>
+<a name="specifying-screen-size-independent-of-skin"></a>
+<h2>Specifying Screen Size Independent of Skin</h2>
+<p>QVFb allows the screen size to be specified independently of the skin. For example, you can use the SmartPhone.skin but specify a screen size of 240x320 pixels. The skin (if command-line arguments are used) or screen (if Configure is used) will be scaled accordingly. For example:</p>
+<pre>     QVFb -skin SmartPhone.skin -width 240 -height 320 -zoom 0.7</pre>
+<p>The above example uses the SmartPhone.skin (screen area 176x208 skin pixels) but with a 240x320 pixel virtual framebuffer (ie. what Qt Extended draws to). The screen is scaled down by 0.7 resulting in a display that is a smooth-scaled 168x224 pixels.</p>
+<p>Note that the SmartPhone.skin is 176x208, not 3:4 which means that 3:4 pixel screens are slightly distorted (but still pixel-correct).</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

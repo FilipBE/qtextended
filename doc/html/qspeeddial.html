@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSpeedDial Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSpeedDial Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSpeedDial class provides access to the Speed Dial settings. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSpeedDial&gt;</pre><ul>
+<li><a href="qspeeddial-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QString <b><a href="qspeeddial.html#addWithDialog">addWithDialog</a></b> ( const QString &amp; <i>label</i>, const QString &amp; <i>icon</i>, const QtopiaServiceRequest &amp; <i>action</i>, QWidget * <i>parent</i> )</li>
+<li><div class="fn"/>QList&lt;QString&gt; <b><a href="qspeeddial.html#assignedInputs">assignedInputs</a></b> ()</li>
+<li><div class="fn"/>QtopiaServiceDescription * <b><a href="qspeeddial.html#find">find</a></b> ( const QString &amp; <i>input</i> )</li>
+<li><div class="fn"/>QList&lt;QString&gt; <b><a href="qspeeddial.html#possibleInputs">possibleInputs</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qspeeddial.html#remove">remove</a></b> ( const QString &amp; <i>input</i> )</li>
+<li><div class="fn"/>QString <b><a href="qspeeddial.html#selectWithDialog">selectWithDialog</a></b> ( QWidget * <i>parent</i> )</li>
+<li><div class="fn"/>void <b><a href="qspeeddial.html#set">set</a></b> ( const QString &amp; <i>input</i>, const QtopiaServiceDescription &amp; <i>r</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSpeedDial class provides access to the Speed Dial settings.</p>
+<p>The QSpeedDial class includes a set of static functions that give access to the Speed Dial settings. This class should not be instantiated.</p>
+<p>The Speed Dial actions are actions from the Favorite Services, with an associated input for faster access.</p>
+<p>The input range is from 1 to 99. To allow the user to select an input for a given action, use <a href="qspeeddial.html#addWithDialog">addWithDialog</a>().</p>
+<p align="center"><img src="images/qspeeddial.png" alt="&quot;Add with Dialog&quot;" /></p><p>To directly modify the Speed Dial settings, use <a href="qspeeddial.html#remove">remove</a>() and <a href="qspeeddial.html#set">set</a>(). Use <a href="qspeeddial.html#find">find</a>() to retrieve the assigned action for a given input or position.</p>
+<p>See also <a href="qspeeddiallist.html">QSpeedDialList</a> and <a href="qfavoriteservicesmodel.html">QFavoriteServicesModel</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="addWithDialog"></a><a href="qstring.html">QString</a> QSpeedDial::addWithDialog ( const <a href="qstring.html">QString</a> &amp; <i>label</i>, const <a href="qstring.html">QString</a> &amp; <i>icon</i>, const <a href="qtopiaservicerequest.html">QtopiaServiceRequest</a> &amp; <i>action</i>, <a href="qwidget.html">QWidget</a> * <i>parent</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Provides a dialog that allows the user to select an input for action <i>action</i>, using <i>label</i> and <i>icon</i> as the display label and icon respectively. The dialog has the given <i>parent</i>.</p>
+<p>Returns the input that the user selected, and also assigns the input to the action.</p>
+<p>If the user cancels the dialog, a null string is returned.</p>
+<p>See also <a href="qspeeddial.html#set">set</a>().</p>
+<h3 class="fn"><a name="assignedInputs"></a><a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; QSpeedDial::assignedInputs ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of the currently assigned Speed Dial inputs.</p>
+<p>This function was introduced in Qtopia 4.3.</p>
+<p>See also <a href="qspeeddial.html#possibleInputs">possibleInputs</a>().</p>
+<h3 class="fn"><a name="find"></a><a href="qtopiaservicedescription.html">QtopiaServiceDescription</a> * QSpeedDial::find ( const <a href="qstring.html">QString</a> &amp; <i>input</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a <a href="qtopiaservicedescription.html">QtopiaServiceDescription</a> for the given Speed Dial <i>input</i>. If the input is not assigned, returns 0. The caller must <i>not</i> delete the <a href="qtopiaservicedescription.html">QtopiaServiceDescription</a> returned, nor rely on pointer validity after subsequent calls to QSpeedDial::find().</p>
+<h3 class="fn"><a name="possibleInputs"></a><a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; QSpeedDial::possibleInputs ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of possible Speed Dial inputs, some of which may be assigned already.</p>
+<p>This function was introduced in Qtopia 4.3.</p>
+<p>See also <a href="qspeeddial.html#assignedInputs">assignedInputs</a>().</p>
+<h3 class="fn"><a name="remove"></a>void QSpeedDial::remove ( const <a href="qstring.html">QString</a> &amp; <i>input</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Removes the action currently associated with the given Speed Dial <i>input</i>. If the action is in the favorites list, it will be deleted from there as well.</p>
+<h3 class="fn"><a name="selectWithDialog"></a><a href="qstring.html">QString</a> QSpeedDial::selectWithDialog ( <a href="qwidget.html">QWidget</a> * <i>parent</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Provides a dialog that allows the user to select an existing speed dial item. The dialog has the given <i>parent</i>.</p>
+<p>Similar to selectServiceWithDialog(), but returns the speed dial input selected instead of the service.</p>
+<p>If the user cancels the dialog, a null pointer is returned.</p>
+<h3 class="fn"><a name="set"></a>void QSpeedDial::set ( const <a href="qstring.html">QString</a> &amp; <i>input</i>, const <a href="qtopiaservicedescription.html">QtopiaServiceDescription</a> &amp; <i>r</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Assigns the given <a href="qtopiaservicedescription.html">QtopiaServiceDescription</a>, <i>r</i>, as the action to perform when the given Speed Dial <i>input</i>, is detected. Will remove any previous services assigned to that <i>input</i> from the Speed Dial.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

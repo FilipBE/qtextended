@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailMessageRemovalRecord Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailMessageRemovalRecord Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>]</span>
+</h1>
+<p>The QMailMessageRemovalRecord class represents the record of a message which has been removed from the mail store. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailMessageRemovalRecord&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qmailmessageremovalrecord-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailmessageremovalrecord.html#QMailMessageRemovalRecord">QMailMessageRemovalRecord</a></b> ( const QMailAccountId &amp; <i>parentAccountId</i>, const QString &amp; <i>serverUid</i>, const QString &amp; <i>fromMailbox</i> = QString() )</li>
+<li><div class="fn"/><b><a href="qmailmessageremovalrecord.html#QMailMessageRemovalRecord-3">QMailMessageRemovalRecord</a></b> ( const QMailMessageRemovalRecord &amp; <i>other</i> )</li>
+<li><div class="fn"/>QString <b><a href="qmailmessageremovalrecord.html#fromMailbox">fromMailbox</a></b> () const</li>
+<li><div class="fn"/>QMailAccountId <b><a href="qmailmessageremovalrecord.html#parentAccountId">parentAccountId</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmailmessageremovalrecord.html#serverUid">serverUid</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qmailmessageremovalrecord.html#setFromMailbox">setFromMailbox</a></b> ( const QString &amp; <i>fromMailbox</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageremovalrecord.html#setParentAccountId">setParentAccountId</a></b> ( const QMailAccountId &amp; <i>id</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailmessageremovalrecord.html#setServerUid">setServerUid</a></b> ( const QString &amp; <i>serverUid</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailMessageRemovalRecord class represents the record of a message which has been removed from the mail store.</p>
+<p>QMailMessageRemovalRecord represents messages that have been previously removed, so that the message server can finalize its interest in the message with an external service, after the message has been removed locally. The removal record contains only the information needed to identify the message to the external service.</p>
+<p>Message removal records should be purged from the mail store once the message server has finalized its interest in the message with the external service.</p>
+<p>See also <a href="qmailstore.html#messageRemovalRecords">QMailStore::messageRemovalRecords</a>() and <a href="qmailstore.html#purgeMessageRemovalRecords">QMailStore::purgeMessageRemovalRecords</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailMessageRemovalRecord"></a>QMailMessageRemovalRecord::QMailMessageRemovalRecord ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>parentAccountId</i>, const <a href="qstring.html">QString</a> &amp; <i>serverUid</i>, const <a href="qstring.html">QString</a> &amp; <i>fromMailbox</i> = QString() )</h3>
+<p>Constructs a removal record for the message identified by the UID <i>serverUid</i> in the mailbox <i>fromMailbox</i>, in the account identified by <i>parentAccountId</i>.</p>
+<h3 class="fn"><a name="QMailMessageRemovalRecord-3"></a>QMailMessageRemovalRecord::QMailMessageRemovalRecord ( const QMailMessageRemovalRecord &amp; <i>other</i> )</h3>
+<p>Constructs a removal record which is a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="fromMailbox"></a><a href="qstring.html">QString</a> QMailMessageRemovalRecord::fromMailbox () const</h3>
+<p>Returns the name of the mailbox at the external service in which the removed message was located.</p>
+<p>See also <a href="qmailmessageremovalrecord.html#setFromMailbox">setFromMailbox</a>().</p>
+<h3 class="fn"><a name="parentAccountId"></a><a href="qmailaccountid.html">QMailAccountId</a> QMailMessageRemovalRecord::parentAccountId () const</h3>
+<p>Returns the identifier of the account owning this removal record.</p>
+<p>See also <a href="qmailmessageremovalrecord.html#setParentAccountId">setParentAccountId</a>().</p>
+<h3 class="fn"><a name="serverUid"></a><a href="qstring.html">QString</a> QMailMessageRemovalRecord::serverUid () const</h3>
+<p>Returns the UID at the external service of the removed message.</p>
+<p>See also <a href="qmailmessageremovalrecord.html#setServerUid">setServerUid</a>().</p>
+<h3 class="fn"><a name="setFromMailbox"></a>void QMailMessageRemovalRecord::setFromMailbox ( const <a href="qstring.html">QString</a> &amp; <i>fromMailbox</i> )</h3>
+<p>Set the name of the mailbox at the external service in which the removed message was located, to <i>fromMailbox</i>.</p>
+<p>See also <a href="qmailmessageremovalrecord.html#fromMailbox">fromMailbox</a>().</p>
+<h3 class="fn"><a name="setParentAccountId"></a>void QMailMessageRemovalRecord::setParentAccountId ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>id</i> )</h3>
+<p>Sets the identifier of the message removal record's owner account to <i>id</i>.</p>
+<p>See also <a href="qmailmessageremovalrecord.html#parentAccountId">parentAccountId</a>().</p>
+<h3 class="fn"><a name="setServerUid"></a>void QMailMessageRemovalRecord::setServerUid ( const <a href="qstring.html">QString</a> &amp; <i>serverUid</i> )</h3>
+<p>Sets the UID at the external service of the removed message to <i>serverUid</i>.</p>
+<p>See also <a href="qmailmessageremovalrecord.html#serverUid">serverUid</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

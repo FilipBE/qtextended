@@ -1,0 +1,102 @@
+--- busybox-1.2.1-secure/sysklogd/syslogd.c	2007-03-02 08:25:28.000000000 +1000
++++ busybox-1.2.1/sysklogd/syslogd.c	2007-03-02 08:36:05.000000000 +1000
+@@ -52,6 +52,9 @@
+ 
+ /* number of rotated message files */
+ static int logFileRotate = 1;
++
++/* program to execute after rotating logs */
++static const char *execAfterRotate = NULL;
+ #endif
+ 
+ /* interval between marks in seconds */
+@@ -307,7 +310,23 @@
+                 logged = TRUE;
+ 	}
+ #endif
+-	if ((fd = device_open(logFilePath,
++
++        int append_mode = (strstr(logFilePath, "%s") == NULL);
++
++        const char *logFilePathTemplate;
++        if (append_mode) {
++            logFilePathTemplate = malloc(strlen(logFilePath) + 4);
++            strcpy((char *)logFilePathTemplate, logFilePath);
++            strcat((char *)logFilePathTemplate, "%s");
++        } else {
++            logFilePathTemplate = logFilePath;
++        }
++
++
++        char curFile[(strlen(logFilePathTemplate)+4)];
++        sprintf(curFile, logFilePath, "");
++            
++	if ((fd = device_open(curFile,
+ 					O_WRONLY | O_CREAT | O_NOCTTY | O_APPEND |
+ 							 O_NONBLOCK)) >= 0) {
+ 		fl.l_type = F_WRLCK;
+@@ -320,22 +339,29 @@
+ 				&& (lseek(fd,0,SEEK_END) > logFileSize) ) {
+ 				if(logFileRotate > 0) {
+ 					int i;
++                                        char rotExtension[4];
+ 					char oldFile[(strlen(logFilePath)+4)], newFile[(strlen(logFilePath)+4)];
+ 					for(i=logFileRotate-1;i>0;i--) {
+-						sprintf(oldFile, "%s.%d", logFilePath, i-1);
+-						sprintf(newFile, "%s.%d", logFilePath, i);
++                                                sprintf(rotExtension, "_%d", i-1);
++                                                sprintf(oldFile, logFilePathTemplate, rotExtension);
++                                                sprintf(rotExtension, "_%d", i);
++						sprintf(newFile, logFilePathTemplate, rotExtension);
+ 						rename(oldFile, newFile);
+ 					}
+-					sprintf(newFile, "%s.%d", logFilePath, 0);
++                                        sprintf(rotExtension, "_%d", 0);
++					sprintf(newFile, logFilePathTemplate, rotExtension);
+ 					fl.l_type = F_UNLCK;
+ 					fcntl (fd, F_SETLKW, &fl);
+ 					close(fd);
+-					rename(logFilePath, newFile);
+-					fd = device_open (logFilePath,
++					rename(curFile, newFile);
++					fd = device_open (curFile,
+ 						   O_WRONLY | O_CREAT | O_NOCTTY | O_APPEND |
+ 						   O_NONBLOCK);
+ 					fl.l_type = F_WRLCK;
+ 					fcntl (fd, F_SETLKW, &fl);
++
++                                        if (execAfterRotate)
++                                            system(execAfterRotate);
+ 				} else {
+ 					ftruncate( fd, 0 );
+ 				}
+@@ -352,6 +378,10 @@
+                 logged = TRUE;
+ 	}
+         
++        if (append_mode) {
++            free((char *)logFilePathTemplate);
++        }
++
+         if (logged == FALSE) {
+ 		/* Always send console messages to /dev/console so people will see them. */
+ 		if ((fd = device_open(_PATH_CONSOLE,
+@@ -607,7 +637,7 @@
+ 	char *p;
+ 
+ 	/* do normal option parsing */
+-	while ((opt = getopt(argc, argv, "m:nO:s:Sb:R:LC::")) > 0) {
++	while ((opt = getopt(argc, argv, "m:nO:s:Sb:R:LC::r:")) > 0) {
+ 		switch (opt) {
+ 		case 'm':
+ 			MarkInterval = atoi(optarg) * 60;
+@@ -626,6 +656,9 @@
+ 			logFileRotate = atoi(optarg);
+ 			if( logFileRotate > 99 ) logFileRotate = 99;
+ 			break;
++                case 'r':
++                        execAfterRotate = optarg;
++                        break;
+ #endif
+ #ifdef CONFIG_FEATURE_REMOTE_LOG
+ 		case 'R':

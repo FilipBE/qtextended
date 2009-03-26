@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Communications: Telephony: Call Management: Call History</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Communications: Telephony: Call Management: Call History<br><small>Functional Description</small></h1><p><strong>Call History</strong> provides a record of calls that have been dialed, received,
+or missed on the phone. A single <strong>Call History</strong> record represents a single
+phone call and contains the various attributes of the call. The call record
+may be further associated with a contact through its phone number in which
+case the contact information is utilized when displaying the record.
+Up to 50 call records are permitted, the oldest record being discarded when a
+new record is created.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-275">All-in-one Call History List</a>
+<li><a href="#QTOPIA-273">Contact Creation</a>
+<li><a href="#QTOPIA-269">Display Detailed Call Information</a>
+<li><a href="#QTOPIA-271">Display Filtered List</a>
+<li><a href="#QTOPIA-270">Display Related Calls</a>
+<li><a href="#QTOPIA-268">Display Separate Call Lists</a>
+<li><a href="#QTOPIA-272">Managing *Call History*</a>
+<li><a href="#QTOPIA-274">Other Application Integration</a>
+<li><a href="#QTOPIA-277">SIM Storage Integration</a>
+<li><a href="#QTOPIA-279">Timezone Tracking</a>
+</ul><h3><a name=QTOPIA-275>All-in-one Call History List</a></h3>
+<p>The user views all types of calls in one list. This list is a default view in the call history and sorted by time.
+<h3><a name=QTOPIA-273>Contact Creation</a></h3>
+<p><b>Call History</b> can be a source of new contacts, as the user<br/>
+may often dial or receive phone calls to/from numbers that have no<br/>
+associated contact. <b>Call History</b> provides the option to save the phone<br/>
+number of a call record not associated with a contact to an existing contact,<br/>
+or create a new contact based on the call record.
+<h3><a name=QTOPIA-269>Display Detailed Call Information</a></h3>
+<p>The general dialed, received and missed call lists provide access to a detailed view of the full information of a call record. The following call record details are displayed:
+
+<ul>
+	<li>if the call record is associated with a contact, the contact name, phone number type and photo, otherwise the literal number of the call.</li>
+	<li>weekday, day, month and time the call originated.</li>
+	<li>for calls that resulted in a connection, the duration and the weekday, day, month and time the call was terminated.</li>
+	<li>an indicator for dialed calls that did not result in a connection.</li>
+	<li>related calls information (see next section).</li>
+</ul>
+<h3><a name=QTOPIA-271>Display Filtered List</a></h3>
+<p>Each list can be filtered to display related calls by typing a phone number or numbers that make up a contact name.<br/>
+The complete list can be viewed by pressing back key when the list is filtered.
+<h3><a name=QTOPIA-270>Display Related Calls</a></h3>
+<p>Call records are related if one of the following criteria is met:
+
+<ul>
+	<li>the calls are either dialed, received or missed calls to/from the same number</li>
+	<li>the calls are either dialed, received or missed calls to/from the same contact.</li>
+</ul>
+
+
+
+<p>The detailed view displays up to 10 related records. The related calls are the closest calls in terms of  time originated, and are shown in ascending order based on this time. The information shown is the same as that shown in the lists.</p>
+<h3><a name=QTOPIA-268>Display Separate Call Lists</a></h3>
+<p><b>Call History</b> is able to display dialed, received and missed call lists separately. Each item in the list shows the following partial call information:
+
+<ul>
+	<li>if the call record is associated with a contact, then the contact name, phone number type and photo otherwise the literal number of the call.</li>
+	<li>phone call type (either dialed, received, or missed).</li>
+	<li>weekday and time the call originated.</li>
+</ul>
+<h3><a name=QTOPIA-272>Managing *Call History*</a></h3>
+<p><b>Call History</b> allows the deletion of records enabling the user to keep the <b>Call History</b> information as pertinent as possible. When viewing the general call lists, the user has the option to clear only the visible list or to clear all lists. When viewing detailed information, the user has the option to delete the call record being viewed.
+<h3><a name=QTOPIA-274>Other Application Integration</a></h3>
+<p>For call records associated with a contact, <b>Call History</b> provides the access to view that contact when viewing the call record in one of the lists or the detailed view.
+
+<p>For all call records not associated with a contact, or call records associated<br/>
+with a contact that have a mobile phone number type, <b>Call History</b> allows<br/>
+the user to create a message using the phone number of the record.</p>
+
+<p><b>Call History</b> associates a call record with a contact where possible and provides the ability to create new contacts from call records that have no associated contact.</p>
+
+<p><b>Call History</b> allows the creation of Messages based on call records.</p>
+<h3><a name=QTOPIA-277>SIM Storage Integration</a></h3>
+<p>When a new SIM is inserted, the call list stored in the SIM is read and integrated with the master list on the phone.
+
+<p>It attempts to read the following phone books on the SIM.</p>
+
+<ul>
+	<li><tt>DC</tt> Dialed calls</li>
+	<li><tt>LD</tt> Last dialed numbers</li>
+	<li><tt>MC</tt> Missed calls</li>
+	<li><tt>RC</tt> Received calls</li>
+</ul>
+<h3><a name=QTOPIA-279>Timezone Tracking</a></h3>
+<p>The user views the locale that the call was made in from detail view of call history if it is different to the current locale.
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

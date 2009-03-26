@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDeviceIndicatorsProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDeviceIndicatorsProvider Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDeviceIndicatorsProvider class provides the backend for the QDeviceIndicator API. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDeviceIndicatorsProvider&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qdeviceindicatorsprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdeviceindicatorsprovider.html#QDeviceIndicatorsProvider">QDeviceIndicatorsProvider</a></b> ( QObject * <i>parent</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdeviceindicatorsprovider.html#addSupportedIndicator">addSupportedIndicator</a></b> ( const QString &amp; <i>indicator</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qdeviceindicatorsprovider.html#changeIndicatorAttribute">changeIndicatorAttribute</a></b> ( const QString &amp; <i>indicator</i>, const QString &amp; <i>attribute</i>, const QVariant &amp; <i>value</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qdeviceindicatorsprovider.html#changeIndicatorState">changeIndicatorState</a></b> ( const QString &amp; <i>indicator</i>, QDeviceIndicators::IndicatorState <i>state</i> ) = 0</li>
+<li><div class="fn"/>void <b><a href="qdeviceindicatorsprovider.html#setIndicatorAttribute">setIndicatorAttribute</a></b> ( const QString &amp; <i>indicator</i>, const QString &amp; <i>attribute</i>, const QVariant &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qdeviceindicatorsprovider.html#setIndicatorState">setIndicatorState</a></b> ( const QString &amp; <i>indicator</i>, QDeviceIndicators::IndicatorState <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="qdeviceindicatorsprovider.html#setIndicatorSupportedStates">setIndicatorSupportedStates</a></b> ( const QString &amp; <i>indicator</i>, QList&lt;QDeviceIndicators::IndicatorState&gt; <i>states</i> )</li>
+<li><div class="fn"/>void <b><a href="qdeviceindicatorsprovider.html#setSupportedIndicators">setSupportedIndicators</a></b> ( const QStringList &amp; <i>indicators</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDeviceIndicatorsProvider class provides the backend for the QDeviceIndicator API.</p>
+<p>QDeviceIndicatorsProvider derived types control the status of device indicators. During construction, derived types usually call <a href="qdeviceindicatorsprovider.html#addSupportedIndicator">addSupportedIndicator</a>() followed by <a href="qdeviceindicatorsprovider.html#setIndicatorSupportedStates">setIndicatorSupportedStates</a>() to set up the indicators they provide. Derived classes must implement the <a href="qdeviceindicatorsprovider.html#changeIndicatorState">changeIndicatorState</a>() and <a href="qdeviceindicatorsprovider.html#changeIndicatorAttribute">changeIndicatorAttribute</a>() functions which perform the actual hardware operations involved.</p>
+<p>Communication between the frontend <a href="qdeviceindicators.html">QDeviceIndicators</a> and backend QDeviceIndicatorsProvider is facilitated through the Qt Extended Value Space. Whenever the state or attributes of an indicator are modified, the status of the indicators should be reflected in the Value Space via <a href="qdeviceindicatorsprovider.html#setIndicatorState">setIndicatorState</a>() and <a href="qdeviceindicatorsprovider.html#setIndicatorAttribute">setIndicatorAttribute</a>().</p>
+<p>The following table shows a few common attributes and how they could be represented.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Attribute</th><th>type(units)</th></tr></thead>
+<tr valign="top" class="odd"><td>Period (Flash state)</td><td>int (ms)</td></tr>
+<tr valign="top" class="even"><td>Duty Cycle(Flash state)</td><td>int (%)</td></tr>
+<tr valign="top" class="odd"><td>TransitionTime (Throb state)</td><td>int (ms)</td></tr>
+<tr valign="top" class="even"><td>Color</td><td><a href="qcolor.html">QColor</a></td></tr>
+</table></p>
+<p>Because the indicator names and supported states and attributes are device specific, it is expected that the implementer of the QDeviceIndicatorsProvider derived class will provide these to the user of <a href="qdeviceindicators.html">QDeviceIndicators</a>. If the possible values a particular attribute need to be queryable, then another attribute can be made specifically for this eg a SupportedColors attribute whose type is <a href="qlist.html">QList</a>&lt;<a href="qcolor.html">QColor</a>&gt;. Generally this would not be necessary since the possible supported values should be provided to the user of <a href="qdeviceindicators.html">QDeviceIndicators</a>.</p>
+<p>This class is part of the Qt Extended server and a specific implementation should be provided as part of a server task.</p>
+<p>See also <a href="qdeviceindicators.html">QDeviceIndicators</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDeviceIndicatorsProvider"></a>QDeviceIndicatorsProvider::QDeviceIndicatorsProvider ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Create a new <a href="qdeviceindicatorsprovider.html">QDeviceIndicatorsProvider</a> instance with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="addSupportedIndicator"></a>void QDeviceIndicatorsProvider::addSupportedIndicator ( const <a href="qstring.html">QString</a> &amp; <i>indicator</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Add an <i>indicator</i> that this <a href="qdeviceindicatorsprovider.html">QDeviceIndicatorsProvider</a> instance will provide. <a href="qdeviceindicatorsprovider.html#changeIndicatorState">changeIndicatorState</a>() callbacks will only occur for indicators added in this way or with <a href="qdeviceindicatorsprovider.html#setSupportedIndicators">setSupportedIndicators</a>(). This function will have no effect and produce a warning if an indicator already exists that is already being provided by this or another provider.</p>
+<p>The initial state of the <i>indicator</i> is <a href="qdeviceindicators.html#IndicatorState-enum">QDeviceIndicators::Off</a>.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#setSupportedIndicators">setSupportedIndicators</a>().</p>
+<h3 class="fn"><a name="changeIndicatorAttribute"></a>void QDeviceIndicatorsProvider::changeIndicatorAttribute ( const <a href="qstring.html">QString</a> &amp; <i>indicator</i>, const <a href="qstring.html">QString</a> &amp; <i>attribute</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Called when the <i>attribute</i> of <i>indicator</i> should be set to a new <i>value</i>. This is usually in response to a <a href="qdeviceindicators.html#setIndicatorAttribute">QDeviceIndicators::setIndicatorAttribute</a>() call. Subclasses should implement the hardware specific operations from this function.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#changeIndicatorState">changeIndicatorState</a>().</p>
+<h3 class="fn"><a name="changeIndicatorState"></a>void QDeviceIndicatorsProvider::changeIndicatorState ( const <a href="qstring.html">QString</a> &amp; <i>indicator</i>, <a href="qdeviceindicators.html#IndicatorState-enum">QDeviceIndicators::IndicatorState</a> <i>state</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Called when the <i>indicator</i> should be set to <i>state</i>. This is usually in response to a <a href="qdeviceindicators.html#setIndicatorState">QDeviceIndicators::setIndicatorState</a>() call. Subclasses should implement the hardware specific operations from this function.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#changeIndicatorAttribute">changeIndicatorAttribute</a>().</p>
+<h3 class="fn"><a name="setIndicatorAttribute"></a>void QDeviceIndicatorsProvider::setIndicatorAttribute ( const <a href="qstring.html">QString</a> &amp; <i>indicator</i>, const <a href="qstring.html">QString</a> &amp; <i>attribute</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the published <i>attribute</i> of <i>indicator</i> to <i>value</i>. This is generally called during the <a href="qdeviceindicatorsprovider.html#changeIndicatorAttribute">changeIndicatorAttribute</a>() callback to reflect the successful change in attribute or at startup to publish the attribute's initial value, but it can be called at any time.</p>
+<p>This function has no effect if <i>indicator</i> has not previously been added or set.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#setIndicatorState">setIndicatorState</a>().</p>
+<h3 class="fn"><a name="setIndicatorState"></a>void QDeviceIndicatorsProvider::setIndicatorState ( const <a href="qstring.html">QString</a> &amp; <i>indicator</i>, <a href="qdeviceindicators.html#IndicatorState-enum">QDeviceIndicators::IndicatorState</a> <i>state</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Set the published <i>indicator</i> state to <i>state</i>. This is generally called during the <a href="qdeviceindicatorsprovider.html#changeIndicatorState">changeIndicatorState</a>() callback to indicate that the state was successfully changed or at startup to set the initial state, but it can be called at any time.</p>
+<p>This function has no effect if indicator has not previously been set up.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#setIndicatorAttribute">setIndicatorAttribute</a>().</p>
+<h3 class="fn"><a name="setIndicatorSupportedStates"></a>void QDeviceIndicatorsProvider::setIndicatorSupportedStates ( const <a href="qstring.html">QString</a> &amp; <i>indicator</i>, <a href="qlist.html">QList</a>&lt;<a href="qdeviceindicators.html#IndicatorState-enum">QDeviceIndicators::IndicatorState</a>&gt; <i>states</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the published list of the supported states of <i>indicator</i> to <i>states</i>.</p>
+<p>This function has no effect if <i>indicator</i> has not previously been set up.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#setIndicatorState">setIndicatorState</a>().</p>
+<h3 class="fn"><a name="setSupportedIndicators"></a>void QDeviceIndicatorsProvider::setSupportedIndicators ( const <a href="qstringlist.html">QStringList</a> &amp; <i>indicators</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Set the <i>indicators</i> that this <a href="qdeviceindicatorsprovider.html">QDeviceIndicatorsProvider</a> instance will provide. <a href="qdeviceindicatorsprovider.html#changeIndicatorState">changeIndicatorState</a>() callbacks will only occur for indicators set in this way or added with <a href="qdeviceindicatorsprovider.html#addSupportedIndicator">addSupportedIndicator</a>(). If an indicator in the in the <i>indicators</i> list is already provided by another <a href="qdeviceindicators.html">QDeviceIndicators</a> instance, then that indicator is not set and a warning is produced.</p>
+<p>The initial state of the <i>indicators</i> is <a href="qdeviceindicators.html#IndicatorState-enum">QDeviceIndicators::Off</a>.</p>
+<p>See also <a href="qdeviceindicatorsprovider.html#addSupportedIndicator">addSupportedIndicator</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

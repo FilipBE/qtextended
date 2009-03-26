@@ -1,0 +1,10 @@
+MODULE_NAME=project2
+
+DEPEND [
+    TYPE=DEPENDS
+    EVAL="BAZ*=baz"
+]
+
+DEP.TYPE=DEPENDS METOO
+DEP.MODULES=project1
+

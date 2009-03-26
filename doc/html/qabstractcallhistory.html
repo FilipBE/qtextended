@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAbstractCallHistory Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAbstractCallHistory Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QAbstractCallHistory class allows developers to replace the &quot;call history screen&quot; portion of the Phone UI. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAbstractCallHistory&gt;</pre><p>Inherits <a href="qwidget.html">QWidget</a>.</p>
+<p>Inherited by <a href="phonecallhistory.html">PhoneCallHistory</a>.</p>
+<ul>
+<li><a href="qabstractcallhistory-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qabstractcallhistory.html#QAbstractCallHistory">QAbstractCallHistory</a></b> ( QWidget * <i>parent</i> = 0, Qt::WFlags <i>flags</i> = 0 )</li>
+<li><div class="fn"/>virtual void <b><a href="qabstractcallhistory.html#refresh">refresh</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qabstractcallhistory.html#reset">reset</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qabstractcallhistory.html#setFilter">setFilter</a></b> ( const QString &amp; <i>f</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qabstractcallhistory.html#showMissedCalls">showMissedCalls</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>206 public functions inherited from <a href="qwidget.html#public-functions">QWidget</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>14 public functions inherited from <a href="qpaintdevice.html#public-functions">QPaintDevice</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qabstractcallhistory.html#requestedDial">requestedDial</a></b> ( const QString &amp; <i>number</i>, const QUniqueId &amp; <i>uid</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractcallhistory.html#viewedMissedCalls">viewedMissedCalls</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qwidget.html#signals">QWidget</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>57 properties inherited from <a href="qwidget.html#properties">QWidget</a></li>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>19 public slots inherited from <a href="qwidget.html#public-slots">QWidget</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qwidget.html#static-public-members">QWidget</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>38 protected functions inherited from <a href="qwidget.html#protected-functions">QWidget</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qpaintdevice.html#protected-functions">QPaintDevice</a></li>
+<li><div class="fn"/>1 protected slot inherited from <a href="qwidget.html#protected-slots">QWidget</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+<li><div class="fn"/>1 protected type inherited from <a href="qpaintdevice.html#protected-variables">QPaintDevice</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAbstractCallHistory class allows developers to replace the &quot;call history screen&quot; portion of the Phone UI.</p>
+<p>The QAbstractCallHistory is part of the <a href="qtopiaserverapplication.html#qt-extended-server-widgets">server widgets framework</a> and represents the portion of the phone UI that users can access to see missing calls, dialed calls and received calls. A small tutorial on how to develop new server widgets using one of the abstract widgets as base can be found in <a href="qabstractserverinterface.html">QAbstractServerInterface</a> class documentation. In addition it is marked as singleton interface. For more details about the concept of singleton server widgets refer to the <a href="qtopiaserverapplication.html#singleton-pattern">server widget documentation</a>.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAbstractCallHistory"></a>QAbstractCallHistory::QAbstractCallHistory ( <a href="qwidget.html">QWidget</a> * <i>parent</i> = 0, <a href="qt.html#WFlags-typedef">Qt::WFlags</a> <i>flags</i> = 0 )</h3>
+<p>Constructs a new <a href="qabstractcallhistory.html">QAbstractCallHistory</a> instance, with the specified <i>parent</i> and widget <i>flags</i>.</p>
+<h3 class="fn"><a name="refresh"></a>void QAbstractCallHistory::refresh ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Refresh the views.</p>
+<h3 class="fn"><a name="requestedDial"></a>void QAbstractCallHistory::requestedDial ( const <a href="qstring.html">QString</a> &amp; <i>number</i>, const <a href="quniqueid.html">QUniqueId</a> &amp; <i>uid</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when a dial is requested. The <i>number</i> sent is the phone number requested and the <i>uid</i> is the unique identifier for this contact.</p>
+<h3 class="fn"><a name="reset"></a>void QAbstractCallHistory::reset ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Reset the filtering criterias of the views.</p>
+<h3 class="fn"><a name="setFilter"></a>void QAbstractCallHistory::setFilter ( const <a href="qstring.html">QString</a> &amp; <i>f</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Sets <i>f</i> as the filtering criteria of the calls view. This will replace any existing filtering criteria.</p>
+<h3 class="fn"><a name="showMissedCalls"></a>void QAbstractCallHistory::showMissedCalls ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if the missed calls have been seen, false otherwise.</p>
+<h3 class="fn"><a name="viewedMissedCalls"></a>void QAbstractCallHistory::viewedMissedCalls ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the missed calls have been seen.</p>
+<p>See also <a href="qabstractcallhistory.html#showMissedCalls">showMissedCalls</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

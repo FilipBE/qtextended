@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMakeObject Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMakeObject Class Reference</h1>
+<p>The QMakeObject class represents a node in the QBuild project tree. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMakeObject&gt;</pre><p>Inherited by <a href="project.html">Project</a> and <a href="startupfile.html">StartupFile</a>.</p>
+<ul>
+<li><a href="qmakeobject-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qmakeobject-traceinfo.html">TraceInfo</a></b></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>QString <b><a href="qmakeobject.html#absoluteName">absoluteName</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qmakeobject.html#addValue">addValue</a></b> ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</li>
+<li><div class="fn"/>bool <b><a href="qmakeobject.html#isProperty">isProperty</a></b> ( const QString &amp; <i>property</i> ) const</li>
+<li><div class="fn"/>QString <b><a href="qmakeobject.html#name">name</a></b> () const</li>
+<li><div class="fn"/>QMakeObject * <b><a href="qmakeobject.html#parent">parent</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="qmakeobject.html#properties">properties</a></b> () const</li>
+<li><div class="fn"/>QMakeObject * <b><a href="qmakeobject.html#property">property</a></b> ( const QString &amp; <i>property</i> ) const</li>
+<li><div class="fn"/>QMakeObject * <b><a href="qmakeobject.html#root">root</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmakeobject.html#rootPath">rootPath</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qmakeobject.html#setName">setName</a></b> ( const QString &amp; <i>path</i> )</li>
+<li><div class="fn"/>void <b><a href="qmakeobject.html#setValue">setValue</a></b> ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</li>
+<li><div class="fn"/>void <b><a href="qmakeobject.html#subtractValue">subtractValue</a></b> ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</li>
+<li><div class="fn"/>void <b><a href="qmakeobject.html#uniteValue">uniteValue</a></b> ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</li>
+<li><div class="fn"/>QStringList <b><a href="qmakeobject.html#value">value</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qmakeobject.html#valueCount">valueCount</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qmakeobject.html#watch">watch</a></b> ( const QString &amp; <i>function</i> )</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QMakeObject * <b><a href="qmakeobject.html#object">object</a></b> ( const QString &amp; <i>path</i>, Project * <i>ctxt</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMakeObject class represents a node in the QBuild project tree.</p>
+<p>This class is NOT generally threadsafe. Once QMakeObject::setReadOnly() has been called the object and its internal structure can no longer change and thus can be freely accessed concurrently from multiple threads.</p>
+<p>QMakeObject is reenterent.</p>
+<p>This class represents an object in QBuild. At it's simplest, an object can be created like this.</p>
+<pre>    foo.bar=1
+    foo.baz=2</pre>
+<p>This causes an object with path <tt>foo</tt> to be created. It has properties <tt>bar</tt> and <tt>baz</tt>. Objects can be nested. All QBuild variables are objects so QMakeObject is used to represent variables.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="absoluteName"></a>QString QMakeObject::absoluteName () const</h3>
+<p>Returns the fully-qualified name of the object.</p>
+<h3 class="fn"><a name="addValue"></a>void QMakeObject::addValue ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</h3>
+<p>Append <i>value</i> to the items the object represents. The <i>ctxt</i> object is for debugging purposes.</p>
+<h3 class="fn"><a name="isProperty"></a>bool QMakeObject::isProperty ( const QString &amp; <i>property</i> ) const</h3>
+<p>Returns true if the object has a property called <i>property</i>.</p>
+<h3 class="fn"><a name="name"></a>QString QMakeObject::name () const</h3>
+<p>Returns the name of the object relative to its parent.</p>
+<p>See also <a href="qmakeobject.html#setName">setName</a>().</p>
+<h3 class="fn"><a name="object"></a>QMakeObject * QMakeObject::object ( const QString &amp; <i>path</i>, <a href="project.html">Project</a> * <i>ctxt</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns an object specified by the absolute path <i>path</i>.</p>
+<p>path is in the form <tt>[&lt;project path&gt;/]&lt;object path&gt;</tt> where <tt>&lt;project path&gt;</tt> is <tt>/</tt> deliminated and <tt>&lt;object path&gt;</tt> is <tt>.</tt> deliminated. Absence of the project path means the current project.</p>
+<p>Returns 0 if no such object. The <i>ctxt</i> object is for debugging.</p>
+<h3 class="fn"><a name="parent"></a>QMakeObject * QMakeObject::parent () const</h3>
+<p>Returns the parent object.</p>
+<h3 class="fn"><a name="properties"></a>QStringList QMakeObject::properties () const</h3>
+<p>Returns a list of the properties the object has.</p>
+<h3 class="fn"><a name="property"></a>QMakeObject * QMakeObject::property ( const QString &amp; <i>property</i> ) const</h3>
+<p>Returns an object representing property <i>property</i>.</p>
+<h3 class="fn"><a name="root"></a>QMakeObject * QMakeObject::root () const</h3>
+<p>Walks up the tree and returns the top parent.</p>
+<h3 class="fn"><a name="rootPath"></a>QString QMakeObject::rootPath () const</h3>
+<p>Walks up the tree and returns the name of the top parent.</p>
+<h3 class="fn"><a name="setName"></a>void QMakeObject::setName ( const QString &amp; <i>path</i> )</h3>
+<p>Set the name of the variable to <i>path</i>. This does not reposition the object in the heirachy, it will still have the same parent.</p>
+<p>See also <a href="qmakeobject.html#name">name</a>().</p>
+<h3 class="fn"><a name="setValue"></a>void QMakeObject::setValue ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</h3>
+<p>Set the items the object represents to <i>value</i>. The <i>ctxt</i> object is for debugging purposes.</p>
+<p>See also <a href="qmakeobject.html#value">value</a>().</p>
+<h3 class="fn"><a name="subtractValue"></a>void QMakeObject::subtractValue ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</h3>
+<p>For every item in <i>value</i>, remove that item from the items the object represents. The <i>ctxt</i> object is for debugging purposes.</p>
+<h3 class="fn"><a name="uniteValue"></a>void QMakeObject::uniteValue ( const QStringList &amp; <i>value</i>, TraceContext * <i>ctxt</i> = 0 )</h3>
+<p>For every item in <i>value</i>, append that item to the items the object represents unless it already exists. The <i>ctxt</i> object is for debugging purposes.</p>
+<h3 class="fn"><a name="value"></a>QStringList QMakeObject::value () const</h3>
+<p>Returns the items the object represents.</p>
+<p>See also <a href="qmakeobject.html#setValue">setValue</a>().</p>
+<h3 class="fn"><a name="valueCount"></a>int QMakeObject::valueCount () const</h3>
+<p>Returns the number of items the object represents.</p>
+<h3 class="fn"><a name="watch"></a>void QMakeObject::watch ( const QString &amp; <i>function</i> )</h3>
+<p>Call <i>function</i> when this object changes.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

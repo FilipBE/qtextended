@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Database Policy</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Database Policy<br /><span class="subtitle"></span>
+</h1>
+<p>This document details the normative requirements for use of the relational database systems in Qt Extended and should be read in conjunction with the <a href="database-specification.html">Database Specification</a> which contains background information for these policies. The development of applications or use of the relational database systems other than in compliance with this policy is not supported.</p>
+<ul><li><a href="#database-schema-modification-and-creation">Database Schema Modification and Creation</a></li>
+</ul>
+<a name="database-schema-modification-and-creation"></a>
+<h2>Database Schema Modification and Creation</h2>
+<p>To modify the the Qt Extended database system a number of rules <b>must</b> be followed for each database element.</p>
+<p>For example, <tt>TABLE</tt>, must have a <i>Unique Prefix</i> constructed using the following steps:</p>
+<p>Using the full company or organization URL (for example, <tt>example.com</tt>) follow these steps:</p>
+<ol type="1">
+<li>reverse the order of the sections separated by periods: <tt>com.example</tt></li>
+<li>replace the periods with an underscore character: <tt>com_example</tt></li>
+<li>append an underscore character: <tt>com_example_</tt></li>
+</ol>
+<p>resulting in a <i>Unique Prefix</i> for <tt>example.com</tt> of: <tt>com_example_</tt></p>
+<p>The following table provides the normative requirements for each rule and a brief description of the rule.</p>
+<p><b>Note:</b></p>
+<ol type="1">
+<li>The term <i>the schema</i> refers to the Qt Extended schema implementation as described in the <a href="database-specification.html">Database Specification</a>.</li>
+<li>The term <tt>unique_prefix_</tt> should be replaced with the constructed <i>Unique Prefix</i>.</li>
+</ol>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Normative Rule</th><th>Explanation</th></tr></thead>
+<tr valign="top" class="odd"><td>Avoid modifying the schema</td><td>Create a custom database with code such as:<pre>    CREATE DATABASE unique_prefix_some_database</pre>
+<p>There are both positives and negatives to this scenario. The positives are that your database wil not be subject to system wide upgrades to the database system. This will allow you complete control over your data lifetime. The negatives are that your data will not be included in system data backups and restores, and as such you are responsible for providing for the safety and security of your own data.</p>
+</td></tr>
+<tr valign="top" class="even"><td>Avoid modifying existing tables.</td><td>Create a custom table with code such as:<pre>    CREATE TABLE unique_prefix_some_table (...)</pre>
+<p>Use a foreign key into the table whose data is required to be referenced so that that table does not need to be altered. The system tables controlled by the Qt Extended development team should be classed as untouchable for several reasons. The foremost being that the only field we guarantee to exist will be the key field. Key fields for information will not be modified when the record is modified, so you can base your own custom data storage upon these keys. Referential integrity is not guaranteed on all database platforms, so you must also make sure to handle foreign key constraints in your application (ie, rows may be added/dissapear outside of your control, you should code to handle this).</p>
+</td></tr>
+<tr valign="top" class="odd"><td>Do not modify or add columns to system tables.</td><td>Use the string attribute tables, for example, the <tt>*custom</tt> tables in <tt>PIM</tt> or the <tt>contentProps</tt> table in <tt>Content</tt>. See <a href="qcontent.html#property">QContent::property</a>() for information on how to access this table. These tables have been designed to allow quick and easy extension to the system information. If this suits your design, you are free and encouraged to use them.</td></tr>
+<tr valign="top" class="even"><td>Do not delete or modify column definitions.</td><td>Breaking this rule may prevent version migration scripts from working. The overhead of having a column empty is preferable to breaking compatibility. Create a new column with the desired information, for example:<pre>    ALTER TABLE qtopia_table ADD COLUMN unique_prefix_old_col INT;
+    UPDATE qtopia_table SET unique_prefix_old_col=old_col||'_new_data';</pre>
+<p>Columns should not be removed between minor releases (ie, 4.16-&gt;4.17) to ensure backwards compatibility. Between major releases (ie, 4.16-&gt;4.20), a database migration script should be supplied if migration is necessary, otherwise a straight table to table copy will be invoked. When handling database per-media, if a prior major-revision database is available upon the card, it will be considered read-only, and modifications will be stored sideways in a version-numbered database with the original database left intact (so that if for example, an SD-Card is inserted into an older version device, the original data will still continue to work as designed).</p>
+</td></tr>
+<tr valign="top" class="odd"><td>Do not remove or alter <tt>INDEXES</tt>.</td><td>This can change the way existing queries work in subtle and hard-to-debug ways. If a particular query requires a new method to sort data, consider setting up a new table and importing the data, or performing the query with a sub-select or temporary table.</td></tr>
+<tr valign="top" class="even"><td>Do not to modify the existing schema for new functionality.</td><td>Research the problem to see if another way can be found. If at all possible in the design phase, take into account the fact that extra data may be needed at a later date, or by another application. Adding a facility to your tables and code to store data tied by keys to the original information will save you a lot of extra work in the long run.</td></tr>
+<tr valign="top" class="odd"><td>Create a consistent primary key field.</td><td>If there is a chance that third parties will be using your data to reference too, create a primary key field. This will allow third party developers to include/reference your data in their own tables and applications without the need to modify your table directly, reducing the chance of the table being in a previously unforseen state. While the row exists in a valid form, every effort should be made to keep this key consistent as much as possible to facilitate referential integrity by 3rd parties.</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

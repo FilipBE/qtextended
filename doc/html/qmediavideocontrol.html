@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaVideoControl Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaVideoControl Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaVideoControl class is an interface to videos playing through the Qt Extended Media System. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaVideoControl&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qmediavideocontrol-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmediavideocontrol.html#QMediaVideoControl">QMediaVideoControl</a></b> ( QMediaContent * <i>mediaContent</i> )</li>
+<li><div class="fn"/><b><a href="qmediavideocontrol.html#dtor.QMediaVideoControl">~QMediaVideoControl</a></b> ()</li>
+<li><div class="fn"/>QWidget * <b><a href="qmediavideocontrol.html#createVideoWidget">createVideoWidget</a></b> ( QWidget * <i>parent</i> = 0 ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmediavideocontrol.html#setVideoRotation">setVideoRotation</a></b> ( QtopiaVideo::VideoRotation <i>rotation</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediavideocontrol.html#setVideoScaleMode">setVideoScaleMode</a></b> ( QtopiaVideo::VideoScaleMode <i>scaleMode</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmediavideocontrol.html#invalid">invalid</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediavideocontrol.html#valid">valid</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediavideocontrol.html#videoTargetAvailable">videoTargetAvailable</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qmediavideocontrol.html#videoTargetRemoved">videoTargetRemoved</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QString <b><a href="qmediavideocontrol.html#name">name</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaVideoControl class is an interface to videos playing through the Qt Extended Media System.</p>
+<p>If a prepared media resource has associated video content, when that content is available to be played, this inteface can be used to contruct a <a href="qwidget.html">QWidget</a> which will contain the rendering of the video content.</p>
+<p>Use the <a href="qmediacontrolnotifier.html">QMediaControlNotifier</a> class to listen for when video content is available.</p>
+<pre>    QMediaControlNotifier *notifier = new QMediaControlNotifier( QMediaVideoControl::name() );
+    connect( notifier, SIGNAL(valid()), this, SLOT(showVideo()) );
+
+    QMediaContent *content = new QMediaContent( &quot;video.3gp&quot; );
+    notifier-&gt;setMediaContent( content );</pre>
+<p>If video content is available <a href="qmediavideocontrol.html#createVideoWidget">createVideoWidget</a>() can be used to construct a new video widget for the media content.</p>
+<pre>    QMediaVideoControl control( content );
+
+    QWidget *video = control.createVideoWidget();
+    videolayout-&gt;addWidget( video );</pre>
+<p>Simply delete video widgets when they are no longer needed or when the video control becomes invalid.</p>
+<p>See also <a href="qmediacontent.html">QMediaContent</a> and <a href="qmediacontrolnotifier.html">QMediaControlNotifier</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMediaVideoControl"></a>QMediaVideoControl::QMediaVideoControl ( <a href="qmediacontent.html">QMediaContent</a> * <i>mediaContent</i> )</h3>
+<p>Create a <a href="qmediavideocontrol.html">QMediaVideoControl</a> with the handle to a prepared media resource</p>
+<p>The <a href="qmediacontrol.html">QMediaControl</a> needs to be constructed with <i>mediaContent</i> that represents the video to be played.</p>
+<h3 class="fn"><a name="dtor.QMediaVideoControl"></a>QMediaVideoControl::~QMediaVideoControl ()</h3>
+<p>Destroy a <a href="qmediavideocontrol.html">QMediaVideoControl</a></p>
+<h3 class="fn"><a name="createVideoWidget"></a><a href="qwidget.html">QWidget</a> * QMediaVideoControl::createVideoWidget ( <a href="qwidget.html">QWidget</a> * <i>parent</i> = 0 ) const</h3>
+<p>Create a <a href="qwidget.html">QWidget</a> that displays the rendered video content.</p>
+<p>This function is used to create a <a href="qwidget.html">QWidget</a> that will display the video content, it is parented to the widget passed in with the <i>parent</i> parameter. This widget can be deleted when the application is finished with it.</p>
+<h3 class="fn"><a name="invalid"></a>void QMediaVideoControl::invalid ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the control is invalid and no longer available for use.</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> QMediaVideoControl::name ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Return the name of this control.</p>
+<h3 class="fn"><a name="setVideoRotation"></a>void QMediaVideoControl::setVideoRotation ( <a href="qtopiavideo.html#VideoRotation-enum">QtopiaVideo::VideoRotation</a> <i>rotation</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set video image <i>rotation</i> mode.</p>
+<p>See also <a href="qtopiavideo.html#VideoRotation-enum">QtopiaVideo::VideoRotation</a>.</p>
+<h3 class="fn"><a name="setVideoScaleMode"></a>void QMediaVideoControl::setVideoScaleMode ( <a href="qtopiavideo.html#VideoScaleMode-enum">QtopiaVideo::VideoScaleMode</a> <i>scaleMode</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the video using <i>scaleMode</i> to be scaled to fit the window size ( <a href="qtopiavideo.html#VideoScaleMode-enum">QtopiaVideo::FitWindow</a> ) or stay unchanged ( QtopiaMedia::NoScale ).</p>
+<p>See also <a href="qtopiavideo.html#VideoScaleMode-enum">QtopiaVideo::VideoScaleMode</a>.</p>
+<h3 class="fn"><a name="valid"></a>void QMediaVideoControl::valid ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the control is valid and available for use.</p>
+<h3 class="fn"><a name="videoTargetAvailable"></a>void QMediaVideoControl::videoTargetAvailable ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when there is a video available to be viewed. The client can call <a href="qmediavideocontrol.html#createVideoWidget">createVideoWidget</a>() at this time.</p>
+<p>See also <a href="qmediavideocontrol.html#createVideoWidget">createVideoWidget</a>().</p>
+<h3 class="fn"><a name="videoTargetRemoved"></a>void QMediaVideoControl::videoTargetRemoved ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when there is no longer video available to be viewed. The client should delete any <a href="qwidget.html">QWidget</a> obtained from <a href="qmediavideocontrol.html#createVideoWidget">createVideoWidget</a>()</p>
+<p>See also <a href="qmediavideocontrol.html#createVideoWidget">createVideoWidget</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

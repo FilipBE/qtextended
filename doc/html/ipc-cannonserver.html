@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Qt Extended IPC Server</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Qt Extended IPC Server<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="ipc-cannonserver-main-cpp.html">ipc/cannonserver/main.cpp</a></li>
+<li><a href="ipc-cannonserver-qbuild-pro.html">ipc/cannonserver/qbuild.pro</a></li>
+</ul>
+<p>The Qt Extended IPC Tutorial demonstrates the use of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>, which is the fundamental class of the Qt Extended IPC system. This example demonstrates the basics of sending and receiving messages between different applications. For the other part of this tutorial, see <a href="ipc-cannonclient.html">Tutorial: Qt Extended IPC Client</a>.</p>
+<p>The cannonserver application starts and begins listening on an IPC channel <b>QPE/CannonExample</b>. When it receives a cannon shoot order, it randomly decides whether the cannon has hit something or missed completely. It then broadcasts the results of the shot on the same channel and exits.</p>
+<a name="cannonlistener-class-definition"></a>
+<h2>CannonListener Class Definition</h2>
+<pre>    class CannonListener : public QtopiaIpcAdaptor
+    {
+        Q_OBJECT
+
+    public:
+        CannonListener(QObject *parent = 0);
+
+    public slots:
+        void shootCannon(int);
+
+    signals:
+        void missed();
+        void hit();
+    };</pre>
+<p>The CannonListener class inherits <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> which is used to send and receive messages between Qt Extended based applications. There are two signals that CannonListener class emits, and a one slot. When a message of type <tt>shootCannon()</tt> arrives, the <tt>shootCannon</tt> slot will be called in CannonListener automatically. Similarly, when the CannonListener emits a signal, a message with the same signature will be sent over the IPC channel.</p>
+<a name="cannonlistener-class-implementation"></a>
+<h2>CannonListener Class Implementation</h2>
+<p>The constructor contains a single call to publishAll(). This tells the Qt Extended IPC system to make the necessary connections between the IPC messages and slots in the CannonListener class. In this example we want all messages with the same signature as the public slots to be hooked up automatically. All signals sent by this class will also be automatically broadcast to the remote clients whenever CannonListener emits the defined signal.</p>
+<pre>    CannonListener::CannonListener(QObject *parent)
+        : QtopiaIpcAdaptor(&quot;QPE/CannonExample&quot;, parent)
+    {
+        publishAll(QtopiaIpcAdaptor::SignalsAndSlots);
+    }</pre>
+<p>The <tt>shootCannon()</tt> slot will be automatically called whenever a message with the same signature arrives. The <tt>power</tt> parameter will hold the message arguments. We roll a simple dice to figure out whether the cannon hit or missed and emit a corresponding signal. This will result in the Qt Extended IPC system broadcasting and IPC message with the same signature. Finally we delete the CannonListener object by using deleteLater(). This will result in the application terminating.</p>
+<pre>    void CannonListener::shootCannon(int power)
+    {
+        int pwr = power % 100;
+        int roll = qrand() % 100;
+
+        if (pwr &gt;= roll)
+            emit hit();
+        else
+            emit missed();
+
+        deleteLater();
+    }</pre>
+<a name="building-the-cannon-listener-application"></a>
+<h2>Building the Cannon Listener application.</h2>
+<p>To install and run the Cannon Listener application, carry out the following steps.</p>
+<ol type="1">
+<li>Create a new directory (e.g&#x2e; $HOME/src/cannonserver) and copy all the example files to that directory.<pre>    mkdir $HOME/src/cannonserver
+    cd $HOME/src/cannonserver
+    cp -r &lt;qtextended-source-directory&gt;/examples/ipc/cannonserver/* .
+    chmod +w *</pre>
+</li>
+<li>Build the new application.<pre>    export QPEDIR=&lt;qtextended-build-directory&gt;
+    $QPEDIR/bin/qbuild
+    $QPEDIR/bin/qbuild image</pre>
+</li>
+<li>Run Qt Extended.<pre>    $QPEDIR/bin/runqtopia</pre>
+</li>
+<li>Run the cannonserver application, you can then run the cannonclient application.</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

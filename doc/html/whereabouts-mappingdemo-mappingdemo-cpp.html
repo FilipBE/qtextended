@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>mappingdemo.cpp Example File (whereabouts/mappingdemo/mappingdemo.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">mappingdemo.cpp Example File<br /><span class="small-subtitle">whereabouts/mappingdemo/mappingdemo.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;mappingdemo.h&quot;
+
+    #include &lt;QWhereabouts&gt;
+    #include &lt;QWhereaboutsFactory&gt;
+    #include &lt;QNmeaWhereabouts&gt;
+    #include &lt;QtopiaApplication&gt;
+    #include &lt;QSoftMenuBar&gt;
+    #include &lt;qtopianamespace.h&gt;
+
+    #include &lt;QDebug&gt;
+    #include &lt;QVBoxLayout&gt;
+    #include &lt;QLabel&gt;
+    #include &lt;QDateTime&gt;
+    #include &lt;QStackedWidget&gt;
+    #include &lt;QTimer&gt;
+    #include &lt;QHttp&gt;
+    #include &lt;QFile&gt;
+    #include &lt;QRadioButton&gt;
+
+<span class="comment">    // this uses the special 'localhost' key for the gmaps key</span>
+    const QString GMAPS_STATICMAP_URL_TEMPLATE =  &quot;http:<span class="comment">//maps.google.com/staticmap?center=%1,%2&amp;zoom=14&amp;size=%3x%4&amp;maptype=mobile&amp;markers=%1,%2&amp;key=ABQIAAAAnfs7bKE82qgb3Zc2YyS-oBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxSySz_REpPq-4WZA27OwgbtyR3VcA&quot;;</span>
+
+    class WhereaboutsInfoWidget : public QWidget
+    {
+        Q_OBJECT
+    public:
+        WhereaboutsInfoWidget(QWidget *parent = 0);
+
+    public slots:
+        void whereaboutsStateChanged(QWhereabouts::State state);
+        void whereaboutsUpdated(const QWhereaboutsUpdate &amp;update);
+
+    private slots:
+        void reloadMap();
+        void httpRequestFinished(int id, bool error);
+
+    private:
+        QHttp *m_http;
+        QLabel *m_mapWidget;
+        QStackedWidget *m_infoStack;
+        QLabel *m_labelTime;
+        QLabel *m_labelPosn;
+        QLabel *m_labelCourseSpeed;
+        QTimer *m_timer;
+
+        QWhereaboutsUpdate m_lastUpdate;
+    };
+
+    WhereaboutsInfoWidget::WhereaboutsInfoWidget(QWidget *parent)
+        : QWidget(parent),
+          m_http(new QHttp(this)),
+          m_mapWidget(new QLabel),
+          m_infoStack(new QStackedWidget),
+          m_labelTime(new QLabel),
+          m_labelPosn(new QLabel),
+          m_labelCourseSpeed(new QLabel),
+          m_timer(0)
+    {
+        m_http-&gt;setHost(&quot;maps.google.com&quot;);
+        connect(m_http, SIGNAL(requestFinished(int,bool)),
+                SLOT(httpRequestFinished(int,bool)));
+
+        m_mapWidget-&gt;setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+        m_infoStack-&gt;setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+
+        QFont f = m_labelTime-&gt;font();
+        f.setPointSize(f.pointSize() - 1);
+        m_labelPosn-&gt;setFont(f);
+        m_labelCourseSpeed-&gt;setFont(f);
+        m_labelTime-&gt;setFont(f);
+        m_labelCourseSpeed-&gt;setText(tr(&quot;Bearing unknown; speed unknown&quot;));
+
+        <span class="comment">// widget to hold the labels that display the GPS information</span>
+        QWidget *statsWidget = new QWidget;
+        QVBoxLayout *statsLayout = new QVBoxLayout;
+        statsLayout-&gt;setMargin(0);
+        statsLayout-&gt;setSpacing(0);
+        statsLayout-&gt;addWidget(m_labelPosn);
+        statsLayout-&gt;addWidget(m_labelCourseSpeed);
+        statsLayout-&gt;addWidget(m_labelTime);
+        statsWidget-&gt;setLayout(statsLayout);
+        m_infoStack-&gt;addWidget(new QLabel(tr(&quot;GPS not available!&quot;)));
+        m_infoStack-&gt;addWidget(new QLabel(tr(&quot;Connected, waiting for fix...&quot;)));
+        m_infoStack-&gt;addWidget(statsWidget);
+
+        QVBoxLayout *mainLayout = new QVBoxLayout;
+        mainLayout-&gt;addWidget(m_mapWidget);
+        mainLayout-&gt;addWidget(m_infoStack);
+        setLayout(mainLayout);
+    }
+
+    void WhereaboutsInfoWidget::whereaboutsStateChanged(QWhereabouts::State state)
+    {
+        switch (state) {
+            case QWhereabouts::NotAvailable:
+                m_infoStack-&gt;setCurrentIndex(0);    <span class="comment">// &quot;GPS not available</span>!&quot;
+                break;
+            case QWhereabouts::PositionFixAcquired:
+                m_infoStack-&gt;setCurrentIndex(2);
+                if (!m_timer) {
+                    QTimer *timer = new QTimer(this);
+                    connect(timer, SIGNAL(timeout()), SLOT(reloadMap()));
+                    timer-&gt;start(1200);
+                }
+                break;
+            default:
+                m_infoStack-&gt;setCurrentIndex(1);    <span class="comment">// &quot;Connected, waiting for fix...&quot;</span>
+        }
+    }
+
+    void WhereaboutsInfoWidget::whereaboutsUpdated(const QWhereaboutsUpdate &amp;update)
+    {
+        m_labelPosn-&gt;setText(tr(&quot;Position: %1&quot;)
+                .arg(update.coordinate().toString(QWhereaboutsCoordinate::DecimalDegreesWithHemisphere)));
+
+        if (update.dataValidityFlags() &amp; QWhereaboutsUpdate::Course &amp;&amp;
+                update.dataValidityFlags() &amp; QWhereaboutsUpdate::GroundSpeed) {
+            m_labelCourseSpeed-&gt;setText(tr(&quot;Bearing %1%2, travelling at %3 km/h&quot;)
+                    .arg(QString::number(update.course())).arg(QChar(0x00B0))   <span class="comment">// degrees symbol</span>
+                    .arg(QString::number(update.groundSpeed() * 3.6, 'f', 1)));
+        }
+
+        m_labelTime-&gt;setText(tr(&quot;(Last update: %1)&quot;).
+                arg(update.updateDateTime().toLocalTime().time().toString()));
+
+        m_lastUpdate = update;
+    }
+
+    void WhereaboutsInfoWidget::reloadMap()
+    {
+        <span class="comment">// Google Maps does not provide maps larger than 640x480</span>
+        int width = qMin(m_mapWidget-&gt;width(), 640);
+        int height = qMin(m_mapWidget-&gt;height(), 480);
+        QString url = GMAPS_STATICMAP_URL_TEMPLATE
+                            .arg(QString::number(m_lastUpdate.coordinate().latitude()))
+                            .arg(QString::number(m_lastUpdate.coordinate().longitude()))
+                            .arg(QString::number(width))
+                            .arg(QString::number(height));
+        m_http-&gt;get(url);
+    }
+
+    void WhereaboutsInfoWidget::httpRequestFinished(int id, bool error)
+    {
+        Q_UNUSED(id);
+        if (error) {
+            qWarning() &lt;&lt; &quot;Cannot load Google Maps image, got HTTP error:&quot;
+                    &lt;&lt; m_http-&gt;errorString();
+            return;
+        }
+
+        if (m_http-&gt;currentRequest().method() == &quot;GET&quot;) {
+            QHttpResponseHeader response = m_http-&gt;lastResponse();
+            if (response.statusCode() != 200) {
+                qWarning() &lt;&lt; &quot;Request for Google Maps image failed, server responded&quot;
+                        &lt;&lt; response.statusCode() &lt;&lt; response.reasonPhrase();
+                return;
+            }
+
+            QPixmap pixmap(m_mapWidget-&gt;width(), m_mapWidget-&gt;height());
+            QByteArray data = m_http-&gt;readAll();
+            if (!pixmap.loadFromData(data, &quot;GIF&quot;)) {
+                qWarning() &lt;&lt; &quot;Cannot read Google Maps image!&quot;;
+                return;
+            }
+            m_mapWidget-&gt;setPixmap(pixmap);
+            m_mapWidget-&gt;adjustSize();
+        }
+    }
+
+<span class="comment">    //============================================================</span>
+
+<span class="comment">    /*
+        This example shows the basics of using the Qt Extended Whereabouts library to
+        read GPS data. It reads GPS data and then displays the location using
+        Google Maps.
+
+        When you run the example, you can choose one of the following
+        sources of GPS position data:
+
+        1) The default GPS data source, as specified in
+           $QPEDIR/etc/Settings/Trolltech/Whereabouts.conf. See the
+           QWhereaboutsFactory documentation for more details.
+
+           If your device has built-in GPS hardware and is a supported Qt Extended
+           device configuration, this option may be already configured to use the
+           GPS hardware. Otherwise, the default data source may be the built-in
+           source which requires GPSd (http://gpsd.berlios.de) to fetch position
+           data.
+
+        2) The nmea_sample.txt file in this example's directory, which
+           is a sample of recorded NMEA data. This option does not require
+           GPS hardware or GPSd.
+
+        If you would like to add your own custom GPS data sources, see the
+        QWhereaboutsPlugin documentation.
+    */</span>
+
+    MappingDemo::MappingDemo(QWidget *parent, Qt::WFlags f)
+        : QMainWindow(parent, f)
+    {
+        int dialogResult = QDialog::Rejected;
+        QWhereabouts *whereabouts = chooseWhereabouts(&amp;dialogResult);
+        if (!whereabouts) {
+            if (dialogResult == QDialog::Accepted)
+                QMessageBox::warning(this, tr(&quot;Error&quot;), tr(&quot;Cannot find a location data source.&quot;));
+            QTimer::singleShot(0, this, SLOT(close()));
+            return;
+        }
+
+        WhereaboutsInfoWidget *display = new WhereaboutsInfoWidget;
+        display-&gt;whereaboutsStateChanged(whereabouts-&gt;state());
+
+        connect(whereabouts, SIGNAL(stateChanged(QWhereabouts::State)),
+                display, SLOT(whereaboutsStateChanged(QWhereabouts::State)));
+        connect(whereabouts, SIGNAL(updated(QWhereaboutsUpdate)),
+                display, SLOT(whereaboutsUpdated(QWhereaboutsUpdate)));
+
+        whereabouts-&gt;startUpdates();
+
+        setCentralWidget(display);
+        setWindowTitle(tr(&quot;Mapping Demo&quot;));
+    }
+
+    QWhereabouts *MappingDemo::chooseWhereabouts(int *dialogResult)
+    {
+        QRadioButton *buttonDefault = new QRadioButton(tr(&quot;Default GPS source&quot;));
+        buttonDefault-&gt;setChecked(true);
+        QRadioButton *buttonNmea = new QRadioButton(tr(&quot;Sample NMEA log&quot;));
+
+        QVBoxLayout *layout = new QVBoxLayout;
+        layout-&gt;addWidget(new QLabel(tr(&quot;Choose GPS data source:&quot;)));
+        layout-&gt;addWidget(buttonDefault);
+        layout-&gt;addWidget(buttonNmea);
+
+        QDialog dialog;
+        dialog.setLayout(layout);
+        dialog.setWindowTitle(tr(&quot;Mapping Demo&quot;));
+        QSoftMenuBar::setLabel(&amp;dialog, Qt::Key_Back, QSoftMenuBar::Ok);
+        *dialogResult = QtopiaApplication::execDialog(&amp;dialog);
+
+        if (*dialogResult == QDialog::Rejected)
+            return 0;
+
+        if (buttonDefault-&gt;isChecked()) {
+            QWhereabouts *whereabouts = QWhereaboutsFactory::create();
+            if (whereabouts)
+                whereabouts-&gt;setParent(this);
+            return whereabouts;
+
+        } else {
+            QFile *sampleFile =
+                    new QFile(Qtopia::qtopiaDir() + &quot;etc/whereabouts/nmea_sample.txt&quot;, this);
+            sampleFile-&gt;open(QIODevice::ReadOnly);
+            QNmeaWhereabouts *whereabouts = new QNmeaWhereabouts(this);
+            whereabouts-&gt;setUpdateMode(QNmeaWhereabouts::SimulationMode);
+            whereabouts-&gt;setSourceDevice(sampleFile);
+            return whereabouts;
+        }
+    }
+
+    #include &quot;mappingdemo.moc&quot;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

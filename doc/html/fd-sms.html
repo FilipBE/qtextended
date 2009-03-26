@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Messaging: SMS</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Messaging: SMS<br><small>Functional Description</small></h1><p>Qt Extended's <nop>SMS features allow the user to send and receive text messages and business cards via Short Messaging Service.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1574">Adding SMS sender to Contacts</a>
+<li><a href="#QTOPIA-1557">Composing Messages</a>
+<li><a href="#QTOPIA-1563">Dependencies</a>
+<li><a href="#QTOPIA-1560">Managing Messages</a>
+<li><a href="#QTOPIA-1567">Receive Flash SMS</a>
+<li><a href="#QTOPIA-8217">Reply to an SMS</a>
+<li><a href="#QTOPIA-1562">Services</a>
+<li><a href="#QTOPIA-1558">Templates</a>
+<li><a href="#QTOPIA-1559">Viewing Messages</a>
+</ul><h3><a name=QTOPIA-1574>Adding SMS sender to Contacts</a></h3>
+<p>The user can add the sender of an SMS message to their contacts list, either as a new contact or as an additional item in an existing contact.
+<h3><a name=QTOPIA-1557>Composing Messages</a></h3>
+<p>Short text messages can be composed using handwriting recognition, keypad input or on-screen keyboard text entry, depending on the input capabilities of the device.  Predictive input recognition is supported during message composition, including the ability to add new words to the word recognition dictionary.  Once text has been entered, the user may either enter phone numbers or select entries from their Contacts list to send the message to.
+
+<p>Messages that have been partially or fully composed can be saved to the Drafts folder, rather than sent to their recipients.  Messages in the Drafts folder can be re-edited at any time, and either transmitted, or re-saved to the Drafts folder.</p>
+
+<p>The user may invoke the text message composer from within the Messages application or via the <span class="nobr"><a href="fd-Dialer.html">Dialer<sup></sup></a></span>, <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span> and <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> applications, or via a <span class="nobr"><a href="fd-SpeedDialing.html">Speed Dialing<sup></sup></a></span> shortcut.</p>
+
+<p>A business card generated from an entry in the user's <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> list can also be sent via SMS from the <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> application.  The user may choose multiple phone numbers or contact entries to send the business card to.</p>
+<h3><a name=QTOPIA-1563>Dependencies</a></h3>
+<p>The SMS features of the Messages application depend on the <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> application for the ability to select a contact to send a new text message to.
+
+<p>The Messages application depends upon the <span class="nobr"><a href="fd-Dialer.html">Dialer<sup></sup></a></span> application to dial phone numbers contained in SMS messages.</p>
+
+<p>The Messages application depends upon the <span class="nobr"><a href="fd-Printing.html">Printing<sup></sup></a></span> service to print the content of received messages.</p>
+<h3><a name=QTOPIA-1560>Managing Messages</a></h3>
+<p>The Messages application provides features for moving, copying and deleting SMS messages stored on the device.  Messages are listed in folders to show coherent subsets of all messages stored on the device.  A listing of messages displays summary information for each message, including the sender or recipients, the subject of the message, and the type and status of the message.
+
+<p>An Inbox folder is provided to allow access to incoming messages.  SMS messages are listed together with MMS messages in a combined inbox, separately from email messages.</p>
+
+<p>A Sent folder is provided to allow messages previously transmitted to be inspected, or re-sent or copied into new messages.  </p>
+
+<p>A Drafts folder is provided to store messages in an incomplete state.</p>
+
+<p>An Outbox folder is provided to permit the user access to messages that have not yet been delivered.  Messages in the Outbox folder can be deleted to abort transmission, or moved back to the Drafts folder to permit editing.</p>
+
+<p>The Messages application uses a Trash folder to allow the user to delete messages in a recoverable fashion; messages can be retrieved from the Trash folder, or permanently deleted.  The entire contents of the Trash folder can also be deleted in a single operation.</p>
+
+<p>A search feature is provided to allow the user to locate messages based on any of their properties, including location, timestamp, origin, destination, or content of the text.</p>
+<h3><a name=QTOPIA-1567>Receive Flash SMS</a></h3>
+<p>An SMS message marked with SMS Class 0 (or, "flash" SMS) is given special handling by Qt Extended.  On reception, a flash SMS is immediately displayed to the user, without first requesting the user's confirmation.  The user is then given the option to Save, otherwise the message is discarded.
+<h3><a name=QTOPIA-8217>Reply to an SMS</a></h3>
+<p>The SMS viewer enables the user to easily reply to the currently viewed SMS message.
+<h3><a name=QTOPIA-1562>Services</a></h3>
+<p>The Messages application provides a service for other applications to invoke the SMS composer.  This service is used by the <span class="nobr"><a href="fd-Dialer.html">Dialer<sup></sup></a></span>, <span class="nobr"><a href="fd-SpeedDialing.html">Speed Dialing<sup></sup></a></span> and <span class="nobr"><a href="fd-CallHistory.html">Call History<sup></sup></a></span>.
+
+<p>The Messages application provides a service for other applications to display the Inbox folder.  This service is used by <span class="nobr"><a href="fd-SpeedDialing.html">Speed Dialing<sup></sup></a></span>.</p>
+
+<p>The Messages application provides a service for other applications to send business cards via SMS.  This service is used by the <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> application.</p>
+
+<p>The Messages application provides a service allowing other applications to send the user internally generated SMS messages.  This service is used by the <span class="nobr"><a href="fd-SafeExecutionEnvironment.html">Safe Execution Environment<sup></sup></a></span> to send the user automated notifications about applications that attempt to violate their allowed security profiles.</p>
+<h3><a name=QTOPIA-1558>Templates</a></h3>
+<p>Template texts are supported when composing SMS messages. Commonly used text phrases may be quickly inserted by choosing from a menu, and new text phrases may be user defined.
+<h3><a name=QTOPIA-1559>Viewing Messages</a></h3>
+<p>Received text messages can be viewed using the Messages application.  Received SMS messages appear in the Inbox folder in the main folder list.  A received message can be replied to, or forwarded to other phone numbers or contacts.
+
+<p>If the received message contains phone numbers or email addresses, they are displayed as hyperlinks that the user can select to send a new message to.  For contained phone numbers, a context menu entry is also created to allow the user to raise the number in the <span class="nobr"><a href="fd-Dialer.html">Dialer<sup></sup></a></span>.  </p>
+
+<p>A received message can be printed if the device provides the necessary functionality.</p>
+
+<p>Received business cards are automatically added to the user's <span class="nobr"><a href="fd-Contacts.html">Contacts<sup></sup></a></span> list when the user views a message containing a business card and confirms the addition.</p>
+
+<p>When one or more new SMS messages are received, an alert is displayed on the <span class="nobr"><a href="fd-HomeScreen.html">Home Screen<sup></sup></a></span> and the Home Screen's context menu includes an option to view the new message(s).  Selecting this option takes the user directly to a view of the new message, or to the Inbox folder of the Messages application if there are multiple new messages.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Enablers: Resources: Hardware Notification</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Enablers: Resources: Hardware Notification<br><small>Functional Description</small></h1><p>
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-572">Hardware Notification</a>
+</ul><h3><a name=QTOPIA-572>Hardware Notification</a></h3>
+<p>Qt Extended relies on notification from the hardware when certain "user level" events happen, such as inserting an SD card, USB device or a PCMCIA network card.  The Linux kernel abstracts these events and notifies user space applications, such as Qt Extended, in a "standard" way.
+
+<p>In late 2.4 and all 2.6 series kernels, Linux will notify applications of certain categories of hardware events by invoking a configurable user-space process (set in /proc/sys/kernel/hotplug) as appropriate.  Various Linux distributions have built up additional - often incompatible - systems of scripts around this central tenet.  Additionally, kernel modules such as subfs can provide services like auto-mounting, but generally lack notification ability.</p>
+
+<p>Currently Qt Extended relies on system integrators to detect hardware events in an integration-specific way. Qt Extended separates hardware information providers from consumers. The delivery of notifications and interaction with providers happens via IPC. This mechanism can be extended in any arbitrary way. The following hardware abstractions are supported.</p>
+
+
+<ul>
+	<li><b>Power/battery management</b> (see QPowerSource/QPowerStatus)</li>
+	<li><b>Signal strength</b> (see QSignalSource)</li>
+	<li><b>Keypad light control</b> (see QKeypadLightAccessory)</li>
+	<li><b>Vibration control</b> (see QVibrateAccessory)</li>
+	<li><b>Boot source control</b> (see QBootSourceAccessory)</li>
+</ul>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

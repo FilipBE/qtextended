@@ -1,0 +1,18 @@
+#!/bin/sh
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        -r)
+            exec reboot
+            ;;
+        -h)
+            exec poweroff
+            ;;
+        *)
+            ;;
+    esac
+    shift
+done
+
+exec poweroff
+

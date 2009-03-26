@@ -1,0 +1,13 @@
+#!/bin/sh
+
+echo "RUNNING SXE QTOPIA SETUP"
+
+test -z $QTOPIA_DIR && { echo "\$QTOPIA_DIR not defined!"; exit 1; }
+
+# Set up SXE database
+$QTOPIA_DIR/bin/sxe_policy_runner $QTOPIA_DIR $QTOPIA_DIR
+
+# must have this rule so packagemanager can be given write rule
+# to installed application binaries otherwise it can't delete them
+lidsconf -A -o $QTOPIA_DIR/plugins/application/libpackagemanager.so -j READONLY
+

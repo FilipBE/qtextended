@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qdsync Protocol</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">qdsync Protocol<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>This page describes how the qdsync protocol works. Individual commands are documented below.</p>
+<p>The qdsync protocol is a line-oriented protocol that can be implemented on top of a socket. It consists of a number of required commands and some optional commands.</p>
+<a name="state-machine"></a>
+<h3>State Machine</h3>
+<p>While there is no formal state machine there is an expected order of message arrival. The basic process looks like this.</p>
+<p align="center"><img src="images/qdsyncprotocol.png" alt="qdsync protocol diagram" /></p><ul>
+<li>When a connection is initiated the device will send a <a href="qdsync-220-1.html">220</a> message.</li>
+<li>The desktop sends a <a href="qdsync-user-1.html">USER</a> message.</li>
+<li>The device responds with a <a href="qdsync-331-1.html">331</a> message.</li>
+<li>The desktop sends a <a href="qdsync-pass-1.html">PASS</a> message.</li>
+<li>The device responds with a <a href="qdsync-230-1.html">230</a> message.</li>
+<li>The desktop and device can now send <a href="qdsync-call-1.html">CALL</a> or <a href="qdsync-callb-1.html">CALLB</a> messages.</li>
+<li>The device responds to these with <a href="qdsync-200-1.html">200</a> messages (unless disabled with <a href="qdsync-helper-init-1.html">HELPER_INIT</a>).</li>
+<li>The connection is ended when the desktop sends a <a href="qdsync-quit-1.html">QUIT</a> message.</li>
+</ul>
+<p>Additionally, once the desktop has sent the <a href="qdsync-helper-init-1.html">HELPER_INIT</a> message the device expects to receive a message of some kind within the specified duration period. The <a href="qdsync-helper-ping-1.html">HELPER_PING</a> and <a href="qdsync-helper-ack-1.html">HELPER_ACK</a> commands exist for this purpose. The <a href="qdsync-helper-quit-1.html">HELPER_QUIT</a> command is used by the device to indicate failure to send a command in the specified time.</p>
+<a name="commands"></a>
+<h3>Commands</h3>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="qdsync-200-1.html">200</a></th><td>200 Command okay</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-211-1.html">211</a></th><td>211 Have a nice day!</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-220-1.html">220</a></th><td>220 Qtopia 4.3&#x2e;0;key=value;key=value</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-230-1.html">230</a></th><td>230 User logged in, proceed</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-331-1.html">331</a></th><td>331 User name ok, need password</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-500-1.html">500</a></th><td>500 Syntax error, command unrecognized</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-502-1.html">502</a></th><td>502 Command not implemented</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-530-1.html">530</a></th><td>530 Please login with USER and PASS</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-599-1.html">599</a></th><td>599 ChannelNotRegistered QPE/Channel</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-call-1.html">CALL</a></th><td>CALL QPE/System execute(QString) addressbook</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-callb-1.html">CALLB</a></th><td>CALLB QPE/System execute(QString) BASE64DATA</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-helper-ack-1.html">HELPER_ACK</a></th><td>HELPER_ACK</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-helper-init-1.html">HELPER_INIT</a></th><td>HELPER_INIT 5000 1 1</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-helper-ping-1.html">HELPER_PING</a></th><td>HELPER_PING</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-helper-quit-1.html">HELPER_QUIT</a></th><td>HELPER_QUIT</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-pass-1.html">PASS</a></th><td>PASS password</td></tr>
+<tr valign="top" class="odd"><th><a href="qdsync-quit-1.html">QUIT</a></th><td>QUIT</td></tr>
+<tr valign="top" class="even"><th><a href="qdsync-user-1.html">USER</a></th><td>USER username</td></tr>
+</table></p>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

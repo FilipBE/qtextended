@@ -1,0 +1,16 @@
+diff -ur wu-ftpd-2.6.2/src/extensions.c wu-ftpd-2.6.2/src/extensions.c
+--- wu-ftpd-2.6.2/src/extensions.c	2000-07-02 04:17:38.000000000 +1000
++++ wu-ftpd-2.6.2-greenphone/src/extensions.c	2006-08-02 14:12:59.000000000 +1000
+@@ -1564,10 +1564,12 @@
+ 	   *  upload defaults to "permitted"
+ 	 */
+ 	/* Not if anonymous */
++#if 0
+ 	if (anonymous) {
+ 	    reply(553, "%s: Permission denied on server. (Upload)", name);
+ 	    return (-1);
+ 	}
++#endif
+ 	return (1);
+     }
+ 

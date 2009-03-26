@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QOtaReader Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QOtaReader Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QOtaReader class provides support for parsing Over-The-Air (OTA) network configuration messages <a href="#details">More...</a></p>
+<pre>    #include &lt;QOtaReader&gt;</pre><p>Inherits <a href="qwbxmlreader.html">QWbXmlReader</a>.</p>
+<ul>
+<li><a href="qotareader-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qotareader.html#QOtaType-enum">QOtaType</a></b> { Nokia, Wap }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qotareader.html#QOtaReader">QOtaReader</a></b> ( QOtaType <i>type</i> = Nokia )</li>
+<li><div class="fn"/>virtual <b><a href="qotareader.html#dtor.QOtaReader">~QOtaReader</a></b> ()</li>
+<li><div class="fn"/>QOtaCharacteristicList * <b><a href="qotareader.html#parseCharacteristics">parseCharacteristics</a></b> ( const QByteArray &amp; <i>input</i> )</li>
+<li><div class="fn"/>QOtaCharacteristicList * <b><a href="qotareader.html#parseCharacteristics-2">parseCharacteristics</a></b> ( QIODevice &amp; <i>input</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>25 public functions inherited from <a href="qwbxmlreader.html#public-functions">QWbXmlReader</a></li>
+<li><div class="fn"/>19 public functions inherited from <a href="qxmlreader.html#public-functions">QXmlReader</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QOtaCharacteristicList * <b><a href="qotareader.html#parseCharacteristics-3">parseCharacteristics</a></b> ( QXmlReader * <i>reader</i>, const QXmlInputSource &amp; <i>input</i> )</li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 protected function inherited from <a href="qwbxmlreader.html#protected-functions">QWbXmlReader</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QOtaReader class provides support for parsing Over-The-Air (OTA) network configuration messages</p>
+<p>The QOtaReader class provides support for reading Over-The-Air (OTA) network configuration messages. Two distinct formats are supported:</p>
+<ul>
+<li><tt>QOtaReader::Nokia</tt> - Nokia Over The Air Settings Specification 7.0&#x2e;</li>
+<li><tt>QOtaReader::Wap</tt> - WAP/OMA standards <a href="http://www.openmobilealliance.org/tech/affiliates/wap/wap-183-provcont-20010724-a.pdf">wap-183-provcont-20010724-a.pdf</a> and <a href="http://www.openmobilealliance.org/release_program/docs/ClientProv/V1_1-20050428-C/OMA-WAP-ProvCont-v1_1-20050428-C.pdf">OMA-WAP-ProvCont-v1_1-20050428-C.pdf</a>.</li>
+</ul>
+<p>See also <a href="qwbxmlreader.html">QWbXmlReader</a> and <a href="qotacharacteristiclist.html">QOtaCharacteristicList</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="QOtaType-enum"></a>enum QOtaReader::QOtaType</h3>
+<p>Defines the format for Over-The-Air (OTA) network configuration messages.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QOtaReader::Nokia</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Nokia Over The Air Settings Specification 7.0&#x2e;</td></tr>
+<tr><td valign="top"><tt>QOtaReader::Wap</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">WAP/OMA standards <a href="http://www.openmobilealliance.org/tech/affiliates/wap/wap-183-provcont-20010724-a.pdf">wap-183-provcont-20010724-a.pdf</a> and <a href="http://www.openmobilealliance.org/release_program/docs/ClientProv/V1_1-20050428-C/OMA-WAP-ProvCont-v1_1-20050428-C.pdf">OMA-WAP-ProvCont-v1_1-20050428-C.pdf</a>.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QOtaReader"></a>QOtaReader::QOtaReader ( <a href="qotareader.html#QOtaType-enum">QOtaType</a> <i>type</i> = Nokia )</h3>
+<p>Construct a new Over-The-Air (OTA) network configuration reader of the specified <i>type</i>.</p>
+<h3 class="fn"><a name="dtor.QOtaReader"></a>QOtaReader::~QOtaReader ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destruct an OTA reader.</p>
+<h3 class="fn"><a name="parseCharacteristics"></a><a href="qotacharacteristiclist.html">QOtaCharacteristicList</a> * QOtaReader::parseCharacteristics ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>input</i> )</h3>
+<p>Parse a WBXML-encoded OTA <i>input</i> message and return a characteristics list that describes its contents.</p>
+<h3 class="fn"><a name="parseCharacteristics-2"></a><a href="qotacharacteristiclist.html">QOtaCharacteristicList</a> * QOtaReader::parseCharacteristics ( <a href="qiodevice.html">QIODevice</a> &amp; <i>input</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Parse a WBXML-encoded OTA <i>input</i> message and return a characteristics list that describes its contents.</p>
+<h3 class="fn"><a name="parseCharacteristics-3"></a><a href="qotacharacteristiclist.html">QOtaCharacteristicList</a> * QOtaReader::parseCharacteristics ( <a href="qxmlreader.html">QXmlReader</a> * <i>reader</i>, const <a href="qxmlinputsource.html">QXmlInputSource</a> &amp; <i>input</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Parse a plain-text XML OTA <i>input</i> message with <i>reader</i> and return a characteristics list that describes its contents. This function is intended for non-binary versions of network configuration messages.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

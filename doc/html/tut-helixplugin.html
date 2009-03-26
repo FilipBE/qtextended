@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: How to Create a Helix Plug-in</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: How to Create a Helix Plug-in<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>The Qt Extended media server is able to use the Helix DNA Client multi-media engine. Information on writing plug-ins for Helix DNA Client can be found in the <a href="http://helix-client.helixcommunity.org">Helix DNA Client SDK Documentation</a>.</p>
+<p>To include your plug-in into the Helix build systems requires the following steps:</p>
+<ol type="1">
+<li>Modify <tt>src/3rdparty/libraries/helix/src/build/build/BIF/helix.bif</tt> within the Helix source directory as follows:<pre>    &lt;!-- FILESYSTEM/QTOPIA --&gt;
+    &lt;module id=&quot;filesystem_qtopia&quot; name=&quot;filesystem/qtopia&quot; group=&quot;core&quot;&gt;
+        &lt;cvs root=&quot;helix&quot;/&gt;
+        &lt;includeplatforms&gt;
+            unix
+        &lt;/includeplatforms&gt;
+
+        &lt;source_dependlist&gt;
+            common_include
+        &lt;/source_dependlist&gt;
+
+        &lt;dependlist&gt;
+            common_container
+            common_util
+            common_system
+            common_fileio
+            common_dbgtool
+            common_runtime
+        &lt;/dependlist&gt;
+    &lt;/module&gt;</pre>
+<p>where</p>
+<ul>
+<li><tt>id=&quot;filesystem_qtopia&quot;</tt> : identifies the module within the <tt>bif</tt> file.</li>
+<li><tt>name=&quot;filesystem/qtopia&quot;</tt> : points to the module source within the Helix source tree.</li>
+</ul>
+</li>
+<li>Add the plug-in to the <i>target</i> as follows:<pre>    &lt;!-- SPLAY_NODIST --&gt;
+    &lt;module id=&quot;splay_nodist_qtopia&quot; name=&quot;clientapps/simpleplayer&quot; group=&quot;core&quot;&gt;
+        &lt;includeplatforms&gt;
+            unix mac win32 symbian openwave wince
+        &lt;/includeplatforms&gt;
+
+        &lt;dependlist&gt;
+            filesystem_qtopia
+    ...
+        &lt;/dependlist&gt;
+    &lt;/module&gt;</pre>
+<p>where the <i>target</i> is the top-level module definition that defines modules included in the build.</p>
+</li>
+<li>Create a <tt>Umakefile</tt>, for example, the following <tt>Umakefile</tt> is used for the Qt Extended filesystem plug-in:<pre>    UmakefileVersion(2,1)
+
+    project.AddModuleIncludes(&quot;common/include&quot;,
+                              &quot;common/system/pub&quot;)
+
+    project.AddIncludes(os.path.join(GetSDKPath(&quot;qt&quot;),&quot;include&quot;))
+    project.AddIncludes(os.path.join(GetSDKPath(&quot;qt&quot;),&quot;include&quot;,&quot;Qt&quot;))
+    project.AddIncludes(os.path.join(GetSDKPath(&quot;qt&quot;),&quot;include&quot;,&quot;QtGui&quot;))
+    project.AddIncludes(os.path.join(GetSDKPath(&quot;qt&quot;),&quot;include&quot;,&quot;QtCore&quot;))
+
+    project.AddIncludes(os.path.join(GetSDKPath(&quot;qtopia&quot;),&quot;include&quot;))
+
+    project.AddSystemPaths(&quot;-L&quot; + os.path.join(GetSDKPath(&quot;qt&quot;),&quot;lib&quot;))
+
+    if project.BuildOption(&quot;debug&quot;):
+        project.AddSystemLibraries(&quot;QtCore_debug&quot;)
+    else:
+        project.AddSystemLibraries(&quot;QtCore&quot;)
+
+    project.AddSystemPaths(&quot;-L&quot; + os.path.join(GetSDKPath(&quot;qtopia&quot;),&quot;lib&quot;))
+    project.AddSystemLibraries(&quot;qtopia&quot;);
+
+    project.AddSources('qtopiafileobject.cpp', 'qtopiafilesystem.cpp')
+
+    project.ExportFunction(&quot;RMACreateInstance&quot;,
+                           &quot;IUnknown** ppObj&quot;,
+                           &quot;common/include&quot;,
+                           &quot;hxcom.h&quot;)
+
+    DLLTarget('qtopiafsys')</pre>
+<p><b>Note:</b> If your plug-in does not use the Qt or Qt Extended libraries you can exclude:</p>
+<ul>
+<li>the Qt and Qt Extended project <tt>.AddIncludes</tt></li>
+<li>project <tt>.AddSystemPaths</tt>.</li>
+</ul>
+</li>
+<li>At configure time after copying the Helix sources and Qt Extended additions to <tt>src/3rdparty/libraries/helixbuild</tt> the Qt Extended build system applies patches to the Helix source tree.<p>To have your changes applied at configure time you may perform one or both of the following:</p>
+<ul>
+<li>create a patch file in src/3rdparty/libraries/helix/trolltech/patches/.</li>
+<li>place your plug-in sources in <tt>src/3rdparty/libraries/helix/trolltech/src</tt>. This directory is copied to the <tt>helixbuild</tt> directory at configure time.</li>
+</ul>
+</li>
+</ol>
+<p><b>Note:</b> Reference documentation for Helix build system including <tt>Umakefiles</tt> is available in <tt>build/doc</tt> within the Helix source directory.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

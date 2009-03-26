@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PIM: Tasks</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PIM: Tasks<br><small>Functional Description</small></h1><p>The <strong>Tasks</strong> application allows the user to prioritize tasks,
+manage due dates and, when appropriate, mark tasks as completed.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1702">Add Task</a>
+<li><a href="#QTOPIA-1705">Beaming</a>
+<li><a href="#QTOPIA-1707">Categories</a>
+<li><a href="#QTOPIA-1700">Data Model</a>
+<li><a href="#QTOPIA-1703">Delete Task</a>
+<li><a href="#QTOPIA-1704">Edit Task</a>
+<li><a href="#QTOPIA-1708">Filtering</a>
+<li><a href="#QTOPIA-1709">Maximum Number of Tasks</a>
+<li><a href="#QTOPIA-1711">Memory</a>
+<li><a href="#QTOPIA-1706">Priorities</a>
+<li><a href="#QTOPIA-1712">QDL Support</a>
+<li><a href="#QTOPIA-1710">Storage</a>
+<li><a href="#QTOPIA-1701">Task Views</a>
+</ul><h3><a name=QTOPIA-1702>Add Task</a></h3>
+<p>It is possible to add tasks. The application does not add a task without a description.
+<h3><a name=QTOPIA-1705>Beaming</a></h3>
+<p>It is possible to beam tasks to or from another device using Bluetooth, IR, and other mechanisms supported by the <span class="nobr"><a href="qtopiasendvia.html">QtopiaSendVia<sup></sup></a></span> mechanism.
+<h3><a name=QTOPIA-1707>Categories</a></h3>
+<p>It is possible to categorize tasks.
+<h3><a name=QTOPIA-1700>Data Model</a></h3>
+<p>A task consists of the following data:
+
+<ul>
+	<li>A single line text description.</li>
+	<li>A priority ranging from 1 as the highest priority to 5 as the lowest priority.</li>
+	<li>A multi-line text note.</li>
+	<li>A status consisting of:
+	<ul>
+		<li>Not started</li>
+		<li>In Progress</li>
+		<li>Completed</li>
+		<li>Waiting</li>
+		<li>Deferred</li>
+	</ul>
+	</li>
+</ul>
+
+
+<ul>
+	<li>A percentage completed. Not applicable if task status is Not Started or Completed.</li>
+	<li>The date the task is due for completion. This is optional.</li>
+	<li>The date the task was started. Not applicable if the task status is Not Started.</li>
+	<li>The date the task was completed. Only applicable if the task status is Completed.</li>
+	<li>A pattern of repetition. Only applicable if the task has a due date set.</li>
+	<li>One or more categories. If the task is not assigned any category it is marked as <em>unfiled</em>.</li>
+</ul>
+<h3><a name=QTOPIA-1703>Delete Task</a></h3>
+<p>It is possible to delete tasks. The application prompts the user to confirm the deletion of a task.
+<h3><a name=QTOPIA-1704>Edit Task</a></h3>
+<p>It is possible to modify tasks. This includes changing the status and adding notes.
+<h3><a name=QTOPIA-1708>Filtering</a></h3>
+<p>It is possible to filter the view of tasks by category.  It is possible to hide already completed tasks.
+<h3><a name=QTOPIA-1709>Maximum Number of Tasks</a></h3>
+<p>The maximum number of tasks is determined by the available device memory. Once this limit is reached it is only possible to delete tasks; they cannot be edited nor can any new tasks be added.
+<h3><a name=QTOPIA-1711>Memory</a></h3>
+<p>While running, each event requires approximately 300 bytes of storage,<br/>
+plus UTF-16 string storage for the description, plus approximately 80 bytes per category membership.
+<h3><a name=QTOPIA-1706>Priorities</a></h3>
+<p>It is possible to prioritize tasks using the scale of 1 as the highest and 5 as the lowest.
+<h3><a name=QTOPIA-1712>QDL Support</a></h3>
+<p>It is possible to access tasks from other applications via the QDL service interface.<br/>
+When activated the <b>Tasks</b> application runs and shows linked tasks.
+
+<p>QDL links are embedded into the notes of a task.  When in the Detailed View,<br/>
+clicking on a QDL link activates the link's application.</p>
+<h3><a name=QTOPIA-1710>Storage</a></h3>
+<p>Each event requires approximately 100 bytes of storage plus UTF-8 string<br/>
+storage for the description, plus approximately 16 bytes per category membership, plus approximately 50 bytes if a due date is specified.
+<h3><a name=QTOPIA-1701>Task Views</a></h3>
+<p>It is possible to view tasks in the following three ways:
+
+<ul>
+	<li>As a sorted list of tasks.</li>
+	<li>A detailed view of a single task.</li>
+	<li>A task opened for editing.</li>
+</ul>
+
+
+
+<h4><a name="SortedList"></a>Sorted List</h4>
+
+<p>The primary display of the application shows a sorted list of tasks. In this<br/>
+list a user is able to mark a task Completed (or Incomplete),<br/>
+and view additional details of the task.  The list of tasks displays the<br/>
+description of the task, as well as brief information about the task<br/>
+like status or due date.</p>
+
+<p>The sorting order of the tasks is:</p>
+
+<ul>
+	<li>Completed: incomplete tasks are shown first.</li>
+	<li>Priority: tasks with a priority closer to 1 are shown first.</li>
+	<li>Description: tasks are shown in alphabetic order.</li>
+</ul>
+
+
+<p>From the sorted list view the user is able to:</p>
+
+<ul>
+	<li>Create a new task through the Edit View of the task.</li>
+	<li>View the details for the task through the Detailed View of the task.</li>
+	<li>Mark tasks as completed or incomplete.</li>
+	<li>Filter the list of tasks shown according to a specified category.</li>
+</ul>
+
+
+
+<h4><a name="DetailedView"></a>Detailed View</h4>
+
+<p>The detailed view of a task shows data for a single task.  This is shown as<br/>
+rich text.  All the information for the task is formatted for optimum readability.</p>
+
+<p>From the details view the user is able to:</p>
+
+<ul>
+	<li>Edit the current task through the Edit View of the task.</li>
+	<li>Delete the current task.</li>
+	<li>Beam the current task.</li>
+	<li>Mark the task as complete or incomplete.</li>
+	<li>Navigate to other tasks in the sorted list in order.</li>
+</ul>
+
+
+
+<h4><a name="EditView"></a>Edit View</h4>
+
+<p>The edit view of a task allows the user to specify the data for a new task<br/>
+or modify that of an existing task.</p>
+
+<p>Non-applicable values are disabled or adjusted as the data changes. For example, the start date field is disabled if the the task status is marked as Not Started, and conversely, enabling the start date field will mark the task status as In Progress.</p>
+
+<p>When the editing has been completed the user is able to either accept or cancel the changes they have made.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

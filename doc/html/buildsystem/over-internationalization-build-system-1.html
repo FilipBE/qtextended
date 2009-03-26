@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Internationalization (build system)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Internationalization (build system)<br /><span class="subtitle"></span>
+</h1>
+<p>When Qt Extended is configured there are two important variables that are set.</p>
+<ul>
+<li><a href="var-available-languages-1.html">AVAILABLE_LANGUAGES</a><p>Set to include all detected languages. This variable is used by <tt>make lupdate</tt> to create <tt>.ts</tt> files for projects. Third party projects that wish to target a specific set of languages should set this variable.</p>
+</li>
+<li><a href="var-languages-1.html">LANGUAGES</a><p>Set to include all selected languages. This corresponds to the <tt>-languages</tt> switch accepted by <a href="over-configure-options-1.html">configure</a>. This variable is used to install <tt>.directory</tt> files which tell Qt Extended that a given language is available.</p>
+</li>
+</ul>
+<p>Conditional sources need to be specified using the TYPE=CONDITIONAL_SOURCES syntax so that the build system can see the conditional sources and translate them no matter the configuration that is being built.</p>
+<pre>    FOO.TYPE=CONDITIONAL_SOURCES
+    FOO.CONDITION=enable_my_condition
+    FOO.HEADERS=foo.h
+    FOO.SOURCES=foo.cpp
+    !qbuild:CONDITIONAL_SOURCES(FOO)</pre>
+<p>This mechanism can be used to set the following variables.</p>
+<ul>
+<li>FORMS</li>
+<li>HEADERS</li>
+<li>PRIVATE_HEADERS</li>
+<li>SEMI_PRIVATE_HEADERS</li>
+<li>SOURCES</li>
+<li>RESOURCES</li>
+</ul>
+<p>See also <a href="overviews.html">Overviews</a>, <a href="hint-nct-1.html">hint=nct</a>, <a href="over-non-code-translatables-1.html">Non-code Translatables</a>, and <a href="foo/../../syscust-internat.html">Internationalization</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

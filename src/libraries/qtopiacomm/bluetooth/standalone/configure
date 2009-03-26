@@ -1,0 +1,73 @@
+#!/bin/sh
+
+QBLUETOOTH_PREFIX=/usr/local
+QBLUETOOTH_QTDIR=$QTDIR
+CONFIG=
+
+while [ "$#" -gt 0 ]; do
+	case $1 in
+		--help)
+			OPT_HELP=yes
+			shift
+			;;
+
+		--prefix)
+			shift
+			QBLUETOOTH_PREFIX=${1}
+			shift
+			;;
+
+                --with-openobex)
+                        shift
+                        INCLUDEPATH=${1}/include
+                        LIBS=-L${1}/lib
+                        shift
+                        ;;
+
+		--qt-dir)
+			shift
+			QBLUETOOTH_QTDIR=${1}
+			shift
+			;;
+
+		--with-qobex)
+			shift
+			QOBEX_DIR=${1}
+			CONFIG=enable_obex
+			shift
+			;;
+			
+		*)
+			echo "${1}: unknown argument. Use -help."
+			exit 1
+			;;
+	esac
+done
+
+if [ "x$OPT_HELP" = "xyes" ]; then
+	cat <<EOF
+Usage: configure [--help] [--prefix <dir>] [--qt-dir <dir>]
+
+Installation options:
+    --help - Print this help
+    --prefix <dir> The QBluetooth library will be installed in this directory.
+    --qt-dir <dir> Qt is located in this directory.  <dir>/bin/qmake will be used.
+    --with-qobex <dir> The QObex library is installed in this directory.  This enables QObex support
+    --with-openobex <dir> The OpenOBEX library is installed in this directory.
+EOF
+	exit 0
+fi
+
+if [ -z $QBLUETOOTH_QTDIR ]
+then
+    echo "Can't find Qt library. No QTDIR set and no --qt-dir argument given"
+    exit 1
+else
+    echo "Using Qt library in $QBLUETOOTH_QTDIR."
+fi
+
+$QBLUETOOTH_QTDIR/bin/qmake "INCLUDEPATH=$INCLUDEPATH" "LIBS=$LIBS" "CONFIG=$CONFIG" "QOBEX_DIR=$QOBEX_DIR" \
+"QBLUETOOTH_PREFIX=$QBLUETOOTH_PREFIX" qbluetooth.pro
+
+echo "Configured, the library and headers will be installed under: $QBLUETOOTH_PREFIX"
+echo "Type 'make' and 'make install'"

@@ -1,0 +1,1289 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Integration guide</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Integration guide<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#linux">Linux</a></li>
+<ul><li><a href="#kernel-requirements">Kernel requirements</a></li>
+<ul><li><a href="#minimal-configuration">Minimal configuration</a></li>
+<li><a href="#additional-options-and-the-qt-extended-dependencies-on-them">Additional options and the Qt Extended dependencies on them</a></li>
+<li><a href="#useful-debugging-options">Useful Debugging Options</a></li>
+</ul>
+<li><a href="#the-qt-extended-root-file-system">The Qt Extended root file system</a></li>
+<ul><li><a href="#file-system-partitions">File system partitions</a></li>
+<li><a href="#busybox-configuration">Busybox configuration</a></li>
+<ul><li><a href="#minimal-linux-configuration">Minimal Linux Configuration</a></li>
+<li><a href="#optional-linux-configuration">Optional Linux Configuration</a></li>
+</ul>
+<li><a href="#other-tools">Other tools</a></li>
+<li><a href="#root-file-system-kernel-sources">Root file system/kernel sources</a></li>
+</ul>
+</ul>
+<li><a href="#qt-extended-build-system">Qt Extended Build system</a></li>
+<ul><li><a href="#how-to-build-qt-extended">How to build Qt Extended</a></li>
+<ul><li><a href="#configure-options">Configure options</a></li>
+<li><a href="#adjusting-projects">Adjusting projects</a></li>
+</ul>
+<li><a href="#device-specific-configuration">Device-specific Configuration</a></li>
+<li><a href="#advanced-build-system-documentation">Advanced build system documentation</a></li>
+</ul>
+<li><a href="#qt-for-embedded-linux">Qt for Embedded Linux</a></li>
+<ul><li><a href="#qt-feature-system">Qt Feature system</a></li>
+<li><a href="#porting">Porting</a></li>
+<ul><li><a href="#qt-for-embedded-linux-to-a-new-architecture">Qt for Embedded Linux to a New Architecture</a></li>
+<li><a href="#to-another-operating-system">To another Operating System</a></li>
+<li><a href="#qt-application-to-qt-for-embedded-linux">Qt Application to Qt for Embedded Linux</a></li>
+<li><a href="#qtopia-2-x-to-4-x">Qtopia 2.x to 4.x</a></li>
+</ul>
+<li><a href="#linux-framebuffer-and-display-management">Linux Framebuffer and Display Management</a></li>
+<li><a href="#fonts">Fonts</a></li>
+<li><a href="#keyboard-input-plug-ins">Keyboard/Input plug-ins</a></li>
+<li><a href="#pointer-plugins">Pointer plugins</a></li>
+<li><a href="#accelerated-graphics-driver">Accelerated Graphics Driver</a></li>
+<li><a href="#environment-variables">Environment Variables</a></li>
+</ul>
+<li><a href="#qt-extended">Qt Extended</a></li>
+<ul><li><a href="#application-services">Application services</a></li>
+<li><a href="#multiple-screen-support">Multiple screen support</a></li>
+<li><a href="#qws-connection-timeout">QWS connection timeout</a></li>
+<li><a href="#server-tasks">Server Tasks</a></li>
+<ul><li><a href="#server-task-plug-ins">Server task plug-ins</a></li>
+<li><a href="#task-startup">Task startup</a></li>
+</ul>
+<li><a href="#communication">Communication</a></li>
+<ul><li><a href="#bluetooth">Bluetooth</a></li>
+<ul><li><a href="#bluetooth-software-requirements">Bluetooth Software Requirements</a></li>
+</ul>
+<li><a href="#networking">Networking</a></li>
+<li><a href="#usb">USB</a></li>
+<ul><li><a href="#usb-host">USB Host</a></li>
+<li><a href="#usb-peripheral">USB Peripheral</a></li>
+<li><a href="#usb-on-the-go">USB On-the-Go</a></li>
+</ul>
+</ul>
+<li><a href="#dynamic-display-rotation">Dynamic Display Rotation</a></li>
+<li><a href="#document-content-system">Document/Content system</a></li>
+<ul><li><a href="#document-storage">Document Storage</a></li>
+<li><a href="#drm-integration">DRM integration</a></li>
+</ul>
+<li><a href="#memory-management">Memory management</a></li>
+<ul><li><a href="#general-information">General information</a></li>
+<li><a href="#out-of-memory-management">Out of memory management</a></li>
+</ul>
+<li><a href="#hardware-integration">Hardware integration</a></li>
+<ul><li><a href="#device-indicators">Device indicators</a></li>
+<li><a href="#hardware-abstraction">Hardware Abstraction</a></li>
+<ul><li><a href="#boot-source">Boot Source</a></li>
+<li><a href="#keypad-light">Keypad Light</a></li>
+<li><a href="#power-source">Power Source</a></li>
+<li><a href="#signal-source">Signal Source</a></li>
+<li><a href="#vibration">Vibration</a></li>
+</ul>
+<li><a href="#key-mappings">Key mappings</a></li>
+<li><a href="#power-management">Power Management</a></li>
+</ul>
+<li><a href="#input-methods">Input methods</a></li>
+<li><a href="#internationalization">Internationalization</a></li>
+<li><a href="#media-integration">Media integration</a></li>
+<ul><li><a href="#audio-states">Audio States</a></li>
+</ul>
+<li><a href="#messaging">Messaging</a></li>
+<ul><li><a href="#multimedia-messaging">Multimedia Messaging</a></li>
+<ul><li><a href="#multimedia-messaging-viewer-smil">Multimedia Messaging Viewer (SMIL)</a></li>
+<li><a href="#wap-stack-integration">WAP Stack Integration</a></li>
+<li><a href="#amr-encoder">AMR Encoder</a></li>
+</ul>
+</ul>
+<li><a href="#sxe-integration">SXE integration</a></li>
+<li><a href="#telephony">Telephony</a></li>
+<ul><li><a href="#modem-integration">Modem Integration</a></li>
+<li><a href="#voip-integration">VoIP integration</a></li>
+</ul>
+<li><a href="#web-browser-integration">Web Browser integration</a></li>
+<li><a href="#other-miscellaneous-steps">Other miscellaneous steps</a></li>
+<ul><li><a href="#qt-extended-environment-variables">Qt Extended Environment variables</a></li>
+</ul>
+</ul>
+<li><a href="#qt-extended-customizations">Qt Extended customizations</a></li>
+<ul><li><a href="#first-use">First Use</a></li>
+<li><a href="#ui-customization">UI customization</a></li>
+<ul><li><a href="#styles">Styles</a></li>
+<li><a href="#theming">Theming</a></li>
+<li><a href="#server-widgets">Server widgets</a></li>
+</ul>
+</ul>
+<li><a href="#running-qt-extended">Running Qt Extended</a></li>
+<ul><li><a href="#building-and-running-outside-of-qt-extended-build-tree">Building and running outside of Qt Extended build tree</a></li>
+<li><a href="#debugging-qt-extended-local-and-remote">Debugging Qt Extended (local and remote)</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>In general, developing a Qt Extended device requires the following two processes:</p>
+<ol type="1">
+<li><b>Integration</b></li>
+<li><b>Customization</b></li>
+</ol>
+<p>The majority of this step-by-step guide refers to the Qt Extended integration process. The target audience is system integrators and ODMs intending to integrate Qt Extended with their hardware. The items in this document are ordered according to their dependencies, starting with the Linux kernel and followed by the root file system requirements, then Qt for Embedded Linux and Qt Extended requirements. Particular attention is paid to dependencies existing between Qt Extended features and Linux kernel/file system options.</p>
+<p>Subsequent to the integration process, the <a href="running-qtextended.html">Running Qt Extended</a> section describes how to start Qt Extended on different targets/platforms.</p>
+<p>The last section of this document focuses on the Qt Extended customization options. This guide refers to customization as the steps that are required to modify or extend the features and user interfaces provided by Qt Extended. Therefore this part of the development process is optional but usually highly desired.</p>
+<a name="linux"></a>
+<h2>Linux</h2>
+<a name="kernel-requirements"></a>
+<h3>Kernel requirements</h3>
+<p>Many of the features in Qt Extended are dependent on support from the underlying operating system. This section outlines the dependencies between these features and the configuration options for the Linux kernel. This list has been limited to only those configuration options explicitly required by Qt Extended. It is highly likely that additional configuration options will need to be enabled in order to bring the system up.</p>
+<p>Many kernel features can be configured to be either built into the kernel binary or built as loadable modules. If you choose to configure kernel features as modules you must ensure that the modules are loaded during system startup. This can be achieved by either manually loading the modules or by using an automatic module loading mechanism such as hotplug or udev.</p>
+<a name="minimal-configuration"></a>
+<h4>Minimal configuration</h4>
+<p>Qt Extended requires that the Linux kernel be configured with the following minimum configuration.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Kernel Feature</th><th>Qt Extended Dependency</th></tr></thead>
+<tr valign="top" class="odd"><td>System V IPC (Shared Memory and Semaphores)</td><td>Qt Extended uses System V IPC (shared memory and semaphores) to share window regions between client applications and the server. For full details on integrating this feature see <a href="#linux-framebuffer-and-display-management">Linux Framebuffer and Display Management</a>.<p>The Linux kernel must be configured with the following option to enable System V IPC.</p>
+<ul>
+<li>CONFIG_SYSVIPC</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Unix-domain Sockets</td><td>Qt Extended uses Unix-domain Sockets for Inter-process Communication (IPC) between client applications and the server. For details on the IPC mechanism used in Qt Extended See <a href="qt-embedded-architecture.html">Client/Server Communication</a> and <a href="qtextendedipc.html">Qt Extended IPC Layer</a>.<p>The Linux kernel must be configured with the following options to enable Unix-domain Sockets</p>
+<ul>
+<li>CONFIG_UNIX</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Linux Framebuffer</td><td>Qt Extended uses the Linux Framebuffer to draw onto the screen of the device. For full details on integrating this feature see <a href="#linux-framebuffer-and-display-management">Linux Framebuffer and Display Management</a>.<p>The Linux kernel must be configured with the following options to enable access to the Framebuffer device</p>
+<ul>
+<li>CONFIG_FB</li>
+<li>CONFIG_FB_*</li>
+<li>Device specific Framebuffer driver</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>proc</tt> Filesystem</td><td>The <tt>proc</tt> virtual filesystem provides an interface for querying the status of and controlling certain aspect of the running system. Qt Extended uses this filesystem for managing processes, authenticating IPC communication when SXE is enabled, monitoring memory use, querying mounted filesystems, managing network interfaces, power management and querying general system information.<p>The <tt>proc</tt> filesystem must be mounted on <tt>/proc</tt> during start-up.</p>
+<p>The Linux kernel must be configured with the following option to enable access to the <tt>proc</tt> filesystem.</p>
+<ul>
+<li>CONFIG_PROC_FS</li>
+</ul>
+</td></tr>
+</table></p>
+<a name="additional-options-and-the-qt-extended-dependencies-on-them"></a>
+<h4>Additional options and the Qt Extended dependencies on them</h4>
+<p>Qt Extended includes many optional features and components that may not be needed for all devices. The following table lists these optional features and components together with the Linux kernel configuration options that they depend on.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Optional Qt Extended Component</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><a name="at-modem"></a><td>AT Modem</td><td>The <a href="qtextended-telephony.html">telephony stack</a> includes support for AT modems. These devices are typically connected via a serial interface. If the modem is connected via a different interface, you will need to enable support for that interface. For full details on modem integration see <a href="#modem-integration">Modem Integration</a>.<p>The Linux kernel must be configured with the following options to enable access to an AT modem connected via a serial interface</p>
+<ul>
+<li>CONFIG_SERIAL</li>
+<li>Device specific serial driver</li>
+<li>Device specific modem driver</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><a name="bluetooth-kernel-configuration"></a><td>Bluetooth</td><td>Qt Extended supports Bluetooth communication devices via the BlueZ API. For full details on Bluetooth integration see <a href="qtopiabluetooth.html">Bluetooth</a>.<p>The Linux kernel must be configured with the following options to enable Bluetooth support</p>
+<ul>
+<li>CONFIG_BLUEZ</li>
+<li>CONFIG_BLUEZ_L2CAP</li>
+<li>CONFIG_BLUEZ_SCO</li>
+<li>CONFIG_BLUEZ_RFCOMM</li>
+<li>CONFIG_BLUEZ_RFCOMM_TTY</li>
+<li>CONFIG_BLUEZ_BNEP</li>
+<li>Device specific Bluetooth driver</li>
+</ul>
+<p>Depending on how the Bluetooth device is connected other configuration options may be required. For example, to support a Bluetooth device connected via a serial interface the following addition configuration options will need to be enabled</p>
+<ul>
+<li>CONFIG_SERIAL</li>
+<li>Device specific serial driver</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Internet, VoIP</td><td>Qt Extended can use a variety of network interfaces to provide Internet connectivity. For full details on integrating Internet connectivity see <a href="#networking">Networking</a>. As VoIP routes calls over the Internet, it has the same kernel configuration requirements as Internet connectivity.<p>The Linux kernel must be configured with the following options to enable support for Internet connectivity</p>
+<ul>
+<li>CONFIG_INET</li>
+<li>CONFIG_NETDEVICES</li>
+<li>Device specific network interface drivers</li>
+</ul>
+<p>For WiFi support the following additional configuration options will also need to be enabled</p>
+<ul>
+<li>CONFIG_NET_RADIO</li>
+<li>Device specific WiFi driver</li>
+</ul>
+<p>Qt Extended supports Internet connectivity over GPRS. This feature requires the following additional configuration options to be enabled</p>
+<ul>
+<li>CONFIG_PPP</li>
+<li>CONFIG_PPP_ASYNC</li>
+</ul>
+<p>Qt Extended can connect to OpenVPN based Virtual Private Networks (VPNs). This feature requires the following kernel configuration option</p>
+<ul>
+<li>CONFIG_TUN</li>
+</ul>
+<p>Qt Extended can share it's Internet connection with other devices. This feature requires the following kernel configuration option</p>
+<ul>
+<li>CONFIG_BRIDGE</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>SXE</td><td>Qt Extended provides a Safe Execution Environment (SXE) for running third party applications. The SXE environment currently uses the LIDS patch set to provide kernel level Mandatory Access Controls (MACs). For full details on SXE integration see <a href="#sxe-integration">SXE integration</a>.<p>The Linux kernel must be patched and configured with the following options to fully enable SXE functionality</p>
+<ul>
+<li>CONFIG_LIDS</li>
+<li>CONFIG_LIDS_*</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Camera</td><td>The Camera application uses the video4linux API to access the device's camera.<p>The Linux kernel must be configured with the following options to enable camera support</p>
+<ul>
+<li>CONFIG_VIDEO_DEV</li>
+<li>Device specific camera driver</li>
+</ul>
+<p>The camera device used by the Camera application is configured in the custom.h file as <a href="custom-h.html#V4L_VIDEO_DEVICE">V4L_VIDEO_DEVICE</a>.</p>
+</td></tr>
+<tr valign="top" class="even"><td>Infrared</td><td>Qt Extended supports Infrared devices.<p>The Linux kernel must be configured with the following options to enable Infrared support</p>
+<ul>
+<li>CONFIG_IRDA</li>
+<li>Device specific infrared driver</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Multimedia Cards</td><td>Qt Extended supports multimedia cards. The most common filesystems used on these devices are FAT or FAT32, although these are not the only possibility.<p>For maximum compatibility it is recommended that the Linux kernel be configured with the following options to enable support for multimedia cards</p>
+<ul>
+<li>Device specific multimedia card driver</li>
+<li>CONFIG_MSDOS_PARTITION</li>
+<li>CONFIG_FAT_FS</li>
+<li>CONFIG_VFAT_FS</li>
+<li>CONFIG_NLS</li>
+<li>CONFIG_NLS_DEFAULT</li>
+<li>CONFIG_NLS_*</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Audio Playback and Recording</td><td>Qt Extended Extended can be configured to process sound either with or without the Media Server integration. For details on Media Server integration is see <a href="#media-integration">Media integration</a>.<p>The Linux kernel provides two sets of sound drivers, the Open Sound System (OSS) and the Advanced Linux Sound Architecture (ALSA). Qt Extended supports both sets of drivers when built without Media Server integration. Generally only one set of drivers will be used at a time. Check the documentation on the Media Server for it's requirements if Media Server integration is being used.</p>
+<p>The Linux kernel must be configured with the following options to enable OSS based audio playback and recording</p>
+<ul>
+<li>CONFIG_SOUND</li>
+<li>Device specific OSS audio drivers</li>
+</ul>
+<p>Alternatively the Linux kernel must be configured with the following options to enable ALSA based audio playback and recording</p>
+<ul>
+<li>CONFIG_SOUND</li>
+<li>Device specific ALSA audio drivers</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>USB Gadgets</td><td>Qt Extended can manage what class of USB device your device appears as when connected to a PC. For details on USB integration see <a href="#usb">USB</a>.<p>The Linux kernel must be configured with the following options to enable USB Gadget support</p>
+<ul>
+<li>CONFIG_USB_GADGET</li>
+<li>CONFIG_SYSFS</li>
+<li>Device specific USB peripheral controller drivers</li>
+</ul>
+<p>and one or more of the following gadget drivers</p>
+<ul>
+<li>CONFIG_USB_ETH</li>
+<li>CONFIG_USB_FILE_STORAGE</li>
+<li>CONFIG_USB_G_SERIAL</li>
+</ul>
+</td></tr>
+</table></p>
+<a name="useful-debugging-options"></a>
+<h4>Useful Debugging Options</h4>
+<p>There are a number of Linux kernel features which are generally not desirable on a production device, but may be useful during development. This section lists these options and gives examples on how to use them during development.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Useful Development Options</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>NFS Filesystem Support</td><td>Enabling NFS support allows you to mount remote NFS shares onto your device. NFS shares can be used as an alternative method of accessing the Qt Extended image on your device, instead of reflashing the device.<p><b>Note</b>: The runtime performance of Qt Extended may be degraded when running over NFS. This is caused by delays in transferring data over the network interface.</p>
+<p>To enable NFS support configure the Linux kernel with the following options enabled</p>
+<ul>
+<li>CONFIG_NFS_FS</li>
+<li>CONFIG_NFS_V3</li>
+<li>CONFIG_SUNRPC</li>
+<li>CONFIG_LOCKD</li>
+<li>CONFIG_LOCKD_V4</li>
+</ul>
+<p>To run Qt Extended over NFS you will first need to export the Qt Extended image directory to your device. Please consult the documentation for your development system on how to achieve this. On a Linux system, the following command can be used to export the Qt Extended image directory to your device. You should replace $DEVICE_ADDRESS and $PATH_TO_IMAGE with the IP address of your device and the absolute path to the Qt Extended image directory you want to export.</p>
+<pre>    exportfs -o rw,no_root_squash,async $DEVICE_ADDRESS:$PATH_TO_IMAGE</pre>
+<p>To mount the exported Qt Extended image on your device run the following command on your device, replacing $SERVER_ADDRESS with the IP address of the development system that is exporting the Qt Extended image and $PATH_TO_IMAGE with the same absolute path you used above. If you have configured Qt Extended with a different runtime prefix you will need to replace <tt>/opt/Qt</tt> Extended with that prefix.</p>
+<pre>    mount -t nfs -o nolock,tcp $SERVER_ADDRESS:$PATH_TO_IMAGE /opt/Qtopia</pre>
+<p>Finally you can run Qt Extended over NFS by setting up the environment variables as you normally would and running <tt>/opt/Qtopia/bin/qpe</tt>. For more details on running Qt Extended via NFS see <a href="running-qtextended.html#using-an-nfs-mount-partition">Running Qt Extended using NFS</a></p>
+</td></tr>
+</table></p>
+<a name="the-qt-extended-root-file-system"></a>
+<h3>The Qt Extended root file system</h3>
+<p>A typical Linux device's root file system hierarchy would be arranged as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Directory</th><th>Usage</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>/bin</tt></td><td>command binaries</td></tr>
+<tr valign="top" class="even"><td><tt>/boot</tt></td><td>bootloader files</td></tr>
+<tr valign="top" class="odd"><td><tt>/dev</tt></td><td>device files</td></tr>
+<tr valign="top" class="even"><td><tt>/etc</tt></td><td>system configuration files</td></tr>
+<tr valign="top" class="odd"><td><tt>/lib</tt></td><td>system libraries and kernel modules</td></tr>
+<tr valign="top" class="even"><td><tt>/media</tt></td><td>mount point for removable media</td></tr>
+<tr valign="top" class="odd"><td><tt>/mnt</tt></td><td>mount point for mounting temporary file systems</td></tr>
+<tr valign="top" class="even"><td><tt>/opt</tt></td><td>add-on software packages</td></tr>
+<tr valign="top" class="odd"><td><tt>/proc</tt></td><td>stub directory for kernel processes.</td></tr>
+<tr valign="top" class="even"><td><tt>/sbin</tt></td><td>system binary commands</td></tr>
+<tr valign="top" class="odd"><td><tt>/tmp</tt></td><td>temporary files</td></tr>
+<tr valign="top" class="even"><td><tt>/usr</tt></td><td>secondary hierarchy</td></tr>
+<tr valign="top" class="odd"><td><tt>/var</tt></td><td>variable data</td></tr>
+</table></p>
+<p>More information is available on the Linux filesystem at <a href="http://www.pathname.com/fhs/">Filesystem Hierarchy Standard</a></p>
+<p>Qt Extended has it's own file system hierarchy, which is usually mounted at <i>/opt/Qtopia</i>. For more details see the Qt Extended <a href="files.html">File System Standards</a>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Directory</th><th>Usage</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>/bin</tt></td><td>Qt Extended binaries.</td></tr>
+<tr valign="top" class="even"><td><tt>/etc</tt></td><td>Qt Extended system configuration files.</td></tr>
+<tr valign="top" class="odd"><td><tt>/help</tt></td><td>Qt Extended html help documentation.</td></tr>
+<tr valign="top" class="even"><td><tt>/i18n</tt></td><td>Qt Extended translation files.</td></tr>
+<tr valign="top" class="odd"><td><tt>/lib</tt></td><td>Qt Extended library files.</td></tr>
+<tr valign="top" class="even"><td><tt>/pics</tt></td><td>Qt Extended images and icons.</td></tr>
+<tr valign="top" class="odd"><td><tt>/plugins</tt></td><td>Qt Extended plugins</td></tr>
+<tr valign="top" class="even"><td><tt>/qt_plugins</tt></td><td>Qt for Embedded Linux plugins.</td></tr>
+<tr valign="top" class="odd"><td><tt>/services</tt></td><td>Qt Extended service task directory</td></tr>
+<tr valign="top" class="even"><td><tt>/sounds</tt></td><td>Qt Extended sound files.</td></tr>
+</table></p>
+<a name="file-system-partitions"></a>
+<h4>File system partitions</h4>
+<p>There are a number of ways a device may be partitioned, depending on the hardware configuration.</p>
+<p>Generally, the bootloader, the kernel and at the root filesystem get their own partitions. The root fileystem can also be partitioned into <tt>/</tt>, <tt>/tmp</tt> and <tt>/home</tt>.</p>
+<p><b>Note</b>: If allowing the user to download and install software packages, you will need the /tmp directory or partiton to be large enough to temporarily store any downloaded application package files.</p>
+<p><a href="syscust-partitionlayout.html">Device Partition Layout</a></p>
+<p>Qt Extended can run on and use a number of file systems. Some are more appropriate for NAND flash devices while others are better for more traditional hard drive devices.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>File System Type</th><th>Comments</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ext2</tt></td><td>general read/write. no journaling. not recommended for NAND devices.</td></tr>
+<tr valign="top" class="even"><td><tt>ext3</tt></td><td>general read/write. journalled ext2. not recommended for NAND devices.</td></tr>
+<tr valign="top" class="odd"><td><tt>cramfs</tt></td><td>read only compressed</td></tr>
+<tr valign="top" class="even"><td><tt>squashfs</tt></td><td>read only compressed. requires kernel patches. See <a href="http://squashfs.sourceforge.net/">squashfs web site</a></td></tr>
+<tr valign="top" class="odd"><td><tt>jffs2</tt></td><td>read/write, compressed, journalled, NAND device only.</td></tr>
+<tr valign="top" class="even"><td><tt>yaffs</tt></td><td>read/write, compressed, journalled, NAND device only. kernel patches required. See <a href="http://www.aleph1.co.uk/yaffs/">yaffs web site</a></td></tr>
+<tr valign="top" class="odd"><td><tt>ramfs</tt> or <tt>tmpfs</tt></td><td>read/write, dynamic size allocation (in RAM), for temporary files.</td></tr>
+<tr valign="top" class="even"></tr>
+</table></p>
+<p>Qt Extended may be installed to a read-only filesystem, provided a writable /tmp, /etc and $HOME is provided.</p>
+<a name="busybox-configuration"></a>
+<h4>Busybox configuration</h4>
+<p><a href="http://www.busybox.net/">Busybox</a> is a compact and powerful replacement for many common Linux(tm) utilities in a single executable, and is extremely configurable.</p>
+<p>Qt Extended uses a few system commands that are required to be on the filesystem.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>command</th><th>Qt Extended Components</th><th>Busybox config</th><th>Notes</th></tr></thead>
+<tr valign="top" class="odd"><td>ash</td><td>Startup/script</td><td>Shells CONFIG_ASH, need bash symlink</td><td></td></tr>
+<tr valign="top" class="even"><td>apm</td><td>systemsuspendtask</td><td></td><td></td></tr>
+<tr valign="top" class="odd"><td>hwclock</td><td>qalarmserver</td><td>Linux System Utilities CONFIG_HWCLOCK</td><td></td></tr>
+<tr valign="top" class="even"><td>logread</td><td>Logging viewer</td><td>System Logging Utilities CONFIG_LOGREAD</td><td></td></tr>
+<tr valign="top" class="odd"><td>syslogd</td><td>Logging viewer</td><td>System Logging Utilities CONFIG_SYSLOGD</td><td></td></tr>
+<tr valign="top" class="even"><td>echo</td><td>oommanager</td><td>Shells CONFIG_ASH_BUILTIN_ECHO</td><td>Qt Extended version 4.3</td></tr>
+<tr valign="top" class="odd"><td>cp</td><td>systemtime</td><td>Coreutils CONFIG_CP</td><td></td></tr>
+<tr valign="top" class="even"><td>rm</td><td>packagemanager, obexservicemanager</td><td>Coreutils CONFIG_RM</td><td></td></tr>
+<tr valign="top" class="odd"><td>mkdir</td><td>obexservicemanager</td><td>Coreutils CONFIG_MKDIR</td><td></td></tr>
+<tr valign="top" class="even"><td>modprobe</td><td>USB peripheral support</td><td>Linux Module Utilities CONFIG_MODPROBE</td><td>Qt Extended version 4.4</td></tr>
+<tr valign="top" class="odd"><td>rmmod</td><td>USB peripheral support</td><td>Linux Modules Utilities CONFIG_RMMOD</td><td>Qt Extended version 4.4</td></tr>
+</table></p>
+<a name="minimal-linux-configuration"></a>
+<h5>Minimal Linux Configuration</h5>
+<p>A very minimal Linux System configuration might consist of these packages:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Package</th><th>Minimum Version</th><th>Description</th><th>Notes</th></tr></thead>
+<tr valign="top" class="odd"><td>binutils</td><td></td><td>Base system binary utilities</td><td></td></tr>
+<tr valign="top" class="even"><td>glibc</td><td></td><td>Essential C library</td><td></td></tr>
+<tr valign="top" class="odd"><td>glibc-linuxthreads</td><td></td><td>Multi-threading capability</td><td></td></tr>
+<tr valign="top" class="even"><td>linux kernel</td><td>2.4&#x2e;19 (recommend 2.6&#x2e;20)</td><td>Linux kernel</td><td></td></tr>
+<tr valign="top" class="odd"><td>busybox</td><td>1.2&#x2e;1</td><td>system commands. See <a href="http://busybox.net/">Busybox</a></td><td></td></tr>
+<tr valign="top" class="even"><td>libstdc++</td><td></td><td></td><td></td></tr>
+<tr valign="top" class="odd"><td>libgcc_s</td><td></td><td></td><td></td></tr>
+<tr valign="top" class="even"><td>e2fsprogs</td><td></td><td>file system tools</td><td></td></tr>
+<tr valign="top" class="odd"><td>libasound</td><td></td><td>Alsa sound support</td><td></td></tr>
+<tr valign="top" class="even"><td>patch</td><td></td><td>patching tool</td><td>compile time requirement only</td></tr>
+<tr valign="top" class="odd"><td>libreadline</td><td></td><td></td><td></td></tr>
+<tr valign="top" class="even"><td>perl</td><td></td><td></td><td>compile time requirement only</td></tr>
+<tr valign="top" class="odd"><td>libsvg</td><td></td><td>parser for SVG content</td><td></td></tr>
+<tr valign="top" class="even"><td>libxslt</td><td></td><td>XSLT C library</td><td></td></tr>
+</table></p>
+<a name="optional-linux-configuration"></a>
+<h5>Optional Linux Configuration</h5>
+<p>In addition to the Minimal Linux System Configuration, these optional packages may be provided, or required based upon the <a href="qtextended-components.html">Qt Extended Components</a> used.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Qt Extended Component</th><th>Package</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="bluetooth.html#software-requirements">Bluetooth</a></td><td><ul>
+<li>D-Bus</li>
+<li>Bluez-libs</li>
+<li>Bluez-utils</li>
+<li>Bluez-firmware</li>
+<li>Bluez-hcidump</li>
+<li><a href="legal-openobex.html">OpenObex</a></li>
+<li>expat</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Camera</td><td><ul>
+<li>v4l (Video 4 Linux)</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>DBus</td><td><ul>
+<li>D-Bus</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Image Viewer</td><td><ul>
+<li>ungif</li>
+<li>libpng</li>
+<li>libjpeg</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Irda</td><td><ul>
+<li><a href="legal-openobex.html">OpenObex</a></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Media Player</td><td><ul>
+<li>Helix</li>
+<li><a href="legal-gstreamer.html">GStreamer</a> (libgstreamer)</li>
+<li>ALSA (libasound)</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Messages</td><td><ul>
+<li><a href="legal-sqlite.html">SQlite</a></li>
+<li>WAP</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>PIM</td><td><ul>
+<li><a href="legal-sqlite.html">SQlite</a></li>
+<li>zoneinfo</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>SXE</td><td><ul>
+<li>LIDS</li>
+<li>App Armor</li>
+<li>syslog-ng</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Telephony (Googletalk)</td><td><ul>
+<li>Telepathy</li>
+<li>Telepathy-gabble</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Touchscreen</td><td><ul>
+<li>tslib</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Wireless Networking</td><td><ul>
+<li>wireless-tools</li>
+<li>ppp</li>
+<li>wpa_supplicant</li>
+</ul>
+</td></tr>
+</table></p>
+<p>These packages may be installed on the target device.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Package</th><th>Minimum Version</th><th>Description</th><th>Qt Extended Component</th><th>Notes</th></tr></thead>
+<tr valign="top" class="odd"><td>ALSA</td><td></td><td><a href="http://www.alsa-project.org/">Advanced Linux Sound Architecture</a></td><td>Media Player</td><td></td></tr>
+<tr valign="top" class="even"><td>D-Bus</td><td>1.0&#x2e;2</td><td>Message Bus system / Inter process communication <a href="http://www.freedesktop.org/wiki/Software/dbus">D-Bus</a></td><td>dbus</td><td></td></tr>
+<tr valign="top" class="odd"><td>DHCP</td><td></td><td>DHCP server</td><td>Networking</td><td></td></tr>
+<tr valign="top" class="even"><td>Helix</td><td></td><td><a href="http://www.helixcommunity.org/">Helix Multimedia Engine</a></td><td>Media Player</td><td><a href="syscust-mediaplayer.html">Helix Integration</a></td></tr>
+<tr valign="top" class="odd"><td><a href="legal-openobex.html">OpenObex</a></td><td></td><td><a href="http://dev.zuckschwerdt.org/openobex/">Object Exchange protocol</a></td><td><a href="bluetooth.html">bluetooth</a>, Irda</td><td></td></tr>
+<tr valign="top" class="even"><td>PPP</td><td></td><td>Point to Point Protocol</td><td>Networking</td><td></td></tr>
+<tr valign="top" class="odd"><td>TSLib</td><td>1.0</td><td><a href="http://tslib.berlios.de/">Touchscreen Library</a></td><td>TSLib plugin</td><td><a href="syscust-pointer.html">Mouse Pointer Handling</a></td></tr>
+<tr valign="top" class="even"><td>WAP</td><td></td><td>Integrator-provided component</td><td>MMS</td><td></td></tr>
+<tr valign="top" class="odd"><td>bluez-firmware</td><td>1.2</td><td>bluez firmware utilities</td><td><a href="bluetooth.html">Bluetooth</a></td><td></td></tr>
+<tr valign="top" class="even"><td>bluez-hcidump</td><td>1.34</td><td>bluez</td><td><a href="bluetooth.html">Bluetooth</a></td><td></td></tr>
+<tr valign="top" class="odd"><td>bluez-libs</td><td>3.9</td><td>bluez library</td><td><a href="bluetooth.html">Bluetooth</a></td><td></td></tr>
+<tr valign="top" class="even"><td>bluez-utils</td><td>3.9</td><td>bluez utilities</td><td><a href="bluetooth.html">Bluetooth</a></td><td></td></tr>
+<tr valign="top" class="odd"><td>dosfstools</td><td></td><td>utilities for DOS file systems</td><td></td><td></td></tr>
+<tr valign="top" class="even"><td>dropbear</td><td></td><td>ssh service and client</td><td></td><td></td></tr>
+<tr valign="top" class="odd"><td>expat</td><td></td><td><a href="http://expat.sourceforge.net/">XML Parser</a></td><td><a href="bluetooth.html">Bluetooth</a></td><td></td></tr>
+<tr valign="top" class="even"><td>e2fsprogs</td><td></td><td>Utilities for ext2 file systems</td><td></td><td></td></tr>
+<tr valign="top" class="odd"><td>LIDS</td><td>1.2&#x2e;2</td><td>Linux Intrusion Detection System</td><td><a href="sxe.html">Safe Execution Environment - SXE</a></td><td></td></tr>
+<tr valign="top" class="even"><td>libungif</td><td></td><td>GIF library</td><td></td><td></td></tr>
+<tr valign="top" class="odd"><td>pcmcia</td><td></td><td>PCMCIA utilities</td><td></td><td></td></tr>
+<tr valign="top" class="even"><td>sqlite</td><td></td><td><a href="http://www.sqlite.org/">SQLite database</a></td><td>PIM, Messaging</td><td>Provided by <a href="qt-embedded.html">Qt for Embedded Linux</a></td></tr>
+<tr valign="top" class="odd"><td>sysvinit</td><td></td><td><a href="http://freshmeat.net/projects/sysvinit/">sysvinit project</a> System initialization</td><td>busybox also provides a simple init without runlevels</td><td></td></tr>
+<tr valign="top" class="even"><td>udev</td><td></td><td>Kernel device manager</td><td></td><td><a href="http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html">Udev web site</a></td></tr>
+<tr valign="top" class="odd"><td>v4l</td><td></td><td><a href="http://www.exploits.org/v4l/">Video For Linux</a></td><td>camera</td><td></td></tr>
+<tr valign="top" class="even"><td>wireless_tools</td><td>0.28</td><td>wireless utilities</td><td>wireless networking <a href="http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html">Wireless Tools</a></td><td></td></tr>
+<tr valign="top" class="odd"><td>wpa_supplicant</td><td>0.4&#x2e;9</td><td><a href="http://hostap.epitest.fi/wpa_supplicant/">WPA\WPA2 Authentication</a></td><td>wireless networking</td><td></td></tr>
+<tr valign="top" class="even"><td>zoneinfo</td><td></td><td>Time Zone Data</td><td>WorldTime, Date/Time</td><td><a href="syscust-time.html">Time on an Embedded Device</a></td></tr>
+</table></p>
+<a name="other-tools"></a>
+<h4>Other tools</h4>
+<p>Other tools you may want to provide for development or general use.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Package</th><th>Provides</th><th>Qt Extended Component</th><th>Notes</th></tr></thead>
+<tr valign="top" class="odd"><td>libelf</td><td>Linux file system tools</td><td></td><td></td></tr>
+<tr valign="top" class="even"><td>dosfstools</td><td>DOS file system tools</td><td></td><td></td></tr>
+<tr valign="top" class="odd"><td>libungif</td><td>gif library</td><td></td><td></td></tr>
+<tr valign="top" class="even"><td>zlib</td><td>File Compression Utility</td><td>Package Manager</td><td>Provided by <a href="qt-embedded.html">Qt for Embedded Linux</a></td></tr>
+<tr valign="top" class="odd"><td>libjpeg</td><td>JPEG image library</td><td></td><td>Provided by <a href="qt-embedded.html">Qt for Embedded Linux</a></td></tr>
+<tr valign="top" class="even"><td>OpenSSH</td><td><a href="http://www.openssh.com/">OpenSSH</a></td><td></td><td>developer tool</td></tr>
+<tr valign="top" class="odd"><td>telnet</td><td>Telnet Terminal Services</td><td></td><td>developer tool</td></tr>
+<tr valign="top" class="even"><td>ftp</td><td>File Transfer Protocol</td><td></td><td>developer tool</td></tr>
+<tr valign="top" class="odd"><td>tar</td><td>Archive Utility</td><td></td><td>developer tool</td></tr>
+<tr valign="top" class="even"><td>freetype</td><td>Font Library</td><td></td><td>Provided by <a href="qt-embedded-fonts.html">Qt for Embedded Linux Fonts</a></td></tr>
+<tr valign="top" class="odd"><td>libmng</td><td>PNG animation library</td><td></td><td>Provided by <a href="qt-embedded.html">Qt for Embedded Linux</a></td></tr>
+<tr valign="top" class="even"><td>libpng</td><td></td><td></td><td>Provided by <a href="qt-embedded.html">Qt for Embedded Linux</a></td></tr>
+<tr valign="top" class="odd"><td>md5</td><td></td><td></td><td>Provided by <a href="qt-embedded.html">Qt for Embedded Linux</a></td></tr>
+<tr valign="top" class="even"><td>gdb server</td><td>Remote debugging utility</td><td></td><td><a href="debug-qtextended.html#remote-debugging">Remote Debugging</a></td></tr>
+<tr valign="top" class="odd"><td>prelink</td><td>Binary optimization</td><td></td><td><a href="tut-prelink.html">Prelink Tutorial</a></td></tr>
+</table></p>
+<p>The compiler requirements are mentioned in the build <a href="qtextended-dependencies.html#supported-compilers">prerequisites</a>.</p>
+<a name="root-file-system-kernel-sources"></a>
+<h4>Root file system/kernel sources</h4>
+<p>There are a number of commercial companies and GPL projects that can provide an Embedded Linux distribution.</p>
+<ul>
+<li><a href="http://www.freescale.com">Freescale</a></li>
+<li><a href="http://windriver.com">Wind River</a></li>
+<li><a href="http://mvista.com">Montavista</a></li>
+<li><a href="http://www.timesys.com/">TimeSys</a></li>
+<li><a href="http://openembedded.org">OpenEmbedded</a></li>
+<li><a href="http://www.pengutronix.de/software/ptxdist/index_en.html">PTXdist</a></li>
+<li><a href="http://www.linuxfromscratch.org/">Linux From Scratch</a></li>
+<li><a href="http://buildroot.uclibc.org/">uClibc Buildroot</a></li>
+</ul>
+<p>To build a cross toolchain yourself:</p>
+<ul>
+<li><a href="http://kegel.com/crosstool/">Crosstool</a></li>
+</ul>
+<a name="qt-extended-build-system"></a>
+<h2>Qt Extended Build system</h2>
+<p>The Qt Extended build system has its own <a href="buildsystem/index.html">reference documentation</a> which provides function and variable descriptions for the various parts of the build system. This section of the integration guide will reference various parts of it as well as additional example documentation.</p>
+<a name="how-to-build-qt-extended"></a>
+<h3>How to build Qt Extended</h3>
+<p>Before Qt Extended can be built various prerequisites and dependencies have to be satisfied. Most of these dependencies are related to the Linux system and root filesystem that Qt Extended is running on. The <a href="#linux">first part of this guide</a> explicitly states those mandatory and optional requirements. Additional information, such as supported compilers, can be found in the <a href="qtextended-dependencies.html">Dependencies and Prerequisites</a> documentation.</p>
+<p>Qt Extended can be built in multiple ways. In general, the build system distinguishes several ways of building a Qt Extended application. They are directly related to launch methods and footprint optimizations provided by Qt Extended.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Build type</th><th>description</th></tr></thead>
+<tr valign="top" class="odd"><td>Normal</td><td>Every application is compiled into a binary that is executed by the Qt Extended Server.</td></tr>
+<tr valign="top" class="even"><td><a href="quicklaunch.html">Quicklauncher</a></td><td>This is the default mode for Qt Extended. It improves the application startup time by using a stub application to preload libraries and construct classes that are common to all Qt Extended applications in the background before an application is started. A quicklaunch enabled application is built as a plugin that is loaded by the stub application.</td></tr>
+<tr valign="top" class="odd"><td><a href="single-exec.html">Singleexec Mode</a></td><td>The Qt Extended Server and all applications are linked together in a single large binary. A single binary is smaller in size than many separate application binaries and launch times are decreased because libraries are statically linked together with applications. The disadvantages are reduced flexibility when updating libraries and applications on already deployed devices, and the inability of user-installed applications to dynamically link against the Qt Extended libraries.</td></tr>
+</table></p>
+<p>Note that the various options provided in the above table can be combined. A detailed overview of the possible options are provided by the Qt Extended <a href="buildsystem/over-configure-options-1.html">configure script</a>.</p>
+<a name="configure-options"></a>
+<h4>Configure options</h4>
+<p>The configure options allow the enabling/disabling of Qt Extended modules. Some modules are not required for every conceivable target device and may be disabled to reduce filesystem and memory use. Module selction can be done via configure's <tt>-modules</tt> flag.</p>
+<pre>    ./configure -devices xyz -modules ipcomms</pre>
+<p>The above example assumes that the target build for device <tt>xyz</tt> requires support for a VoIP features only. Therefore the required modules are the <a href="qtbasemodule.html">Base</a> and <a href="qtipcommsmodule.html">IpComms</a> module. The Base module is required for all Qt Extended builds and is implicitly selected by all build configurations. The next example demonstrates how to select multiple module at the same time:</p>
+<pre>    ./configure -devices xyz -modules ipcomms,cell,location</pre>
+<p>More information about the module concept can be found in the <a href="modules-index.html">Qt Extended Modules</a> documentation.</p>
+<p>In addition to the modules flag Qt Extended maintains two sets of configure options. The first set is related to the Qt Extended configure script and the second set is related to Qt's configure script.</p>
+<ul>
+<li><a href="buildsystem/over-configure-options-1.html">Qt Extended configure options</a></li>
+<li><a href="buildsystem/over-configure-options-qt-embedded-1.html">Qt for Embedded Linux configure options</a></li>
+</ul>
+<p>Note that Qt config options are actually passed to Qt Extended via the <tt>-extra-qtopiacore-config</tt> option provided by the Qt Extended configure script.</p>
+<a name="adjusting-projects"></a>
+<h4>Adjusting projects</h4>
+<p>In addition to the removal of Qt Extended features, applications can be removed and added to a Qt Extended build. The Qt Extended <a href="buildsystem/task-deciding-what-to-build-1.html">project files</a> list each individual project that is part of the build and hence enables the developer to choose among provided libraries, plug-ins and applications. This level of customization is also available via <a href="#device-specific-configuration">device profiles</a>. This enables an even better level of customization but has the disadvantage that project dependencies may have to be resolved manually.</p>
+<p>As an example the greenphone profile adds and removes the following projects to/from the build process:</p>
+<pre>    PROJECTS*=\
+        3rdparty/tools/atd\
+        3rdparty/applications/target_sqlite\
+        settings/startupflags\
+        tools/phonebounce
+
+    PROJECTS-=\
+        settings/beaming
+
+    THEMES-=finxi</pre>
+<a name="device-specific-configuration"></a>
+<h3>Device-specific Configuration</h3>
+<p>As already mentioned earlier in this guide <a href="buildsystem/over-device-profiles-1.html">device profiles</a> provide a convenient way of bundling device-specific code and configurations. This removes the need for code customizations within in the main Qt Extended source tree. Device Profiles may be provided by hardware manufactures and/or with Qt Extended as separate packages that can easily be integrated into a Qt Extended source package. Device profiles can be found in <tt>$QTOPIA_DEPOT_PATH/devices</tt>, are entirely independent of the main Qt Extended source tree and are easily enabled via the build system.</p>
+<p>The following example configures, compiles and installs the Greephone device profile which is located in <tt>$QTOPIA_DEPOT_PATH/devices/greenphone</tt>:</p>
+<pre>    cd $QPEDIR
+    $QTOPIA_DEPOT_PATH/configure -device greenphone
+    bin/qbuild
+    bin/qbuild image</pre>
+<p>The build system will use the configure options stored in <tt>QTOPIA_DEPOT_PATH/devices/greenphone/configure</tt> to build Qt Extended for the Greenphone. Note that even <a href="syscust-crosscompile.html">cross-compiling</a> is handled by device profiles.</p>
+<p>The <a href="tut-deviceexample.html">device plugin tutorial</a> may be of interest as well because it demonstrates how a new profile is created using the requirement for a device plugin, such as a keyboard plugin, as an example.</p>
+<a name="advanced-build-system-documentation"></a>
+<h3>Advanced build system documentation</h3>
+<p>The Qt Extended build system has a separate <a href="buildsystem/index.html">documentation index</a>. Its main aim is to explain the various project file functions, variables and how they interact with the configure script. Supplemental <a href="qtopiadesktop/overviews.html">overviews</a> and <a href="buildsystem/tasks.html">tutorials</a> introduce common tasks which may occur during the Qt Extended development process.</p>
+<a name="qt-for-embedded-linux"></a>
+<h2>Qt for Embedded Linux</h2>
+<a name="qt-feature-system"></a>
+<h3>Qt Feature system</h3>
+<p>Qt for Embedded Linux allows the fine-tuning of library content via the qconfig tool. <a href="qt-embedded-features.html">QConfig</a> provides a visual user interface that enables a convenient way of customizing library content. It presents a short description of particular features, can enable/disable them and resolves dependencies among these features. This allows the adjustment of Qt for Embedded Linux library sizes as needed. Qt Extended uses a default configuration provided by <tt>QPEDIR/qtopiacore/qconfig-qpe.h</tt> which may be used as a starting point for further customization. Please note that the qconfig system can only be used to customize Qt for Embedded Linux libraries and not Qt Extended libraries.</p>
+<p><tt>qconfig-qpe.h</tt> excludes the following Qt components from a standard Qt Extended build:</p>
+<p><table width="90%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th><tt>#define</tt></th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>QT_NO_STL</td><td>standard template library compatibility</td></tr>
+<tr valign="top" class="even"><td>QT_NO_COLORDIALOG</td><td>removes <a href="qcolordialog.html">QColorDialog</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_ERRORMESSAGE</td><td>removes <a href="qerrormessage.html">QErrorMessage</a></td></tr>
+<tr valign="top" class="even"><td>QT_NO_FILEDIALOG</td><td>removes <a href="qfiledialog.html">QFileDialog</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_INPUTDIALOG</td><td>removes <a href="qinputdialog.html">QInputDialog</a></td></tr>
+<tr valign="top" class="even"><td>QT_NO_PROGRESSDIALOG</td><td>removes QProgressDialog</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_TABDIALOG</td><td>removes <a href="q3tabdialog.html">Q3TabDialog</a></td></tr>
+<tr valign="top" class="even"><td>QT_NO_IMAGEFORMAT_PPM</td><td>removes support for PPM images</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_IMAGE_HEURISTIC_MASK</td><td>removes support for 1-bpp heuristic mask (see <a href="qimage.html#createHeuristicMask">QImage::createHeuristicMask</a>() )</td></tr>
+<tr valign="top" class="even"><td>QT_NO_IMAGE_TEXT</td><td>removes support for image file text strings</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_BIG_CODECS</td><td>no support for big codecs e.g&#x2e;, CJK (should be added via plug-ins when necessary)</td></tr>
+<tr valign="top" class="even"><td>QT_NO_CODECS</td><td>no support for non-unicode text conversions</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_DIRMODEL</td><td>no data model support for the local filesystem (see <a href="qdirmodel.html">QDirModel</a>)</td></tr>
+<tr valign="top" class="even"><td>QT_NO_CURSOR</td><td>no mouse cursor support (see <a href="qcursor.html">QCursor</a>)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_DRAGANDDROP</td><td>removes drag and drop mechanisms</td></tr>
+<tr valign="top" class="even"><td>QT_NO_EFFECTS</td><td>removes special widget effects (e.g&#x2e;, fading and scrolling)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_SESSIONMANAGER</td><td>removes support for session management</td></tr>
+<tr valign="top" class="even"><td>QT_NO_NETWORKPROXY</td><td>removes network layer proxy support (see <a href="qnetworkproxy.html">QNetworkProxy</a>)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_SOCKS5</td><td>removes SOCKS v5 network proxy support (depends on QT_NO_NETWORKPROXY)</td></tr>
+<tr valign="top" class="even"><td>QT_NO_COLORNAMES</td><td>removes colar names such as &quot;red&quot;, which are used by <a href="qcolor.html">QColor</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_QWS_ALPHA_CURSOR</td><td>removes support for alpha-blended cursors</td></tr>
+<tr valign="top" class="even"><td>QT_NO_QWS_CURSOR</td><td>removes support for visible cursors (depends on QT_NO_CURSOR)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_QWS_DECORATION_WINDOWS</td><td>no support for &quot;Windows&quot; style decorations of top level windows</td></tr>
+<tr valign="top" class="even"><td>QT_NO_QWS_MOUSE</td><td>removes mouse driver support</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_QWS_MOUSE_AUTO</td><td>removes support for auto-detected mouse drivers</td></tr>
+<tr valign="top" class="even"><td>QT_NO_QWS_MOUSE_MANUAL</td><td>removes support for non-autodetected mouse drivers</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_STYLE_MOTIF</td><td>removes support for Motif look and feel (see <a href="qmotifstyle.html">QMotifStyle</a>)</td></tr>
+<tr valign="top" class="even"><td>QT_NO_STYLE_CDE</td><td>removes support for CDE look and feel (depends in QT_NO_STYLE_MOTIF)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_STYLE_PLASTIQUE</td><td>removes support for widget style similar to the Plastik style available in KDE (see <a href="qplastiquestyle.html">QPlastiqueStyle</a>)</td></tr>
+<tr valign="top" class="even"><td>QT_NO_STYLE_WINDOWSXP</td><td>removes support for Microsoft WindowsXP look and feel (see <a href="qwindowsxpstyle.html">QWindowsXPStyle</a>)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_CONTEXTMENU</td><td>removes support for pop-up menus on right mouse click</td></tr>
+<tr valign="top" class="even"><td>QT_NO_DOCKWIDGET</td><td>removes support for docking widgets inside a <a href="qmainwindow.html">QMainWindow</a> or floated as a top-level window (see <a href="qdockwidget.html">QDockWidget</a>)</td></tr>
+<tr valign="top" class="odd"><td>QT_NO_WORKSPACE</td><td>removes <a href="porting4.html">QWorkSpace</a></td></tr>
+<tr valign="top" class="even"><td>QT_NO_SPLITTER</td><td>removes <a href="qsplitter.html">QSplitter</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_SIZEGRIP</td><td>removes <a href="qsizegrip.html">QSizeGrip</a></td></tr>
+<tr valign="top" class="even"><td>QT_NO_DIAL</td><td>removes <a href="qdial.html">QDial</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_SYNTAXHIGHLIGHTER</td><td>removes <a href="qsyntaxhighlighter.html">QSyntaxHighlighter</a></td></tr>
+<tr valign="top" class="even"><td>QT_NO_STATUSBAR</td><td>removes <a href="qstatusbar.html">QStatusBar</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_STATUSTIP</td><td>removes support for status tip functionality and events</td></tr>
+<tr valign="top" class="even"><td>QT_NO_TOOLBOX</td><td>removes <a href="qtoolbox.html">QToolBox</a></td></tr>
+<tr valign="top" class="odd"><td>QT_NO_TOOLTIP</td><td>removes <a href="qtooltip.html">QToolTip</a></td></tr>
+</table></p>
+<a name="porting"></a>
+<h3>Porting</h3>
+<p>The term porting is used to describe two similar processes. The first use of the term is in the context of modifying Qt for Embedded Linux to support a new hardware platform or operating system. In this case the statements &quot;Porting Qt for Embedded Linux to a new Architecture&quot; and &quot;Porting Qt for Embedded Linux to another Operating System&quot; refer to the process of adding the necessary platform dependent code to Qt for Embedded Linux to support the target hardware platform and operating system. The second use refers to the process of changing application code, for an existing application, to work with a newer version of the Qt Extended API.</p>
+<a name="qt-for-embedded-linux-to-a-new-architecture"></a>
+<h4>Qt for Embedded Linux to a New Architecture</h4>
+<p>Porting Qt for Embedded Linux to a new Architecture involves implementing device drivers for keypad input pointer input, and screen output. You must also ensure that platform dependent atomic operations are provided. These topics are covered in the <a href="qt-embedded-porting-device.html">Porting Qt for Embedded Linux to a New Architecture</a> document.</p>
+<a name="to-another-operating-system"></a>
+<h4>To another Operating System</h4>
+<p>Porting Qt for Embedded Linux to another Operating System involves replacing all Linux specific system calls used in Qt for Embedded Linux with equivalents available on the new Operating System. <a href="qt-embedded-porting-operatingsystem.html">Porting Qt for Embedded Linux to Another Operating System</a> documents the Linux specific system calls that are currently used and what they are used for.</p>
+<a name="qt-application-to-qt-for-embedded-linux"></a>
+<h4>Qt Application to Qt for Embedded Linux</h4>
+<p>Existing Qt 4 applications should require no porting provided there is no platform dependent code. If platform dependent code is used, <a href="qt-embedded-differences.html">Porting Qt Applications to Qt for Embedded Linux</a> provides information on how to manage platform dependent code within your application.</p>
+<a name="qtopia-2-x-to-4-x"></a>
+<h4>Qtopia 2.x to 4.x</h4>
+<p>Porting applications from Qtopia 2.x to Qtopia / Qt Extended 4.x primarily involves making changes related to changes in the Qt API. Qt Extended does not support the Qt 3 Support module, so the task of porting from Qtopia 2 to Qtopia / Qt Extended 4 takes more work than porting from Qt 2 to Qt 4. An overview on the planned incompatibilities between Qtopia / Qt Extended versions and instructions on how to update your code to the new API is described in the <a href="porting.html">Porting Between Qtopia/Qt Extended Versions</a> document.</p>
+<p>For Qtopia Qt Extended 4 applications it is no longer recommended that the <tt>main()</tt> function be written explicitly by the programmer. Instead macros are used to declare the application entry point. These macros are designed so that your application can be built for different configurations (such as <a href="single-exec.html">singleexec</a>, <a href="quicklaunch.html">quicklaunch</a> and standard builds) without requiring any code changes. For details on declaring the entry point for your application see <a href="buildsystem/over-applications-1.html">Applications</a>.</p>
+<a name="linux-framebuffer-and-display-management"></a>
+<h3>Linux Framebuffer and Display Management</h3>
+<p>Qt Extended for Embedded Linux provides screen drivers for the Linux Framebuffer, virtual framebuffer, transformed screens, VNC servers and multiple screens. Qt for Embedded Linux's default behavior is for each client application to render its contents into an off-screen buffer. The Qt Extended Server process copies the memory contents onto the screen. For an overview of this process see <a href="qt-embedded-architecture.html">Graphics Rendering</a> and <a href="qt-embedded-architecture.html">Drawing on Screen</a>.</p>
+<p>The virtual framebuffer and VNC server drivers are used predominantly during development. When Qt is deployed on a device the Linux framebuffer, transformed screens or multi-screen drivers are typically used. The screen driver that Qt Extended uses is specified in the <a href="qt-embedded-envvars.html">QWS_DISPLAY</a> environment variable. Refer to <a href="qt-embedded-displaymanagement.html">Qt for Embedded Linux Display Management</a> for documentation on building screen drivers and how to specify which screen driver Qt Extended should use.</p>
+<p>Most devices will use the Linux Framebuffer driver. The Qt for Embedded Linux document <a href="qt-embedded-testingframebuffer.html">Testing the Linux Framebuffer</a> includes a small test program that can be used to verify that the Linux Framebuffer is configured and works correctly.</p>
+<p>Qt Extended includes support for multiple screens and accelerated graphics drivers. For documentation on integrating these features refer to <a href="#multiple-screen-support">Multiple Screen Support</a> and <a href="#accelerated-graphics-driver">Accelerated Graphics Driver</a>.</p>
+<a name="fonts"></a>
+<h3>Fonts</h3>
+<p>Qt for Embedded Linux uses the <a href="qt-embedded-fonts.html">FreeType 2</a> font engine to render fonts. In addition Qt for Embedded Linux also supports native prerendered fonts (<a href="qt-embedded-fonts.html">QPF2</a>) and legacy prerendered fonts (<a href="qt-embedded-fonts.html">QPF</a>). For full details on the font formats supported by Qt for Embedded Linux see <a href="qt-embedded-fonts.html">Qt for Embedded Linux Fonts</a>.</p>
+<p>Qt for Embedded Linux ships with several fonts. The licensing terms for these fonts are described in <a href="licenses-fonts.html">Licenses for Fonts Used in Qt for Embedded Linux</a>.</p>
+<p>Qt Extended selects the font size based on the size and resolution of the target display. Please refer to <a href="syscust-dpi.html">Setting the Display Size</a> which demonstrates how the actual font size is calculated.</p>
+<a name="keyboard-input-plug-ins"></a>
+<h3>Keyboard/Input plug-ins</h3>
+<p>Qt Extended keyboard handling is controlled by <a href="qt-embedded.html">Qt for Embedded Linux</a>. There are a few default keyboard drivers available: tty usb sl5000 yopy vr41xx qvfb</p>
+<p>A custom keyboard driver may be implemented through the <a href="buildsystem/over-device-profiles-1.html">Device Configuration Profiles</a>, and documentation can be found for the class <a href="qwskeyboardhandler.html">QWSKeyboardHandler</a>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Keyboard driver</th><th>Source</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>tty</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qkbdtty_qws.cpp</tt></td><td>Standard tty keyboard</td></tr>
+<tr valign="top" class="even"><td>usb</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qkbdusb_qws.cpp</tt></td><td>Standard USB keyboard</td></tr>
+<tr valign="top" class="odd"><td>sl5000</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qkbdsl5000_qws.cpp</tt></td><td>Keyboard specific to the Sharp Zaurus 5500</td></tr>
+<tr valign="top" class="even"><td>yopy</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qkbdyopy_qws.cpp</tt></td><td>Keyboard specific to the Yopy</td></tr>
+<tr valign="top" class="odd"><td>vr41xx</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qkbdvr41xx_qws.cpp</tt></td><td>Keyboard specific for the NEC Vr41XX device.</td></tr>
+<tr valign="top" class="even"><td>qvfb</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qkbdvfb_qws.cpp</tt></td><td>Keyboard specific for Qvfb</td></tr>
+</table></p>
+<p>More information about Keyboard Plugins:</p>
+<ul>
+<li><a href="syscust-keypadarch.html">Keypad Architecture</a></li>
+<li><a href="qt-embedded-charinput.html">Qt for Embedded Linux Character Input</a></li>
+<li><a href="syscust-keypadbutt.html">Keypad Button Behavior</a></li>
+</ul>
+<a name="pointer-plugins"></a>
+<h3>Pointer plugins</h3>
+<p>In Qt for Embedded Linux, there are built-in Mouse Pointer (touchscreen) Plugins. If none of these work, a Device Configuration may include a custom mouse pointer plugin.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Driver</th><th>Source</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>pc</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmousepc_qws.cpp</tt></td><td>Standard pc mouse</td></tr>
+<tr valign="top" class="even"><td>bus</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmousebus_qws.cpp</tt></td><td>Standard bus mouse</td></tr>
+<tr valign="top" class="odd"><td>linuxtp</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmouselinuxtp_qws.cpp</tt></td><td>Standard Linux Touchscreen</td></tr>
+<tr valign="top" class="even"><td>yopy</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmouseyopy_qws.cpp</tt></td><td>Yopy device</td></tr>
+<tr valign="top" class="odd"><td>vr41xx</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmousevr41xx_qws.cpp</tt></td><td>vr41 device</td></tr>
+<tr valign="top" class="even"><td>tslib</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmousetslib_qws.cpp</tt></td><td>Use libts for touchscreen events.</td></tr>
+<tr valign="top" class="odd"><td>qvfb</td><td><tt>$QPEDIR/qtopiacore/qt/src/gui/embedded/qmousevfb_qws.cpp</tt></td><td>Mouse pointer for QVFb</td></tr>
+</table></p>
+<p>More information about Mouse Pointer plug-ins:</p>
+<ul>
+<li><a href="syscust-pointer.html">Mouse Pointer Handling</a></li>
+<li><a href="qt-embedded-pointer.html">Qt for Embedded Linux Pointer Handling</a></li>
+<li><a href="tut-mouse-ptr.html">Mouse Pointer Calibration</a></li>
+</ul>
+<a name="accelerated-graphics-driver"></a>
+<h3>Accelerated Graphics Driver</h3>
+<p>The display performance can be enhanced by the use of a hardware graphics accelerator.</p>
+<p>More information about Accelerated Graphics Drivers in Qt for Embedded Linux:</p>
+<ul>
+<li><a href="qt-embedded-displaymanagement.html">Qt for Embedded Linux Display Management</a></li>
+<li><a href="qws-svgalib.html">Accelerated Graphics Driver Example</a></li>
+<li><a href="qws-ahigl.html">OpenGL for Embedded Systems Example</a></li>
+</ul>
+<a name="environment-variables"></a>
+<h3>Environment Variables</h3>
+<p>Qt Extended makes use of a few environment variables. These are usually set by the startup script.</p>
+<pre>    #!/bin/sh
+    export QWS_DISPLAY=LinuxFb:mmWidth34:mmHeight44:0
+    /opt/Qtopia/bin/qpe</pre>
+<p>They can also be set from the <tt>defaultbuttons.conf</tt> file.</p>
+<pre>    [Environment]
+    QWS_DISPLAY=LinuxFb:mmWidth34:mmHeight44:0</pre>
+<p>Note that variables set in defaultbuttons.conf do not override variables set in the environment before running Qt Extended.</p>
+<p>More Information on most Qt for Embedded Linux Environmental Variables:</p>
+<ul>
+<li><a href="qt-embedded-envvars.html">Qt for Embedded Linux Environment Variables</a></li>
+</ul>
+<p>In addition to the Qt for Embedded Linux specific environment variables mentioned above the following standard variables may be required:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Variable</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>LANG</td><td>Specifies the language and codeset to be used by Qt for Embedded Linux. If problems with missing or wrong text codecs are occuring this variable should be checked. The format for this variable is:<pre>                &lt;language&gt;_&lt;country&gt;.&lt;codeset&gt;</pre>
+<p>A valid example would be <tt>en_GB.utf8</tt> (British English w/ UTF8 codeset). The codeset must always be set to utf8 for Qt Extended. Refer to the <a href="#internationalization">Internationalization</a> section for more details on language and translation specifc information.</p>
+</td></tr>
+</table></p>
+<a name="qt-extended"></a>
+<h2>Qt Extended</h2>
+<a name="application-services"></a>
+<h3>Application services</h3>
+<p>Services are a standardized way of accessing functionality supplied by other applications. Any application can utilize these services via the <a href="ipc.html">QtopiaService*</a> classes. Messages between applications are delivered via <a href="qtextendedipc.html">Qt Extended IPC</a>.</p>
+<p>Qt Extended services are documented in the <a href="services.html">service documentation</a>. It explains what services are provided by Qt Extended, how they can be accessed and the steps required to add new services. The various meta-information describing a service can be found in <tt>$QPEDIR/services</tt> and each service is documented like any other Qt Extended class (see the <a href="clockservice.html">ClockService</a> as an example).</p>
+<a name="multiple-screen-support"></a>
+<h3>Multiple screen support</h3>
+<p>Qt Extended supports multiple screens. A possible use case for such a situation might be a clamshell phone which has a small status display on the outside and a larger display on the inside. The <a href="tut-dualdisplay.html">Dual Screen</a> guide describes the necessary setup steps for dual display development and how any application can display a widget on the secondary display. Support for more than two displays can be achieved with similar steps.</p>
+<p>Qt Extended provides an integrated and themeable secondary display via the server widget classes <a href="qabstractsecondarydisplay.html">QAbstractSecondaryDisplay</a> and <a href="themedsecondarydisplay.html">ThemedSecondaryDisplay</a>. More details can be found in the <a href="#server-widgets">Server widgets</a> part of this guide.</p>
+<a name="qws-connection-timeout"></a>
+<h3>QWS connection timeout</h3>
+<p>The Qt Extended Server needs to launch processes during startup but it also needs to do it's own initializing which can cause the processes to die. This happens because of a 5 second timeout, QWS clients wait only 5 seconds for the server to respond after connecting to it's socket.</p>
+<p>To avoid this problem the server sets the <tt>QWS_CONNECTION_TIMEOUT</tt> variable to 30, extending the timeout to 30 seconds. This value was chosen after testing on the Greenphone. It can be overriden by setting the variable (see <a href="#qt-extended-environment-variables">Qt Extended Environment Variables</a> for how to do this).</p>
+<a name="server-tasks"></a>
+<h3>Server Tasks</h3>
+<p>The Qt Extended Server application is structured as a collection of <a href="qtopiaserverapplication.html#qt-extended-server-tasks">server tasks</a>. Ideally each task would perform a small, well-defined portion of work or functionality. Server tasks allow ODMs to easily customize Qt Extended by extending, replacing and removing tasks from the Qt Extended Server application with little or no changes required to the Qt Extended Server source code. This is achieved by using <a href="#device-specific-configuration">device profiles</a> and the <tt>$QPEDIR/etc/Tasks.cfg</tt> configuration file. For information about particular server tasks refer to the <a href="groups.html#qt-extended-server-classes">server task class documentation</a>.</p>
+<p>In most cases Qt Extended Server tasks are implemented as <a href="qobject.html">QObject</a> derived classes. An exception to this are functional tasks, which are implemented as static functions. The developer uses <a href="qtopiaserverapplication.html#QTOPIA_TASK">QTOPIA_TASK</a>() and <a href="qtopiaserverapplication.html#QTOPIA_STATIC_TASK">QTOPIA_STATIC_TASK</a>() macros to declare server tasks. For full details see the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> documentation. The following example demonstrates how to implement a server task. First the class is declared in the header file</p>
+<pre>        <span class="comment">// exampleservertask.h</span>
+        #include &lt;QObject&gt;
+
+        class ExampleServerTask : public QObject
+        {
+            public:
+                ExampleServerTask();
+        };</pre>
+<p>Then the class is implemented and registered with the task system in the implementation file</p>
+<pre>        #include &quot;exampleservertask.h&quot;
+
+        ExampleServerTask::ExampleServerTask()
+        {
+            ...
+        }
+
+        QTOPIA_TASK(ExampleServerTask, ExampleServerTask);</pre>
+<p>New server tasks are added by placing the source code for the server tasks into the <tt>server/</tt> directory of the configured <a href="#device-specific-configuration">device profile</a>. The <a href="#qt-extended-build-system">Qt Extended Build System</a> automatically includes source files in this directory into the Qt Extended Server application.</p>
+<p>Existing server tasks can be extended to provide additional functionality or to implement device specific code by creating subclasses of the existing server tasks. Source code for these classes should be stored in the <tt>server/</tt> directory of the configured <a href="#device-specific-configuration">device profile</a>.</p>
+<p>Removing server tasks can be achieved by adding task names to the <tt>exclude</tt> group of the <tt>$QPEDIR/etc/Tasks.cfg</tt> configuration file.</p>
+<a name="server-task-plug-ins"></a>
+<h4>Server task plug-ins</h4>
+<p>This mechanism enables the Qt Extended Server to add new task to the system without having to recompile the server. This is particularly useful for patching of already deployed systems. More information about server task plug-ins can be found in the <a href="server-plugins-exampletask.html">Server task plug-in tutorial</a>.</p>
+<a name="task-startup"></a>
+<h4>Task startup</h4>
+<p>The startup process of the Qt Extended Server Application is defined by the order that tasks are listed in the <tt>Tasks.cfg</tt> configuration file. <tt>Tasks.cfg</tt> supports the definition of task groups which can be used to collect related tasks together. Except for a few <a href="qtopiaserverapplication.html#reserved-task-group-names">reserved task group names</a>, group names can be any alphanumeric string. For details on the format of the <tt>Tasks.cfg</tt> configuration file refer to <a href="qtopiaserverapplication.html#qt-extended-server-tasks">Qt Extended Server Tasks</a>.</p>
+<p>Qt Extended supports two <a href="qtopiaserverapplication.html#supported-task-types">types of tasks</a>: preemptive tasks and on-demand tasks. Preemptive tasks are started during the startup process as defined in the <tt>Tasks.cfg</tt> configuration file. On-demand tasks are configured as such by <a href="qtopiaserverapplication.html#marking-tasks-to-be-started-on-demand">marking tasks to be started on demand</a> in the <tt>Tasks.cfg</tt> configuration file. Only tasks in the reserved <tt>prestartup</tt>, <tt>startup</tt> and <tt>idle</tt> groups are preemptively started by Qt Extended.</p>
+<p>Some server tasks provide essential functionality and their startup order must be well defined. Two such tasks are the <a href="qtopiaapplication.html">QtopiaApplication</a> server task (implemented in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class) and the <a href="qtopiaserverapplicationlauncher.html">QtopiaServerApplicationLauncher</a> tasks. The startup order of the <a href="qtopiaapplication.html">QtopiaApplication</a> server task must be configured correctly as many other server tasks have an implicit dependency on it. This requirement is documented as part of the <a href="qtopiaserverapplication.html#tasks-startup-order">Tasks Startup Order</a>. Typically Qt Extended is configured to start the <a href="qtopiaapplication.html">QtopiaApplication</a> task from the <tt>prestartup</tt> group. To achieve this <tt>Tasks.cfg</tt> should contain a <tt>prestartup</tt> group with contents similar to</p>
+<pre>        [prestartup]
+        EnvironmentSetup
+        DBMigrate
+        QtopiaApplication
+        IpcRouter</pre>
+<p><a href="qtopiaserverapplicationlauncher.html">QtopiaServerApplicationLauncher</a> is part of the <a href="applicationlauncher.html">application launcher</a> framework. It functions as a proxy for the Qt Extended Server within the application launcher framework. To ensure correct behavior it is <b>essential</b> that the <a href="qtopiaserverapplicationlauncher.html">QtopiaServerApplicationLauncher</a> task is the first task with the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> interface that is started. The startup sequence of the application framework is typically configured by including something similar to the following in the <tt>Tasks.cfg</tt> configuration file:</p>
+<pre>        ...
+        [ApplicationLauncher]
+        ApplicationMonitor
+        ApplicationLauncher
+        QtopiaServerApplicationLauncher
+        BuiltinApplicationLauncher
+        ConsoleApplicationLauncher
+        QuickExeApplicationLauncher
+        QuickForkedApplicationLauncher
+        SandboxedExeApplicationLauncher
+        SimpleExeApplicationLauncher
+
+        [startup]
+        +ApplicationLauncher
+        ...</pre>
+<p>Some tasks cannot be set as on-demand tasks, but can have their construction delayed until after the user interface is shown. This is accomplished by putting the task in the <tt>idle</tt> group. Tasks in this group will be started shortly after the UI is displayed, but their construction will be delayed if the user starts interacting with the device (for example, making calls).</p>
+<p>Good candidates for this task group are tasks which provide services in the background with no user-visible component. For example, a task providing a Bluetooth dialup service can be placed in the <tt>idle</tt> group by adding the following to <tt>Tasks.cfg</tt>:</p>
+<pre>        ...
+        [idle]
+        BtDialupServiceTask
+        ...</pre>
+<p>In some cases, launch time of the Qt Extended Server can be improved by placing the <tt>All</tt> task in the <tt>idle</tt> group and manually specifying any tasks in <tt>startup</tt> which must be launched before the user interface is shown.</p>
+<a name="communication"></a>
+<h3>Communication</h3>
+<a name="bluetooth"></a>
+<h4>Bluetooth</h4>
+<p>Qt Extended uses the official Linux Bluetooth stack, BlueZ, for Bluetooth support. The <a href="bluetooth.html">Bluetooth Support</a> document covers the <a href="bluetooth.html#introduction">third party requirements</a> and describes the <a href="bluetooth.html#functionality">Bluetooth functionality</a> supported by Qt Extended.</p>
+<p>The <a href="bluetooth-servicemanager.html">Bluetooth Service Management Framework</a> enables Bluetooth services to be handled consistently within Qt Extended.</p>
+<p>Qt Extended supports the following Bluetooth connection sockets</p>
+<ul>
+<li><a href="qbluetoothl2capserver.html">L2CAP</a></li>
+<li><a href="qbluetoothrfcommserver.html">RFCOMM</a></li>
+<li><a href="qbluetoothscoserver.html">SCO</a></li>
+</ul>
+<p>Qt Extended includes implementations of the following Bluetooth services.</p>
+<ul>
+<li><a href="qbluetoothhandsfreeaudiogatewayserver.html">Bluetooth handsfree service Audio Gateway</a></li>
+<li><a href="qbluetoothheadsetaudiogatewayserver.html">Bluetooth headset service Audio Gateway</a></li>
+<li><a href="btdialupservicetask.html">Bluetooth dial-up networking service</a></li>
+</ul>
+<p>For documentation on creating additional Bluetooth services, refer to <a href="bluetooth-servicemanager.html#creating-a-custom-bluetooth-service">Creating a custom Bluetooth service</a>.</p>
+<a name="bluetooth-software-requirements"></a>
+<h5>Bluetooth Software Requirements</h5>
+<p>Qt Extended requires Linux kernel and additional third party software to support Bluetooth. <a href="#bluetooth-kernel-configuration">Bluetooth Kernel Configuration</a> describes the necessary Linux kernel configuration. <a href="#optional-linux-configuration">Optional Linux Configuration</a> lists the required third party packages.</p>
+<a name="networking"></a>
+<h4>Networking</h4>
+<p>Qt Extended uses network plug-ins to enable new types of network bearer. At present the following network types are supported:</p>
+<p><table width="60%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>network type</th><th>related plug-in</th></tr></thead>
+<tr valign="top" class="odd"><td>Local Area Network (LAN)</td><td><tt>QPEDIR/src/plugins/network/lan</tt></td></tr>
+<tr valign="top" class="even"><td>Wireless Local Area Network (WLAN)</td><td><tt>QPEDIR/src/plugins/network/lan</tt></td></tr>
+<tr valign="top" class="odd"><td>Dial-up via analog modem, GPRS or UMTS</td><td><tt>QPEDIR/src/plugins/network/dialing</tt></td></tr>
+<tr valign="top" class="even"><td>Bluetooth Dial-up Networking (DUN)</td><td><tt>QPEDIR/src/plugins/network/bluetooth</tt></td></tr>
+<tr valign="top" class="odd"><td>Bluetooth Personal Area Networking (PAN)</td><td>planned for future relases of Qt Extended</td></tr>
+</table></p>
+<p>In general each plug-in provides three components. The GUI component allows the user to configure each network connection via the Settings -&gt; Internet application or any other application that wants to do so. The second component initiates and publishes state changes such as the starting/stopping of the physical network device and the change of routes. The third part is a network script that abstracts the OS/distribution specific network interface configuration from Qt Extended. This is done via shell scripts.</p>
+<p>Due to the different types of supported network interfaces, the script interfaces are different for each plug-in. It is required to implement these scripts as part of the integration process. To ease the initial development process all plug-in's ship with sample scripts demonstrating the expected functionality. The (W)LAN plug-in for example provides a SuSE 9.3 and a busybox implementation. They may be used as a starting point for the integration process. The exact script parameters and configuration file formats are described in the <a href="networkservices.html">Network Services</a> documentation.</p>
+<p>If it is necessary to support a network bearer that is not yet supported by Qt Extended, new plug-ins can be added by implementing the abstract <a href="qtopianetworkplugin.html">QtopiaNetworkPlugin</a> and <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a> interfaces. An overview of network related classes and how they interact with each other can be found in the <a href="qnetworkdevice.html">QNetworkDevice</a> class documentation.</p>
+<a name="usb"></a>
+<h4>USB</h4>
+<a name="usb-host"></a>
+<h5>USB Host</h5>
+<p>Qt Extended does not provide any specific USB host functionality. Outlined below is information that may be helpful in supporting hotplugged USB devices.</p>
+<ul>
+<li>Ensure drivers are loaded, e.g&#x2e; via hotplug or udev.</li>
+<li>If necessary notify Qt Extended of the new devices. This can be done via custom udev rules and qcop.</li>
+</ul>
+<p>Depending on the connected peripheral device you will may need to provide addition configuration. For example</p>
+<ul>
+<li>Mass storage devices must have a corresponding entry in the <tt>Storage.conf</tt> configuration file.</li>
+<li>Keyboard and mouse handlers need to be instantiated for new input devices. This can be handled by a <a href="qtopiaserver-task.html">Server Task</a> that monitors for new input devices.</li>
+</ul>
+<a name="usb-peripheral"></a>
+<h5>USB Peripheral</h5>
+<p>Qt Extended includes support for selecting the class of USB peripheral device your device appears as when connected to a PC. If your device will only ever operate as a single USB device class you will not need to enable USB Peripheral support in Qt Extended. This support is based on the standard USB Gadget subsystem in Linux 2.6&#x2e; You may override this functionality to support a 3rd party USB Gadget stack by creating custom USB gadget provider classes. See <a href="qusbgadget.html">QUsbGadget</a>, <a href="qusbethernetgadget.html">QUsbEthernetGadget</a>, <a href="qusbserialgadget.html">QUsbSerialGadget</a>, <a href="qusbstoragegadget.html">QUsbStorageGadget</a>, <a href="qusbmanager.html">QUsbManager</a>. If support for additional device classes is added, <a href="usbgadgettask.html">UsbGadgetTask</a> server task should be extended as well.</p>
+<p>For an example implementation of a 3rd party USB Gadget stack see <a href="tut-usbgadgetprovider.html">Supporting alternative USB Gadget Stacks</a>.</p>
+<p>There is no standard way of querying the connection status of the USB cable. The system integrator should ensure that the Value Space key <tt>/Hardware/UsbGadget/cableConnected</tt> is set to true when the USB cable is connected to the device and false otherwise. See <a href="qvaluespaceobject.html">QValueSpaceObject</a> for details on how to add entries to the Value Space.</p>
+<p>Configuration settings for the USB gadget framework is in the <tt>Usb.conf</tt> configuration file. The default configuration file is set up to use the <tt>dummy_hcd</tt> virtual USB peripheral controller. The <tt>dummy_hcd</tt> peripheral controller can be used for testing USB peripheral functionality when real peripheral hardware is not available. To configure Qt Extended to work with your device you will need to</p>
+<ol type="1">
+<li>Copy the <tt>Usb.conf</tt> configuration file to the <tt>etc/default/Trolltech</tt> directory in your <a href="buildsystem/over-device-profiles-1.html">device profile</a>.</li>
+<li>Modify the <tt>PeripheralController/Path</tt> configuration setting to point to the <tt>sysfs</tt> path of your USB peripheral controller.</li>
+<li>Modify the <tt>PeripheralController/SupportedGadgets</tt> configuration setting to include only those USB device classes that you would like to support on your device. Available options are Ethernet, Storage and Serial.</li>
+</ol>
+<a name="usb-on-the-go"></a>
+<h5>USB On-the-Go</h5>
+<p>Qt Extended does not provide any specific USB On-the-Go (OTG) functionality. Outlined below is information that may be helpful in integrating USB OTG support with Qt Extended.</p>
+<p>OTG functionality is handled within the Linux kernel. During Host Negotiation Protocol (HNP) the Linux kernel will check the connected device against a whitelist specified in <tt>linux/drivers/usb/core/otg_whitelist.h</tt>. The whitelist in this file should be modified to include only the devices that have been tested with your device.</p>
+<p>If your device assumes A-role (host) you may need to implement some of the suggestions outlined in the <a href="#usb-host">USB Host</a> section above.</p>
+<p>If your device assumes B-role (peripheral) the <a href="#usb-peripheral">USB Peripheral</a> configuration is used.</p>
+<a name="dynamic-display-rotation"></a>
+<h3>Dynamic Display Rotation</h3>
+<p>Qt Extended has support for dynamically changing the display orientation, and can be rotated in 90, 180, 270 degrees.</p>
+<p>To use dynamic rotation, an integrator must:</p>
+<ul>
+<li>Enable the Transformed driver in Qt for Embedded Linux: * as build-in driver, update the devices/&lt;device&gt;/configure file:<pre>                          -extra-qtopiacore-config -qt-gfx-transformed</pre>
+<p>* as plugin driver, update the devices/&lt;device&gt;/configure file:</p>
+<pre>                          -extra-qtopiacore-config -plugin-gfx-transformed</pre>
+</li>
+<li>Add<pre>     -dynamic-rotation</pre>
+<p>argument to the devices/&lt;device&gt;/configure file to enable rotation and build the RotationManager and rotation settings application.</p>
+</li>
+<li>Export the appropriate <a href="qt-embedded-envvars.html">QWS_DISPLAY</a> value before running Qt Extended eg : export <a href="qt-embedded-envvars.html">QWS_DISPLAY</a>=Transformed:Rot270</li>
+</ul>
+<p>Further documentation can be found in <a href="syscust-rotation.html">Rotation</a></p>
+<a name="document-content-system"></a>
+<h3>Document/Content system</h3>
+<p>Qt Extended has a robust <a href="docsys-overview.html">Document and Content system</a> to enable the user to easily find documents and content.</p>
+<a name="document-storage"></a>
+<h4>Document Storage</h4>
+<p>Documents in Qt Extended are usually stored in the user's <tt>$HOME</tt> directory under the <tt>Documents</tt> directory, in a tree as such: <tt>/&lt;file type&gt;/&lt;mine type&gt;/&lt;file name&gt;</tt>.</p>
+<p>For example, if a user creates a voice note, the resulting file gets stored in <tt>$HOME/Documents/audio/x-wav/June_5_2007_333_AM.wav</tt></p>
+<p>The content system categorizes the file and stores its location in the database. The user can then access their files from the <tt>Documents</tt> menu in the launcher.</p>
+<p>A <tt>Storage.conf</tt> file can be supplied detailing alternate locations for documents.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Section</th><th>Key</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td>MountTable</td><td><ul>
+<li>MountPoints</li>
+<li>DocumentsDefault</li>
+<li>ApplicationsDefault</li>
+</ul>
+</td><td><ul>
+<li>Names all the mount points available.</li>
+<li>Names which MountPoint Qt Extended should keep user Documents by default.</li>
+<li>Names which MountPoint Qt Extended should install Application packages to by default.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Packages</td><td><ul>
+<li>MountPoint</li>
+<li>Path</li>
+</ul>
+</td><td><ul>
+<li>Names which MountPoint Qt Extended should install user Packages to.</li>
+<li>path to installed directory from Applications mount point.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>HOME</td><td><ul>
+<li>Name[]</li>
+<li>Documents</li>
+<li>Applications</li>
+</ul>
+</td><td><ul>
+<li>String name for home.</li>
+<li>Whether Qt Extended should scan HOME for Documents.</li>
+<li>Whether Qt Extended should scan HOME for applications.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>MountPoint0</td><td><ul>
+<li>Name[]</li>
+<li>Path</li>
+<li>Removable</li>
+<li>Applications</li>
+<li>Documents</li>
+<li>ContentDatabase</li>
+</ul>
+</td><td><ul>
+<li>User string</li>
+<li>Path to device node of storage device.</li>
+<li>Whether MountPoint is removable media.</li>
+<li>Whether Qt Extended should scan this MountPoint for documents.</li>
+<li>Whether Qt Extended should scan this MountPoint for applications.</li>
+<li>Whether Qt Extended should store content in a database on the MountPoint or in the system database.</li>
+</ul>
+</td></tr>
+</table></p>
+<a name="drm-integration"></a>
+<h4>DRM integration</h4>
+<p>Qt Extended is able to handle Digital Rights Management. See <a href="docsys-drmintegr.html">Document System: DRM</a> for general details on how the document system handles DRM protected files and refer to <a href="syscust-drm.html">DRM Agent Integration</a> if more information on integrating a particular drm agent is required.</p>
+<a name="memory-management"></a>
+<h3>Memory management</h3>
+<a name="general-information"></a>
+<h4>General information</h4>
+<p>Qt Extended performs adequately with 64 MB of RAM. However the best value may depend on the actual device and most importantly the size of the display. A significant proportion of memory is used for the shared pixmap cache. More details on how to influence the size of the pixmap cache can be found in the <a href="syscust-memusage.html">Managing Memory Usage</a> documentation.</p>
+<p>If it is necessary to debug various memory related problems, profiling tools like <tt>valgrind</tt> and <tt>gprof</tt> should be used to determine potential bottlenecks. The Qt Extended documentation provides a quick <a href="syscust-perform.html">introduction</a> (using <tt>valgrind</tt> as an example) to how memory related performance issues might be detected.</p>
+<a name="out-of-memory-management"></a>
+<h4>Out of memory management</h4>
+<p>Qtopia 4.3 introduces the concept of an <a href="syscust-oom.html">Out-Of-Memory (OOM) management</a>. The Qt Extended management system consists of four parts:</p>
+<ol type="1">
+<li>OOM Data Manager</li>
+<li>Application Launcher integration</li>
+<li>Memory Monitor</li>
+<li>Low Memory Handler</li>
+</ol>
+<p>Together these four components are responsible for the avoidance of OOM situation and if it should become necessary for the detection of immanent problems and the subsequent handling of these situations. The Memory Monitor and the Low Memory Handler can be customized by subclassing/replacing certain Qt Extended Server interface/tasks. The various <a href="qtopiaserver-memory.html">management classes</a> are part of the Qt Extended Server.</p>
+<a name="hardware-integration"></a>
+<h3>Hardware integration</h3>
+<a name="device-indicators"></a>
+<h4>Device indicators</h4>
+<p>Devices such as Mobile Phones often have indication lights, for things such as charging status, or new email indicators. The <a href="qdeviceindicators.html">QDeviceIndicators</a> class may be used to control an arbitrary number of LED's on the device.</p>
+<a name="hardware-abstraction"></a>
+<h4>Hardware Abstraction</h4>
+<p>The <a href="syscust-accessories.html">Qt Extended Hardware Abstraction</a> is used to access hardware devices from Qt Extended applications. A hardware abstraction provides a standard method of querying available devices and a standard interface for accessing those devices. Currently the <a href="syscust-accessories.html">Qt Extended Hardware Abstraction</a> defines hardware interfaces for the following devices</p>
+<ul>
+<li><a href="#boot-source">Boot Source</a></li>
+<li><a href="#keypad-light">Keypad Light</a></li>
+<li><a href="#power-source">Power Source</a></li>
+<li><a href="#signal-source">Signal Source</a></li>
+<li><a href="#vibration">Vibration</a></li>
+</ul>
+<p>The system integrator adds device-specific code for their device by creating a new abstraction class that inherits from one of the abstraction provider classes and overrides the member functions with device-specific implementations. Alternatively the abstraction provider classes can be instantiated directly, connecting the appropriate signals and slots to provide the necessary device-specific functionality.</p>
+<p>Hardware interfaces are made available to the system when an abstraction provider object is instantiated. Typically this is done during system startup from a <a href="qtopiaserverapplication.html#qt-extended-server-tasks">server task</a>.</p>
+<a name="boot-source"></a>
+<h5>Boot Source</h5>
+<p>Boot source abstractions are used to query the event that triggered the last boot sequence. Typically a device has only a single boot source abstraction. For documentation on how to implement a boot source abstraction see <a href="qbootsourceaccessoryprovider.html">QBootSourceAccessoryProvider</a>. For documentation on how to use boot source abstraction from a Qt Extended application see <a href="qbootsourceaccessory.html">QBootSourceAccessory</a>.</p>
+<a name="keypad-light"></a>
+<h5>Keypad Light</h5>
+<p>Keypad light abstractions are used to control the state of the keypad light on the device. Typically a device has only a single keypad light abstraction. For documentation on how to implement a keypad light abstraction see <a href="qkeypadlightaccessoryprovider.html">QKeypadLightAccessoryProvider</a>. For documentation on how to use the keypad light abstraction from a Qt Extended application see <a href="qkeypadlightaccessory.html">QKeypadLightAccessory</a>.</p>
+<a name="power-source"></a>
+<h5>Power Source</h5>
+<p>Power sources are used to query information about the available power sources. Power sources describe both batteries and wall power sources. For documentation on how to implement a power source see <a href="qpowersourceprovider.html">QPowerSourceProvider</a>. Qt Extended provides two methods of accessing power source information. The first method uses the standard <a href="syscust-accessories.html">Qt Extended Hardware Abstraction</a> API, for details refer to <a href="qpowersource.html">QPowerSource</a>. The second method is a simplified interface provided by <a href="qpowerstatus.html">QPowerStatus</a>.</p>
+<p>Qt Extended supports multiple power sources on a single device. See <a href="qpowersource.html">QPowerSource</a> for details on how to specify a default power sources.</p>
+<a name="signal-source"></a>
+<h5>Signal Source</h5>
+<p>Signal source abstractions are used to query information about the available signal sources. For documentation on how to implement a signal source see <a href="qsignalsourceprovider.html">QSignalSourceProvider</a>. For documentation on how to use signal sources from a Qt Extended application see <a href="qsignalsource.html">QSignalSource</a>.</p>
+<p>Qt Extended supports multiple signal sources on a single device. See <a href="qsignalsource.html">QSignalSource</a> for details on how to specify a default signal source.</p>
+<a name="vibration"></a>
+<h5>Vibration</h5>
+<p>Vibration abstractions are used to alert the user. Typically a device has only a single vibration abstraction. For documentation on how to implement a vibration abstraction see <a href="qvibrateaccessoryprovider.html">QVibrateAccessoryProvider</a>. For documentation on how to use a vibration abstraction from a Qt Extended application see <a href="qvibrateaccessory.html">QVibrateAccessory</a>.</p>
+<p>Qt Extended uses the vibrate abstraction to alert the user to a variety of conditions.</p>
+<a name="key-mappings"></a>
+<h4>Key mappings</h4>
+<p>The defaultbuttons.conf file provides integrators a way to map the devices keypad to certain actions, map out characters to be generated and specify details for the UI. The relevant sections:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Section</th><th>Details</th><th>Possible settings.</th></tr></thead>
+<tr valign="top" class="odd"><td>[Translation]</td><td></td><td><ul>
+<li>File=</li>
+<li>Context=</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>[Menu]</td><td>Specifies details for the main 'grid'</td><td><ul>
+<li>Rows=&lt;number&gt;</li>
+<li>Columns=&lt;number&gt;</li>
+<li>Map=&lt;characters(123456789*0#)&gt; - Maps grid to keypad shortcuts.</li>
+<li>Default=&lt;number&gt; - Which in map should Qt Extended default to.</li>
+<li>&lt;number (from Map)&gt;=&lt;apps.desktop&gt; - Specifies an application desktop file to handle.</li>
+<li>Animator=Bounce</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>[SoftKeys]</td><td>Provides assignments for Qt Extended softkeys at the botton of the screen</td><td><ul>
+<li>Count=&lt;number&gt; - number of buttons to display</li>
+<li>KeyX=&lt;Qt Key&gt; - assign Qt Keycode to this button. Where X is a number starting with 0. Possible codes: Context1, Select, Back.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>[SystemButtons]</td><td>Provides Qt keycode assignments for physical buttons.</td><td><ul>
+<li>Count=&lt;number&gt; - number of physical buttons</li>
+<li>KeyX=&lt;Qt keycode&gt; - assign Qt Keycode to this button. Where X is a number starting with 0. Possible codes: Context1, Select, Back, Call, Hangup</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>[TextButtons]</td><td>Maps physical buttons to hold and tab actions.</td><td><ul>
+<li>Buttons=&lt;characters(123456789*0#)&gt; - which buttons to map</li>
+<li>HoldX=&lt;'Y&gt; - Specifies hold actions, where X is button specifier and Y is a character to send, ie. 0-9,*,# or mode|shift|symbol</li>
+<li>TapX=&lt;&quot;string&quot;&gt; - Specifies tap actions, where X is button specifier, and string is characters, i.e &quot;wxyz9&quot;</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>[LocaleTextButtons]</td><td></td><td><ul>
+<li>TapX[]=&lt;'string&gt; - Specifies tap action, where X is button specifier and string is characters</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>[PhoneTextButtons]</td><td></td><td><ul>
+<li>Buttons=&lt;button specifier&gt;</li>
+<li>TapX=&lt;characters&gt; - Specifies tap action, where X is button specifier</li>
+<li>HoldX=&lt;characters&gt; - Specifies hold actions, where X is buttons specifier</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>[Device]</td><td>Provides device information.</td><td>PrimaryInput=(Keypad|Touchscreen) - Tells Qt Extended to use keypad or touchscreen.</td></tr>
+<tr valign="top" class="odd"><td>[Button]</td><td>Tells Qt Extended number of physical buttons to provide mapping for.</td><td>Count=&lt;number&gt;</td></tr>
+<tr valign="top" class="even"><td>[ButtonX]</td><td>Specifies a physical button and mapping its actions. X being a number starting at 0 to the number specified in [Button]/Count.</td><td><ul>
+<li>Name=&lt;string&gt;</li>
+<li>Key=&lt;Qt Key&gt;, i.e&#x2e; F7</li>
+<li>HeldActionService=&lt;Service&gt;</li>
+<li>HeldActionMessage=&lt;QCop message&gt;</li>
+<li>PressedActionService=&lt;Service&gt;</li>
+<li>PressedActionMessage=&lt;QCop message&gt;</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>[Environment]</td><td>Specifies environmental configuration.</td><td><a href="qt-embedded-envvars.html">QWS_DISPLAY</a>=&lt;gfx driver&gt;&lt;:driver specific options&gt;&lt;:display number&gt;</td></tr>
+<tr valign="top" class="even"><td>[<a href="inputmethods.html">InputMethods</a>]</td><td>Specifies default InputMethod to be used</td><td>DefaultIM=&lt;string:Identifier&gt;</td></tr>
+</table></p>
+<a name="power-management"></a>
+<h4>Power Management</h4>
+<p>Qt Extended includes support for managing a device's power states. This feature can be used to decrease the power consumption of a device, and extend battery life, when the user is not interacting with it. The system supports multiple levels of power saving, transitioning between each power saving level after a period of user inactivity.</p>
+<p>Within the Qt Extended Server <a href="qtopiapowermanager.html">QtopiaPowerManager</a> defines the generic power management interface. This interface must be implemented if power management functionality is required. Qt Extended includes a default implementation that supports three power saving levels:</p>
+<ul>
+<li>dim backlight</li>
+<li>backlight off</li>
+<li>suspend device</li>
+</ul>
+<p>See <a href="phonepowermanager.html">PhonePowerManager</a> for details.</p>
+<p>Additional power saving levels can be defined by subclassing either <a href="phonepowermanager.html">PhonePowerManager</a> or <a href="qtopiapowermanager.html">QtopiaPowerManager</a>.</p>
+<p>Applications can influence the minimum power saving level that the system will enter with the <a href="qtopiaapplication.html#setPowerConstraint">QtopiaApplication::setPowerConstraint</a>() function. For example a video player would use this function to temporarily disable all power management settings. An audio player would use this function to temporarily disable suspending the device, but still allowing the display to be turned off.</p>
+<p>Finer control of the Qt Extended power manager is provided by the <a href="qtopiapowermanagerservice.html">QtopiaPowerManager service</a>.</p>
+<p>The <i>suspend</i> state is typically the lowest power state that a device can enter while still being <i>on</i>. Transitioning into and out of the suspended state generally requires additional set up and restore tasks. These are implemented as <a href="#server-tasks">server tasks</a> that implement the <a href="systemsuspendhandler.html">SystemSuspendHandler</a> interface. The <a href="systemsuspend.html">SystemSuspend</a> server task coordinates suspending and resuming the system to and from its lowest power saving state.</p>
+<a name="input-methods"></a>
+<h3>Input methods</h3>
+<p>Qt Extended input method handling consists of two parts. The IM backend is provided by the <a href="qtopiaserver-inputmethods.html">Qt Extended Server</a> which is responsible for the loading of input method plug-ins and <a href="userinput.html">input/output related Qt Extended classes</a>. These classes build the framework for input method plug-ins.</p>
+<p>The front-end implementation for IM support is provided via plug-ins (see <a href="qpeinputmethod-class-overview.html">Input Methods: Class Overview</a> for more details). By default Qt Extended provides a few reference implementations which demonstrate certain IM capabilities:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Input method</th><th>source</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="inputmethods-description.html">Phone keys</a></td><td><tt>$QPEDIR/src/3rdparty/plugins/inputmethods/pkim</tt></td><td>The Phone key input method is intended for use with keypad buttons with the common 0-9, # and * buttons. It uses a dictionary lookup system to guess the most likely input, as well as a multitap system.</td></tr>
+<tr valign="top" class="even"><td><a href="inputmethods-description.html">FullScreen Handwriting</a></td><td><tt>$QPEDIR/src/3rdparty/plugins/inputmethods/pkim</tt> and <tt>$QPEDIR/src/libraries/handwriting</tt></td><td>This IM can be used when using a pointing device such as a touchscreen or mouse. It composes characters out of multiple strokes. It uses the same dictionary as the <a href="inputmethods-description.html">Phone keys</a></td></tr>
+<tr valign="top" class="odd"><td>Keyboard</td><td><tt>$QPEDIR/src/plugins/inputmethods/keyboard</tt></td><td>The Keyboard input method demonstrates widget based pop up text input.</td></tr>
+<tr valign="top" class="even"><td>Docked Keyboard</td><td><tt>$QPEDIR/src/plugins/inputmethods/dockedkeyboard</tt></td><td>The Docked Keyboard provides widget based input methods not unlike the Keyboard. However the difference is the presentation of the input widget. Using the same popup widget as the normal keyboard, this input method docks itself along side other widgets on the display (instead of on top of them), reducing the available display space for normal widgets.</td></tr>
+</table></p>
+<p>As stated earlier, the Qt Extended input methods are reference implementations. Their purpose is to demonstrate and test certain capabilities of the Qt Extended back-end implementation as well as providing sample code for new plug-in development. The <a href="tut-createim-compose.html">input method tutorial</a> describes the steps required for plug-in development.</p>
+<a name="internationalization"></a>
+<h3>Internationalization</h3>
+<p>Qt Extended can be translated into several languages. By default, Qt Extended only provides an English user interface. However user interfaces have been designed and tested with a variety of European and Asian languages to ensure that Qt Extended can handle the various layout and space issues caused by most languages.</p>
+<p>The Qt Extended <a href="syscust-internat.html">Internationalization</a> guide explains the fundamental details of the Qt Extended i18n support, such as how the build system can support the process and how to generate translations for new (not yet) supported languages. The build system documentation has some additional documentation which covers Non-code Translatable (translations required for settings and xml files) related information:</p>
+<ul>
+<li><a href="buildsystem/task-translating-categories-1.html">Translating Categories</a></li>
+<li><a href="buildsystem/task-translating-themes-1.html">Translating Themes</a></li>
+<li><a href="qtopiadesktop/overviews.html">Other build system related internationalization tasks</a></li>
+</ul>
+<p>It is possible to purchase translations for selected languages. For more details please contact <a href="mailto:qt-sales@nokia.com">qt-sales@nokia.com</a>.</p>
+<p>The number of supported languages is limited by Qt. Please consult the <a href="i18n.html">Internationalization with Qt</a> guide to obtain an overview.</p>
+<a name="media-integration"></a>
+<h3>Media integration</h3>
+<p>The Qt Extended media system is an engines/plug-in based client server architecture which allows the implementation of user frontend's without particular knownledge of the backend. The Qt Extended <a href="multimedia-overview.html">Multimedia</a> overview provide an introduction into the frameworks architecture and demonstrates common integration tasks by means of tutorials.</p>
+<a name="audio-states"></a>
+<h4>Audio States</h4>
+<p>Audio functionality can change depending on the context. For example when a headset is plugged in. <a href="qaudiostateplugin.html">QAudioStatePlugin</a> provides the ability to override the defaults for a particular device.</p>
+<a name="messaging"></a>
+<h3>Messaging</h3>
+<p>Qt Extended provides Messaging functionality that enables Qt Extended devices to support SMS, MMS and electronic mail messaging. The <a href="qtextended-messaging.html">Messaging Documention</a> provides the main entry page into the messaging parts of Qt Extended.</p>
+<a name="multimedia-messaging"></a>
+<h4>Multimedia Messaging</h4>
+<p>Qt Extended includes MMS functionality in the Messages client but does not include a WAP stack implementation that would be needed to send or receive such messages.</p>
+<a name="multimedia-messaging-viewer-smil"></a>
+<h5>Multimedia Messaging Viewer (SMIL)</h5>
+<p>Qt Extended includes a <tt>SMIL 2.0</tt> parser/viewer in directory: <tt>$QPEDIR/src/libraries/qtopiasmil/</tt>.</p>
+<p>This SMIL viewer is intended for use with an MMS viewer and is currently only used by the Messages application.</p>
+<p>The SMIL viewer:</p>
+<ul>
+<li>covers a subset of <tt>SMIL 2.0</tt> basic</li>
+<li>can be modified to implement <tt>SMIL 2.0</tt> basic language specification</li>
+<li>implements functionality as required by: <i>MMS Conformance Document 1.2 Candidate Version 29-September-2003 (OMA-MMS-CONF-v1_2-20030929-C)</i>.</li>
+</ul>
+<a name="wap-stack-integration"></a>
+<h5>WAP Stack Integration</h5>
+<p>Qt Extended does not include a WAP stack with the MMS client. Instead, an interface is provided which allows any WAP stack to be integrated. The <tt>MmsComms</tt> class must be subclassed and the virtual functions implemented and signals emitted as appropriate.</p>
+<p>The <tt>MmsCommsHttp</tt> class provides a sample implementation using HTTP over TCP/IP.</p>
+<p>Refer to: <tt>$QPEDIR/src/applications/qtmail/mmscomms_http.cpp</tt> and <tt>$QPEDIR/src/applications/qtmail/mmscomms_http.h</tt>.</p>
+<p>To choose an alternate WAP stack connection method:</p>
+<ol type="1">
+<li>to choose the <tt>MmsComms</tt> implementation:<ul>
+<li>modify the <tt>MmsClient::setAccount</tt> function in <tt>$QPEDIR/src/applications/qtmail/mmsclient.cpp</tt></li>
+</ul>
+</li>
+<li>to list the source/header files for the Mmscomms implementation:<ul>
+<li>modify <tt>MMSCOMMS_HEADERS</tt> and <tt>MSCOMMS_SOURCES</tt> in <tt>$QPEDIR/src/applications/qtmail/qtmail.pri</tt></li>
+</ul>
+</li>
+</ol>
+<a name="amr-encoder"></a>
+<h5>AMR Encoder</h5>
+<p>The AMR encoder included with Qt Extended is a reference implementation only. It is recommended that an encoder optimized for the target platform be installed. The media recorder plug-in interface provides a convenient method of integrating the codec.</p>
+<a name="sxe-integration"></a>
+<h3>SXE integration</h3>
+<p>Qt Extended sandbox based security mechanism called the <a href="sxe.html">Safe Execution Environment (SXE)</a> Safe Execution Environment, which supports the download and secure execution of 3rd party native applications.</p>
+<p>The SXE consists of several major components working together in tandem.</p>
+<ul>
+<li><a href="sxe-pkgmgr.html">Package Manager</a></li>
+<li><a href="sxe-pkgmgr-profiles.html">Application level policy</a></li>
+<li><a href="syscust-sxe.html">OS level policy using LIDS</a></li>
+<li><a href="sxe-sxemonitor.html">Security Monitor</a>(aka SxeMonitor)</li>
+</ul>
+<a name="telephony"></a>
+<h3>Telephony</h3>
+<p>Qt Extended provides Telephony support that enables Qt Extended devices to use GSM and Voice over IP (VoIP) functionality. The <a href="qtextended-telephony.html">Telephony Documentation</a> provides the main entry page into the telephony components of Qt Extended.</p>
+<a name="modem-integration"></a>
+<h4>Modem Integration</h4>
+<p>Qt Extendedsupports vendor-specific modem commands through the use of plug-ins to the <a href="telephony-modem.html">Qt Extended Phone Modem Library</a>. The process of implementing a vendor-specific phone-vendor plug-in and multiplexer plug-in is covered in <a href="syscust-gsm.html">GSM Modem Integration</a> and <a href="tut-multiplexing.html">Tutorial: Writing a Multiplexer Plug-in</a> respectively. Before starting it may be necessary to configure the Linux kernel to support the modem device. See <a href="#at-modem">AT Modem</a> for details on what is required for modems connected via a serial interface.</p>
+<p>The <tt>QTOPIA_PHONE_DEVICE</tt> macro in <tt>custom.h</tt> is used to specify the modem device. <tt>QTOPIA_PHONE_DEVICE</tt> can also be set as an environment variable. The format of <tt>QTOPIA_PHONE_DEVICE</tt> is</p>
+<pre>        &lt;device&gt;:&lt;baud rate&gt;</pre>
+<p>For example to specify <tt>/dev/ttyS0</tt> as the modem device with a baud rate of 115200, add the following preprocessor define to <tt>custom.h</tt></p>
+<pre>        #define QTOPIA_PHONE_DEVICE &quot;/dev/ttyS0:115200&quot;</pre>
+<p>or alternatively the <tt>QTOPIA_PHONE_DEVICE</tt> environment variable could be set. For Bourne compatible shells</p>
+<pre>        export QTOPIA_PHONE_DEVICE=&quot;/dev/ttyS0:115200&quot;</pre>
+<a name="voip-integration"></a>
+<h4>VoIP integration</h4>
+<p>The main Qt Extended telephony components are based on GSM/UMTS networks. However many other communication bearers require similar if not even identicial infrastructure support. Therefore new bearers can easily be integrated into the Qt Extended telephony API. In fact the higher API layers are almost agnostic in regards to the actual communication protocol.</p>
+<p>One additional communication bearer that is directly supported by Qt Extended is Voice over IP (VoIP). The <a href="syscust-voip.html">VoIP Integration</a> describes the main VoIP components used by the Qt Extended reference implementation and demonstrates how they interact with the Qt Extended phone user interface. The reference implementation uses the open source library <tt>libdissipate2</tt> which provides simple SIP functionality.</p>
+<p><b>Note:</b> Currently due to licensing inconsistencies <tt>libdissipate2</tt> cannot be shipped with Qt Extended.</p>
+<p>If the hardware platform already features its own SIP implementation the Qt Extended VoIP implementation can easily be replaced as described by the Qt Extended general <a href="syscust-voip.html">VoIP Integration</a> guide. It describes the necessary steps to integrate new SIP clients as well as new telephony services in general.</p>
+<a name="web-browser-integration"></a>
+<h3>Web Browser integration</h3>
+<p>Any web browser integrated with Qt Extended should respond to the <a href="webaccessservice.html">WebAccess service</a>. The web browser should invoke Qt Extended services to fullfil external application needs, including:</p>
+<ol type="1">
+<li><a href="messagesservice.html#composeMessage">Messages::composeMessage(QMailMessage)</a> - for &quot;mailto:&quot; URLs.</li>
+<li><a href="dialerservice.html#dial">Dialer::dial(QString,QString)</a> - for &quot;tel:&quot; URLs.</li>
+<li><a href="playmediaservice.html#openURL">PlayMedia::openURL(QString)</a> - for media URLs not handled the browser.</li>
+</ol>
+<p>The <a href="qsettings.html">QSettings</a> value &quot;Trolltech/WebAccess/Locations/Home&quot; is the user's globally set Home page.</p>
+<a name="other-miscellaneous-steps"></a>
+<h3>Other miscellaneous steps</h3>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Step</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="syscust-hardware.html#device-specific-code">Device-specific code</a></td><td>Qt Extended expects device-specific code to be implemented by the system integrator. See <a href="custom-h.html">&lt;custom.h&gt;</a> for the required and available functions/macros.</td></tr>
+<tr valign="top" class="even"><td><a href="syscust-time.html">Setting time on a device</a></td><td>Qt Extended requires <tt>/sbin/hwclock</tt> to update the system time and zone information for time conversion purposes.</td></tr>
+<tr valign="top" class="odd"><td><a href="syscust-hardware.html#removable-media-and-devices">Removable Media and Devices</a></td><td>Qt Extended must be notified when a removable media or a PCMCIA card is connected to the device. Note that the <a href="stabmonitor.html">StabMonitor</a> server task can provide such notifications for PCMCIA cards (for details refer to the class documentation).</td></tr>
+</table></p>
+<a name="qt-extended-environment-variables"></a>
+<h4>Qt Extended Environment variables</h4>
+<p>Qt Extended uses various environmental variables to facilitate various settings, which are documented in:</p>
+<ul>
+<li><a href="qt-embedded-envvars.html">Qt for Embedded Linux Environment Variables</a></li>
+<li><a href="running-qtextended.html#environment-settings-to-run-qt-extended">Environment Settings to Run Qt Extended</a></li>
+</ul>
+<p>In addition to Qt for Embedded Linux's environment variables Qt Extended uses the following variables to further specify its behavior:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Variable</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><b><a href="custom-h.html#QTOPIA_PHONE_DEVICE">QTOPIA_PHONE_DEVICE</a></b></td><td>Specifies the phone device and speed. Qt Extended will use a default device if this variable is not set. The default value is set in <tt>custom.h</tt>.<p>See also <a href="#modem-integration">Modem Integration</a> and <a href="running-qtextended.html#connecting-qt-extended-to-the-phone-device">Using a phone device</a></p>
+</td></tr>
+<tr valign="top" class="even"><td><b>QTOPIA_PHONE_DUMMY</b></td><td>If this Variable is set to <tt>1</tt> Qt Extended uses a telephony dummy implementation which does not require a real serial device. However its capabilities are limited as well.</td></tr>
+<tr valign="top" class="odd"><td><b><a href="custom-h.html#QTOPIA_PHONE_MUX">QTOPIA_PHONE_MUX</a></b></td><td>If this variable is set to <tt>no</tt> disables multiplexing in Qt Extended.<p>See also <a href="syscust-gsm.html">GSM Modem Integration</a></p>
+</td></tr>
+<tr valign="top" class="even"><td><b><a href="custom-h.html#QTOPIA_PHONE_VENDOR">QTOPIA_PHONE_VENDOR</a></b></td><td>Specifies the multiplexer plug-in that Qt Extended uses.<p>See also <a href="tut-multiplexing.html#introduction">Multiplexer plug-in tutorial</a></p>
+</td></tr>
+</table></p>
+<a name="qt-extended-customizations"></a>
+<h2>Qt Extended customizations</h2>
+<a name="first-use"></a>
+<h3>First Use</h3>
+<p>After the first startup, the &quot;First Use&quot; tool is launched. It presents a user interface allowing the user to set initial settings for Qt Extended. The following settings can be set:</p>
+<ul>
+<li>Calibration of the touchscreen</li>
+<li>Language Selection</li>
+<li>TimeZone Selection</li>
+<li>Time and Date Format Selection</li>
+</ul>
+<p>Depending on the devices capabilities some of the above settings may not be necessary. In order to accommodate for such cases the tool can be customized by modifying the <tt>[Startup]</tt> group in the file <tt>$QPEDIR/etc/default/Trolltech/qpe.conf</tt> The following fields can be edited:</p>
+<ul>
+<li><a href="firstuse.html">FirstUse</a>: if true, the First Use tool will be displayed after the startup.</li>
+<li>NeedTimeZone: if true, the time zone selection dialog will be enabled. This dialog is not required if the device automatically detects the current time and time zone.</li>
+<li>NeedCalibrate: if true, the touchscreen calibration tool will be enabled. The calibration will be enforced if <tt>/etc/pointercal</tt> is empty or wrong.</li>
+</ul>
+<a name="ui-customization"></a>
+<h3>UI customization</h3>
+<a name="styles"></a>
+<h4>Styles</h4>
+<p>Qt Extended uses the <a href="qstyle.html">Qt Style framework</a> to define the look and feel of the common widgets used by Qt Extended applications. Qt Extended provides a default style, Qt Extended, which is implemented in <a href="qphonestyle.html">QPhoneStyle</a> and <a href="qtopiastyle.html">QtopiaStyle</a>. The look and feel of Qt Extended applications can be changed by implementing new styles. New styles are created by deriving new classes from <a href="qstyle.html">QStyle</a>. Refer to <a href="qstyle.html">Creating a custom style</a> and <a href="widgets-styles.html">Styles Example</a> documentation on creating custom styles. Custom styles are loaded using the <a href="plugins-howto.html">plug-in system</a>. For details on creating a style plug-in and registering the custom style with the <a href="qstylefactory.html">QStyleFactory</a> refer to <a href="plugins-howto.html">Writing Qt Extensions</a>.</p>
+<p>If your device will be used with both left-to-right and right-to-left layouts you should consider the <a href="qstyle.html">implications</a> this has when designing custom styles.</p>
+<p>When creating custom widgets it is important to make them <a href="qstyle.html">style-aware</a>, doing so will allow you to maintain a consistent look and feel.</p>
+<p>In Qt Extended, styles are linked to themes, which the user can select in the Appearance Settings application. The following segment of <tt>$QPEDIR/etc/themes/qtopia.conf</tt> demonstrates how a widget style is associated with a given theme. In this example the Qt Extended style is used when the user selects the Qt Extended theme.</p>
+<pre>        [Theme]
+        Name[] = Qtopia
+        Style = Qtopia
+        ...</pre>
+<p>In addition the Qt Extended applications follow a <a href="styleguide.html">style guide</a> which describes the guide lines for user interfaces. The focus is on consistency.</p>
+<a name="theming"></a>
+<h4>Theming</h4>
+<p>Integrators can extend the Qt Extended look and feel by customizing the theme. Several themes are shipped with Qt Extended (see <tt>QPEDIR/etc/themes</tt> for details) and may serve as examples.</p>
+<ul>
+<li><a href="syscust-theming.html">Theming</a></li>
+<li><a href="tut-themefiles.html">Theming Files</a></li>
+<li><a href="tut-titlebar.html">Title Bar Theming</a></li>
+<li><a href="tut-contextbar.html">Context Bar Theming</a></li>
+<li><a href="tut-screenthemes.html">Home and Call Screen Themes</a></li>
+<li><a href="tut-winddectheme.html">Window Decoration Themes</a></li>
+</ul>
+<a name="server-widgets"></a>
+<h4>Server widgets</h4>
+<p>The <a href="qtopiaserverapplication.html#qt-extended-server-widgets">Server widget concept</a> is the user interface customization with the most flexibility. It enables the replacement of widget components via abstract widget classes which define how the various main user interface components interact with each other. The following UML diagram shows a selection of server widgets and how they are connected to each other.</p>
+<p align="center"><img src="images/UML-serverwidgets.png" alt="&quot;Server Widgets UML&quot;" /></p><p>The following table describes the purpose of the various abstract server widget:</p>
+<p><table width="90%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th><a href="#server-widgets">Abstract widget</a></th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qabstractmessagebox.html">QAbstractMessageBox</a></td><td>This abstract server widget provides an interface for message boxes. This allows the easy replacement of message boxes. The <a href="phonemessagebox.html">PhoneMessageBox</a> class implements the Qt Extended default message box.</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractserverinterface.html">QAbstractServerInterface</a></td><td>This is the main UI widget instantiated by the Qt Extended Server that is common to all Qt Extended editions. The <a href="phonelauncher.html">PhoneLauncher</a> class implements this interface for the Qt Extended. The remaining abstract server widgets are based on the <a href="phonelauncher.html">PhoneLauncher</a> as it is the <a href="phonelauncher.html">PhoneLauncher</a> class that creates and connects the remaining server widgets.</td></tr>
+<tr valign="top" class="odd"><td><a href="qabstractbrowserscreen.html">QAbstractBrowserScreen</a></td><td>This abstract server widget is Qt Extended specific and provides the main application browser. Users use it to navigate through and launch applications. The PhoneBrowserScreen class implements the default behaviour.</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractcallhistory.html">QAbstractCallHistory</a></td><td>This abstract server widget is Qt Extended specific and provides the main call history view. It shows outgoing, incoming and missed calls and their details. In addition it provides shortcuts to store new contact details, send messages or call a number. The default call history is implemented by <a href="phonecallhistory.html">PhoneCallHistory</a>.</td></tr>
+<tr valign="top" class="odd"><td><a href="qabstractcallscreen.html">QAbstractCallScreen</a></td><td>This abstract server widget is Qt Extended specific and provides the main call screen. The call screen is shown during calls. It displays all active active calls, enables call management features such as merging and holding of calls and informs the user about call parameter such as length or contact details.</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractcontextlabel.html">QAbstractContextLabel</a></td><td>This abstract server widget provides the interface for the soft key menubar. It is docked to the bottom of the screen and shows the menu and current key shortcuts. Applications cannot access or display anything in this area. The <a href="basecontextlabel.html">BaseContextLabel</a> extends the widget interface by adding button related behaviour. This may be of interest if the default context label (ThemdedContextLabel) UI is already too specific.</td></tr>
+<tr valign="top" class="odd"><td><a href="qabstractdialerscreen.html">QAbstractDialerScreen</a></td><td>This abstract server widget is Qt Extendedspecific and provides the dialer screen. Qt Extended provides two implementation for this server widget (<a href="phonequickdialerscreen.html">PhoneQuickDialerScreen</a> and <a href="phonetouchdialerscreen.html">PhoneTouchDialerScreen</a>). The decision which class is instanciated depends on whether Qt Extended is used on a touchscreen (<a href="phonetouchdialerscreen.html">PhoneTouchDialerScreen</a>) or a keypad phone (<a href="phonequickdialerscreen.html">PhoneQuickDialerScreen</a>) .</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractheader.html">QAbstractHeader</a></td><td>This abstract server widget provides the interface for the title bar. The title bar is docked to the top of the screen. Applications cannot access or display anthing in this area. The default implementation is provided by <a href="phoneheader.html">PhoneHeader</a>.</td></tr>
+<tr valign="top" class="odd"><td><a href="qabstracthomescreen.html">QAbstractHomeScreen</a></td><td>This abstract server widget provides the main idle screen interface. It is the first widget shown to the user. It can displays status information such as the number of missed calls or the name of the current network.</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractsecondarydisplay.html">QAbstractSecondaryDisplay</a></td><td>This abstract server widget provides the secondary screen display. A secondary display is used by e.g&#x2e;, Clamshell phones which provide a small status display on the outside. The <a href="themedsecondarydisplay.html">ThemedSecondaryDisplay</a> class implements the default widget for Qt Extended.</td></tr>
+<tr valign="top" class="odd"><td><a href="qabstracttaskmanager.html">QAbstractTaskManager</a></td><td>This abstract server widget provides the interface for the task manager. The task manager shows the list of running applications, enables multitasking and allows the user to kill an application if that should be required.</td></tr>
+</table></p>
+<p>The main benefits of server widgets are their flexibility and configurability. Large UI parts can be exchanged against alternative implementations by changing a confguration file. However unlike themes the Qt Extended server must be restarted in order to update the user interface. Besides the default implementations Qt Extended ships with a couple of <a href="qtopiaserver-phoneui.html">sample server widgets</a> which demonstrate the possibilities. The server widget settings application (see <tt>$QPEDIR/src/settings/serverwidgets</tt>) is a reference application that allows the user to change the server appearance using server widgets.</p>
+<a name="running-qt-extended"></a>
+<h2>Running Qt Extended</h2>
+<p>The <a href="running-qtextended.html">Running Qt Extended</a> reference documentation describes how to run Qt Extended on desktop machines as well as running Qt Extended on a target device (directly flashed onto the device or via NFS).</p>
+<p>In order to test Qt Extended functionality Qt Extended provides a <a href="running-qtextended.html#connecting-qt-extended-to-the-phone-device">Phone simulator</a> (see <tt>$QTOPIA_DEPOT_PATH/src/tools/phonesim</tt>) which simulates a significant subset of the GSM 27.007 AT command set. This may be used if a real modem is not available for testing purposes.</p>
+<p>The Qt for Embedded Linux documentation also contains a <a href="qt-embedded-running.html">Running Qt for Embedded Linux Applications</a> help which shows the qws command line supported by Qt for Embedded Linux.</p>
+<a name="building-and-running-outside-of-qt-extended-build-tree"></a>
+<h3>Building and running outside of Qt Extended build tree</h3>
+<p>In addition to standard Qt Extended applications and libraries which are already incorporated into the build system it may be necessary to add more (including 3rdparty) applications to a Qt Extended build. For this purpose the Qt Extended build system provides qbuild which allows development from outside of the main build tree. Please refer to the following documents for further information:</p>
+<ul>
+<li><a href="compile-run-examples.html">Compile and Run the Example Application</a></li>
+<li><a href="application.html">Tutorial: Creating a New Application</a></li>
+</ul>
+<a name="debugging-qt-extended-local-and-remote"></a>
+<h3>Debugging Qt Extended (local and remote)</h3>
+<p>Debugging Qt Extended applications is an important part of the development process. The <a href="debug-qtextended.html">Debugging Qt Extended Applications</a> guide provides a basic introduction showing how to use gdb and the Qt Extended internal logging mechanisms.</p>
+<p>In some situation it may be necessary to debug Qt Extended running on a remote device because a particular bug may only happen on the target device but not on a desktop machine. This imposes further restriction upon the debugging process because the target device may not have sufficient memory to hold a complete debug build of Qt Extended. This situation can be solved by using <a href="http://www.google.com/search?q=gdb+remote+debugging">gdb's remote debugging</a> facilities. The Qt Extended <a href="debug-qtextended.html#remote-debugging">Remote Debugging</a> guide provides a quick demonstration how Qt Extended may be remotely debugged.</p>
+<p>See also <a href="qdeviceindicators.html">QDeviceIndicators</a> and <a href="qvaluespaceitem.html">QValueSpaceItem</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

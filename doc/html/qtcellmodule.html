@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Cell Module</title>
+  <link rel="prev" href="qtbluetoothmodule.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="qtconnectivitymodule.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtbluetoothmodule.html">Qt Bluetooth Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtconnectivitymodule.html">Qt Connectivity Module</a>]
+</p>
+<h1 class="title">Qt Cell Module<br /><span class="subtitle"></span>
+</h1>
+<a name="qtcellmodule"></a><p>The Qt Cell module offers support for modem based telephony backend. This module is based on <a href="qtbasemodule.html">Base module</a>.</p>
+<p>The following configure line can be used to build the Base and Cell module:</p>
+<pre>    ./configure -modules cell -device xyz</pre>
+<p>The <tt>-modem</tt> option is equivalent to the <tt>-modules cell</tt> option. This module implies the <a href="qttelephonymodule.html">Telephony</a> module.</p>
+<a name="feature-description"></a>
+<h2>Feature description</h2>
+<p>This module provides a modem based back-end for the Qt Extended Telephony API. The actual modem interface can be AT based or any other form of programming interface.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Details</th></tr></thead>
+<tr valign="top" class="odd"><td>Modem integration</td><td>This module uses the Qt Extended Telephony API and provides a back-end implementation for modems. In order to increase the reusability the modem integration uses a plug-in mechanism. The following two types of plug-ins are supported:<ul>
+<li>The Phone vendor plug-in caters for differences among the various 3GPP AT command implementations supported by various modems. The <a href="syscust-gsm.html">GSM modem integration guide</a> explains how phone vendor plug-ins work and how new plug-ins can be created.</li>
+<li>The Multiplexer plug-in can be used to replace the default GSM 07.10 mulitplexing provided by this module. The <a href="tut-multiplexing.html">Writing a Multiplexer Plug-in</a> tutorial gives a brief introduction into this feature and demonstrates how a new plug-in can be created.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Call Forwarding</td><td>This application allows the user to configure forwarding rules for Data, Fax and Voice calls.</td></tr>
+<tr valign="top" class="odd"><td>Call Networks</td><td>This application allows the user to configure the preferred network operator selection process.</td></tr>
+<tr valign="top" class="even"><td>Call Options</td><td>This application allows the user to configure the following parameters:<ul>
+<li>Call Barring (selectively block calls to/from device)</li>
+<li>Call Waiting</li>
+<li>Caller ID</li>
+<li>Cell Broadcasting</li>
+<li>Fixed Dialing (restrict outgoing calls to white-listed numbers)</li>
+<li>Service numbers (voice mail and SMS service center)</li>
+<li>Call volume</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Other features</td><td>The following minor features are included in this module:<ul>
+<li>GPRS/3G connection monitor</li>
+<li>SIM Toolkit support</li>
+<li>GCF compliant <a href="gsmdialfilter.html">GSM dial filter</a></li>
+<li>SIM based call history support</li>
+</ul>
+</td></tr>
+</table></p>
+<a name="software-components"></a>
+<h2>Software components</h2>
+<p>The Cell module includes the following software components:</p>
+<ul>
+<li>the entire <a href="qttelephonymodule.html">Telephony</a> module</li>
+<li><tt>libraries/qtopiaphonemodem</tt></li>
+<li>multiplexer and phone vendor plug-ins for Ericsson and Wavecom modems</li>
+<li>CallForwarding application</li>
+<li>CallNetworks application (network selection)</li>
+<li>CallOptions application (Call Barring, Call Waiting, Broadcast etc)</li>
+<li><a href="qabstractcallpolicymanager.html">Call policy manager</a> for for <a href="cellmodemmanager.html">GSM/3G</a></li>
+<li>server components for SIM and modem handling</li>
+</ul>
+<p>The exact list of components included in this module can be found in <tt>$QPEDIR/src/module_cell.pri</tt>.</p>
+<p>The <a href="tp-module-cell.html">test plan</a> for the Cell module summarizes the Quality Assurance procedures for this module. The results of these test are available <a href="qt-extended-test-results.html">here</a>.</p>
+<p>The following table contains all classes and services which are part of this module:</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="cellbroadcastcontrol.html">CellBroadcastControl</a></th><td>Monitors incoming cell broadcast messages</td></tr>
+<tr valign="top" class="even"><th><a href="cellmodemmanager.html">CellModemManager</a></th><td>Simplifies the initialization and monitoring of a cellular phone modem</td></tr>
+<tr valign="top" class="odd"><th><a href="gprsmonitor.html">GPRSMonitor</a></th><td>Keeps track of the state of GPRS accounts</td></tr>
+<tr valign="top" class="even"><th><a href="gsmdialfilter.html">GSMDialFilter</a></th><td>GSM dial filter required for GCF compliance</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemadviceofcharge.html">QModemAdviceOfCharge</a></th><td>Advice of charge information on AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemcall.html">QModemCall</a></th><td>Implements phone call functionality for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemcallbarring.html">QModemCallBarring</a></th><td>Implements the call barring settings for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemcallforwarding.html">QModemCallForwarding</a></th><td>Implements the call forwarding settings for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemcallprovider.html">QModemCallProvider</a></th><td>Implements a mechanism for AT-based phone call providers to hook into the telephony system</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemcallsettings.html">QModemCallSettings</a></th><td>Implements access to auxiliary call settings for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemcallvolume.html">QModemCallVolume</a></th><td>Implements call volume functionality for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemcellbroadcast.html">QModemCellBroadcast</a></th><td>Implements cell broadcast functionality for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemconfiguration.html">QModemConfiguration</a></th><td>Information about the modem such as its manufacturer and serial number</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemdatacall.html">QModemDataCall</a></th><td>Implements data call functionality for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemgprsnetworkregistration.html">QModemGprsNetworkRegistration</a></th><td>Information about GPRS network registration on AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemindicators.html">QModemIndicators</a></th><td>Supports indicators for signal quality, battery charge, etc</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemnetworkregistration.html">QModemNetworkRegistration</a></th><td>Access to network registration features of AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemphonebook.html">QModemPhoneBook</a></th><td>Implements SIM phone book operations for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodempinmanager.html">QModemPinManager</a></th><td>Method for the modem to query the user interface for pin values</td></tr>
+<tr valign="top" class="even"><th><a href="qmodempreferrednetworkoperators.html">QModemPreferredNetworkOperators</a></th><td>Implements the preferred operator list functions for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemrffunctionality.html">QModemRfFunctionality</a></th><td>Method to get or set the level of RF activity on an AT-based modem</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemsmsreader.html">QModemSMSReader</a></th><td>SMS reading facilities for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemsmssender.html">QModemSMSSender</a></th><td>SMS sending facilities for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemservice.html">QModemService</a></th><td>Implements telephony functionality for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemservicenumbers.html">QModemServiceNumbers</a></th><td>Access to GSM service numbers such as voice mail and SMS service center for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemserviceplugin.html">QModemServicePlugin</a></th><td>Defines a base class for implementing vendor-specific modem plug-ins</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemserviceplugininterface.html">QModemServicePluginInterface</a></th><td>Defines the interface to vendor-specific modem plug-ins</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemsimfiles.html">QModemSimFiles</a></th><td>Implements SIM file access for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemsimgenericaccess.html">QModemSimGenericAccess</a></th><td>Implements SIM generic access for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemsiminfo.html">QModemSimInfo</a></th><td>SIM identity information for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemsimtoolkit.html">QModemSimToolkit</a></th><td>Access to SIM toolkit functionality for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="qmodemsupplementaryservices.html">QModemSupplementaryServices</a></th><td>Access to structured and unstructured supplementary services for AT-based modems</td></tr>
+<tr valign="top" class="odd"><th><a href="qmodemvibrateaccessory.html">QModemVibrateAccessory</a></th><td>Vibrate accessory support for AT-based modems</td></tr>
+<tr valign="top" class="even"><th><a href="simcallhistory.html">SimCallHistory</a></th><td>Populates the in-memory call history list with entries provided by the call history list stored on a SIM card</td></tr>
+<tr valign="top" class="odd"><th><a href="simcontroleventhandlertask.html">SimControlEventHandlerTask</a></th><td>Feedback about SIM control events to the user</td></tr>
+<tr valign="top" class="even"><th><a href="supplementaryservicetask.html">SupplementaryServiceTask</a></th><td>Notification about unstructured notifications within GSM networks</td></tr>
+</table></p>
+<p>
+[Previous: <a href="qtbluetoothmodule.html">Qt Bluetooth Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtconnectivitymodule.html">Qt Connectivity Module</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Phone Library</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Phone Library<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#services-and-interfaces">Services and Interfaces</a></li>
+<li><a href="#using-telephony-interfaces">Using Telephony Interfaces</a></li>
+<li><a href="#implementing-telephony-interfaces">Implementing Telephony Interfaces</a></li>
+<li><a href="#automatic-starting-of-telephony-services">Automatic Starting of Telephony Services</a></li>
+<li><a href="#modem-services">Modem Services</a></li>
+</ul>
+<p>This document describes the design of the Qt Extended Phone Library. The complete list of library classes can be found on the <a href="telephony.html">Telephony Classes</a> page.</p>
+<a name="services-and-interfaces"></a>
+<h2>Services and Interfaces</h2>
+<p>Handlers in the telephony system are referred to as <i>services</i>. Each service has a unique name, such as <tt>modem</tt>, <tt>voip</tt>, etc. By convention, service names are lower case. Within each service is a list of interfaces for functionality areas such as network registration, phone calls, SMS, SIM Application Toolkit, etc.</p>
+<p>Interface names correspond to class names in the Qt Extended Telephony API. For example, the <a href="qnetworkregistration.html">QNetworkRegistration</a> interface provides access to network registration features, and the <a href="qsmssender.html">QSMSSender</a> interface provides methods to send SMS messages. The following table summarises the interfaces in the Qt Extended Phone Library:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Interface</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qadviceofcharge.html">QAdviceOfCharge</a></td><td>Advice of charge information during a call.</td></tr>
+<tr valign="top" class="even"><td><a href="qbandselection.html">QBandSelection</a></td><td>Selection of GSM bands - 850 MHz, 900 MHz, 1800 MHz, 1900 MHz, dual, and tri-band.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcallbarring.html">QCallBarring</a></td><td>Settings related to call barring.</td></tr>
+<tr valign="top" class="even"><td><a href="qcallforwarding.html">QCallForwarding</a></td><td>Settings related to call forwarding.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcallsettings.html">QCallSettings</a></td><td>Other call settings: call waiting and caller ID restrictriction.</td></tr>
+<tr valign="top" class="even"><td><a href="qcallvolume.html">QCallVolume</a></td><td>Control the volume while on a call.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcellbroadcast.html">QCellBroadcast</a></td><td>Access to cell broadcast messages.</td></tr>
+<tr valign="top" class="even"><td><a href="qgprsnetworkregistration.html">QGprsNetworkRegistration</a></td><td>Notification of GPRS registration state.</td></tr>
+<tr valign="top" class="odd"><td><a href="qnetworkregistration.html">QNetworkRegistration</a></td><td>Notification of general network registration state, plus operator selection.</td></tr>
+<tr valign="top" class="even"><td><a href="qphonebook.html">QPhoneBook</a></td><td>Access to phone books that are stored on a SIM.</td></tr>
+<tr valign="top" class="odd"><td><a href="qphonecallmanager.html">QPhoneCallManager</a></td><td>Making and receiving calls: voice, data, fax, etc.</td></tr>
+<tr valign="top" class="even"><td><a href="qphonerffunctionality.html">QPhoneRfFunctionality</a></td><td>Manipulation of the RF functionality level for selecting airplane and non-airplane modes.</td></tr>
+<tr valign="top" class="odd"><td><a href="qpinmanager.html">QPinManager</a></td><td>Notification of PIN requests, and PIN management (change, lock, unlock, etc).</td></tr>
+<tr valign="top" class="even"><td><a href="qpreferrednetworkoperators.html">QPreferredNetworkOperators</a></td><td>Access to the preferred network operator list in a SIM.</td></tr>
+<tr valign="top" class="odd"><td><a href="qservicechecker.html">QServiceChecker</a></td><td>Check that a service was started and has sufficient resources to perform operations.</td></tr>
+<tr valign="top" class="even"><td><a href="qservicenumbers.html">QServiceNumbers</a></td><td>Access to service numbers such as SMS service center and the voice mail number.</td></tr>
+<tr valign="top" class="odd"><td><a href="qsimfiles.html">QSimFiles</a></td><td>Raw access to files on the SIM.</td></tr>
+<tr valign="top" class="even"><td><a href="qsimgenericaccess.html">QSimGenericAccess</a></td><td>Raw access for sending commands to the SIM.</td></tr>
+<tr valign="top" class="odd"><td><a href="qsiminfo.html">QSimInfo</a></td><td>Information about the SIM's identity and whether or not it is currently inserted.</td></tr>
+<tr valign="top" class="even"><td><a href="qsimtoolkit.html">QSimToolkit</a></td><td>Access to SIM Application Toolkit features of the SIM.</td></tr>
+<tr valign="top" class="odd"><td><a href="qsmsreader.html">QSMSReader</a></td><td>Access to the incoming SMS message queue.</td></tr>
+<tr valign="top" class="even"><td><a href="qsmssender.html">QSMSSender</a></td><td>Access to the outgoing SMS message queue.</td></tr>
+<tr valign="top" class="odd"><td><a href="qsupplementaryservices.html">QSupplementaryServices</a></td><td>SS and USSD support for GSM networks.</td></tr>
+<tr valign="top" class="even"><td><a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a></td><td>Service configuration interface and miscellaneous settings.</td></tr>
+</table></p>
+<p>Not all services have all of these interfaces. For example, VoIP services may only have <a href="qnetworkregistration.html">QNetworkRegistration</a>, QPresence, <a href="qphonecallmanager.html">QPhoneCallManager</a>, and <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a>. GSM services will not typically have QPresence, and may not have <a href="qsimtoolkit.html">QSimToolkit</a> if the modem does not support it.</p>
+<p>Client applications can use the <a href="qcommservicemanager.html">QCommServiceManager</a> class to determine if an interface is supported by a service:</p>
+<pre>    QCommServiceManager mgr;
+    if ( mgr.supports&lt;QSimToolkit&gt;( &quot;modem&quot; ) ) {
+       ...
+    }</pre>
+<a name="using-telephony-interfaces"></a>
+<h2>Using Telephony Interfaces</h2>
+<p>Client applications access the features of an interface by creating an instance of the corresponding class. For example, the following can be used to send an SMS message using the default service that supports the <a href="qsmssender.html">QSMSSender</a> interface:</p>
+<pre>    QSMSSender sender;
+    QSMSMessage msg;
+    msg.setRecipient( &quot;1234567&quot; );
+    msg.setText( &quot;Hello!&quot; );
+    sender.send( msg );</pre>
+<p>When creating an interface instance, the client application can specify an explicit service name, if more than one service implements the same interface, or leave the service name empty to use the default service for that interface. For example, if the VoIP implementation supported SMS over SIP, then the following could be used to send the same message via the <tt>voip</tt> service:</p>
+<pre>    QSMSSender sender( &quot;voip&quot; );
+    if ( sender.available() ) {
+        QSMSMessage msg;
+        msg.setRecipient( &quot;1234567&quot; );
+        msg.setText( &quot;Hello!&quot; );
+        sender.send( msg );
+    } else {
+        QMessageBox::warning( 0, tr(&quot;SMS&quot;), tr(&quot;SMS over SIP is not available&quot;) );
+    }</pre>
+<p>This time, we have checked that the service is available before trying to send the message. The <a href="qcommservicemanager.html">QCommServiceManager</a> class can be used to locate all services that implement a particular interface, to allow the user to select which one they want to use:</p>
+<pre>    QCommServiceManager mgr;
+    QStringList services = mgr.supports&lt;QSMSSender&gt;();</pre>
+<a name="implementing-telephony-interfaces"></a>
+<h2>Implementing Telephony Interfaces</h2>
+<p>Telephony services implement interfaces by inheriting from the client-side class and overriding its public slots with a new implementation. To demonstrate how this works, we will implement the hypothetical &quot;SMS over SIP&quot; referred to in the previous section.</p>
+<pre>    class VoIPSMSSender : public QSMSSender
+    {
+        Q_OBJECT
+    public:
+        VoIPSMSSender( QObject *parent = 0 )
+            : QSMSSender( &quot;voip&quot;, parent, QCommInterface::Server ) {}
+        ~VoIPSMSSender() {}
+
+    public slots:
+        void send( const QString&amp; id, const QSMSMessage&amp; msg );
+    };
+
+    void VoIPSMSSender::send( const QString&amp; id, const QSMSMessage&amp; msg )
+    {
+        ...
+    }</pre>
+<p>The VoIP service creates an instance of <tt>VoIPSMSSender</tt>, passing the <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Server</a> flag to the base class constructor. This tells the Qt Extended Phone Library to advertise <tt>VoIPSMSSender</tt> as the implementation of the interface <a href="qsmssender.html">QSMSSender</a> for the service <tt>voip</tt>. The Qt Extended Phone Library uses <a href="qtextendedipc.html">Qt Extended IPC</a> and the <a href="qvaluespaceitem.html">Value Space</a> to effect communication between the client application and the service. There is more information on how this process works in the documentation for <a href="qabstractipcinterface.html">QAbstractIpcInterface</a>, which is the base class for all telephony interfaces.</p>
+<p>The <tt>VoIPSMSSender</tt> instance can be created anywhere in the system, usually in the daemon that implements the VoIP telephony service. The example VoIP implementation that comes with Qt Extended is implemented by the <tt>sipagent</tt> daemon.</p>
+<p>Telephony services do not need to be part of the <tt>qpe</tt> process, or any other special Qt Extended application, although they can be. The default implementation of the GSM <tt>modem</tt> service is created by <tt>qpe</tt>, but other modem implementations could be in separate daemons.</p>
+<p>Most telephony services will have more than one interface. The <a href="qtelephonyservice.html">QTelephonyService</a> class makes it easy to create large numbers of related interfaces within a service. Our VoIP implementation would look something like this:</p>
+<pre>    class VoIPService : public QTelephonyService
+    {
+        Q_OBJECT
+    public:
+        VoIPService( QObject *parent = 0 )
+            : QTelephonyService( &quot;voip&quot;, parent ) {}
+        ~VoIPService() {}
+
+        void initialize();
+    };
+
+    void VoIPService::initialize()
+    {
+        if ( !supports&lt;QSMSSender&gt;() )
+            addInterface( new VoIPSMSSender( this ) );
+
+        ...
+
+        QTelephonyService::initialize();
+    }</pre>
+<p>The VoIP daemon creates an instance of <tt>VoIPService</tt>, and then calls the <tt>initialize()</tt> method to complete the initialization process.</p>
+<p>In the example above, we call <tt>supports()</tt> to first check if there is an existing implementation of <a href="qsmssender.html">QSMSSender</a> before creating the new one. This style of interface creation supports inheritance of services. A better version of the VoIP service could inherit from <tt>VoIPService</tt>, override <tt>initialize()</tt>, and create a new implementation of the <a href="qsmssender.html">QSMSSender</a> interface that replaces the original.</p>
+<p>The <a href="syscust-voip.html">VoIP Integration Guide</a> provides more detailed information on integrating VoIP telephony services into Qt Extended, and the particular interfaces that are required.</p>
+<a name="automatic-starting-of-telephony-services"></a>
+<h2>Automatic Starting of Telephony Services</h2>
+<p>Third-party telephony services can be easily added to Qt Extended by adding a file to the directory <tt>$QPEDIR/services/Telephony</tt> whose name is the same as the daemon binary. Its contents should be as follows:</p>
+<pre>    [Extensions]
+    [Standard]
+    Version = 100</pre>
+<p>When Qt Extended starts up, any daemons that are registered under <tt>$QPEDIR/services/Telephony</tt> will be automatically started by sending the service a <tt>start()</tt> message. The services then create instances of every interface that they support and wait for requests to arrive from client applications.</p>
+<p>The example VoIP implementation that comes with Qt Extended, <tt>sipagent</tt>, demonstrates how to write such a service and integrate it with the rest of Qt Extended.</p>
+<p>Because telephony services do not normally have a user interface associated with them, it is necessary to register the daemon as a running task to prevent Qt Extended from telling it to exit soon after startup. You should place a line of code in your startup logic such as the following:</p>
+<pre>    QtopiaApplication::instance()-&gt;registerRunningTask( &quot;Telephony&quot;, obj );</pre>
+<p>where <tt>obj</tt> is a <a href="qobject.html">QObject</a> in your application that will stay in existence while the telephony service is running (the <a href="qtelephonyservice.html">QTelephonyService</a> instance may be a good candidate).</p>
+<a name="modem-services"></a>
+<h2>Modem Services</h2>
+<p>AT-based GSM <tt>modem</tt> telephony services have special support in Qt Extended. Most of the time, the Qt Extended implementation will be sufficient, but there are slight variations in GSM modems that may need additional support.</p>
+<p>The systems integrator can elect to write their own modem telephony service from scratch, but this is usually very time-consuming. A better way is to use the existing Qt Extended implementation in <tt>src/libraries/qtopiaphonemodem</tt> and just override the pieces that are different in a modem vendor plugin.</p>
+<p>The <a href="syscust-gsm.html">GSM Modem Integration</a> page describes how to write a modem vendor plugin.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

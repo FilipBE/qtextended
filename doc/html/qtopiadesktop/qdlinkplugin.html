@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDLinkPlugin Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDLinkPlugin Class Reference</h1>
+<p>The QDLinkPlugin class is responsible for maintaining a network link. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDLinkPlugin&gt;</pre><p>Inherits <a href="qdplugin.html">QDPlugin</a>.</p>
+<ul>
+<li><a href="qdlinkplugin-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qdlinkplugin.html#State-enum">State</a></b> { Up, Down }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdlinkplugin.html#QDLinkPlugin">QDLinkPlugin</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qdlinkplugin.html#dtor.QDLinkPlugin">~QDLinkPlugin</a></b> ()</li>
+<li><div class="fn"/>virtual int <b><a href="qdlinkplugin.html#ping_interval">ping_interval</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="qdlinkplugin.html#send_ack">send_ack</a></b> ()</li>
+<li><div class="fn"/>QIODevice * <b><a href="qdlinkplugin.html#socket">socket</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qdlinkplugin.html#stop">stop</a></b> () = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qdlinkplugin.html#tryConnect">tryConnect</a></b> ( QDConPlugin * <i>connection</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 public functions inherited from <a href="qdplugin.html#public-functions">QDPlugin</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="foo/../../qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdlinkplugin.html#setState">setState</a></b> ( QDLinkPlugin * <i>plugin</i>, int <i>state</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="foo/../../qobject.html#signals">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdlinkplugin.html#setupSocket">setupSocket</a></b> ( QIODevice * <i>device</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="foo/../../qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="foo/../../qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="foo/../../qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="foo/../../qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="foo/../../qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="foo/../../qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDLinkPlugin class is responsible for maintaining a network link.</p>
+<p>This plugin should be used to bring up a network interface and provide an IP address for Qt Extended Sync Agent to connect to.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="State-enum"></a>enum QDLinkPlugin::State</h3>
+<p>This enum type specifies the state of the connection.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QDLinkPlugin::Up</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The link is up.</td></tr>
+<tr><td valign="top"><tt>QDLinkPlugin::Down</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The link is down.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDLinkPlugin"></a>QDLinkPlugin::QDLinkPlugin ( <a href="foo/../../qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a <a href="qdlinkplugin.html">QDLinkPlugin</a> with <i>parent</i> as the owning <a href="foo/../../qobject.html">QObject</a>.</p>
+<h3 class="fn"><a name="dtor.QDLinkPlugin"></a>QDLinkPlugin::~QDLinkPlugin ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="ping_interval"></a>int QDLinkPlugin::ping_interval ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the time in miliseconds between pings. Returning 0 will disable the pings, relying on the underlying connection to correctly indicate loss of connection.</p>
+<p>Note that this value can be overridden by the user when operating in debug mode.</p>
+<h3 class="fn"><a name="send_ack"></a>bool QDLinkPlugin::send_ack ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns true if <a href="qdsync-helper-ack-1.html">HELPER_ACK</a> commands should be sent, false otherwise.</p>
+<h3 class="fn"><a name="setState"></a>void QDLinkPlugin::setState ( QDLinkPlugin * <i>plugin</i>, int <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal should be emitted by the <i>plugin</i> to indicate changes in <i>state</i> using a constant from the <a href="qdlinkplugin.html#State-enum">QDLinkPlugin::State</a> enum.</p>
+<h3 class="fn"><a name="setupSocket"></a>void QDLinkPlugin::setupSocket ( <a href="foo/../../qiodevice.html">QIODevice</a> * <i>device</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Call this function after you have created your <i>device</i> to initialize the socket. Note that the <i>device</i> will be moved to a separate thread so you should not interact with it except via signals. For the proxy device that you can interact with see <a href="qdlinkplugin.html#socket">QDLinkPlugin::socket</a>().</p>
+<p>Ownership of <i>device</i> is taken by <a href="qdlinkplugin.html">QDLinkPlugin</a> and it will be destroyed when the plugin is destroyed but you can delete it yourself using the <a href="foo/../../qobject.html#deleteLater">QObject::deleteLater</a>() function.</p>
+<h3 class="fn"><a name="socket"></a><a href="foo/../../qiodevice.html">QIODevice</a> * QDLinkPlugin::socket ()</h3>
+<p>Returns the socket for connections to use or 0 if the socket has not been initialized.</p>
+<h3 class="fn"><a name="stop"></a>void QDLinkPlugin::stop ()&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Tear down the link. The <a href="qdlinkplugin.html#socket">socket</a>() function should return 0 once this function has been called.</p>
+<h3 class="fn"><a name="tryConnect"></a>bool QDLinkPlugin::tryConnect ( <a href="qdconplugin.html">QDConPlugin</a> * <i>connection</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Attempt to bring up the link, using the port from <i>connection</i> (for TCP/IP-based links). Return false to indicate immediate failure and the <a href="qdlinkplugin.html#setState">setState</a>() signal to indicate asynchronous failure.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

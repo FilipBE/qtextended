@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Document System - Content Meta-data</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Document System - Content Meta-data<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#core-meta-data">Core Meta-data</a></li>
+<ul><li><a href="#derived-meta-data">Derived Meta-data</a></li>
+</ul>
+<li><a href="#properties">Properties</a></li>
+<li><a href="#categories">Categories</a></li>
+<li><a href="#application-meta-data">Application Meta-data</a></li>
+<li><a href="#content-plug-ins">Content Plug-ins</a></li>
+</ul>
+<a name="overview"></a>
+<h2>Overview</h2>
+<p>The document system stores a variety of information about content on a device which is used in the presentation of content and for constructing sets of content. This information is broken down into three different groups for most content; core meta-data, properties, and categories, there is also some meta-data that is unique to applications.</p>
+<p>Content meta-data may be specified by an application when creating content, or it may be extracted from the content itself by content plug ins that are run by the document system when installing content.</p>
+<a name="core-meta-data"></a>
+<h2>Core Meta-data</h2>
+<p>The core meta-data is defining information that is common to all content, it identifies the name of the content, its type, intended use, and whether it utilizes any DRM protection.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Meta-data</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qcontent.html#name">Name</a></td><td>The user visible name of the content. This is typically derived from the file name but may be explicitly set or extracted from content headers (e.g&#x2e; the song title of an MP3). For some content such as applications this will be a translated string.</td></tr>
+<tr valign="top" class="even"><td><a href="qcontent.html#fileNamex">File name</a></td><td>The absolute file name of the content, or for applications the binary name with no path.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcontent.html#type">MIME type</a></td><td>The RFC2045 MIME type of the content.</td></tr>
+<tr valign="top" class="even"><td><a href="qcontent.html#role">Role</a></td><td>The intended usage of the document, indicates whether it is an application, a user document, a system document, or an application folder.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcontent.html#drmState">DRM protection</a></td><td>Indicates whether or not the content is protected by any form of DRM.</td></tr>
+</table></p>
+<p><a href="qcontentfilter.html">Filters</a> can be constructed for searching on all the core meta-data, and <a href="qcontentset.html">content sets</a> may be <a href="qcontentsortcriteria.html">sorted</a> on the name, file name, or MIME type.</p>
+<a name="derived-meta-data"></a>
+<h3>Derived Meta-data</h3>
+<p>The document system also makes available some meta-data that it does not store directly. This is data that can be derived from the core meta-data such as things that are common to all content of the same MIME type, that can be queried from the content itself, or is stored separately. As this meta-data is not stored by the document system it can not be used to filter or sort content.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Meta-data</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qcontent.html#icon">Icon</a></td><td>The icon displayed when listing the content. For most content this is derived for the MIME type, but it can also be explicitly set as is done for most applications.</td></tr>
+<tr valign="top" class="even"><td><a href="qcontent.html#media">Media</a></td><td>The root path of the file system the content is stored on. This is not explicitly stored but is instead determined from the file path of the content.</td></tr>
+<tr valign="top" class="odd"><td><a href="qcontent.html#rights">DRM Rights</a></td><td>The current DRM permissions for using the content. This information is maintained by a DRM agent independent of the document system and is queried on demand.</td></tr>
+<tr valign="top" class="even"><td><a href="qcontent.html#size">Size</a></td><td>The size of the content in bytes. The document system does not store the size, but gets it from the content directly when queried.</td></tr>
+</table></p>
+<a name="properties"></a>
+<h2>Properties</h2>
+<p><a href="qcontent.html#property">Properties</a> are key-value pairs that are stored by the document system and can be used to filter and sort content.</p>
+<p>Property identifiers are composed of a group and a key the combination of which must be unique per content and value (reusing a group and key will overwrite the existing value). It's not necessary to use a property group as the document system will default to the global group <tt>none</tt> if no group is given, however when storing application specific properties it is recommended to use a group unique to the application to prevent key conflicts. Qt Extended defines some keys for commonly occurring properties with the <a href="qcontent.html#Property-enum">QContent::Property</a> enumeration, all of these properties are in the <tt>none</tt> group.</p>
+<a name="categories"></a>
+<h2>Categories</h2>
+<p>The document system utilizes the common Qt Extended <a href="categories.html">category system</a> for grouping content. In order to <a href="qcontent.html#setCategories">assign</a> content a category it must have already been created using <a href="qcategorymanager.html">QCategoryManager</a>, categories from any scope may be assigned to content but typically only the global and <tt>Documents</tt> scope should be used as categories in other scopes cannot be selected in the document selector widgets or Qt Extended launcher.</p>
+<p>The application folders in the Qt Extended launcher are categories in the <tt>Applications</tt> scope, applications are added to these folders by assigning them one or more application categories.</p>
+<a name="application-meta-data"></a>
+<h2>Application Meta-data</h2>
+<p>In addition to the regular meta-data shared by all content, applications also need to identify the types of documents they are able to open from the launcher. For each supported type the document system stores the type itself, an icon, and the DRM permission a document must have in order to be opened by the application. Only the first must be specified, if no icon is given then the application's icon will be used, and in the absence of a DRM permission the application is assumed to not support protected content.</p>
+<p>The MIME type information and other application meta-data is usually defined in a <a href="desktopfiles.html"><tt>.desktop</tt></a> file and is imported into the document system when the application is installed.</p>
+<a name="content-plug-ins"></a>
+<h2>Content Plug-ins</h2>
+<p>The document system employs <a href="qcontentplugin.html">content plug-ins</a> to extract meta-data embedded in content. The information provided by a content plug-in may be an extensive list of searchable information such as that found in the ID3 headers of MP3 files, or simply the correct type of a file with an ambiguous file extension.</p>
+<p>A content plug-in identifies a list of file extensions for MIME types it support reading and when installing or updating content meta-data the document system uses these extensions to identify a content plug-in capable of extracting embedded meta-data. If no content plug-in can be found for the content or some necessary information (name or MIME type) has not been provided the document will attempt to derive the missing information from the file name.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

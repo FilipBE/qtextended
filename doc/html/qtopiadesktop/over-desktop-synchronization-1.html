@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Desktop Synchronization</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Desktop Synchronization<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#intended-audience">Intended Audience</a></li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#remote-engine">Remote Engine</a></li>
+<li><a href="#synchronization">Synchronization</a></li>
+<ul><li><a href="#qt-extended-pim-plugins">Qt Extended PIM Plugins</a></li>
+<li><a href="#qtopia4sync">Qtopia4Sync</a></li>
+<li><a href="#qcop-bridge">QCop Bridge</a></li>
+<li><a href="#qserialport">QSerialPort</a></li>
+<li><a href="#usb-serial-gadget">USB Serial Gadget</a></li>
+</ul>
+<li><a href="#qt-extended-sync-agent">Qt Extended Sync Agent</a></li>
+<ul><li><a href="#outlook-plugins">Outlook Plugins</a></li>
+<li><a href="#qtopia4sync">Qtopia4Sync</a></li>
+<li><a href="#qcop-connection">QCop Connection</a></li>
+<li><a href="#serial-link">Serial Link</a></li>
+<li><a href="#usb-serial-driver">USB Serial Driver</a></li>
+</ul>
+</ul>
+<a name="intended-audience"></a>
+<h3>Intended Audience</h3>
+<p>This documentation is aimed primarily at system integrators. A complete Desktop Synchronization solution will require some device-specific code and may involve writing device drivers. It will also require <a href="over-building-qt-extended-sync-agent-1.html">building the Qt Extended Sync Agent</a>.</p>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>From a high level, Desktop Synchronization is made up of client and server plugins that communicate their changes to the <a href="over-sync-manager-1.html">Sync Manager</a> which handles conflicts and passes on the merged data. The reference implementation provides plugins for Qt Extended PIM and Outlook. The components look like this.</p>
+<p align="center"><img src="images/dsoverview.png" alt="Desktop Synchronization Overview" /></p><p>The plugins are responsible for converting the data into a common format. This is defined separately for each dataset. See <a href="datasets.html">Datasets</a> for the datasets that are supported by the reference implementation.</p>
+<p>See <a href="task-add-a-new-device-plugin-1.html">Add a new device plugin</a> and <a href="task-add-a-new-desktop-plugin-1.html">Add a new desktop plugin</a> for how to add a plugin.</p>
+<a name="remote-engine"></a>
+<h3>Remote Engine</h3>
+<p>The remote engine is an abstract entity. It consists of a combination of hardware, software and drivers but these do not matter to the high level synchronization process. A simplified overview of these components is given below.</p>
+<p align="center"><img src="images/dsremote.png" alt="Remote Engine Overview" /></p><p>As you can see the components on each machine are roughly the same. The plugin interface is remoted using QCop messages which are serialized onto a stream. The underlying driver is exposed as a <a href="foo/../../qiodevice.html">QIODevice</a> which carries the messages. The components of the Remote Engine are examined in more detail below.</p>
+<a name="synchronization"></a>
+<h3>Synchronization</h3>
+<p>The Synchronization application runs on Qt Extended.</p>
+<p align="center"><img src="images/dssyncapp.png" alt="Synchronization Overview" /></p><a name="qt-extended-pim-plugins"></a>
+<h4>Qt Extended PIM Plugins</h4>
+<p>The PIM plugins are instaces of <a href="qtopia4syncplugin.html">Qtopia4SyncPlugin</a>. A <a href="qtopia4syncpluginfactory.html">Qtopia4SyncPluginFactory</a> is used so that a single plugin file can contain all of the PIM plugins.</p>
+<a name="qtopia4sync"></a>
+<h4>Qtopia4Sync</h4>
+<p>This class converts from QCop messages to the <a href="qtopia4syncplugin.html">Qtopia4SyncPlugin</a> API. It also performs device-specific house keeping such as recording the sync anchors.</p>
+<a name="qcop-bridge"></a>
+<h4>QCop Bridge</h4>
+<p>This class serializes QCop messages for transmission. It uses the <a href="qdsync-commands.html">qdsync Protocol</a> over a <a href="foo/../../qiodevice.html">QIODevice</a>.</p>
+<a name="qserialport"></a>
+<h4>QSerialPort</h4>
+<p>This class exposes the USB serial driver as a <a href="foo/../../qiodevice.html">QIODevice</a> for the QCop Bridge. See <a href="task-use-a-serial-connection-1.html">Use a Serial Connection</a> for more information. Synchronization also contains support for TCP/IP. See <a href="task-use-a-tcp-ip-connection-1.html">Use a TCP/IP Connection</a> for more information.</p>
+<a name="usb-serial-gadget"></a>
+<h4>USB Serial Gadget</h4>
+<p>This is the Linux 2.4 serial_fd gadget. The Greenphone also supports the Linux 2.4 net_fd gadget which works well with Linux PCs.</p>
+<p>Note that Qt Extended does not provide a Windows driver for the Linux net_fd gadget.</p>
+<a name="qt-extended-sync-agent"></a>
+<h3>Qt Extended Sync Agent</h3>
+<p>Qt Extended Sync Agent runs on the Windows PC.</p>
+<p align="center"><img src="images/dssyncagent.png" alt="Qt Extended Sync Agent Overview" /></p><a name="outlook-plugins"></a>
+<h4>Outlook Plugins</h4>
+<p>The Outlook plugins are instaces of <a href="qdserversyncplugin.html">QDServerSyncPlugin</a>. They communicate to Outlook via the Outlook Object Model (OOM) although the Messaging API (MAPI) is used in some places to avoid security dialogs.</p>
+<a name="qtopia4sync"></a>
+<h4>Qtopia4Sync</h4>
+<p>This class implements <a href="qdclientsyncplugin.html">QDClientSyncPlugin</a> and converts to QCop messages. A <a href="qdclientsyncpluginfactory.html">QDClientSyncPluginFactory</a> is used so that one Qtopia4Sync instance can be created for each dataset that the device supports.</p>
+<a name="qcop-connection"></a>
+<h4>QCop Connection</h4>
+<p>This class implements <a href="qdconplugin.html">QDConPlugin</a> and serializes QCop messages for transmission. It uses the <a href="qdsync-commands.html">qdsync Protocol</a> over a <a href="foo/../../qiodevice.html">QIODevice</a>.</p>
+<a name="serial-link"></a>
+<h4>Serial Link</h4>
+<p>This class implements <a href="qdlinkplugin.html">QDLinkPlugin</a> and exposes the USB driver as a <a href="foo/../../qiodevice.html">QIODevice</a> to the QCop Connection. It supports proper COM ports and the broken COM port implementation used by the Greenphone USB serial driver. See <a href="task-use-a-serial-connection-1.html">Use a Serial Connection</a> for more information. Qt Extended Sync Agent also contains support for a TCP/IP link. See <a href="task-use-a-tcp-ip-connection-1.html">Use a TCP/IP Connection</a> for more information.</p>
+<a name="usb-serial-driver"></a>
+<h4>USB Serial Driver</h4>
+<p>This is a Windows driver for the Greenphone's serial_fd gadget.</p>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

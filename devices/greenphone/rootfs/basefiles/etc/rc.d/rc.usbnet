@@ -1,0 +1,123 @@
+#!/bin/sh
+
+findlauncherpids()
+{
+    ps ax | grep '[r]c.usbnet daemon' | awk '{print $1}'
+}
+
+update_hosts()
+{
+    TMPHOSTS=$(mktemp /etc/hosts.XXXXXX)
+    awk -v ipaddress=$IPADDR '
+        BEGIN {done = 0}
+        $2 == "greenphone" {printf "%s\t%s\n", ipaddress, $2 ; done = 1}
+        $2 != "greenphone" {print $0}
+        END { if (done == 0) printf "%s\tgreenphone\n", ipaddress }' /etc/hosts > $TMPHOSTS
+    mv -f $TMPHOSTS /etc/hosts
+}
+
+start_daemon()
+{
+    # Don't ever show output from this process and don't let it get killed!
+    nohup $0 daemon >/dev/null 2>&1 &
+}
+
+stop_daemon()
+{
+    kill $(findlauncherpids) $(pidof inetd) >/dev/null 2>&1
+}
+
+case $1 in
+daemon)
+    while :; do
+        # wait for network device to become available
+        until ifconfig eth0 2>/dev/null >/dev/null; do
+            sleep 5
+        done
+
+        /sbin/ifconfig eth0 hw ether $(/usr/bin/tat localmac)
+
+        if [ ! -r /etc/usbnet.conf ]; then
+            # store default settings in conf file
+            cat > /etc/usbnet.conf <<EOF
+MODE=static
+IPADDR=10.10.10.20
+NETMASK=255.255.255.0
+BROADCAST=10.10.10.255
+GATEWAY=10.10.10.21
+EOF
+        fi
+
+        # load default settings
+        . /etc/usbnet.conf
+
+        # use users network settings if they exists
+        if [ -r /home/Settings/Network/eth0 ]; then
+            . /home/Settings/Network/eth0
+        fi
+
+        # bring up network interface
+        case $MODE in
+            dhcp)
+                # use a custom script which does does not always set up
+                # the default route
+                /sbin/udhcpc -s /usr/share/udhcpc/usbnet.script -i eth0
+                ;;
+            static)
+                /sbin/ifconfig eth0 up
+                /sbin/ifconfig eth0 $IPADDR netmask $NETMASK broadcast $BROADCAST
+
+                # add host route to the gateway
+                /sbin/route add $GATEWAY dev eth0
+
+                # add a net route for the subnet if NETMASK != 255.255.255.255
+                if [ "$NETMASK" != "255.255.255.255" ]; then
+                    eval $(/bin/ipcalc -s -n $IPADDR $NETMASK)
+                    /sbin/route add $NETWORK dev eth0
+                fi
+
+                # only update the default route if no default route is defined
+                if ! route -n | grep '^0\.0\.0\.0 *[^ ]* *0\.0\.0\.0 *UG' >/dev/null; then
+                    /sbin/route add default gw $GATEWAY
+
+                    # make sure bogus nameservers are not defined
+                    rm -f /etc/resolv.conf
+                fi
+
+                # update /etc/hosts with the new ip address
+                update_hosts greenphone $IPADDR
+                ;;
+            *)
+                ;;
+        esac
+
+        # Start network services (inetd)
+        /usr/sbin/inetd
+
+        # wait for network device to become unavailable
+        while ifconfig eth0 2>/dev/null >/dev/null; do
+            sleep 5
+        done
+
+        # Stop network services (inetd)
+        kill $(pidof inetd)
+    done
+    ;;
+start)
+    start_daemon
+    ;;
+stop)
+    stop_daemon
+    ;;
+restart)
+    stop_daemon
+    start_daemon
+    ;;
+*)
+    echo "usage: $0 { start | stop | restart }"
+    exit 2
+    ;;
+esac
+    
+exit 0
+

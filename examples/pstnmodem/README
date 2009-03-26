@@ -1,0 +1,48 @@
+
+The pstnmodem example demonstrates how to write a modem vendor plugin
+and multiplexer that access the Public Switched Telephone Network (PSTN)
+using a regular Data/Fax/Voice modem.  The modem is assumed to be visible
+to Qtopia as a regular serial port.
+
+The multiplexer handles switching between command and data modes so that
+Qtopia can support both voice and data traffic on the same modem, although
+not at the same time.  The multiplexer also handles out of band DLE
+escape sequences, converting them into in-band AT commands and unsolicited
+responses.
+
+The modem vendor plugin uses AT commands from ITU Recommendations V.250 and
+V.253 to implement the call functionality.  The plugin also has some
+limited support for non-V.250/V.253 Rockwell modem chipsets.
+
+Currently this example cannot put calls on hold, or transfer the audio
+between handset, speaker, etc.  Further AT commands would need to be added
+to support those features.  Since Data/Fax/Voice modems vary widely in
+their supported functionality, extensive customization would be required
+to deploy this example for a realistic device.
+
+To activate the pstnmodem example, type "qbuild && qbuild image" in the pstnmode
+example directory, set the QTOPIA_PHONE_VENDOR environment variable to "pstn",
+and set the QTOPIA_PHONE_DEVICE environment variable to the name of the
+serial port and baud rate.  For example, if the modem is connected to
+ttyUSB0, the environment variables would be set as follows:
+
+    export QTOPIA_PHONE_VENDOR=pstn
+    export QTOPIA_PHONE_DEVICE=/dev/ttyUSB0:115200
+
+If you are using a Winmodem device on a computer's motherboard, it is
+important that you have installed the correct Linux drivers to make the
+modem visible as a serial port.  The exact procedure for doing this is
+beyond the scope of this document.  Consult http://www.linmodems.org/
+for more information on using Winmodem devices with Linux.
+
+Where possible, we recommend using an old-fashioned external RS-232 serial
+modem, accessed via an RS-232 to USB converter cable if you don't have a
+spare RS-232 serial port on your computer.  While a USB modem may be tempting,
+it may not appear as a USB serial device to Linux, and so special drivers
+will still be required.  The older (and dumber) the modem, the better.
+
+When using an RS-232 to USB converter cable, the device will normally
+show up as ttyUSB0, but there is no guarantee of this.  Consult the output
+of "dmesg" to determine which USB port the Linux kernel has associated with
+the modem.  Also make sure that the serial port device has user read-write
+permissions if you will not be running Qtopia as root.

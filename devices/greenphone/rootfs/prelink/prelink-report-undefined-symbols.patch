@@ -1,0 +1,25 @@
+--- prelink-0.0.20060712/src/get.c	2005-06-10 23:26:33.000000000 +1000
++++ prelink-0.0.20060712-greenphone/src/get.c	2008-10-21 09:30:55.000000000 +1000
+@@ -529,12 +529,17 @@
+ 	    }
+ 	}
+       else if (strncmp (buffer, "undefined symbol: ",
+-			sizeof ("undefined symbol: ") - 1) == 0 && ! undef)
++			sizeof ("undefined symbol: ") - 1) == 0)
+ 	{
+-	  undef = 1;
+-	  if (verbose)
+-	    error (0, 0, "Warning: %s has undefined non-weak symbols",
+-		   info->ent->filename);
++          if (! undef)
++            {
++	      undef = 1;
++	      if (verbose)
++	        error (0, 0, "Warning: %s has undefined non-weak symbols",
++                  info->ent->filename);
++            }
++          if (verbose)
++	    error (0, 0, "Warning: %s: %s", info->ent->filename, buffer);
+ 	}
+     } while (fgets (buffer, 8192, f) != NULL);
+ 

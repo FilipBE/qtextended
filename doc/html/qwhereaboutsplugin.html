@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QWhereaboutsPlugin Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QWhereaboutsPlugin Class Reference<br /><span class="small-subtitle">[<a href="qtlocationmodule.html">QtLocationModule</a>]</span>
+</h1>
+<p>The QWhereaboutsPlugin class defines an interface for writing a whereabouts plugin. <a href="#details">More...</a></p>
+<pre>    #include &lt;QWhereaboutsPlugin&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qwhereaboutsplugin-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qwhereaboutsplugin.html#QWhereaboutsPlugin">QWhereaboutsPlugin</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qwhereaboutsplugin.html#dtor.QWhereaboutsPlugin">~QWhereaboutsPlugin</a></b> ()</li>
+<li><div class="fn"/>virtual QWhereabouts * <b><a href="qwhereaboutsplugin.html#create">create</a></b> ( const QString &amp; <i>source</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QWhereaboutsPlugin class defines an interface for writing a whereabouts plugin.</p>
+<p>Whereabouts plugins can be written to retrieve location information from arbitrary data sources.</p>
+<p>To create a Whereabouts plugin, subclass QWhereaboutsPlugin and implement <a href="qwhereaboutsplugin.html#create">create</a>(), and use the QTOPIA_EXPORT_PLUGIN macro to export your plugin.</p>
+<p>See <a href="location.html">Location Services</a> for a detailed example of creating and using a Whereabouts plugin.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QWhereaboutsPlugin"></a>QWhereaboutsPlugin::QWhereaboutsPlugin ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a whereabouts plugin with the parent object <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QWhereaboutsPlugin"></a>QWhereaboutsPlugin::~QWhereaboutsPlugin ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the plugin.</p>
+<p>Note that Qt Extended destroys a plugin automatically when it is no longer used, so there is no need for calling the destructor explicitly.</p>
+<h3 class="fn"><a name="create"></a><a href="qwhereabouts.html">QWhereabouts</a> * QWhereaboutsPlugin::create ( const <a href="qstring.html">QString</a> &amp; <i>source</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Creates and returns a <a href="qwhereabouts.html">QWhereabouts</a> object that will read position data using the specified <i>source</i>.</p>
+<p>The <i>source</i> value may be empty to specify that a default source should be used, if possible.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

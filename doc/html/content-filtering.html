@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Content Filtering</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Content Filtering<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="content-filtering-filterdemo-cpp.html">content/filtering/filterdemo.cpp</a></li>
+<li><a href="content-filtering-filterdemo-h.html">content/filtering/filterdemo.h</a></li>
+<li><a href="content-filtering-main-cpp.html">content/filtering/main.cpp</a></li>
+<li><a href="content-filtering-qbuild-pro.html">content/filtering/qbuild.pro</a></li>
+</ul>
+<p>The Content Filtering tutorial demonstrates some of the different ways the filtering criteria can be applied to a <a href="qcontentset.html">QContentSet</a>. It also demonstrates using a <a href="qcontentsetmodel.html">QContentSetModel</a> to display the contents of a <a href="qcontentset.html">QContentSet</a> in a <a href="qlistview.html">QListView</a> and handling key events from a <a href="qsoftmenubar.html">QSoftMenuBar</a>.</p>
+<p align="center"><img src="images/tut-contentfiltering.png" /></p><p>The Content Filtering application displays a series of filtered views of content in the Document System. Users navigate through the views using the next label on the soft menu bar. The views are in order; all applications, applications in the <tt>Games</tt> category, documents with either the <tt>image/jpeg</tt> or <tt>image/png</tt> MIME type, and applications in the <tt>Games</tt> category and <tt>image/jpeg</tt> or <tt>image/png</tt> documents.</p>
+<a name="filterdemo-class-definition"></a>
+<h2>FilterDemo Class Definition</h2>
+<pre>    class FilterDemo : public QListView
+    {
+        Q_OBJECT
+    public:
+        FilterDemo( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+
+    protected:
+        void keyPressEvent( QKeyEvent *event );
+
+    private:
+        bool nextFilter();
+
+        int index;
+        QContentSet contentSet;
+    };</pre>
+<p>The <tt>FilterDemo</tt> class inherits from the only widget in the application; a <a href="qlistview.html">QListView</a>. It has a single event handler <tt>keyPressEvent()</tt> for handling the soft menu bar key presses, and another method <tt>nextFilter()</tt> for iterating through the different filters.</p>
+<a name="filterdemo-class-implementation"></a>
+<h2>FilterDemo Class Implementation</h2>
+<p>The FilterDemo constructor begins by initializing the <a href="qlistview.html">QListView</a>, the only thing we want to do here is set the horizontal scroll bar policy so the horizontal scroll bar is never shown.</p>
+<pre>    FilterDemo::FilterDemo( QWidget *parent, Qt::WindowFlags flags )
+        : QListView( parent )
+        , index( 0 )
+    {
+        setWindowFlags( flags );
+        setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );</pre>
+<p>In order to display the <a href="qcontentset.html">QContentSet</a> in the <a href="qlistview.html">QListView</a> we need to construct a new <a href="qcontentsetmodel.html">QContentSetModel</a>. There's no setup required so we simply create it and set it as the model for the <a href="qlistview.html">QListView</a>.</p>
+<pre>        setModel( new QContentSetModel( &amp;contentSet, this ) );</pre>
+<p>Next we want to initialize the <a href="qsoftmenubar.html">QSoftMenuBar</a>. We'll remove the label on the Select button as there is no select action and change the label on the Back button to Next.</p>
+<pre>        QSoftMenuBar::menuFor( this );
+        QSoftMenuBar::setLabel( this, Qt::Key_Select, QSoftMenuBar::NoLabel );
+        QSoftMenuBar::setLabel( this, Qt::Key_Back, QSoftMenuBar::Next );</pre>
+<p>Finally we'll display the first filtered view.</p>
+<pre>        nextFilter();
+    }</pre>
+<p>The <tt>keyPressEvent()</tt> event handler processes the key press events for the FilterDemo widget including those from the <a href="qsoftmenubar.html">QSoftMenuBar</a>. When the Back key is pressed it will call the <tt>nextFilter()</tt> method and accept the key event. If any other key is pressed or <tt>nextFilter()</tt> returns false it will let <a href="qlistview.html">QListView</a> handle the event, if handled by <a href="qlistview.html">QListView</a> the Back key will close the application.</p>
+<pre>    void FilterDemo::keyPressEvent( QKeyEvent *event )
+    {
+        if ( event-&gt;key() == Qt::Key_Back &amp;&amp; nextFilter() ) {
+            event-&gt;accept();
+        } else {
+            QListView::keyPressEvent( event );
+        }
+    }</pre>
+<p>The <tt>nextFilter()</tt> method applies a series of filtering criteria to the <a href="qcontentset.html">QContentSet</a>. When no more filters are left it will return false.</p>
+<p>The first filter includes all content with the <a href="qcontent.html#Role-enum">QContent::Application</a> role.</p>
+<pre>    bool FilterDemo::nextFilter()
+    {
+        switch( index++ )
+        {
+        case 0:
+            contentSet.setCriteria( QContentFilter( QContent::Application ) );
+            return true;</pre>
+<p>The second filter restricts the existing filtering criteria to only content in the <tt>Games</tt> category.</p>
+<pre>        case 1:
+            contentSet.addCriteria( QContentFilter::Category, &quot;Games&quot;, QContentFilter::And );
+            return true;</pre>
+<p>The third filter replaces the existing criteria with one that includes all content with the <tt>image/jpeg</tt> MIME type, extends that to also include the <tt>image/png</tt> MIME type, and then restricts that set to content with the <a href="qcontent.html#Role-enum">QContent::Document</a> role.</p>
+<pre>        case 2:
+            contentSet.setCriteria( QContentFilter::MimeType, &quot;image/jpeg&quot; );
+            contentSet.addCriteria( QContentFilter::mimeType( &quot;image/png&quot; ), QContentFilter::Or );
+            contentSet.addCriteria( QContentFilter( QContent::Document ), QContentFilter::And );
+            return true;</pre>
+<p>The final filter extends the previous one to also include applications in the <tt>Games</tt> category.</p>
+<pre>        case 3:
+            contentSet.addCriteria( QContentFilter( QContent::Application )
+                                  &amp; QContentFilter::category( &quot;Games&quot; )
+                                  , QContentFilter::Or );</pre>
+<p>Once the final filter view has been displayed, pressing the Back key will exit the application, so change the <a href="qsoftmenubar.html">QSoftMenuBar</a> label to indicate this before returning. Subsequent calls to <tt>nextFilter()</tt> will return false.</p>
+<pre>            QSoftMenuBar::setLabel( this, Qt::Key_Back, QSoftMenuBar::Back );
+
+            return true;
+        default:
+            return false;
+        }
+    }</pre>
+<a name="building-the-content-filtering-application"></a>
+<h2>Building the Content Filtering application</h2>
+<p>To install and run the Filter Demo example, carry out the following steps.</p>
+<ol type="1">
+<li>Create a new directory (e.g&#x2e; $HOME/src/filtering) and copy all the example files to that directory.<pre>    mkdir $HOME/src/filtering
+    cd $HOME/src/filtering
+    cp -r &lt;Qt-Extended-source-directory&gt;/examples/content/filtering/* .
+    chmod +w *</pre>
+</li>
+<li>Build the new application.<pre>    export QPEDIR=&lt;Qt-Extended-build-directory&gt;
+    $QPEDIR/bin/qbuild
+    $QPEDIR/bin/qbuild image</pre>
+</li>
+<li>Run Qt Extended.<pre>    $QPEDIR/bin/runqtopia</pre>
+</li>
+<li>Go into the list of Applications and scroll down until you find the <tt>Filter Demo</tt> application.</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

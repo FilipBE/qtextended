@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCommDeviceSession Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCommDeviceSession Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QCommDeviceSession class provides facilities to initiate a device session. <a href="#details">More...</a></p>
+<pre>    #include &lt;QCommDeviceSession&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qcommdevicesession-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qcommdevicesession.html#WaitType-enum">WaitType</a></b> { Block, BlockWithEventLoop }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcommdevicesession.html#QCommDeviceSession">QCommDeviceSession</a></b> ( const QByteArray &amp; <i>deviceId</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qcommdevicesession.html#dtor.QCommDeviceSession">~QCommDeviceSession</a></b> ()</li>
+<li><div class="fn"/>const QByteArray &amp; <b><a href="qcommdevicesession.html#deviceId">deviceId</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qcommdevicesession.html#endSession">endSession</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicesession.html#startSession">startSession</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcommdevicesession.html#sessionClosed">sessionClosed</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicesession.html#sessionFailed">sessionFailed</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicesession.html#sessionOpen">sessionOpen</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QCommDeviceSession * <b><a href="qcommdevicesession.html#session">session</a></b> ( const QByteArray &amp; <i>deviceId</i>, WaitType <i>type</i> = BlockWithEventLoop, QObject * <i>parent</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCommDeviceSession class provides facilities to initiate a device session.</p>
+<p>The QCommDeviceSession class provides facilities to initiate a new session on a hardware device. The system will attempt to keep the device open for the duration of the open session, unless the user explicitly shuts it down or another unexpected event occurs.</p>
+<p>Sessions are thus used by applications to give a hint to the device manager that the device is currently in use. E.g&#x2e; a client that is trying to send a vCard over bluetooth to a remote device would wrap all Bluetooth related operations by using the QCommDeviceSession object with a given Bluetooth device.</p>
+<p>See also <a href="qcommdevicecontroller.html">QCommDeviceController</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="WaitType-enum"></a>enum QCommDeviceSession::WaitType</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCommDeviceSession::Block</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Block, not using the event loop.</td></tr>
+<tr><td valign="top"><tt>QCommDeviceSession::BlockWithEventLoop</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Block, but using the event loop.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCommDeviceSession"></a>QCommDeviceSession::QCommDeviceSession ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>deviceId</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new <a href="qcommdevicesession.html">QCommDeviceSession</a> object. The he <i>deviceId</i> specifies the device id. This is usually equivalent to the hardware device id of the device. E.g&#x2e; irdaX for Infrared devices and hciX for Bluetooth devices.</p>
+<p>The <i>parent</i> parameter is passed to the <a href="qobject.html">QObject</a> constructor.</p>
+<p>See also <a href="qcommdevicesession.html#deviceId">deviceId</a>().</p>
+<h3 class="fn"><a name="dtor.QCommDeviceSession"></a>QCommDeviceSession::~QCommDeviceSession ()</h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="deviceId"></a>const <a href="qbytearray.html">QByteArray</a> &amp; QCommDeviceSession::deviceId () const</h3>
+<p>Returns the id of the device.</p>
+<h3 class="fn"><a name="endSession"></a>void QCommDeviceSession::endSession ()</h3>
+<p>Closes the current session.</p>
+<p>See also <a href="qcommdevicesession.html#startSession">startSession</a>() and <a href="qcommdevicesession.html#sessionClosed">sessionClosed</a>().</p>
+<h3 class="fn"><a name="session"></a>QCommDeviceSession * QCommDeviceSession::session ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>deviceId</i>, <a href="qcommdevicesession.html#WaitType-enum">WaitType</a> <i>type</i> = BlockWithEventLoop, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a new session for device given by <i>deviceId</i>. The type of wait to use (blocking or recursive event loop) is specified by <i>type</i>. The <i>parent</i> is used to specify the <a href="qobject.html">QObject</a> parent of the created session.</p>
+<p>If the session could not be established, a NULL is returned.</p>
+<h3 class="fn"><a name="sessionClosed"></a>void QCommDeviceSession::sessionClosed ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever the session has been terminated (perhaps forcefully)</p>
+<p>See also <a href="qcommdevicesession.html#endSession">endSession</a>().</p>
+<h3 class="fn"><a name="sessionFailed"></a>void QCommDeviceSession::sessionFailed ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when there was a problem opening the device session.</p>
+<p>See also <a href="qcommdevicesession.html#startSession">startSession</a>().</p>
+<h3 class="fn"><a name="sessionOpen"></a>void QCommDeviceSession::sessionOpen ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever a session has been opened successfully and it is safe to use the device.</p>
+<p>See also <a href="qcommdevicesession.html#startSession">startSession</a>().</p>
+<h3 class="fn"><a name="startSession"></a>void QCommDeviceSession::startSession ()</h3>
+<p>Attempts to initiate a session. Once the session is established, the <a href="qcommdevicesession.html#sessionOpen">sessionOpen</a>() signal will be sent. Otherwise <a href="qcommdevicesession.html#sessionFailed">sessionFailed</a>() signal will be sent.</p>
+<p>See also <a href="qcommdevicesession.html#sessionOpen">sessionOpen</a>(), <a href="qcommdevicesession.html#sessionFailed">sessionFailed</a>(), and <a href="qcommdevicesession.html#endSession">endSession</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.2&#x2e;3 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.2&#x2e;3 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.2&#x2e;3 release is a maintenance release of Qtopia that is based on Qt 4.2 technology. This release provides a number of bug fixes and documentation updates, both general and Greenphone-specific. This release also provides WiFi functionality for the Greenphone.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Bluetooth</b> Bluetooth support is provided in this release only as a technology preview. When building Qtopia, Bluetooth is disabled by default, but may be enabled by specifying the -bluetooth configure switch.</li>
+<li><b>WiFi</b><p>The <b>Internet</b> settings application has been enhanced to provide support for configuration and operation of wireless LAN connections, including support for roaming between wireless access points.</p>
+</li>
+<li><b>API Documentation</b><p>The Qtopia API documentation has been extensively revised for this release. API documentation for most classes has been reviewed and improved/rewritten where necessary to provide an accurate description of current Qtopia functionality.</p>
+</li>
+<li><b>System Integration Guide</b><p>The Qtopia System Integration Guide has been substantially expanded to provide more detailed coverage of the steps required to integrate Qtopia onto a new hardware platform.</p>
+</li>
+<li><b>Build System Documentation</b><p>The Qt Extended build system documentation has been substantially revised.</p>
+</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>BUG 165968: Bluetooth was always switched on after exiting Airplane Safe Mode, even if Bluetooth was off when Airplane Safe Mode was entered.</li>
+<li>BUG 167599: Qtopia 4.2&#x2e;2 introduced a bug preventing Bluetooth handsfree and headset devices from connecting to Qtopia.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 161170: Third-party applications could not be built in debug mode against a release mode Qtopia build.</li>
+</ul>
+</li>
+<li><b>Call Management</b><ul>
+<li>BUG 161592: The &quot;Call &lt;number&gt;&quot; option on the Call Screen's context menu did not place a new call.</li>
+<li>BUG 161593: Attempting to redirect an incoming call with the &quot;4*&lt;number&gt;SEND&quot; key sequence would place the call on hold instead.</li>
+<li>BUG 162229: When viewing the Call Screen during a call, the existing call would be terminated if the user attempted to reject a new incoming call.</li>
+<li>BUG 165515: Incoming VoIP calls were not shown on the Call Screen.</li>
+</ul>
+</li>
+<li><b>Call Options</b><ul>
+<li>BUG 161588: The PIN code for Call Barring could not be changed.</li>
+<li>BUG 163995: The Fixed Dialing option asked the user for a PUK2 code where it should have asked for a PIN2 code.</li>
+</ul>
+</li>
+<li><b>Content</b><ul>
+<li>BUG 158191: After viewing pre-installed wallpapers in the Appearance settings application, the wallpapers were incorrectly added to the Documents list.</li>
+</ul>
+</li>
+<li><b>Greenphone</b><ul>
+<li>BUG 158881: The &quot;Rescan Files&quot; development tool was not removing deleted files from the content database.</li>
+<li>BUG 159567: The Qtopia 4.2&#x2e;2 release introduced an error whereby the device's defaultbuttons.conf file was not writable, meaning that the Startup Flags development tool could save any changes made by the user.</li>
+<li>BUG 164504: Bluetooth was active by default. As Bluetooth is often not in use, it has been made inactive by default to provide significantly better battery life for the majority of users. When required, Bluetooth can be activated using the Settings -&gt; Bluetooth application.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 143283: Automatic capitalisation of new sentences in predictive input mode was not working.</li>
+</ul>
+</li>
+<li><b>Media Player</b><ul>
+<li>BUG 145709: Playback of some media formats did not work when using a Bluetooth headset.</li>
+</ul>
+</li>
+<li><b>Profiles</b><ul>
+<li>BUG 158549: Changing profiles erroneously deactivated Airplane Safe Mode.</li>
+</ul>
+</li>
+<li><b>Phone Simulator</b><ul>
+<li>BUG 159351: Changes to battery level made in the Phone Simulator GUI were not reported to Qtopia.</li>
+<li>BUG 161177: The first simulated incoming call would result in two incoming calls being reported to Qtopia.</li>
+</ul>
+</li>
+<li><b>Power Management</b><ul>
+<li>BUG 161178: Due to incorrect default power management settings, devices would not suspend until after the first time the user ran the Power Management settings application.</li>
+</ul>
+</li>
+<li><b>Server</b><ul>
+<li>BUG 147437: Application windows received unrotated geometry when using the transformed driver.</li>
+</ul>
+</li>
+<li><b>User Interface</b><ul>
+<li>BUG 155362: The Document Properties dialog did not correctly handle long category names, potentially causing the dialog to be wider than the physical screen without providing a scrollbar.</li>
+<li>BUG 156416: The <a href="qwaitwidget.html">QWaitWidget</a> class incorrectly ignored the hangup key, preventing the user from returning to the home screen while the wait widget was being displayed.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Call Options</b>:<ul>
+<li>BUG 138102: Phone numbers cannot be added to the Fixed Dialing list.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+</ul>
+</li>
+<li><b>Messages</b>:<ul>
+<li>BUG 120160: Messages doesn't start/stop network when fetching mail.</li>
+<li>BUG 123694: Outgoing messages are saved in Drafts instead of Outbox in Airplane Safe Mode.</li>
+<li>BUG 139837: Messages refuses to process attachments larger than 2Mb.</li>
+<li>BUG 140806: The user is not audibly notified when an MMS message is received.</li>
+<li>BUG 142744: MMS audio doesn't play to completion if the audio track is longer than the slideshow.</li>
+<li>BUG 148423: MMS messages saved to drafts cannot be subsequently edited.</li>
+</ul>
+</li>
+<li><b>Pictures</b>:<ul>
+<li>BUG 142355: Pictures crashes if launched from Documents with a large image file.</li>
+</ul>
+</li>
+<li><b>Server</b>:<ul>
+<li>BUG 123850: Files with Chinese names are only presented (and used) properly if the LANG environment variable is set prior to starting Qtopia Server to any language ending with .UTF8, for example: 'export LANG=&lt;yourlanguage&gt;.UTF8'.</li>
+<li>BUG 135563: Softkey Menu does not become scrollable when too big for the screen.</li>
+</ul>
+</li>
+<li><b>Server Widgets</b>:<ul>
+<li>BUG 148987: The Task Manager list only works correctly with the Standard Qtopia server widgets.</li>
+</ul>
+</li>
+<li><b>Touchscreen</b>:<ul>
+<li>Cannot access some controls on <tt>Touchscreen</tt> Phone</li>
+</ul>
+</li>
+<li><b>Words</b>:<ul>
+<li>Input widgets do not emit <tt>textChanged</tt> messages in response to changes in composing text.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

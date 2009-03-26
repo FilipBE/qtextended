@@ -1,0 +1,9 @@
+#!/bin/sh
+qbuild -script || exit 1
+qbuild -script -C src/project1 | tee output2
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output2 template
+    result=$?
+fi
+exit $result

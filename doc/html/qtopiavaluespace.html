@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Value Space</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Value Space<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>The Qt Extended Value Space unifies various sources of hierarchical data into a single consistent model. Conceptually the Value Space is a hierarchical tree of which each node or leaf can optionally contain a <a href="qvariant.html">QVariant</a> value. A serialized version of a simple example Value Space might look like this.</p>
+<pre>    /Device/Buttons = 3
+    /Device/Buttons/1/Name = Context
+    /Device/Buttons/1/Usable = true
+    /Device/Buttons/2/Name = Select
+    /Device/Buttons/2/Usable = false
+    /Device/Buttons/3/Name = Back
+    /Device/Buttons/3/Usable = true</pre>
+<p>Programmers access the Value Space through the <a href="qvaluespaceitem.html">QValueSpaceItem</a> class. This class allows applications to read item values, navigate through and subscribe to change notifications for items within the space.</p>
+<p>Nodes in the Value Space can be thought of as representing schema objects. Obviously this is a conceptual differentiation and not a physical one, as internally the Value Space is treated as one large tree. By applying structured schema to the space &quot;explorability&quot; is increased. For example, the <tt>/Device/Buttons</tt> schema can be defined as containing a value representing the number of mappable buttons on a device, and a sub-item for each adhering to the <tt>MappableButton</tt> schema. The <tt>MappableButton</tt> schema itself may be defined as containing two attributes <tt>Name</tt> and <tt>Usable</tt>. Change notification is modeled in this fashion also. Where the <tt>/Device/Buttons/1/Name</tt> item is to change, the <tt>/Device/Buttons/1</tt> item would be marked as changed, and so on up the tree. This allows, for example, subscription to just <tt>/Device/Buttons</tt> to be notified when anything &quot;button&quot; related changes.</p>
+<p>Internally, the Value Space consists of an arbitrary number of data source trees, or layers, which are stacked on top of each other to form the final unified view. If a &quot;higher&quot; layer contains an item, it shadows the value of items in the layers below it. The two most important Value Space layers are:</p>
+<p><i>The Application Object layer</i></p>
+<p>The Application Object layer allows applications to add and remove &quot;transient&quot; data from the Value Space. Applications access the Application Object layer through the <a href="qvaluespaceobject.html">QValueSpaceObject</a> class.</p>
+<p><i>The INI layer</i></p>
+<p>The INI layer maps regular INI files into the Value Space. This mapping allows values stored in configuration files to be used interchangably with other values in the Value Space. The INI layer is described in the architecture section below.</p>
+<p>Consider the Value Space item <tt>/Device/Buttons</tt>. If both the Application Object layer and the INI layer contained this item, the value in the Application Object layer would shadow that from the INI layer. However, if only the INI layer contained this item, it would be visible through the <a href="qvaluespaceitem.html">QValueSpaceItem</a> class, even if the Application Object layer contained sub-items such as <tt>/Device/Buttons/1</tt>. That is, layer shadowing occurs by value not by path.</p>
+<a name="architecture"></a>
+<h3>Architecture</h3>
+<p>Layers in the Qt Extended Value Space are provided by objects implementing the IValueSpaceLayer interface. The two internal layers, the Application Object layer and the INI layer, are implemented in this fashion. The Value Space supports adding new, 3rd party layers through calls to the <a href="qvaluespace.html#installLayer">QValueSpace::installLayer</a>() method. All layers must be installed prior to the first Value Space usage. Although it is legal to have a different set of layers installed in each process (a process local layer, for example) this asymmetric model is discouraged as it might cause confusion if these two processes communicate.</p>
+<p>The Qt Extended Value Space system is divided into two parts: a single server and zero or more clients. Internally the Value Space system draws no distinction between the two - the server is also a client, for example - but certain layers, in particular the Application Object layer, do. The Value Space server <b>must</b> be initialized via a call to QValueSpace::initValuespaceManager() prior to any use of the Value Space. Value Space clients will automatically initialize the first time Value Space functionionality is used.</p>
+<a name="application-object-layer"></a>
+<h4>Application Object layer</h4>
+<p>The external use of the Application Object layer is described in <a href="qvaluespaceobject.html">QValueSpaceObject</a>. The Application Object layer stores all values in a 10MB block of shared memory which is reserved when the Value Space initializes. As the layer creates this region at startup, it is assumed that the operating system lazily commits memory. If this assumption is invalid, the Application Object layer will unnecessarily consume 10MB of memory.</p>
+<p>Value Space clients read from the Application Object layer's shared memory region directly. A kernel lock is acquired for each read to prevent corruption. While the layer supports concurrent readers, it is possible that a faulty or malicious application could acquire and refuse to release this lock causing any layer updates to be delayed indefinately.</p>
+<p>Only the Value Space server ever writes to the shared memory region. When clients attempt to add items to the layer, their changes are transmitted via the <tt>/tmp/qtopia-N/valuespace_applayer</tt> Unix domain socket to the server where the update is performed. Updates are batched in-process and sent when the process re-enters the Qt event loop. Transmission and synchronization of changes can be forced manually by the <a href="qvaluespaceobject.html#sync">QValueSpaceObject::sync</a>() call, although as this requires a round trip between the client and server, doing so frequently may significantly degrade performance.</p>
+<p>Change notifications are transmitted to clients in the form of &quot;something has changed&quot; messages. Nodes within the shared memory region are versioned, which allows clients to quickly determine exactly what has changed without the need for a bulkier change notification protocol.</p>
+<a name="ini-layer"></a>
+<h4>INI layer</h4>
+<p>The INI layer maps INI files from disk into the Value Space. The INI layer supports arbitrary mappings, fallback paths and partial change notification.</p>
+<p>As the unified path structure of the Value Space doesn't allow the INI layer to transparently determine which INI file to access off disk, a INI layer configuration file (an INI file itself) is used to dictate how INI files are located. The INI file identified by <tt>Trolltech/IniValueSpace</tt> using the <a href="qsettings.html">QSettings</a> resolution rules is used for this purpose.</p>
+<p>The general form of the INI layer configuration file is:</p>
+<pre>    [General]
+    Translations=&lt;Directory to INI translations&gt;
+    LanguageItem=&lt;Value Space Item for current language&gt;
+    Mappings=&lt;Number of mappings that follow&gt;
+
+    [Mapping&lt;x&gt;]
+    ValueSpacePath=(Required)
+    FileSystemPath=(One of FileSystemPath or FileSystemPaths required)
+    FileSystemPaths=(One of FileSystemPath or FileSystemPaths required)
+    FileSystemPath&lt;x&gt;=(Required if FileSystemPaths specified)
+    FileSystemExtension=(Optional.  Required if DirectoryDepth is specified)
+    DirectoryDepth=(Optional.  Only allowed if FileSystemExtension specified)</pre>
+<p>The <tt>General/Mappings</tt> key simply specifies the number of mappings that follow, which are grouped as <tt>Mapping0</tt> - <tt>Mapping&lt;n&gt;</tt>. Each mapping consists of a single required field, <tt>ValueSpacePath</tt>, and a number of optional and interdependant keys.</p>
+<p>The {ValueSpacePath} key specifies the point of mapping in the value space. This is called a &quot;terminal&quot; point. There may be only a single mapping for each distinct terminal point. Two <tt>/Device</tt> mappings are not allowed, but a <tt>/Device</tt> and a <tt>/Device/Buttons</tt> mapping is fine. Each terminal mapping is either a &quot;depth mapping&quot; or a &quot;file mapping&quot;.</p>
+<p>File mappings are identified by the lack of the <tt>FileSystemExtension</tt> and <tt>DirectoryDepth</tt> keys. File mappings map a single INI file to a single Value Space node. For example, in following mapping</p>
+<pre>    [Mapping0]
+    ValueSpacePath=/Device/Buttons
+    FileSystemPath=/opt/Qtopia/etc/defaultbuttons.conf</pre>
+<p>if the <tt>/opt/Qtopia/etc/defaultbuttons.conf</tt> file contained a <tt>Mode/Type</tt> key, the corresponding Value Space item <tt>/Device/Buttons/Mode/Type</tt> would exist.</p>
+<p>Using the FileSystemPaths list, fallback file mappings may be created. For example</p>
+<pre>    [Mapping0]
+    ValueSpacePath=/Device/Buttons
+    FileSystemPaths=2
+    FileSystemPath0=/tmp/qtembedded-0/defaultbuttons.conf
+    FileSystemPath1=/opt/Qtopia/etc/defaultbuttons.conf</pre>
+<p>will first attempt to map <tt>/tmp/qtembedded-0/defaultbuttons.conf</tt> and then, if this doesn't exist, <tt>/opt/Qtopia/etc/defaultbuttons.conf</tt>. Fallback mappings completely obscure each other. That is, the two files <tt>/tmp/qtembedded-0/defaultbuttons.conf</tt> and <tt>/opt/Qtopia/etc/defaultbuttons.conf</tt> are not unified, but whichever exists is used and the other ignored. Fallbacks are monitored for change, so if the <tt>/tmp/qtembedded-0/defaultbuttons.conf</tt> file is created sometime later the INI layer will update accordingly.</p>
+<p>Depth mappings allow groups of ini files to be mapped into the Value Space dynamically. Depth mappings are identified by the presence of the <tt>FileExtension</tt> key. In the case of depth mappings, the <tt>ValueSpacePath</tt> point specifies the beginning of the mapping. The next <tt>DirectoryDepth</tt> sub-paths are treated as directory specifiers, and the subsequent sub-path a file name with the <tt>FileSystemExtension</tt> extension. For example</p>
+<pre>    [Mapping0]
+    ValueSpacePath=/Applications
+    FileSystemPath=/opt/Qtopia/apps
+    FileSystemExtension=desktop
+    DirectoryDepth=1
+
+    [Mapping1]
+    ValueSpacePath=/GamesApplications
+    FileSystemPath=/opt/Qtopia/apps/Games
+    FileSystemExtension=desktop
+    DirectoryDepth=0</pre>
+<p>creates two mappings. In the above both the Value Space items <tt>/Applications/Games/parashoot</tt> and <tt>/GamesApplications/parashoot</tt> map to the <tt>/opt/Qtopia/apps/Games/parashoot.desktop</tt> INI file. Thus if this file contained <tt>Desktop Entry/Name</tt>, the corresponding Value Space paths <tt>/Applications/Games/parashoot/Desktop Entry/Name</tt> and <tt>/GamesApplications/parashoot/Desktop Entry/Name</tt> would also exist.</p>
+<p>As with file mappings, depth mapping support fallback paths. For example</p>
+<pre>    [Mapping0]
+    ValueSpacePath=/Settings
+    FileSystemPaths=2
+    FileSystemPath0=/home/username/.config
+    FileSystemPath1=/etc/
+    FileSystemExtension=conf
+    DirectoryDepth=1</pre>
+<p>will map <tt>/Settings/Trolltech/qpe</tt> first to <tt>/home/username/.config/Trolltech/qpe.conf</tt> and then to <tt>/etc/Trolltech/qpe.conf</tt>. Like file mappings, the fallback paths are monitored in case the file is later created.</p>
+<p>Keys within an INI file can be marked as translatable by appending the &quot;[]&quot; token to them. For example, the following file contains one translatable key, <tt>/Example/Translatable</tt> and one non-translatable key, <tt>/Example/NonTranslatable</tt>.</p>
+<pre>    [Translation]
+    File=ExampleTranslation
+    Context=ExampleContext
+
+    [Example]
+    Translatable[]=Translatable Value
+    NonTranslatable=Non-Translatable Value</pre>
+<p>In both cases the &quot;[]&quot; token is omitted from the key name when accessed through the <a href="qvaluespaceitem.html">QValueSpaceItem</a> class.</p>
+<p>INI translation files must be stored under a directory structure rooted at the <tt>General/Translations</tt> directory provided in the INI layer's configuration file. If this configuration entry is omitted, translation is disabled. To provide accurate translations, the INI layer also needs to know the current system language. This information is accesses through the Value Space itself, from the item path specified by <tt>General/LanguageItem</tt>. Together the translations directory, and the current system language are combined to form the root under which the INI layer looks for translations files.</p>
+<p>INI files that include translatable keys, must also include the special <tt>Translation</tt> INI group that dictates how the INI layer locates translations for the key's value. The <tt>Translation/File</tt> key specifies the file to open under the translations root directory discussed above, and the <tt>Translation/Context</tt> key the Qt translation context to use within that file. The INI layer supports change notifications on language change.</p>
+<p>Currently the INI layer only supports partial change notification. Change notifications will occur for keys that exist within mapped INI files, but these notifications will not be propagated up the Value Space tree. For example with the previous mapping, should the <tt>qpe.conf</tt> file change,</p>
+<pre><span class="comment">    // Will emit QValueSpaceItem::contentsChanged()</span>
+    QValueSpaceItem item(&quot;/Settings/Trolltech/qpe/Desktop Entry/Name&quot;);
+
+<span class="comment">    // Will emit QValueSpaceItem::contentsChanged()</span>
+    QValueSpaceItem item2(&quot;/Settings/Trolltech/qpe&quot;);
+
+<span class="comment">    // Will NOT emit QValueSpaceItem::contentsChanged()</span>
+    QValueSpaceItem item3(&quot;/Settings/Trolltech&quot;);</pre>
+<p>.</p>
+<p>This limitation may be removed in future versions.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

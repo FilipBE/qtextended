@@ -1,0 +1,42 @@
+#!/bin/sh
+
+FVISIBILITY_SUPPORT=no
+COMPILER=$1
+VERBOSE=$2
+
+case "$COMPILER" in
+aCC*)
+    ;;
+
+icpc)
+    ICPC_VERSION=`icpc -dumpversion`
+    case "$ICPC_VERSION" in
+    10.1)
+        FVISIBILITY_SUPPORT=yes
+        ;;
+    esac
+    ;;
+
+    *)
+cat >>fvisibility.c << EOF
+__attribute__((visibility("default"))) void blah();
+#if !defined(__GNUC__)
+# error "Visiblility support requires GCC"
+#elif __GNUC__ < 4
+# error "GCC3 with backported visibility patch is known to miscompile Qt"
+#endif
+EOF
+
+"$COMPILER" -c -fvisibility=hidden fvisibility.c >/dev/null 2>&1 && FVISIBILITY_SUPPORT=yes
+rm -f fvisibility.c fvisibility.o
+    ;;
+esac
+
+# done
+if [ "$FVISIBILITY_SUPPORT" != "yes" ]; then
+    [ "$VERBOSE" = "yes" ] && echo "Symbol visibility control disabled."
+    exit 0
+else
+    [ "$VERBOSE" = "yes" ] && echo "Symbol visibility control enabled."
+    exit 1
+fi

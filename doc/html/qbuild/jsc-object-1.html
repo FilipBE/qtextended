@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Object Javascript Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Object Javascript Class Reference<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#properties">Properties</a></li>
+<ul><li><a href="#name-string">name: string</a></li>
+<li><a href="#absname-string">absName: string</a></li>
+</ul>
+<li><a href="#methods">Methods</a></li>
+<ul><li><a href="#value-list-string">value(): list&lt;string&gt;</a></li>
+<li><a href="#isempty-boolean">isEmpty(): boolean</a></li>
+<li><a href="#properties-list-string">properties(): list&lt;string&gt;</a></li>
+<li><a href="#property-property-object">property(property): Object</a></li>
+<li><a href="#setvalue-value-null">setValue(value): null</a></li>
+<li><a href="#clear-null">clear(): null</a></li>
+<li><a href="#append-value-null">append(value): null</a></li>
+<li><a href="#unite-value-null">unite(value): null</a></li>
+<li><a href="#remove-value-null">remove(value): null</a></li>
+<li><a href="#find-propertyname-value-list-string">find(propertyName[, value]): list&lt;string&gt;</a></li>
+<li><a href="#isproperty-property-boolean">isProperty(property): boolean</a></li>
+<li><a href="#contains-value-boolean">contains(value): boolean</a></li>
+<li><a href="#strvalue-value-string">strValue(value): string</a></li>
+<li><a href="#assignvalue-string">assignValue(): string</a></li>
+<li><a href="#watch-functionname-null">watch(functionname): null</a></li>
+</ul>
+</ul>
+<p>The Object class encapsulates a node within a project. Nodes may have further subnodes (properies) and a list value. Object's cannot be instantiated directly, but should be accessed through the Project.property() or QMake_Object() methods.</p>
+<a name="properties"></a>
+<h3>Properties</h3>
+<a name="target-object-javascript-class-reference-name-string"></a><a name="name-string"></a>
+<h4>name: string</h4>
+<p>Returns the name of the Object. For example, in the following .pro snippet:</p>
+<pre>    games_category.hint = desktop</pre>
+<p>the assigned object name is &quot;hint&quot;.</p>
+<a name="target-object-javascript-class-reference-absname-string"></a><a name="absname-string"></a>
+<h4>absName: string</h4>
+<p>Returns the absolute name of the Object. The absolute name is the entire path required to access the object from any project file. For example, in the following .pro snippet:</p>
+<pre>    games_category.hint = desktop</pre>
+<p>the absolute name might be &quot;/src/libraries/qtopia.games_category.files&quot;.</p>
+<a name="methods"></a>
+<h3>Methods</h3>
+<a name="target-object-javascript-class-reference-value-list-string"></a><a name="value-list-string"></a>
+<h4>value(): list&lt;string&gt;</h4>
+<p>Returns the current Object value.</p>
+<a name="target-object-javascript-class-reference-isempty-boolean"></a><a name="isempty-boolean"></a>
+<h4>isEmpty(): boolean</h4>
+<p>Returns true if the value is empty (either null or a single empty string), otherwise false.</p>
+<a name="target-object-javascript-class-reference-properties-list-string"></a><a name="properties-list-string"></a>
+<h4>properties(): list&lt;string&gt;</h4>
+<p>Returns a list of all the Object's properties.</p>
+<a name="target-object-javascript-class-reference-property-property-object"></a><a name="property-property-object"></a>
+<h4>property(property): Object</h4>
+<p>Returns the Object's <i>property</i>. If the property does not exist, it is created unless the project is read-only, in which case a null Object is returned.</p>
+<a name="target-object-javascript-class-reference-setvalue-value-null"></a><a name="setvalue-value-null"></a>
+<h4>setValue(value): null</h4>
+<p>Set the Object's current value. <i>value</i> may be a string, or a list of strings. This is equivalent to the &quot;=&quot; .pro operator.</p>
+<p>Note that calling <tt>object.setValue(&quot;&quot;)</tt> clears the value, it does not create a single item that is an empty string.</p>
+<a name="target-object-javascript-class-reference-clear-null"></a><a name="clear-null"></a>
+<h4>clear(): null</h4>
+<p>Clear the Object's current value. This includes all properties. To clear just the value use <tt>setValue(&quot;&quot;)</tt> instead of <tt>clear()</tt>.</p>
+<a name="target-object-javascript-class-reference-append-value-null"></a><a name="append-value-null"></a>
+<h4>append(value): null</h4>
+<p>Append <i>value</i> to the Object's value. <i>value</i> may be a string, or a list of strings. This is equivalent to the &quot;+=&quot; .pro operator.</p>
+<a name="target-object-javascript-class-reference-unite-value-null"></a><a name="unite-value-null"></a>
+<h4>unite(value): null</h4>
+<p>Unite <i>value</i> with the Object's value. <i>value</i> may be a string, or a list of strings. Uniting a value means to append if the value does not already contain the entry, otherwise do nothing. This is equivalent to the &quot;*=&quot; .pro operator.</p>
+<a name="target-object-javascript-class-reference-remove-value-null"></a><a name="remove-value-null"></a>
+<h4>remove(value): null</h4>
+<p>Remove <i>value</i> from the Object's value. <i>value</i> may be a string, or a list of strings. This is equivalent to the &quot;-=&quot; .pro operator.</p>
+<a name="target-object-javascript-class-reference-find-propertyname-value-list-string"></a><a name="find-propertyname-value-list-string"></a>
+<h4>find(propertyName[, value]): list&lt;string&gt;</h4>
+<p>Return the absolute names of Object's that have a property named <i>propertyName</i> that contains the <i>value</i>. <i>value</i> may not be a list. The current object, and all its children are searched.</p>
+<p>The absoulte name of an Object may be passed to <i>QMake_Object()</i> to retrieve the Object instance.</p>
+<p>If <i>value</i> is omitted, any objects that have the property <i>propertyName</i> will be returned.</p>
+<a name="target-object-javascript-class-reference-isproperty-property-boolean"></a><a name="isproperty-property-boolean"></a>
+<h4>isProperty(property): boolean</h4>
+<p>Returns true if the object has a <i>property</i>.</p>
+<a name="target-object-javascript-class-reference-contains-value-boolean"></a><a name="contains-value-boolean"></a>
+<h4>contains(value): boolean</h4>
+<p>Returns true if the Object value contains <i>value</i>, otherwise false. <i>value</i> may not be a list.</p>
+<a name="target-object-javascript-class-reference-strvalue-value-string"></a><a name="strvalue-value-string"></a>
+<h4>strValue(value): string</h4>
+<p>Returns the current Object value. If the value is a list, is is joined into a single string with a single space separator (&quot; &quot;).</p>
+<a name="target-object-javascript-class-reference-assignvalue-string"></a><a name="assignvalue-string"></a>
+<h4>assignValue(): string</h4>
+<p>Returns the current Object value as a quoted string. The string returned could be used in a .pro file to establish an object with the same name.</p>
+<a name="target-object-javascript-class-reference-watch-functionname-null"></a><a name="watch-functionname-null"></a>
+<h4>watch(functionname): null</h4>
+<p>The function <i>functionname</i> will be called every time the object changes. Note that you should quote the function name.</p>
+<pre>    project.property(&quot;FOO&quot;).watch(&quot;myfunc&quot;);</pre>
+<p><b>Note: Overuse of this function could have dire effects on the performance of qbuild.</b></p>
+<p>See also <a href="javascript.html">Javascript Binding</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

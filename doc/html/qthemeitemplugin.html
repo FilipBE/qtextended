@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QThemeItemPlugin Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QThemeItemPlugin Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QThemeItemPlugin class is a simple plugin interface that makes it easy to create custom theme items that can be loaded dynamically using the <a href="qthemeitemfactory.html">QThemeItemFactory</a> class. <a href="#details">More...</a></p>
+<pre>    #include &lt;QThemeItemPlugin&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>This class was introduced in Qtopia 4.4.</p>
+<ul>
+<li><a href="qthemeitemplugin-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QThemeItem * <b><a href="qthemeitemplugin.html#create">create</a></b> ( const QString &amp; <i>type</i>, QThemeItem * <i>parent</i> ) = 0</li>
+<li><div class="fn"/>virtual QStringList <b><a href="qthemeitemplugin.html#keys">keys</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QThemeItemPlugin class is a simple plugin interface that makes it easy to create custom theme items that can be loaded dynamically using the <a href="qthemeitemfactory.html">QThemeItemFactory</a> class.</p>
+<p>Writing a theme item plugin is achieved by subclassing this base class, reimplementing the pure virtual <a href="qthemeitemplugin.html#keys">keys</a>() and <a href="qthemeitemplugin.html#create">create</a>() functions, and exporting the class using the <a href="qtopiaapplication.html#QTOPIA_EXPORT_PLUGIN">QTOPIA_EXPORT_PLUGIN</a>() macro.</p>
+<p>See also <a href="qthemeitem.html">QThemeItem</a> and <a href="qthemeitemfactory.html">QThemeItemFactory</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="create"></a><a href="qthemeitem.html">QThemeItem</a> * QThemeItemPlugin::create ( const <a href="qstring.html">QString</a> &amp; <i>type</i>, <a href="qthemeitem.html">QThemeItem</a> * <i>parent</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Creates and returns a <a href="qthemeitem.html">QThemeItem</a> object for the given <i>type</i> with parent <i>parent</i>. If a plugin cannot create a item, it should return 0 instead.</p>
+<h3 class="fn"><a name="keys"></a><a href="qstringlist.html">QStringList</a> QThemeItemPlugin::keys () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the list of theme items this plugin supports. These keys are usually the class names of the custom items that are implemented in the plugin.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

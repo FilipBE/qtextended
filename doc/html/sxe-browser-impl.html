@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Web Browser Integration Implementation</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Web Browser Integration Implementation<br /><span class="subtitle"></span>
+</h1>
+<p>This documentation describes implementation details of how <tt>PackageManager</tt> has been primed for integration with web browsers. For instructions on integrating the browser see <a href="syscust-sxepkgbrowser.html">PackageManager - Browser Integration</a>.</p>
+<p>The Web Browser integration allows the user to install a package directly from a web page viewed within a web browser. When a user clicks a link to a Qt Extended package descriptor file, the <tt>PackageManager</tt> service is notified. It then invokes the <tt>PackageManager</tt> enabling the user to install the package referenced by the descriptor. The browser notifies the <tt>PackageManager</tt> service when it recognizes a file of a pre-defined mime type. The service then passes the descriptor file contents to the <tt>PackageManager</tt>, which manages the execution of the standard package installation functionality.</p>
+<ul><li><a href="#packagemanager-definition">PackageManager Definition</a></li>
+<ul><li><a href="#the-file">The <tt>services/PackageManager.service</tt> file</a></li>
+<li><a href="#the-file">The <tt>etc/qds/Packagemanager</tt> file</a></li>
+<li><a href="#the-class">The <tt>PackageManagerService</tt> Class</a></li>
+</ul>
+</ul>
+<a name="packagemanager-definition"></a>
+<h2>PackageManager Definition</h2>
+<p>The <tt>PackageManager</tt> definition contains:</p>
+<ul>
+<li><tt>services/PackageManager.service</tt></li>
+<li><tt>etc/qds/Packagemanager</tt></li>
+<li>implementation of the <tt>PackageManagerService</tt> class.</li>
+</ul>
+<a name="the-file"></a>
+<h3>The <tt>services/PackageManager.service</tt> file</h3>
+<p>This file defines the <tt>PackageManager</tt> service as a standard Qt Extended service. It specifies an action called <tt>installPackage()</tt> which corresponds to a method with the same name in the <tt>PackageManagerService</tt> class.</p>
+<a name="the-file"></a>
+<h3>The <tt>etc/qds/Packagemanager</tt> file</h3>
+<p>This file defines the <tt>PackageManager</tt> service as a QDS service allowing it to be found when searching for the QDS services available for a particular mime type. For example, the mime type for the <tt>PackageManager</tt> is <tt>application/qtopia-package</tt>. The file also specifies the service attribute <tt>install</tt> allowing <a href="qdsservices.html">QDSServices</a> to find a service corresponding to this mime type and attribute, with the returned service being the <tt>PackageManager</tt> service.</p>
+<a name="the-class"></a>
+<h3>The <tt>PackageManagerService</tt> Class</h3>
+<p>The <tt>PackageManagerService</tt> class is derived from <a href="qtopiaabstractservice.html">QtopiaAbstractService</a> with core implementation similar to other services. Additionally, it contains the method <tt>installPackage()</tt> which accepts a single parameter of type <tt>QDSRequest</tt> and contains the request data, that is, the contents of the Qt Extended package descriptor file. This method is called when a service action of the same name is invoked (by the browser on recognition of the <tt>application/qtopia-package</tt> mime type) and then executes the standard <tt>PackageManager</tt> dialog, which prompts the user to install the package or cancel the installation.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

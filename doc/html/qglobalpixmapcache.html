@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QGlobalPixmapCache Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QGlobalPixmapCache Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QGlobalPixmapCache class provides a system-wide cache for pixmaps. <a href="#details">More...</a></p>
+<pre>    #include &lt;QGlobalPixmapCache&gt;</pre><ul>
+<li><a href="qglobalpixmapcache-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qglobalpixmapcache.html#find">find</a></b> ( const QString &amp; <i>key</i>, QPixmap &amp; <i>pixmap</i> )</li>
+<li><div class="fn"/>bool <b><a href="qglobalpixmapcache.html#insert">insert</a></b> ( const QString &amp; <i>key</i>, const QPixmap &amp; <i>pixmap</i> )</li>
+<li><div class="fn"/>void <b><a href="qglobalpixmapcache.html#remove">remove</a></b> ( const QString &amp; <i>key</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QGlobalPixmapCache class provides a system-wide cache for pixmaps.</p>
+<p>This class is a tool for caching of pixmaps which are likely to be used by multiple processes, or are expensive to generate and may benefit from caching between application executions. For an application-wide <a href="qpixmap.html">QPixmap</a> cache use <a href="qpixmapcache.html">QPixmapCache</a>.</p>
+<p>Use <a href="qglobalpixmapcache.html#insert">insert</a>() to insert pixmaps, <a href="qglobalpixmapcache.html#find">find</a>() to find them, and <a href="qglobalpixmapcache.html#remove">remove</a>() to remove them from the global cache.</p>
+<p>QGlobalPixmapCache contains no member data, only static functions to access the global pixmap cache.</p>
+<p>The global cache associates a pixmap with a string (key). If two pixmaps are inserted into the global cache using equal keys, then the last pixmap will hide the first pixmap.</p>
+<p>When the global cache becomes full, <a href="qglobalpixmapcache.html#insert">insert</a>() will fail until adequate space is made available by removing unneeded pixmaps from the global cache, or by deleting all references to the global pixmap's data.</p>
+<p>See also <a href="qpixmapcache.html">QPixmapCache</a>, <a href="qpixmap.html">QPixmap</a>, and <a href="custom-h.html#QGLOBAL_PIXMAP_CACHE_LIMIT">QGLOBAL_PIXMAP_CACHE_LIMIT</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="find"></a>bool QGlobalPixmapCache::find ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, <a href="qpixmap.html">QPixmap</a> &amp; <i>pixmap</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Looks for a cached pixmap associated with the <i>key</i> in the global cache. If the pixmap is found, the function sets <i>pixmap</i> to that pixmap and returns true; otherwise it leaves <i>pixmap</i> alone and returns false.</p>
+<p>Internally the global cache ensures that the pixmap is not removed until the <i>pixmap</i> is destroyed, therefore <i>pixmap</i> is directly associated with the <a href="qpixmap.html">QPixmap</a> in the global cache and should not be reused.</p>
+<p>Example of correct use:</p>
+<pre>    {
+        QPixmap pm;
+        if (!QGlobalPixmapCache::find(&quot;background_image&quot;, pm)) {
+            pm.load(&quot;backgroundimage.png&quot;);
+            QGlobalPixmapCache::insert(&quot;background_image&quot;, pm);
+        }
+        painter-&gt;drawPixmap(0, 0, pm);
+    }
+
+    {
+        QPixmap pm;
+        if (!QGlobalPixmapCache::find(&quot;wallpaper_image&quot;, pm)) {
+            pm.load(&quot;wallpaper.png&quot;);
+            QGlobalPixmapCache::insert(&quot;wallpaper_image&quot;, pm);
+        }
+        painter-&gt;drawPixmap(0, 0, pm);
+    }</pre>
+<p>Example of incorrect use:</p>
+<pre>    QPixmap pm;
+    if (!QGlobalPixmapCache::find(&quot;background_image&quot;, pm)) {
+        pm.load(&quot;backgroundimage.png&quot;);
+        QGlobalPixmapCache::insert(&quot;background_image&quot;, pm);
+    }
+    painter-&gt;drawPixmap(0, 0, pm);
+
+    if (!QGlobalPixmapCache::find(&quot;wallpaper_image&quot;, pm)) {
+        pm.load(&quot;wallpaper.png&quot;);
+        QGlobalPixmapCache::insert(&quot;wallpaper_image&quot;, pm);
+    }
+    painter-&gt;drawPixmap(0, 0, pm);</pre>
+<h3 class="fn"><a name="insert"></a>bool QGlobalPixmapCache::insert ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, const <a href="qpixmap.html">QPixmap</a> &amp; <i>pixmap</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Inserts the pixmap <i>pixmap</i> associated with the <i>key</i> into the global cache.</p>
+<p>All pixmaps inserted by Qt Extended have a key starting with &quot;<a href="qtopiadesktop/src-tools-qdsync-task-xsd.html">_</a>$QTOPIA&quot;, so your own pixmap keys should never begin with &quot;<a href="qtopiadesktop/src-tools-qdsync-task-xsd.html">_</a>$QTOPIA&quot;.</p>
+<p>The function returns true if the object was inserted into the global cache; otherwise it returns false.</p>
+<p>When the pixmap is no longer required in the global cache, <a href="qglobalpixmapcache.html#remove">remove</a>() may be called to free space in the global cache.</p>
+<p>If two pixmaps are inserted into the global cache using equal keys, then the last pixmap will hide the first pixmap.</p>
+<h3 class="fn"><a name="remove"></a>void QGlobalPixmapCache::remove ( const <a href="qstring.html">QString</a> &amp; <i>key</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Removes the pixmap associated with the <i>key</i> from the global cache.</p>
+<p>Space in the global cache will not be reclaimed unless remove() is called on pixmaps that are not required or all pixmaps referencing the global pixmap data are deleted.</p>
+<p>Note that calling remove marks the image for removal, but may not necessarily remove it until some time later. Other callers are permitted to re-reference the pixmap until that time. Consequently, the mere presence of an image in the global pixmap cache should not be used to indicate application state.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

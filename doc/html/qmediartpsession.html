@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaRtpSession Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaRtpSession Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaRtpSession class provides a means establishing remote media connections. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaRtpSession&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qmediartpsession-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmediartpsession.html#QMediaRtpSession">QMediaRtpSession</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qmediartpsession.html#dtor.QMediaRtpSession">~QMediaRtpSession</a></b> ()</li>
+<li><div class="fn"/>QMediaRtpAudioStream * <b><a href="qmediartpsession.html#addAudioStream">addAudioStream</a></b> ( QMediaRtpStream::Direction <i>direction</i> )</li>
+<li><div class="fn"/>QMediaRtpStream * <b><a href="qmediartpsession.html#addStream">addStream</a></b> ( QMediaRtpStream::Type <i>type</i>, QMediaRtpStream::Direction <i>direction</i> )</li>
+<li><div class="fn"/>QMediaRtpVideoStream * <b><a href="qmediartpsession.html#addVideoStream">addVideoStream</a></b> ( QMediaRtpStream::Direction <i>direction</i> )</li>
+<li><div class="fn"/>void <b><a href="qmediartpsession.html#removeStream">removeStream</a></b> ( QMediaRtpStream * <i>stream</i> )</li>
+<li><div class="fn"/>QMediaRtpStream * <b><a href="qmediartpsession.html#stream">stream</a></b> ( int <i>index</i> ) const</li>
+<li><div class="fn"/>int <b><a href="qmediartpsession.html#streamCount">streamCount</a></b> () const</li>
+<li><div class="fn"/>QList&lt;QMediaRtpPayload&gt; <b><a href="qmediartpsession.html#supportedInboundPayloads">supportedInboundPayloads</a></b> ( QMediaRtpStream::Type <i>type</i> ) const</li>
+<li><div class="fn"/>QList&lt;QMediaRtpPayload&gt; <b><a href="qmediartpsession.html#supportedOutboundPayloads">supportedOutboundPayloads</a></b> ( QMediaRtpStream::Type <i>type</i> ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaRtpSession class provides a means establishing remote media connections.</p>
+<p>An RTP session manages a set of related RTP streams, it provides functions for creating streams and managing their lifetimes.</p>
+<p>The RTP session also provides information about the payloads supported by the stream provider. A list of payloads that can be received for a stream type is given by <a href="qmediartpsession.html#supportedInboundPayloads">supportedInboundPayloads</a>() and a similar list for payloads that can be sent is given by <a href="qmediartpsession.html#supportedOutboundPayloads">supportedOutboundPayloads</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMediaRtpSession"></a>QMediaRtpSession::QMediaRtpSession ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates new RTP session with the given <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QMediaRtpSession"></a>QMediaRtpSession::~QMediaRtpSession ()</h3>
+<p>Destroys a session.</p>
+<h3 class="fn"><a name="addAudioStream"></a><a href="qmediartpaudiostream.html">QMediaRtpAudioStream</a> * QMediaRtpSession::addAudioStream ( <a href="qmediartpstream.html#Direction-enum">QMediaRtpStream::Direction</a> <i>direction</i> )</h3>
+<p>Adds an new audio stream to the session which sends and/or receives data according to <i>direction</i>.</p>
+<p>Returns the new stream, or a null pointer if the stream could not be created.</p>
+<h3 class="fn"><a name="addStream"></a><a href="qmediartpstream.html">QMediaRtpStream</a> * QMediaRtpSession::addStream ( <a href="qmediartpstream.html#Type-enum">QMediaRtpStream::Type</a> <i>type</i>, <a href="qmediartpstream.html#Direction-enum">QMediaRtpStream::Direction</a> <i>direction</i> )</h3>
+<p>Adds a new <i>type</i> stream to the session which sends and/or receives data according to <i>direction</i>.</p>
+<p>Returns the new stream, or a null pointer if the stream could not be created.</p>
+<h3 class="fn"><a name="addVideoStream"></a><a href="qmediartpvideostream.html">QMediaRtpVideoStream</a> * QMediaRtpSession::addVideoStream ( <a href="qmediartpstream.html#Direction-enum">QMediaRtpStream::Direction</a> <i>direction</i> )</h3>
+<p>Adds an new video stream to the session which sends and/or receives data according to <i>direction</i>.</p>
+<p>Returns the new stream, or a null pointer if the stream could not be created.</p>
+<h3 class="fn"><a name="removeStream"></a>void QMediaRtpSession::removeStream ( <a href="qmediartpstream.html">QMediaRtpStream</a> * <i>stream</i> )</h3>
+<p>Removes a <i>stream</i> from the session.</p>
+<h3 class="fn"><a name="stream"></a><a href="qmediartpstream.html">QMediaRtpStream</a> * QMediaRtpSession::stream ( int <i>index</i> ) const</h3>
+<p>Returns the stream at <i>index</i>.</p>
+<h3 class="fn"><a name="streamCount"></a>int QMediaRtpSession::streamCount () const</h3>
+<p>Returns the number of streams in the session.</p>
+<h3 class="fn"><a name="supportedInboundPayloads"></a><a href="qlist.html">QList</a>&lt;<a href="qmediartppayload.html">QMediaRtpPayload</a>&gt; QMediaRtpSession::supportedInboundPayloads ( <a href="qmediartpstream.html#Type-enum">QMediaRtpStream::Type</a> <i>type</i> ) const</h3>
+<p>Returns a list of <i>type</i> payloads a session is able to receive.</p>
+<h3 class="fn"><a name="supportedOutboundPayloads"></a><a href="qlist.html">QList</a>&lt;<a href="qmediartppayload.html">QMediaRtpPayload</a>&gt; QMediaRtpSession::supportedOutboundPayloads ( <a href="qmediartpstream.html#Type-enum">QMediaRtpStream::Type</a> <i>type</i> ) const</h3>
+<p>Returns a list of <i>type</i> payloads a session is able receive.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

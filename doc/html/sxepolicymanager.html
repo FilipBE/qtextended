@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXEPolicyManager Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXEPolicyManager Class Reference<br /><span class="small-subtitle">[<a href="qtpkgmanagementmodule.html">QtPkgManagementModule</a>]</span>
+</h1>
+<p>The SXEPolicyManager class provides a management interface for Qt Extended Safe Execution Environment policies <a href="#details">More...</a></p>
+<pre>    #include &lt;SXEPolicyManager&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="sxepolicymanager-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="sxepolicymanager.html#dtor.SXEPolicyManager">~SXEPolicyManager</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="sxepolicymanager.html#findPolicy">findPolicy</a></b> ( unsigned char <i>progId</i> )</li>
+<li><div class="fn"/>QString <b><a href="sxepolicymanager.html#findRequest">findRequest</a></b> ( QString <i>request</i>, QStringList <i>prof</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="sxepolicymanager.html#policyCheck">policyCheck</a></b> ( QTransportAuth::Data &amp; <i>d</i>, const QString &amp; <i>req</i> )</li>
+<li><div class="fn"/>void <b><a href="sxepolicymanager.html#resetDateCheck">resetDateCheck</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>SXEPolicyManager * <b><a href="sxepolicymanager.html#getInstance">getInstance</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The SXEPolicyManager class provides a management interface for Qt Extended Safe Execution Environment policies</p>
+<p>In order for Qtopia <a href="sxe.html">Safe Execution Environment (SXE)</a> programs to function they must request services and other functionality from other components of Qtopia. However to provide a level of security for the SXE, requests must only be actioned for those programs which are authorised.</p>
+<p>The SXEPolicy manager provides an interface to the Qt Extended system policy files which record which programs are authorised for what service requests.</p>
+<p>In the context of SXE Policy, the word <i>service request</i> is intended to be more general than <a href="services.html">Qt Extended Services</a>. Policy does cover these services, but it also is designed to work with any type of inter-process communication which maybe described by a string name.</p>
+<p>In the context of SXE Policy, a <i>program</i> is a number of (at least one) binary executable files, and support files that are installed onto the storage media available to the Qt Extended device. Any binary installed with the program or executing on its behalf is identified by that program's unique Program Identity, a number between 1 and 255 inclusive. Program Identity 0 is reserved for the Qt Extended server.</p>
+<p>SXE Policies provide a list of profile names for each Program Identity. Each profile name stands for a list of service request names. Some examples of service request names are:</p>
+<ul>
+<li>openURL(<a href="qstring.html">QString</a> url)</li>
+<li>removeEvent(PimEvent)</li>
+<li>mtabChanged()</li>
+</ul>
+<p>The profile names are documented in the <a href="sxe.html">SXE Documentation</a> but as an example the <tt>openURL(QString)</tt> request is in the <i>web profile</i>, and the <tt>removeEvent(PimEvent)</tt> request is in the <i>admin profile</i>; and the <tt>mtabChanged()</tt> request is in the <i>comm</i> profile.</p>
+<p>Profiles serve as a level of indirection to lessen the impact of changes in the service names or structures.</p>
+<p>To use the SXEPolicyManager class first obtain the Program Identity, then call <a href="sxepolicymanager.html#findPolicy">findPolicy</a>() to get a list of the profile names authorized for the program. In attempting to decide whether to action a request these profile names may be used in application program logic:</p>
+<pre>    QStringList profs = SXEPolicyManager::getInstance()-&gt;findPolicy( progId );
+    if ( profs.contains( &quot;web&quot; ))
+        processWebRequest();</pre>
+<p>To find if a particular service request name is allowed call <a href="sxepolicymanager.html#findRequest">findRequest</a>() to see if a profile authorizes a particular request.</p>
+<p>A program may be authorized under zero, one or more than one profile. A request will generally be only included in one profile, but there is nothing to prevent it being present in more than one.</p>
+<p>See also <a href="qpackageregistry.html">QPackageRegistry</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.SXEPolicyManager"></a>SXEPolicyManager::~SXEPolicyManager ()</h3>
+<p>Destruct a <a href="sxepolicymanager.html">SXEPolicyManager</a>.</p>
+<h3 class="fn"><a name="findPolicy"></a><a href="qstringlist.html">QStringList</a> SXEPolicyManager::findPolicy ( unsigned char <i>progId</i> )</h3>
+<p>Given the <i>progId</i> return a list of the profile names which that program is authorised to access. The information is read from the Qt Extended SXE policy file [<a href="qbuild/qb-qtvar-qt-prefix-1.html">qt_prefix</a>]/etc/sxe.policy. A caching algorithm is used to lessen the number of file accesses required for recurring lookups. The cache is checked for freshness against this files last modify time, as the Qt Extended installer may have changed it since it was last accessed.</p>
+<h3 class="fn"><a name="findRequest"></a><a href="qstring.html">QString</a> SXEPolicyManager::findRequest ( <a href="qstring.html">QString</a> <i>request</i>, <a href="qstringlist.html">QStringList</a> <i>prof</i> )</h3>
+<p>Given a <i>request</i> return the profile name containing that request. If the request exists in multiple profiles, this method will return a random profile name which contains that request. If the request is not found, a null string is returned.</p>
+<p>If the list <i>prof</i> is non-empty, just those profiles are searched, and a profile name from amongst them returned if the request is found. If the <i>prof</i> list is empty (the default) all profiles are searched.</p>
+<p>The meaning of not found (null string return) is defined by the caller. For a secure system <i>not found</i> equals deny.</p>
+<p>Note that for a worst case, ie no <i>prof</i> is provided, and the messages request is not found this method will first check its internal cache and then scan the entire file on storage before determining the <i>not found</i> result. For this reason the profile lists should be carefully chosen so that common messages do not cause a worst case.</p>
+<p>To avoid worst cases two synthetic profiles &quot;allow&quot; and &quot;deny&quot; should be used to <i>white-list</i> and <i>black-list</i> common service requests.</p>
+<p>The search order is</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>item searched</th><th>conditions</th></tr></thead>
+<tr valign="top" class="odd"><td>cache</td><td>if in cache AND if either the <i>prof</i> is empty, OR <i>prof</i> contains the cached result (counting &quot;deny&quot; or &quot;allow&quot; as listed in <i>prof</i>)</td></tr>
+<tr valign="top" class="even"><td><i>prof</i></td><td>if non-empty</td></tr>
+<tr valign="top" class="odd"><td>&quot;deny&quot;</td><td>if exists</td></tr>
+<tr valign="top" class="even"><td>&quot;allow&quot;</td><td>if exists</td></tr>
+<tr valign="top" class="odd"><td>sxe.profile on disk</td><td>always on fall-thru</td></tr>
+</table></p>
+<p>Note that a cache freshness check is not performed since the sxe.profiles file is not altered during run-time.</p>
+<h3 class="fn"><a name="getInstance"></a>SXEPolicyManager * SXEPolicyManager::getInstance ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Return an pointer to this processes <a href="sxepolicymanager.html">SXEPolicyManager</a> instance.</p>
+<h3 class="fn"><a name="policyCheck"></a>void SXEPolicyManager::policyCheck ( QTransportAuth::Data &amp; <i>d</i>, const <a href="qstring.html">QString</a> &amp; <i>req</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This slot is for receiving signals from a QTransportAuth object alerting the presence of an incoming message for authentication against policy. The QTransportAuth should already have taken care of confirming the identity of message originator, and validity of the message transport.</p>
+<p>Note that any number of authorisers can connect to this slot. If any one of them sets the permit Status bits to Deny, then the request will be denied regardless of other authorisers. In other words all must either provide Allow status (or leave the status unchanged) for the request to pass.</p>
+<p>The QTransportAuth::Data item <i>d</i> is the connection data representing the source of the <i>req</i>.</p>
+<h3 class="fn"><a name="resetDateCheck"></a>void SXEPolicyManager::resetDateCheck ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Receive a time-out signal to reset the checkDate flag. This flag prevents the date check mechanism from DoS'ing the out-of-date code.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

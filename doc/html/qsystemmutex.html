@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSystemMutex Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSystemMutex Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSystemMutex class provides mutual exclusion between processes. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSystemMutex&gt;</pre><ul>
+<li><a href="qsystemmutex-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsystemmutex.html#QSystemMutex">QSystemMutex</a></b> ( unsigned int <i>id</i>, bool <i>owner</i> )</li>
+<li><div class="fn"/><b><a href="qsystemmutex.html#dtor.QSystemMutex">~QSystemMutex</a></b> ()</li>
+<li><div class="fn"/>unsigned int <b><a href="qsystemmutex.html#id">id</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qsystemmutex.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qsystemmutex.html#lock">lock</a></b> ( int <i>milliSec</i> )</li>
+<li><div class="fn"/>void <b><a href="qsystemmutex.html#unlock">unlock</a></b> ()</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSystemMutex class provides mutual exclusion between processes.</p>
+<p>A mutex is a synchronization tool for protecting critical sections of the code. The purpose of a QSystemMutex is to protect an object, data structure or section of code so that only one thread, or process, can access it at a time.</p>
+<p>QSystemMutex behaves much like the <a href="qmutex.html">QMutex</a> class, but it also works across multiple processes (although it also works perfectly well, albeit slightly less efficiently, in a single process). In order to clean up the system resources used to coordinate cross process synchronization, one QSystemMutex instance is designated the lock &quot;owner&quot;. This instance creates the required resources, and removes them when it is destroyed. The lock owner should always be instantiated before any others.</p>
+<p>System locks are identified by a 32-bit integer, which allows other processes to share the same lock. While the selection of this identifier is left upto the caller, under Linux it is common to use the ftok(3) function call which uses the identity of a specified file to generate such an identifier.</p>
+<pre>    int id = (int)::ftok(&quot;/tmp/my_lock_identifier&quot;, 0);
+
+    QSystemMutex lock(id, true);</pre>
+<p>The file passed to ftok(3) is only used to generate a unique identifier for the mutex and is otherwise unrelated to the mutx. It is possible, although bad practice due to potential unintended clashes with other applications that do the same, to simply make up a number for the mutex id.</p>
+<p>Other applications can then easily create a non-owner reference to the mutex:</p>
+<pre>    int id = (int)::ftok(&quot;/tmp/my_lock_identifier&quot;, 0);
+
+    QSystemMutex lock(id, false);</pre>
+<p>An ftok(3) call on the same file was used to ensure the owner and the non-owner use the same id and thus refer to the same system-global mutex.</p>
+<p>See also <a href="qsystemreadwritelock.html">QSystemReadWriteLock</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSystemMutex"></a>QSystemMutex::QSystemMutex ( unsigned int <i>id</i>, bool <i>owner</i> )</h3>
+<p>Construct a system mutex from the provided <i>id</i>. If <i>owner</i> is true, the instance will create the system resources required for the mutex and will remove them when it is destructed.</p>
+<h3 class="fn"><a name="dtor.QSystemMutex"></a>QSystemMutex::~QSystemMutex ()</h3>
+<p>Destroy the mutex instance. If owner was specified in the <a href="qsystemmutex.html">QSystemMutex</a> constructor, all the system resources used by this mutex will also be removed and further use of the lock by other threads or processes will fail.</p>
+<h3 class="fn"><a name="id"></a>unsigned int QSystemMutex::id () const</h3>
+<p>Return the id of mutex as passed to the constructor.</p>
+<h3 class="fn"><a name="isNull"></a>bool QSystemMutex::isNull () const</h3>
+<p>Return true if the mutex is invalid.</p>
+<h3 class="fn"><a name="lock"></a>bool QSystemMutex::lock ( int <i>milliSec</i> )</h3>
+<p>Attempt to acquire the lock. This method will return true if the lock was successfully acquired, false otherwise.</p>
+<p>Aquisition of the mutex may fail if:</p>
+<p><i>The</i> timeout <i>milliSec</i>, in milliseconds, expired.</p>
+<p>If the caller wants to poll the mutex in a non-blocking way, it should specify a timeout of 0. If the caller would prefer to block until the mutex is acquired it should specify a timeout of -1.</p>
+<p>Currently, only systems that support the semtimedop(2) system call can perform non-blocking, or time blocked calls. All other systems will block indefinately until the mutex is acquired, regardless of the <i>milliSec</i> value.</p>
+<p><i>The</i> <a href="qsystemmutex.html">QSystemMutex</a> instance does not refer to a valid lock.</p>
+<p>Callers can check for an invalid lock using the <a href="qsystemmutex.html#isNull">isNull</a>() method.</p>
+<h3 class="fn"><a name="unlock"></a>void QSystemMutex::unlock ()</h3>
+<p>Release the mutex.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

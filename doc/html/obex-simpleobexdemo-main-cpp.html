@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>main.cpp Example File (obex/simpleobexdemo/main.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">main.cpp Example File<br /><span class="small-subtitle">obex/simpleobexdemo/main.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;obexclientwindow.h&quot;
+    #include &quot;obexquoteserver.h&quot;
+    #include &lt;qtopiaapplication.h&gt;
+
+<span class="comment">    /*
+        This demonstrates the basics of using OBEX support in Qtopia to set up
+        an OBEX server and then connect OBEX clients to that server.
+
+        For this example, the OBEX sessions are run over TCP using QTcpSocket,
+        but they could have used any transport provided by a subclass of
+        QIODevice. For example, the QBluetoothRfcommSocket class could have
+        been used to run the OBEX sessions over Bluetooth instead.
+
+        More example code is provided in the QObexClientSession and
+        QObexServerSession class documentation.
+    */</span>
+
+    QSXE_APP_KEY
+    int main( int argc, char **argv )
+    {
+        QSXE_SET_APP_KEY(argv[0])
+        QtopiaApplication app( argc, argv );
+
+        ObexQuoteServer server;
+        if (server.run()) {
+            ObexClientWindow win(server.serverAddress(), server.serverPort());
+            win.show();
+        } else {
+            qWarning(&quot;Unable to run OBEX example server&quot;);
+        }
+
+        return app.exec();
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

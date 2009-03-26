@@ -1,0 +1,76 @@
+#!/bin/sh
+
+update_etc()
+{
+    # always remove LIDS configuration
+    rm -rf /mnt/other/lids
+
+    cp -a /etc/* /mnt/other
+    mount -o move /mnt/other /etc
+
+    # Store filesystem ids
+    hexdump -e '"%08x"' -n 48 /dev/tffsa1 > /etc/rootfs.id
+    hexdump -e '"%08x"' -n 48 /dev/tffsa2 > /etc/qtopia.id
+}
+
+splash -now "Mounting virtual" "filesystems"
+
+mount /dev
+tar -C /dev -xzf /dev.tar.gz
+
+mount /proc
+
+mount /dev/pts
+
+mount /var
+tar -C /var -xzf /var.tar.gz
+
+# check all filesystems for errors
+splash -p + "Checking filesystems"
+
+# check ext2 and vfat filesystems in parallel
+if fsck -y -A -P -t ext2,vfat 2>&1 | grep REBOOT; then
+    splash -now "Filesystem errors" "detected, rebooting"
+    reboot
+fi
+
+# mount local filesystems
+splash -p + "Mounting filesystems"
+mount -a
+
+# make sure writable /etc is mounted and populated
+if ! grep '^.* /etc ' /proc/mounts >/dev/null; then
+    /sbin/mkfs.ext2 /dev/tffsc >/dev/null
+    mount /dev/tffsc /mnt/other
+    update_etc
+else
+    # check if we need to update /etc
+    ROOTFS_ID=$( hexdump -e '"%08x"' -n 48 /dev/tffsa1 )
+    OLD_ROOTFS_ID=$( cat /etc/rootfs.id )
+    QTOPIA_ID=$( hexdump -e '"%08x"' -n 48 /dev/tffsa2 )
+    OLD_QTOPIA_ID=$( cat /etc/qtopia.id )
+    
+
+    if [ "$ROOTFS_ID" != "$OLD_ROOTFS_ID" ] ||
+       [ "$QTOPIA_ID" != "$OLD_QTOPIA_ID" ]; then
+        mount -o move /etc /mnt/other
+        update_etc
+    fi
+fi
+
+BDADDR=`/usr/bin/tat bdaddr`
+if [ $BDADDR != "" ] && [ ! -f /etc/bluetooth/lib/bluetooth/$BDADDR/config ] ; then
+    splash -p - Configuring Bluetooth
+    mkdir -p /etc/bluetooth/lib/bluetooth/$BDADDR
+    echo "mode off" > /etc/bluetooth/lib/bluetooth/$BDADDR/config
+fi
+
+# make sure filesystems are mounted
+if ! grep '^.* /home ' /proc/mounts >/dev/null; then
+    ( /sbin/mkfs.ext2 /dev/tffsb >/dev/null ; mount /home ) &
+fi
+if ! grep '^.* /mnt/documents ' /proc/mounts >/dev/null; then
+    ( /sbin/mkfs.vfat -F 32 /dev/tffsd >/dev/null ; mount /mnt/documents ) &
+fi
+wait
+

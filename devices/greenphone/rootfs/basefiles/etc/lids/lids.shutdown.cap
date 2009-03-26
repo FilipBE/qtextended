@@ -1,0 +1,206 @@
+### 0: In a system with the _POSIX_CHOWN_RESTRICTED option defined, this overrides the restriction
+### 0: of changing file ownership and group ownership. 
+#
++0:CAP_CHOWN
+
+### 1: Override all DAC access, including ACL execute access if _POSIX_ACL is defined. Excluding
+### 1: DAC access covered by CAP_LINUX_IMMUTABLE. 
+#
++1:CAP_DAC_OVERRIDE
+
+### 2: Overrides all DAC restrictions regarding read and search on files and directories, including
+### 2: ACL restrictions if _POSIX_ACL is defined. Excluding DAC access covered by
+### 2: CAP_LINUX_IMMUTABLE. 
+#
++2:CAP_DAC_READ_SEARCH
+
+### 3: Overrides all restrictions about allowed operations on files, where file owner ID must be equal
+### 3: to the user ID, except where CAP_FSETID is applicable. It doesn't override MAC and DAC
+### 3: restrictions. 
+#
++3:CAP_FOWNER
+
+### 4: Overrides the following restrictions that the effective user ID shall match the file owner ID
+### 4: when setting the S_ISUID and S_ISGID bits on that file; that the effective group ID (or one of
+### 4: the supplementary group IDs) shall match the file owner ID when setting the S_ISGID bit on
+### 4: that file; that the S_ISUID and S_ISGID bits are cleared on successful return from chown(2)
+### 4: (not implemented). 
+#
++4:CAP_FSETID
+
+### 5: Overrides the restriction that the real or effective user ID of a process sending a signal must
+### 5: match the real or effective user ID of the process receiving the signal. 
+#
++5:CAP_KILL
+
+### 6: - Allows setgid(2) manipulation 
+### 6: - Allows setgroups(2) 
+### 6: - Allows forged gids on socket credentials passing. 
+# 
++6:CAP_SETGID
+
+### 7: - Allows set*uid(2) manipulation (including fsuid). 
+### 7: - Allows forged pids on socket credentials passing. 
+#
++7:CAP_SETUID
+
+### 8: Transfer any capability in your permitted set to any pid, remove any capability in your
+### 8: permitted set from any pid. 
+#
++8:CAP_SETPCAP
+
+### 9: Allow modification of S_IMMUTABLE and S_APPEND file attributes. 
+# 
++9:CAP_LINUX_IMMUTABLE
+
+### 10: Allows binding to TCP/UDP sockets below 1024. 
+# 
++10:CAP_NET_BIND_SERVICE
+
+### 11: Allow broadcasting, listen to multicast.
+#  
++11:CAP_NET_BROADCAST
+
+### 12: - Allow interface configuration 
+### 12: - Allow administration of IP firewall, masquerading and accounting 
+### 12: - Allow setting debug option on sockets 
+### 12: - Allow modification of routing tables 
+### 12: - Allow setting arbitrary process / process group ownership on sockets 
+### 12: - Allow binding to any address for transparent proxying 
+### 12: - Allow setting TOS (type of service) 
+### 12: - Allow setting promiscuous mode 
+### 12: - Allow clearing driver statistics 
+### 12: - Allow multicasting 
+### 12: - Allow read/write of device-specific registers 
+#
++12:CAP_NET_ADMIN
+
+### 13: - Allow use of RAW sockets 
+### 13: - Allow use of PACKET sockets 
+#
++13:CAP_NET_RAW
+
+### 14: - Allow locking of shared memory segments 
+### 14: - Allow mlock and mlockall (which doesn't really have anything to do with IPC) 
+#
++14:CAP_IPC_LOCK
+
+### 15: Override IPC ownership checks. 
+#
++15:CAP_IPC_OWNER
+
+### 16: Insert and remove kernel modules. 
+#
++16:CAP_SYS_MODULE
+
+### 17: - Allow ioperm/iopl and /dev/port access 
+### 17: - Allow /dev/mem and /dev/kmem acess 
+### 17: - Allow raw block devices (/dev/[sh]d??) acess 
+#
++17:CAP_SYS_RAWIO
+
+### 18: Allow use of chroot() 
+#
++18:CAP_SYS_CHROOT
+
+### 19: Allow ptrace() of any process 
+#
++19:CAP_SYS_PTRACE
+
+### 20: Allow configuration of process accounting 
+#
++20:CAP_SYS_PACCT
+
+### 21: 
+
+### 21: - Allow configuration of the secure attention key 
+### 21: - Allow administration of the random device 
+### 21: - Allow device administration (mknod) 
+### 21: - Allow examination and configuration of disk quotas 
+### 21: - Allow configuring the kernel's syslog (printk behaviour) 
+### 21: - Allow setting the domainname 
+### 21: - Allow setting the hostname 
+### 21: - Allow calling bdflush() 
+### 21: - Allow mount() and umount(), setting up new smb connection 
+### 21: - Allow some autofs root ioctls 
+### 21: - Allow nfsservctl 
+### 21: - Allow VM86_REQUEST_IRQ 
+### 21: - Allow to read/write pci config on alpha 
+### 21: - Allow irix_prctl on mips (setstacksize) 
+### 21: - Allow flushing all cache on m68k (sys_cacheflush) 
+### 21: - Allow removing semaphores 
+### 21: - Used instead of CAP_CHOWN to "chown" IPC message queues, semaphores and shared memory 
+### 21: - Allow locking/unlocking of shared memory segment 
+### 21: - Allow turning swap on/off 
+### 21: - Allow forged pids on socket credentials passing 
+### 21: - Allow setting readahead and flushing buffers on block devices 
+### 21: - Allow setting geometry in floppy driver 
+### 21: - Allow turning DMA on/off in xd driver 
+### 21: - Allow administration of md devices (mostly the above, but some extra ioctls) 
+### 21: - Allow tuning the ide driver 
+### 21: - Allow access to the nvram device 
+### 21: - Allow administration of apm_bios, serial and bttv (TV) device 
+### 21: - Allow manufacturer commands in isdn CAPI support driver 
+### 21: - Allow reading non-standardized portions of pci configuration space 
+### 21: - Allow DDI debug ioctl on sbpcd driver 
+### 21: - Allow setting up serial ports 
+### 21: - Allow sending raw qic-117 commands 
+### 21: - Allow enabling/disabling tagged queuing on SCSI controllers and sending arbitrary SCSI commands 
+### 21: - Allow setting encryption key on loopback filesystem 
+# 
++21:CAP_SYS_ADMIN
+
+### 22: Allow use of reboot()
+#
++22:CAP_SYS_BOOT
+
+### 23: - Allow raising priority and setting priority on other (different UID) processes 
+### 23: - Allow use of FIFO and round-robin (realtime) scheduling on own processes and setting
+### 23:   the scheduling algorithm used by another process. 
+#
++23:CAP_SYS_NICE
+
+Override resource limits. Set resource limits. 
+### 24: - Override quota limits. 
+### 24: - Override reserved space on ext2 filesystem 
+### 24:   NOTE: ext2 honors fsuid when checking for resource overrides, so you can override
+### 24:   using fsuid too 
+### 24: - Override size restrictions on IPC message queues 
+### 24: - Allow more than 64hz interrupts from the real-time clock 
+### 24: - Override max number of consoles on console allocation 
+### 24: - Override max number of keymaps 
+#
++24:CAP_SYS_RESOURCE
+
+### 25: - Allow manipulation of system clock 
+### 25: - Allow irix_stime on mips 
+### 25: - Allow setting the real-time clock 
+#
++25:CAP_SYS_TIME
+
+### 26: - Allow configuration of tty devices 
+### 26: - Allow vhangup() of tty 
+#
++26:CAP_SYS_TTY_CONFIG
+
+### 27: Allow the privileged aspects of mknod() 
+###
++27:CAP_MKNOD
+
+### 28:Allow taking of leases on files */
+###
++28:CAP_LEASE
+
+
+### 29: Restricts viewable processes by a user. 
+#
++29:CAP_HIDDEN
+
+### 30: Allow killing protected processes. 
+#
++30:CAP_KILL_PROTECTED
+
+### 31: Allow reading unprotected input without entering untrusted domain.
+#
++31:CAP_PROTECTED
+

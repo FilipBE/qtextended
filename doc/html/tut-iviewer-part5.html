@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Image Viewer Tutorial: Part 5</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Image Viewer Tutorial: Part 5<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="the-info-screen"></a>
+<h2>The Info Screen</h2>
+<a name="setting-up-the-screen"></a>
+<h3>Setting up the screen</h3>
+<p>The screen setup follows the typical screen pattern. The info screen is a so-called leaf screen. The whole navigation inside our application can be seen as a tree, with the list screen as the root node, the image screen as a child of the list screen and the info screen again as the last child of the image screen. Showing the info screen from the list screen is also wanted. This means the back functionality must be conditional now. Now it really depends where the user comes from and the information is not hardcoded.</p>
+<p>In the tree navigation, it is recommended to avoid creating any circles as this make the back functionality very difficult to manage. The screen navigation model will be the following:</p>
+<ul>
+<li>List Screen<ul>
+<li>Image Screen<ul>
+<li>InfoScreen</li>
+</ul>
+</li>
+<li>Info Screen</li>
+</ul>
+</li>
+</ul>
+<p>The info screen shall display information about the selected image. For every information item, a complex read-only form can now be implemented to display the items label and value. But luckily Qt has a more flexible and efficient way. The information will be presented using a html table where each row will be an information item.</p>
+<p>In a new infoscreen.h file, the class InfoScreen is declared. It derives this time from a <a href="qtextedit.html">QTextEdit</a>. The <tt>createActions()</tt>, <tt>createMenu()</tt> and <tt>setupUi()</tt> methods are added and the IViewer is passed as parent to the constructor. In addition, a <tt>setImage(const QContent&amp; content)</tt> method is created in the class.</p>
+<p>File: infoscreen.h</p>
+<pre>    #ifndef INFOSCREEN_H
+    #define INFOSCREEN_H
+
+    #include &lt;QWidget&gt;
+    #include &lt;QTextEdit&gt;
+    #include &lt;QKeyEvent&gt;
+    #include &lt;QContent&gt;
+
+    class IViewer;
+
+    class InfoScreen : public QTextEdit
+    {
+        Q_OBJECT
+    public:
+        InfoScreen(IViewer *iviewer);
+        void setImage(const QContent &amp;content);
+    private:
+        void setupUi();
+        void createActions();
+        void createMenu();
+    private:
+        IViewer *_viewer;
+    };
+    #endif</pre>
+<p>The infoscreen.cpp file will contains the skeleton from the header. The <tt>setupUi()</tt>, <tt>createActions()</tt>, and <tt>createMenu()</tt> methods must be called in the constructor.</p>
+<p>The <a href="qtextedit.html">QTextEdit</a> is set to read only in the <tt>setupUi()</tt> method.</p>
+<pre>    void InfoScreen::setupUi()
+    {
+        setReadOnly(true);
+    }</pre>
+<p>In the <tt>setImage()</tt> method, two QStringLists are created: one for the keys and the other for the values. Those keys and values are populated and a html table is created. The table consists of rows (tr), headers (th) and data field (td). Finally, the html string is placed into the documents, using the <tt>setHtml()</tt> method.</p>
+<p>This is a very useful approach, which gives flexibility in the information presentation.</p>
+<pre>    void InfoScreen::setImage(const QContent &amp;content)
+    {
+        QStringList keys;
+        QStringList values;
+
+        keys &lt;&lt; &quot;Name:&quot;;
+        values &lt;&lt; content.name();
+        keys &lt;&lt; &quot;Type:&quot;;
+        values &lt;&lt; content.type();
+        keys &lt;&lt; &quot;Size:&quot;;
+        values &lt;&lt; QString(&quot;%1kB&quot;).arg(content.size()/1024);
+        keys &lt;&lt; &quot;Modified:&quot;;
+        values &lt;&lt; content.lastUpdated().toString(Qt::LocalDate);
+
+        QString html = &quot;&lt;table&gt;&quot;;
+        for (int i=0; i&lt;keys.count(); i++) {
+            QString key = keys[i];
+            QString value = values[i];
+            html += QString(&quot;&lt;tr&gt;&lt;th&gt;%1&lt;/th&gt;&lt;td&gt;%2&lt;/td&gt;&lt;/tr&gt;&quot;).arg(key, value);
+        }
+
+        html += &quot;&lt;/table&gt;&quot;;
+        document()-&gt;setHtml(html);
+    }</pre>
+<p>To see the result, a &quot;Show Info&quot; action must be added to the image screen and then placed into the menu. The action should call a method named <tt>onShowInfo()</tt>.</p>
+<p><a href="tut-iviewer-part4.html">Prev</a>|<a href="#top">Top</a>|<a href="tut-iviewer-part1.html">Start Page</a>|<a href="tut-iviewer-part6.html">Next</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

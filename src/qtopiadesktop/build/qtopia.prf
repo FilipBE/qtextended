@@ -1,0 +1,51 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(qtopia.prf)
+# Qtopia-specific config
+
+depotProject {
+    # Depot projects generally have the same version
+    isEmpty(VERSION):VERSION=$$QPE_VERSION
+}
+
+# FIXME hack
+platform:DEFINES+=QTOPIA_PHONE
+drmagent:DEFINES+=QTOPIA_DRM
+enable_voip:DEFINES+=QTOPIA_VOIP
+enable_cell:DEFINES+=QTOPIA_CELL
+enable_bluetooth:DEFINES+=QTOPIA_BLUETOOTH
+enable_infrared:DEFINES+=QTOPIA_INFRARED
+enable_vpn:DEFINES+=QTOPIA_VPN
+!enable_sxe:DEFINES+=QT_NO_SXE
+desktop:DEFINES+=QTOPIA_HOST
+enable_dbus_ipc:DEFINES+=QTOPIA_DBUS_IPC
+enable_pictureflow:DEFINES+=USE_PICTUREFLOW
+
+
+# Stuff for apps
+app {
+    # If we don't use the app macros, quicklaunch and singleexec won't work
+    !qtopia_main {
+        CONFIG+=no_quicklaunch
+        # If we have a singleexec-compatible main(), singleexec can work anyway
+        singleexec_main:DEFINES+=SINGLE_EXEC_USE_MAIN
+        else:enable_singleexec:!no_singleexec:error("$$self: You must declare this project with CONFIG qtopia_main, singleexec_main or no_singleexec")
+    }
+
+    # If quicklaunch hasn't been disabled, use it
+    !no_quicklaunch {
+        TEMPLATE=lib
+        CONFIG-=app
+        CONFIG+=quicklaunch plugin 
+        CONFIG+=qtopia_visibility
+        plugin_type=application
+        DEFINES+=QTOPIA_APP_INTERFACE
+        # In singleexec builds the symlink is created is singleexec.prf
+        !enable_singleexec {
+            instsymlink.path=$$bindir
+            instsymlink.commands=$$COMMAND_HEADER\
+                rm -f $(INSTALL_ROOT)$$instsymlink.path/$$ORIG_TARGET $$LINE_SEP_VERBOSE\
+                ln -s quicklauncher $(INSTALL_ROOT)$$instsymlink.path/$$ORIG_TARGET
+            INSTALLS+=instsymlink
+        }
+    }
+}
+

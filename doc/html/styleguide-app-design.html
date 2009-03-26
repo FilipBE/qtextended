@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Style Guide: Application Design</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Style Guide: Application Design<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#application-styles">Application Styles</a></li>
+<ul><li><a href="#item-based-applications">Item-based Applications</a></li>
+<ul><li><a href="#list-of-lists">List of Lists</a></li>
+<li><a href="#list-of-items">List of Items</a></li>
+<li><a href="#viewing-a-single-item">Viewing a Single Item</a></li>
+<li><a href="#editing-a-single-item">Editing a Single Item</a></li>
+<li><a href="#deleting-a-single-item">Deleting a Single Item</a></li>
+<li><a href="#navigational-flow">Navigational Flow</a></li>
+<li><a href="#form-layout">Form Layout</a></li>
+</ul>
+<li><a href="#task-based-applications">Task-based applications</a></li>
+</ul>
+</ul>
+<a name="application-styles"></a>
+<h2>Application Styles</h2>
+<p>There are two basic styles of application:</p>
+<ul>
+<li>item-based - applications used to view and possibly edit a specific item type, such as <tt>Contacts</tt>.</li>
+<li>task-based - applications used to perform a specific task, such as <tt>Clock</tt>.</li>
+</ul>
+<a name="item-based-applications"></a>
+<h3>Item-based Applications</h3>
+<p>The main window of an item-based application presents a list of items, or in rare cases a list of sub-lists.</p>
+<p><b>Note:</b> The <i>items</i> may or may not be associated with files. The <i>entries</i> in <tt>Contacts</tt> or <i>photos</i> in <tt>Pictures</tt> are equally considered as items.</p>
+<p>Item-based applications follow a standard navigational flow:</p>
+<ul>
+<li>(List of Lists)</li>
+<li>List of Items</li>
+<li>Single Item View</li>
+<li>Single Item Editing View</li>
+</ul>
+<a name="list-of-lists"></a>
+<h4>List of Lists</h4>
+<p>This is rarely needed. It is used when there are a number of lists that behave differently or have some incompatible properties. An example application is the Qt Extended <tt>Messaging</tt> application. This application shows folders that have specific functions. The <tt>Outbox</tt>, <tt>Trash</tt>, <tt>Inbox</tt>, etc. folders have specific properties that preclude grouping their items into one list.</p>
+<p>The context menu should contain entries that act on all of the lists, and optionally a <i>New</i> entry.</p>
+<p>Highlighting a list and pressing <tt>Select</tt> displays the list of items. Pressing <tt>Back</tt> or <tt>Done</tt> should close the application.</p>
+<a name="list-of-items"></a>
+<h4>List of Items</h4>
+<p>This is the screen most applications will display when started via the launcher. It lists the items that the application may view and/or edit. It is recommended that the menu contains a <i>View Category..&#x2e;</i> option to display only the items in the selected category.</p>
+<p>The context menu should contain entries that act on all of the items, and optionally a <i>New</i> entry.</p>
+<p>Highlighting an item and pressing <tt>Select</tt> should display a more detailed view of the highlighted item. Pressing <tt>Back</tt> or <tt>Done</tt> should return to the previous list of lists (if present), or close the application otherwise.</p>
+<p>When an item in the list is used to group or store information; selecting that list item should present the information about that item.</p>
+<a name="viewing-a-single-item"></a>
+<h4>Viewing a Single Item</h4>
+<p>This screen displays the detailed view of a single item, and may allow navigation and activation of data within the view. The context menu should contain entries that act only on the viewed item. If the application can edit the item, it should contain an <tt>Edit</tt> menu entry. If the view contains elements that can be activated, then the <tt>Select</tt> key should activate the highlighted element. Pressing <tt>Back</tt> or <tt>Done</tt> should return to the list of items.</p>
+<a name="editing-a-single-item"></a>
+<h4>Editing a Single Item</h4>
+<p>This screen allows a single item to be modified. Edit screens should be able to be canceled via the <tt>Cancel</tt> option found in the context menu. When creating or editing an item, the first tab should be displayed with the first input widget focused.</p>
+<p>The context menu should be limited to those entries that act on the item being edited. Phones that do not offer a <tt>No</tt> button may automatically have a <tt>Cancel</tt> entry added to the end of the menu.</p>
+<p>Pressing <tt>Back</tt> or <tt>Done</tt> should accept the changes and return to the view. Pressing <tt>Cancel</tt> should discard the changes and return to the view.</p>
+<p><b>Note:</b> In most cases, when a user selects the <tt>Done</tt> or <tt>Back</tt> option without making any changes, it should act as the <tt>Cancel</tt> option to prevent an empty item from being stored.</p>
+<a name="deleting-a-single-item"></a>
+<h4>Deleting a Single Item</h4>
+<p>An application that can create or edit an item needs to provide the ability to remove an item of the same type. Items are only able to be deleted when viewing or editing details, and hence can only deleted one at a time.</p>
+<a name="navigational-flow"></a>
+<h4>Navigational Flow</h4>
+<p>In order to maintain a consistent navigational flow, the following rules should be followed:</p>
+<ul>
+<li>When moving <i>forward</i> (e.g&#x2e; by pressing <tt>Select</tt> or selecting <tt>Edit</tt> from the menu), the displayed screen should be in its <i>initial state</i>. For example, in a list of items the top-most item should be highlighted.</li>
+<li>When moving <i>back</i> (e.g&#x2e; by pressing <tt>Back</tt> or <tt>Done</tt>), the previously viewed screen should be displayed in the same state that it was in when left. For example, if item <i>D</i> was highlighted then viewed, pressing <tt>Back</tt> in the view must return to the list with item <i>D</i> still highlighted.</li>
+<li>The <i>left</i> and <i>right</i> buttons are used for moving between tabs in a tabbed dialog.</li>
+<li>The <i>up</i> and <i>down</i> buttons are used for moving between fields in a dialog.</li>
+<li>To edit a field you first have to focus it using the <i>up/down</i> buttons then enter edit mode by pressing <tt>Edit</tt>.</li>
+</ul>
+<a name="form-layout"></a>
+<h4>Form Layout</h4>
+<p>An input form provides a simple and familiar way for the user to input data. If your application includes an input form, consider using <a href="qformlayout.html">QFormLayout</a> to arrange your form, as this will help ensure a consistent look and feel with other input forms in Qt Extended.</p>
+<p>It is recommended that the same input form be used when creating and editing an item.</p>
+<a name="task-based-applications"></a>
+<h3>Task-based applications</h3>
+<p>Task-based applications allow a specific task to be performed. For example viewing the time in <tt>Clock</tt> or performing calculations in <tt>Calculator</tt>.</p>
+<p><b>Note</b>: While task-based applications do not operate on items, they may generate items that are then accessed in other applications. For example, <tt>Camera</tt> is a task-based application that produces photos which can be used by <tt>Pictures</tt>, an item-based application.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

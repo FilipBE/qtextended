@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSupplementaryServices Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSupplementaryServices Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QSupplementaryServices class provides access to structured and unstructured supplementary services within GSM networks. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSupplementaryServices&gt;</pre><p>Inherits <a href="qcomminterface.html">QCommInterface</a>.</p>
+<p>Inherited by <a href="qmodemsupplementaryservices.html">QModemSupplementaryServices</a>.</p>
+<ul>
+<li><a href="qsupplementaryservices-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qsupplementaryservices.html#IncomingNotification-enum">IncomingNotification</a></b> { MT_Forwarded, MT_ClosedUserGroup, MT_Hold, MT_Retrieved, ..., MT_AdditionalIncomingForwarded }</li>
+<li><div class="fn"/>enum <b><a href="qsupplementaryservices.html#OutgoingNotification-enum">OutgoingNotification</a></b> { MO_UnconditionalForwardingActive, MO_ConditionalForwardingActive, MO_Forwarded, MO_Waiting, ..., MO_Deflected }</li>
+<li><div class="fn"/>enum <b><a href="qsupplementaryservices.html#UnstructuredAction-enum">UnstructuredAction</a></b> { NoFurtherActionRequired, FurtherActionRequired, TerminatedByNetwork, OtherLocalClientResponded, OperationNotSupported, NetworkTimeout }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsupplementaryservices.html#QSupplementaryServices">QSupplementaryServices</a></b> ( const QString &amp; <i>service</i> = QString(), QObject * <i>parent</i> = 0, QCommInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qsupplementaryservices.html#dtor.QSupplementaryServices">~QSupplementaryServices</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qsupplementaryservices.html#cancelUnstructuredSession">cancelUnstructuredSession</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qsupplementaryservices.html#sendSupplementaryServiceData">sendSupplementaryServiceData</a></b> ( const QString &amp; <i>data</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a></b> ( const QString &amp; <i>data</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qsupplementaryservices.html#incomingNotification">incomingNotification</a></b> ( QSupplementaryServices::IncomingNotification <i>type</i>, int <i>groupIndex</i>, const QString &amp; <i>number</i> )</li>
+<li><div class="fn"/>void <b><a href="qsupplementaryservices.html#outgoingNotification">outgoingNotification</a></b> ( QSupplementaryServices::OutgoingNotification <i>type</i>, int <i>groupIndex</i> )</li>
+<li><div class="fn"/>void <b><a href="qsupplementaryservices.html#supplementaryServiceResult">supplementaryServiceResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+<li><div class="fn"/>void <b><a href="qsupplementaryservices.html#unstructuredNotification">unstructuredNotification</a></b> ( QSupplementaryServices::UnstructuredAction <i>action</i>, const QString &amp; <i>data</i> )</li>
+<li><div class="fn"/>void <b><a href="qsupplementaryservices.html#unstructuredResult">unstructuredResult</a></b> ( QTelephony::Result <i>result</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSupplementaryServices class provides access to structured and unstructured supplementary services within GSM networks.</p>
+<p>Structured supplementary service data can be sent to the network with <a href="qsupplementaryservices.html#sendSupplementaryServiceData">sendSupplementaryServiceData</a>() and unstructured supplementary service data can be sent with <a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a>().</p>
+<p>As structured and unstructured supplementary service data is received from the network, the <a href="qsupplementaryservices.html#outgoingNotification">outgoingNotification</a>(), <a href="qsupplementaryservices.html#incomingNotification">incomingNotification</a>(), and <a href="qsupplementaryservices.html#unstructuredNotification">unstructuredNotification</a>() signals will be emitted.</p>
+<p>If there is an ongoing unstructured supplementary service session in progress, it can be canceled with <a href="qsupplementaryservices.html#cancelUnstructuredSession">cancelUnstructuredSession</a>().</p>
+<p>See also <a href="qcomminterface.html">QCommInterface</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="IncomingNotification-enum"></a>enum QSupplementaryServices::IncomingNotification</h3>
+<p>This enum defines notification types for incoming mobile-terminated (MT) calls according to 3GPP TS 27.007.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_Forwarded</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Call has been forwarded.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_ClosedUserGroup</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Closed user group call.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_Hold</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Call has been put on hold during a voice call.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_Retrieved</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Call has been retrieved during a voice call.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_MultipartyEntered</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Multiparty call entered during a voice call.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_HoldReleased</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Call on hold has been released during a voice call.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_ForwardCheck</tt></td><td align="center" valign="top"><tt>6</tt></td><td valign="top">Forward check message received.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_Alerting</tt></td><td align="center" valign="top"><tt>7</tt></td><td valign="top">Call is being connected (alerting) with the remote party in alerting state in explicit call transfer operation (during a voice call).</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_ExplicitTransfer</tt></td><td align="center" valign="top"><tt>8</tt></td><td valign="top">Call has been connected with the other remote party in explicit call transfer operation (during a voice call or MT call setup).</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_Deflected</tt></td><td align="center" valign="top"><tt>9</tt></td><td valign="top">Call has been deflected.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MT_AdditionalIncomingForwarded</tt></td><td align="center" valign="top"><tt>10</tt></td><td valign="top">Additional incoming call forwarded.</td></tr>
+</table></p>
+<h3 class="fn"><a name="OutgoingNotification-enum"></a>enum QSupplementaryServices::OutgoingNotification</h3>
+<p>This enum defines notification types for outgoing mobile-originated (MO) calls according to 3GPP TS 27.007.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_UnconditionalForwardingActive</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Unconditional call forwarding is active.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_ConditionalForwardingActive</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Some of the conditional call forwardings are active.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_Forwarded</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Call has been forwarded.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_Waiting</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Call is waiting.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_ClosedUserGroup</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Closed user group call.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_OutgoingCallsBarred</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Outgoing calls are barred.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_IncomingCallsBarred</tt></td><td align="center" valign="top"><tt>6</tt></td><td valign="top">Incoming calls are barred.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_CallerIdSuppressionRejected</tt></td><td align="center" valign="top"><tt>7</tt></td><td valign="top">Caller-Id suppression request has been rejected.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::MO_Deflected</tt></td><td align="center" valign="top"><tt>8</tt></td><td valign="top">Call has been deflected.</td></tr>
+</table></p>
+<h3 class="fn"><a name="UnstructuredAction-enum"></a>enum QSupplementaryServices::UnstructuredAction</h3>
+<p>This enum defines the action that should be taken for an incoming unstructured supplementary service notification according to 3GPP TS 27.007.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::NoFurtherActionRequired</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">No further user action required.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::FurtherActionRequired</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Further user action required.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::TerminatedByNetwork</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Terminated by network.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::OtherLocalClientResponded</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Other local client has responded.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::OperationNotSupported</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Operation not supported.</td></tr>
+<tr><td valign="top"><tt>QSupplementaryServices::NetworkTimeout</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Network time out.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSupplementaryServices"></a>QSupplementaryServices::QSupplementaryServices ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new supplementary services object for <i>service</i> and attach it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports supplementary services. If there is more than one service that supports supplementary services, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qsupplementaryservices.html">QSupplementaryServices</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QSupplementaryServices"></a>QSupplementaryServices::~QSupplementaryServices ()</h3>
+<p>Destroy this supplementary services object.</p>
+<h3 class="fn"><a name="cancelUnstructuredSession"></a>void QSupplementaryServices::cancelUnstructuredSession ()&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Cancel the current USSD session. The <a href="qsupplementaryservices.html#unstructuredResult">unstructuredResult</a>() signal will be emitted to indicate the result of canceling the current USSD session.</p>
+<p>See also <a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a>() and <a href="qsupplementaryservices.html#unstructuredResult">unstructuredResult</a>().</p>
+<h3 class="fn"><a name="incomingNotification"></a>void QSupplementaryServices::incomingNotification ( <a href="qsupplementaryservices.html#IncomingNotification-enum">QSupplementaryServices::IncomingNotification</a> <i>type</i>, int <i>groupIndex</i>, const <a href="qstring.html">QString</a> &amp; <i>number</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when a supplementary service notification <i>type</i> arrives for an incoming mobile-terminated (MT) call. If <i>type</i> is <tt>MT_ClosedUserGroup</tt>, then <i>groupIndex</i> will be the index of the closed user group. Otherwise <i>groupIndex</i> will be zero. If the call was transferred (<i>type</i> equal to <tt>MT_ExplicitTransfer</tt>), <i>number</i> will be present.</p>
+<h3 class="fn"><a name="outgoingNotification"></a>void QSupplementaryServices::outgoingNotification ( <a href="qsupplementaryservices.html#OutgoingNotification-enum">QSupplementaryServices::OutgoingNotification</a> <i>type</i>, int <i>groupIndex</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when a supplementary service notification <i>type</i> arrives for an outgoing mobile-originated (MO) call. If <i>type</i> is <tt>MO_ClosedUserGroup</tt>, then <i>groupIndex</i> will be the index of the closed user group. Otherwise <i>groupIndex</i> will be zero.</p>
+<h3 class="fn"><a name="sendSupplementaryServiceData"></a>void QSupplementaryServices::sendSupplementaryServiceData ( const <a href="qstring.html">QString</a> &amp; <i>data</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Sends <i>data</i> as a supplementary service command. On GSM modems, the <tt>ATD</tt> command is used for this purpose. The <i>data</i> should start with <tt>*</tt> or <tt>#</tt>. The sendSupplementaryServiceDataResult() signal will be emitted to indicate the result of sending <i>data</i>.</p>
+<p>See also <a href="qsupplementaryservices.html#supplementaryServiceResult">supplementaryServiceResult</a>() and <a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a>().</p>
+<h3 class="fn"><a name="sendUnstructuredData"></a>void QSupplementaryServices::sendUnstructuredData ( const <a href="qstring.html">QString</a> &amp; <i>data</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>Sends <i>data</i> within the current USSD session. On GSM modems, the <tt>AT+CUSD</tt> command is used for this purpose. The <a href="qsupplementaryservices.html#unstructuredResult">unstructuredResult</a>() signal will be emitted to indicate the result of sending <i>data</i>.</p>
+<p>See also <a href="qsupplementaryservices.html#cancelUnstructuredSession">cancelUnstructuredSession</a>(), <a href="qsupplementaryservices.html#sendSupplementaryServiceData">sendSupplementaryServiceData</a>(), and <a href="qsupplementaryservices.html#unstructuredResult">unstructuredResult</a>().</p>
+<h3 class="fn"><a name="supplementaryServiceResult"></a>void QSupplementaryServices::supplementaryServiceResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of a call to <a href="qsupplementaryservices.html#sendSupplementaryServiceData">sendSupplementaryServiceData</a>().</p>
+<p>See also <a href="qsupplementaryservices.html#sendSupplementaryServiceData">sendSupplementaryServiceData</a>().</p>
+<h3 class="fn"><a name="unstructuredNotification"></a>void QSupplementaryServices::unstructuredNotification ( <a href="qsupplementaryservices.html#UnstructuredAction-enum">QSupplementaryServices::UnstructuredAction</a> <i>action</i>, const <a href="qstring.html">QString</a> &amp; <i>data</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when an unstructured supplementary service notification arrives. The <i>action</i> parameter specifies the action to be taken next in the current session, and <i>data</i> specifies the data provided by the network.</p>
+<p>See also <a href="qsupplementaryservices.html#cancelUnstructuredSession">cancelUnstructuredSession</a>() and <a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a>().</p>
+<h3 class="fn"><a name="unstructuredResult"></a>void QSupplementaryServices::unstructuredResult ( <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of a call to <a href="qsupplementaryservices.html#cancelUnstructuredSession">cancelUnstructuredSession</a>() or <a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a>().</p>
+<p>See also <a href="qsupplementaryservices.html#cancelUnstructuredSession">cancelUnstructuredSession</a>() and <a href="qsupplementaryservices.html#sendUnstructuredData">sendUnstructuredData</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

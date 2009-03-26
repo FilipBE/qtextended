@@ -1,0 +1,119 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Find;
+
+my $QTOPIA_DEPOT_PATH = shift(@ARGV) or die "Usage:  find_files <source tree>\n";
+if ( ! -e "$QTOPIA_DEPOT_PATH/configure" ) {
+    die "Usage:  find_files <source tree>\n";
+}
+
+my @translatables;
+find_projects($QTOPIA_DEPOT_PATH);
+print join("\n", @translatables)."\n";
+
+exit 0;
+
+sub find_projects
+{
+    my ( $path ) = @_;
+
+    my $file;
+    for ( "qbuild.pro", "server.pri" ) {
+        if ( -e "$path/$_" ) {
+            $file = "$path/$_";
+            last;
+        }
+    }
+    if ( $file ) {
+        # Found a qbuild.pro, check if it has elected to have its config files translated by the system
+        local *IN;
+        open IN, $file or die "Can't read $file";
+        my @data = <IN>;
+        close IN;
+
+        my $process = 0;
+        for ( @data ) {
+            s/#.*//;
+            if ( /UNIFIED_NCT_LUPDATE\s*=\s*1/ ) {
+                $process = 1;
+                last;
+            }
+        }
+        if ( $process ) {
+            # Find translatables for this project
+            find_translatables($path);
+        }
+    }
+
+    # Recurse into subdirectories
+    local *DIR;
+    opendir DIR, $path or die "Can't opendir $path";
+    for ( readdir DIR ) {
+        next if ( ! -d "$path/$_" );
+        next if ( $_ eq "." or $_ eq ".." );
+        next if ( $_ eq "tests" );
+        next if ( "$path/$_" eq "$QTOPIA_DEPOT_PATH/examples" );
+        next if ( "$path/$_" eq "$QTOPIA_DEPOT_PATH/qbuild" );
+        next if ( "$path/$_" eq "$QTOPIA_DEPOT_PATH/config.tests" );
+        find_projects("$path/$_");
+    }
+    closedir DIR;
+}
+
+sub find_translatables
+{
+    my ( $path ) = @_;
+
+    if ( $path eq $QTOPIA_DEPOT_PATH ) {
+        if ( -d "$path/apps" ) {
+            find(sub {
+                return if ( ! -f $File::Find::name );
+                if ( $_ eq ".directory" || /\.desktop$/ ) {
+                    push(@translatables, $File::Find::name);
+                }
+            }, "$path/apps");
+        }
+
+        if ( -d "$path/i18n" ) {
+            find(sub {
+                return if ( ! -f $File::Find::name );
+                if ( $_ eq ".directory" ) {
+                    push(@translatables, $File::Find::name);
+                }
+            }, "$path/i18n");
+        }
+
+        if ( -d "$path/ui" ) {
+            find(sub {
+                return if ( ! -f $File::Find::name );
+                if ( /\.(conf|scheme|desktop)$/ ) {
+                    push(@translatables, $File::Find::name);
+                }
+            }, "$path/ui");
+        }
+    }
+
+    push(@translatables, glob("$path/*.conf"));
+    push(@translatables, glob("$path/*.scheme"));
+    push(@translatables, glob("$path/*.desktop"));
+
+    if ( -d "$path/etc" ) {
+        find(sub {
+            return if ( ! -f $File::Find::name );
+            if ( $File::Find::name =~ /^\Q$path\/etc\/qds\/\E/ || /\.(conf|scheme|desktop)$/ ) {
+                push(@translatables, $File::Find::name);
+            }
+        }, "$path/etc");
+    }
+
+    if ( -d "$path/services" ) {
+        find(sub {
+            return if ( ! -f $File::Find::name );
+            push(@translatables, $File::Find::name);
+        }, "$path/services");
+    }
+}
+

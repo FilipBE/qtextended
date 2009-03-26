@@ -1,0 +1,5 @@
+MODULE_NAME=mathlib
+DEP.libs [
+    TYPE=DEPENDS PERSISTED SDK
+    EVAL="LIBS+=-lm"
+]

@@ -1,0 +1,8 @@
+#!/bin/sh
+mkdir -p $QPEDIR/config.tests/system_qt
+cd $QPEDIR/config.tests/system_qt
+srcdir="$(dirname $0)"
+$QMAKE $srcdir/system_qt/qmake.pro 2>&1 || exit 1
+$MAKE || exit 1
+./system_qt || exit 1
+exit 0

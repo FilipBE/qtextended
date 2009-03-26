@@ -1,0 +1,93 @@
+#!/bin/sh
+
+if [ -r /opt/Qtopia/SDK/scripts/functions ]; then
+    . /opt/Qtopia/SDK/scripts/functions
+    QPEVER=$(version)
+fi
+
+die()
+{
+    echo -n "updatedevice failed while doing: "
+    echo $@
+    exit 1
+}
+
+prepare_device()
+{
+
+    ssh root@$PHONEIP '/etc/init.d/qpe stop' || die prepare_device updateqtopiahelper killqtopia
+
+    scp $TEMPDIR/flash-status-flashing.gif root@$PHONEIP:/tmp || die prepare_device scp
+
+    ssh root@$PHONEIP 'gifanim /tmp/flash-status-flashing.gif' || die prepare_device gifanim
+    ssh root@$PHONEIP 'rm -f /tmp/flash-status-flashing.gif' || die prepare_device rm
+    ssh root@$PHONEIP 'rm -f /opt' || die prepare_device rm
+
+}
+
+upload_image()
+{
+    scp $QTOPIA_IMAGE root@$PHONEIP:/ || die upload_image
+}
+
+install_image()
+{
+    ssh root@$PHONEIP "tar -xvpzf /qtopia-${DEVICE}-update.tar.gz" >/dev/null
+    RESULT=$?
+    ssh root@$PHONEIP "rm qtopia-${DEVICE}-update.tar.gz" || die install_image updateqtopiahelper
+
+    if [ $RESULT -ne 0 ]; then
+        sleep 60
+    fi
+    ssh root@$PHONEIP "\"/etc/init.d/qpe start &\"" || die install_image reboot
+}
+
+# Find default update image
+if [ $# -eq 0 ] && [ -r /opt/Qtopia/extras/images/qtopia-${DEVICE}-update.tar.gz ]; then
+    QTOPIA_IMAGE=/opt/Qtopia/extras/images/qtopia-${DEVICE}-update.tar.gz
+elif [ $# -eq 1 ]; then    
+    case "$1" in
+        /*)
+            QTOPIA_IMAGE="$1"
+            ;;
+        *)
+            QTOPIA_IMAGE="$(pwd)/$1"
+            ;;
+    esac
+else
+    echo "usage: $0 [image]"
+    exit 1
+fi
+
+# Check if network is up
+if which sdk >/dev/null 2>&1; then
+    # SDK 
+    if ! sdk -net; then
+        echo "Could not establish a network connection with Neo.  Check connection."
+        exit 1
+    fi
+else
+    # not SDK
+    if [ -z $PHONEIP ]; then
+        PHONEIP=192.168.0.202
+    fi
+
+    if ! ssh root@$PHONEIP /bin/true >/dev/null 2>&1; then
+        echo "Could not establish a network connection with Neo at $PHONEIP.  Check connection."
+        exit 1
+    fi
+fi
+
+# Flash Process
+echo "Starting Flash process, please wait..."
+prepare_device
+echo "device prep stage complete."
+upload_image
+echo "uploading image stage complete."
+echo
+echo "Flashing begins..........please wait....."
+install_image
+echo "Image installed, phone will automatically restart Qtopia"
+echo
+echo
+

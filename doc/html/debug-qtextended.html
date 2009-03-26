@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Debugging Qt Extended Applications</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Debugging Qt Extended Applications<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#debugging-qt-extended-using-gdb">Debugging Qt Extended using gdb</a></li>
+<ul><li><a href="#build-the-application-with-debug-symbols">Build the Application with Debug Symbols</a></li>
+<li><a href="#run-the-debugging-environment">Run the Debugging Environment</a></li>
+<li><a href="#examining-application-crashes">Examining Application Crashes</a></li>
+</ul>
+<li><a href="#remote-debugging">Remote Debugging</a></li>
+<li><a href="#qlog-categorized-logging">qLog - Categorized Logging</a></li>
+<ul><li><a href="#customizing-log-output">Customizing Log Output</a></li>
+</ul>
+<li><a href="#references">References</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This document describes useful techniques for debugging Qt Extended and Qt Extended applications. These techniques include:</p>
+<ul>
+<li>using the GNU Debugger, <tt>gdb</tt>, to monitor program execution and examine program status in the event of a crash</li>
+<li>using the GNU Debugger to remotely debug Qt Extended running on an embedded device</li>
+<li>using the <tt>qLog</tt> function to output categorized logging of debug information.</li>
+</ul>
+<a name="debugging-qt-extended-using-gdb"></a>
+<h2>Debugging Qt Extended using gdb</h2>
+<p>This section provides instructions on how to debug desktop builds of Qt Extended using <tt>gdb</tt> in a Linux environment.</p>
+<a name="build-the-application-with-debug-symbols"></a>
+<h3>Build the Application with Debug Symbols</h3>
+<p>To build an application with debug symbols:</p>
+<ul>
+<li>pass <tt>-debug</tt> to configure or add debug to the <tt>qbuild.pro</tt> file CONFIG settings as follows:<pre>    CONFIG += debug</pre>
+</li>
+<li>build the application and install the application binary into the <tt>/opt/Qtopia/bin</tt> directory using the following commands:<pre>    $QPEDIR/bin/qbuild
+    $QPEDIR/bin/qbuild image</pre>
+</li>
+</ul>
+<a name="run-the-debugging-environment"></a>
+<h3>Run the Debugging Environment</h3>
+<p>The <a href="running-qtextended.html#running-qt-extended-on-the-desktop-machine">runqtopia</a> script supports running Qt Extended in several different debugging environments. To run Qt Extended in using <tt>gdb</tt>:</p>
+<pre>    $QPEDIR/bin/runqtopia -runmode gdb</pre>
+<p>Once the <tt>gdb</tt> command prompt is displayed enter the following command to run Qt Extended:</p>
+<pre>    (gdb) run</pre>
+<p>Alternatively to debug an application outside of the Qt Extended environment:</p>
+<pre>    runqtopia -qpe theProgram -runmode gdb</pre>
+<p>Once the <tt>gdb</tt> command prompt is displayed enter the following command to run the application</p>
+<pre>    (gdb) set args -qws
+    (gdb) run</pre>
+<a name="examining-application-crashes"></a>
+<h3>Examining Application Crashes</h3>
+<p>If an application crashes, a <tt>core</tt> file is produced. Use the following commands to examine the core file contents:</p>
+<pre>    $ runqtopia -qpe theProgram -runmode gdb
+    (gdb) core &lt;core file&gt;
+    (gdb) backtrace full</pre>
+<p><b>Note:</b> If no core file is generated run: <tt>ulimit -c 64000</tt>.</p>
+<a name="remote-debugging"></a>
+<h2>Remote Debugging</h2>
+<p>Remote debugging using the GNU Debugger is possible between machines of the same or different architecture. In both instances the procedure is the same. However, when cross-debugging you must ensure that <tt>gdb</tt> finds and loads the correct shared libraries for the remote architecture.</p>
+<ul>
+<li>Binaries on the remote and host machine must match.</li>
+<li>Debug symbols may be stripped from the binaries on the remote machine.</li>
+</ul>
+<p>On the remote machine run:</p>
+<pre>    gdbserver :22222 qpe</pre>
+<p>On the host machine run:</p>
+<ol type="1">
+<li>Create symlink from /opt/Qtopia to the directory containing the Qt Extended image.<pre>    ln -s /path/to/Qtopia/image /opt/Qtopia</pre>
+</li>
+<li>Run <tt>gdb</tt> and connect to the remote debugging session<pre>    $ /opt/toolchains/.../bin/gdb /opt/Qtopia/bin/qpe
+    (gdb) target remote REMOTE_IP_ADDRESS:22222
+    (gdb) handle SIG32 nostop noprint
+    (gdb) handle SIGTRAP nostop noprint
+    (gdb) handle SIGPIPE nostop noprint
+    (gdb) break main
+    (gdb) cont</pre>
+</li>
+</ol>
+<a name="qlog"></a><a name="qlog-categorized-logging"></a>
+<h2>qLog - Categorized Logging</h2>
+<p>Qt Extended provides the <tt>qLog(CategoryIdentifier)</tt> function for categorized logging, built on top of the QDebug class in Qt for Embedded Linux.</p>
+<p>The following is an example of using a log message in the source code:</p>
+<pre>    #include &lt;qtopialog.h&gt;
+
+    qLog(Type) &lt;&lt; &quot;Test&quot;;
+    qLog(Type) &lt;&lt; &quot;string=&quot; &lt;&lt; str &lt;&lt; &quot;, int=&quot; &lt;&lt; i;</pre>
+<p>where <tt>Type</tt> is a category as defined in <tt>qtopialog-config.h</tt>.</p>
+<p>The categories are declared by using one of the following macros:</p>
+<ul>
+<li><tt>QLOG_DISABLE(CategoryIdentifier)</tt> - no logging code is generated.</li>
+<li><tt>QLOG_ENABLE(CategoryIdentifier)</tt> - logging code is always generated and invoked.</li>
+<li><tt>QTOPIA_LOG_OPTION(CategoryIdentifier)</tt> - logging code is always generated, invoked depending on the settings in the <tt>Log.conf</tt> settings file.</li>
+<li><tt>QLOG_OPTION(CategoryIdentifier,expr)</tt> - logging code is always generated, invoked if <i>expr</i> is true at the time the log is issued, <i>expr</i> may be cached.</li>
+<li><tt>QLOG_OPTION_VOLATILE(CategoryIdentifier,expr)</tt> - as above, but <i>expr</i> is not cached.</li>
+</ul>
+<p>The <tt>CategoryIdentifier</tt> has <tt>_QLog</tt> appended within the macros, so it can be any identifier you choose. The associated type name might be a useful choice:</p>
+<pre>    qLog(QWidget) &lt;&lt; &quot;Created&quot; &lt;&lt; name;</pre>
+<p>For categories declared with <tt>QTOPIA_LOG_OPTION</tt>, the output of logging depends on the <tt>Log</tt> settings. As with all Qt Extended settings files, the defaults are found in:</p>
+<pre>    /opt/Qtopia/etc/default/Trolltech/Log.conf</pre>
+<p>and these are overridden by settings in:</p>
+<pre>    $HOME/Settings/Trolltech/Log.conf</pre>
+<p>For example, the following enables logging messages related to the user interface:</p>
+<pre>    [UI]
+    Enabled = 1
+    Name[] = User interface
+    Help[] = Anything to do with the user interface.</pre>
+<p><b>Note:</b> Changes to <tt>Log.conf</tt> are not reflected in running applications immediately. A QCop message (<tt>QPE/System LogConfChanged()</tt>) can be sent which will cause all applications to re-read Log.conf and re-process the categories created with <tt>QTOPIA_LOG_OPTION</tt>.</p>
+<p>To assist field testing, there is a <tt>Logging Settings</tt> application that uses the <tt>logread</tt> program to interface with the <tt>BusyBox syslogd</tt> output. To forward the output to <tt>syslogd</tt>, use the <tt>logger</tt> program:</p>
+<ol type="1">
+<li>Start the <tt>syslog</tt> daemon in circular buffer mode. With the command:<pre>    syslogd -C &lt;buffersize&gt;</pre>
+<p>For example, to start <tt>syslogd</tt> with a 512 byte circular buffer use:</p>
+<pre>    syslogd -C 512</pre>
+</li>
+<li>Start Qt Extended with logging output redirected to the system log using:<pre>    qpe 2&gt;&amp;1 | logger -t Qtopia</pre>
+</li>
+<li>Start <tt>Logging Settings</tt> to view log messages.</li>
+<li>Select <tt>Categories...</tt> from the context menu to select the log messages to enable/disable. The effects are immediate for all categories created with <tt>QTOPIA_LOG_OPTION</tt>.</li>
+<li>Log messages can be viewed on the console by running:<pre>    logread -f</pre>
+</li>
+</ol>
+<p>For an example of a script that uses syslogd when starting Qt Extended see <tt>&lt;source&gt;/devices/greenphone/src/devtools/startup/qpe.sh</tt></p>
+<a name="customizing-log-output"></a>
+<h3>Customizing Log Output</h3>
+<p>The formatting of log messages can be modified globally by setting <tt>MessageHandler/Format</tt> in the <tt>Log2</tt> settings file. This can be used to add additional information to all logged messages suitable for log analysis tools. A C-style format string determines the output format to be used, with the following specifiers being supported:</p>
+<ul>
+<li><tt>%s</tt> - The text of the message being logged.</li>
+<li><tt>%t</tt> - A timestamp, in milliseconds, since a fixed point in the past. All processes use the same fixed point so that timestamps can be compared between processes.</li>
+<li><tt>%p</tt> - The PID (process identifier) of the current process.</li>
+<li><tt>%n</tt> - The name of the current process as returned by <a href="qcoreapplication.html#applicationName-prop">QCoreApplication::applicationName</a>(), or if a <a href="qcoreapplication.html">QCoreApplication</a> has not yet been created, the filename of the process's executable.</li>
+</ul>
+<p>For example, if <tt>$HOME/Settings/Trolltech/Log2.conf</tt> contains the following text:</p>
+<pre>    [MessageHandler]
+    Format = %t %p %n: %s</pre>
+<p>Log messages will be formatted as in the following example:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Code</th><th>Output</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>qLog(UI) &lt;&lt; &quot;Creating main user interface&quot;;</tt></td><td><tt>212 18755 myapp: UI : Creating main user interface</tt></td></tr>
+<tr valign="top" class="even"><td><tt>MainWindow win;</tt></td><td></td></tr>
+<tr valign="top" class="odd"><td><tt>qLog(UI) &lt;&lt; &quot;Done creating main user interface&quot;;</tt></td><td><tt>320 18755 myapp: UI : Done creating main user interface</tt></td></tr>
+</table></p>
+<p>As with changes to the <a href="#qlog">qLog</a> categories, sending the <tt>QPE/System LogConfChanged()</tt> QCop message is necessary for changes to log formatting to take effect in running applications.</p>
+<a name="references"></a>
+<h2>References</h2>
+<ul>
+<li><a href="debug.html">Qt Debugging Techniques</a></li>
+<li><a href="http://www.gnu.org/software/gdb/gdb.html">gdb: The GNU Project Debugger</a> - (http://www.gnu.org/software/gdb/gdb.html)</li>
+<li><a href="http://refcards.com/docs/peschr/gdb/gdb-refcard-a4.pdf">gdb Reference Card</a> - (http://www.refcards.com/)</li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

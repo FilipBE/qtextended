@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSimGenericAccess Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSimGenericAccess Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QSimGenericAccess class provides an interface to send commands directly to a SIM. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSimGenericAccess&gt;</pre><p>Inherits <a href="qcomminterface.html">QCommInterface</a>.</p>
+<p>Inherited by <a href="qmodemsimgenericaccess.html">QModemSimGenericAccess</a>.</p>
+<ul>
+<li><a href="qsimgenericaccess-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsimgenericaccess.html#QSimGenericAccess">QSimGenericAccess</a></b> ( const QString &amp; <i>service</i> = QString(), QObject * <i>parent</i> = 0, QCommInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qsimgenericaccess.html#dtor.QSimGenericAccess">~QSimGenericAccess</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qsimgenericaccess.html#command">command</a></b> ( const QByteArray &amp; <i>data</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qsimgenericaccess.html#command-2">command</a></b> ( const QString &amp; <i>reqid</i>, const QByteArray &amp; <i>data</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qsimgenericaccess.html#response">response</a></b> ( const QString &amp; <i>reqid</i>, QTelephony::Result <i>result</i>, const QByteArray &amp; <i>data</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSimGenericAccess class provides an interface to send commands directly to a SIM.</p>
+<p>Use of this class usually results in an <tt>AT+CSIM</tt> command being sent to the modem. The commands must be in the format described in 3GPP TS 51.011.</p>
+<p>Sending generic access commands to a SIM bypasses the normal mechanisms that are used to access SIM files, SIM application toolkit, operator data, etc. This class should therefore be used only for commands that are not already covered by other classes such as <a href="qsimfiles.html">QSimFiles</a>, <a href="qbinarysimfile.html">QBinarySimFile</a>, <a href="qrecordbasedsimfile.html">QRecordBasedSimFile</a>, and <a href="qsimtoolkit.html">QSimToolkit</a>.</p>
+<p>See also <a href="qsimfiles.html">QSimFiles</a>, <a href="qbinarysimfile.html">QBinarySimFile</a>, <a href="qrecordbasedsimfile.html">QRecordBasedSimFile</a>, and <a href="qsimtoolkit.html">QSimToolkit</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSimGenericAccess"></a>QSimGenericAccess::QSimGenericAccess ( const <a href="qstring.html">QString</a> &amp; <i>service</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QCommInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new SIM generic access object for <i>service</i> and attach it to <i>parent</i>. The object will be created in client mode if <i>mode</i> is Client, or server mode otherwise.</p>
+<p>If <i>service</i> is empty, this class will use the first available service that supports SIM generic access. If there is more than one service that supports SIM generic access, the caller should enumerate them with <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>() and create separate <a href="qsimgenericaccess.html">QSimGenericAccess</a> objects for each.</p>
+<p>See also <a href="qabstractipcinterfacegroupmanager.html#supports">QCommServiceManager::supports</a>().</p>
+<h3 class="fn"><a name="dtor.QSimGenericAccess"></a>QSimGenericAccess::~QSimGenericAccess ()</h3>
+<p>Destroy this generic SIM access object.</p>
+<h3 class="fn"><a name="command"></a><a href="qstring.html">QString</a> QSimGenericAccess::command ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>data</i> )</h3>
+<p>Sends <i>data</i> to the SIM as a generic access command and returns a unique request identifier for it. The command has the format described in 3GPP TS 51.011. The telephony service will emit the <a href="qsimgenericaccess.html#response">response</a>() signal once the command has completed.</p>
+<p>See also <a href="qsimgenericaccess.html#response">response</a>().</p>
+<h3 class="fn"><a name="command-2"></a>void QSimGenericAccess::command ( const <a href="qstring.html">QString</a> &amp; <i>reqid</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>data</i> )&nbsp;&nbsp;<tt> [virtual slot]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends <i>data</i> to the SIM as a generic access command. The <i>reqid</i> will be returned via the <a href="qsimgenericaccess.html#response">response</a>() signal to help match up commands and responses. The command has the format described in 3GPP TS 51.011.</p>
+<p>See also <a href="qsimgenericaccess.html#response">response</a>().</p>
+<h3 class="fn"><a name="response"></a>void QSimGenericAccess::response ( const <a href="qstring.html">QString</a> &amp; <i>reqid</i>, <a href="qtelephony.html#Result-enum">QTelephony::Result</a> <i>result</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>data</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted to report the <i>result</i> of issuing the request <i>reqid</i> via <a href="qsimgenericaccess.html#command">command</a>(). If <i>result</i> is QTelephony::Ok, then <i>data</i> is the data returned by the SIM in response to the command. The response has the format described in 3GPP TS 51.011.</p>
+<p>See also <a href="qsimgenericaccess.html#command">command</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

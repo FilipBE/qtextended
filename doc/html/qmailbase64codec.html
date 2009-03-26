@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailBase64Codec Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailBase64Codec Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>]</span>
+</h1>
+<p>The QMailBase64Codec class encodes or decodes between 8-bit data and 7-bit ASCII, using the Base64 character mapping scheme. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailBase64Codec&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qmailcodec.html">QMailCodec</a>.</p>
+<ul>
+<li><a href="qmailbase64codec-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmailbase64codec.html#ContentType-enum">ContentType</a></b> { Text, Binary }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailbase64codec.html#QMailBase64Codec">QMailBase64Codec</a></b> ( ContentType <i>content</i>, int <i>maximumLineLength</i> = -1 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>8 public functions inherited from <a href="qmailcodec.html#public-functions">QMailCodec</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>2 static public members inherited from <a href="qmailcodec.html#static-public-members">QMailCodec</a></li>
+<li><div class="fn"/>2 protected functions inherited from <a href="qmailcodec.html#protected-functions">QMailCodec</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailBase64Codec class encodes or decodes between 8-bit data and 7-bit ASCII, using the Base64 character mapping scheme.</p>
+<p>The Base64 character mapping scheme maps arbitrary 8-bit values into a range of 64 printable characters from the 7-bit ASCII set. The mapping scheme used is defined in <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045</a> (Multipurpose Internet Mail Extensions Part One). This encoding is also defined as the '&quot;B&quot; encoding' for 'encoded words' in <a href="http://www.ietf.org/rfc/rfc2047.txt">RFC 2047</a> (Multipurpose Internet Mail Extensions Part Three).</p>
+<p>The Base64 scheme encodes every incoming octet regardless of its original value, and thus produces the same ratio of output length to input length for any input data sequence. Since Base64 encodes four output characters for every three input octets, it produces a 33% increase in stream size when encoding.</p>
+<p>An instance of QMailBase64Codec contains state information about the encoding or decoding operation it performs, so an instance should be used for a single coding operation only:</p>
+<pre>    QString textData = acquireInput();
+
+<span class="comment">    // Encode the string data to a UTF-8 byte sequence, and then encode to Base64</span>
+    QMailBase64Codec encoder;
+    QByteArray base64Data = encoder.encode(textData, &quot;UTF-8&quot;);</pre>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ContentType-enum"></a>enum QMailBase64Codec::ContentType</h3>
+<p>This enumerated type is used to specify whether content is textual data or binary data.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailBase64Codec::Text</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The data is textual data; newline sequences within the data will be converted during coding.</td></tr>
+<tr><td valign="top"><tt>QMailBase64Codec::Binary</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The data is not textual, and does not contain newline sequences.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailBase64Codec"></a>QMailBase64Codec::QMailBase64Codec ( <a href="qmailbase64codec.html#ContentType-enum">ContentType</a> <i>content</i>, int <i>maximumLineLength</i> = -1 )</h3>
+<p>Constructs a codec object for coding to or from Base64 encoding.</p>
+<p>If <i>content</i> is <a href="qmailbase64codec.html#ContentType-enum">QMailBase64Codec::Text</a>, then newline sequences will be converted between the local representation (for example, 0x0A on Unix) and the transmission standard representation (0x0D 0x0A). Otherwise, the data will be coded without modification.</p>
+<p>The maximum number of encoded characters per output line can be specified as <i>maximumLineLength</i>. If not specified, or specified to a non-positive value, a default value will be used.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

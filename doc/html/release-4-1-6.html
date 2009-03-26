@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.1&#x2e;6 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.1&#x2e;6 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qtopia 4.1&#x2e;6 is a patch release that provides:</p>
+<ul>
+<li>improved performance</li>
+<li>fixes for a number of bugs</li>
+<li>many optimizations for the Greenphone.</li>
+</ul>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Performance</b>:<ul>
+<li>Enabled symbol hiding (for the greenphone) to reduce the symbol count of <tt>libQt*</tt>, which has a small improvement to the time it takes to run applications.</li>
+<li>Qtopia now supports GCC 4.1&#x2e;1 which considerably improves performance.</li>
+</ul>
+</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Qt</b><ul>
+<li>BUG : Fixed security issue in qimage.cpp. This makes the Qt version used for this release Qt 4.1&#x2e;12 + security patch.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG : Changed the text for adding a photo to a contact from &quot;Move to Contact..&#x2e;&quot; to &quot;Save to Contact..&#x2e;&quot;&#x2e; Also changed the icon to use the correct icon for contacts.</li>
+<li>BUG : Fixed a bug where only one contact would be shown.</li>
+<li>BUG 134212: Show all contacts except those from SIM when assigning a photo to a contact.</li>
+<li>BUG : Fixed a crash bug in i<tt>AbEditor</tt>.</li>
+<li>BUG 132414: Prompt the user to choose if a new contact is to be created when adding phone numbers from call history to contacts.</li>
+<li>BUG 132421: A contact with multiple phone numbers did not show the first phone number in <i>Add to Speed Dial</i> on the menu.</li>
+<li>132970, 132542: Added support for adding descriptive text to a category selection dialog.</li>
+</ul>
+</li>
+<li><b>Calendar</b><ul>
+<li>BUG 132401: In month view it was impossible to navigate around the calendar</li>
+</ul>
+</li>
+<li><b>Documents API</b><ul>
+<li>BUG : Check validity of files on removable media to handle the case where an SD card is removed.</li>
+<li>BUG : Made <tt>scanPath</tt> &quot;all&quot; scan for applications also.</li>
+<li>BUG 134030: Moving a document stripped the categories.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 132385: Automatically switch to hands-free mode when headphones are plugged in.</li>
+<li>BUG : If a contact has more than one phone number, ask the user to select which phone number they want to send and SMS to rather than using the default number.</li>
+<li>BUG 134444: DTMF tones did not work on Greenphone.</li>
+<li>BUG 133610: Prevent duplicate calls being shown when only one is received.</li>
+<li>BUG 132573: signal strength should not be shown in airplane mode.</li>
+<li>BUG 132397: Added a message box to indicate when joins and holds fail.</li>
+</ul>
+</li>
+<li><b>Qtopia Server</b><ul>
+<li>BUG : <a href="qtopiaapplication.html">QtopiaApplication</a> should not be setting the volume via OSS in phone edition.</li>
+<li>BUG 132571: Improved heuristics for screen brightness.</li>
+<li>BUG 132556: ensure the correct value is used after changing the <tt>TZ</tt> environment variable.</li>
+<li>BUG 130424: Fixed a crash during long key presses when no Helix is available.</li>
+</ul>
+</li>
+<li><b>Camera</b><ul>
+<li>BUG : Fixed a crash that occured when a view no longer owns the model.</li>
+<li>BUG : Fixed camera issues in Greenphone device.</li>
+</ul>
+</li>
+<li><b>Full Screen Handwriting</b><ul>
+<li>BUG : Smoothe mouse input to improve handwriting.</li>
+</ul>
+</li>
+<li><b>Messages</b><ul>
+<li>BUG : Prevent messages from closing when hiding the message view in <tt>Touchscreen</tt> mode.</li>
+<li>BUG 128610: Improved character limit for SMS messages.</li>
+<li>BUG 124864: MMS messages with no subject where discarded.</li>
+<li>BUG 132545: There was no <i>delete all</i> functionality.</li>
+<li>BUG 132543: Show the contact selector widget in appropriate cases when the select key is pressed.</li>
+<li>BUG : Fixed a crash when canceling composition.</li>
+<li>BUG 128614: Use assigned MMS account instead of default so delivery reports are sent properly.</li>
+<li>BUG 128619: MMS read-reply flag was not honored when choosing to <i>read later</i>.</li>
+<li>BUG 128612: Prevent re-ordering of multiple accounts when downloading mails.</li>
+<li>BUG 126510: Don't remove <tt>bcc</tt> addresses for MMS.</li>
+<li>BUG 124571: Fixed a problem with decoding of charsets in WSP encoded-text-strings.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 134216, 123700: fixed disappearing cursor.</li>
+<li>BUG 134215: When text was selected, the copy action first copied the text and then removed it.</li>
+<li>BUG 134047: <tt>Touchscreen</tt> wasn't completely disabled in keypad lock mode.</li>
+</ul>
+</li>
+<li><b>Pictures</b><ul>
+<li>BUG 133609: First image in document list flashed on-screen before the selected image was loaded.</li>
+<li>BUG 134238: Removed legacy manual double buffering to improve navigation in Pictures.</li>
+</ul>
+</li>
+<li><b>Appearance</b><ul>
+<li>BUG 134232: Only change theme on explicit Yes.</li>
+</ul>
+</li>
+<li><b>Phone Networks</b><ul>
+<li>BUG 134019: show a wait widget while reading network information.</li>
+</ul>
+</li>
+<li><b>Call Options</b><ul>
+<li>BUG 132562: Caller ID blocking didn't work until after the first time it was changed.</li>
+</ul>
+</li>
+<li><b>Call History</b><ul>
+<li>BUG 132410: The top item did not have focus when viewing the call details.</li>
+</ul>
+</li>
+<li><b>Call Forwarding</b><ul>
+<li>BUG 132558, 132559: Added a <i>To voice mail</i> option to number selector.</li>
+</ul>
+</li>
+<li><b>World Time</b><ul>
+<li>BUG 134220: Ensure that QTimeZoneWidget displays the current time zone when selecting &quot;More..&#x2e;&quot;</li>
+<li>BUG 134219: Canceling &quot;more..&#x2e;&quot; now reverts time zone back to the previous time zone in QTimeZoneWidget</li>
+<li>BUG 132556: Ensure correct city is selected when cities are closely spaced</li>
+<li>BUG 132555: Fixed zooming in <tt>Worldmap</tt></li>
+<li>BUG 132554: Improved user interface.</li>
+</ul>
+</li>
+<li><b>Date &amp; Time</b><ul>
+<li>BUG 133815: Could not use keypad entries to enter minutes.</li>
+<li>BUG 134029: Made selecting time zones in date/time more sensible.</li>
+<li>BUG 133187: Made sure the date is shown when clock first appears (not 0.5 seconds later)</li>
+<li>BUG 132538: Use select key to start/stop stopwatch.</li>
+</ul>
+</li>
+<li><b>Voice Notes</b><ul>
+<li>BUG 133192: Improved suspension mechanism to allow replaying audio files in full, even when the screensaver kicks in.</li>
+</ul>
+</li>
+<li><b>Handwriting</b><ul>
+<li>BUG 132567: Drawing animation for the first character in the list was only displayed once.</li>
+</ul>
+</li>
+<li><b>Tasks</b><ul>
+<li>BUG 132549: After returning from the edit task screen a task could not be deleted until the user fully returned to the task list screen.</li>
+</ul>
+</li>
+<li><b>Network</b><ul>
+<li>BUG 126516: encrypt password when shown on UI</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b></b><ul>
+<li>Bluetooth is currently not supported on the Greenphone device.</li>
+<li>Only wav file support is available on the Greenphone (no video playback).</li>
+<li>MMS and WAP are not currently supported.</li>
+<li>The user cannot add custom strokes to handwriting.</li>
+<li>When an SMS arrives the SMS that is opened initially is not the just received SMS.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

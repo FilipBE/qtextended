@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothAuthorizationAgent Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothAuthorizationAgent Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothAuthorizationAgent class represents an authorization proxy. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothAuthorizationAgent&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qbluetoothauthorizationagent-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qbluetoothauthorizationagent.html#Error-enum">Error</a></b> { NoError, AlreadyExists, DoesNotExist, UnknownError }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothauthorizationagent.html#QBluetoothAuthorizationAgent">QBluetoothAuthorizationAgent</a></b> ( const QString &amp; <i>name</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qbluetoothauthorizationagent.html#dtor.QBluetoothAuthorizationAgent">~QBluetoothAuthorizationAgent</a></b> ()</li>
+<li><div class="fn"/>QBluetoothAuthorizationAgent::Error <b><a href="qbluetoothauthorizationagent.html#error">error</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qbluetoothauthorizationagent.html#name">name</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothauthorizationagent.html#registerAgent">registerAgent</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothauthorizationagent.html#registerAgent-2">registerAgent</a></b> ( const QString &amp; <i>localDevice</i> )</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothauthorizationagent.html#unregisterAgent">unregisterAgent</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothauthorizationagent.html#unregisterAgent-2">unregisterAgent</a></b> ( const QString &amp; <i>localDevice</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual bool <b><a href="qbluetoothauthorizationagent.html#authorize">authorize</a></b> ( const QString &amp; <i>localDevice</i>, const QBluetoothAddress &amp; <i>remote</i>, const QString &amp; <i>service</i>, const QString &amp; <i>uuid</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qbluetoothauthorizationagent.html#cancel">cancel</a></b> ( const QString &amp; <i>localDevice</i>, const QBluetoothAddress &amp; <i>remote</i>, const QString &amp; <i>service</i>, const QString &amp; <i>uuid</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qbluetoothauthorizationagent.html#release">release</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothAuthorizationAgent class represents an authorization proxy.</p>
+<p>The QBluetoothAuthorizationAgent class provides an abstract interface for querying and granting authorization requests whenever remote bluetooth devices wish to use local bluetooth services. It is up to the clients of this class to actually establish whether the authorization request is granted or denied. For instance, the client could ask the user by informing him or her of the incoming request.</p>
+<p>The authorization agent can be registered as a global for all local adapters or for a particular adapter.</p>
+<p>See also <a href="qbluetoothaddress.html">QBluetoothAddress</a> and <a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Error-enum"></a>enum QBluetoothAuthorizationAgent::Error</h3>
+<p>Possible errors that might occur.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QBluetoothAuthorizationAgent::NoError</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">No error.</td></tr>
+<tr><td valign="top"><tt>QBluetoothAuthorizationAgent::AlreadyExists</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Another passkey agent has already been registered.</td></tr>
+<tr><td valign="top"><tt>QBluetoothAuthorizationAgent::DoesNotExist</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The passkey agent has not been registered.</td></tr>
+<tr><td valign="top"><tt>QBluetoothAuthorizationAgent::UnknownError</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">An unknown error has occurred.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothAuthorizationAgent"></a>QBluetoothAuthorizationAgent::QBluetoothAuthorizationAgent ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs an authorization agent. The <i>name</i> parameter specifies a unique name of the authorization agent. The name should be a valid identifier name, e.g&#x2e; it cannot contain special characters or start with a number. For instance: DefaultAuthAgent.</p>
+<p>The <i>parent</i> parameter holds the <a href="qobject.html">QObject</a> parent.</p>
+<h3 class="fn"><a name="dtor.QBluetoothAuthorizationAgent"></a>QBluetoothAuthorizationAgent::~QBluetoothAuthorizationAgent ()</h3>
+<p>Destroys the passkey agent.</p>
+<h3 class="fn"><a name="authorize"></a>bool QBluetoothAuthorizationAgent::authorize ( const <a href="qstring.html">QString</a> &amp; <i>localDevice</i>, const <a href="qbluetoothaddress.html">QBluetoothAddress</a> &amp; <i>remote</i>, const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qstring.html">QString</a> &amp; <i>uuid</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>This virtual function will be called whenever the bluetooth system has received an authorization request, and the agent is registered to handle the particular request.</p>
+<p>The <i>localDevice</i> parameter contains the local adapter this request came in on. The <i>remote</i> parameter contains the Bluetooth address of the remote device requesting authorization, and <i>service</i> parameter holds the name of the service the authorization is being obtained for. The <i>uuid</i> contains an optional uuid of the request.</p>
+<p>This function should return true if the request is to be authorized and false otherwise.</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#cancel">cancel</a>().</p>
+<h3 class="fn"><a name="cancel"></a>void QBluetoothAuthorizationAgent::cancel ( const <a href="qstring.html">QString</a> &amp; <i>localDevice</i>, const <a href="qbluetoothaddress.html">QBluetoothAddress</a> &amp; <i>remote</i>, const <a href="qstring.html">QString</a> &amp; <i>service</i>, const <a href="qstring.html">QString</a> &amp; <i>uuid</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>This function will be called whenever an authorization request has been canceled by the requestor (e.g&#x2e; connection to the service has been dropped).</p>
+<p>The request being cancelled is on <i>localDevice</i> and <i>remote</i> is the address of the remote device. The <i>service</i> is the service name of the service canceling the authorization request. The <i>uuid</i> contains an optional uuid of the request.</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#authorize">authorize</a>().</p>
+<h3 class="fn"><a name="error"></a><a href="qbluetoothauthorizationagent.html#Error-enum">QBluetoothAuthorizationAgent::Error</a> QBluetoothAuthorizationAgent::error () const</h3>
+<p>Returns the last error that has occurred.</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> QBluetoothAuthorizationAgent::name () const</h3>
+<p>Returns the name of the passkey agent as a string.</p>
+<h3 class="fn"><a name="registerAgent"></a>bool QBluetoothAuthorizationAgent::registerAgent ()</h3>
+<p>Register the authorization agent for all local adapters.</p>
+<p>Returns true if the agent cou7ld be registered successfully, and false otherwise. If the call fails, the error can be obtained by calling <a href="qbluetoothauthorizationagent.html#error">error</a>().</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#unregisterAgent">unregisterAgent</a>() and <a href="qbluetoothauthorizationagent.html#error">error</a>().</p>
+<h3 class="fn"><a name="registerAgent-2"></a>bool QBluetoothAuthorizationAgent::registerAgent ( const <a href="qstring.html">QString</a> &amp; <i>localDevice</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Register the authorization agent for <i>localDevice</i> adapter. The adapter name can be obtained from the <a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a> object.</p>
+<p>Returns true if the agent could be registered successfully, and false otherwise. If the call fails, the error can be obtained by calling <a href="qbluetoothauthorizationagent.html#error">error</a>().</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#unregisterAgent">unregisterAgent</a>(), <a href="qbluetoothauthorizationagent.html#error">error</a>(), and <a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a>.</p>
+<h3 class="fn"><a name="release"></a>void QBluetoothAuthorizationAgent::release ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>This function will be called whenever a passkey agent has been unregistered.</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#unregisterAgent">unregisterAgent</a>().</p>
+<h3 class="fn"><a name="unregisterAgent"></a>bool QBluetoothAuthorizationAgent::unregisterAgent ()</h3>
+<p>Unregister the authorization agent for all local adapters.</p>
+<p>Returns true if the agent could be registered successfully, and false otherwise. If the call fails, the error can be obtained by calling <a href="qbluetoothauthorizationagent.html#error">error</a>().</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#registerAgent">registerAgent</a>() and <a href="qbluetoothauthorizationagent.html#error">error</a>().</p>
+<h3 class="fn"><a name="unregisterAgent-2"></a>bool QBluetoothAuthorizationAgent::unregisterAgent ( const <a href="qstring.html">QString</a> &amp; <i>localDevice</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Unregister the authorization agent for <i>localDevice</i> adapter. The adapter name can be obtained from the <a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a> object.</p>
+<p>Returns true if the agent could be registered successfully, and false otherwise. If the call fails, the error can be obtained by calling <a href="qbluetoothauthorizationagent.html#error">error</a>().</p>
+<p>See also <a href="qbluetoothauthorizationagent.html#unregisterAgent">unregisterAgent</a>(), <a href="qbluetoothauthorizationagent.html#error">error</a>(), and <a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

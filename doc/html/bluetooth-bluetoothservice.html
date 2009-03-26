@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Creating a Bluetooth service</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Creating a Bluetooth service<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="bluetooth-bluetoothservice-serialportsdprecord-xml.html">bluetooth/bluetoothservice/SerialPortSDPRecord.xml</a></li>
+<li><a href="bluetooth-bluetoothservice-bluetoothservice-cpp.html">bluetooth/bluetoothservice/bluetoothservice.cpp</a></li>
+<li><a href="bluetooth-bluetoothservice-bluetoothservice-h.html">bluetooth/bluetoothservice/bluetoothservice.h</a></li>
+<li><a href="bluetooth-bluetoothservice-main-cpp.html">bluetooth/bluetoothservice/main.cpp</a></li>
+<li><a href="bluetooth-bluetoothservice-qbuild-pro.html">bluetooth/bluetoothservice/qbuild.pro</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This tutorial shows how to implement a simple Bluetooth service in Qt Extended.</p>
+<p>A Bluetooth service allows others to connect to your device via Bluetooth and perform some operation. For example, a Bluetooth OBEX Object Push service allows others to connect to your device and transfer files. Qt Extended Bluetooth services can be controlled from the Bluetooth settings application.</p>
+<p>The Bluetooth services are managed internally by the Bluetooth Service Manager. For more information about the system architecture for Bluetooth services, see <a href="bluetooth-servicemanager.html">Bluetooth Service Management Framework</a>.</p>
+<a name="overview"></a>
+<h2>Overview</h2>
+<p><a href="qbluetoothabstractservice.html">QBluetoothAbstractService</a> provides a convenient way to implement Bluetooth services within Qt Extended. To create a Bluetooth service, just subclass <a href="qbluetoothabstractservice.html">QBluetoothAbstractService</a>, and your service will automatically be registered as a Bluetooth service within Qt Extended. This means the service will be accessible to external parties through <a href="qbluetoothservicecontroller.html">QBluetoothServiceController</a>. It will also be shown in the list of local services in the Bluetooth settings application, allowing end users to modify the service's settings.</p>
+<p>Naturally, it is possible to implement Bluetooth services outside of Qt Extended by using the BlueZ libraries and standard Linux tools. However, such services cannot be accessed by end users through Qt Extended, and cannot be controlled programmatically through the Qt Extended libraries.</p>
+<p>This example creates a Bluetooth Serial Port service that listens for RFCOMM client connections and sends a &quot;hello, world&quot; message to a client before disconnecting.</p>
+<a name="using-a-xml-formatted-sdp-record"></a>
+<h2>Using a XML-formatted SDP record</h2>
+<p>When creating a Bluetooth service, you must register a SDP record so that other devices can find your service during a SDP query. You can use <a href="qbluetoothsdprecord.html">QBluetoothSdpRecord</a> to either assemble a SDP record yourself, or load one from a XML file.</p>
+<p>This example uses an XML file, <tt>SerialPortSDPRecord.xml</tt>, to encapsulate the SDP record data. The contents of this file looks something like this:</p>
+<pre>    &lt;record&gt;
+            &lt;attribute id=&quot;0x0001&quot;&gt;
+                    &lt;sequence&gt;
+                            &lt;uuid value=&quot;0x1101&quot; /&gt;
+                    &lt;/sequence&gt;
+            &lt;/attribute&gt;
+            &lt;attribute id=&quot;0x0004&quot;&gt;
+                    &lt;sequence&gt;
+                            &lt;sequence&gt;
+                                    &lt;uuid value=&quot;0x0100&quot; /&gt;
+                            &lt;/sequence&gt;
+    ...</pre>
+<p>One way to create such an XML file is to use the Linux command <tt>sdptool</tt>. For example, <tt>sdptool add</tt> registers a service, and <tt>sdptool browse --xml local</tt> prints all registered local services in XML format:</p>
+<pre>    $&gt; sdptool add SP
+    Serial Port service registered
+    $&gt; sdptool browse --xml local
+    &lt;record&gt;
+            &lt;attribute id=&quot;0x0000&quot;&gt;
+                    &lt;uint32 value=&quot;0x0001004b&quot; /&gt;
+            &lt;/attribute&gt;
+            &lt;attribute id=&quot;0x0001&quot;&gt;
+                    &lt;sequence&gt;
+                            &lt;uuid value=&quot;0x1101&quot; /&gt;
+                    &lt;/sequence&gt;
+            &lt;/attribute&gt;
+            &lt;attribute id=&quot;0x0004&quot;&gt;
+                    &lt;sequence&gt;
+                            &lt;sequence&gt;
+                                    &lt;uuid value=&quot;0x0100&quot; /&gt;
+                            &lt;/sequence&gt;
+                            &lt;sequence&gt;
+                                    &lt;uuid value=&quot;0x0003&quot; /&gt;
+                                    &lt;uint8 value=&quot;0x01&quot; /&gt;
+                            &lt;/sequence&gt;
+    ...</pre>
+<p>You can use the generated output as your SDP record XML file, provided you:</p>
+<ul>
+<li>Remove the 0x0000 <tt>&lt;attribute&gt;</tt> element (that is, the first <tt>&lt;attribute&gt;</tt> in the record) and its nested <tt>&lt;uint32&gt;</tt> element. This is the service record handle, which must not be provided by the programmer as it is automatically generated by the SDP server. Notice this value is not present in the <tt>SerialPortSDPRecord.xml</tt> extract above.</li>
+<li>Ensure the RFCOMM channel value (if this is a RFCOMM-based service) is set to a channel that will not be used by any other RFCOMM services. In the above output, the RFCOMM channel is set to 0x01 (the <tt>&lt;uint8&gt;</tt> value following the 0x0003 <tt>&lt;uuid&gt;</tt> value).</li>
+</ul>
+<a name="bluetoothserialportexampleservice-class-definition"></a>
+<h2>BluetoothSerialPortExampleService class definition</h2>
+<p>Here is the <tt>BluetoothSerialPortExampleService</tt> class definition:</p>
+<pre>    class BluetoothSerialPortExampleService : public QBluetoothAbstractService
+    {
+        Q_OBJECT
+
+    public:
+        BluetoothSerialPortExampleService(QObject *parent = 0);
+        virtual ~BluetoothSerialPortExampleService();
+
+        virtual void start();
+        virtual void stop();
+        virtual void setSecurityOptions(QBluetooth::SecurityOptions options);
+
+    private slots:
+        void newRfcommConnection();
+
+    private:
+        bool startRfcommServer(int rfcommChannel);
+
+        QBluetooth::SecurityOptions m_securityOptions;
+        quint32 m_sdpRecordHandle;
+        QBluetoothRfcommServer *m_rfcommServer;
+    };</pre>
+<p>The <tt>start()</tt>, <tt>stop()</tt> and <tt>setSecurityOptions()</tt> methods are pure virtual in <a href="qbluetoothabstractservice.html">QBluetoothAbstractService</a> and so must be implemented.</p>
+<p>The <tt>m_sdpRecordHandle</tt> member variable holds the SDP record handle for this service. This handle should be retained when the SDP record is registered so it can be used later to unregister the record if necessary.</p>
+<p>The example uses <a href="qbluetoothrfcommserver.html">QBluetoothRfcommServer</a> is used to implement the RFCOMM server functionality.</p>
+<a name="bluetoothserialportexampleservice-class-implementation"></a>
+<h2>BluetoothSerialPortExampleService class implementation</h2>
+<a name="the-constructor"></a>
+<h3>The constructor</h3>
+<p>The <tt>BluetoothSerialPortExampleService</tt> constructor looks like this:</p>
+<pre>    BluetoothSerialPortExampleService::BluetoothSerialPortExampleService(QObject *parent)
+        : QBluetoothAbstractService(&quot;SerialPortExampleService&quot;, tr(&quot;Serial Port Example&quot;), parent)
+    {
+        m_securityOptions = 0;
+        m_sdpRecordHandle = 0;
+        m_rfcommServer = 0;
+    }</pre>
+<p>The first argument to the base class constructor (&quot;SerialPortExampleService&quot; in this example) is the name of the service. This name must be unique among Qt Extended Bluetooth services, as it is used internally to identify the service.</p>
+<p>The second argument is an internationalized, human-readable name that can be displayed to the end user. This string will be used, for example, to list local Bluetooth services in the Bluetooth settings application:</p>
+<p align="center"><img src="images/tut-bluetoothservice-localservices.png" /></p><a name="implementing"></a>
+<h3>Implementing <tt>start()</tt></h3>
+<p>The <tt>start()</tt> implementation registers a SDP record using <tt>SerialPortSDPRecord.xml</tt>, starts the RFCOMM server for the service, and emits <a href="qbluetoothabstractservice.html#started">started()</a> to tell Qt Extended whether the service started successfully or not:</p>
+<pre>    void BluetoothSerialPortExampleService::start()
+    {
+        if (!m_rfcommServer)
+            m_rfcommServer = new QBluetoothRfcommServer(this);
+
+        <span class="comment">// Read the SDP record that we want to register for this service.</span>
+        QFile file(Qtopia::qtopiaDir() + &quot;/etc/bluetooth/sdp/SerialPortSDPRecord.xml&quot;);
+        if (!file.exists()) {
+            emit started(true, tr(&quot;Cannot find SDP record file&quot;));
+            return;
+        }
+        if (!file.open(QIODevice::ReadOnly)) {
+            emit started(true, tr(&quot;Error reading SDP record file&quot;));
+            return;
+        }
+        QBluetoothSdpRecord record = QBluetoothSdpRecord::fromDevice(&amp;file);
+        file.close();
+
+        <span class="comment">// QBluetoothAbstractService::registerRecord() registers a SDP record and</span>
+        <span class="comment">// returns the service record handle for the newly registered service.</span>
+        m_sdpRecordHandle = registerRecord(record);
+        if (m_sdpRecordHandle == 0) {
+            emit started(true, tr(&quot;Error registering the SDP service&quot;));
+            return;
+        }
+
+        int rfcommChannel = QBluetoothSdpRecord::rfcommChannel(record);
+
+        if (!startRfcommServer(rfcommChannel)) {
+            <span class="comment">// The server could not be started, so clean up and unregister the</span>
+            <span class="comment">// SDP record using QBluetoothAbstractService::unregisterRecord().</span>
+            unregisterRecord(m_sdpRecordHandle);
+            m_sdpRecordHandle = 0;
+
+            emit started(true, tr(&quot;Error starting RFCOMM server&quot;));
+            return;
+        }
+
+        qDebug() &lt;&lt; &quot;Started example Bluetooth service&quot;;
+        emit started(false, QString());
+    }</pre>
+<p>Notice that <a href="qbluetoothabstractservice.html#started">started()</a> must be emitted regardless of whether the service was started successfully or not.</p>
+<p>Do not call <a href="qbluetoothabstractservice.html#start">start()</a> from within your own code, because it is automatically invoked by the Bluetooth Service Manager when the service should be started. This could be because:</p>
+<ul>
+<li>The user has tried to start the service from within the Bluetooth settings application.</li>
+<li>The service has been created for the first time.</li>
+<li>The service was still running at the time of the last Qt Extended shutdown, in which case <tt>start()</tt> will automatically be invoked when the service is next created.</li>
+</ul>
+<p>Note the path <tt>/etc/bluetooth/sdp/</tt> is used when referencing <tt>SerialPortSDPRecord.xml</tt>. This is because that is the path specified by <tt>qbuild.pro</tt> for the installation of the XML file:</p>
+<pre>    # include the SDP record XML file
+    # /etc/bluetooth/sdp is where other Qtopia SDP record XML files are located
+    sdprecord.hint=image
+    sdprecord.files=SerialPortSDPRecord.xml
+    sdprecord.path=/etc/bluetooth/sdp</pre>
+<a name="implementing-stop"></a>
+<h3>Implementing stop()</h3>
+<p>The <tt>stop()</tt> method closes the service's RFCOMM server, unregisters the SDP record that was registered in <tt>start()</tt>, and emits <a href="qbluetoothabstractservice.html#stopped">stopped()</a> to tell Qt Extended that the service has stopped:</p>
+<pre>    void BluetoothSerialPortExampleService::stop()
+    {
+        if (m_rfcommServer) {
+            m_rfcommServer-&gt;close();
+            delete m_rfcommServer;
+            m_rfcommServer = 0;
+        }
+
+        if (!unregisterRecord(m_sdpRecordHandle))
+            qDebug() &lt;&lt; &quot;Error unregistering the SDP service&quot;;
+        m_sdpRecordHandle = 0;
+
+        qDebug() &lt;&lt; &quot;Stopped example Bluetooth service&quot;;
+        emit stopped();
+    }</pre>
+<a name="other-methods"></a>
+<h3>Other methods</h3>
+<p>Finally, <tt>setSecurityOptions()</tt> sets the security options for the service:</p>
+<pre>    void BluetoothSerialPortExampleService::setSecurityOptions(QBluetooth::SecurityOptions options)
+    {
+        if (m_rfcommServer)
+            m_rfcommServer-&gt;setSecurityOptions(options);
+        m_securityOptions = options;
+    }</pre>
+<p>This method is also invoked automatically by the Bluetooth Service Manager when the security options should be changed.</p>
+<a name="the-bluetooth-service-manager-and-service-settings"></a>
+<h2>The Bluetooth Service Manager and service settings</h2>
+<p>The Bluetooth Service Manager stores service settings in <tt>Bluetooth.conf</tt>. This stores the security options for known services and defines whether a service should be automatically started the next time it is created. A default configuration file is provided at <tt>etc/default/Trolltech/BluetoothServices.conf</tt>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

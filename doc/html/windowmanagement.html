@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>WindowManagement Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">WindowManagement Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The WindowManagement class allows you to monitor and control the application windows in the system. <a href="#details">More...</a></p>
+<pre>    #include &lt;WindowManagement&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="windowmanagement-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="windowmanagement.html#DockArea-enum">DockArea</a></b> { Top, Bottom, Left, Right }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="windowmanagement.html#WindowManagement">WindowManagement</a></b> ( QObject * <i>parent</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#windowActive">windowActive</a></b> ( const QString &amp; <i>caption</i>, const QRect &amp; <i>rect</i>, WId <i>window</i> )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#windowCaption">windowCaption</a></b> ( const QString &amp; <i>caption</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QString <b><a href="windowmanagement.html#activeAppName">activeAppName</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#closeWindow">closeWindow</a></b> ( WId <i>winId</i> )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#dockWindow">dockWindow</a></b> ( QWidget * <i>window</i>, DockArea <i>placement</i>, int <i>screen</i> = -1 )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#dockWindow-2">dockWindow</a></b> ( QWidget * <i>window</i>, DockArea <i>placement</i>, const QSize &amp; <i>size</i>, int <i>screen</i> = -1 )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#hideDockedWindow">hideDockedWindow</a></b> ( QWidget * <i>window</i> )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#protectWindow">protectWindow</a></b> ( QWidget * <i>window</i> )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#setLowestWindow">setLowestWindow</a></b> ( QWidget * <i>window</i> )</li>
+<li><div class="fn"/>void <b><a href="windowmanagement.html#showDockedWindow">showDockedWindow</a></b> ( QWidget * <i>window</i> )</li>
+<li><div class="fn"/>bool <b><a href="windowmanagement.html#supportsSoftMenus">supportsSoftMenus</a></b> ( WId <i>winId</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The WindowManagement class allows you to monitor and control the application windows in the system.</p>
+<p>The WindowManagement class allows server windows to be protected, preventing other windows from obscuring them, and docked to the edge of the screen.</p>
+<p>The WindowManagement class also updates the value space with the following keys that can be used to track window status:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Key</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>/UI/ActiveWindow/Title</tt></td><td>The title of the currently active window</td></tr>
+<tr valign="top" class="even"><td><tt>/UI/ActiveWindow/Rect</tt></td><td>The rectangle of the currently active window</td></tr>
+<tr valign="top" class="odd"><td><tt>/UI/ActiveWindow/Caption</tt></td><td>The caption of the currently active window. The caption is the same as the title except that it isn't changed for popup windows that only consume a small part of the screen.</td></tr>
+</table></p>
+<p>These value space keys are updated if either the <tt>WindowManagement</tt> task is running, or at least one instance of the WindowManagement class has been instantiated.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="DockArea-enum"></a>enum WindowManagement::DockArea</h3>
+<p>The DockArea enum type defines the areas where widgets can be docked:</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>WindowManagement::Top</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">- the top of the screen.</td></tr>
+<tr><td valign="top"><tt>WindowManagement::Bottom</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">- the Bottom of the screen.</td></tr>
+<tr><td valign="top"><tt>WindowManagement::Left</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">- the Left of the screen.</td></tr>
+<tr><td valign="top"><tt>WindowManagement::Right</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">- the Right of the screen.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="WindowManagement"></a>WindowManagement::WindowManagement ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a new <a href="windowmanagement.html">WindowManagement</a> instance with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="activeAppName"></a><a href="qstring.html">QString</a> WindowManagement::activeAppName ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a reference to the name of the active application, ie the one that is visible. If there is no active application, the string is returned empty.</p>
+<h3 class="fn"><a name="closeWindow"></a>void WindowManagement::closeWindow ( <a href="qwidget.html#WId-typedef">WId</a> <i>winId</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sends a close message to the window <i>winId</i>. This is used for applications that do not support the Qt Extended soft menu bar.</p>
+<p>See also <a href="windowmanagement.html#supportsSoftMenus">supportsSoftMenus</a>().</p>
+<h3 class="fn"><a name="dockWindow"></a>void WindowManagement::dockWindow ( <a href="qwidget.html">QWidget</a> * <i>window</i>, <a href="windowmanagement.html#DockArea-enum">DockArea</a> <i>placement</i>, int <i>screen</i> = -1 )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Docks a top-level widget <i>window</i> on a side of the <i>screen</i> specified by <i>placement</i>. The widget is placed according to the order that it was docked, its sizeHint() and whether previously docked widgets are visible. The desktop area available to <a href="qwidget.html#showMaximized">QWidget::showMaximized</a>() will exclude any visible docked widgets.</p>
+<p>For example, if a widget is docked at the bottom of the screen, its sizeHint() will define its height and it will use the full width of the screen. If a widget is then docked to the right, its sizeHint() will define its width and it will be as high as possible without covering the widget docked at the bottom.</p>
+<p>This function is useful for reserving system areas such as taskbars and input methods that should not be covered by applications. Even after calling this method, an application can manually position itself over the docked window. To prevent this, also call <a href="windowmanagement.html#protectWindow">WindowManagement::protectWindow</a>() on the window.</p>
+<h3 class="fn"><a name="dockWindow-2"></a>void WindowManagement::dockWindow ( <a href="qwidget.html">QWidget</a> * <i>window</i>, <a href="windowmanagement.html#DockArea-enum">DockArea</a> <i>placement</i>, const <a href="qsize.html">QSize</a> &amp; <i>size</i>, int <i>screen</i> = -1 )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Normally the <a href="qwidget.html#sizeHint-prop">QWidget::sizeHint</a>() of the docked widget is used to determine its docked size. If the sizeHint() is not correct, the <i>size</i> parameter can be used to override it. The <i>window</i>, <i>placement</i> and <i>screen</i> parameters are used as above.</p>
+<h3 class="fn"><a name="hideDockedWindow"></a>void WindowManagement::hideDockedWindow ( <a href="qwidget.html">QWidget</a> * <i>window</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Hides the docked <i>window</i>. While you can call <a href="qwidget.html#hide">QWidget::hide</a>() on the docked window, using this function will result in smoother screen updates.</p>
+<h3 class="fn"><a name="protectWindow"></a>void WindowManagement::protectWindow ( <a href="qwidget.html">QWidget</a> * <i>window</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Prevent application windows from being raised above the provided toplevel <i>window</i>. If an application window attempts to obscure any of the protected region, the protected window will immediately be raised above it.</p>
+<h3 class="fn"><a name="setLowestWindow"></a>void WindowManagement::setLowestWindow ( <a href="qwidget.html">QWidget</a> * <i>window</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sets <i>window</i> as the lowest in the screen stacking order, below all normal and docked windows. This is normally used only for the <a href="qabstractserverinterface.html">QAbstractServerInterface</a> widget.</p>
+<h3 class="fn"><a name="showDockedWindow"></a>void WindowManagement::showDockedWindow ( <a href="qwidget.html">QWidget</a> * <i>window</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Shows the docked <i>window</i>. While you can call <a href="qwidget.html#show">QWidget::show</a>() on the docked window, using this function may result in smoother screen updates.</p>
+<h3 class="fn"><a name="supportsSoftMenus"></a>bool WindowManagement::supportsSoftMenus ( <a href="qwidget.html#WId-typedef">WId</a> <i>winId</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if <i>winId</i> supports the Qt Extended soft menu bar via the <a href="qsoftmenubar.html">QSoftMenuBar</a> class; false otherwise.</p>
+<p>Under QWS, this function always returns true. Under X11, it will return false if the application uses a widget toolkit other than that of Qtopia. The soft menu bar changes its behavior so that the &quot;back&quot; button will send a close message to the foreign application using <a href="windowmanagement.html#closeWindow">closeWindow</a>().</p>
+<p>See also <a href="windowmanagement.html#closeWindow">closeWindow</a>().</p>
+<h3 class="fn"><a name="windowActive"></a>void WindowManagement::windowActive ( const <a href="qstring.html">QString</a> &amp; <i>caption</i>, const <a href="qrect.html">QRect</a> &amp; <i>rect</i>, <a href="qwidget.html#WId-typedef">WId</a> <i>window</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever a <i>window</i> becomes active or the active window's <i>caption</i> changes. <i>rect</i> is the rectangle covered by the window.</p>
+<h3 class="fn"><a name="windowCaption"></a>void WindowManagement::windowCaption ( const <a href="qstring.html">QString</a> &amp; <i>caption</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the active window <i>caption</i> changes.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

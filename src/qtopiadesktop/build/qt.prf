@@ -1,0 +1,20 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(qt.prf)
+# Employ magic to ensure that the real qt.prf is loaded with the correct CONFIG
+
+CONFIG(debug,debug|release):QTOPIA_DEBUG=1
+else:QTOPIA_DEBUG=0
+
+equals(QT_DEBUG_LIBS,1) {
+    CONFIG+=debug
+    load(qt)
+} else {
+    CONFIG+=release
+    load(qt)
+}
+
+equals(QTOPIA_DEBUG,1) {
+    CONFIG+=debug
+} else {
+    CONFIG+=release
+}
+

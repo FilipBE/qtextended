@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Building modules</title>
+  <link rel="prev" href="selectingmodules.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="qtextendededitions.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="selectingmodules.html">Module concept</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtextendededitions.html">Reference designs</a>]
+</p>
+<h1 class="title">Building modules<br /><span class="subtitle"></span>
+</h1>
+<p>This section describes how the various modules are selected/build into Qt Extended. Depending on the module there are different ways of enabling a specific module.</p>
+<a name="configure-script-selection"></a>
+<h2>Configure script selection</h2>
+<p>Previous versions of configure provided options which enabled a similar style of feature/module selection. To unify the selection mechanism a new <tt>-modules</tt> flag has been created. It expects a list of modules to be enabled. The only module that doesn't have to be enabled is the Base module as it is provides requirement for all other modules. Therefore it is automatically included.</p>
+<p>The subsequent table shows the mapping of all old configure switches which directly map to a designated module:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>enabled module</th><th>related configure switch</th><th>related build system flag</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qtbluetoothmodule.html">Bluetooth</a></td><td>-bluetooth</td><td>enable_bluetooth</td></tr>
+<tr valign="top" class="even"><td><a href="qtinfraredmodule.html">Infrared</a></td><td>-infrared</td><td>enable_infrared</td></tr>
+<tr valign="top" class="odd"><td><a href="qttelephonymodule.html">Telephony</a></td><td>-telephony</td><td>enable_telephony</td></tr>
+<tr valign="top" class="even"><td><a href="qtcellmodule.html">Cell</a></td><td>-modem (implies -telephony switch)</td><td>enable_cell</td></tr>
+<tr valign="top" class="odd"><td><a href="qtipcommsmodule.html">IPComms</a></td><td>-voip (implies -telephony switch)</td><td>enable_voip</td></tr>
+<tr valign="top" class="even"><td><a href="qtdrmmodule.html">Drm</a></td><td>-drm</td><td>drmagent</td></tr>
+<tr valign="top" class="odd"><td><a href="qtmediamodule.html">Media</a></td><td>-qtopiamedia</td><td>enable_qtopiamedia</td></tr>
+<tr valign="top" class="even"><td><a href="qtlocationmodule.html">Location</a></td><td>-whereabouts</td><td>enable_qtopiawhereabouts</td></tr>
+<tr valign="top" class="odd"><td><a href="qtuitestmodule.html">QtUiTest</a></td><td>-test</td><td>qtuitest</td></tr>
+</table></p>
+<p>To further increase the flexibility the Qt Extended configure script behaves slightly more restrictive when compared to previous versions. Usually Qt Extended enables additional features/modules based on tests performed when configure runs. If for instance Bluez &amp; DBUS support is detected Bluetooth support is automatically enabled unless it was explicitly disabled via the <i>-no-bluetooth</i> flag. Starting with Qt Extended 4.4 configure only enables additional features/modules if they are explicitly enabled via their respective command line option.</p>
+<p>The <i>-modules</i> configure options unifies the various options and allows the selection of modules.</p>
+<pre>    ./configure -modules cell,location,pim,messaging -device xyz</pre>
+<p>The above command line enables the <a href="qtcellmodule.html">QtCellModule</a>, <a href="qtlocationmodule.html">QtLocationModule</a>, <a href="qtpimmodule.html">QtPimModule</a>, <a href="qtmessagingmodule.html">QtMessagingModule</a> and the <a href="qtbasemodule.html">QtBaseModule</a> module. The Base module is always required and is implicitly selected.</p>
+<a name="module-adjustments"></a>
+<h2>Module adjustments</h2>
+<p>Each module has a definition file which lists the projects belonging to it. The definition files use the following name schema <i>$QPEDIR/src/module_&lt;module-name&gt;.pri</i> and the appropriate configure flag has to be passed to enable it. Once the module is included each project listed in the definition file becomes part of the build.</p>
+<p>In some cases a module may still contain some projects not required for a particular target build. Therefore selected projects can be further excluded from the build via the <a href="buildsystem/over-device-profiles-1.html">device profile's</a> <i>projects.pri</i>. Project selection happens after module selection. The example below adds the contact application and removes the calculator from the build.</p>
+<pre>    PROJECTS+=src/applications/addressbook
+
+    PROJECTS-=src/applciations/calculator</pre>
+<p>Note that when directly adding new projects dependencies may require further project adjustments in order to resolve build problems. It may for instance be necessary to add the pim library the above project selection as the addressbook depends on it (this is subject the modules selected prior to the project selection).</p>
+<p>
+[Previous: <a href="selectingmodules.html">Module concept</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtextendededitions.html">Reference designs</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

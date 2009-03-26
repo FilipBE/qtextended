@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QModemIndicators Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QModemIndicators Class Reference<br /><span class="small-subtitle">[<a href="qtcellmodule.html">QtCellModule</a>]</span>
+</h1>
+<p>The QModemIndicators class supports indicators for signal quality, battery charge, etc. <a href="#details">More...</a></p>
+<pre>    #include &lt;QModemIndicators&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qmodemindicators-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmodemindicators.html#ChargeState-enum">ChargeState</a></b> { PoweredByBattery, NotPoweredByBattery, NoBattery, PowerFault }</li>
+<li><div class="fn"/>enum <b><a href="qmodemindicators.html#SmsMemoryFullStatus-enum">SmsMemoryFullStatus</a></b> { SmsMemoryOK, SmsMemoryFull, SmsMemoryMessageRejected }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmodemindicators.html#QModemIndicators">QModemIndicators</a></b> ( QModemService * <i>service</i> )</li>
+<li><div class="fn"/><b><a href="qmodemindicators.html#dtor.QModemIndicators">~QModemIndicators</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmodemindicators.html#setBatteryCharge">setBatteryCharge</a></b> ( int <i>value</i>, int <i>maxValue</i>, QModemIndicators::ChargeState <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="qmodemindicators.html#setNetworkTime">setNetworkTime</a></b> ( uint <i>time</i>, int <i>zone</i>, int <i>dst</i> )</li>
+<li><div class="fn"/>void <b><a href="qmodemindicators.html#setNetworkTimeZone">setNetworkTimeZone</a></b> ( int <i>zone</i>, int <i>dst</i> )</li>
+<li><div class="fn"/>void <b><a href="qmodemindicators.html#setSignalQuality">setSignalQuality</a></b> ( int <i>value</i>, int <i>maxValue</i> )</li>
+<li><div class="fn"/>void <b><a href="qmodemindicators.html#setSmsMemoryFull">setSmsMemoryFull</a></b> ( QModemIndicators::SmsMemoryFullStatus <i>value</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QModemIndicators class supports indicators for signal quality, battery charge, etc.</p>
+<p>Modem vendor plug-ins might have proprietary notifications for reporting this information. When such a notification arrives, the plug-in should call <a href="qmodemindicators.html#setSignalQuality">setSignalQuality</a>(), <a href="qmodemindicators.html#setBatteryCharge">setBatteryCharge</a>(), etc.</p>
+<p>The modem vendor plug-in will obtain an instance of this class by calling <a href="qmodemservice.html#indicators">QModemService::indicators</a>().</p>
+<p>See also <a href="qmodemservice.html">QModemService</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ChargeState-enum"></a>enum QModemIndicators::ChargeState</h3>
+<p>This enum defines the current charging state of the battery, using the values defined by 3GPP TS 27.007.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QModemIndicators::PoweredByBattery</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Currently powered by the battery.</td></tr>
+<tr><td valign="top"><tt>QModemIndicators::NotPoweredByBattery</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Battery is connected, but not powering the phone.</td></tr>
+<tr><td valign="top"><tt>QModemIndicators::NoBattery</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">No battery connected.</td></tr>
+<tr><td valign="top"><tt>QModemIndicators::PowerFault</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">There is a power fault and calls are inhibited.</td></tr>
+</table></p>
+<h3 class="fn"><a name="SmsMemoryFullStatus-enum"></a>enum QModemIndicators::SmsMemoryFullStatus</h3>
+<p>This enum defines the full status of the incoming SMS message store.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QModemIndicators::SmsMemoryOK</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The store has slots available to receive new messages.</td></tr>
+<tr><td valign="top"><tt>QModemIndicators::SmsMemoryFull</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The store is full and cannot accept new messages.</td></tr>
+<tr><td valign="top"><tt>QModemIndicators::SmsMemoryMessageRejected</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The store is full and a new message was just rejected.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QModemIndicators"></a>QModemIndicators::QModemIndicators ( <a href="qmodemservice.html">QModemService</a> * <i>service</i> )</h3>
+<p>Construct a modem indicator object for <i>service</i>. Normally, a modem vendor plug-in will call <a href="qmodemservice.html#indicators">QModemService::indicators</a>().</p>
+<h3 class="fn"><a name="dtor.QModemIndicators"></a>QModemIndicators::~QModemIndicators ()</h3>
+<p>Destroy this modem indicator object.</p>
+<h3 class="fn"><a name="setBatteryCharge"></a>void QModemIndicators::setBatteryCharge ( int <i>value</i>, int <i>maxValue</i>, <a href="qmodemindicators.html#ChargeState-enum">QModemIndicators::ChargeState</a> <i>state</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Report an unsolicited battery charge <i>value</i> and <i>state</i>. The <i>maxValue</i> parameter indicates the maximum value for the valid range of values. e.g&#x2e; if <i>value</i> can vary between 0 and 100, then <i>maxValue</i> will be 100.</p>
+<p>If <i>value</i> is -1, then it indicates that the battery charge is currently undetectable.</p>
+<p>This function is typically called by modem vendor plug-ins that have a proprietary command for reporting the current battery charge. If the modem vendor plug-in does not call this function, the default implementation will poll the <tt>AT+CBC</tt> command for battery charge.</p>
+<p>Client applications get access to the battery charge value using the <a href="qpowersource.html">QPowerSource</a> class.</p>
+<p>See also <a href="qpowersource.html">QPowerSource</a>.</p>
+<h3 class="fn"><a name="setNetworkTime"></a>void QModemIndicators::setNetworkTime ( <a href="qtglobal.html#uint-typedef">uint</a> <i>time</i>, int <i>zone</i>, int <i>dst</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Sets the network time information to <i>time</i>, <i>zone</i>, and <i>dst</i>. The <i>time</i> parameter indicates the time from the network in UTC, as seconds past midnight, 1 Jan 1970.</p>
+<p>The <i>zone</i> parameter indicates the number of minutes east of GMT. The <i>dst</i> parameter indicates the number of minutes of daylight savings adjustment that have been applied to <i>zone</i>.</p>
+<p>The parameter values are placed into the value space as <tt>/Telephony/Status/Time</tt>, <tt>/Telephony/Status/TimeZone</tt>, and <tt>/Telephony/Status/TimeZoneDST</tt>. In addition, the value space item <tt>/Telephony/Status/TimeTimeStamp</tt> will be set to the current time on the phone, also in UTC.</p>
+<p>The values of <tt>Time</tt> and <tt>TimeTimeStamp</tt> in the value space can be used to determine the network time at some point in the future relative to the current time on the phone. Subtract <tt>TimeTimeStamp</tt> from the current time and add it to <tt>Time</tt> to determine the current network time.</p>
+<h3 class="fn"><a name="setNetworkTimeZone"></a>void QModemIndicators::setNetworkTimeZone ( int <i>zone</i>, int <i>dst</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Sets the network time zone information to <i>zone</i> and <i>dst</i>. The <i>zone</i> parameter indicates the number of minutes east of GMT. The <i>dst</i> parameter indicates the number of minutes of daylight savings adjustment that have been applied to <i>zone</i>.</p>
+<p>The parameter values are placed into the value space as <tt>/Telephony/Status/TimeZone</tt> and <tt>/Telephony/Status/TimeZoneDST</tt>.</p>
+<p>This function is deprecated in Qtopia 4.3 an later. Use <a href="qmodemindicators.html#setNetworkTime">setNetworkTime</a>() instead.</p>
+<p>See also <a href="qmodemindicators.html#setNetworkTime">setNetworkTime</a>().</p>
+<h3 class="fn"><a name="setSignalQuality"></a>void QModemIndicators::setSignalQuality ( int <i>value</i>, int <i>maxValue</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Report an unsolicited signal quality <i>value</i>. The <i>maxValue</i> parameter indicates the maximum value for the valid range of values. e.g&#x2e; if <i>value</i> can vary between 0 and 31, then <i>maxValue</i> will be 31.</p>
+<p>If <i>value</i> is -1, then it indicates that the signal quality is currently undetectable (e.g&#x2e; no network).</p>
+<p>This function is typically called by modem vendor plug-ins that have a proprietary command for reporting the current signal quality. If the modem vendor plug-in does not call this function, the default implementation will poll the <tt>AT+CSQ</tt> command for signal quality.</p>
+<p>Client applications get access to the signal quality value using the <a href="qsignalsource.html">QSignalSource</a> class.</p>
+<p>See also <a href="qsignalsource.html">QSignalSource</a>.</p>
+<h3 class="fn"><a name="setSmsMemoryFull"></a>void QModemIndicators::setSmsMemoryFull ( <a href="qmodemindicators.html#SmsMemoryFullStatus-enum">QModemIndicators::SmsMemoryFullStatus</a> <i>value</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Sets the SMS memory full indicator to <i>value</i>.</p>
+<p>Client applications get access to the SMS memory full indicator by querying the <tt>/Telephony/Status/SMSMemoryFull</tt> value space item.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

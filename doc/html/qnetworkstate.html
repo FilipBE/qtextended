@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QNetworkState Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QNetworkState Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QNetworkState class provides very generic information about the connectivity state of the Qt Extended device. <a href="#details">More...</a></p>
+<pre>    #include &lt;QNetworkState&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qnetworkstate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qnetworkstate.html#QNetworkState">QNetworkState</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qnetworkstate.html#dtor.QNetworkState">~QNetworkState</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qnetworkstate.html#defaultWapAccount">defaultWapAccount</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qnetworkstate.html#gateway">gateway</a></b> () const</li>
+<li><div class="fn"/>QList&lt;QString&gt; <b><a href="qnetworkstate.html#interfacesOnline">interfacesOnline</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qnetworkstate.html#connected">connected</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qnetworkstate.html#defaultGatewayChanged">defaultGatewayChanged</a></b> ( QString <i>handle</i>, const QNetworkInterface &amp; <i>local</i> )</li>
+<li><div class="fn"/>void <b><a href="qnetworkstate.html#disconnected">disconnected</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QList&lt;QString&gt; <b><a href="qnetworkstate.html#availableNetworkDevices">availableNetworkDevices</a></b> ( QtopiaNetwork::Type <i>type</i> = QtopiaNetwork::Any )</li>
+<li><div class="fn"/>QtopiaNetwork::Type <b><a href="qnetworkstate.html#deviceType">deviceType</a></b> ( const QString &amp; <i>devHandle</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QNetworkState class provides very generic information about the connectivity state of the Qt Extended device.</p>
+<p>In addition to <a href="qtopianetwork.html#online">QtopiaNetwork::online</a>() which returns the current connectivity state QNetworkState provides the <a href="qnetworkstate.html#connected">connected</a>() and <a href="qnetworkstate.html#disconnected">disconnected</a>() signals which are emitted when the connectivity changes. If more specific information about a particular device is required <a href="qnetworkdevice.html">QNetworkDevice</a> should be used.</p>
+<p><a href="qnetworkstate.html#interfacesOnline">interfacesOnline</a>() returns the list of interfaces which are online. An network interface is identified via its device handle which is the configuration file that specifies the device parameter. If it is required to enumerate all or a particular type of network devices (regardless of their state) <a href="qnetworkstate.html#availableNetworkDevices">availableNetworkDevices</a>() can be used. The reverse operation is provided by <a href="qnetworkstate.html#deviceType">deviceType</a>().</p>
+<p>QNetworkState also provides gateway/routing information. The <a href="qnetworkstate.html#gateway">gateway</a>() function returns the devHandle belonging to the network device that currently provides the default route. The <a href="qnetworkstate.html#defaultGatewayChanged">defaultGatewayChanged</a>() signal is emitted when the default route changes. The default WAP configuration is returned via <a href="qnetworkstate.html#defaultWapAccount">defaultWapAccount</a>().</p>
+<p>See also <a href="qtopianetwork.html">QtopiaNetwork</a>, <a href="qnetworkdevice.html">QNetworkDevice</a>, and <a href="qnetworkconnection.html">QNetworkConnection</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QNetworkState"></a>QNetworkState::QNetworkState ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qnetworkstate.html">QNetworkState</a> object with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QNetworkState"></a>QNetworkState::~QNetworkState ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructs the <a href="qnetworkstate.html">QNetworkState</a> object.</p>
+<h3 class="fn"><a name="availableNetworkDevices"></a><a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; QNetworkState::availableNetworkDevices ( <a href="qtopianetwork.html#TypeFlag-enum">QtopiaNetwork::Type</a> <i>type</i> = QtopiaNetwork::Any )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the list of known network devices of <i>type</i>. If <i>type</i> is <tt>QtopiaNetwork::Any</tt> it returns all known devices. A device is considered to be known if a configuration file exists for it. The returned Qt Extended network interface handles are equivalent to the full qualified path to the configuration file.</p>
+<p>See also <a href="qtopianetwork.html#availableNetworkConfigs">QtopiaNetwork::availableNetworkConfigs</a>().</p>
+<h3 class="fn"><a name="connected"></a>void QNetworkState::connected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when Qt Extended changes from offline to online. If the connectivity state of a particular device is required <a href="qnetworkdevice.html#state">QNetworkDevice::state</a>() should be used.</p>
+<p>See also <a href="qtopianetwork.html#online">QtopiaNetwork::online</a>().</p>
+<h3 class="fn"><a name="defaultGatewayChanged"></a>void QNetworkState::defaultGatewayChanged ( <a href="qstring.html">QString</a> <i>handle</i>, const <a href="qnetworkinterface.html">QNetworkInterface</a> &amp; <i>local</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the default gateway for network packages changes. Such a change usually implies that a new route and new DNS information have been set. <i>handle</i> is the new default interface and <i>local</i> contains the IP details for <i>handle</i>. An empty <i>handle</i> implies that no new default gateway is available. This may happen when the last online interface changes its state to offline.</p>
+<p>See also <a href="qnetworkstate.html#gateway">gateway</a>().</p>
+<h3 class="fn"><a name="defaultWapAccount"></a><a href="qstring.html">QString</a> QNetworkState::defaultWapAccount () const</h3>
+<p>Returns the default WAP account. If no default account has been set this function returns an empty string. The returned account can be accessed via <a href="qwapaccount.html">QWapAccount</a>.</p>
+<pre>    QNetworkState state;
+    QString wapConf = state.defaultWapAccount();
+    if ( !wapConf.isEmpty() ) {
+        QWapAccount acc( state.defaultWapAccount() );
+        QString name = acc.name();  <span class="comment">//returns user visibile name</span>
+    }</pre>
+<p>See also <a href="qwapaccount.html">QWapAccount</a>.</p>
+<h3 class="fn"><a name="deviceType"></a><a href="qtopianetwork.html#TypeFlag-enum">QtopiaNetwork::Type</a> QNetworkState::deviceType ( const <a href="qstring.html">QString</a> &amp; <i>devHandle</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the type of <i>devHandle</i>.</p>
+<h3 class="fn"><a name="disconnected"></a>void QNetworkState::disconnected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when Qt Extended changes from online to offline. If the connectivity state of a particular device is required <a href="qnetworkdevice.html#state">QNetworkDevice::state</a>() should be used.</p>
+<p>See also <a href="qtopianetwork.html#online">QtopiaNetwork::online</a>().</p>
+<h3 class="fn"><a name="gateway"></a><a href="qstring.html">QString</a> QNetworkState::gateway () const</h3>
+<p>Returns the handle to the network interface that is currently used as default gateway for network packages. If <a href="qtopianetwork.html#online">QtopiaNetwork::online</a>() returns <tt>false</tt> this function returns an empty string.</p>
+<h3 class="fn"><a name="interfacesOnline"></a><a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; QNetworkState::interfacesOnline () const</h3>
+<p>This function returns the list of all interface which are online at the time of the function call. The returned list contains the device handles for these interfaces.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

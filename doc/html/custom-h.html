@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>&lt;custom.h&gt; - Device Specific Qt Extended Declarations</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">&lt;custom.h&gt; - Device Specific Qt Extended Declarations<br /><span class="subtitle"></span>
+</h1>
+<p>The custom.h file is used to customize Qt Extended for a specific hardware platform. <a href="#details">More...</a></p>
+<ul>
+</ul>
+<a name="Functionsx"></a>
+<h3>Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="custom-h.html#qpe_setBrightness">qpe_setBrightness</a></b> ( int <i>bright</i> )</li>
+<li><div class="fn"/>int <b><a href="custom-h.html#qpe_sysBrightnessSteps">qpe_sysBrightnessSteps</a></b> ()</li>
+</ul>
+<a name="Macrosx"></a>
+<h3>Macros</h3>
+<ul>
+<li><div class="fn"/><b><a href="custom-h.html#NO_WIRELESS_LAN">NO_WIRELESS_LAN</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QDSYNC_DEFAULT_PORTS">QDSYNC_DEFAULT_PORTS</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QDSYNC_DEFAULT_SERIAL_PORT">QDSYNC_DEFAULT_SERIAL_PORT</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QDSYNC_DEFAULT_TCP_PORT">QDSYNC_DEFAULT_TCP_PORT</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QDSYNC_MODEL">QDSYNC_MODEL</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QDSYNC_STARTUP_DELAY">QDSYNC_STARTUP_DELAY</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QDSYNC_SYSTEM">QDSYNC_SYSTEM</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QGLOBAL_PIXMAP_CACHE_LIMIT">QGLOBAL_PIXMAP_CACHE_LIMIT</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QPE_ARCHITECTURE">QPE_ARCHITECTURE</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QPE_NEED_CALIBRATION">QPE_NEED_CALIBRATION</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QPE_USE_MALLOC_FOR_NEW">QPE_USE_MALLOC_FOR_NEW</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_COMPATIBLE_DEVICES">QTOPIA_COMPATIBLE_DEVICES</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_ENABLE_EXPORTED_BACKGROUNDS">QTOPIA_ENABLE_EXPORTED_BACKGROUNDS</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_ENABLE_GLOBAL_BACKGROUNDS">QTOPIA_ENABLE_GLOBAL_BACKGROUNDS</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_PHONE_DEVICE">QTOPIA_PHONE_DEVICE</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_PHONE_MUX">QTOPIA_PHONE_MUX</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_PHONE_VENDOR">QTOPIA_PHONE_VENDOR</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#QTOPIA_ZONEINFO_PATH">QTOPIA_ZONEINFO_PATH</a></b></li>
+<li><div class="fn"/><b><a href="custom-h.html#V4L_VIDEO_DEVICE">V4L_VIDEO_DEVICE</a></b></li>
+</ul>
+<p>The custom.h and custom.cpp files are implemented by the system integrator.</p>
+<p>Since these files are tied to a device it is useful to have them in the device profile. If these files are not present configure will look in the traditional location, <tt>&lt;source&gt;/src/libraries/qtopia/custom-&lt;xplatform&gt;.(h|cpp)</tt>. For reference implementations of these files, the existing files found in <tt>&lt;source&gt;/devices/&lt;device&gt;/custom.*</tt> and <tt>&lt;source&gt;/src/libraries/qtopiabase/custom-&lt;xplatform&gt;.*</tt> may be of assistance.</p>
+<p>A number of macros can be defined in <tt>custom.h</tt> to customize Qt Extended for the specific hardware. The associated <tt>custom.cpp</tt> file will be compiled and linked to provide any custom functions that are required.</p>
+<hr />
+<h2>Function Documentation</h2>
+<h3 class="fn"><a name="qpe_setBrightness"></a>void qpe_setBrightness ( int <i>bright</i> )</h3>
+<p>Sets the brightness of the device's LCD backlight/frontlight to <i>bright</i>.</p>
+<p><i>bright</i> represents the LCD backlight/frontlight brightness as an integer between 0 and <a href="custom-h.html#qpe_sysBrightnessSteps">qpe_sysBrightnessSteps</a>(). A value of 0 means that the LCD display should be turned off. Values between 1 and <a href="custom-h.html#qpe_sysBrightnessSteps">qpe_sysBrightnessSteps</a>() are interpreted as varying brightness levels with 1 representing the dimmest level and <a href="custom-h.html#qpe_sysBrightnessSteps">qpe_sysBrightnessSteps</a>() the brightest.</p>
+<h3 class="fn"><a name="qpe_sysBrightnessSteps"></a>int qpe_sysBrightnessSteps ()</h3>
+<p>Returns the number of graduations supported by the device's LCD backlight/frontlight.</p>
+<p>This function is called by Qt Extended to query the number of graduations the device's LCD backlight/frontlight has.</p>
+<hr />
+<h2>Macro Documentation</h2>
+<h3 class="fn"><a name="NO_WIRELESS_LAN"></a>NO_WIRELESS_LAN</h3>
+<p>Setting this define removes all wireless LAN related parts from Qt Extended. This reduces Qt Extended footprint and increases its performance.</p>
+<h3 class="fn"><a name="QDSYNC_DEFAULT_PORTS"></a>QDSYNC_DEFAULT_PORTS</h3>
+<p>Set the ports that Synchronization uses by default.</p>
+<p>If present, this macro sets the default ports that Synchronization uses. Synchronization currently supports &quot;tcp&quot; and &quot;serial&quot;. The settings file overrides this default.</p>
+<p>Note that this macro must evaluate to a string list.</p>
+<p>If this macro is not present the default value is:</p>
+<pre>    #ifndef QDSYNC_DEFAULT_PORTS
+    #define QDSYNC_DEFAULT_PORTS QStringList() &lt;&lt; &quot;tcp&quot;
+    #endif</pre>
+<h3 class="fn"><a name="QDSYNC_DEFAULT_SERIAL_PORT"></a>QDSYNC_DEFAULT_SERIAL_PORT</h3>
+<p>Set the serial port that Synchronization uses by default.</p>
+<p>If present, this macro sets the default serial port that Synchronization uses. The settings file overrides this default.</p>
+<p>If this macro is not present the default value is:</p>
+<pre>    #ifndef QDSYNC_DEFAULT_SERIAL_PORT
+    #define QDSYNC_DEFAULT_SERIAL_PORT &quot;/dev/ttyS0&quot;
+    #endif</pre>
+<h3 class="fn"><a name="QDSYNC_DEFAULT_TCP_PORT"></a>QDSYNC_DEFAULT_TCP_PORT</h3>
+<p>Set the TCP port that Synchronization uses by default.</p>
+<p>If present, this macro sets the default TCP port that Synchronization uses. Note that the display number is added to the port so that multiple instances can run on the same machine. The default display number is 0. The settings file overrides this default.</p>
+<p>If this macro is not present the default value is:</p>
+<pre>    #ifndef QDSYNC_DEFAULT_TCP_PORT
+    #define QDSYNC_DEFAULT_TCP_PORT 4245
+    #endif</pre>
+<h3 class="fn"><a name="QDSYNC_MODEL"></a>QDSYNC_MODEL</h3>
+<p>Set the model that Synchronization reports.</p>
+<p>If present, this macro sets the model that Synchronization uses. This is a string that is shown to the user.</p>
+<p>If this macro is not present the default value is:</p>
+<pre>    #ifndef QDSYNC_MODEL
+    #define QDSYNC_MODEL Qtopia::architecture()
+    #endif</pre>
+<p>See also <a href="qtopia.html#architecture">Qtopia::architecture</a>().</p>
+<h3 class="fn"><a name="QDSYNC_STARTUP_DELAY"></a>QDSYNC_STARTUP_DELAY</h3>
+<p>Set the delay for the initial Synchronization launch.</p>
+<p>If present, this macro sets the initial delay for Synchronization launch (in milliseconds). A freshly-booted system does not typically require synchronization capability immediately and delaying the launch of Synchronization can improve startup time.</p>
+<p>If this macro is not present the default is to have no delay. Note that an algorithm attempts to detect when the device is busy and automatically delays launching of Synchronization so leaving this undefined is not guaranteed to make Synchronization launch immediately.</p>
+<h3 class="fn"><a name="QDSYNC_SYSTEM"></a>QDSYNC_SYSTEM</h3>
+<p>Set the system that Synchronization reports.</p>
+<p>If present, this macro sets the system that Synchronization uses. Qt Extended Sync Agent plugins may handle specific systems.</p>
+<p>If this macro is not present the default value is:</p>
+<pre>    #ifndef QDSYNC_SYSTEM
+    #define QDSYNC_SYSTEM &quot;Qtopia&quot;
+    #endif</pre>
+<h3 class="fn"><a name="QGLOBAL_PIXMAP_CACHE_LIMIT"></a>QGLOBAL_PIXMAP_CACHE_LIMIT</h3>
+<p>This constant is provided to aid memory management for systems with large, high bit per pixel(bpp) screens. If this macro is not present the default value is:</p>
+<pre>    #ifndef QGLOBAL_PIXMAP_CACHE_LIMIT
+    #define QGLOBAL_PIXMAP_CACHE_LIMIT 1048576     <span class="comment">// 1 Mb</span>
+    #endif</pre>
+<p>See also <a href="syscust-memusage.html#shared-memory-cache">Shared Memory Cache</a> and <a href="qglobalpixmapcache.html">QGlobalPixmapCache</a>.</p>
+<h3 class="fn"><a name="QPE_ARCHITECTURE"></a>QPE_ARCHITECTURE</h3>
+<p>This macro sets the value returned by the <a href="qtopia.html#architecture">Qtopia::architecture</a>() function.</p>
+<h3 class="fn"><a name="QPE_NEED_CALIBRATION"></a>QPE_NEED_CALIBRATION</h3>
+<p>If you have a touch screen that requires calibration you should set this define.</p>
+<h3 class="fn"><a name="QPE_USE_MALLOC_FOR_NEW"></a>QPE_USE_MALLOC_FOR_NEW</h3>
+<p>Setting this define causes memory to be allocated using <tt>malloc()</tt> instead of the default C++ new implementation. This is faster in some cases.</p>
+<p>When Qt Extended is built with this define it implements C++ operator new functions that call malloc. You should link with gcc instead of g++ to avoid clashes with the stdc++lib versions of the C++ operator new functions.</p>
+<h3 class="fn"><a name="QTOPIA_COMPATIBLE_DEVICES"></a>QTOPIA_COMPATIBLE_DEVICES</h3>
+<p>Set this macro to specify the devices whose packages are known to be compatible with this device. It is a comma delimited string and by convention the first device listed is this device.</p>
+<p>This macro is used by packagemanager as a guide to filter out packages not suitable for the device.</p>
+<p>If this macro is not present the default value is:</p>
+<pre>    #ifndef QTOPIA_COMPATIBLE_DEVICES
+    #define QTOPIA_COMPATIBLE_DEVICES &quot;Unknown&quot;
+    #endif</pre>
+<h3 class="fn"><a name="QTOPIA_ENABLE_EXPORTED_BACKGROUNDS"></a>QTOPIA_ENABLE_EXPORTED_BACKGROUNDS</h3>
+<p>Set this macro to have a background image used as the background for the launcher.</p>
+<h3 class="fn"><a name="QTOPIA_ENABLE_GLOBAL_BACKGROUNDS"></a>QTOPIA_ENABLE_GLOBAL_BACKGROUNDS</h3>
+<p>Set this macro to have a background image used as the background for all applications. This has no effect unless used with <a href="custom-h.html#QTOPIA_ENABLE_EXPORTED_BACKGROUNDS">QTOPIA_ENABLE_EXPORTED_BACKGROUNDS</a>.</p>
+<h3 class="fn"><a name="QTOPIA_PHONE_DEVICE"></a>QTOPIA_PHONE_DEVICE</h3>
+<p>Set this macro to specify the default modem device to use. For example, the first physical COM port would be specified with <tt>&quot;/dev/ttyS0&quot;</tt>. The <tt>QTOPIA_PHONE_DEVICE</tt> environment variable can override this value.</p>
+<p>See also <a href="syscust-gsm.html">GSM Modem Integration</a>.</p>
+<h3 class="fn"><a name="QTOPIA_PHONE_MUX"></a>QTOPIA_PHONE_MUX</h3>
+<p>Set this macro to the string <tt>no</tt> to disable multiplexing. The <tt>QTOPIA_PHONE_MUX</tt> environment variable can override this value.</p>
+<p>This setting is typically used for testing phone vendor plug-ins before development of the multiplexer plug-in has been finished, or to determine if a modem problem is due to problems in the multiplexer plug-in.</p>
+<p>See also <a href="syscust-gsm.html">GSM Modem Integration</a> and <a href="tut-multiplexing.html">Tutorial: Writing a Multiplexer Plug-in</a>.</p>
+<h3 class="fn"><a name="QTOPIA_PHONE_VENDOR"></a>QTOPIA_PHONE_VENDOR</h3>
+<p>Set this macro to specify the default phone vendor and multiplexer plug-ins to use. The <tt>QTOPIA_PHONE_VENDOR</tt> environment variable can override this value.</p>
+<p>See also <a href="syscust-gsm.html">GSM Modem Integration</a>.</p>
+<h3 class="fn"><a name="QTOPIA_ZONEINFO_PATH"></a>QTOPIA_ZONEINFO_PATH</h3>
+<p>Set this macro to specify an alternate location to the zoneinfo database. You should set this if your zoneinfo database is not in the usual location of <tt>/usr/share/zoneinfo</tt>.</p>
+<p>See also <a href="syscust-time.html">Time on an Embedded Device</a>.</p>
+<h3 class="fn"><a name="V4L_VIDEO_DEVICE"></a>V4L_VIDEO_DEVICE</h3>
+<p>Set this macro to specify the <a href="qtextended-dependencies.html#video4linux">Video4Linux</a> device to use. If this macro is not present the default value is:</p>
+<pre>    #ifndef V4L_VIDEO_DEVICE
+    #define V4L_VIDEO_DEVICE &quot;/dev/video&quot;
+    #endif</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

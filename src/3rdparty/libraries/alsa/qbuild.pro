@@ -1,0 +1,5 @@
+MODULE_NAME=alsa
+DEP.libs [
+    TYPE=DEPENDS PERSISTED SDK
+    EVAL="LIBS+=-lasound"
+]

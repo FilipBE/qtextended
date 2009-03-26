@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Creating a QtUiTest Test Widget</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Creating a QtUiTest Test Widget<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#when-a-test-widget-is-required">When a Test Widget is Required</a></li>
+<li><a href="#choosing-the-right-interfaces">Choosing the Right Interfaces</a></li>
+<li><a href="#implementing-the-test-widget">Implementing the Test Widget</a></li>
+<ul><li><a href="#plugin-method">Plugin method</a></li>
+<ul><li><a href="#test-widget-class">Test widget class</a></li>
+<li><a href="#test-widget-factory">Test widget factory</a></li>
+</ul>
+<li><a href="#multiple-inheritance-method">Multiple inheritance method</a></li>
+</ul>
+<li><a href="#customizing-behavior-for-standard-ui-elements">Customizing Behavior for Standard UI Elements</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p><a href="qtuitest.html">QtUiTest</a> provides support for simulating high-level user interface interactions. Conceptually these take the form of, for example, <i>Select 'Dog' from the widget labelled 'Animal'</i>, or <i>Enter 'Bob' into the widget labelled 'Name'</i>.</p>
+<p>Crucially, testcases do not need to specify the exact type of each widget or how to interact with it. Instead the logic for interacting with different types of widgets resides on the system under test, either alongside the implementation of each widget or in a plugin. Each class of widget which <a href="qtuitest.html">QtUiTest</a> can interact with has a corresponding wrapper class, referred to as a test widget.</p>
+<p>This document explains when a test widget must be created and how it is implemented.</p>
+<a name="when-a-test-widget-is-required"></a>
+<h2>When a Test Widget is Required</h2>
+<p><a href="qtuitest.html">QtUiTest</a> includes support for most widgets used throughout Qt Extended. When a new type of widget is introduced, a test widget may be required.</p>
+<p>In these cases, a test widget will almost certainly have to be implemented:</p>
+<ul>
+<li>A custom widget implements painting and interaction by overriding functions such as <a href="qwidget.html#paintEvent">paintEvent()</a> and <a href="qwidget.html#keyPressEvent">keyPressEvent()</a>.</li>
+<li>The behavior of a major user interface element has been customized (for example, a device profile is used which has a device-specific way of accepting incoming phone calls).</li>
+</ul>
+<p>In these cases, a test widget will usually not be required:</p>
+<ul>
+<li>A custom widget acts primarily as a container for standard widgets. In this case, <a href="qtuitest.html">QtUiTest</a> can interact with the contained widgets as normal.</li>
+<li>A custom widget subclasses a standard widget and correctly reimplements virtual functions. For example, a subclass of <a href="qabstractitemview.html">QAbstractItemView</a> which performs custom painting with a custom model will work with no additional effort if <a href="qabstractitemview.html#visualRect">visualRect()</a> is implemented correctly (for mouse interaction), standard item view key event handling is used and the item model accurately reports its data.</li>
+</ul>
+<p>As an example, consider a testcase for creating a contact in the addressbook application. At one point in the testcase, we wish to set the contact's title to Doctor:</p>
+<p><tt>select(&quot;Dr&quot;, &quot;Title&quot;);</tt></p>
+<p>This requires that the widget referred to by &quot;Title&quot; implements the <a href="qtuitest-selectwidget.html">SelectWidget</a> interface. If this is not the case, the testcase fails with a failure message like the following:</p>
+<p><tt>FAIL! : sys_addressbook::creating_a_contact() ERROR: Title (QComboBox(0x80b2768)) is not a SelectWidget.</tt></p>
+<p>This error message indicates that the &quot;Title&quot; widget, which is a <a href="qcombobox.html">QComboBox</a>, does not have any corresponding test widget which implements the <a href="qtuitest-selectwidget.html">SelectWidget</a> interface, and therefore can't have items selected from it.</p>
+<p>Note that not all errors arising from missing test widgets will be of this form.</p>
+<a name="choosing-the-right-interfaces"></a>
+<h2>Choosing the Right Interfaces</h2>
+<p>Test widgets must implement one or more of a standard set of interfaces belonging to the <a href="qtuitest.html">QtUiTest</a> namespace.</p>
+<p>Test widget interfaces map to the conceptual purpose of a widget from a user's perspective. The available interfaces are listed below:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Interface</th><th>Applies to</th><th>Examples</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qtuitest-widget.html">Widget</a></td><td>All 2D user interface elements.</td><td><a href="qwidget.html">QWidget</a></td></tr>
+<tr valign="top" class="even"><td><a href="qtuitest-activatewidget.html">ActivateWidget</a></td><td>Widgets which are activated to trigger some action.</td><td><a href="qabstractbutton.html">QAbstractButton</a></td></tr>
+<tr valign="top" class="odd"><td><a href="qtuitest-checkwidget.html">CheckWidget</a></td><td>Widgets which can be checked and unchecked.</td><td><a href="qcheckbox.html">QCheckBox</a>, <a href="qradiobutton.html">QRadioButton</a></td></tr>
+<tr valign="top" class="even"><td><a href="qtuitest-textwidget.html">TextWidget</a></td><td>Widgets which display text.</td><td><a href="qlineedit.html">QLineEdit</a>, <a href="qtextedit.html">QTextEdit</a>, <a href="qmenu.html">QMenu</a>, <a href="qabstractitemview.html">QAbstractItemView</a>, <a href="qlabel.html">QLabel</a>, many others</td></tr>
+<tr valign="top" class="odd"><td><a href="qtuitest-inputwidget.html">InputWidget</a></td><td>Widgets which can accept text input.</td><td><a href="qlineedit.html">QLineEdit</a>, <a href="qtextedit.html">QTextEdit</a></td></tr>
+<tr valign="top" class="even"><td><a href="qtuitest-listwidget.html">ListWidget</a></td><td>Widgets which display a list of items.</td><td><a href="qabstractitemview.html">QAbstractItemView</a>, <a href="qmenu.html">QMenu</a></td></tr>
+<tr valign="top" class="odd"><td><a href="qtuitest-selectwidget.html">SelectWidget</a></td><td>Widgets which allow an item to be selected from a list.</td><td><a href="qabstractitemview.html">QAbstractItemView</a>, <a href="qmenu.html">QMenu</a></td></tr>
+</table></p>
+<p>Each test widget should implement all interfaces applicable to the wrapped widget. Test widgets can subclass other test widgets and reuse already-implemented interfaces. For example, the test widget for <a href="qcheckbox.html">QCheckBox</a> could inherit from the test widget for <a href="qabstractbutton.html">QAbstractButton</a> to avoid having to reimplementing the <a href="qtuitest-widget.html">Widget</a>, <a href="qtuitest-textwidget.html">TextWidget</a> and <a href="qtuitest-activatewidget.html">ActivateWidget</a> interfaces again.</p>
+<p>Some test widget interfaces are strongly related and are likely to be implemented in pairs. Almost all widgets which accept text input also display the entered text, so any test widget which implements <a href="qtuitest-inputwidget.html">InputWidget</a> will usually implement <a href="qtuitest-textwidget.html">TextWidget</a>. Almost all widgets which can be selected from also display the selectable items, so any test widget which implements <a href="qtuitest-selectwidget.html">SelectWidget</a> will usually implement <a href="qtuitest-listwidget.html">ListWidget</a>.</p>
+<a name="implementing-the-test-widget"></a>
+<h2>Implementing the Test Widget</h2>
+<p>To make a new test widget visible to <a href="qtuitest.html">QtUiTest</a>, there are two separate approaches which can be taken, each with their own advantages.</p>
+<a name="plugin-method"></a>
+<h3>Plugin method</h3>
+<p>The plugin method involves adding the test widget code into a plugin which is then loaded by <a href="qtuitest.html">QtUiTest</a> at runtime. This is the most suitable method to use in most cases and the only method used for the test widgets shipped with <a href="qtuitest.html">QtUiTest</a>.</p>
+<p>Advantages to the plugin method compared to the multiple inheritance method include:</p>
+<ul>
+<li>The code for the test widget is cleanly separated from the wrapped widget and hence easy to omit from a release build without the need for <tt>#ifdef</tt>s or similar measures.</li>
+<li>It is easier to reuse test widget code because test widgets aren't directly tied to wrapped widgets.</li>
+<li>It is possible to customize the process of <a href="qtuitest-widgetfactory.html#find">finding</a> and <a href="qtuitest-widgetfactory.html#create">creating</a> test widgets.</li>
+<li>Typical multiple inheritance difficulties are avoided, such as the test widget interface API shadowing the API of the wrapped widget.</li>
+</ul>
+<a name="test-widget-class"></a>
+<h4>Test widget class</h4>
+<p>Each test widget class needs to inherit from <a href="qobject.html">QObject</a> and the relevant test widget interfaces.</p>
+<p>In practice, it is common for a test widget class hierarchy to be written which closely mirrors the wrapped widget class hierarchy. This makes it possible to avoid rewriting the code for common interfaces such as <a href="qtuitest-widget.html">QtUiTest::Widget</a> many times.</p>
+<p>It is possible to subclass the test widgets shipped with <a href="qtuitest.html">QtUiTest</a>, although they are not guaranteed to remain source or binary compatible across releases. The convention used in the reference plugins to generate a test widget class name is to take the wrapped widget class name, drop any leading Q, and prefix Test. For example, the test widget wrappers for <a href="qwidget.html">QWidget</a> and <a href="qabstractitemview.html">QAbstractItemView</a> are named TestWidget and TestAbstractItemView respectively.</p>
+<p>Using the plugin approach, while subclassing from TestWidget to avoid reimplementing the <a href="qtuitest-widget.html">QtUiTest::Widget</a> interface, would result in a class declaration like the following:</p>
+<pre>    #include &lt;testwidget.h&gt;
+    class TestCustomComboBox : public TestWidget, public QtUiTest::ListWidget,
+        public QtUiTest::SelectWidget, public QtUiTest::TextWidget
+    {
+    Q_OBJECT
+    Q_INTERFACES(
+        QtUiTest::ListWidget
+        QtUiTest::SelectWidget
+        QtUiTest::TextWidget)
+
+    public:
+        TestCustomComboBox(CustomComboBox* wrapped);
+        virtual ~TestCustomComboBox();
+
+        <span class="comment">// QtUiTest::ListWidget members</span>
+        virtual QStringList list() const;
+        virtual QRect visualRect(const QString&amp;) const;
+
+        <span class="comment">// QtUiTest::SelectWidget members</span>
+        virtual bool canSelect(QString const&amp;) const;
+        virtual bool select(QString const&amp;);
+
+        <span class="comment">// QtUiTest::TextWidget members</span>
+        virtual QString text() const;
+        virtual QString selectedText() const;
+
+    private:
+        CustomComboBox* m_wrapped;
+    };</pre>
+<p>Implementing the test widget is as simple as retrieving the necessary information from the wrapped widget. Test widgets can create and use other test widgets at runtime when necessary, as shown in the <tt>list()</tt> function below.</p>
+<pre>    TestCustomComboBox::TestCustomComboBox(CustomComboBox* wrapped)
+        : m_wrapped(wrapped)
+    {}
+
+    QStringList TestCustomComboBox::list() const
+    { return qtuitest_cast&lt;QtUiTest::ListWidget*&gt;(m_wrapped-&gt;view())-&gt;list(); }
+
+    QString TestCustomComboBox::text() const
+    { return list().join(&quot;\n&quot;); }
+
+    QString TestCustomComboBox::selectedText() const
+    { return m_wrapped-&gt;currentText(); }</pre>
+<p>Memory management is handled automatically; there will be a maximum of one TestCustomComboBox instance created for any CustomComboBox and it will be destroyed when the underlying CustomComboBox is destroyed.</p>
+<a name="test-widget-factory"></a>
+<h4>Test widget factory</h4>
+<p>When using the plugin approach it is also necessary to implement a factory class. This serves as the entry point to the plugin and handles the logic for creating test widgets.</p>
+<p>The test widget factory must subclass <a href="qtuitest-widgetfactory.html">QtUiTest::WidgetFactory</a> and implement the <a href="qtuitest-widgetfactory.html#create">create()</a> function to create test widgets and the <a href="qtuitest-widgetfactory.html#keys">keys()</a> function to report which widget classes can be wrapped.</p>
+<pre>    class TestWidgetsFactory : public QObject, public QtUiTest::WidgetFactory
+    {
+        Q_OBJECT
+        Q_INTERFACES(QtUiTest::WidgetFactory)
+
+    public:
+        TestWidgetsFactory();
+
+        virtual QObject* create(QObject*);
+        virtual QStringList keys() const;
+    };</pre>
+<p>The <a href="qtuitest-widgetfactory.html#create">create()</a> function is called when a new test widget is to be created. Our example widget factory handles CustomComboBox widgets and nothing else.</p>
+<pre>    QObject* TestWidgetsFactory::create(QObject* wrapped)
+    {
+        if ((CustomComboBox* ccb = qobject_cast&lt;CustomComboBox*&gt;(wrapped))) {
+            return new TestCustomComboBox(ccb);
+        }
+        return 0;
+    }</pre>
+<p>The <a href="qtuitest-widgetfactory.html#keys">keys()</a> function must report which classes can be handled by this factory. Any object passed into the <a href="qtuitest-widgetfactory.html#create">create()</a> function is guaranteed to be one of the classes returned by <a href="qtuitest-widgetfactory.html#keys">keys()</a>. Classes are handled from most to least specific; when creating a test widget for CustomComboBox, a factory which handles CustomComboBox has higher priority over a factory which handles <a href="qwidget.html">QWidget</a>. If two or more factories handle the same class, it is undefined which factory will be asked to create the test widget.</p>
+<p>Our example factory can only handle CustomComboBox widgets so it returns that class name only.</p>
+<pre>    QStringList TestWidgetsFactory::keys() const
+    {
+        return QStringList() &lt;&lt; &quot;CustomComboBox&quot;;
+    }</pre>
+<p>Finally, the plugin needs to be exported using the standard Qt plugin mechanism:</p>
+<pre>    #include &lt;qplugin.h&gt;
+    Q_EXPORT_PLUGIN2(customtestwidgets, TestWidgetsFactory)</pre>
+<p>In the project's <tt>qbuild.pro</tt>, the <tt>PLUGIN_TYPE</tt> must be set to <tt>qtuitest_widgets</tt>.</p>
+<a name="multiple-inheritance-method"></a>
+<h3>Multiple inheritance method</h3>
+<p>The multiple inheritance approach requires the widget being wrapped to implement the test widget interfaces itself.</p>
+<p>Advantages to the multiple inheritance method compared to the plugin method include:</p>
+<ul>
+<li>The code for the test widget is in the same file as the wrapped widget and hence is more likely to be maintained if the widget is modified.</li>
+<li>The test widget has access to the internal structures of the wrapped widget.</li>
+<li>There is no need to write a <a href="qtuitest-widgetfactory.html">WidgetFactory</a> class to handle creation of test widgets.</li>
+</ul>
+<p>For example, implementing a custom combobox class along with all of the associated test widget interfaces would result in a class declaration like:</p>
+<pre>    class CustomComboBox : public QComboBox, public QtUiTest::Widget,
+        public QtUiTest::ListWidget, public QtUiTest::SelectWidget,
+        public QtUiTest::TextWidget
+    {
+    Q_OBJECT
+    Q_INTERFACES(
+        QtUiTest::Widget
+        QtUiTest::ListWidget
+        QtUiTest::SelectWidget
+        QtUiTest::TextWidget)
+
+    public:
+        CustomComboBox(QWidget* parent = 0);
+        ...
+
+        <span class="comment">// CustomComboBox members</span>
+        void addCustomItem(const QVariant&amp; item);
+        void addCustomItems(const QVariantList&amp; items);
+        ...
+
+        <span class="comment">// QtUiTest::Widget members</span>
+        virtual const QRect&amp; geometry() const;
+        virtual QRect rect() const;
+        ...
+
+        <span class="comment">// QtUiTest::ListWidget members</span>
+        virtual QStringList list() const;
+        virtual QRect visualRect(const QString&amp;) const;
+        ...
+
+        <span class="comment">// etc...</span>
+    };</pre>
+<p>Implementing the test widget is as simple as returning the necessary information. Test widgets can create and use other test widgets at runtime when necessary, as shown in the <tt>list()</tt> function below.</p>
+<pre>    QStringList CustomComboBox::list() const
+    { return qtuitest_cast&lt;QtUiTest::ListWidget*&gt;(view())-&gt;list(); }
+
+    QString CustomComboBox::text() const
+    { return list().join(&quot;\n&quot;); }
+
+    QString CustomComboBox::selectedText() const
+    { return currentText(); }</pre>
+<a name="customizing-behavior-for-standard-ui-elements"></a>
+<h2>Customizing Behavior for Standard UI Elements</h2>
+<p>In test cases it is possible to refer to abstract UI elements such as the home screen or the soft menu bar with code such as the following:</p>
+<pre>    select(&quot;New contact...&quot;, optionsMenu());</pre>
+<p>In the above example, the <tt>optionsMenu()</tt> function automatically resolves to whatever widget is responsible for showing the options menu for the standard Qt Extended user interface. Similar functions include <tt>tabBar()</tt>, <tt>progressBar()</tt>, <tt>softMenu()</tt> and <tt>launcherMenu()</tt>.</p>
+<p>If the Qt Extended UI is heavily customized, it may be necessary to override the behavior of these functions. <a href="qtuitest.html#WidgetType-enum">WidgetType</a> enumerates the types of widgets which can have their resolution overridden this way.</p>
+<p>Overriding the behavior for a particular <a href="qtuitest.html#WidgetType-enum">WidgetType</a> requires a <a href="qtuitest-widgetfactory.html">WidgetFactory</a> to be implemented (as detailed <a href="#test-widget-factory">above</a>) and the <a href="qtuitest-widgetfactory.html#find">find()</a> function to be overridden. This function may return an actual widget or a test widget. Returning a test widget is useful in cases where a particular <a href="qtuitest.html#WidgetType-enum">WidgetType</a> does not map to exactly one actual widget.</p>
+<p>For example, consider a device with two significant customizations. The options menu, typically a simple <a href="qmenu.html">QMenu</a> raised by a context key on the device, has been moved to an always-onscreen singleton widget. The device can also accept and hangup calls by sliding the top half of the device up or down (which is seen by Qt as a special key click), as well as through the typical dedicated keys and items in the options menu.</p>
+<p>In this example, for the options menu it is sufficient for <a href="qtuitest-widgetfactory.html#find">find()</a> to simply return a pointer to the new options menu widget. For the call manager, <a href="qtuitest-widgetfactory.html#find">find()</a> must construct and return a special test widget which knows how to simulate all the necessary key clicks for call management as well as interacting with the options menu.</p>
+<p>The following <a href="qtuitest-widgetfactory.html#find">find()</a> function achieves this:</p>
+<pre>    QObject* CustomFactory::find(QtUiTest::WidgetType type)
+    {
+        <span class="comment">// For the options menu, use our permanently onscreen widget</span>
+        if (type == QtUiTest::OptionsMenu)
+            return OnScreenOptionsMenu::instance();
+
+        <span class="comment">// For the call manager, create our test widget which knows how to simulate</span>
+        <span class="comment">// device-specific key clicks.  Since there is no underlying widget,</span>
+        <span class="comment">// just create and reuse a single test widget throughout the whole lifetime</span>
+        <span class="comment">// of the program.</span>
+        if (type == QtUiTest::CallManager) {
+            static TestCustomCallManager testCallManager;
+            return &amp;testCallManager;
+        }
+
+        <span class="comment">// For all other widget types, just use the default find behavior.</span>
+        return 0;
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

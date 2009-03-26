@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Introduction to QBuild</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Introduction to QBuild<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>QBuild is a build tool. It does the job of reading qbuild.pro files and building the app, lib or plugin as directed. Compared to previous versions of Qt Extended, QBuild does the work of qtopiamake, qmake and make.</p>
+<p>QBuild itself is quite simple. It parses qbuild.pro files similarly to qmake to determine the project variables. It runs backend code from .js files (via <a href="foo/../../qtscript.html">QtScript</a>). The backend code will then create rules which are similar to the rules that would be written in a Makefile. QBuild executes these rules, taking advantage of multiple CPU cores if available.</p>
+<p align="center"><img src="images/qbuild_overview.png" /></p><p>The build system does not concern itself with the project parser or rule engine. However, the .js files that provide the backend code are considered part of the build system.</p>
+<a name="converting-from-qtopiamake-qmake"></a>
+<h3>Converting from qtopiamake/qmake</h3>
+<p>QBuild is not a drop-in replacement for qmake, hence projects must be ported to use it. This is not a complex process but it is not trivial either so there is no automated process to port projects for you. The complete set of porting information is in <a href="task-porting-to-qbuild-1.html">Porting to QBuild</a>.</p>
+<p>See also <a href="basics.html">Basics</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

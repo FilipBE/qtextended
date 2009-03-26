@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Customizing Domains</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Customizing Domains<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#modifying-application-level-policy">Modifying application level policy</a></li>
+<li><a href="#modifying-os-level-policy">Modifying OS Level policy</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#domains">Domains</a></li>
+</ul>
+<p>The following sections describe the methods to customize policy domains. The intended audience for this section are system integrators.</p>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>An SXE domain is a keyword, made up of lower case a-z and the underscore character, for example &quot;untrusted&quot;. The domain specifies allowed access rights, both of</p>
+<ul>
+<li>SXE applications level policy eg, sending qcop messages</li>
+<li>LIDS OS level policy eg, access to devices or capabilities</li>
+</ul>
+<a name="modifying-application-level-policy"></a>
+<h2>Modifying application level policy</h2>
+<p>Application level policy is defined in a file called <tt>sxe.profiles</tt>. Domains typically follow the following format:</p>
+<pre>    [Domain]
+    requests
+    ...
+    #</pre>
+<p>The SXE Discovery Mode can be used to determine what requests a particular application makes as it runs. In this mode all requests are allowed and logged, but doing this has a severe impact on performance. To operate <tt>qpe</tt> in SXE Discovery Mode, ensure Qt Embedded is compiled in debug mode and that and the <tt>SXE_DISCOVERY_MODE</tt> environment variable is exported. The requests will all be logged in <tt>/tmp/qtopia-0/sxe_discovery.log</tt> (where 0 is the session). The requests can be compared with <tt>sxe.profiles</tt> to see if the domain is lacking requests used by the application.</p>
+<p>Alternatively, an application can run without SXE discovery mode and if there is a request made that is not in the application's declared domain then it will breach policy and the qpe console output and/or security log can be viewed to see what request was needed.</p>
+<p>If <tt>sxe.profiles</tt> needs to be updated simply add any extra requests to the appropriate domain. It is helpful to note that the wildcard * maybe be placed at the end of a request. This is useful for situations where a family of requests, which share the same prefix, can be added as one entry.</p>
+<p><b>Note:</b> After changing policy, ensure that <tt>sxe.profiles</tt> in the image directory is up to date. If shadow building, most of the time copying &lt;qt-extended-root-dir&gt;/etc/sxe.profiles to &lt;image-dir&gt;/etc/sxe.profiles is sufficient.</p>
+<a name="modifying-os-level-policy"></a>
+<h2>Modifying OS Level policy</h2>
+<p>OS Level policy is defined by scripts in the &lt;qt-extended-root-dir&gt;/etc/<a href="#sxe-domains">sxe_domains</a> directory. The script names consist of the domain name preceded by sxe_qtopia, eg sxe_qtopia_untrusted. The scripts run the lidsconf utility which is used to apply a set of MAC rules. See also <a href="syscust-sxe.html">SXE - System Integration</a>.</p>
+<a name="troubleshooting"></a>
+<h2>Troubleshooting</h2>
+<p>To trouble-shoot SXE problems try these ideas:</p>
+<ul>
+<li>run <tt>qbuild &amp;&amp; qbuild image</tt> in the build root to ensure the image is up to date</li>
+<li>flash the image onto your device to make sure the device is up to date</li>
+<li>use the <tt>dumpsec.pl</tt> script. Without parameters it will show the program id associated with each registered binary, by providing a parameter of program name or program id, eg <tt>dumpsec.pl Camera</tt> or <tt>dumpsec.pl 32</tt> a detailed listing with be shown for matching application/s.</li>
+<li>check the applications <tt>qbuild.pro</tt> file to ensure the correct domain has been declared by the application</li>
+<li>compile in debug mode and export <tt>SXE_DISCOVERY_MODE</tt> to see what requests an application is making.</li>
+<li>turn on SXE logging in the log utility</li>
+</ul>
+<a name="sxe-domains"></a><a name="domains"></a>
+<h2>Domains</h2>
+<p>The SXE operates with the two domains listed below:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>SXE Profile name</th><th>Access Controls Effect</th><th>Information display</th><th>Risk level</th></tr></thead>
+<tr valign="top" class="odd"><td>untrusted</td><td>Restricts application privileges to that of games</td><td>requests minimal access privileges on your device</td><td>Low</td></tr>
+<tr valign="top" class="even"><td>trusted</td><td>Unlimited access to device filesystem and application level service requests</td><td>requests unrestricted access on your device</td><td>High</td></tr>
+</table></p>
+<p>(You may notice that there is a &quot;qpe domain&quot; in sxe.profiles, the <tt>qpe</tt> server needs to declare this for historical reasons so it should not be removed, but for all other intents and purposes it can be ignored)</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

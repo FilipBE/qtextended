@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qcop tool</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">qcop tool<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>The <tt>qcop</tt> command-line tool can be used to access the <a href="qtextendedipc.html">Qt Extended IPC</a> system from shell scripts and for debugging purposes. Running <tt>qcop</tt> without any arguments will print a help message. The other commands are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>qcop send</tt> <i>channel</i> <i>message</i> [<i>parameters</i>]</td><td>Send <i>message</i> on <i>channel</i> with the specified <i>parameters</i>.</td></tr>
+<tr valign="top" class="even"><td><tt>qcop service send</tt> <i>name</i> <i>message</i> [<i>parameters</i>]</td><td>Send <i>message</i> to the application that implements the service <i>name</i> with the specified <i>parameters</i>.</td></tr>
+<tr valign="top" class="odd"><td><tt>qcop watch</tt> <i>channel</i> [<i>channel</i> ..&#x2e;]</td><td>Watch all messages on <i>channel</i> and print them to standard output. If <i>channel</i> has the form <tt>QPE/Application/foo</tt>, this will watch all messages to the application <tt>foo</tt>.</td></tr>
+<tr valign="top" class="even"><td><tt>qcop service watch</tt> <i>name</i> [<i>name</i> ..&#x2e;]</td><td>Same as above, but watches the application associated with the service <i>name</i> instead.</td></tr>
+<tr valign="top" class="odd"><td><tt>qcop wait</tt> <i>channel</i> <i>message</i></td><td>Waits for <i>message</i> to appear on <i>channel</i> and then prints the message arguments to standard output.</td></tr>
+<tr valign="top" class="even"><td><tt>qcop service wait</tt> <i>name</i> <i>message</i></td><td>Same as above, but waits on the application channel for the application associated with the service. This can be used to wait for someone to send a message to the service.</td></tr>
+<tr valign="top" class="odd"><td><tt>qcop query</tt> <i>channel</i></td><td>Query all messages that the application on <i>channel</i> can respond to. The application needs to handle the special message <tt>__query_qcop_messages(QString)</tt> for this to work correctly. The easiest method is to use the <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> or <a href="qtopiaabstractservice.html">QtopiaAbstractService</a> classes to implement your service. These classes will automatically respond to the query message. The argument to the message is the name of the channel to respond on. The <tt>qcop query</tt> command has a default timeout of 1 second unless overridden by the <tt>timeout</tt> flag.</td></tr>
+<tr valign="top" class="even"><td><tt>qcop service query</tt> <i>name</i></td><td>Same as above, but for the service called <i>name</i>.</td></tr>
+<tr valign="top" class="odd"><td><tt>qcop list</tt></td><td>List all services and the Qt Extended IPC channels that they map to.</td></tr>
+</table></p>
+<p>The following flags can be specified before a command to modify its behavior:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Flag</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>hex</tt></td><td>Print the contents of <a href="qbytearray.html">QByteArray</a> parameters in hexadecimal (default).</td></tr>
+<tr valign="top" class="even"><td><tt>nohex</tt></td><td>Print the contents of <a href="qbytearray.html">QByteArray</a> parameters as Latin-1 strings.</td></tr>
+<tr valign="top" class="odd"><td><tt>timeout</tt> <i>msecs</i></td><td>Set the timeout for the command to <i>msecs</i> milliseconds.</td></tr>
+<tr valign="top" class="even"><td><tt>notimeout</tt></td><td>Disable the timeout for the command. This is the default for most commands, except <tt>qcop query</tt> which has a default timeout of 1 second.</td></tr>
+<tr valign="top" class="odd"><td><tt>enum</tt> <i>name</i></td><td>Recognise <i>name</i> as an enumerated type in message names.</td></tr>
+</table></p>
+<p>The following example will watch for all Qt Extended IPC messages on the <tt>QPE/System</tt> channel:</p>
+<pre>    qcop watch QPE/System</pre>
+<p>The channel name for <tt>qcop watch</tt> can include wildcards. For example, the following will watch all network-related channels:</p>
+<pre>    qcop watch 'QPE/Network*'</pre>
+<p>It is usually necessary to quote channel names when they include wildcards, especially when using <tt>qcop watch '*'</tt>.</p>
+<p>The following example sends a <tt>Time::editTime()</tt> message to the <tt>Time</tt> service:</p>
+<pre>    qcop service send Time 'editTime()'</pre>
+<p>Multiple commands can be separated by <tt>--</tt> on the command line. The following example sends the <tt>dial()</tt> message to the <tt>QPE/pppd</tt> channel and then waits for up to 30 seconds for a <tt>dialResult(bool)</tt> message on the same channel.</p>
+<pre>    qcop send QPE/pppd 'dial()' -- timeout 30000 wait QPE/pppd 'dialResult(bool)'</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

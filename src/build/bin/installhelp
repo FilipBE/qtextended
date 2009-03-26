@@ -1,0 +1,113 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Copy;
+use File::Glob;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::Opt;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/build/bin", $ARGV[0]);
+}
+
+Qtopia::Opt::read_config_cache();
+
+use constant DEBUG => 0;
+
+# Turn "en_US ja" into a hash map with each language as a key (easier lookup later)
+my %translations = ();
+$_ = shift(@ARGV);
+s/^\s+//;
+s/\s+$//;
+map { $translations{$_}++ } split;
+# Handle non-underscored languages too (eg. 'en')
+for my $lang ( keys %translations ) {
+    if ( $lang =~ s/_.*// ) {
+        $translations{$lang}++;
+    }
+}
+
+my $srcdir = shift(@ARGV) || usage();
+my $helpSource = shift(@ARGV) || usage();
+DEBUG and print "helpSource = $helpSource\n";
+if ( $helpSource !~ /^\// ) {
+    $helpSource = "$srcdir/$helpSource";
+    DEBUG and print "helpSource = $helpSource\n";
+}
+my $helpDest = shift(@ARGV) || usage();
+$helpDest =~ s,\\,/,g;
+
+if ( ! @ARGV ) {
+    usage();
+}
+
+# Device profiles can override help files
+my $devicehelp;
+if ( opt("device") ) {
+    $devicehelp = opt("device", "config_path")."/help";
+}
+
+processFiles( @ARGV );
+
+exit 0;
+
+
+sub usage
+{
+    print "Usage:  ".script_name($0)." \"translations\" <source dir> <help source> <help dest> <help files>\n";
+    exit 2;
+}
+
+sub processFiles
+{
+    my $found = 0;
+
+    my @files = @_;
+    # We should get just 1 argument with everything in it (the shell shouldn't be allowed to expand anything).
+    for ( @files ) {
+        # Split on whitespace
+        for my $file ( split ) {
+            $file =~ s,\\,/,g;
+            # Note: This code assumes a flat structure for help files
+            for my $lang ( undef, keys %translations ) {
+                DEBUG and print "glob( $helpSource/".($lang?"$lang/":"")."html/".basename($file)." )\n";
+                my @sources = glob("$helpSource/".($lang?"$lang/":"")."html/".basename($file));
+                for my $source ( @sources ) {
+                    if ( $devicehelp ) {
+                        $_ = $source;
+                        s,^\Q$helpSource\E,$devicehelp,;
+                        if ( -f $_ ) {
+                            $source = $_;
+                        }
+                    }
+                    next if ( ! -f $source );
+                    my $destdir = "$helpDest/".($lang?"$lang/":"")."html";
+                    my $dest = "$destdir/".basename($source);
+                    system("mkdir -p $destdir");
+                    print "install -c $source $dest\n";
+                    copy($source, $dest);
+                    $found = 1;
+                }
+            }
+        }
+    }
+
+    if ( !$found ) {
+        die "ERROR: installhelp could not locate any help files to install for project:\n".
+            "  $srcdir\n".
+            "       Requested files were:\n".
+            "  ".join(" ", @files)."\n".
+            "       Untranslated files should be in:\n".
+            "  $helpSource/html\n".
+            "       Translated files should be in:\n".
+            "  $helpSource/<lang>/html\n";
+    }
+}
+

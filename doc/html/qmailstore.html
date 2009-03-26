@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailStore Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailStore Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>]</span>
+</h1>
+<p>The QMailStore class represents the main interface for storage and retrieval of messages and folders on the message store. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailStore&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qmailstore-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qmailstore-readaccess.html">ReadAccess</a></b></li>
+<li><div class="fn"/>class <b><a href="qmailstore-writeaccess.html">WriteAccess</a></b></li>
+<li><div class="fn"/>enum <b><a href="qmailstore.html#MessageRemovalOption-enum">MessageRemovalOption</a></b> { NoRemovalRecord, CreateRemovalRecord }</li>
+<li><div class="fn"/>enum <b><a href="qmailstore.html#ReturnOption-enum">ReturnOption</a></b> { ReturnAll, ReturnDistinct }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="qmailstore.html#dtor.QMailStore">~QMailStore</a></b> ()</li>
+<li><div class="fn"/>QMailAccount <b><a href="qmailstore.html#account">account</a></b> ( const QMailAccountId &amp; <i>id</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#addAccount">addAccount</a></b> ( QMailAccount * <i>account</i>, AccountConfiguration * <i>config</i> = 0 )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#addFolder">addFolder</a></b> ( QMailFolder * <i>folder</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#addMessage">addMessage</a></b> ( QMailMessage * <i>msg</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#addMessage-2">addMessage</a></b> ( QMailMessageMetaData * <i>metaData</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#asynchronousEmission">asynchronousEmission</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qmailstore.html#countAccounts">countAccounts</a></b> ( const QMailAccountKey &amp; <i>key</i> = QMailAccountKey() ) const</li>
+<li><div class="fn"/>int <b><a href="qmailstore.html#countFolders">countFolders</a></b> ( const QMailFolderKey &amp; <i>key</i> = QMailFolderKey() ) const</li>
+<li><div class="fn"/>int <b><a href="qmailstore.html#countMessages">countMessages</a></b> ( const QMailMessageKey &amp; <i>key</i> = QMailMessageKey() ) const</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#flushIpcNotifications">flushIpcNotifications</a></b> ()</li>
+<li><div class="fn"/>QMailFolder <b><a href="qmailstore.html#folder">folder</a></b> ( const QMailFolderId &amp; <i>id</i> ) const</li>
+<li><div class="fn"/>quint64 <b><a href="qmailstore.html#folderStatusMask">folderStatusMask</a></b> ( const QString &amp; <i>name</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#initialized">initialized</a></b> () const</li>
+<li><div class="fn"/>QMailMessage <b><a href="qmailstore.html#message">message</a></b> ( const QMailMessageId &amp; <i>id</i> ) const</li>
+<li><div class="fn"/>QMailMessage <b><a href="qmailstore.html#message-2">message</a></b> ( const QString &amp; <i>uid</i>, const QMailAccountId &amp; <i>accountId</i> ) const</li>
+<li><div class="fn"/>QMailMessageMetaData <b><a href="qmailstore.html#messageMetaData">messageMetaData</a></b> ( const QMailMessageId &amp; <i>id</i> ) const</li>
+<li><div class="fn"/>QMailMessageMetaData <b><a href="qmailstore.html#messageMetaData-2">messageMetaData</a></b> ( const QString &amp; <i>uid</i>, const QMailAccountId &amp; <i>accountId</i> ) const</li>
+<li><div class="fn"/>const QMailMessageRemovalRecordList <b><a href="qmailstore.html#messageRemovalRecords">messageRemovalRecords</a></b> ( const QMailAccountId &amp; <i>accountId</i>, const QString &amp; <i>fromMailbox</i> = QString() ) const</li>
+<li><div class="fn"/>quint64 <b><a href="qmailstore.html#messageStatusMask">messageStatusMask</a></b> ( const QString &amp; <i>name</i> ) const</li>
+<li><div class="fn"/>const QMailMessageMetaDataList <b><a href="qmailstore.html#messagesMetaData">messagesMetaData</a></b> ( const QMailMessageKey &amp; <i>key</i>, const QMailMessageKey::Properties &amp; <i>properties</i>, ReturnOption <i>option</i> = ReturnAll ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#purgeMessageRemovalRecords">purgeMessageRemovalRecords</a></b> ( const QMailAccountId &amp; <i>accountId</i>, const QStringList &amp; <i>serverUids</i> = QStringList() )</li>
+<li><div class="fn"/>const QMailAccountIdList <b><a href="qmailstore.html#queryAccounts">queryAccounts</a></b> ( const QMailAccountKey &amp; <i>key</i> = QMailAccountKey(), const QMailAccountSortKey &amp; <i>sortKey</i> = QMailAccountSortKey() ) const</li>
+<li><div class="fn"/>const QMailFolderIdList <b><a href="qmailstore.html#queryFolders">queryFolders</a></b> ( const QMailFolderKey &amp; <i>key</i> = QMailFolderKey(), const QMailFolderSortKey &amp; <i>sortKey</i> = QMailFolderSortKey() ) const</li>
+<li><div class="fn"/>const QMailMessageIdList <b><a href="qmailstore.html#queryMessages">queryMessages</a></b> ( const QMailMessageKey &amp; <i>key</i> = QMailMessageKey(), const QMailMessageSortKey &amp; <i>sortKey</i> = QMailMessageSortKey() ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#registerFolderStatusFlag">registerFolderStatusFlag</a></b> ( const QString &amp; <i>name</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#registerMessageStatusFlag">registerMessageStatusFlag</a></b> ( const QString &amp; <i>name</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#removeAccount">removeAccount</a></b> ( const QMailAccountId &amp; <i>id</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#removeAccounts">removeAccounts</a></b> ( const QMailAccountKey &amp; <i>key</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#removeFolder">removeFolder</a></b> ( const QMailFolderId &amp; <i>id</i>, MessageRemovalOption <i>option</i> = NoRemovalRecord )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#removeFolders">removeFolders</a></b> ( const QMailFolderKey &amp; <i>key</i>, MessageRemovalOption <i>option</i> = NoRemovalRecord )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#removeMessage">removeMessage</a></b> ( const QMailMessageId &amp; <i>id</i>, MessageRemovalOption <i>option</i> = NoRemovalRecord )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#removeMessages">removeMessages</a></b> ( const QMailMessageKey &amp; <i>key</i>, MessageRemovalOption <i>option</i> = NoRemovalRecord )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#restoreToPreviousFolder">restoreToPreviousFolder</a></b> ( const QMailMessageId &amp; <i>id</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#restoreToPreviousFolder-2">restoreToPreviousFolder</a></b> ( const QMailMessageKey &amp; <i>key</i> )</li>
+<li><div class="fn"/>int <b><a href="qmailstore.html#sizeOfMessages">sizeOfMessages</a></b> ( const QMailMessageKey &amp; <i>key</i> = QMailMessageKey() ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#updateAccount">updateAccount</a></b> ( QMailAccount * <i>account</i>, AccountConfiguration * <i>config</i> = 0 )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#updateFolder">updateFolder</a></b> ( QMailFolder * <i>folder</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#updateMessage">updateMessage</a></b> ( QMailMessage * <i>msg</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#updateMessage-2">updateMessage</a></b> ( QMailMessageMetaData * <i>metaData</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#updateMessagesMetaData">updateMessagesMetaData</a></b> ( const QMailMessageKey &amp; <i>key</i>, const QMailMessageKey::Properties &amp; <i>properties</i>, const QMailMessageMetaData &amp; <i>data</i> )</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#updateMessagesMetaData-2">updateMessagesMetaData</a></b> ( const QMailMessageKey &amp; <i>key</i>, quint64 <i>status</i>, bool <i>set</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailstore.html#accountContentsModified">accountContentsModified</a></b> ( const QMailAccountIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#accountsAdded">accountsAdded</a></b> ( const QMailAccountIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#accountsRemoved">accountsRemoved</a></b> ( const QMailAccountIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#accountsUpdated">accountsUpdated</a></b> ( const QMailAccountIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#folderContentsModified">folderContentsModified</a></b> ( const QMailFolderIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#foldersAdded">foldersAdded</a></b> ( const QMailFolderIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#foldersRemoved">foldersRemoved</a></b> ( const QMailFolderIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#foldersUpdated">foldersUpdated</a></b> ( const QMailFolderIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#messageRemovalRecordsAdded">messageRemovalRecordsAdded</a></b> ( const QMailAccountIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#messageRemovalRecordsRemoved">messageRemovalRecordsRemoved</a></b> ( const QMailAccountIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#messagesAdded">messagesAdded</a></b> ( const QMailMessageIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#messagesRemoved">messagesRemoved</a></b> ( const QMailMessageIdList &amp; <i>ids</i> )</li>
+<li><div class="fn"/>void <b><a href="qmailstore.html#messagesUpdated">messagesUpdated</a></b> ( const QMailMessageIdList &amp; <i>ids</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QMailStore * <b><a href="qmailstore.html#instance">instance</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qmailstore.html#storeInitialized">storeInitialized</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailStore class represents the main interface for storage and retrieval of messages and folders on the message store.</p>
+<p>The QMailStore class is accessed through a singleton interface and provides functions for adding, updating and deleting of QMailAccounts, QMailFolders and QMailMessages on the message store.</p>
+<p>QMailStore also provides functions for querying and counting of QMailFolders, QMailAccounts and QMailMessages when used in conjunction with <a href="qmailmessagekey.html">QMailMessageKey</a>, <a href="qmailfolderkey.html">QMailFolderKey</a> and <a href="qmailaccountkey.html">QMailAccountKey</a> classes.</p>
+<p>See also <a href="qmailmessage.html">QMailMessage</a>, <a href="qmailfolder.html">QMailFolder</a>, <a href="qmailmessagekey.html">QMailMessageKey</a>, <a href="qmailfolderkey.html">QMailFolderKey</a>, and <a href="qmailaccountkey.html">QMailAccountKey</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="MessageRemovalOption-enum"></a>enum QMailStore::MessageRemovalOption</h3>
+<p>Defines whether or not a <a href="qmailmessageremovalrecord.html">QMailMessageRemovalRecord</a> is created upon message removal.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailStore::NoRemovalRecord</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Do not create a <a href="qmailmessageremovalrecord.html">QMailMessageRemovalRecord</a> upon message removal.</td></tr>
+<tr><td valign="top"><tt>QMailStore::CreateRemovalRecord</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Create a <a href="qmailmessageremovalrecord.html">QMailMessageRemovalRecord</a> upon message removal.</td></tr>
+</table></p>
+<h3 class="fn"><a name="ReturnOption-enum"></a>enum QMailStore::ReturnOption</h3>
+<p>This enum defines the meta data list return option for <a href="qmailstore.html#messagesMetaData">QMailStore::messagesMetaData</a>()</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailStore::ReturnAll</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Return all meta data objects that match the selection criteria, including duplicates.</td></tr>
+<tr><td valign="top"><tt>QMailStore::ReturnDistinct</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Return distinct meta data objects that match the selection criteria, excluding duplicates.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.QMailStore"></a>QMailStore::~QMailStore ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys this <a href="qmailstore.html">QMailStore</a> object.</p>
+<h3 class="fn"><a name="account"></a><a href="qmailaccount.html">QMailAccount</a> QMailStore::account ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>id</i> ) const</h3>
+<p>Returns the QMailAcount defined by a <a href="qmailaccountid.html">QMailAccountId</a> <i>id</i> from the store.</p>
+<h3 class="fn"><a name="accountContentsModified"></a>void QMailStore::accountContentsModified ( const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when changes to messages and folders in the mail store affect the content of the accounts in the list <i>ids</i>.</p>
+<p>See also <a href="qmailstore.html#messagesAdded">messagesAdded</a>(), <a href="qmailstore.html#messagesUpdated">messagesUpdated</a>(), <a href="qmailstore.html#messagesRemoved">messagesRemoved</a>(), <a href="qmailstore.html#foldersAdded">foldersAdded</a>(), <a href="qmailstore.html#foldersUpdated">foldersUpdated</a>(), and <a href="qmailstore.html#foldersRemoved">foldersRemoved</a>().</p>
+<h3 class="fn"><a name="accountsAdded"></a>void QMailStore::accountsAdded ( const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the accounts in the list <i>ids</i> are added to the store.</p>
+<p>See also <a href="qmailstore.html#accountsRemoved">accountsRemoved</a>() and <a href="qmailstore.html#accountsUpdated">accountsUpdated</a>().</p>
+<h3 class="fn"><a name="accountsRemoved"></a>void QMailStore::accountsRemoved ( const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the accounts in the list <i>ids</i> are removed from the store.</p>
+<p>See also <a href="qmailstore.html#accountsAdded">accountsAdded</a>() and <a href="qmailstore.html#accountsUpdated">accountsUpdated</a>().</p>
+<h3 class="fn"><a name="accountsUpdated"></a>void QMailStore::accountsUpdated ( const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the accounts in the list <i>ids</i> are updated within the store.</p>
+<p>See also <a href="qmailstore.html#accountsAdded">accountsAdded</a>() and <a href="qmailstore.html#accountsRemoved">accountsRemoved</a>().</p>
+<h3 class="fn"><a name="addAccount"></a>bool QMailStore::addAccount ( <a href="qmailaccount.html">QMailAccount</a> * <i>account</i>, <a href="accountconfiguration.html">AccountConfiguration</a> * <i>config</i> = 0 )</h3>
+<p>Adds a new <a href="qmailaccount.html">QMailAccount</a> object <i>account</i> into the messsage store, with the configuration details optionally specified by <i>config</i>. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="addFolder"></a>bool QMailStore::addFolder ( <a href="qmailfolder.html">QMailFolder</a> * <i>folder</i> )</h3>
+<p>Adds a new <a href="qmailfolder.html">QMailFolder</a> object <i>folder</i> into the message store, performing respective integrity checks. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="addMessage"></a>bool QMailStore::addMessage ( <a href="qmailmessage.html">QMailMessage</a> * <i>msg</i> )</h3>
+<p>Adds a new <a href="qmailmessage.html">QMailMessage</a> object <i>msg</i> into the message store, performing respective integrity checks. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="addMessage-2"></a>bool QMailStore::addMessage ( <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> * <i>metaData</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Adds a new <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> object <i>metaData</i> into the message store, performing respective integrity checks. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="asynchronousEmission"></a>bool QMailStore::asynchronousEmission () const</h3>
+<p>Returns true if the running process is in the act of emitting an asynchronous <a href="qmailstore.html">QMailStore</a> signal caused by another process. This can only be true when called from a slot invoked by a <a href="qmailstore.html">QMailStore</a> signal.</p>
+<h3 class="fn"><a name="countAccounts"></a>int QMailStore::countAccounts ( const <a href="qmailaccountkey.html">QMailAccountKey</a> &amp; <i>key</i> = QMailAccountKey() ) const</h3>
+<p>Returns the count of the number of accounts which pass the filtering criteria defined in <a href="qmailaccountkey.html">QMailAccountKey</a> <i>key</i>. If key is empty a count of all accounts is returned.</p>
+<h3 class="fn"><a name="countFolders"></a>int QMailStore::countFolders ( const <a href="qmailfolderkey.html">QMailFolderKey</a> &amp; <i>key</i> = QMailFolderKey() ) const</h3>
+<p>Returns the count of the number of folders which pass the filtering criteria defined in <a href="qmailfolderkey.html">QMailFolderKey</a> <i>key</i>. If key is empty a count of all folders is returned.</p>
+<h3 class="fn"><a name="countMessages"></a>int QMailStore::countMessages ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i> = QMailMessageKey() ) const</h3>
+<p>Returns the count of the number of messages which pass the filtering criteria defined in <a href="qmailmessagekey.html">QMailMessageKey</a> <i>key</i>. If key is empty a count of all messages is returned.</p>
+<h3 class="fn"><a name="flushIpcNotifications"></a>void QMailStore::flushIpcNotifications ()</h3>
+<p>Forces any queued event notifications to immediately be synchronously emitted, and processed synchronously by recipient processes.</p>
+<p>Any events occurring before flushIpcNotifications() is invoked will be processed by recipient processes before any IPC packets generated after the invocation.</p>
+<h3 class="fn"><a name="folder"></a><a href="qmailfolder.html">QMailFolder</a> QMailStore::folder ( const <a href="qmailfolderid.html">QMailFolderId</a> &amp; <i>id</i> ) const</h3>
+<p>Returns the <a href="qmailfolder.html">QMailFolder</a> defined by a <a href="qmailfolderid.html">QMailFolderId</a> <i>id</i> from the message store.</p>
+<h3 class="fn"><a name="folderContentsModified"></a>void QMailStore::folderContentsModified ( const <a href="qmailfolderid.html#QMailFolderIdList-typedef">QMailFolderIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when changes to messages in the mail store affect the content of the folders in the list <i>ids</i>.</p>
+<p>See also <a href="qmailstore.html#messagesAdded">messagesAdded</a>(), <a href="qmailstore.html#messagesUpdated">messagesUpdated</a>(), and <a href="qmailstore.html#messagesRemoved">messagesRemoved</a>().</p>
+<h3 class="fn"><a name="folderStatusMask"></a><a href="qtglobal.html#quint64-typedef">quint64</a> QMailStore::folderStatusMask ( const <a href="qstring.html">QString</a> &amp; <i>name</i> ) const</h3>
+<p>Returns the status bitmask needed to test the result of <a href="qmailfolder.html#status">QMailFolder::status</a>() against the <a href="qmailfolder.html">QMailFolder</a> status flag registered with the identifier <i>name</i>.</p>
+<p>See also <a href="qmailstore.html#registerFolderStatusFlag">registerFolderStatusFlag</a>() and <a href="qmailfolder.html#statusMask">QMailFolder::statusMask</a>().</p>
+<h3 class="fn"><a name="foldersAdded"></a>void QMailStore::foldersAdded ( const <a href="qmailfolderid.html#QMailFolderIdList-typedef">QMailFolderIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the folders in the list <i>ids</i> are added to the mail store.</p>
+<p>See also <a href="qmailstore.html#foldersRemoved">foldersRemoved</a>() and <a href="qmailstore.html#foldersUpdated">foldersUpdated</a>().</p>
+<h3 class="fn"><a name="foldersRemoved"></a>void QMailStore::foldersRemoved ( const <a href="qmailfolderid.html#QMailFolderIdList-typedef">QMailFolderIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the folders in the list <i>ids</i> are removed from the mail store.</p>
+<p>See also <a href="qmailstore.html#foldersAdded">foldersAdded</a>() and <a href="qmailstore.html#foldersUpdated">foldersUpdated</a>().</p>
+<h3 class="fn"><a name="foldersUpdated"></a>void QMailStore::foldersUpdated ( const <a href="qmailfolderid.html#QMailFolderIdList-typedef">QMailFolderIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the folders in the list <i>ids</i> are updated within the mail store.</p>
+<p>See also <a href="qmailstore.html#foldersAdded">foldersAdded</a>() and <a href="qmailstore.html#foldersRemoved">foldersRemoved</a>().</p>
+<h3 class="fn"><a name="initialized"></a>bool QMailStore::initialized () const</h3>
+<p>Returns true if the <a href="qmailstore.html">QMailStore</a> object was correctly initialized.</p>
+<h3 class="fn"><a name="instance"></a>QMailStore * QMailStore::instance ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns an instance of the <a href="qmailstore.html">QMailStore</a> object.</p>
+<h3 class="fn"><a name="message"></a><a href="qmailmessage.html">QMailMessage</a> QMailStore::message ( const <a href="qmailmessageid.html">QMailMessageId</a> &amp; <i>id</i> ) const</h3>
+<p>Returns the <a href="qmailmessage.html">QMailMessage</a> defined by a <a href="qmailmessageid.html">QMailMessageId</a> <i>id</i> from the message store.</p>
+<h3 class="fn"><a name="message-2"></a><a href="qmailmessage.html">QMailMessage</a> QMailStore::message ( const <a href="qstring.html">QString</a> &amp; <i>uid</i>, const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>accountId</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns the <a href="qmailmessage.html">QMailMessage</a> defined by the unique identifier <i>uid</i> from the account with id <i>accountId</i>.</p>
+<h3 class="fn"><a name="messageMetaData"></a><a href="qmailmessagemetadata.html">QMailMessageMetaData</a> QMailStore::messageMetaData ( const <a href="qmailmessageid.html">QMailMessageId</a> &amp; <i>id</i> ) const</h3>
+<p>Returns the meta data for the message identified by the <a href="qmailmessageid.html">QMailMessageId</a> <i>id</i> from the message store.</p>
+<h3 class="fn"><a name="messageMetaData-2"></a><a href="qmailmessagemetadata.html">QMailMessageMetaData</a> QMailStore::messageMetaData ( const <a href="qstring.html">QString</a> &amp; <i>uid</i>, const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>accountId</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns the meta data for the message identified by the unique identifier <i>uid</i> from the account with id <i>accountId</i>.</p>
+<h3 class="fn"><a name="messageRemovalRecords"></a>const QMailMessageRemovalRecordList QMailStore::messageRemovalRecords ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>accountId</i>, const <a href="qstring.html">QString</a> &amp; <i>fromMailbox</i> = QString() ) const</h3>
+<p>Retrieves a list of <a href="qmailmessageremovalrecord.html">QMailMessageRemovalRecord</a> objects containing information about messages that have been removed from local storage. Records are retrived for messages whose account Id's match <i>accountId</i> and whose optional mailbox matches <i>fromMailbox</i>. This information is primarily for synchronization of local changes to remote message storage services such as IMAP servers.</p>
+<p>Returns a list of <a href="qmailmessageremovalrecord.html">QMailMessageRemovalRecord</a> objects if successfully completed, or an empty list for an error or no data.</p>
+<h3 class="fn"><a name="messageRemovalRecordsAdded"></a>void QMailStore::messageRemovalRecordsAdded ( const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when QMailMessageRemovalRecords are added to the store, affecting the accounts listed in <i>ids</i>.</p>
+<p>See also <a href="qmailstore.html#messageRemovalRecordsRemoved">messageRemovalRecordsRemoved</a>().</p>
+<h3 class="fn"><a name="messageRemovalRecordsRemoved"></a>void QMailStore::messageRemovalRecordsRemoved ( const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when QMailMessageRemovalRecords are removed from the store, affecting the accounts listed in <i>ids</i>.</p>
+<p>See also <a href="qmailstore.html#messageRemovalRecordsAdded">messageRemovalRecordsAdded</a>().</p>
+<h3 class="fn"><a name="messageStatusMask"></a><a href="qtglobal.html#quint64-typedef">quint64</a> QMailStore::messageStatusMask ( const <a href="qstring.html">QString</a> &amp; <i>name</i> ) const</h3>
+<p>Returns the status bitmask needed to test the result of <a href="qmailmessagemetadata.html#status">QMailMessage::status</a>() against the <a href="qmailmessage.html">QMailMessage</a> status flag registered with the identifier <i>name</i>.</p>
+<p>See also <a href="qmailstore.html#registerMessageStatusFlag">registerMessageStatusFlag</a>() and <a href="qmailmessagemetadata.html#statusMask">QMailMessage::statusMask</a>().</p>
+<h3 class="fn"><a name="messagesAdded"></a>void QMailStore::messagesAdded ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the messages in the list <i>ids</i> are added to the mail store.</p>
+<p>See also <a href="qmailstore.html#messagesRemoved">messagesRemoved</a>() and <a href="qmailstore.html#messagesUpdated">messagesUpdated</a>().</p>
+<h3 class="fn"><a name="messagesMetaData"></a>const QMailMessageMetaDataList QMailStore::messagesMetaData ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i>, const <a href="qmailmessagekey.html#Property-enum">QMailMessageKey::Properties</a> &amp; <i>properties</i>, <a href="qmailstore.html#ReturnOption-enum">ReturnOption</a> <i>option</i> = ReturnAll ) const</h3>
+<p>Retrieves a list of <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> objects containing meta data elements specified by <i>properties</i>, for messages which match the criteria defined by <i>key</i>. If <i>option</i> is <tt>ReturnAll</tt> then duplicate objects are included in the list; otherwise duplicate objects are excluded from the returned list.</p>
+<p>Returns a list of <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> objects if successfully completed, or an empty list for an error or no data.</p>
+<h3 class="fn"><a name="messagesRemoved"></a>void QMailStore::messagesRemoved ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the messages in the list <i>ids</i> are removed from the mail store.</p>
+<p>See also <a href="qmailstore.html#messagesAdded">messagesAdded</a>() and <a href="qmailstore.html#messagesUpdated">messagesUpdated</a>().</p>
+<h3 class="fn"><a name="messagesUpdated"></a>void QMailStore::messagesUpdated ( const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> &amp; <i>ids</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the messages in the list <i>ids</i> are updated within the mail store.</p>
+<p>See also <a href="qmailstore.html#messagesAdded">messagesAdded</a>() and <a href="qmailstore.html#messagesRemoved">messagesRemoved</a>().</p>
+<h3 class="fn"><a name="purgeMessageRemovalRecords"></a>bool QMailStore::purgeMessageRemovalRecords ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>accountId</i>, const <a href="qstringlist.html">QStringList</a> &amp; <i>serverUids</i> = QStringList() )</h3>
+<p>Erases message deletion records from the account with id <i>accountId</i> and server uid listed in <i>serverUids</i>. If serverUids is empty, all message deletion records for the specified account are deleted.</p>
+<p>Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="queryAccounts"></a>const <a href="qmailaccountid.html#QMailAccountIdList-typedef">QMailAccountIdList</a> QMailStore::queryAccounts ( const <a href="qmailaccountkey.html">QMailAccountKey</a> &amp; <i>key</i> = QMailAccountKey(), const <a href="qmailaccountsortkey.html">QMailAccountSortKey</a> &amp; <i>sortKey</i> = QMailAccountSortKey() ) const</h3>
+<p>Returns the <a href="qmailaccountid.html">QMailAccountId</a>s of accounts in the store. If <i>key</i> is not empty only accounts matching the parameters set by <i>key</i> will be returned, otherwise all accounts identifiers will be returned. If <i>sortKey</i> is not empty, the identifiers will be sorted by the parameters set by <i>sortKey</i>.</p>
+<h3 class="fn"><a name="queryFolders"></a>const <a href="qmailfolderid.html#QMailFolderIdList-typedef">QMailFolderIdList</a> QMailStore::queryFolders ( const <a href="qmailfolderkey.html">QMailFolderKey</a> &amp; <i>key</i> = QMailFolderKey(), const <a href="qmailfoldersortkey.html">QMailFolderSortKey</a> &amp; <i>sortKey</i> = QMailFolderSortKey() ) const</h3>
+<p>Returns the <a href="qmailfolderid.html">QMailFolderId</a>s of folders in the message store. If <i>key</i> is not empty only folders matching the parameters set by <i>key</i> will be returned, otherwise all folder identifiers will be returned. If <i>sortKey</i> is not empty, the identifiers will be sorted by the parameters set by <i>sortKey</i>.</p>
+<h3 class="fn"><a name="queryMessages"></a>const <a href="qmailmessageid.html#QMailMessageIdList-typedef">QMailMessageIdList</a> QMailStore::queryMessages ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i> = QMailMessageKey(), const <a href="qmailmessagesortkey.html">QMailMessageSortKey</a> &amp; <i>sortKey</i> = QMailMessageSortKey() ) const</h3>
+<p>Returns the <a href="qmailmessageid.html">QMailMessageId</a>s of messages in the message store. If <i>key</i> is not empty only messages matching the parameters set by <i>key</i> will be returned, otherwise all message identifiers will be returned. If <i>sortKey</i> is not empty, the identifiers will be sorted by the parameters set by <i>sortKey</i>.</p>
+<h3 class="fn"><a name="registerFolderStatusFlag"></a>bool QMailStore::registerFolderStatusFlag ( const <a href="qstring.html">QString</a> &amp; <i>name</i> )</h3>
+<p>Registers a status flag for <a href="qmailfolder.html">QMailFolder</a> objects, with the identifier <i>name</i>. Returns true if the flag is already registered, or if it is successfully registered; otherwise returns false.</p>
+<p>See also <a href="qmailstore.html#folderStatusMask">folderStatusMask</a>().</p>
+<h3 class="fn"><a name="registerMessageStatusFlag"></a>bool QMailStore::registerMessageStatusFlag ( const <a href="qstring.html">QString</a> &amp; <i>name</i> )</h3>
+<p>Registers a status flag for <a href="qmailmessage.html">QMailMessage</a> objects, with the identifier <i>name</i>. Returns true if the flag is already registered, or if it is successfully registered; otherwise returns false.</p>
+<p>See also <a href="qmailstore.html#messageStatusMask">messageStatusMask</a>().</p>
+<h3 class="fn"><a name="removeAccount"></a>bool QMailStore::removeAccount ( const <a href="qmailaccountid.html">QMailAccountId</a> &amp; <i>id</i> )</h3>
+<p>Removes a <a href="qmailaccount.html">QMailAccount</a> with <a href="qmailaccountid.html">QMailAccountId</a> <i>id</i> from the store. Also removes any folder, message and message removal records associated with the removed account. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="removeAccounts"></a>bool QMailStore::removeAccounts ( const <a href="qmailaccountkey.html">QMailAccountKey</a> &amp; <i>key</i> )</h3>
+<p>Removes all QMailAccounts identified by the key <i>key</i> from the store. Also removes any folder, message and message removal records associated with the removed account. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="removeFolder"></a>bool QMailStore::removeFolder ( const <a href="qmailfolderid.html">QMailFolderId</a> &amp; <i>id</i>, <a href="qmailstore.html#MessageRemovalOption-enum">MessageRemovalOption</a> <i>option</i> = NoRemovalRecord )</h3>
+<p>Removes a <a href="qmailfolder.html">QMailFolder</a> with <a href="qmailfolderid.html">QMailFolderId</a> <i>id</i> from the message store. Also removes any sub-folders of the identified folder, and any messages contained in any of the folders removed. If <i>option</i> is <a href="qmailstore.html#MessageRemovalOption-enum">QMailStore::CreateRemovalRecord</a> then removal records will be created for each removed message. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="removeFolders"></a>bool QMailStore::removeFolders ( const <a href="qmailfolderkey.html">QMailFolderKey</a> &amp; <i>key</i>, <a href="qmailstore.html#MessageRemovalOption-enum">MessageRemovalOption</a> <i>option</i> = NoRemovalRecord )</h3>
+<p>Removes all QMailFolders identified by the key <i>key</i> from the message store. Also removes any sub-folders of the removed folders, and any messages contained in any of the folders removed. If <i>option</i> is <a href="qmailstore.html#MessageRemovalOption-enum">QMailStore::CreateRemovalRecord</a> then removal records will be created for each removed message. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="removeMessage"></a>bool QMailStore::removeMessage ( const <a href="qmailmessageid.html">QMailMessageId</a> &amp; <i>id</i>, <a href="qmailstore.html#MessageRemovalOption-enum">MessageRemovalOption</a> <i>option</i> = NoRemovalRecord )</h3>
+<p>Removes a <a href="qmailmessage.html">QMailMessage</a> with <a href="qmailmessageid.html">QMailMessageId</a> <i>id</i> from the message store. If <i>option</i> is <a href="qmailstore.html#MessageRemovalOption-enum">QMailStore::CreateRemovalRecord</a> then a removal record will be created for the removed message. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="removeMessages"></a>bool QMailStore::removeMessages ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i>, <a href="qmailstore.html#MessageRemovalOption-enum">MessageRemovalOption</a> <i>option</i> = NoRemovalRecord )</h3>
+<p>Removes all QMailMessages identified by the key <i>key</i> from the message store. If <i>option</i> is <a href="qmailstore.html#MessageRemovalOption-enum">QMailStore::CreateRemovalRecord</a> then removal records will be created for each removed message. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="restoreToPreviousFolder"></a>bool QMailStore::restoreToPreviousFolder ( const <a href="qmailmessageid.html">QMailMessageId</a> &amp; <i>id</i> )</h3>
+<p>Updates the <a href="qmailmessage.html">QMailMessage</a> with <a href="qmailmessageid.html">QMailMessageId</a> <i>id</i> to move the message back to the previous folder it was contained by.</p>
+<p>Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="restoreToPreviousFolder-2"></a>bool QMailStore::restoreToPreviousFolder ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Updates all QMailMessages identified by the key <i>key</i> to move the messages back to the previous folder they were contained by.</p>
+<p>Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="sizeOfMessages"></a>int QMailStore::sizeOfMessages ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i> = QMailMessageKey() ) const</h3>
+<p>Returns the total size of the messages which pass the filtering criteria defined in <a href="qmailmessagekey.html">QMailMessageKey</a> <i>key</i>. If key is empty the total size of all messages is returned.</p>
+<h3 class="fn"><a name="storeInitialized"></a>bool QMailStore::storeInitialized ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if the <a href="qmailstore.html">QMailStore</a> was correctly initialized.</p>
+<h3 class="fn"><a name="updateAccount"></a>bool QMailStore::updateAccount ( <a href="qmailaccount.html">QMailAccount</a> * <i>account</i>, <a href="accountconfiguration.html">AccountConfiguration</a> * <i>config</i> = 0 )</h3>
+<p>Updates the existing <a href="qmailaccount.html">QMailAccount</a> <i>account</i> on the store, with the configuration details optionally specified by <i>config</i>. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="updateFolder"></a>bool QMailStore::updateFolder ( <a href="qmailfolder.html">QMailFolder</a> * <i>folder</i> )</h3>
+<p>Updates the existing <a href="qmailfolder.html">QMailFolder</a> <i>folder</i> on the message store. Returns <tt>true</tt> if the operation completed successfully, <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="updateMessage"></a>bool QMailStore::updateMessage ( <a href="qmailmessage.html">QMailMessage</a> * <i>msg</i> )</h3>
+<p>Updates the existing <a href="qmailmessage.html">QMailMessage</a> <i>msg</i> on the message store. Returns <tt>true</tt> if the operation completed successfully, or <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="updateMessage-2"></a>bool QMailStore::updateMessage ( <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> * <i>metaData</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Updates the meta data of the existing message on the message store, to match <i>metaData</i>. Returns <tt>true</tt> if the operation completed successfully, or <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="updateMessagesMetaData"></a>bool QMailStore::updateMessagesMetaData ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i>, const <a href="qmailmessagekey.html#Property-enum">QMailMessageKey::Properties</a> &amp; <i>properties</i>, const <a href="qmailmessagemetadata.html">QMailMessageMetaData</a> &amp; <i>data</i> )</h3>
+<p>Updates the message properties defined in <i>properties</i> to match the respective element contained in the <i>data</i>, for all messages which match the criteria defined by <i>key</i>.</p>
+<p>Returns <tt>true</tt> if the operation completed successfully, or <tt>false</tt> otherwise.</p>
+<h3 class="fn"><a name="updateMessagesMetaData-2"></a>bool QMailStore::updateMessagesMetaData ( const <a href="qmailmessagekey.html">QMailMessageKey</a> &amp; <i>key</i>, <a href="qtglobal.html#quint64-typedef">quint64</a> <i>status</i>, bool <i>set</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Updates message status flags set in <i>status</i> according to <i>set</i>, for messages which match the criteria defined by <i>key</i>.</p>
+<p>Returns <tt>true</tt> if the operation completed successfully, or <tt>false</tt> otherwise.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

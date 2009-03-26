@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QContactModel Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QContactModel Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>, <a href="qttelephonymodule.html">QtTelephonyModule</a>, <a href="qtuimodule.html">QtUiModule</a>]</span>
+</h1>
+<p>The QContactModel class provides access to the Contacts data. <a href="#details">More...</a></p>
+<pre>    #include &lt;QContactModel&gt;</pre><p>Inherits <a href="qpimmodel.html">QPimModel</a>.</p>
+<p>Inherited by <a href="servercontactmodel.html">ServerContactModel</a>.</p>
+<ul>
+<li><a href="qcontactmodel-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qcontactmodel.html#Field-enum">Field</a></b> { Invalid, Label, NameTitle, FirstName, ..., PresenceCapabilities }</li>
+<li><div class="fn"/>enum <b><a href="qcontactmodel.html#FilterFlags-enum">FilterFlags</a></b> { ContainsPhoneNumber, ContainsEmail, ContainsMailing, ContainsChat }</li>
+<li><div class="fn"/>enum <b><a href="qcontactmodel.html#QContactModelRole-enum">QContactModelRole</a></b> { LabelRole, SubLabelRole, PortraitRole, StatusIconRole }</li>
+<li><div class="fn"/>typedef <b><a href="qcontactmodel.html#SortField-typedef">SortField</a></b></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcontactmodel.html#QContactModel">QContactModel</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qcontactmodel.html#dtor.QContactModel">~QContactModel</a></b> ()</li>
+<li><div class="fn"/>QUniqueId <b><a href="qcontactmodel.html#addContact">addContact</a></b> ( const QContact &amp; <i>contact</i>, const QPimSource &amp; <i>source</i> = QPimSource() )</li>
+<li><div class="fn"/>virtual QUniqueId <b><a href="qcontactmodel.html#addRecord">addRecord</a></b> ( const QByteArray &amp; <i>bytes</i>, const QPimSource &amp; <i>source</i>, const QString &amp; <i>format</i> = QString() )</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#clearFilter">clearFilter</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#clearPersonalDetails">clearPersonalDetails</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#clearPresenceFilter">clearPresenceFilter</a></b> ()</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#contact">contact</a></b> ( const QModelIndex &amp; <i>index</i> ) const</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#contact-2">contact</a></b> ( int <i>row</i> ) const</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#contact-3">contact</a></b> ( const QUniqueId &amp; <i>identifier</i> ) const</li>
+<li><div class="fn"/>virtual QVariant <b><a href="qcontactmodel.html#data">data</a></b> ( const QModelIndex &amp; <i>index</i>, int <i>role</i> ) const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#filterFlags">filterFlags</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qcontactmodel.html#filterText">filterText</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#firstSimIndex">firstSimIndex</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#hasPersonalDetails">hasPersonalDetails</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#isPersonalDetails">isPersonalDetails</a></b> ( const QModelIndex &amp; <i>row</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#isPersonalDetails-2">isPersonalDetails</a></b> ( int <i>row</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#isPersonalDetails-3">isPersonalDetails</a></b> ( const QUniqueId &amp; <i>identifier</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#isSimCardContact">isSimCardContact</a></b> ( const QModelIndex &amp; <i>index</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#isSimCardContact-2">isSimCardContact</a></b> ( const QUniqueId &amp; <i>identifier</i> ) const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#lastSimIndex">lastSimIndex</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#loadingSim">loadingSim</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>QModelIndexList <b><a href="qcontactmodel.html#match">match</a></b> ( Field <i>field</i>, const QVariant &amp; <i>value</i>, Qt::MatchFlags <i>flags</i> = Qt::MatchFlags( Qt::MatchStartsWith ), int <i>start</i> = 0, int <i>hits</i> = 1 )</li>
+<li><div class="fn"/>QModelIndexList <b><a href="qcontactmodel.html#match-2">match</a></b> ( const QModelIndex &amp; <i>start</i>, int <i>role</i>, const QVariant &amp; <i>value</i>, int <i>hits</i> = 1, Qt::MatchFlags <i>flags</i> = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#matchChatAddress">matchChatAddress</a></b> ( const QString &amp; <i>text</i>, const QString &amp; <i>provider</i> = QString() )</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#matchEmailAddress">matchEmailAddress</a></b> ( const QString &amp; <i>text</i> )</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#matchPhoneNumber">matchPhoneNumber</a></b> ( const QString &amp; <i>text</i> )</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#mirrorAll">mirrorAll</a></b> ( const QPimSource &amp; <i>source</i>, const QPimSource &amp; <i>destination</i> )</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#mirrorToSource">mirrorToSource</a></b> ( const QPimSource &amp; <i>destination</i>, const QUniqueId &amp; <i>identifier</i> )</li>
+<li><div class="fn"/>QContact <b><a href="qcontactmodel.html#personalDetails">personalDetails</a></b> () const</li>
+<li><div class="fn"/>QUniqueId <b><a href="qcontactmodel.html#personalID">personalID</a></b> () const</li>
+<li><div class="fn"/>QPimSource <b><a href="qcontactmodel.html#phoneSource">phoneSource</a></b> () const</li>
+<li><div class="fn"/>QList&lt;QCollectivePresenceInfo::PresenceType&gt; <b><a href="qcontactmodel.html#presenceFilter">presenceFilter</a></b> () const</li>
+<li><div class="fn"/>virtual QByteArray <b><a href="qcontactmodel.html#record">record</a></b> ( const QUniqueId &amp; <i>identifier</i>, const QString &amp; <i>format</i> = QString() ) const</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#removeContact">removeContact</a></b> ( const QContact &amp; <i>contact</i> )</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#removeContact-2">removeContact</a></b> ( const QUniqueId &amp; <i>identifier</i> )</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#removeList">removeList</a></b> ( const QList&lt;QUniqueId&gt; &amp; <i>identifiers</i> )</li>
+<li><div class="fn"/>virtual bool <b><a href="qcontactmodel.html#removeRecord">removeRecord</a></b> ( const QUniqueId &amp; <i>identifier</i> )</li>
+<li><div class="fn"/>virtual bool <b><a href="qcontactmodel.html#setData">setData</a></b> ( const QModelIndex &amp; <i>index</i>, const QVariant &amp; <i>value</i>, int <i>role</i> )</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#setFilter">setFilter</a></b> ( const QString &amp; <i>text</i>, int <i>flags</i> = 0 )</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#setPersonalDetails">setPersonalDetails</a></b> ( const QUniqueId &amp; <i>identifier</i> )</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#setPresenceFilter">setPresenceFilter</a></b> ( QList&lt;QCollectivePresenceInfo::PresenceType&gt; <i>types</i> )</li>
+<li><div class="fn"/>QString <b><a href="qcontactmodel.html#simCardIdentity">simCardIdentity</a></b> () const</li>
+<li><div class="fn"/>QList&lt;int&gt; <b><a href="qcontactmodel.html#simCardIndexes">simCardIndexes</a></b> ( const QUniqueId &amp; <i>identifier</i>, const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#simFreeIndexCount">simFreeIndexCount</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#simIndexCount">simIndexCount</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#simLabelLimit">simLabelLimit</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#simNumberLimit">simNumberLimit</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>QPimSource <b><a href="qcontactmodel.html#simSource">simSource</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qcontactmodel.html#simUsedIndexCount">simUsedIndexCount</a></b> ( const QPimSource &amp; <i>source</i> = QPimSource() ) const</li>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#sort">sort</a></b> ( QList&lt;SortField&gt; <i>list</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qcontactmodel.html#sort-2">sort</a></b> ( int <i>column</i>, Qt::SortOrder <i>order</i> = Qt::AscendingOrder )</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#updateContact">updateContact</a></b> ( const QContact &amp; <i>contact</i> )</li>
+<li><div class="fn"/>virtual bool <b><a href="qcontactmodel.html#updateRecord">updateRecord</a></b> ( const QUniqueId &amp; <i>id</i>, const QByteArray &amp; <i>bytes</i>, const QString &amp; <i>format</i> = QString() )</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#writeVCard">writeVCard</a></b> ( const QString &amp; <i>filename</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>35 public functions inherited from <a href="qpimmodel.html#public-functions">QPimModel</a></li>
+<li><div class="fn"/>34 public functions inherited from <a href="qabstractitemmodel.html#public-functions">QAbstractItemModel</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcontactmodel.html#simLoaded">simLoaded</a></b> ( const QPimSource &amp; <i>source</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>14 signals inherited from <a href="qabstractitemmodel.html#signals">QAbstractItemModel</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QVariant <b><a href="qcontactmodel.html#contactField">contactField</a></b> ( const QContact &amp; <i>contact</i>, QContactModel::Field <i>field</i> )</li>
+<li><div class="fn"/>QIcon <b><a href="qcontactmodel.html#fieldIcon">fieldIcon</a></b> ( Field <i>field</i> )</li>
+<li><div class="fn"/>QString <b><a href="qcontactmodel.html#fieldIdentifier">fieldIdentifier</a></b> ( Field <i>field</i> )</li>
+<li><div class="fn"/>QString <b><a href="qcontactmodel.html#fieldLabel">fieldLabel</a></b> ( Field <i>field</i> )</li>
+<li><div class="fn"/>Field <b><a href="qcontactmodel.html#identifierField">identifierField</a></b> ( const QString &amp; <i>identifier</i> )</li>
+<li><div class="fn"/>QList&lt;Field&gt; <b><a href="qcontactmodel.html#labelFields">labelFields</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qcontactmodel.html#localeNameTitles">localeNameTitles</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qcontactmodel.html#localeSuffixes">localeSuffixes</a></b> ()</li>
+<li><div class="fn"/>QList&lt;Field&gt; <b><a href="qcontactmodel.html#phoneFields">phoneFields</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qcontactmodel.html#setContactField">setContactField</a></b> ( QContact &amp; <i>contact</i>, QContactModel::Field <i>field</i>, const QVariant &amp; <i>value</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>2 public slots inherited from <a href="qabstractitemmodel.html#public-slots">QAbstractItemModel</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractitemmodel.html#protected-functions">QAbstractItemModel</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QContactModel class provides access to the Contacts data.</p>
+<p>User contacts are represented in the contact model as a table, with each row corresponding to a particular contact and each column as on of the fields of the contact. Complete <a href="qcontact.html">QContact</a> objects can be retrieved using the <a href="qcontactmodel.html#contact">contact</a>() function which takes either a row, index, or unique identifier.</p>
+<p>The contact model is a descendant of <a href="qabstractitemmodel.html">QAbstractItemModel</a>, so it is suitable for use with the Qt View classes such as <a href="qlistview.html">QListView</a> and <a href="qtableview.html">QTableView</a>, as well as QContactView and any custom views.</p>
+<p>The contact model provides functions for sorting and some filtering of items. For filters or sorting that is not provided by the contact model it is recommended that <a href="qsortfilterproxymodel.html">QSortFilterProxyModel</a> is used to wrap the contact model.</p>
+<p>A QContactModel instance will also reflect changes made in other instances of QContactModel, both within this application and from other applications. This will result in the <a href="qabstractitemmodel.html#modelReset">modelReset</a>() signal being emitted.</p>
+<p>See also <a href="qcontact.html">QContact</a>, <a href="qcontactlistview.html">QContactListView</a>, <a href="qsortfilterproxymodel.html">QSortFilterProxyModel</a>, and <a href="qpim-library.html">Pim Library</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Field-enum"></a>enum QContactModel::Field</h3>
+<p>Enumerates the columns when in table mode and columns used for sorting. Is a subset of data retrievable from a <a href="qcontact.html">QContact</a>.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QContactModel::Invalid</tt></td><td align="center" valign="top"><tt>-1</tt></td><td valign="top">An invalid field</td></tr>
+<tr><td valign="top"><tt>QContactModel::Label</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">An appropriate text label for the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::NameTitle</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The contact's title, such as Mr or Dr.</td></tr>
+<tr><td valign="top"><tt>QContactModel::FirstName</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The first name of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::MiddleName</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The middle name of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::LastName</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">The last name of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Suffix</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">The contact's suffix, such as Jr or II.</td></tr>
+<tr><td valign="top"><tt>QContactModel::JobTitle</tt></td><td align="center" valign="top"><tt>6</tt></td><td valign="top">The contact's job title</td></tr>
+<tr><td valign="top"><tt>QContactModel::Department</tt></td><td align="center" valign="top"><tt>7</tt></td><td valign="top">The contact's department</td></tr>
+<tr><td valign="top"><tt>QContactModel::Company</tt></td><td align="center" valign="top"><tt>8</tt></td><td valign="top">The contact's company</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessPhone</tt></td><td align="center" valign="top"><tt>9</tt></td><td valign="top">The business phone number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessFax</tt></td><td align="center" valign="top"><tt>10</tt></td><td valign="top">The business fax number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessMobile</tt></td><td align="center" valign="top"><tt>11</tt></td><td valign="top">The business mobile number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessPager</tt></td><td align="center" valign="top"><tt>28</tt></td><td valign="top">The business pager number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomePhone</tt></td><td align="center" valign="top"><tt>19</tt></td><td valign="top">The home phone number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeFax</tt></td><td align="center" valign="top"><tt>20</tt></td><td valign="top">The home fax number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeMobile</tt></td><td align="center" valign="top"><tt>21</tt></td><td valign="top">The home mobile number of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::DefaultPhone</tt></td><td align="center" valign="top"><tt>14</tt></td><td valign="top">The default phone number for the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::DefaultEmail</tt></td><td align="center" valign="top"><tt>12</tt></td><td valign="top">The default email address for the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Emails</tt></td><td align="center" valign="top"><tt>13</tt></td><td valign="top">The list of email addresses for the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessStreet</tt></td><td align="center" valign="top"><tt>23</tt></td><td valign="top">The business street address for the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessCity</tt></td><td align="center" valign="top"><tt>24</tt></td><td valign="top">The city for the business address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessState</tt></td><td align="center" valign="top"><tt>25</tt></td><td valign="top">The state for the business address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessZip</tt></td><td align="center" valign="top"><tt>26</tt></td><td valign="top">The zip code for the business address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessCountry</tt></td><td align="center" valign="top"><tt>27</tt></td><td valign="top">The country for the business address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessWebPage</tt></td><td align="center" valign="top"><tt>29</tt></td><td valign="top">The business web page address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Office</tt></td><td align="center" valign="top"><tt>30</tt></td><td valign="top">The contact's office</td></tr>
+<tr><td valign="top"><tt>QContactModel::Profession</tt></td><td align="center" valign="top"><tt>31</tt></td><td valign="top">The contact's profession</td></tr>
+<tr><td valign="top"><tt>QContactModel::Assistant</tt></td><td align="center" valign="top"><tt>32</tt></td><td valign="top">The contact's assistant</td></tr>
+<tr><td valign="top"><tt>QContactModel::Manager</tt></td><td align="center" valign="top"><tt>33</tt></td><td valign="top">The contact's manager</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeStreet</tt></td><td align="center" valign="top"><tt>34</tt></td><td valign="top">The home street address for the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeCity</tt></td><td align="center" valign="top"><tt>35</tt></td><td valign="top">The city for the home address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeState</tt></td><td align="center" valign="top"><tt>36</tt></td><td valign="top">The state for the home address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeZip</tt></td><td align="center" valign="top"><tt>37</tt></td><td valign="top">The zip code for the home address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeCountry</tt></td><td align="center" valign="top"><tt>38</tt></td><td valign="top">The country for the home address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeWebPage</tt></td><td align="center" valign="top"><tt>39</tt></td><td valign="top">The home web page address of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Spouse</tt></td><td align="center" valign="top"><tt>40</tt></td><td valign="top">The contact's spouse</td></tr>
+<tr><td valign="top"><tt>QContactModel::Gender</tt></td><td align="center" valign="top"><tt>41</tt></td><td valign="top">The contact's gender</td></tr>
+<tr><td valign="top"><tt>QContactModel::Birthday</tt></td><td align="center" valign="top"><tt>42</tt></td><td valign="top">The contact's birthday</td></tr>
+<tr><td valign="top"><tt>QContactModel::Anniversary</tt></td><td align="center" valign="top"><tt>43</tt></td><td valign="top">The contact's anniversary</td></tr>
+<tr><td valign="top"><tt>QContactModel::Nickname</tt></td><td align="center" valign="top"><tt>44</tt></td><td valign="top">The nickname of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Children</tt></td><td align="center" valign="top"><tt>45</tt></td><td valign="top">The contact's children</td></tr>
+<tr><td valign="top"><tt>QContactModel::Portrait</tt></td><td align="center" valign="top"><tt>46</tt></td><td valign="top">The portrait of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Notes</tt></td><td align="center" valign="top"><tt>47</tt></td><td valign="top">The notes relating to the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::LastNamePronunciation</tt></td><td align="center" valign="top"><tt>48</tt></td><td valign="top">The pronunciation of the last name of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::FirstNamePronunciation</tt></td><td align="center" valign="top"><tt>49</tt></td><td valign="top">The pronunciation of the first name of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::CompanyPronunciation</tt></td><td align="center" valign="top"><tt>50</tt></td><td valign="top">The pronunciation of the contact's company</td></tr>
+<tr><td valign="top"><tt>QContactModel::Identifier</tt></td><td align="center" valign="top"><tt>51</tt></td><td valign="top">The identifier of the contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::Categories</tt></td><td align="center" valign="top"><tt>52</tt></td><td valign="top">The list of categories the contact belongs to</td></tr>
+<tr><td valign="top"><tt>QContactModel::HomeVOIP</tt></td><td align="center" valign="top"><tt>54</tt></td><td valign="top">The URI for the contact's home VOIP id</td></tr>
+<tr><td valign="top"><tt>QContactModel::BusinessVOIP</tt></td><td align="center" valign="top"><tt>55</tt></td><td valign="top">The URI for the contact's business VOIP id</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceStatus</tt></td><td align="center" valign="top"><tt>56</tt></td><td valign="top">A map (QPresenceTypeMap) of presence URIs to presence status types for this contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceStatusString</tt></td><td align="center" valign="top"><tt>57</tt></td><td valign="top">A map (QPresenceStringMap) of presence URIs to presence status strings for this contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceMessage</tt></td><td align="center" valign="top"><tt>61</tt></td><td valign="top">A map (QPresenceStringMap) of presence URIs to presence messages for this contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceDisplayName</tt></td><td align="center" valign="top"><tt>58</tt></td><td valign="top">A map (QPresenceStringMap) of presence URIs to display names for this contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceUpdateTime</tt></td><td align="center" valign="top"><tt>59</tt></td><td valign="top">A map (QPresenceDateTimeMap) of presence URIs to last update time for this contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceAvatar</tt></td><td align="center" valign="top"><tt>62</tt></td><td valign="top">A map (QPresenceStringMap) of presence URIs to avatar file paths for this contact</td></tr>
+<tr><td valign="top"><tt>QContactModel::PresenceCapabilities</tt></td><td align="center" valign="top"><tt>60</tt></td><td valign="top">A map (QPresenceCapabilityMap) of presence URIs to presence capabilities for this contact</td></tr>
+</table></p>
+<p>See also <a href="qcontactmodel.html#localeNameTitles">localeNameTitles</a>() and <a href="qcontactmodel.html#localeSuffixes">localeSuffixes</a>().</p>
+<h3 class="fn"><a name="FilterFlags-enum"></a>enum QContactModel::FilterFlags</h3>
+<p>These flags describe what kind of contact information to filter contacts on.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QContactModel::ContainsPhoneNumber</tt></td><td align="center" valign="top"><tt>0x00100</tt></td><td valign="top">The contact must provide one or more phone numbers.</td></tr>
+<tr><td valign="top"><tt>QContactModel::ContainsEmail</tt></td><td align="center" valign="top"><tt>0x0200</tt></td><td valign="top">The contact must provide one or more email addresses.</td></tr>
+<tr><td valign="top"><tt>QContactModel::ContainsMailing</tt></td><td align="center" valign="top"><tt>0x0400</tt></td><td valign="top">The contact must provide one or more mailing addresses.</td></tr>
+<tr><td valign="top"><tt>QContactModel::ContainsChat</tt></td><td align="center" valign="top"><tt>0x0800</tt></td><td valign="top">The contact must provide one or more chat addresses.</td></tr>
+</table></p>
+<p>See also <a href="qcontactmodel.html#setFilter">setFilter</a>().</p>
+<h3 class="fn"><a name="QContactModelRole-enum"></a>enum QContactModel::QContactModelRole</h3>
+<p>Extends <a href="qt.html#ItemDataRole-enum">Qt::ItemDataRole</a></p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QContactModel::LabelRole</tt></td><td align="center" valign="top"><tt>Qt::UserRole</tt></td><td valign="top">A short formatted text label of the contacts name.</td></tr>
+<tr><td valign="top"><tt>QContactModel::SubLabelRole</tt></td><td align="center" valign="top"><tt>Qt::UserRole + 1</tt></td><td valign="top">A short formatted text label with supplementary contact information, like phone number, email address or company.</td></tr>
+<tr><td valign="top"><tt>QContactModel::PortraitRole</tt></td><td align="center" valign="top"><tt>Qt::UserRole + 2</tt></td><td valign="top">A pixmap of the contacts image, or a default image if none is specifically set.</td></tr>
+<tr><td valign="top"><tt>QContactModel::StatusIconRole</tt></td><td align="center" valign="top"><tt>Qt::UserRole + 3</tt></td><td valign="top">An icon providing additional information about the contact. For instance marking as a business contact or marking the contact as recently called.</td></tr>
+</table></p>
+<h3 class="fn"><a name="SortField-typedef"></a>typedef QContactModel::SortField</h3>
+<p>The QContactModel::SortField structure provides sorting instructions.</p>
+<p>This structure holds a <a href="qcontactmodel.html">QContactModel</a> field to sort by, and a sorting direction. Typically an ordered list of these structures is used to allows arbitrary sorting to be performed on a <a href="qcontactmodel.html">QContactModel</a>.</p>
+<p>See also <a href="qcontactmodel.html">QContactModel</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QContactModel"></a>QContactModel::QContactModel ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs contact model with the given <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QContactModel"></a>QContactModel::~QContactModel ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the contact model.</p>
+<h3 class="fn"><a name="addContact"></a><a href="quniqueid.html">QUniqueId</a> QContactModel::addContact ( const <a href="qcontact.html">QContact</a> &amp; <i>contact</i>, const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() )</h3>
+<p>Adds the <i>contact</i> to the model under the specified storage <i>source</i>. If source is null the function will add the contact to the default storage source.</p>
+<p>Returns a valid identifier for the contact if the contact was successfully added. Otherwise returns a null identifier.</p>
+<p>Note the current identifier of the specified appointment is ignored.</p>
+<p>See also <a href="qcontactmodel.html#phoneSource">phoneSource</a>(), <a href="qcontactmodel.html#simSource">simSource</a>(), and <a href="qcontactmodel.html#mirrorToSource">mirrorToSource</a>().</p>
+<h3 class="fn"><a name="addRecord"></a><a href="quniqueid.html">QUniqueId</a> QContactModel::addRecord ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>bytes</i>, const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i>, const <a href="qstring.html">QString</a> &amp; <i>format</i> = QString() )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Adds the PIM record encoded in <i>bytes</i> to the model under the specified storage <i>source</i>. The format of the record in <i>bytes</i> is given by <i>format</i>. An empty format string will cause the record to be read using the data stream operators for the PIM data type of the model. If the specified source is null the function will add the record to the default storage source.</p>
+<p>Returns a valid identifier for the record if the record was successfully added. Otherwise returns a null identifier.</p>
+<p>Can only add PIM data that is represented by the model. This means that only contact data can be added using a contact model. Valid formats are &quot;vCard&quot; or an empty string.</p>
+<p>Reimplemented from <a href="qpimmodel.html#addRecord">QPimModel</a>.</p>
+<h3 class="fn"><a name="clearFilter"></a>void QContactModel::clearFilter ()</h3>
+<p>Clears contact name and type filtering for the model. Does not affect category or presence filtering.</p>
+<h3 class="fn"><a name="clearPersonalDetails"></a>void QContactModel::clearPersonalDetails ()</h3>
+<p>Clears the personal details of the device owner. Does not remove and contacts from the contact model.</p>
+<p>/sa <a href="qcontactmodel.html#setPersonalDetails">setPersonalDetails</a>()</p>
+<h3 class="fn"><a name="clearPresenceFilter"></a>void QContactModel::clearPresenceFilter ()</h3>
+<p>Clears any presence filtering done by the model.</p>
+<p>See also <a href="qcontactmodel.html#setPresenceFilter">setPresenceFilter</a>().</p>
+<h3 class="fn"><a name="contact"></a><a href="qcontact.html">QContact</a> QContactModel::contact ( const <a href="qmodelindex.html">QModelIndex</a> &amp; <i>index</i> ) const</h3>
+<p>Returns the contact for the row specified by <i>index</i>. The column of <i>index</i> is ignored.</p>
+<h3 class="fn"><a name="contact-2"></a><a href="qcontact.html">QContact</a> QContactModel::contact ( int <i>row</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Return the contact for the given <i>row</i>.</p>
+<h3 class="fn"><a name="contact-3"></a><a href="qcontact.html">QContact</a> QContactModel::contact ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns the contact in the model with the given <i>identifier</i>. The contact does not have to be in the current filter mode for it to be returned.</p>
+<h3 class="fn"><a name="contactField"></a><a href="qvariant.html">QVariant</a> QContactModel::contactField ( const <a href="qcontact.html">QContact</a> &amp; <i>contact</i>, <a href="qcontactmodel.html#Field-enum">QContactModel::Field</a> <i>field</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the value for the specified <i>field</i> of the given <i>contact</i>.</p>
+<p>See also <a href="qcontactmodel.html#setContactField">setContactField</a>().</p>
+<h3 class="fn"><a name="data"></a><a href="qvariant.html">QVariant</a> QContactModel::data ( const <a href="qmodelindex.html">QModelIndex</a> &amp; <i>index</i>, int <i>role</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the data stored under the given <i>role</i> for the item referred to by the <i>index</i>.</p>
+<p>The row of the index specifies which contact to access and the column of the index is treated as a <tt>QContactModel::Field</tt>.</p>
+<p>Reimplemented from <a href="qabstractitemmodel.html#data">QAbstractItemModel</a>.</p>
+<p>See also <a href="qcontactmodel.html#setData">setData</a>() and <a href="qcontactmodel.html#contactField">contactField</a>().</p>
+<h3 class="fn"><a name="fieldIcon"></a><a href="qicon.html">QIcon</a> QContactModel::fieldIcon ( <a href="qcontactmodel.html#Field-enum">Field</a> <i>field</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a icon representing the contact model <i>field</i>.</p>
+<p>Returns a null icon if no icon is available.</p>
+<p>See also <a href="qcontactmodel.html#fieldLabel">fieldLabel</a>(), <a href="qcontactmodel.html#fieldIdentifier">fieldIdentifier</a>(), and <a href="qcontactmodel.html#identifierField">identifierField</a>().</p>
+<h3 class="fn"><a name="fieldIdentifier"></a><a href="qstring.html">QString</a> QContactModel::fieldIdentifier ( <a href="qcontactmodel.html#Field-enum">Field</a> <i>field</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a non-translated string describing the contact model <i>field</i>.</p>
+<p>See also <a href="qcontactmodel.html#fieldLabel">fieldLabel</a>(), <a href="qcontactmodel.html#fieldIcon">fieldIcon</a>(), and <a href="qcontactmodel.html#identifierField">identifierField</a>().</p>
+<h3 class="fn"><a name="fieldLabel"></a><a href="qstring.html">QString</a> QContactModel::fieldLabel ( <a href="qcontactmodel.html#Field-enum">Field</a> <i>field</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a translated string describing the contact model <i>field</i>.</p>
+<p>See also <a href="qcontactmodel.html#fieldIcon">fieldIcon</a>(), <a href="qcontactmodel.html#fieldIdentifier">fieldIdentifier</a>(), and <a href="qcontactmodel.html#identifierField">identifierField</a>().</p>
+<h3 class="fn"><a name="filterFlags"></a>int QContactModel::filterFlags () const</h3>
+<p>Returns the filter flags being used by the model.</p>
+<p>See also <a href="qcontactmodel.html#setFilter">setFilter</a>().</p>
+<h3 class="fn"><a name="filterText"></a><a href="qstring.html">QString</a> QContactModel::filterText () const</h3>
+<p>Returns the filter text being used by the model.</p>
+<p>See also <a href="qcontactmodel.html#setFilter">setFilter</a>().</p>
+<h3 class="fn"><a name="firstSimIndex"></a>int QContactModel::firstSimIndex ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the index of the first entry for a SIM cnotact data <i>source</i>.</p>
+<h3 class="fn"><a name="hasPersonalDetails"></a>bool QContactModel::hasPersonalDetails () const</h3>
+<p>Returns true if a contact in the contact model is specified as the personal details of the device owner.</p>
+<h3 class="fn"><a name="identifierField"></a><a href="qcontactmodel.html#Field-enum">Field</a> QContactModel::identifierField ( const <a href="qstring.html">QString</a> &amp; <i>identifier</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the contact model field for the non-translated field <i>identifier</i>.</p>
+<p>See also <a href="qcontactmodel.html#fieldLabel">fieldLabel</a>(), <a href="qcontactmodel.html#fieldIcon">fieldIcon</a>(), and <a href="qcontactmodel.html#fieldIdentifier">fieldIdentifier</a>().</p>
+<h3 class="fn"><a name="isPersonalDetails"></a>bool QContactModel::isPersonalDetails ( const <a href="qmodelindex.html">QModelIndex</a> &amp; <i>row</i> ) const</h3>
+<p>Returns true if the contact for the specified <i>row</i> represents the personal details of the device owner.</p>
+<h3 class="fn"><a name="isPersonalDetails-2"></a>bool QContactModel::isPersonalDetails ( int <i>row</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns true if the contact at the given <i>row</i> represents the personal details of the device owner.</p>
+<h3 class="fn"><a name="isPersonalDetails-3"></a>bool QContactModel::isPersonalDetails ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns true if the contact with specified <i>identifier</i> represents the personal details of the device owner.</p>
+<h3 class="fn"><a name="isSimCardContact"></a>bool QContactModel::isSimCardContact ( const <a href="qmodelindex.html">QModelIndex</a> &amp; <i>index</i> ) const</h3>
+<p>Returns true if the contact at the given <i>index</i> is stored on the SIM card.</p>
+<h3 class="fn"><a name="isSimCardContact-2"></a>bool QContactModel::isSimCardContact ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns true if the contact with the given <i>identifier</i> is on the SIM card.</p>
+<h3 class="fn"><a name="labelFields"></a><a href="qlist.html">QList</a>&lt;<a href="qcontactmodel.html#Field-enum">Field</a>&gt; QContactModel::labelFields ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the contact model fields that represent the label for a contact.</p>
+<h3 class="fn"><a name="lastSimIndex"></a>int QContactModel::lastSimIndex ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the index of the last entry for a SIM contact data <i>source</i>.</p>
+<h3 class="fn"><a name="loadingSim"></a>bool QContactModel::loadingSim ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns true if the entries for the given SIM contact <i>source</i> are still being loaded into SQL storage.</p>
+<p>See also <a href="qcontactmodel.html#simLoaded">simLoaded</a>().</p>
+<h3 class="fn"><a name="localeNameTitles"></a><a href="qstringlist.html">QStringList</a> QContactModel::localeNameTitles ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns known name titles for the current language settings. These are used to assist in parsing and constructing contact name information. Contacts are not restricted to these name titles.</p>
+<h3 class="fn"><a name="localeSuffixes"></a><a href="qstringlist.html">QStringList</a> QContactModel::localeSuffixes ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns known suffixes for the current language settings. These are used to assist in parsing and constructing contact name information. Contacts are not restricted to these suffixes.</p>
+<h3 class="fn"><a name="match"></a><a href="qmodelindex.html#QModelIndexList-typedef">QModelIndexList</a> QContactModel::match ( <a href="qcontactmodel.html#Field-enum">Field</a> <i>field</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i>, <a href="qt.html#MatchFlags-typedef">Qt::MatchFlags</a> <i>flags</i> = Qt::MatchFlags( Qt::MatchStartsWith ), int <i>start</i> = 0, int <i>hits</i> = 1 )</h3>
+<p>Returns a list of indexes for the items where the data in the <i>field</i> value matches the specified <i>value</i>. The list that is returned may be empty.</p>
+<p>The search starts from the <i>start</i> row and continues until the number of matching data items equals <i>hits</i> or the search reaches the last row.</p>
+<p>The <i>flags</i> argument can contain any of the following flags:</p>
+<p>- <a href="qt.html#MatchFlag-enum">Qt::MatchWildcard</a> - <a href="qt.html#MatchFlag-enum">Qt::MatchFixedString</a> (or equivalently <a href="qt.html#MatchFlag-enum">Qt::MatchExactly</a>) - <a href="qt.html#MatchFlag-enum">Qt::MatchContains</a> - <a href="qt.html#MatchFlag-enum">Qt::MatchStartsWith</a> - <a href="qt.html#MatchFlag-enum">Qt::MatchCaseSensitive</a></p>
+<h3 class="fn"><a name="match-2"></a><a href="qmodelindex.html#QModelIndexList-typedef">QModelIndexList</a> QContactModel::match ( const <a href="qmodelindex.html">QModelIndex</a> &amp; <i>start</i>, int <i>role</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i>, int <i>hits</i> = 1, <a href="qt.html#MatchFlags-typedef">Qt::MatchFlags</a> <i>flags</i> = Qt::MatchFlags( Qt::MatchStartsWith | Qt::MatchWrap ) ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a list of indexes for the items where the data matches the specified <i>value</i>. The list that is returned may be empty.</p>
+<p>The search starts from the <i>start</i> index and continues until the number of matching data items equals <i>hits</i> or the search reaches the last row</p>
+<p>The arguments <i>role</i> and <i>flags</i> are currently ignored.</p>
+<h3 class="fn"><a name="matchChatAddress"></a><a href="qcontact.html">QContact</a> QContactModel::matchChatAddress ( const <a href="qstring.html">QString</a> &amp; <i>text</i>, const <a href="qstring.html">QString</a> &amp; <i>provider</i> = QString() )</h3>
+<p>Returns the best match for the chat address <i>text</i>. If the <i>provider</i> is not empty, restricts matches to contacts with chat addresses from that <a href="qcollectivepresence.html">QCollectivePresence</a> provider. If no contact in the model has a chat address matching the given text returns a null contact.</p>
+<p>See also <a href="qcollectivepresence.html">QCollectivePresence</a>.</p>
+<h3 class="fn"><a name="matchEmailAddress"></a><a href="qcontact.html">QContact</a> QContactModel::matchEmailAddress ( const <a href="qstring.html">QString</a> &amp; <i>text</i> )</h3>
+<p>Returns the best match for the email address <i>text</i>. If no contact in the model has an email address matching the given text returns a null contact.</p>
+<h3 class="fn"><a name="matchPhoneNumber"></a><a href="qcontact.html">QContact</a> QContactModel::matchPhoneNumber ( const <a href="qstring.html">QString</a> &amp; <i>text</i> )</h3>
+<p>Returns the best match for the phone number <i>text</i>. If no contact in the model has a phone number matching the given text returns a null contact.</p>
+<h3 class="fn"><a name="mirrorAll"></a>bool QContactModel::mirrorAll ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i>, const <a href="qpimsource.html">QPimSource</a> &amp; <i>destination</i> )</h3>
+<p>Exports the contacts stored in <i>source</i> storage source and imports them into the <i>destination</i> storage source. The contacts are modified by the source and destination storage contexts to account for storage restrictions.</p>
+<p>Returns true upon success.</p>
+<p>See also <a href="qcontactmodel.html#mirrorToSource">mirrorToSource</a>().</p>
+<h3 class="fn"><a name="mirrorToSource"></a>bool QContactModel::mirrorToSource ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>destination</i>, const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> )</h3>
+<p>Exports the contact in the model with the specified <i>identifier</i> and imports it into the <i>destination</i> storage source. The contact is modified by the source and destination storage contexts to account for storage restrictions. For instance a contact may be split into multiple contacts when mirrored to the active SIM card and contacts from the SIM card will be merged into contacts in local storage if they have equal name information.</p>
+<p>Returns true upon success.</p>
+<p>See also <a href="qcontactmodel.html#mirrorAll">mirrorAll</a>().</p>
+<h3 class="fn"><a name="personalDetails"></a><a href="qcontact.html">QContact</a> QContactModel::personalDetails () const</h3>
+<p>Returns the contact representing the personal details of the device owner.</p>
+<p>If no contact is specified as the personal details of the device owner, will return a null contact.</p>
+<p>See also <a href="qcontactmodel.html#setPersonalDetails">setPersonalDetails</a>().</p>
+<h3 class="fn"><a name="personalID"></a><a href="quniqueid.html">QUniqueId</a> QContactModel::personalID () const</h3>
+<p>Returns the identifier for the contact representing the personal details of the device owner.</p>
+<p>If no contact is specified as the personal details of the device owner, will return a null identifier.</p>
+<h3 class="fn"><a name="phoneFields"></a><a href="qlist.html">QList</a>&lt;<a href="qcontactmodel.html#Field-enum">Field</a>&gt; QContactModel::phoneFields ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the contact model fields that represent the phone numbers for a contact.</p>
+<h3 class="fn"><a name="phoneSource"></a><a href="qpimsource.html">QPimSource</a> QContactModel::phoneSource () const</h3>
+<p>Returns the default identifier for storage sources relating to the device memory.</p>
+<h3 class="fn"><a name="presenceFilter"></a><a href="qlist.html">QList</a>&lt;<a href="qcollectivepresenceinfo.html#PresenceType-enum">QCollectivePresenceInfo::PresenceType</a>&gt; QContactModel::presenceFilter () const</h3>
+<p>Returns the presence filter being used by the model.</p>
+<p>See also <a href="qcontactmodel.html#setPresenceFilter">setPresenceFilter</a>().</p>
+<h3 class="fn"><a name="record"></a><a href="qbytearray.html">QByteArray</a> QContactModel::record ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i>, const <a href="qstring.html">QString</a> &amp; <i>format</i> = QString() ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the record in the model with the specified <i>identifier</i> encoded in the format specified by the <i>format</i> string. An empty format string will cause the record to be written using the data stream operators for the PIM data type of the model.</p>
+<p>Valid formats are &quot;vCard&quot; or an empty string.</p>
+<p>Reimplemented from <a href="qpimmodel.html#record">QPimModel</a>.</p>
+<p>See also <a href="qcontactmodel.html#contact">contact</a>().</p>
+<h3 class="fn"><a name="removeContact"></a>bool QContactModel::removeContact ( const <a href="qcontact.html">QContact</a> &amp; <i>contact</i> )</h3>
+<p>Removes the contact from the model with the same identifier as the specified <i>contact</i>.</p>
+<p>Returns true if the contact was successfully removed.</p>
+<h3 class="fn"><a name="removeContact-2"></a>bool QContactModel::removeContact ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Removes the contact from the model with the specified <i>identifier</i>.</p>
+<p>Returns true if the contact was successfully removed.</p>
+<h3 class="fn"><a name="removeList"></a>bool QContactModel::removeList ( const <a href="qlist.html">QList</a>&lt;<a href="quniqueid.html">QUniqueId</a>&gt; &amp; <i>identifiers</i> )</h3>
+<p>Removes the records in the model specified by the list of <i>identifiers</i>.</p>
+<p>Returns true if contacts were successfully removed.</p>
+<h3 class="fn"><a name="removeRecord"></a>bool QContactModel::removeRecord ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Removes the record from the model with the specified <i>identifier</i>.</p>
+<p>Returns true if the record was successfully removed.</p>
+<p>Reimplemented from <a href="qpimmodel.html#removeRecord">QPimModel</a>.</p>
+<h3 class="fn"><a name="setContactField"></a>bool QContactModel::setContactField ( <a href="qcontact.html">QContact</a> &amp; <i>contact</i>, <a href="qcontactmodel.html#Field-enum">QContactModel::Field</a> <i>field</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sets the value for the specified <i>field</i> of the given <i>contact</i> to <i>value</i>.</p>
+<p>Returns true if the contact was modified.</p>
+<p>See also <a href="qcontactmodel.html#contactField">contactField</a>() and <a href="qcontactmodel.html#setData">setData</a>().</p>
+<h3 class="fn"><a name="setData"></a>bool QContactModel::setData ( const <a href="qmodelindex.html">QModelIndex</a> &amp; <i>index</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i>, int <i>role</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Sets the <i>role</i> data for the item at <i>index</i> to <i>value</i>. Returns true if successful.</p>
+<p>The contact model only accepts data for the <tt>EditRole</tt>. The column of the specified index specifies the <tt>QContactModel::Field</tt> to set and the row of the index specifies which contact to modify.</p>
+<p>Reimplemented from <a href="qabstractitemmodel.html#setData">QAbstractItemModel</a>.</p>
+<p>See also <a href="qcontactmodel.html#data">data</a>() and <a href="qcontactmodel.html#setContactField">setContactField</a>().</p>
+<h3 class="fn"><a name="setFilter"></a>void QContactModel::setFilter ( const <a href="qstring.html">QString</a> &amp; <i>text</i>, int <i>flags</i> = 0 )</h3>
+<p>Sets the model to filter contacts by labels that start with <i>text</i> and contact type information specified <i>flags</i>. By default flags is 0 which means filtering will only occur based on label text.</p>
+<p>See also <a href="qcontactmodel.html#FilterFlags-enum">FilterFlags</a>, <a href="qcontactmodel.html#filterFlags">filterFlags</a>(), and <a href="qcontactmodel.html#filterText">filterText</a>().</p>
+<h3 class="fn"><a name="setPersonalDetails"></a>void QContactModel::setPersonalDetails ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i> )</h3>
+<p>Sets the personal details of the device owner to the contact with the given <i>identifier</i>. If there is no contact with the specified identifier in the contact model this will clear the personal details.</p>
+<p>See also <a href="qcontactmodel.html#personalDetails">personalDetails</a>() and <a href="qcontactmodel.html#clearPersonalDetails">clearPersonalDetails</a>().</p>
+<h3 class="fn"><a name="setPresenceFilter"></a>void QContactModel::setPresenceFilter ( <a href="qlist.html">QList</a>&lt;<a href="qcollectivepresenceinfo.html#PresenceType-enum">QCollectivePresenceInfo::PresenceType</a>&gt; <i>types</i> )</h3>
+<p>Sets the model to only contain those contacts that have a presence status in the supplied <i>types</i>.</p>
+<p>See also <a href="qcontactmodel.html#presenceFilter">presenceFilter</a>().</p>
+<h3 class="fn"><a name="simCardIdentity"></a><a href="qstring.html">QString</a> QContactModel::simCardIdentity () const</h3>
+<p>Returns the identifier for the currently inserted SIM card.</p>
+<h3 class="fn"><a name="simCardIndexes"></a><a href="qlist.html">QList</a>&lt;int&gt; QContactModel::simCardIndexes ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>identifier</i>, const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the list of indexes in the given <i>source</i> of contact data on a SIM card for the contact with the given <i>identifier</i>.</p>
+<h3 class="fn"><a name="simFreeIndexCount"></a>int QContactModel::simFreeIndexCount ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the number of free indexes for a given SIM contact data <i>source</i>.</p>
+<h3 class="fn"><a name="simIndexCount"></a>int QContactModel::simIndexCount ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the total number of indexes available for a given SIM contact data <i>source</i>.</p>
+<h3 class="fn"><a name="simLabelLimit"></a>int QContactModel::simLabelLimit ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the maximum number of characters for the label component of a SIM contact data <i>source</i> entry.</p>
+<p>Note that when storing contacts with multiple phone numbers to a SIM, part of the label may be used to indicate the type phone number for the entries used.</p>
+<h3 class="fn"><a name="simLoaded"></a>void QContactModel::simLoaded ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the given <i>source</i> of contact data on a SIM card completes syncing to the SQL storage.</p>
+<p>See also <a href="qcontactmodel.html#loadingSim">loadingSim</a>().</p>
+<h3 class="fn"><a name="simNumberLimit"></a>int QContactModel::simNumberLimit ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the maximum number of characters for the number component of a SIM contact data <i>source</i> entry.</p>
+<h3 class="fn"><a name="simSource"></a><a href="qpimsource.html">QPimSource</a> QContactModel::simSource () const</h3>
+<p>Returns the identifier for storage sources relating to the SIM Card.</p>
+<h3 class="fn"><a name="simUsedIndexCount"></a>int QContactModel::simUsedIndexCount ( const <a href="qpimsource.html">QPimSource</a> &amp; <i>source</i> = QPimSource() ) const</h3>
+<p>Returns the number of indexes used for a given SIM contact data <i>source</i>.</p>
+<h3 class="fn"><a name="sort"></a>void QContactModel::sort ( <a href="qlist.html">QList</a>&lt;<a href="qcontactmodel.html#SortField-typedef">SortField</a>&gt; <i>list</i> )</h3>
+<p>Sorts the model by the fields specified in <i>list</i>. Each entry in the list specifies a field and an order (ascending or descending).</p>
+<h3 class="fn"><a name="sort-2"></a>void QContactModel::sort ( int <i>column</i>, <a href="qt.html#SortOrder-enum">Qt::SortOrder</a> <i>order</i> = Qt::AscendingOrder )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sorts the model by <i>column</i> in the specified <i>order</i>.</p>
+<p>Reimplemented from <a href="qabstractitemmodel.html#sort">QAbstractItemModel</a>.</p>
+<h3 class="fn"><a name="updateContact"></a>bool QContactModel::updateContact ( const <a href="qcontact.html">QContact</a> &amp; <i>contact</i> )</h3>
+<p>Updates the contact in the model with the same identifier as the specified <i>contact</i> to equal the specified contact.</p>
+<p>Returns true if the contact was successfully updated.</p>
+<h3 class="fn"><a name="updateRecord"></a>bool QContactModel::updateRecord ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>id</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>bytes</i>, const <a href="qstring.html">QString</a> &amp; <i>format</i> = QString() )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Updates the corresponding record in the model to equal the record encoded in <i>bytes</i>. The format of the record in <i>bytes</i> is given by the <i>format</i> string. An empty <i>format</i> string will cause the record to be read using the data stream operators for the PIM data type of the model. If <i>id</i> is not null will set the record identifier to <i>id</i> before attempting to update the record.</p>
+<p>Returns true if the record was successfully updated.</p>
+<p>Valid formats are &quot;vCalendar&quot; or an empty string.</p>
+<p>Reimplemented from <a href="qpimmodel.html#updateRecord">QPimModel</a>.</p>
+<p>See also <a href="qcontactmodel.html#updateContact">updateContact</a>().</p>
+<h3 class="fn"><a name="writeVCard"></a>bool QContactModel::writeVCard ( const <a href="qstring.html">QString</a> &amp; <i>filename</i> )</h3>
+<p>Write vCards for all visible contacts in the model to the file specified by <i>filename</i>.</p>
+<p>Returns true if successful.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

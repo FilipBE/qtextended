@@ -1,0 +1,10 @@
+# qmake doesn't include this when using $$fromfile()
+!contains(PROECSSED_PRI,qmake_cache):include($$(PROJECT_ROOT)/.qmake.cache)
+
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(default_pre.prf)
+# Setup all the stuff we need to process the .pro file
+
+# Get Qt's version of this file
+load(default_pre)
+load(functions)
+load(config)

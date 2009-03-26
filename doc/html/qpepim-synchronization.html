@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PIM Synchronization</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PIM Synchronization<br /><span class="subtitle"></span>
+</h1>
+<p>Qt Extended supports adding PIM synchronization at two levels of detail. Device synchronization and Desktop synchronization. Which one is most appropriate is dependent on the nature of the synchronization type to be integrated.</p>
+<a name="device-synchronization"></a>
+<h3>Device Synchronization</h3>
+<p>Qt Extended supports implementing PIM synchronization on the device through functions provided by <a href="qpimmodel.html">QPimModel</a>. The functions <a href="qpimmodel.html#added">QPimModel::added</a>(), <a href="qpimmodel.html#removed">QPimModel::removed</a>() and <a href="qpimmodel.html#modified">QPimModel::modified</a>() are provided as a way of accessing the internal changelog maintained by the PIM Library. This helps determine what data has changed since a previous synchronization action so to minimize the amount of data sent over a network when enacting the next synchronization. The functions <a href="qpimmodel.html#startSyncTransaction">QPimModel::startSyncTransaction</a>(), <a href="qpimmodel.html#abortSyncTransaction">QPimModel::abortSyncTransaction</a>() and <a href="qpimmodel.html#commitSyncTransaction">QPimModel::commitSyncTransaction</a>() are provided to atomically apply changes for synchronization as well as to increase performance by virtue of the SQL transaction and reduced load on calculating changelog timestamps.</p>
+<p>Device Synchronization is intended for integrating PIM synchronization for existing protocols where desktop components already exists. See <a href="device-synchronization.html">Device Synchronization</a> for more information.</p>
+<p>Desktop Synchronization uses Device Synchronization as a sub-component.</p>
+<a name="desktop-synchronization"></a>
+<h3>Desktop Synchronization</h3>
+<p>Qt Extended supports implementing PIM synchronization on the desktop through an existing protocol and data merging functions in the Qt Extended Sync Agent. This allows synchronization with an app where using an existing protocol is not practical. It handles communicating changes between the device and the desktop, maintaining synchronization bookkeeping and a level of change merging.</p>
+<p>Desktop Synchronization is intended for integrating PIM synchronization for existing applications using Qt Extended for the protocol and record merging. See <a href="qtopiadesktop/over-desktop-synchronization-1.html">Desktop Synchronization</a> for more information.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,75 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use File::Find;
+use File::Basename;
+use File::stat;
+use File::Copy;
+use Carp;
+$Carp::CarpLevel = 1;
+
+my $qtdir = shift(@ARGV) or usage();
+my $sdkdir = shift(@ARGV) or usage();
+
+find( sub{
+    my $file = $File::Find::name;
+    if ( -d $file ) {
+        return;
+    }
+    my $origfile = $file;
+    $origfile =~ s/^\Q$sdkdir\E/$qtdir/;
+    if ( -e $origfile ) {
+        $origfile = resolveHeader($origfile);
+        system("touch -r $origfile $file");
+    }
+}, $sdkdir );
+
+exit 0;
+
+sub usage
+{
+    print "Usage:  fixsdktimestamps QTDIR SDKDIR\n";
+    exit 2;
+}
+
+# Track down a "real" header
+sub resolveHeader
+{
+    my ( $file ) = @_;
+    my $last = "";
+    for (;;) {
+	open IN, $file or croak "Can't read $file (included from $last)";
+	my $orig = <IN>; 
+	if ( !defined($orig) ) {
+            #warn "Qtopia::File::resolveHeader() undefined value read from $file";
+	    return $file;
+	}
+	chomp $orig;
+        # Allow "symlink" header files to indicate that the include is not the first line
+        if ( $orig =~ /resolveHeader skip (\d+)/ ) {
+            my $skip = $1;
+            for ( my $i = 0; $i < $skip; $i++ ) {
+                $orig = <IN>;
+            }
+        }
+	close IN;
+	if ( $orig =~ /^#include "(.*)"\s*$/ ) {
+            my $nf = $1;
+            if ( substr($1,0,1) ne "/" ) {
+                $nf = dirname($file)."/".$1;
+            }
+            if ( -e $nf ) {
+                $last = $file;
+                $file = $nf;
+            } else {
+                last;
+            }
+        } else {
+            last;
+        }
+    }
+    return $file;
+}
+

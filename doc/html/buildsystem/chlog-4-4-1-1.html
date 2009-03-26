@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Build system changes for 4.4&#x2e;1</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Build system changes for 4.4&#x2e;1<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>This page describes changes to the 4.4&#x2e;1 build system.</p>
+<ul>
+<li>The build system was replaced for Qt Extended 4.4&#x2e;1&#x2e; Please see the <a href="bas-introduction-to-qbuild-1.html">Introduction to QBuild</a> for information about the new system.</li>
+<li>-edition is no longer supported. Instead, there is the -ui-type switch to select the user interface. -ui-type is a mandatory switch (there is no default value).</li>
+<li>All configure options default to off. However, there is now a default device (devices/reference) that turns everything on so that running configure without options will give you a fully-loaded build.</li>
+<li>There is a new -modules switch for selecting the modules to build. See <a href="foo/../../modules-index.html">Qt Extended Modules</a>.</li>
+<li>Features that are tied to modules no longer have switches. You need to turn the modules on instead. The <a href="over-configure-options-1.html">configure Options</a> lists these modules.</li>
+<li>If you do not specify a -device, the reference device (devices/reference) is automatically used. This device turns on all features and modules.</li>
+<li>There is better support for QVFb builds of device profiles. This is achieved via the -qvfb switch. See <a href="over-qvfb-builds-1.html">QVFb Builds</a> for more information.</li>
+<li>There is a new -allow-fail switch that devices can use to allow certain features to be missing when doing a QVFb build.</li>
+<li>For every multi-value configure option (eg. -option var,var) there is a -add[-option] and -remove[-option] variant to add or remove an item from the list.</li>
+<li>For every list configure option (eg. -option foo -option bar) there is a -no[-option] variant to remove a value from the list.</li>
+<li>Devices can place configure switches common to a real and QVFb build in configure-common to avoid duplication. The device-specific values then go into configure while configure-qvfb is used for QVFb.</li>
+<li>The link_test is now mandatory for all projects.</li>
+<li>Some aspects of the build system have become more automatic (eg. header installation, dependency handling). See <a href="task-porting-to-qbuild-1.html">Porting to QBuild</a> for more information.</li>
+<li>Build system features have become opt-in instead of opt-out. See <a href="task-porting-to-qbuild-1.html">Porting to QBuild</a> for more information.</li>
+<li>The SDK is created incrementally, with SDK contents being stored only in the SDK (and not in the build tree). The SDK now has a default location of &lt;build&gt;/sdk.</li>
+</ul>
+<a name="known-issues"></a>
+<h3>Known Issues</h3>
+<ul>
+<li>A standalone SDK cannot be created. The SDK will work as long as the build and source trees are available.</li>
+<li>Most projects in Qtopia do not resemble fully-ported applications (as described in <a href="task-porting-to-qbuild-1.html">Porting to QBuild</a>). This is due to the maintenance of multiple build systems during the 4.4&#x2e;1 development phase. These are expected to be cleaned up in a future release.</li>
+<li>Building for an x86_64 target does not work.</li>
+<li>QBuild bootstrapping requires Qt 4.3 or higher to be installed on the system.</li>
+</ul>
+<p>See also <a href="changes.html">What's New?</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

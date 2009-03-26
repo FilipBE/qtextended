@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# redirect all output to /dev/null
+exec 1>/dev/null
+exec 2>/dev/null
+
+case "$1" in
+    boot)
+        splash "Loading boot" "modules"
+
+        # FAT Support
+        insmod fat
+        insmod vfat
+        insmod nls_cp437
+        insmod nls_iso8859-1
+        insmod nls_utf8
+
+        # TAT Table
+        insmod docparatable
+
+        # Power Management
+        insmod omega_pmu
+        insmod omega_power
+        insmod omega_poweroff
+        ;;
+    debug)
+        splash -p + "Loading debug" "modules"
+
+        # Loopback block device
+        insmod loop
+
+        # NFS Support
+        insmod sunrpc
+        insmod lockd
+        insmod nfs
+        ;;
+    *)
+        splash -p + "Loading modules"
+
+        # Networking and PPP
+        insmod af_packet
+        insmod unix
+        insmod slhc
+        insmod ppp_generic
+        insmod ppp_async
+
+        # Multimedia interfaces
+        insmod omega_i2c
+        insmod videodev
+        insmod omega_camera
+        insmod soundcore
+        insmod greenphone-sound
+        insmod wm9713-ts
+        insmod s1d19120
+
+        # Misc Hardware
+        insmod hsav_detect
+        insmod omega_alarm
+        insmod omega_rtcalarm
+        insmod omega_bcm2121
+        insmod omega_chgled
+        insmod omega_spi
+        insmod omega_vibrator
+        insmod omega_kpbl
+        insmod omega_usb_detect
+        insmod pseudo_serial
+
+        # miniSD Card
+        insmod mmc_base
+        insmod mmc_omega
+#        insmod p300wlan
+
+        # Bluetooth
+        insmod omega_bt
+        insmod bluez
+        insmod l2cap
+        insmod sco
+        insmod hci_uart
+        insmod rfcomm
+        ;;
+esac
+

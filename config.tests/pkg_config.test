@@ -1,0 +1,20 @@
+#!/bin/sh
+pkgconfig=pkg-config
+
+# Test that the package exists
+$pkgconfig $PACKAGE
+if [ $? -ne 0 ]; then
+    echo "Package $PACKAGE does not exist!"
+    exit 1
+fi
+
+if [ -z "$FLAGS" ]; then
+    FLAGS=cflags,libs
+fi
+
+# Now pull out the information we want
+for f in $(echo $FLAGS | sed 's/,/ /g'); do
+    echo $(echo $f | tr '[a-z]' '[A-Z]')=$($pkgconfig $PACKAGE --$f)
+done
+
+exit 0

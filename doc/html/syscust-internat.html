@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Internationalization</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Internationalization<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#translating-qt-extended">Translating Qt Extended</a></li>
+<ul><li><a href="#language-directory-and-language-description-file">Language Directory and Language Description File</a></li>
+<li><a href="#create-initial-version-of-translation-files">Create Initial Version of Translation Files</a></li>
+<li><a href="#translating-strings-using-linguist">Translating strings using Linguist</a></li>
+<li><a href="#install-translation-files">Install Translation Files</a></li>
+<li><a href="#updating-translation-files">Updating Translation Files</a></li>
+</ul>
+<li><a href="#fonts">Fonts</a></li>
+<li><a href="#program-internationalization">Program Internationalization</a></li>
+<ul><li><a href="#placing-application-files">Placing Application Files</a></li>
+<li><a href="#placing-plug-in-files">Placing Plug-in Files</a></li>
+</ul>
+<li><a href="#desktop-configuration-file-internationalization">Desktop &amp; Configuration File Internationalization</a></li>
+<li><a href="#image-translation">Image Translation</a></li>
+<li><a href="#documentation-internationalization">Documentation Internationalization</a></li>
+<li><a href="#word-lists">Word Lists</a></li>
+<li><a href="#input-methods">Input Methods</a></li>
+<li><a href="#special-localizations">Special Localizations</a></li>
+<ul><li><a href="#contacts">Contacts</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended can be translated into several languages. By default Qt Extended ships only with English. Additional language-specific packages are available for purchase. For further information please contact <a href="mailto:qt-sales@nokia.com">qt-sales@nokia.com</a>.</p>
+<p>Internationalizing Qt Extended software is much the same as internationalizing any Qt-based software. You should be familiar with the <a href="i18n.html">Qt internationalization documentation</a>, the <a href="qobject.html#tr">QObject::tr()</a> functions, <a href="linguist-manual.html">Qt Linguist</a> and the internationalization process in general before you proceed with this document.</p>
+<p><b>Note:</b> Qt Extended ships without any translation files, later steps will show how to generate the translation files.</p>
+<a name="translating-qt-extended"></a>
+<h2>Translating Qt Extended</h2>
+<p>Adding a translation for Qt Extended is easy. There are a few steps you will need to take in order to successfully translate Qt Extended into your chosen language.</p>
+<ol type="1">
+<li><a href="#description">Add language description file</a></li>
+<li><a href="#createinitialtsfiles">Create initial version of translation files</a></li>
+<li><a href="#translate">Translating strings using Linguist</a></li>
+<li><a href="#releasefiles">Install translation files</a></li>
+<li><a href="#updatefiles">Updating translation files</a></li>
+</ol>
+<p>To translate Qt Extended into an additional language you must perform the translation process described above for all the application, desktop and configuration files, and any help documentation that you wish to have available in that language.</p>
+<a name="description"></a><a name="language-directory-and-language-description-file"></a>
+<h3>Language Directory and Language Description File</h3>
+<p>Create the directory <tt>$QPEDIR/i18n/&lt;new-lang&gt;</tt> for the new language, for example run:</p>
+<pre>    mkdir $QPEDIR/i18n/zh_CN</pre>
+<p>if you want to create translation files for Simplified Chinese</p>
+<p>Every language needs a <tt>.directory</tt> file that serves as a description for the language itself. For example, the Simplified Chinese <tt>.directory</tt> in <tt>$QPEDIR/i18n/zh_CN</tt> may look like this:</p>
+<pre>    [Translation]
+    File=QtopiaI18N
+    Context=Simplified Chinese
+    [Desktop Entry]
+    Name[]=Simplified Chinese</pre>
+<p>A <tt>.directory</tt> file contains the untranslated (English) name of the language itself as it is presented to the user. To create a <tt>.directory</tt> run:</p>
+<pre>    cp $QPEDIR/i18n/en_US/.directory $QPEDIR/i18n/zh_CN/
+    # edit the .directory file setting the correct value for  Context and Name[]
+    vim $QPEDIR/i18n/zh_CN/.directory</pre>
+<a name="createinitialtsfiles"></a><a name="create-initial-version-of-translation-files"></a>
+<h3>Create Initial Version of Translation Files</h3>
+<p>After creating the .directory file above you need to run configure so that it is aware of the new langage. After that you can create the .ts files for all available languages by running:</p>
+<pre>    qbuild lupdate</pre>
+<p>This will result in the following steps for all available languages.</p>
+<ul>
+<li>generate server specific translation files(e.g&#x2e; <tt>QtopiaApplications.ts</tt> which contain the translated names for Qt Extended applications) in the <tt>$QPEDIR/i18n/&lt;your-lang&gt;</tt> directory.</li>
+<li>generate application specific translation files in that applications source directory (e.g <tt>$QPEDIR/src/settings/worldtime/</tt>). The general naming convention for the application specific translation files is <tt>&lt;appname&gt;-&lt;your-lang&gt;.ts</tt> (e.g&#x2e; <tt>sysinfo-zh_CN.ts</tt>).</li>
+</ul>
+<p>The script <tt>$QPEDIR/bin/nct_lupdate</tt> is executed in order to generate translation files for those strings that cannot be found in source code. This includes most config and desktop files in the <tt>$QPEDIR</tt> directory. Each of these config/desktop files must have a Translation group similar to the following one which can be found in <tt>$QPEDIR/apps/Applications/clock.desktop</tt>:</p>
+<pre>    [Translation]
+    File=QtopiaApplications
+    Context=Clock</pre>
+<p>This causes the generation of the file <tt>QtopiaApplications.ts</tt> in <tt>$QPEDIR/i18n/&lt;your-lang&gt;</tt>. If this file already exists it will be updated without the loss of any existing content. The Desktop &amp; Configuration File Internationalization <a href="#desktop-configuration-file-internationalization">section</a> further down in this document explains how this information is used to translate settings file content.</p>
+<p>For more information on build system related translation information please refer to the following guides:</p>
+<ul>
+<li><a href="buildsystem/task-translating-categories-1.html">Translating Categories</a></li>
+<li><a href="buildsystem/task-translating-themes-1.html">Translating Themes</a></li>
+<li><a href="buildsystem/over-internationalization-build-system-1.html">Internationalization (build system)</a></li>
+</ul>
+<a name="translate"></a><a name="translating-strings-using-linguist"></a>
+<h3>Translating strings using Linguist</h3>
+<p>The next step is to run the linguist tool. Linguist makes it easy to work with translations. It supports incremental translation, which helps you to keep track of any additional content that is added to Qt Extended and needs to be translated. Any strings that are ambiguous or otherwise unclear or suspect in some way, should be translated to whatever degree is possible and then left in the <i>unfinished</i> state.</p>
+<p>For further information refer to : <a href="http://doc.trolltech.com/4/linguist-manual.html">Linguist Manual</a></p>
+<a name="releasefiles"></a><a name="install-translation-files"></a>
+<h3>Install Translation Files</h3>
+<p>The last step is to run the command <tt>bin/qbuild image</tt> in the Qt Extended (<tt>$QPEDIR</tt>) directory. As part of this process lrelease is used to create Qt message files (<tt>.qm</tt> files).</p>
+<a name="updatefiles"></a><a name="updating-translation-files"></a>
+<h3>Updating Translation Files</h3>
+<p>Any time a User Visible string has changed run <tt>qbuild lupdate</tt> to cause the recreation of the translation files. It is then a matter of editing the changed .ts files with linguist so that the correct text is shown for the new strings. The last step is the installation of the edited translation files by running <tt>qbuild image</tt>.</p>
+<a name="fonts"></a>
+<h2>Fonts</h2>
+<p>Qt Extended uses DejaVu as the default font, however this font does not specify the characters for languages such as Chinese.</p>
+<p>The configuration file <tt>$QPEDIR/etc/default/Trolltech/qpe.conf</tt> has to be translated so that the correct font family and size is used for each language. If this configuration file is not translated, Qt Extended will use DejaVu as the default font. Therefore, valid <tt>qpe.conf</tt> and <tt>QtopiaDefaults.ts</tt> files are required to suppress DejaVu as the preferred choice. The <tt>qpe.conf</tt> looks like this:</p>
+<pre>    [Translation]
+    File=QtopiaDefaults
+    Context=QPE
+
+    [Font]
+    FontFamily[]=dejavu_sans_condensed
+    FontSize[]=6.4</pre>
+<p>Such a configuration will be suitable for most Western languages. The <tt>Font</tt> group defines the font family and font size (in points) that will be used by Qt Extended.</p>
+<p>This configuration file is marked for translation. When executing <tt>qbuild lupdate</tt> the build system will create: <tt>$QPEDIR/i18n/&lt;your-lang&gt;/QtopiaDefaults.ts</tt>. For example, a Korean translation may look like this:</p>
+<pre>    &lt;name&gt;QPE&lt;/name&gt;
+    &lt;message&gt;
+        &lt;source&gt;dejavu_sans_condensed&lt;/source&gt;
+        &lt;translation&gt;unifont&lt;/translation&gt;
+    &lt;/message&gt;
+    &lt;message&gt;
+        &lt;source&gt;6.4&lt;/source&gt;
+        &lt;translation&gt;13&lt;/translation&gt;
+    &lt;/message&gt;</pre>
+<p>The chosen font has to support all characters of the given language.</p>
+<a name="program-internationalization"></a>
+<h2>Program Internationalization</h2>
+<p>When <tt>qbuild image</tt> is executed, the build system generates Qt message files (<tt>.qm</tt> files).</p>
+<a name="placing-application-files"></a>
+<h3>Placing Application Files</h3>
+<p>Application files will be placed as follows:</p>
+<p><tt>/opt/Qtopia/i18n/&lt;language&gt;/&lt;appname&gt;.qm</tt></p>
+<p>The <b>language</b> is an ISO 639 language code optionally followed by an underscore and an ISO 3166 territory (for example, &quot;en&quot;, &quot;en_GB&quot;, &quot;ja&quot;, &quot;ja_JP&quot;). Locale suffixes are supported. For example, if your application uses British English it can have a <tt>/opt/Qtopia/i18n/en_US/&lt;appname&gt;.qm</tt> file specifying changes for American English. Translations with locale suffixes take precedence over translations without such suffixes.</p>
+<p>The <b>&lt;appname&gt;</b> is the filename of the application executable.</p>
+<a name="placing-plug-in-files"></a>
+<h3>Placing Plug-in Files</h3>
+<p>For plug-ins that are shared libraries the files must be placed in the following directory:</p>
+<p><tt>/opt/Qtopia/i18n/&lt;language&gt;/&lt;pluginname&gt;.qm</tt></p>
+<p>The <b>&lt;pluginname&gt;</b> is the filename of the plug-in shared object minus any extensions, but including <i>lib</i> if the plug-in incorporates that prefix. New plug-ins should always be loaded via <a href="qpluginmanager.html">QPluginManager</a> in order to ensure that the necessary translation files are loaded.</p>
+<a name="desktop-configuration-file-internationalization"></a>
+<h2>Desktop &amp; Configuration File Internationalization</h2>
+<p>Desktop/Config files (eg. <tt>/opt/Qtopia/apps/Application/&lt;appname&gt;.desktop</tt>) can also be translated. For example, the <tt>texteditor.desktop</tt> file begins with:</p>
+<pre>    [Translation]
+    File=QtopiaApplications
+    Context=Notes
+    [Desktop Entry]
+    Comment[]=A Text Editing Program
+    Exec=textedit
+    Icon=TextEditor
+    Type=Application
+    MimeType=text/*
+    Name[]=Notes</pre>
+<p>This causes the file <tt>/opt/Qtopia/i18n/language/QtopiaApplications.qm</tt> to be loaded (if it isn't already) and the strings marked with &quot;[]&quot; to be translated in the &quot;Text Editor&quot; context. The &quot;bin/nct_lupdate&quot; script can be used to maintain <tt>.ts</tt> files from <tt>.desktop</tt> files.</p>
+<p>All desktop files have to be encoded in UTF-8.</p>
+<a name="image-translation"></a>
+<h2>Image Translation</h2>
+<p>For certain applications it may be a requirement to translate images. A word processor application may have a tool button that markes text as bold. The button itself may have the capital letter B as image. This would not be suitable for e.g&#x2e; a German user interface where the B would have to be replaced by an image displaying the letter F ('Bold' translates to the German 'Fett').</p>
+<p>The resource system supports the following two types of translatable images:</p>
+<ul>
+<li><tt>QPixmap(&quot;:image/i18n/bold&quot;)</tt></li>
+<li><tt>QIcon(&quot;:icon/i18n/bold)</tt></li>
+</ul>
+<p>The string <tt>i18n</tt> serves as an indicator to activate a lookup mechanism that is aware of the current user interface language. The pixmap above will be looked up in one of the following directories:</p>
+<ul>
+<li><tt>$QPEDIR/pics/&lt;app-name&gt;/i18n/de_DE/bold.png</tt> (app specific translatable pictures)</li>
+<li><tt>$QPEDIR/pics/i18n/de_DE/bold.png</tt> (global non-translatable pictures)</li>
+<li><tt>$QPEDIR/pics/&lt;app-name&gt;/i18n/de/bold.png</tt></li>
+<li><tt>$QPEDIR/pics/i18n/de/bold.png</tt></li>
+<li><tt>$QPEDIR/pics/&lt;app-name&gt;/i18n/en_US/bold.png</tt> (app specific fall back)</li>
+<li><tt>$QPEDIR/pics/i18n/en_US/bold.png</tt> (global fallback)</li>
+</ul>
+<p>As comparison a call to <tt>QPixmap(&quot;:image/bold&quot;)</tt> will search in different directories:</p>
+<ul>
+<li><tt>$QPEDIR/pics/&lt;app-name&gt;/bold.png</tt> (app specific pictures)</li>
+<li><tt>$QPEDIR/pics/bold.png</tt> (app specific pictures)</li>
+</ul>
+<p>A picture that requires a translation must be put into one of the i18n subfolders. American English (en_US) is used as a fall back mechanism in case there is no translation for the current language. Therefore developers who want to provide translations for their pictures have to ensure that they provide a translation/picture for American English.</p>
+<a name="documentation-internationalization"></a>
+<h2>Documentation Internationalization</h2>
+<p>Online documentation for applications is written in the HTML subset supported by the Qt richtext widget. Such documentation files must be placed as follows:</p>
+<p>English documentation:</p>
+<p><tt>/opt/Qtopia/help/html/&lt;appname&gt;-suffixes.html</tt></p>
+<p>Non-English documentation:</p>
+<p><tt>/opt/Qtopia/help/&lt;lang&gt;/html/&lt;appname&gt;-suffixes.html</tt></p>
+<p>These files are encoded in UTF-8.</p>
+<a name="word-lists"></a>
+<h2>Word Lists</h2>
+<p><tt>/opt/Qtopia/etc/dict/&lt;lang&gt;/</tt> contains word lists specific to the language. These files end with <tt>.dawg</tt> and are generated at install time from files <i>without</i> the <tt>.dawg</tt> suffix in the source. See the <a href="qdawg.html">QDawg</a> documentation for details.</p>
+<p>The word lists are:</p>
+<ul>
+<li><tt>words.dawg</tt> - list of words</li>
+<li><tt>common.dawg</tt> - list of common words that input methods might conflict with less common words</li>
+</ul>
+<a name="input-methods"></a>
+<h2>Input Methods</h2>
+<p>Dictionary-based input methods should use the Word Lists described above where possible. The Predictive Keyboard input method uses these word lists and a key layout configuration file:</p>
+<p><tt>/opt/Qtopia/etc/default/Trolltech/&lt;lang&gt;/PredictiveKeyboardLayout.conf</tt></p>
+<p>Sample layouts are provided for German and French. Languages not supplied will default to using:</p>
+<p><tt>/opt/Qtopia/etc/default/Trolltech/PredictiveKeyboardLayout.conf</tt></p>
+<p>which is a US keyboard layout.</p>
+<a name="special-localizations"></a>
+<h2>Special Localizations</h2>
+<a name="contacts"></a>
+<h3>Contacts</h3>
+<p>Qt Extended defines name ordering conventions used by Contacts in the <tt>formatting</tt> section of <tt>$QPEDIR/etc/default/Trolltech/Contacts.conf</tt>, where a number of options are listed (by default 2 are provided), and the default selection between those options. See <a href="qcontact.html#setLabelFormat">QContact::setLabelFormat</a>() for a description of the format.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaIpcAdaptor Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaIpcAdaptor Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaIpcAdaptor class provides an interface to messages on a Qt Extended IPC channel which simplifies remote signal and slot invocations. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaIpcAdaptor&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="alarmserverservice.html">AlarmServerService</a>, <a href="inputmethodservice.html">InputMethodService</a>, <a href="qtopianetworkserver.html">QtopiaNetworkServer</a>, and <a href="qtopiavpnmanager.html">QtopiaVpnManager</a>.</p>
+<ul>
+<li><a href="qtopiaipcadaptor-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qtopiaipcadaptor.html#ChannelSelector-enum">ChannelSelector</a></b> { AutoDetect, SenderIsChannel, ReceiverIsChannel }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopiaipcadaptor.html#QtopiaIpcAdaptor">QtopiaIpcAdaptor</a></b> ( const QString &amp; <i>channel</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtopiaipcadaptor.html#dtor.QtopiaIpcAdaptor">~QtopiaIpcAdaptor</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qtopiaipcadaptor.html#isConnected">isConnected</a></b> ( const QByteArray &amp; <i>signal</i> )</li>
+<li><div class="fn"/>QtopiaIpcSendEnvelope <b><a href="qtopiaipcadaptor.html#send">send</a></b> ( const QByteArray &amp; <i>member</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaipcadaptor.html#send-2">send</a></b> ( const QByteArray &amp; <i>member</i>, const QVariant &amp; <i>arg1</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaipcadaptor.html#send-3">send</a></b> ( const QByteArray &amp; <i>member</i>, const QVariant &amp; <i>arg1</i>, const QVariant &amp; <i>arg2</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaipcadaptor.html#send-4">send</a></b> ( const QByteArray &amp; <i>member</i>, const QVariant &amp; <i>arg1</i>, const QVariant &amp; <i>arg2</i>, const QVariant &amp; <i>arg3</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaipcadaptor.html#send-5">send</a></b> ( const QByteArray &amp; <i>member</i>, const QList&lt;QVariant&gt; &amp; <i>args</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qtopiaipcadaptor.html#connect">connect</a></b> ( QObject * <i>sender</i>, const QByteArray &amp; <i>signal</i>, QObject * <i>receiver</i>, const QByteArray &amp; <i>member</i>, QtopiaIpcAdaptor::ChannelSelector <i>selector</i> = AutoDetect )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<a name="protected-types"></a>
+<h3>Protected Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qtopiaipcadaptor.html#PublishType-enum">PublishType</a></b> { Signals, Slots, SignalsAndSlots }</li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QString <b><a href="qtopiaipcadaptor.html#memberToMessage">memberToMessage</a></b> ( const QByteArray &amp; <i>member</i> )</li>
+<li><div class="fn"/>bool <b><a href="qtopiaipcadaptor.html#publish">publish</a></b> ( const QByteArray &amp; <i>member</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiaipcadaptor.html#publishAll">publishAll</a></b> ( QtopiaIpcAdaptor::PublishType <i>type</i> )</li>
+<li><div class="fn"/>virtual QString <b><a href="qtopiaipcadaptor.html#receiveChannel">receiveChannel</a></b> ( const QString &amp; <i>channel</i> )</li>
+<li><div class="fn"/>virtual QStringList <b><a href="qtopiaipcadaptor.html#sendChannels">sendChannels</a></b> ( const QString &amp; <i>channel</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaIpcAdaptor class provides an interface to messages on a Qt Extended IPC channel which simplifies remote signal and slot invocations.</p>
+<p>Using this class, it is very easy to convert a signal emission into an IPC message on a channel, and to convert an IPC message on a channel into a slot invocation. In the following example, when the signal <tt>valueChanged(int)</tt> is emitted from the object <tt>source</tt>, the IPC message <tt>changeValue(int)</tt> will be sent on the channel <tt>QPE/Foo</tt>:</p>
+<pre>    QtopiaIpcAdaptor *adaptor = new QtopiaIpcAdaptor(&quot;QPE/Foo&quot;);
+    QtopiaIpcAdaptor::connect
+        (source, SIGNAL(valueChanged(int)), adaptor, MESSAGE(changeValue(int)));</pre>
+<p>Note that we use <a href="qtopiaipcadaptor.html#connect">QtopiaIpcAdaptor::connect</a>() to connect the signal to the IPC message, not <a href="qobject.html#connect">QObject::connect</a>(). A common error is to use <tt>connect()</tt> without qualifying it with <tt>QtopiaIpcAdaptor::</tt> and picking up <a href="qobject.html#connect">QObject::connect</a>() by mistake.</p>
+<p>On the server side of an IPC protocol, the <tt>changeValue(int)</tt> message can be connected to the slot <tt>setValue()</tt> on <tt>dest</tt>:</p>
+<pre>    QtopiaIpcAdaptor *adaptor = new QtopiaIpcAdaptor(&quot;QPE/Foo&quot;);
+    QtopiaIpcAdaptor::connect
+        (adaptor, MESSAGE(changeValue(int)), dest, SLOT(setValue(int)));</pre>
+<p>Now, whenever the client emits the <tt>valueChanged(int)</tt> signal, the <tt>setValue(int)</tt> slot will be automatically invoked on the server side, with the <tt>int</tt> parameter passed as its argument.</p>
+<p>Only certain parameter types can be passed across an IPC boundary in this fashion. The type must be visible to <a href="qvariant.html">QVariant</a> as a meta-type. Many simple built-in types are already visible; for user-defined types, use Q_DECLARE_USER_METATYPE().</p>
+<p>See also <a href="qtopiaabstractservice.html">QtopiaAbstractService</a> and <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ChannelSelector-enum"></a>enum QtopiaIpcAdaptor::ChannelSelector</h3>
+<p>Select which of the sender or receiver in QtopiaIpcAdaptor::connect is the channel.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaIpcAdaptor::AutoDetect</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Automatically detect from the arguments (the default).</td></tr>
+<tr><td valign="top"><tt>QtopiaIpcAdaptor::SenderIsChannel</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The sender is the channel, so the receiver is treated as local even if it is an instance of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>. This is normally only needed if both sender and receiver are instances of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</td></tr>
+<tr><td valign="top"><tt>QtopiaIpcAdaptor::ReceiverIsChannel</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The receiver is the channel, so the sender is treated as local even if it is an instance of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>. This is normally only needed if both sender and receiver are instances of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</td></tr>
+</table></p>
+<h3 class="fn"><a name="PublishType-enum"></a>enum QtopiaIpcAdaptor::PublishType</h3>
+<p>Type of members to publish via <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaIpcAdaptor::Signals</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Publish only signals.</td></tr>
+<tr><td valign="top"><tt>QtopiaIpcAdaptor::Slots</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Publish only public slots.</td></tr>
+<tr><td valign="top"><tt>QtopiaIpcAdaptor::SignalsAndSlots</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Publish both signals and public slots.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtopiaIpcAdaptor"></a>QtopiaIpcAdaptor::QtopiaIpcAdaptor ( const <a href="qstring.html">QString</a> &amp; <i>channel</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a Qt Extended IPC message object for <i>channel</i> and attach it to <i>parent</i>. If <i>channel</i> is empty, then messages are taken from the application's <tt>appMessage</tt> channel.</p>
+<h3 class="fn"><a name="dtor.QtopiaIpcAdaptor"></a>QtopiaIpcAdaptor::~QtopiaIpcAdaptor ()</h3>
+<p>Destroy this Qt Extended IPC messaging object.</p>
+<h3 class="fn"><a name="connect"></a>bool QtopiaIpcAdaptor::connect ( <a href="qobject.html">QObject</a> * <i>sender</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>signal</i>, <a href="qobject.html">QObject</a> * <i>receiver</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i>, <a href="qtopiaipcadaptor.html#ChannelSelector-enum">QtopiaIpcAdaptor::ChannelSelector</a> <i>selector</i> = AutoDetect )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Connects <i>signal</i> on <i>sender</i> to <i>member</i> on <i>receiver</i>. Returns true if the connection was possible; otherwise returns false.</p>
+<p>If either <i>sender</i> or <i>receiver</i> are instances of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>, this function will arrange for the signal to be delivered over a Qt Extended IPC channel. If both <i>sender</i> and <i>receiver</i> are local, this function is identical to <a href="qobject.html#connect">QObject::connect</a>().</p>
+<p>The <i>selector</i> argument allows the caller to disambiguate the case where both <i>sender</i> and <i>receiver</i> are instances of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</p>
+<p>If the same signal is connected to same slot multiple times, then signal delivery will happen that many times.</p>
+<p>See also <a href="qtopiaipcadaptor.html#ChannelSelector-enum">QtopiaIpcAdaptor::ChannelSelector</a>.</p>
+<h3 class="fn"><a name="isConnected"></a>bool QtopiaIpcAdaptor::isConnected ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>signal</i> )</h3>
+<p>Returns true if the message on the Qt Extended IPC channel corresponding to <i>signal</i> has been connected to a local slot; otherwise returns false.</p>
+<h3 class="fn"><a name="memberToMessage"></a><a href="qstring.html">QString</a> QtopiaIpcAdaptor::memberToMessage ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Converts a signal or slot <i>member</i> name into a Qt Extended IPC message name. The default implementation strips the signal or slot prefix number from <i>member</i> and then normalizes the name to convert types such as <tt>const QString&amp;</tt> into <a href="qstring.html">QString</a>.</p>
+<h3 class="fn"><a name="publish"></a>bool QtopiaIpcAdaptor::publish ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Publishes the signal or slot called <i>member</i> on this object on the Qt Extended IPC channel represented by this <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>.</p>
+<p>If <i>member</i> is a slot, then whenever an application sends a message to the channel with that name, the system will arrange for the slot to be invoked.</p>
+<p>If <i>member</i> is a signal, then whenever this object emits that signal, the system will arrange for a message with that name to be sent on the channel.</p>
+<p>Returns false if <i>member</i> does not refer to a valid signal or slot.</p>
+<p>See also <a href="qtopiaipcadaptor.html#publishAll">publishAll</a>().</p>
+<h3 class="fn"><a name="publishAll"></a>void QtopiaIpcAdaptor::publishAll ( <a href="qtopiaipcadaptor.html#PublishType-enum">QtopiaIpcAdaptor::PublishType</a> <i>type</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Publishes all signals or public slots on this object within subclasses of <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a>. This is typically called from a subclass constructor. The <i>type</i> indicates if all signals, all public slots, or both, should be published. Private and protected slots will never be published.</p>
+<p>See also <a href="qtopiaipcadaptor.html#publish">publish</a>().</p>
+<h3 class="fn"><a name="receiveChannel"></a><a href="qstring.html">QString</a> QtopiaIpcAdaptor::receiveChannel ( const <a href="qstring.html">QString</a> &amp; <i>channel</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Converts <i>channel</i> into a new name to use for receiving messages. The default implementation returns <i>channel</i>.</p>
+<h3 class="fn"><a name="send"></a><a href="qtopiaipcsendenvelope.html">QtopiaIpcSendEnvelope</a> QtopiaIpcAdaptor::send ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i> )</h3>
+<p>Sends a message on the Qt Extended IPC channel which will cause the invocation of <i>member</i> on receiving objects. The return value can be used to add arguments to the message before transmission.</p>
+<h3 class="fn"><a name="send-2"></a>void QtopiaIpcAdaptor::send ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>arg1</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends a message on the Qt Extended IPC channel which will cause the invocation of the single-argument <i>member</i> on receiving objects, with the argument <i>arg1</i>.</p>
+<h3 class="fn"><a name="send-3"></a>void QtopiaIpcAdaptor::send ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>arg1</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>arg2</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends a message on the Qt Extended IPC channel which will cause the invocation of the double-argument <i>member</i> on receiving objects, with the arguments <i>arg1</i> and <i>arg2</i>.</p>
+<h3 class="fn"><a name="send-4"></a>void QtopiaIpcAdaptor::send ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>arg1</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>arg2</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>arg3</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends a message on the Qt Extended IPC channel which will cause the invocation of the triple-argument <i>member</i> on receiving objects, with the arguments <i>arg1</i>, <i>arg2</i>, and <i>arg3</i>.</p>
+<h3 class="fn"><a name="send-5"></a>void QtopiaIpcAdaptor::send ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i>, const <a href="qlist.html">QList</a>&lt;<a href="qvariant.html">QVariant</a>&gt; &amp; <i>args</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sends a message on the Qt Extended IPC channel which will cause the invocation of the multi-argument <i>member</i> on receiving objects, with the argument list <i>args</i>.</p>
+<h3 class="fn"><a name="sendChannels"></a><a href="qstringlist.html">QStringList</a> QtopiaIpcAdaptor::sendChannels ( const <a href="qstring.html">QString</a> &amp; <i>channel</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Converts <i>channel</i> into a list of names to use for sending messages. The default implementation returns a list containing just <i>channel</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

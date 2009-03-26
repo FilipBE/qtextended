@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaPowerManagerService Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaPowerManagerService Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaPowerManagerService class provides the <a href="qtopiapowermanager.html">QtopiaPowerManager</a> service. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaPowerManagerService&gt;</pre><p>Inherits <a href="qtopiaabstractservice.html">QtopiaAbstractService</a>.</p>
+<ul>
+<li><a href="qtopiapowermanagerservice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtopiapowermanagerservice.html#setActive">setActive</a></b> ( bool <i>on</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiapowermanagerservice.html#setBacklight">setBacklight</a></b> ( int <i>brightness</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiapowermanagerservice.html#setConstraint">setConstraint</a></b> ( int <i>constraint</i>, const QString &amp; <i>app</i> )</li>
+<li><div class="fn"/>void <b><a href="qtopiapowermanagerservice.html#setDefaultIntervals">setDefaultIntervals</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopiapowermanagerservice.html#setIntervals">setIntervals</a></b> ( int <i>dim</i>, int <i>lightOff</i>, int <i>suspend</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qtopiaabstractservice.html#protected-functions">QtopiaAbstractService</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaPowerManagerService class provides the <a href="qtopiapowermanager.html">QtopiaPowerManager</a> service.</p>
+<p>The <i>QtopiaPowerManager</i> service enables applications to control the behavior of the Qt Extended power manager. Normally an application will use <a href="qtopiaapplication.html#setPowerConstraint">QtopiaApplication::setPowerConstraint</a>() for this, but finer control is available for settings applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="setActive"></a>void QtopiaPowerManagerService::setActive ( bool <i>on</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Activate power management if <i>on</i> is true; otherwise deactivate power management.</p>
+<p>This slot corresponds to the QCop service message <tt>QtopiaPowerManager::setActive(bool)</tt>.</p>
+<h3 class="fn"><a name="setBacklight"></a>void QtopiaPowerManagerService::setBacklight ( int <i>brightness</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the backlight level to <i>brightness</i>, between 0 and 255.</p>
+<p>This slot corresponds to the QCop service message <tt>QtopiaPowerManager::setBacklight(int,int)</tt>.</p>
+<p>Once the brightnes has been updated, the <tt>brightnessChanged(int)</tt> message will be sent to the <tt>Qtopia/PowerStatus</tt> channel.</p>
+<p>If <i>brightness</i> is -3, then the backlight will be forced on. If <i>brightness</i> is -2, then the backlight will be toggled from its current state. If <i>brightness</i> is -1, then the backlight will be set to its default state.</p>
+<h3 class="fn"><a name="setConstraint"></a>void QtopiaPowerManagerService::setConstraint ( int <i>constraint</i>, const <a href="qstring.html">QString</a> &amp; <i>app</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Apply the power management constraint <i>constraint</i> for the application <i>app</i>. The <i>constraint</i> value is one of the values from <a href="qtopiaapplication.html#PowerConstraint-enum">QtopiaApplication::PowerConstraint</a>.</p>
+<p>Normally client applications will use <a href="qtopiaapplication.html#setPowerConstraint">QtopiaApplication::setPowerConstraint</a>().</p>
+<p>This slot corresponds to the QCop service message <tt>QtopiaPowerManagerService::setConstraint(int,QString)</tt>.</p>
+<p>See also <a href="qtopiaapplication.html#setPowerConstraint">QtopiaApplication::setPowerConstraint</a>().</p>
+<h3 class="fn"><a name="setDefaultIntervals"></a>void QtopiaPowerManagerService::setDefaultIntervals ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the power manager intervals to their default values.</p>
+<p>This slot corresponds to the QCop service message <tt>QtopiaPowerManager::setDefaultIntervals()</tt>.</p>
+<h3 class="fn"><a name="setIntervals"></a>void QtopiaPowerManagerService::setIntervals ( int <i>dim</i>, int <i>lightOff</i>, int <i>suspend</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Set the power manager intervals to <i>dim</i>, <i>lightOff</i>, and <i>suspend</i>, for the three levels of power saving. The values are in seconds.</p>
+<p>This slot corresponds to the QCop service message <tt>QtopiaPowerManager::setIntervals(int,int,int)</tt>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

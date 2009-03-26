@@ -1,0 +1,211 @@
+exists($$(QPEDIR)/src/qtopiadesktop/build/qt_patch/force_qmake.pri):include($$(QPEDIR)/src/qtopiadesktop/build/qt_patch/force_qmake.pri)
+else:error(Missing $$(QPEDIR)/src/qtopiadesktop/build/qt_patch/force_qmake.pri)
+QPE_CONFIG=$$(QPE_CONFIG)
+QTOPIACORE_CONFIG=$$(QTOPIACORE_CONFIG)
+QPE_TARGET=$$(QPE_TARGET)
+contains(QPE_CONFIG,qbuild):QPE_TARGET=$$TARGET
+ADD_CFLAGS=$$(ADD_CFLAGS)
+ADD_CXXFLAGS=$$(ADD_CXXFLAGS)
+#win32:equals(ADD_CFLAGS,none):ADD_CFLAGS=
+
+QMAKE_BEHAVIORS=
+
+foo="bar"
+bar=bar
+!equals(foo,$$bar):QMAKE_BEHAVIORS+=keep_quotes
+
+foo="foo bar"
+contains(QMAKE_BEHAVIORS,keep_quotes) {
+    foo~=s/^"//
+    foo~=s/"$//
+}
+bar=$$foo
+count(bar,2):QMAKE_BEHAVIORS+=var_split
+
+# Deal with qmake behaviors
+contains(QMAKE_BEHAVIORS,keep_quotes) {
+    LITERAL_QUOTE="
+    LITERAL_ESCAPED_QUOTE=\"
+    LITERAL_SQUOTE='
+    LITERAL_BACKSLASH=\\
+
+} else {
+    LITERAL_QUOTE=\"
+    LITERAL_ESCAPED_QUOTE=\\\"
+    LITERAL_SQUOTE=\'
+    LITERAL_BACKSLASH=\\\
+
+}
+
+# containsre(val,regex,flags,splitchar) is like containstext() but it uses a regular expression
+defineTest(containsre) {
+    tmp="$$1"
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        tmp~=s/^"//
+        tmp~=s/"$//
+    }
+    re=$$2
+    flags=$$3
+    splitter=$$4
+    isEmpty(splitter):splitter=,
+
+    eval(tmp~=s$$splitter\$$re$$splitter ___CONTAINSTEXT_FOUND_THE_TEXT___ $$splitter\$$flags)
+    contains(QMAKE_BEHAVIORS,var_split) {
+        tmp=$$tmp
+    } else {
+        tmp=$$split(tmp," ")
+    }
+    contains(tmp,___CONTAINSTEXT_FOUND_THE_TEXT___):return(1)
+    else:return(0)
+}
+
+!contains(QMAKE_BEHAVIORS,var_split) {
+    QPE_CONFIG=$$split(QPE_CONFIG," ")
+    QTOPIACORE_CONFIG=$$split(QTOPIACORE_CONFIG," ")
+}
+
+!contains(QPE_CONFIG,qbuild) {
+unix:contains(QTOPIACORE_CONFIG,rpath) {
+    # Don't hit other targets
+    equals(TARGET,$$QPE_TARGET) {
+        !contains(QTOPIACORE_CONFIG,no_symlink) {
+            copytoqpedir.commands=@\
+                if echo $(TARGET) | grep '^\/' >/dev/null 2>&1; then\
+                    target=$(TARGET);\
+                else\
+                    target=$$OUT_PWD/$(TARGET);\
+                fi;\
+                mkdir -p \$$QPEDIR/bin;\
+                echo ln -sf \$$target \$$QPEDIR/bin;\
+                ln -sf \$$target \$$QPEDIR/bin
+            copytoqpedir.depends=$(TARGET)
+            QMAKE_EXTRA_TARGETS+=copytoqpedir
+            ALL_DEPS+=copytoqpedir
+        }
+    }
+}
+}
+
+contains(QPE_CONFIG,build_qtopia_sqlite) {
+    # Remove this from everywhere
+    LIBS-=sqlite3
+    # Now add it back in for Qtopia Core libs (including plugins)
+    # That's more than we'd really like but for now it'll have to do
+    SQLITE_TARGETS=QtSql qsqlite
+    contains(QTOPIACORE_CONFIG,target):equals(TEMPLATE,lib):contains(SQLITE_TARGETS,$$TARGET) {
+        INCLUDEPATH+=$$(SDKROOT)/include/sqlite
+        LIBS+=-L$$(SDKROOT)/lib -lqtopia-sqlite
+    }
+}
+
+# If these libs are disabled, don't actually build them
+MAYBE_REMOVE=qt3support opengl
+QT_CONF=$$QT_CONFIG
+equals(TEMPLATE,lib):contains(MAYBE_REMOVE,$$QPE_TARGET):!contains(QT_CONF,$$QPE_TARGET) {
+    HEADERS=
+    SOURCES=
+    FORMS=
+    LIBS=
+    QT=
+    CONFIG-=qt
+    silent:QMAKE_LINK=true
+    else:QMAKE_LINK=@true
+}
+
+LINE_SEP=$$quote(\n\t)
+foo=$$quote(\n)
+equals(foo,\n):LINE_SEP=$$escape_expand(\n\t)
+
+contains(QTOPIACORE_CONFIG,subdirs) {
+    win32 {
+        remove_target.commands+=@$(MAKE) clean
+    } else {
+        remove_target.commands=
+        for(dir,SUBDIRS) {
+            !isEmpty(remove_target.commands):remove_target.commands+=$$LINE_SEP
+            remove_target.commands+=@$(MAKE) -C $$dir remove_target
+        }
+    }
+    QMAKE_EXTRA_TARGETS+=remove_target
+} else {
+    # remove_target removes the TARGET file
+    unix:equals(TEMPLATE,app) {
+        cmds=@\
+            if echo $(TARGET) | grep '^\/' >/dev/null 2>&1; then\
+                target=$(TARGET);\
+            else\
+                target=$$OUT_PWD/$(TARGET);\
+            fi;\
+            echo rm -f \$$target;\
+            rm -f \$$target
+    } else {
+        cmds=-$(DEL_FILE) $(DESTDIR)$(TARGET)
+    }
+    !build_all|build_pass:remove_target.commands=$$cmds
+    remove_target.CONFIG+=recursive
+    QMAKE_EXTRA_TARGETS+=remove_target
+}
+
+# Disable the SVG iconengine (we've got our own version)
+equals(TEMPLATE,subdirs):contains(SUBDIRS,svgiconengine) {
+    SUBDIRS-=svgiconengine
+}
+
+# Qt plugins are compiled in to the server but unless we take some extra
+# steps they aren't actually made available to Qtopia.
+contains(QPE_CONFIG,enable_singleexec) {
+    singleexec_pri.commands=
+    equals(TEMPLATE,subdirs) {
+        for(s,SUBDIRS) {
+            !isEmpty(singleexec_pri.commands):singleexec_pri.commands+=$$LINE_SEP
+            singleexec_pri.commands+=$(MAKE) -C $$s singleexec_pri
+        }
+    }
+    plugin:containsre($$target.path,^$$[QT_INSTALL_PLUGINS]):contains(SOURCES,main.cpp) {
+        SOURCES-=main.cpp
+        SOURCES+=$$PWD/wrapmain.cpp
+        SE_LIBS=$$DESTDIR/lib$${TARGET}.a $$LIBS
+        singleexec_pri.commands=echo $${LITERAL_QUOTE}LIBS*=$${SE_LIBS}$$LITERAL_QUOTE >>$$(QPEDIR)/src/plugins/qtopiacore/singleexec.pri
+    }
+    QMAKE_EXTRA_TARGETS+=singleexec_pri
+}
+
+# Turn off hiding symbols in qtestlib
+equals(TARGET,QtTest) {
+    QT_CONFIG -= reduce_exports
+    CONFIG    -= hide_symbols
+}
+QMAKE_CFLAGS+=$$ADD_CFLAGS
+QMAKE_CXXFLAGS+=$$ADD_CFLAGS $$ADD_CXXFLAGS
+
+# Disable the ActiveQt designer plugin
+contains(SUBDIRS,activeqt):SUBDIRS-=activeqt
+
+# Stop qdoc3.pro from trying (and failing) to build docs
+equals(QPE_TARGET,qdoc3):QMAKE_POST_LINK=
+
+# Rename "compat" assistant to assistant
+!contains(QPE_CONFIG,qbuild):equals(TARGET,assistant_adp):TARGET=assistant
+
+# Prevent dynamic_cast from being used in embedded builds (we disable rtti so it will
+# always fail or worse, succeed without checking)
+contains(QTOPIACORE_CONFIG,target):!contains(QPE_CONFIG,enable_rtti) {
+    equals(QT_MINOR_VERSION,5) {
+        DEFINES+=QT_NO_DYNAMIC_CAST
+    } else {
+        DEFINES+=dynamic_cast=dynamic_cast_not_allowed
+    }
+}
+
+# Optimize linker algorithm for memory use. Handy on memory-constrained systems.
+contains(QPE_CONFIG,ld_optimize_memory):QMAKE_LFLAGS+=-Wl,-no-keep-memory
+
+# Force on -fPIC
+equals(TEMPLATE,lib):contains(QPE_CONFIG,force_pic) {
+    QMAKE_CFLAGS+=$$QMAKE_CFLAGS_SHLIB
+    QMAKE_CXXFLAGS+=$$QMAKE_CFLAGS_SHLIB
+    QMAKE_LFLAGS+=$$QMAKE_CFLAGS_SHLIB
+}
+
+# Get Qt's version of this file
+load(default_post)

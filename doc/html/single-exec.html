@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Single Exec</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Single Exec<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#costs-benefits">Costs/Benefits</a></li>
+<li><a href="#how-it-works">How it works</a></li>
+<li><a href="#issues">Issues</a></li>
+<li><a href="#building-single-exec">Building Single-exec</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>By default Qt Extended compiles dynamically. This allows applications to be installed but increases the minimum size and startup time. If installable applications are not required Qt Extended can be built as single-exec. This uses static linking to put everything into a single multi-call binary (similar to how busybox works).</p>
+<a name="costs-benefits"></a>
+<h2>Costs/Benefits</h2>
+<p>The costs of using single-exec are:</p>
+<ul>
+<li>Cannot install new applications except by rebuilding Qt Extended.</li>
+<li>The single-exec binary is too large put on a cramfs filesystem.</li>
+</ul>
+<p>The benefits of using single-exec are:</p>
+<ul>
+<li>The single-exec binary is smaller than the combined sizes of the dynamic binaries.</li>
+<li>The memory footprint is reduced due to the static linking.</li>
+<li>All dynamic linking costs are removed due to the static linking. This can speed up Qt Extended startup time, app startup time and plugin load time.</li>
+<li>SXE is disabled which can lead to a performance gain in situations involving lots of messaging.</li>
+</ul>
+<a name="how-it-works"></a>
+<h2>How it works</h2>
+<p>Libraries are compiled statically. Plugins are compiled as static libraries. Applications are compiled as static libraries. Static global initializers are used to register the plugins with the plugin manager. They are also used to register the quicklaunch applications with quicklauncher and the non-quicklaunch applications with the server. See <a href="buildsystem/over-applications-1.html">Applications</a> for information about how applications can be launched.</p>
+<p>All of these static libraries are linked into the server creating a single binary. When the server starts it looks at <tt>argv[0]</tt> to determine which process it is.</p>
+<p>The size benefit of single-exec is derived from static linking. When the linker combines the code, it performs various size optimizations such as:</p>
+<ul>
+<li>removing inline functions that are always included inline</li>
+<li>removing redundant or dead code that is not used by any applications</li>
+<li>not including symbol tables usually needed for dynamic linking</li>
+<li>no requirement for the code to be position independent code (PIC) which provides additional size and speed advantages.</li>
+</ul>
+<a name="issues"></a>
+<h2>Issues</h2>
+<p>One important thing to be aware of when building single-exec with additional 3rd-party components is that the symbols must not clash with those from other applications. The use of C++ namespaces would be a very good idea to avoid potential problems caused by this.</p>
+<a name="building-single-exec"></a>
+<h2>Building Single-exec</h2>
+<p>To build Qt Extended as a single-exec binary simply pass -singleexec to configure.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDrmContentLicense Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDrmContentLicense Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDrmContentLicense class provides an interface for DRM agents to monitor the consumption of DRM content. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDrmContentLicense&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qdrmcontentlicense-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdrmcontentlicense.html#QDrmContentLicense">QDrmContentLicense</a></b> ()</li>
+<li><div class="fn"/>virtual <b><a href="qdrmcontentlicense.html#dtor.QDrmContentLicense">~QDrmContentLicense</a></b> ()</li>
+<li><div class="fn"/>virtual QContent <b><a href="qdrmcontentlicense.html#content">content</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QDrmRights::Permission <b><a href="qdrmcontentlicense.html#permission">permission</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QDrmContent::RenderState <b><a href="qdrmcontentlicense.html#renderState">renderState</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qdrmcontentlicense.html#renderStateChanged">renderStateChanged</a></b> ( const QContent &amp; <i>content</i>, QDrmContent::RenderState <i>state</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdrmcontentlicense.html#rightsExpired">rightsExpired</a></b> ( const QContent &amp; <i>content</i>, QDrmRights::Permission <i>permission</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDrmContentLicense class provides an interface for DRM agents to monitor the consumption of DRM content.</p>
+<p>A DRM content license provides the interface through which a consuming application will notify a DRM agent of when consumption of an item of content begins, ends, and pauses.</p>
+<p>Before opening a DRM protected file an application will request an instance of QDrmContentLicense from a DRM agent. If a license is sucessfully granted the application will attempt to open the file and begin making calls to <a href="qdrmcontentlicense.html#renderStateChanged">QDrmContentLicense::renderStateChanged</a>() reflecting the consumption of the content. If the content's rights expire while the content is being rendered the content license will emit the <a href="qdrmcontentlicense.html#rightsExpired">QDrmContentLicense::rightsExpired</a>() signal.</p>
+<p>Applications should not request a content license directly, instead licenses should be requested using <a href="qdrmcontent.html">QDrmContent</a>.</p>
+<p>See also <a href="qdrmcontent.html">QDrmContent</a> and <a href="qdrmcontentplugin.html">QDrmContentPlugin</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDrmContentLicense"></a>QDrmContentLicense::QDrmContentLicense ()</h3>
+<p>Constructs a ContentLicense object for an item of DRM protected content.</p>
+<h3 class="fn"><a name="dtor.QDrmContentLicense"></a>QDrmContentLicense::~QDrmContentLicense ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys a <a href="qdrmcontentlicense.html">QDrmContentLicense</a> object. If the paired monitor is still consuming the content it is sent a message to release the content.</p>
+<h3 class="fn"><a name="content"></a><a href="qcontent.html">QContent</a> QDrmContentLicense::content () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the content the license has been granted for.</p>
+<h3 class="fn"><a name="permission"></a><a href="qdrmrights.html#Permission-enum">QDrmRights::Permission</a> QDrmContentLicense::permission () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the usage permission the license has been granted for.</p>
+<h3 class="fn"><a name="renderState"></a><a href="qdrmcontent.html#RenderState-enum">QDrmContent::RenderState</a> QDrmContentLicense::renderState () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the current render state of the content the license has been granted for.</p>
+<p>See also <a href="qdrmcontentlicense.html#renderStateChanged">renderStateChanged</a>().</p>
+<h3 class="fn"><a name="renderStateChanged"></a>void QDrmContentLicense::renderStateChanged ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i>, <a href="qdrmcontent.html#RenderState-enum">QDrmContent::RenderState</a> <i>state</i> )&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Notifies the drm agent that the render state of <i>content</i> has changed to <i>state</i> and the rights should be updated accordingly.</p>
+<p>See also <a href="qdrmcontentlicense.html#renderState">renderState</a>().</p>
+<h3 class="fn"><a name="rightsExpired"></a>void QDrmContentLicense::rightsExpired ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i>, <a href="qdrmrights.html#Permission-enum">QDrmRights::Permission</a> <i>permission</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the license to render <i>content</i> with the given <i>permission</i> has expired.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

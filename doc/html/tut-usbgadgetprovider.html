@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Supporting alternative USB Gadget Stacks</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Supporting alternative USB Gadget Stacks<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended includes an API that applications can use to control the USB gadget feature of a device. The default implementation that is provided utilizes the Linux USB gadget stack available in 2.6 kernel. There is a need to support alternative USB gadget stacks, either 3rd party stacks or older incompatible gadget stacks.</p>
+<p>This tutorial walks you through the steps of implementing USB gadget provider classes for the USB gadget stack found on the Greenphone. The gadget stack on the Greenphone is a deprecated stack found in some versions of the 2.4 series Linux kernel.</p>
+<p>In this tutorial we will override the default gadget provider classes by</p>
+<ol type="1">
+<li>implementing an alternative Ethernet gadget provider class</li>
+<li>instantiated the alternative provider classes in a custom server task</li>
+<li>preventing the server from loaded the standard provider classes</li>
+</ol>
+<p>The source code for this tutorial can be found in the <tt>server</tt> directory of the Greenphone <a href="buildsystem/over-device-profiles-1.html">device profile</a>.</p>
+<a name="gadget-provider-classes"></a>
+<h2>Gadget Provider Classes</h2>
+<p>Qt Extended includes an API for accessing Ethernet, Storage and Serial USB gadgets. The Greenphone USB gadget stack provides support for Ethernet and Serial gadgets. In this tutorial we will demonstrate how to implement the provider class for the Ethernet gadget.</p>
+<a name="ethernet-provider"></a>
+<h3>Ethernet Provider</h3>
+<p>To implement an Ethernet provider class, subclass <a href="qusbethernetgadget.html">QUsbEthernetGadget</a> and reimplement all of the virtual functions. The class declaration:</p>
+<pre>    #include &lt;QUsbEthernetGadget&gt;
+
+    class QUsbManager;
+
+    class GreenphoneEthernetGadgetProvider : public QUsbEthernetGadget
+    {
+        Q_OBJECT
+
+    public:
+        GreenphoneEthernetGadgetProvider(const QString &amp;group = QString(), QObject *parent = 0);
+        ~GreenphoneEthernetGadgetProvider();
+
+    public slots:
+        void setVendorId(const quint16 id);
+        void setProductId(const quint16 id);
+        void setVendor(const QByteArray &amp;vendor);
+        void setProduct(const QByteArray &amp;product);
+
+        void saveConfig();
+
+        void activate();
+        void deactivate();
+
+        void setRemoteMac(const QByteArray &amp;mac);
+        void setLocalMac(const QByteArray &amp;mac);
+
+    private:
+        QUsbManager *m_manager;
+
+        QByteArray m_defaultLocalMac;
+        QByteArray m_defaultRemoteMac;
+
+        void initFromConfig();
+
+    private slots:
+        void loadModule();
+        void abort();
+    };</pre>
+<p>In the constructor we check whether the Ethernet gadget is active by parsing <tt>/proc/usbd</tt>, stored in the <tt>PeripheralController/Path</tt> setting. Because the Greenphone USB gadget stack does not provide a method of retrieving the configuration of the activated gadget, we always initialize the gadget from the configuration settings stored in the <tt>Usb.conf</tt> settings file.</p>
+<pre>    GreenphoneEthernetGadgetProvider::GreenphoneEthernetGadgetProvider(const QString &amp;group, QObject *parent)
+        : QUsbEthernetGadget(group, parent, Server), m_manager(0)
+    {
+        QSettings settings(&quot;Trolltech&quot;, &quot;Usb&quot;);
+
+        QString function = settings.value(&quot;PeripheralController/Path&quot;).toString();
+
+        setValue(&quot;gadget&quot;, QByteArray(GADGET_NAME));
+
+        QProcess tat;
+        tat.start(&quot;tat&quot;, QStringList() &lt;&lt; &quot;remotemac&quot;);
+        tat.waitForFinished(-1);
+        m_defaultRemoteMac = tat.readAllStandardOutput().trimmed();
+
+        tat.start(&quot;tat&quot;, QStringList() &lt;&lt; &quot;localmac&quot;);
+        tat.waitForFinished(-1);
+        m_defaultLocalMac = tat.readAllStandardOutput().trimmed();
+
+        QFile file(function);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            initFromConfig();
+            setValue(&quot;active&quot;, false);
+            return;
+        }
+
+        foreach (QByteArray line, file.readAll().split('\n')) {
+            if (line.startsWith(&quot;Function: &quot;)) {
+                initFromConfig();
+                if (line.mid(10) == &quot;Generic Network&quot;)
+                    setValue(&quot;active&quot;, true);
+                else
+                    setValue(&quot;active&quot;, false);
+            }
+        }
+    }</pre>
+<p>The Greenphone Ethernet gadget supports setting the USB vendor and product ids. Reimplement setVendorId() and setProductId() to store the new values in the Value Space.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::setVendorId(const quint16 id)
+    {
+        setValue(&quot;vendorId&quot;, id);
+    }
+
+    void GreenphoneEthernetGadgetProvider::setProductId(const quint16 id)
+    {
+        setValue(&quot;productId&quot;, id);
+    }</pre>
+<p>Setting the USB vendor and product strings is not supported. Reimplement setVendor() and setProduct() to do nothing.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::setVendor(const QByteArray &amp;)
+    {
+    }
+
+    void GreenphoneEthernetGadgetProvider::setProduct(const QByteArray &amp;)
+    {
+    }</pre>
+<p>Setting the local and remote MAC addresses is supported. Reimplement setRemoteMac() and setLocalMac() to store the new values in the Value Space.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::setRemoteMac(const QByteArray &amp;mac)
+    {
+        setValue(&quot;remoteMac&quot;, mac);
+    }
+
+    void GreenphoneEthernetGadgetProvider::setLocalMac(const QByteArray &amp;mac)
+    {
+        setValue(&quot;localMac&quot;, mac);
+    }</pre>
+<p>The saveConfig() slot saves all of the configuration settings to the <tt>Usb.conf</tt> configuration file.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::saveConfig()
+    {
+        QSettings settings(&quot;Trolltech&quot;, &quot;Usb&quot;);
+        settings.beginGroup(GADGET_NAME);
+
+        QVariant v = value(&quot;productId&quot;);
+        if (v.isValid())
+            settings.setValue(&quot;ProductId&quot;, v.toUInt());
+
+        v = value(&quot;vendorId&quot;);
+        if (v.isValid())
+            settings.setValue(&quot;VendorId&quot;, v.toUInt());
+
+        v = value(&quot;localMac&quot;);
+        if (v.isValid() &amp;&amp; v.toByteArray() != m_defaultLocalMac)
+            settings.setValue(&quot;LocalMac&quot;, v.toString());
+
+        v = value(&quot;remoteMac&quot;);
+        if (v.isValid() &amp;&amp; v.toByteArray() != m_defaultRemoteMac)
+            settings.setValue(&quot;RemoteMac&quot;, v.toString());
+
+        settings.endGroup();
+    }</pre>
+<p>Before activating the Ethernet gadget we must ensure that no other gadget is active, deactivating it if there is an gadget already active. Because the call to <a href="qusbgadget.html#deactivate">QUsbGadget::deactivate</a>() is asynchronous we do the actual activation of the Ethernet gadget upon receipt of the <a href="qusbmanager.html#deactivateCompleted">QUsbManager::deactivateCompleted</a>() signal, or abort the activation if <a href="qusbmanager.html#deactivateAborted">QUsbManager::deactivateAborted</a>() is received.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::activate()
+    {
+        if (!value(&quot;active&quot;, false).toBool()) {
+            if (!m_manager)
+                m_manager = new QUsbManager;
+
+            if (m_manager-&gt;canActivate(GADGET_NAME)) {
+                loadModule();
+            } else {
+                connect(m_manager, SIGNAL(deactivateCompleted()), this, SLOT(loadModule()));
+                connect(m_manager, SIGNAL(deactivateAborted()), this, SLOT(abort()));
+                m_manager-&gt;deactivateGadgets();
+            }
+        }
+    }</pre>
+<p>The loadModule() private slot activates the Ethernet gadget by loading the required kernel modules.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::loadModule()
+    {
+        QStringList args;
+
+        args &lt;&lt; &quot;net_fd&quot;;
+
+        QVariant v = value(&quot;productId&quot;);
+        if (v.isValid())
+            args &lt;&lt; &quot;product_id=0x&quot; + QString::number(v.toInt(), 16);
+
+        v = value(&quot;vendorId&quot;);
+        if (v.isValid())
+            args &lt;&lt; &quot;vendor_id=0x&quot; + QString::number(v.toInt(), 16);
+
+        v = value(&quot;localMac&quot;);
+        if (v.isValid())
+            args &lt;&lt; &quot;local_mac_address=&quot; + v.toString().remove(':');
+
+        v = value(&quot;remoteMac&quot;);
+        if (v.isValid())
+            args &lt;&lt; &quot;remote_mac_address=&quot; + v.toString().remove(':');
+
+        qLog(USB) &lt;&lt; &quot;loading module&quot; &lt;&lt; args;
+        if (QProcess::execute(&quot;/sbin/insmod&quot;, args) != 0) {
+            abort();
+            return;
+        }
+
+        args.clear();
+
+        args &lt;&lt; &quot;bvd_bi&quot;;
+
+        qLog(USB) &lt;&lt; &quot;loading module&quot; &lt;&lt; args;
+        if (QProcess::execute(&quot;/sbin/insmod&quot;, args) != 0) {
+            qLog(USB) &lt;&lt; &quot;unloading module net_fd&quot;;
+            QProcess::execute(&quot;/sbin/rmmod net_fd&quot;);
+            abort();
+        } else {
+            setValue(&quot;interface&quot;, &quot;eth0&quot;);
+            setValue(&quot;active&quot;, true);
+            qLog(USB) &lt;&lt; &quot;ethernet gadget activated&quot;;
+            QTimer::singleShot(500, this, SIGNAL(activated()));
+        }
+    }</pre>
+<p>The abort() private slot handles failed gadget activation.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::abort()
+    {
+        removeValue(&quot;interface&quot;);
+        qLog(USB) &lt;&lt; &quot;ethernet gadget activate failed&quot;;
+        emit activateFailed();
+    }</pre>
+<p>Reimplement the deactivate() slot to unload the Ethernet gadget modules.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::deactivate()
+    {
+        if (value(&quot;active&quot;, false).toBool()) {
+            qLog(USB) &lt;&lt; &quot;unloading modules bvd_bi net_fd&quot;;
+            if (QProcess::execute(&quot;/sbin/rmmod bvd_bi net_fd&quot;) == 0) {
+                setValue(&quot;active&quot;, false);
+                removeValue(&quot;interface&quot;);
+                qLog(USB) &lt;&lt; &quot;ethernet gadget deactivated&quot;;
+                emit deactivated();
+            } else {
+                qLog(USB) &lt;&lt; &quot;ethernet gadget deactivate failed&quot;;
+                emit deactivateFailed();
+            }
+        }
+    }</pre>
+<p>Helper function to load the Ethernet gadget configuration of the <tt>Usb.conf</tt> settings file.</p>
+<pre>    void GreenphoneEthernetGadgetProvider::initFromConfig()
+    {
+        QSettings settings(&quot;Trolltech&quot;, &quot;Usb&quot;);
+
+        settings.beginGroup(GADGET_NAME);
+
+        QVariant v = settings.value(&quot;VendorId&quot;);
+        if (v.isValid())
+            setVendorId(v.toUInt());
+        else
+            removeValue(&quot;vendorId&quot;);
+
+        v = settings.value(&quot;ProductId&quot;);
+        if (v.isValid())
+            setProductId(v.toUInt());
+        else
+            removeValue(&quot;productId&quot;);
+
+        v = settings.value(&quot;RemoteMac&quot;);
+        if (v.isValid())
+            setRemoteMac(v.toByteArray());
+        else
+            setRemoteMac(m_defaultRemoteMac);
+
+        v = settings.value(&quot;LocalMac&quot;);
+        if (v.isValid())
+            setLocalMac(v.toByteArray());
+        else
+            setLocalMac(m_defaultLocalMac);
+
+        settings.endGroup();
+    }</pre>
+<p>The source code for the Greenphone Ethernet gadget provider is located in <tt>devices/greenphone/server/greenphoneethernetgadget.{cpp,h}</tt>.</p>
+<a name="server-task"></a>
+<h3>Server Task</h3>
+<p>The next step is to create a new <a href="qtopiaserver-task.html">Server Task</a> that will instantiate each gadget provider. As the server task has no other function apart from instantiating the gadget providers we will use a static task.</p>
+<pre>    class GreenphoneUsbGadgetTask
+    {
+    public:
+        static void loadProviders();
+    };</pre>
+<p>The single member function loads all of the support gadget providers that it understands, and activates the default gadget if one is specified.</p>
+<pre>    void GreenphoneUsbGadgetTask::loadProviders()
+    {
+        QSettings settings(&quot;Trolltech&quot;, &quot;Usb&quot;);
+        settings.beginGroup(&quot;PeripheralController&quot;);
+
+        QList&lt;QByteArray&gt; supportedGadgets = settings.value(&quot;SupportedGadgets&quot;).toByteArray().split(',');
+        QByteArray defaultGadget = settings.value(&quot;DefaultGadget&quot;).toByteArray();
+
+        foreach (QByteArray gadget, supportedGadgets) {
+            if (gadget == &quot;GreenphoneEthernet&quot;) {
+                GreenphoneEthernetGadgetProvider *gp = new GreenphoneEthernetGadgetProvider(&quot;Greenphone&quot;);
+                if (gadget == defaultGadget)
+                    gp-&gt;activate();
+<span class="comment">    /*        } else if (gadget == &quot;GreenphoneStorage&quot;) {
+                GreenphoneStorageGadgetProvider *gp = new GreenphoneStorageGadgetProvider(&quot;Greenphone&quot;);
+                if (gadget == defaultGadget)
+                    gp-&gt;activate(); */</span>
+            } else if (gadget == &quot;GreenphoneSerial&quot;) {
+                GreenphoneSerialGadgetProvider *gp = new GreenphoneSerialGadgetProvider(&quot;Greenphone&quot;);
+                if (gadget == defaultGadget)
+                    gp-&gt;activate();
+            }
+        }
+    }</pre>
+<p>Finally we register our task with the task system.</p>
+<pre>    QTOPIA_STATIC_TASK(GreenphoneUsbGadget, GreenphoneUsbGadgetTask::loadProviders());</pre>
+<a name="configuration"></a>
+<h3>Configuration</h3>
+<p>We need modify the <tt>Usb.conf</tt> settings file to disable the standard gadget providers and activate our alternative providers. This is done by removing the standard gadget providers from the <tt>SupportedGadgets</tt> setting and replacing them with the alternate implementation <tt>GreenphoneEthernet</tt> and <tt>GreenphoneSerial</tt>.</p>
+<pre>    [PeripheralController]
+    Path=/proc/usbd
+    SupportedGadgets=&quot;GreenphoneEthernet,GreenphoneSerial&quot;
+    DefaultGadget=GreenphoneEthernet
+
+    [GreenphoneEthernet]
+    ProductId=2
+    VendorId=26214
+    RemoteMac=00:11:22:33:44:55
+    LocalMac=00:66:77:88:99:AA
+
+    [GreenphoneSerial]
+    ProductId=1
+    VendorId=26214</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

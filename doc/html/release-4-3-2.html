@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.3&#x2e;2 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.3&#x2e;2 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.3&#x2e;2 release is a patch release of Qtopia that is based on Qt 4.3 technology. The main purpose of this release is to provide bug fixes and performance improvements based on both internal testing and customer feedback.</p>
+<p>The <a href="buildsystem/chlog-4-3-2-1.html">build system</a> and <a href="qtopiadesktop/chlog-4-3-2-1.html">Qtopia Sync Agent</a> changes are recorded separately.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Build System</b><ul>
+<li>BUG 200709: The <tt>configure --help</tt> command now displays the available values for the <tt>-arch</tt> option.</li>
+<li>BUG 202362: The build system now causes a compilation error (in preference to hard-to-debug runtime errors) if <tt>dynamic_cast</tt> is used in source code that is compiled for the target device.</li>
+</ul>
+</li>
+<li><b>Documentation</b><ul>
+<li>A number of documentation pages have been revised and expanded.</li>
+</ul>
+</li>
+<li><b>Online Help</b><ul>
+<li>BUG 179917: The Online Help content has been extensively revised, particularly for touchscreen devices.</li>
+</ul>
+</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>BUG 180925: If the user pressed the Call button to view the Call History while viewing the Bluetooth FTP application, the application would close after the user closed Call History.</li>
+<li>BUG 197317: The New Folder operation could not be performed if the Predictive Keyboard was active.</li>
+<li>BUG 206090: Bluetooth could be activated by the user while under flight mode.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 198631: During &quot;make install&quot;, the content_installer helper application would fail if any file names passed to it contained spurious directory separators.</li>
+<li>BUG 200720: Running <tt>make lupdate</tt> could fail to create all necessary .ts files due to long argument lists.</li>
+</ul>
+</li>
+<li><b>Calendar</b><ul>
+<li>BUG 187465: The Snooze function in the event reminder dialog did not work.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 195622: When sending a Contact as a vCard, the year was lost from birthday and anniversary dates.</li>
+<li>BUG 196946: If a contact had no phone numbers, the Messages tab would show all messages on the device.</li>
+<li>BUG 202375: When viewing a message associated with a contact, a second message could not be viewed if the first message was still open.</li>
+</ul>
+</li>
+<li><b>Date/Time</b><ul>
+<li>BUG 197930: Changes to date and time were discarded if the timezone was subsequently changed.</li>
+</ul>
+</li>
+<li><b>Document Management</b><ul>
+<li>BUG 197120: When moving a file between file systems using the Document Properties dialog, the Qtopia UI would appear to freeze for the duration of the move operation.</li>
+</ul>
+</li>
+<li><b>Games</b><ul>
+<li>BUG 205793: The <tt>Mine Hunt</tt> game would consume all available CPU time if the user placed flags on all squares before beginning the game.</li>
+</ul>
+</li>
+<li><b>Internet</b><ul>
+<li>BUG 200881: In the WLAN detection menu, the network priority could not be changed using the touchscreen.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 195293: The Handwriting Settings application would crash if the user attempted to delete a character that had previously been added.</li>
+<li>BUG 182318: The Predictive Keyboard would sometimes refuse further input after the user tapped the carriage return symbol.</li>
+</ul>
+</li>
+<li><b>Launcher</b><ul>
+<li>BUG 199726: The Qtopia Server would crash if the user attempted to launch an item that had an invalid .desktop file.</li>
+</ul>
+</li>
+<li><b>Media Player</b><ul>
+<li>BUG 199385: The player widget would show &quot;- of -&quot; after press-and-hold on a playlist to play a track.</li>
+</ul>
+</li>
+<li><b>Messaging</b><ul>
+<li>BUG 113280: IMAP message flags were not synchronized when an account was first created. This resulted in all messages being marked as new, regardless of their flags on the server.</li>
+<li>BUG 190832: DRM protected content in MMS messages could not be viewed.</li>
+<li>BUG 206359: The <tt>Save to Contacts</tt> function would not work for email addresses containing a comment section.</li>
+</ul>
+</li>
+<li><b>Pictures</b><ul>
+<li>BUG 168382: If the user pressed the hangup key while a dialog was visible, the <tt>Pictures</tt> application would be backgrounded instead of exiting.</li>
+<li>BUG 212165: Using the zoom feature with the keypad would cause transient display corruption.</li>
+</ul>
+</li>
+<li><b>Server</b><ul>
+<li>BUG 200879: The Qtopia server could crash on some architectures due to a memory alignment bug in the Valuespace implementation.</li>
+</ul>
+</li>
+<li><b>Software Packages</b><ul>
+<li>BUG 193269: For SXE-enabled builds, the Software Packages application did not check whether installing a new package would cause the configured maximum number of LIDS rules to be exceeded.</li>
+<li>BUG 210099: Package installation would fail if the package was larger than 1Mb and was created with a different locale to the one currently set on the target device.</li>
+</ul>
+</li>
+<li><b>System Info</b><ul>
+<li>BUG 182945: Parts of the Security, Modem and SIM tabs were not painted correctly in right-to-left mode.</li>
+</ul>
+</li>
+<li><b>Tasks</b><ul>
+<li>BUG 197305: The buttons used to move between tasks in the Task Details view were too small to be used with fingers on finger-driven devices such as the Neo 1973.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 197516: The Qtopia server would crash if the user cancelled the &quot;Which type of call&quot; dialog while an incoming call was ringing.</li>
+<li>BUG 199897: Qtopia startup time was longer than necessary due to the Call History list being rebuilt an excessive number of times as call history records were loaded.</li>
+</ul>
+</li>
+<li><b>Widgets</b><ul>
+<li>BUG 182347: The calendar widget did not respond correctly to arrow keys in right-to-left mode.</li>
+<li>BUG 182368: The slider widget did not respond correctly to arrow keys in right-to-left mode.</li>
+<li>BUG 187463: The calendar widget displayed the same heading for every column in Arabic.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Greenphone</b>:<ul>
+<li>BUG 171152: Due to a bug in the modem firmware, outgoing calls may not be canceled correctly if the user presses the hangup key while the call is in the &quot;dialing&quot; state. Qtopia attempts to work around this by attempting to cancel the call after it transitions from &quot;dialing' to &quot;alerting&quot;. This strategy fails in cases where the call transitions directly from &quot;dialing&quot; to &quot;connected&quot;.</li>
+<li>BUG 176936: Due to incorrect factory calibration, some Greenphone handsets do not perform noise cancellation correctly. This may result in significant levels of echo being heard when using the handset indoors. This level of echo can be reduced by adjusting the microphone and speaker volumes via the <b>Call Options</b> application's <b>Call Volume</b> feature.</li>
+<li>BUG 179229: The Greenphone modem does not report whether an incoming call has been diverted from another number. Thus Qtopia is unable to indicate Call Diversion to the user, and the Greenphone therefore fails to achieve GCF Standard Compliance for this function.</li>
+<li>BUG 180951: On some Greenphones, the Bluetooth subsystem regularly gets into a state where no further Bluetooth operations will succeed until the device is reset. This is believed to be a fault in the hardware and/or kernel, rather than a problem with the Qtopia software.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+</ul>
+</li>
+<li><b>Messages</b>:<ul>
+<li>BUG 142744: MMS audio doesn't play to completion if the audio track is longer than the slideshow.</li>
+</ul>
+</li>
+<li><b>Neo 1973 (ficgta01 device profile)</b><ul>
+<li>BUG 197301: SIM Applications are not supported on the Neo 1973 in this release.</li>
+</ul>
+</li>
+<li><b>Safe Execution Framework</b><ul>
+<li>BUG 195751: The LIDS franmework is not able to protect network sockets.</li>
+</ul>
+</li>
+<li><b>Server Widgets</b>:<ul>
+<li>BUG 148987: The Task Manager list only works correctly with the Standard Qtopia server widgets.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

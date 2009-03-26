@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Neo Freerunner (GTA02) Performance Test Results</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Neo Freerunner (GTA02) Performance Test Results<br /><span class="subtitle"></span>
+</h1>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This page contains performance statistics for Qt Extended, measured using the <tt>neo</tt> device profile. All figures are measured with respect to the default configuration.</p>
+<a name="device-specs"></a>
+<h2>Device specs</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Type</th><th>Value</th></tr></thead>
+<tr valign="top" class="odd"><td><b>Model</b></td><td>Neo Freerunner (GTA02)</td></tr>
+<tr valign="top" class="even"><td><b>Kernel</b></td><td>Linux om-gta02 2.6&#x2e;24</td></tr>
+<tr valign="top" class="odd"><td><b>CPU</b></td><td>Samsung S3C2442B B54 (ARMv4T) 400 MHz</td></tr>
+<tr valign="top" class="even"><td><b>Baseband</b></td><td>Texas Instruments Calypso</td></tr>
+<tr valign="top" class="odd"><td><b>Memory</b></td><td>128MB RAM &amp; 256MB Flash</td></tr>
+<tr valign="top" class="even"><td><b>Display</b></td><td>480x640 LCD color screen</td></tr>
+<tr valign="top" class="odd"><td><b>Input</b></td><td>Touch-screen only</td></tr>
+<tr valign="top" class="even"><td><b>Features</b></td><td>Micro-SD(TM) card slot, Bluetooth(R), Mini-USB port, Accelerometer, 802.11 b/g, A-GPS, 3D acceleration (Smedia Glamo 3362)</td></tr>
+</table></p>
+<p>Testing takes place under the following conditions:</p>
+<ul>
+<li>A SIM is inserted into the phone.</li>
+<li>The phone is operating with a USB cable attached.</li>
+<li>The root filesystem and kernel used are those supplied in <tt>qtopia-4.3&#x2e;2-gta02-flash.tgz</tt> (md5sum 7ce80edae36717cae9a9e370ec80a911).</li>
+</ul>
+<a name="test-results"></a>
+<h2>Test Results</h2>
+<a name="linux-qt-extended-startup-time"></a>
+<h3>Linux + Qt Extended Startup Time</h3>
+<p>The <i>Linux + Qt Extended startup time</i> refers to the amount of time taken for a device to reach the Qt Extended homescreen and accept user input from the time the power button is pressed.</p>
+<p><table width="60%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Version</th><th>Time (seconds)</th></tr></thead>
+<tr valign="top" class="odd"><td>4.3&#x2e;2</td><td>129</td></tr>
+<tr valign="top" class="even"><td>4.4&#x2e;1</td><td>170</td></tr>
+</table></p>
+<p>The total time to launch Qt Extended on the Freerunner is considerably longer than it would be if the root filesystem were optimized. The majority of the time is spent booting Linux and system services before Qt Extended is launched. A significant amount of time is spent performing tasks which would be of no interest on an end-user device, such as writing kernel messages to the framebuffer.</p>
+<a name="application-startup"></a>
+<h3>Application Startup</h3>
+<p>The <i>application startup time</i> refers to the amount of time taken for an application to appear on the screen and respond to user input, after the user requests the application to launch.</p>
+<p><i>warm startup time</i> indicates that the application has been started at least once since the device has last been booted.</p>
+<p>The below table shows the average warm startup times for each application or group of applications. Please note that small changes may be due to natural variance in the data. Figures are rounded.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>4.3&#x2e;2</th><th>4.4&#x2e;1</th></tr></thead>
+<tr valign="top" class="odd"><td><b>addressbook</b></td><td>0.98</td><td>1.42</td></tr>
+<tr valign="top" class="even"><td><b>calculator</b></td><td>0.98</td><td>1.40</td></tr>
+<tr valign="top" class="odd"><td><b>clock</b></td><td>0.62</td><td>1.42</td></tr>
+<tr valign="top" class="even"><td><b>datebook</b></td><td>1.15</td><td>1.70</td></tr>
+<tr valign="top" class="odd"><td><b>qtmail</b></td><td>1.17</td><td>2.03</td></tr>
+<tr valign="top" class="even"><td><b>todolist</b></td><td>0.72</td><td>0.93</td></tr>
+</table></p>
+<a name="ram-usage"></a>
+<h3>RAM usage</h3>
+<p>The below table shows the effective memory usage of Qt Extended. All sizes are in kilobytes. &quot;6 apps&quot; refers to having six core applications running simultaneously using the Qt Extended multitasking feature. These figures are taken after Qt Extended and the applications have actively been used.</p>
+<p>Effective memory usage refers to the total physical memory usage minus the portion of memory used by Linux for buffers and cache.</p>
+<p>The <b>All six</b> test refers to having all six tested applications running simultaneously using the Qt Extended multitasking mechanism.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Component</th><th>4.3&#x2e;2</th><th>4.4&#x2e;1</th></tr></thead>
+<tr valign="top" class="odd"><td><b>All six</b></td><td>44556</td><td>50236</td></tr>
+<tr valign="top" class="even"><td><b>addressbook</b></td><td>36132</td><td>40516</td></tr>
+<tr valign="top" class="odd"><td><b>calculator</b></td><td>35792</td><td>39696</td></tr>
+<tr valign="top" class="even"><td><b>clock</b></td><td>33608</td><td>39904</td></tr>
+<tr valign="top" class="odd"><td><b>datebook</b></td><td>35532</td><td>40024</td></tr>
+<tr valign="top" class="even"><td><b>homescreen</b></td><td>32888</td><td>37960</td></tr>
+<tr valign="top" class="odd"><td><b>qtmail</b></td><td>35484</td><td>41084</td></tr>
+<tr valign="top" class="even"><td><b>todolist</b></td><td>35644</td><td>40188</td></tr>
+</table></p>
+<p>The Freerunner root filesystem launches many system services which are not used by Qt Extended. Therefore the RAM usage is considerably higher than if the root filesystem were optimized for Qt Extended.</p>
+<a name="binary-sizes"></a>
+<h3>Binary Sizes</h3>
+<p>The below table shows the disk usage of Qt Extended filesystem images using the default filesystem for this device profile.</p>
+<p>The size includes only the space used by Qt Extended. The size of the root filesystem is not included in these figures.</p>
+<p><i>No data is currently available.</i></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

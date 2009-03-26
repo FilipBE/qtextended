@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PIM: Synchronization: Desktop</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PIM: Synchronization: Desktop<br><small>Functional Description</small></h1><p>
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-416">Outlook Synchronization</a>
+</ul><h3><a name=QTOPIA-416>Outlook Synchronization</a></h3>
+<p><h2><a name="QtopiaSyncAgent"></a>Qt Extended Sync Agent</h2>
+<ul>
+	<li>Can sync data from calendar, contacts and tasks with Microsoft Outlook</li>
+	<li>Tested configurations:
+	<ul>
+		<li>Outlook 2002 with the latest service pack, with Windows 2000</li>
+		<li>Outlook 2003 with the latest service pack, with Windows XP</li>
+		<li>Outlook 2007 with the latest service pack, with Windows Vista</li>
+	</ul>
+	</li>
+	<li>Tested only on 32-bit Windows 2000/XP/Vista, not 64-bit Windows</li>
+	<li>Tested only with administrator user accounts</li>
+	<li>Installs in system tray, no significant UI</li>
+	<li>Requires some form of serial or TCP/IP driver for connection to device
+	<ul>
+		<li>these could be provided by Bluetooth or Wifi, but there is no explicit support for these technologies</li>
+		<li>support for direct access to the device data (device acts as USB mass storage) is not present</li>
+	</ul>
+	</li>
+	<li>Installer automatically requests administrator privileges.</li>
+	<li>Communication with Qt Extended uses a simple line-oriented protocol.</li>
+	<li>Tested with Qt Extended running in QVFb (using ethernet and a real serial cable) and the Greenphone (using USB-serial).</li>
+	<li>The sync communications and algorithm are proprietary (not SyncML etc.).</li>
+	<li>Design described in <span class="nobr"><a href="qtopiadesktop/over-desktop-synchronization-1.html">Desktop Synchronization Overview<sup></sup></a></span></li>
+</ul>
+
+
+<h2><a name="GreenphoneSampleImplementations"></a>Greenphone Sample Implementations</h2>
+<ul>
+	<li>Greenphone serial driver also installs on 32-bit Windows 2000/XP/Vista.</li>
+	<li>The Greenphone shows up as serial port COM20 but due to driver limitations special code must be enabled (the GUI has a check box for this).</li>
+	<li>The Greenphone must be set to serial mode (using Applications -&gt; Synchronization) to talk to Qt Extended Sync Agent using the serial driver.</li>
+</ul>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

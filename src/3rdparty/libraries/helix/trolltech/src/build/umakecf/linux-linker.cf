@@ -1,0 +1,172 @@
+
+class LinuxLinker(Linker2):
+    def __init__(self):
+        Linker2.__init__(self)
+        self.extra_arguments=[]
+        self.xplatform=""
+
+    def add_argument(self, arg):
+        self.extra_arguments.append(arg)
+
+    def get_ar_cmd(self):
+        return self.xplatform+"ar"
+
+    def link_paths(self):
+        return string.join(platform.system_paths +
+                           project.system_paths)
+
+    def link_script_path(self):
+        return "%s.exp" % (project.TargetName())
+
+    def armerge_lib_path(self):
+        libname = "%s_libs.%s" % (project.target_name, platform.library_suffix)
+        return os.path.join(project.output_dir, libname)
+    
+    def armerge_tmp_path(self):
+        return os.path.join(project.object_dir, "lib")
+
+    def write_link_script(self, path):
+        ## if there are no exported functions, die here
+        if len(project.exported_func) == 0:
+            umake_lib.fatal("dll target without exported functions") 
+        
+        ## create a gcc link script
+        fil = open(path, "w")
+        fil.write("VERSION\n")
+        fil.write("{\n")
+        fil.write("  G2 {\n")
+        fil.write("    global:\n")
+
+        for export in project.exported_func:
+            fil.write("      %s;\n" % (export))
+
+        fil.write("    local:\n")
+        fil.write("      *;\n")
+        fil.write("  };\n")
+        fil.write("}\n")
+        fil.close()
+
+    def LinkLIB(self, target_path, objects):
+        cmd_list = []
+        
+        cmd = "%s %s %s" % (make_lib.cmd, target_path, objects)
+        cmd_list.append(cmd)
+
+        cmd = "ranlib %s" % (target_path)
+        cmd_list.append(cmd)
+
+        return cmd_list
+
+    def CleanLIB(self, target_path):
+        return [target_path]
+        
+    def LinkDLL(self, target_path, objects, static_libs, dynamic_libs):
+        cmd_list = []
+        armerge_cmd = os.path.join(BUILD_ROOT, "bin", "armerge.py")
+        tmp_path = self.armerge_tmp_path()
+        libpath = self.armerge_lib_path()
+        
+        cmd = "python %s -a %s -d %s %s %s" % (armerge_cmd, self.get_ar_cmd(), tmp_path, libpath, static_libs)
+        cmd_list.append(cmd)
+
+        lspath = self.link_script_path()
+        self.write_link_script(lspath)
+        if project.exported_func:
+            undefinedSymbols="-u "+string.join(project.exported_func," -u ")
+        else:
+            undefinedSymbols=""
+
+        if project.BuildOption("debug") or not project.IsDefined('HELIX_CONFIG_USE_RLINK'):
+            cmd = ""
+        else:
+            cmd = "python %s -x '%s' " % (os.path.join(BUILD_ROOT,"bin","rlink.py"), self.xplatform)
+
+        cmd = "%s%s -shared %s -o %s %s %s %s %s %s %s " % (
+            cmd, 
+            platform.cxx.cmd,
+            lspath, target_path,
+            undefinedSymbols,
+            objects, libpath,
+            self.link_paths(),
+            string.join(self.extra_arguments),
+            dynamic_libs)
+        cmd_list.append(cmd)
+
+        cmd = 'rm "%s"' % (libpath)
+        cmd_list.append(cmd)
+
+        return cmd_list
+
+    def CleanDLL(self, target_path):
+        list = []
+        list.append(target_path)
+        list.append(self.armerge_tmp_path())
+        list.append(self.armerge_lib_path())
+        return list
+
+    def LinkEXE(self, target_path, objects, static_libs, dynamic_libs):
+        cmd_list = []
+
+        armerge_cmd = os.path.join(BUILD_ROOT, "bin", "armerge.py")
+        tmp_path = self.armerge_tmp_path()
+        libpath = self.armerge_lib_path()
+        cmd = "python %s -a %s -d %s %s %s" % (armerge_cmd, self.get_ar_cmd(), tmp_path, libpath, static_libs)
+        cmd_list.append(cmd)
+
+        if project.BuildOption("debug") or not project.IsDefined('HELIX_CONFIG_USE_RLINK'):
+            cmd = ""
+        else:
+            cmd = "python %s -x '%s' " % (os.path.join(BUILD_ROOT,"bin","rlink.py"), self.xplatform)
+
+        cmd = "%s%s -o %s %s %s %s %s %s" % (
+            cmd, 
+            platform.cxx.cmd,
+            target_path, objects, libpath,
+            self.link_paths(),
+            string.join(self.extra_arguments),
+            dynamic_libs)
+        cmd_list.append(cmd)
+
+        cmd = 'rm "%s"' % (libpath)
+        cmd_list.append(cmd)
+
+        return cmd_list
+    
+    def CleanEXE(self, target_path):
+        list = []
+        list.append(target_path)
+        list.append(self.armerge_tmp_path())
+        list.append(self.armerge_lib_path())
+        return list
+    
+    def make_lib_static(self, lib):
+        return "-Wl,-Bstatic %s -Wl,-Bdynamic" % lib
+
+
+# use rpaths in linking
+class RPathLinker(LinuxLinker):
+    def __init__(self, rpath):
+        LinuxLinker.__init__(self)
+        self.rpath = rpath
+
+    def LinkDLL(self, target_path, objects, static_libs, dynamic_libs):
+
+        cmd_list = LinuxLinker.LinkDLL(self, target_path, objects, static_libs, dynamic_libs)
+
+        cmd_list[1] = cmd_list[1].replace(platform.cxx.cmd, '%s %s' % (platform.cxx.cmd, self.rpath), 1)
+
+        return cmd_list
+
+
+try:
+
+    qtopia_rpath_opt = project.qtopia_rpath_opt
+    if len(qtopia_rpath_opt) != 0:
+        platform.link = RPathLinker(qtopia_rpath_opt)
+    else:
+        platform.link = LinuxLinker()
+
+except:
+    platform.link = LinuxLinker()   # go back to default
+
+    

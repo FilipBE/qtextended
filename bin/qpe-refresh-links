@@ -1,0 +1,7 @@
+#/bin/sh
+# Simple script to refresh launcher tabs in case you modify the filesystem
+# from outside Qtopia.
+
+QTOPIA_INSTALL_PREFIX=/opt/Qtopia # set to the -prefix location at install time
+
+$QTOPIA_INSTALL_PREFIX/bin/qcop QPE/System 'linkChanged(QString)' ''

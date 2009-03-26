@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSignalSource Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSignalSource Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSignalSource class provides access to information about signal sources on devices. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSignalSource&gt;</pre><p>Inherits <a href="qhardwareinterface.html">QHardwareInterface</a>.</p>
+<p>Inherited by <a href="qsignalsourceprovider.html">QSignalSourceProvider</a>.</p>
+<ul>
+<li><a href="qsignalsource-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qsignalsource.html#Availability-enum">Availability</a></b> { Available, NotAvailable, Invalid }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsignalsource.html#QSignalSource">QSignalSource</a></b> ( const QString &amp; <i>id</i> = QString(), QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qsignalsource.html#dtor.QSignalSource">~QSignalSource</a></b> ()</li>
+<li><div class="fn"/>Availability <b><a href="qsignalsource.html#availability">availability</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qsignalsource.html#signalStrength">signalStrength</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qsignalsource.html#type">type</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qsignalsource.html#availabilityChanged">availabilityChanged</a></b> ( QSignalSource::Availability <i>availability</i> )</li>
+<li><div class="fn"/>void <b><a href="qsignalsource.html#signalStrengthChanged">signalStrengthChanged</a></b> ( int <i>signalStrength</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSignalSource class provides access to information about signal sources on devices.</p>
+<p>Signal sources are accessories that provide radio signal details to Qtopia. A signal source could be an internal modem monitoring the GSM/3G network signal or a wireless LAN interface on VoIP devices as indicated by <a href="qsignalsource.html#type">type</a>(). QSignalSource allows applications to query the availability through <a href="qsignalsource.html#availability">availability</a>(), the signal level through <a href="qsignalsource.html#signalStrength">signalStrength</a>() and emits signals <a href="qsignalsource.html#availabilityChanged">availabilityChanged</a>() and <a href="qsignalsource.html#signalStrengthChanged">signalStrengthChanged</a>() when those values change.</p>
+<p>In addition to the above hardware related signal sources Qt Extended provides a virtual default signal source. This default source is selected from the list of available QSignalSource providers. The selection may be configured in the <tt>Trolltech/HardwareAccessories</tt> configuration file. The following keys apply:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>key</th><th>Decription</th></tr></thead>
+<tr valign="top" class="odd"><td>SignalSources/DefaultSignalSource</td><td>Name (ID) of the QSignalSource to use as the default signal source.</td></tr>
+</table></p>
+<p>If the default signal source is not explicitly configured via the configuration file above a modem signal source is preferred over a WLAN signal source. If there are several signal sources of the same type the first signal source that is created will be used. If the default signal source is configured, but the specified provider does not exist, then QSignalSource becomes invalid. The default signal is provided by the <a href="defaultsignal.html">DefaultSignal</a> server task.</p>
+<p>A specific QSignalSource can be selected as shown in the following example:</p>
+<pre>    QSignalSource* src = 0;
+    QHardwareManager* manager = new QHardwareManager(&quot;QSignalSource&quot;, this);
+    QStringList providers = man-&gt;providers();
+
+<span class="comment">    //find a WLAN signal source</span>
+    foreach( QString signalSourceId, providers )
+    {
+        src = new QSignalSource( signalSourceId, this );
+        if ( src-&gt;type() == &quot;wlan&quot; ) {
+            break;
+        } else {
+            delete src;
+            src = 0;
+        }
+    }
+
+    if ( !src ) {
+        <span class="comment">//could not find signal source for WLAN</span>
+        <span class="comment">//fall back to virtual default signal source</span>
+        src = new QSignalSource( &quot;DefaultSignal&quot;, this );
+        if ( src-&gt;availability() == QSignalSource::Invalid ) {
+            <span class="comment">//no signal source available at all</span>
+        }
+    }</pre>
+<p>New signal sources can be added to Qt Extended via the <a href="qsignalsourceprovider.html">QSignalSourceProvider</a> class.</p>
+<p>See also <a href="qsignalsourceprovider.html">QSignalSourceProvider</a>, <a href="qhardwaremanager.html">QHardwareManager</a>, and <a href="defaultsignal.html">DefaultSignal</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Availability-enum"></a>enum QSignalSource::Availability</h3>
+<p>Represents whether the signal source is available.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QSignalSource::Available</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The signal source is available.</td></tr>
+<tr><td valign="top"><tt>QSignalSource::NotAvailable</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The Signal source is not available. If the signal source is of type <tt>&quot;wlan&quot;</tt> the signal strength is temporarily not available while the WLAN interface is not connected.</td></tr>
+<tr><td valign="top"><tt>QSignalSource::Invalid</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The signal source is not valid. This is distinct from the not available case. A reason for this state could be that <a href="qsignalsource.html">QSignalSource</a> was initialised with an invalid/not existing ID or in the case of the default signal source there simply is no signal source available that the default signal source could map to.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSignalSource"></a>QSignalSource::QSignalSource ( const <a href="qstring.html">QString</a> &amp; <i>id</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new signal source for provider <i>id</i> with the specified <i>parent</i>.</p>
+<p>If <i>id</i> is empty, this class will use the default signal source.</p>
+<h3 class="fn"><a name="dtor.QSignalSource"></a>QSignalSource::~QSignalSource ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qsignalsource.html">QSignalSource</a>.</p>
+<h3 class="fn"><a name="availability"></a><a href="qsignalsource.html#Availability-enum">Availability</a> QSignalSource::availability () const</h3>
+<p>Returns the signal source availability.</p>
+<h3 class="fn"><a name="availabilityChanged"></a>void QSignalSource::availabilityChanged ( <a href="qsignalsource.html#Availability-enum">QSignalSource::Availability</a> <i>availability</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever the availability of the signal source changes; <i>availability</i> is the new value.</p>
+<h3 class="fn"><a name="signalStrength"></a>int QSignalSource::signalStrength () const</h3>
+<p>Returns the signal source strength as a percentage of the maximum strength, or -1 if the strength is unavailable or invalid.</p>
+<h3 class="fn"><a name="signalStrengthChanged"></a>void QSignalSource::signalStrengthChanged ( int <i>signalStrength</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever the strength of the signal changes; <i>signalStrength</i> is the new value.</p>
+<h3 class="fn"><a name="type"></a><a href="qstring.html">QString</a> QSignalSource::type () const</h3>
+<p>Returns the type of the signal source, e.g&#x2e; <tt>&quot;wlan&quot;</tt>, <tt>&quot;modem&quot;</tt>, or an empty string if this signal source is invalid.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

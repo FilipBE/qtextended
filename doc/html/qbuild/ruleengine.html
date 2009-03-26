@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>RuleEngine Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">RuleEngine Class Reference</h1>
+<pre>    #include &lt;RuleEngine&gt;</pre><ul>
+<li><a href="ruleengine-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="ruleengine.html#Result-enum">Result</a></b> { Succeeded, Failed, NothingToDo }</li>
+<li><div class="fn"/>enum <b><a href="ruleengine.html#StringFlags-enum">StringFlags</a></b> { None, Evaluatable, NoEcho, Hidden, ..., EchoIfNeeded }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>Result <b><a href="ruleengine.html#createFile">createFile</a></b> ( Project * <i>project</i>, const QString &amp; <i>filename</i> )</li>
+<li><div class="fn"/>Result <b><a href="ruleengine.html#execute">execute</a></b> ( Project * <i>project</i>, const QString &amp; <i>r</i> = QString() )</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>StringFlags <b><a href="ruleengine.html#flags">flags</a></b> ( const QString &amp; <i>input</i>, QString &amp; <i>output</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Result-enum"></a>enum RuleEngine::Result</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="40%">
+<tr><th width="60%">Constant</th><th width="40%">Value</th></tr>
+<tr><td valign="top"><tt>RuleEngine::Succeeded</tt></td><td align="center" valign="top"><tt>0</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Failed</tt></td><td align="center" valign="top"><tt>1</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::NothingToDo</tt></td><td align="center" valign="top"><tt>2</tt></td></tr>
+</table></p>
+<h3 class="fn"><a name="StringFlags-enum"></a>enum RuleEngine::StringFlags</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="40%">
+<tr><th width="60%">Constant</th><th width="40%">Value</th></tr>
+<tr><td valign="top"><tt>RuleEngine::None</tt></td><td align="center" valign="top"><tt>0x0000</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Evaluatable</tt></td><td align="center" valign="top"><tt>0x0001</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::NoEcho</tt></td><td align="center" valign="top"><tt>0x0002</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Hidden</tt></td><td align="center" valign="top"><tt>0x0004</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::NoFail</tt></td><td align="center" valign="top"><tt>0x0008</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Verbatim</tt></td><td align="center" valign="top"><tt>0x0010</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Optional</tt></td><td align="center" valign="top"><tt>0x0020</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::CallFunction</tt></td><td align="center" valign="top"><tt>0x0040</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::TTy</tt></td><td align="center" valign="top"><tt>0x0080</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Ordered</tt></td><td align="center" valign="top"><tt>0x0100</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::Test</tt></td><td align="center" valign="top"><tt>0x0200</tt></td></tr>
+<tr><td valign="top"><tt>RuleEngine::EchoIfNeeded</tt></td><td align="center" valign="top"><tt>0x0400</tt></td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="createFile"></a><a href="ruleengine.html#Result-enum">Result</a> RuleEngine::createFile ( <a href="project.html">Project</a> * <i>project</i>, const QString &amp; <i>filename</i> )</h3>
+<p>Create <i>filename</i> for <i>project</i>.</p>
+<h3 class="fn"><a name="execute"></a><a href="ruleengine.html#Result-enum">Result</a> RuleEngine::execute ( <a href="project.html">Project</a> * <i>project</i>, const QString &amp; <i>r</i> = QString() )</h3>
+<p>Execute rule <i>r</i> in project <i>project</i>.</p>
+<p>For each rule, the following occurs:</p>
+<ul>
+<li>Run each prereq *once*, updating the list of prereqs each time (rules can create new prereqs)</li>
+<li>Run the commands if:<ul>
+<li>Any inputFiles are newer than any of the outputFiles</li>
+<li>There are no outputFiles</li>
+<li>An inputFile is missing, but can be created by another rule (rescan *new* inputFiles and prereqs)</li>
+<li>Any (non-hidden) prerequisite was run (not just tested)</li>
+<li>-forceRule was passed</li>
+</ul>
+</li>
+<li>Fail the rule if:<ul>
+<li>An input File is missing, and cannot be created by another rule</li>
+<li>A (non-optional) prerequisite is missing</li>
+</ul>
+</li>
+</ul>
+<h3 class="fn"><a name="flags"></a><a href="ruleengine.html#StringFlags-enum">StringFlags</a> RuleEngine::flags ( const QString &amp; <i>input</i>, QString &amp; <i>output</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the flags for <i>input</i>. Return the corrected string in <i>output</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

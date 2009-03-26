@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Keypad Button Behavior</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Keypad Button Behavior<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#keypad-button-behavior">Keypad Button Behavior</a></li>
+<ul><li><a href="#user-definable-button-mappings">User Definable Button Mappings</a></li>
+<li><a href="#phone-launcher-menu">Phone Launcher Menu</a></li>
+<li><a href="#phone-buttons">Phone Buttons</a></li>
+<li><a href="#input-methods">Input Methods</a></li>
+<li><a href="#phone-softkey-definition">Phone SoftKey Definition</a></li>
+<li><a href="#usual-key-meanings">Usual Key Meanings</a></li>
+</ul>
+</ul>
+<a name="keypad-button-behavior"></a>
+<h2>Keypad Button Behavior</h2>
+<p>The configuration of hardware buttons for a device is defined by the <tt>etc/defaultbuttons-&lt;platform-spec&gt;.conf</tt> files.</p>
+<p>The file is divided into sections.</p>
+<p>See the existing files, especially the generic file, for guidance.</p>
+<a name="user-definable-button-mappings"></a>
+<h3>User Definable Button Mappings</h3>
+<p>Button Mappings map the hard buttons on a device to application actions. For example a calendar button that brings up todays schedule, or a button to beam your business card.</p>
+<p>The description of the buttons should be included in <tt>defaultbuttons.conf</tt> on the device, or <tt>defaultbuttons-&lt;platform&gt;.conf</tt> if in the build tree.</p>
+<p>An example of what this may look like:</p>
+<pre>    [Button]
+    Count=3
+    [Button0]
+    Name=Calendar Button
+    Key=F9
+    PressedActionService=Calendar
+    PressedActionMessage=raiseToday()
+    HeldActionService=Calendar
+    HeldActionMessage=raise()
+    [Button1]
+    Name=Contacts Button
+    Key=F10
+    PressedActionService=Contacts
+    PressedActionMessage=raise()
+    HeldActionService=Contacts
+    HeldActionMessage=beamBusinessCard()
+    [Button2]
+    Name=Multitasking Button
+    Key=Home
+    PressedActionMappable=0
+    PressedActionService=TaskManager
+    PressedActionMessage=multitask()
+    HeldActionMappable=0
+    HeldActionService=TaskManager
+    HeldActionMessage=showRunningTasks()
+    [Button3]
+    Name=Power Button
+    Key=Hangup
+    HeldActionService=Launcher
+    HeldActionMessage=execute(QString)
+    HeldActionArgs=@ByteArray(\0\0\0\x1\0\0\0\n\0\0\0\0\x10\0s\0h\0u\0t\0\x64\0o\0w\0n)</pre>
+<p>This example describes a device with three hardware buttons. One that opens the calendar application, one that opens the contacts application or beams the owners business card, and a third that is used for multitasking.</p>
+<pre>    [Button]
+    Count=3</pre>
+<p>This indicates that also in <tt>defaultbuttons.conf</tt> there are two groups, named <tt>Button0</tt> and <tt>Button1</tt>. Each group describes the button and its actions. For example starting from the line <tt>[Button0]</tt> to another group definition or the end of the file defines the first button mapping.</p>
+<pre>    Name[]=Calendar Button
+    ...
+    [Translation]
+    File=QtopiaDefaults
+    Context=Buttons</pre>
+<p>This describes the name of the button. Qt Extended provides a Buttons application where the user can change the button mapping for shortcut buttons on their device. The Name of a button is how the button is described to them. The translation for the button's name can be found in <tt>$QPEDIR/i18n/&lt;your-lang&gt;/QtopiaDefaults.ts</tt>.</p>
+<p>Images can be provided for the buttons by placing them in <tt>pics/Button/</tt>. The name of the image should be the number of the button as described in <tt>defaultbuttons.conf</tt>. For this example, the image for the calendar button would be <tt>Button/0.png</tt>.</p>
+<pre>    Key=F9</pre>
+<p>This describes the Qt keycode the button maps to. These are the codes listed in <tt>qnamespace.h</tt> found in the Qt include directory.</p>
+<p>If your driver does not already map to the right keycode a custom driver may be required. Driver's can be added by deriving from the <a href="qwsmousehandler.html">QWSMouseHandler</a> and <a href="qmousedriverplugin.html">QMouseDriverPlugin</a> classes, or the <a href="qwskeyboardhandler.html">QWSKeyboardHandler</a> and <a href="qkbddriverplugin.html">QKbdDriverPlugin</a> classes, and using Qt's plugin mechanism. See the <a href="plugins-howto.html">How to Create Qt Plugins</a> documentation and the <a href="tools-plugandpaint.html">Plug &amp; Paint</a> example for details.</p>
+<pre>    PressedActionService=Calendar
+    PressedActionMessage=raiseToday()
+    HeldActionService=Calendar
+    HeldActionMessage=raise()</pre>
+<p>These describe what occurs when a button is pressed or held. The Service is a Qt Extended Service, described in <a href="services.html">Qt Extended Application Services </a>. In this case the name of the services is calendar, and the action is raise(), or raiseToday(). Both the service and actions are already provided for the Qt Extended calendar application. Only actions that take no parameters can be used.</p>
+<p>The &quot;Multitasking Button&quot; in the example uses:</p>
+<pre>    HeldActionMappable=0</pre>
+<p>To disable the user from changing the button's functionality. This could be important for certain usability or branding considerations.</p>
+<a name="phone-launcher-menu"></a>
+<h3>Phone Launcher Menu</h3>
+<p>The launcher menu on a phone is often a 3 by 4 grid, corresponding to the positioning of the keys 1 to 9, *, 0, and #.</p>
+<p>The format of the launcher menu section of the file is as follows:</p>
+<pre>    [Menu]
+    Rows=&lt;rows of icons&gt;
+    Columns=&lt;columns of icons&gt;
+    Map=&lt;one character for each icon, left to right, top to bottom&gt;
+    Default=&lt;character of initially focussed icon&gt;
+    &lt;character&gt;=&lt;desktop file or directory&gt;
+    ... for each character in Map.</pre>
+<p>An example of what this may look like in a real example is:</p>
+<pre>    [Menu]
+    Rows=3
+    Columns=3
+    Map=123456789
+    Default=5
+    1=
+    2=Applications/datebook.desktop
+    3=Games
+    4=
+    5=Applications/addressbook.desktop
+    6=Settings
+    7=Applications/simapp.desktop{@/Telephony/Status/SimToolkitAvailable},Applications/calculator.desktop
+    8=Applications
+    9=Documents</pre>
+<p>Note the example for button 7 is a <i>list</i> of alternatives separated by commas. The first alternative (simapp.desktop) is only used if the bracketed <a href="qexpressionevaluator.html">Qt Extended Expression</a> evaluates to true. By using an expression that references the <a href="qvaluespaceitem.html">Value Space</a>, this mechanism allows the function associated with a button to be determined dynamically.</p>
+<a name="phone-buttons"></a>
+<h3>Phone Buttons</h3>
+<p>The dialing and other buttons of a phone are configured by the <i>SystemButtons</i>, <i>TextButtons</i>, <i>PhoneTextButtons</i>, and <i>LocaleTextButtons</i> sections of the <tt>defaultbuttons.conf</tt> file.</p>
+<p>The format of the SystemButtons section of the file is as follows:</p>
+<pre>    [SystemButtons]
+    Count=n
+    Key0=Name of Qt key code, e.g. Menu, Select, Context1
+    ... for each system button on the device 0 to n</pre>
+<p>An example of what this may look like in a real example is:</p>
+<pre>    [SystemButtons]
+    Count=5
+    Key0=Menu
+    Key1=Select
+    Key2=Back
+    Key3=Call
+    Key4=Hangup</pre>
+<p>The <tt>TextButtons</tt> section defines all text and actions associated with each button. For example, the &quot;2&quot; key is associated with &quot;2&quot;, as well as the letters &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, and all variants of those letters. By default each key is associated only with it's moniker so the '2' key enters a 2, the '#' enters '#' etc.</p>
+<p>The <tt>LocaleTextButtons</tt> modifies or extends the <tt>TextButtons</tt> section, but only defines the text associated with the current language. The texts in these sections are translated in the standard way for Config files. Any buttons not specified are drawn from <tt>TextButtons</tt>.</p>
+<p>The <tt>PhoneTextButtons</tt> section defines all phone number text and actions associated with each button. For example, the &quot;*&quot; key might choose between any of the characters &quot;*&quot;, &quot;+&quot;, and &quot;p&quot; (for pause).</p>
+<p><tt>TextButtons</tt> and <tt>PhoneTextButtons</tt> can also be used as a base for widgets using custom input method hints.</p>
+<p>The format of the <tt>TextButtons</tt>, <tt>PhoneTextButtons</tt>, and <tt>LocaleTextButtons</tt> sections of the file are similar, as follows:</p>
+<pre>    [TextButtons]
+    Buttons=0123456789*#
+    Tap0= ...
+    Hold0= ...
+    ...</pre>
+<p>For each button listed in <tt>Buttons</tt>, define:</p>
+<ul>
+<li>Tap<tt>X</tt> - the action to do when key <tt>X</tt> is pressed and released. This is either:<ul>
+<li><tt>'</tt><i>text</i> - insert character from <i>text</i>.</li>
+<li><tt>&quot;\\&quot;</tt><i>textc{&quot;}</i> - insert character from <i>text</i>, while showing all options.</li>
+<li>space - insert a space.</li>
+<li>symbol - popup symbol selector.</li>
+<li>modify - choose between alternatives.</li>
+<li>mode - change mode or language.</li>
+<li>shift - toggle upper/lowercase.</li>
+</ul>
+</li>
+<li>Hold<tt>X</tt> - the action to do when key <tt>X</tt> is held down. This is the same as for Tap, except <tt>&quot;\\&quot;</tt><i>textc{&quot;}</i> is not supported.</li>
+</ul>
+<p>Character insertions where the first character is punctuation are treated specially. The details of the special treatment are internal.</p>
+<p>Timing behavior for phone buttons are handled by the ButtonTimings section of the file.</p>
+<pre>    [ButtonTimings]
+    ButtonHeldTimeout=1500
+    AutoAcceptTimeout=1200</pre>
+<p>The ButtonHeldTimeout is the number of milliseconds a button needs to be held for the held behavior described above to take affect. The AutoAcceptTimeout is the number of milliseconds after a key is tapped before the composed text is confirmed. This only applies to some text input modes.</p>
+<p>The help file &quot;help/html/help-input.html&quot; should be modified to explain the usage of phone keys.</p>
+<a name="input-methods"></a>
+<h3>Input Methods</h3>
+<p>The format of the input method section is as follows:</p>
+<pre>    [InputMethods]
+    DefaultIM=Phone Keys</pre>
+<p>If the named input method is available, it will be activated by default on startup. If this entry is not present, the default input method depends on the <tt>PrimaryInput</tt> entry of the <tt>Device</tt> section.</p>
+<p>Additionally, configuration options for the symbol picker are available. For backwards compatibility, these are in a different section as follows:</p>
+<pre>    [IMethod]
+    picker_width=13
+    picker_font_point_size=6</pre>
+<p><tt>picker_width</tt> determines the number of characters per row on the symbol picker, and <tt>picker_font_point_size</tt> determines the size of the font used on the symbol picker. If this results in too many characters per row to fit onscreen, the rightmost characters will not be visible.</p>
+<a name="phone-softkey-definition"></a>
+<h3>Phone SoftKey Definition</h3>
+<p>The format of the soft-key definition section of the file is as follows:</p>
+<pre>    [SoftKeys]
+    Count=n
+    Key0=Name of Qt key code, e.g. Menu, Select, Context1</pre>
+<p>An example of what this may look like in a real example is:</p>
+<pre>    [SoftKeys]
+    Count=3
+    Key0=Context1
+    Key1=Select
+    Key2=Back</pre>
+<a name="usual-key-meanings"></a>
+<h3>Usual Key Meanings</h3>
+<p>This section describes the usual key meanings that Qt Extended uses, across many different device categories. If your device has a similar key, it is recommended that you choose the mapping in this list.</p>
+<p>The following keys are handled specially in the source code, and should be mapped exactly as listed here:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Key</th><th>Usual meaning</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Key_Context1</tt></td><td>Left soft key on the soft menu bar.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Select</tt></td><td>Center soft key on the soft menu bar.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Back</tt></td><td>Right soft key on the soft menu bar.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Context2</tt>, <tt>Key_Context3</tt>, <tt>Key_Context4</tt></td><td>Other soft keys on the soft menu bar.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Call</tt></td><td>Key to place a phone call (green key on mobile phones).</td></tr>
+<tr valign="top" class="even"><td><tt>Key_Hangup</tt></td><td>Key to hang up a phone call (red key on mobile phones). This key is usually also the power on/off key when held down.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Up</tt>, <tt>Key_Down</tt>, <tt>Key_Left</tt>, <tt>Key_Right</tt></td><td>Directional movement keys.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_VolumeUp</tt>, <tt>Key_VolumeDown</tt></td><td>Adjust the volume of the currently playing media or the current phone call.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_Flip</tt></td><td>Key that is sent whenever a flip phone is opened or closed. A key release event should be sent when the flip is opened, and a key press event sent when the flip is closed.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F26</tt></td><td>Input method mode switch key. If an input method has several modes (e.g&#x2e; multi-tap vs word matching modes), then it can offer the user the option to quickly switch between the modes using this key.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F27</tt></td><td>Handset cradle on desk phones. A key release event should be sent when the handset is picked up, and a key press event should be sent when the handset is replaced in the cradle.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F28</tt></td><td>Key on the headphones, which indicates whether to accept the incoming call or hang up the current call.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F29</tt></td><td>Lock key, for locking/unlocking the keypad.</td></tr>
+</table></p>
+<p>The following table indicates special functions that are usually handled in the <tt>defaultbuttons.conf</tt> file rather than in the source code. Keys that only appear in <tt>defaultbuttons.conf</tt> can be mapped to any function key, but the following mappings are recommended for consistency across device types:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Key</th><th>Usual meaning</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>Key_F4</tt></td><td>Camera key, for launching the camera program, or taking a picture if the camera program is currently active.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F5</tt></td><td>Headset key, for transfering audio to the headset.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F6</tt></td><td>Speakerphone key, for transfering audio to the speakerphone.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F7</tt></td><td>Multitask, showing running tasks in the task manager.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F8</tt></td><td>Multitask, switching between the running applications.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F9</tt></td><td>Launch the Datebook application.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F10</tt></td><td>Launch the Contacts application.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F11</tt></td><td>Launch the Todo application.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F12</tt></td><td>Return to the home screen.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F13</tt></td><td>Launch the Messages application.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F14</tt></td><td>Voice mail key.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F15</tt></td><td>Transfer key.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F16</tt></td><td>Options key.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F17</tt></td><td>Conference key.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F18</tt></td><td>Intercom key.</td></tr>
+<tr valign="top" class="even"><td><tt>Key_F19</tt></td><td>Redial key.</td></tr>
+<tr valign="top" class="odd"><td><tt>Key_F20</tt></td><td>Hold key.</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

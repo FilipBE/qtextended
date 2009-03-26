@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Creating and using binary SDKs</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Creating and using binary SDKs<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#creating-a-binary-sdk">Creating a binary SDK</a></li>
+<ul><li><a href="#installing-into-a-sandbox">Installing into a sandbox</a></li>
+</ul>
+<li><a href="#using-a-binary-sdk">Using a binary SDK</a></li>
+<li><a href="#advanced-binary-sdk-creation">Advanced binary SDK creation</a></li>
+<li><a href="#using-multiple-sdks">Using multiple SDKs</a></li>
+</ul>
+<a name="creating-a-binary-sdk"></a>
+<h2>Creating a binary SDK</h2>
+<p>When Qt Extended is built it produces a binary SDK. This is a directory that can be used to build third party applications. Note that this directory must be finalized before it can be deployed to another computer.</p>
+<p>You can specify the location of the sdk by passing <tt>-sdk /path/to/sdk</tt> to <a href="over-configure-options-1.html">configure</a>. Unlike previous versions of Qtopia, Qt Extended creates the SDK incrementally.</p>
+<p>A common reason to use binary SDKs is to put Qt Extended into a toolchain directory or other shared location so that multiple developers can build against the same configuration without having to build Qt Extended for each machine.</p>
+<pre>    configure -device mydevice -sdk /opt/toolchains/mydevicetoolchain
+    bin/qbuild
+    bin/qbuild sdk</pre>
+<p>Note that an SDK does not include the files required to run Qt Extended, only the files required to build third party applications.</p>
+<a name="installing-into-a-sandbox"></a>
+<h3>Installing into a sandbox</h3>
+<p>You cannot currently install the SDK into a sandbox.</p>
+<a name="using-a-binary-sdk"></a>
+<h2>Using a binary SDK</h2>
+<p>All development is done against a binary SDK, both non-finalized SDKs and finalized SDKs that have been deployed to another machine. The experience should not differ in any significant way. There is no need to set environment variables to use the SDK. However it may be useful to include the <tt>bin</tt> directory in your <tt>PATH</tt> so that <tt>qbuild</tt> is readily available.</p>
+<a name="advanced-binary-sdk-creation"></a>
+<h2>Advanced binary SDK creation</h2>
+<p>A combination of x86 (native) and device (cross-compiled) SDKs is useful when building apps. The native build allows running on a fast, desktop system under QVFb and the device SDK allows creation of apps for the actual device.</p>
+<p>To do this you must complete 2 builds. This example will create the native SDK first. Before that can be done the sources must be unpacked and suitable build directories created.</p>
+<pre>    tar zxf qtopia-phone-commercial-src-4.2.4.tar.gz
+    mkdir build_native
+    mkdir build_device</pre>
+<p>The native SDK does not depend on Qt and includes an image so that the apps can be run under QVFb.</p>
+<pre>    cd build_native
+    ../qtopia-phone-4.2.4/configure -device mydevice -qvfb -force-build-qt -sdk /opt/Qtopia/SDK/4.2.4/x86 -image /opt/Qtopia/SDK/4.2.4/x86/image
+    bin/qbuild
+    bin/qbuild image
+    bin/qbuild sdk
+    cd ..</pre>
+<p>The device SDK does not include an image since the apps are run on the device. It uses Qt from the native SDK.</p>
+<pre>    cd build_device
+    export PATH=/opt/Qtopia/SDK/4.2.4/x86/bin:$PATH
+    ../qtopia-phone-4.2.4/configure -device mydevice -sdk /opt/Qtopia/SDK/4.2.4/mydevice
+    bin/qbuild
+    bin/qbuild sdk
+    cd ..</pre>
+<a name="using-multiple-sdks"></a>
+<h2>Using multiple SDKs</h2>
+<p>A third party project can only be built against a single SDK at a time. You should run <tt>qbuild clean</tt> before switching between SDKs. To select the SDK to use, simply run the appropriate <tt>qbuild</tt>.</p>
+<p>Here is how you would run under the native SDK created above.</p>
+<pre>    export PATH=/opt/Qtopia/SDK/4.2.4/x86/bin:$PATH
+    qbuild clean
+    qbuild
+    qbuild image
+    runqtopia</pre>
+<p>Here is how you would create a device package.</p>
+<pre>    export PATH=/opt/Qtopia/SDK/4.2.4/mydevice/bin:$PATH
+    qbuild clean
+    qbuild
+    qbuild packages</pre>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

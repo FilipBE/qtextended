@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- /home/test1/tmp/mksrcpackage_20873/qt-extended-4.4.3/src/qtopiadesktop/doc/src/changes_432.qdocpp -->
+<head>
+  <title>Qtopia Sync Agent changes for 4.3&#x2e;2</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia Sync Agent changes for 4.3&#x2e;2<br /><span class="subtitle"></span>
+</h1>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>This page describes changes to Qtopia Sync Agent 4.3&#x2e;2&#x2e;</p>
+<ul>
+<li>Fixed numerous crash bugs.</li>
+<li>Correct the progress reporting on the device. It's still a bogus indicator but it now goes from 1 to n instead of stopping at n-1.</li>
+<li>The connection timeout code was restored but it defaults to off. The Greenphone requires this code to be in operation due to it's inability to detect a disconnect event. The device timeout is now 3x the value the desktop uses.</li>
+<li>Objects of an unexpected type returned from Outlook are ignored.</li>
+<li>A bug causing items created in Outlook to be duplicated at every sync has been fixed.</li>
+<li>Tasks modified in the server are now changed on the device.</li>
+<li>The <a href="over-sync-manager-1.html">Sync Manager</a> page documents the merge algorithm used by Qtopia Sync Agent.</li>
+<li>The <a href="qdsync-commands.html">qdsync Protocol</a> has been ammended to close a security hole related to <tt>CALLB</tt> messages.</li>
+<li>You can now force a slow sync (look in the Tools menu). Note that a slow sync will create many duplicate records due to how the merge algorithm works and because Qtopia and Outlook generate different XML for the same record.</li>
+<li>Fixed a problem where a slow sync (forced or otherwise) causes identifier mappings to be lost. Identifier mappings are now stored with a dataset. Qtopia Sync Agent associates a dataset with the existing mappings as it maps them so the upgrade process is gradual.</li>
+<li>Fixed the XML writing code that the Outlook plugin uses to avoid text encoding bugs.</li>
+<li>Fixed a Synchronization bug causing Outlook appointments with no alarm to be only partially transferred to Qtopia.</li>
+<li>Correctly parse long items so that notes are transferred in full.</li>
+<li>The clock does not need to be set the same on the client and desktop.</li>
+<li>All day events can now be synchronized correctly between Qtopia and Outlook. This also resolves the problem of events starting and ending at midnight.</li>
+<li>Outlook items that are not known to Qtopia Sync Agent but have a last modified timestamp that is before the sync timestamp are now transferred.</li>
+<li>Outlook events have their recurrence cleared before being updating to prevent a crash.</li>
+<li>Birthdays and anniversaries are no longer duplicated in the calendar.</li>
+</ul>
+<a name="known-issues"></a>
+<h3>Known issues</h3>
+<ul>
+<li>Serial connections are unreliable.</li>
+<li>Synchronization will not send any Calendar events to Qtopia Sync Agent due to a logic bug.</li>
+<li>Contacts created from Exchange addresses will have incorrect emails transfered to Qtopia.</li>
+<li>Appointments with removed occurrences in Outlook will results in blank events being created in Qtopia.</li>
+<li>Appointments with exceptions in Outlook will result in the Outlook security dialog being displayed.</li>
+</ul>
+<p>See also <a href="changes.html">What's New?</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

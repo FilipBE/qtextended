@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Framework Overview</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Framework Overview<br /><span class="subtitle"></span>
+</h1>
+<p>The implementation of the SXE logically categorizes all applications into two domains or profiles: trusted or untrusted. Trusted applications have no restrictions enforced upon them and all applications pre-installed on the Qt Extended image are considered trusted while untrusted applications are limited to those capabilities outlined in the <a href="sxe-requirements.html">SXE - Aims and Limitations</a>.</p>
+<p>Downloaded applications can be either untrusted or trusted however the packagemanager would generally be configured to only install untrusted packages, which are subject to sandbox conditions. Downloading trusted packages are usually for development purposes only.</p>
+<p>The restrictions of the capabilities and privileges of an application are enforced through two sets of rules:</p>
+<ol type="1">
+<li>The operating-system level MAC rules (which can be divided into file system and capability rules)</li>
+<li>The application level Qt Extended rules.</li>
+</ol>
+<p>These are summarized in the table below:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Policy Rule Set</th><th>Enforced by</th><th>Items controlled</th><th>Examples</th></tr></thead>
+<tr valign="top" class="odd"><td>Mandatory Access Control (MAC) file system</td><td>The <a href="http://www.lids.org">MAC enabled Linux kernel </a></td><td>entities on the file system</td><td><ul>
+<li><tt>/dev/ttyS0</tt> (a device),</li>
+<li><tt>/tmp/qt-embedded-0</tt> (a Unix Domain Socket) or</li>
+<li><tt>/etc/passwd</tt> (a plain file)</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>Mandatory Access Control (MAC) capabilities</td><td>The <a href="http://www.lids.org">MAC enabled Linux kernel </a></td><td><a href="http://www.lids.org/lids-howto/node34.html">system capabilities</a></td><td><ul>
+<li><tt>CAP_NET_RAW</tt> - write raw socket data,</li>
+<li><tt>CAP_SYS_ADMIN</tt> - range of actions incl forging the PID on a Unix Domain Socket</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>Application rule-sets</td><td>the Safe Execution Environment system</td><td>requests for service</td><td><ul>
+<li><tt>QCop</tt> messages: <i>transmit sms</i>, <i>dial number</i></li>
+<li>sound server and other applications</li>
+</ul>
+</td></tr>
+</table></p>
+<p>The function of the MAC-enabled Linux kernel is to prevent processes from accessing some parts of the system, for example:</p>
+<ul>
+<li><tt>/dev</tt> entries</li>
+<li>binary libraries</li>
+<li>configuration files.</li>
+</ul>
+<p>The MAC rule-set can, if needed, allow such access under read-only provisions or deny access altogether. The MAC can also prevent certain system calls via kernel capabilities, such as <tt>CAP_SYSADMIN</tt> and <tt>CAP_RAWIO</tt>.</p>
+<p>The SXE employs the <i>sandbox</i> MAC rule set which inverts the usual system of <i>allow, unless specifically denied</i> to instead be <i>deny, unless specifically allowed</i>. The sandboxing provided by the MAC kernel patches and its rule-set provides a broad low-level degree of protection against system-level risks from flawed or malicious programs attempting to access system resources. For example, any alteration of data or password files, harvesting of user information, and installation of <i>root-kits</i> is prevented.</p>
+<p>At the application level, SXE acts like a firewall to prevent programs making unauthorized access to sensitive system services. Requests received by the phone server are first checked to see if the originating program has the correct security domain awarded to allow the sending of such messages.</p>
+<p>During the package download process, the user is presented with a confirmation dialog with an easily understood description of the domain under which the package will operate. If approved, the Qt Extended package installation facility is responsible for applying the appropriate rules to a package.</p>
+<p>If an application violates policy such as making a service request or opening a file that it is not allowed to, the application is of course denied that access. The security monitor process known as <a href="sxe-sxemonitor.html">SxeMonitor</a> then acts to terminate the application and notify the user.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

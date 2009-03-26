@@ -1,0 +1,6 @@
+qconfig=$$(qconfig)
+exists($$qconfig):include($$qconfig)
+else:error(Missing $$qconfig!)
+VARNAME=$$(VARNAME)
+val=$$(val)
+!contains($$VARNAME,$$val):error($$VARNAME was missing value $$val!)

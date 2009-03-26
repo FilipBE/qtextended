@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Controlling the Volume Widget</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Controlling the Volume Widget<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#example">Example</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>For devices that have physical volume keys, these can programatically be mapped by the applications need to show feedback in the form of a volume widget to the user. This is done by registering oneself with the Audio Volume Manager which is a service task that decides who currently has control of a displayable volume widget and the values it represents.</p>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>Some steps to be taken in interfacing with the Audio Volume Manager are shown below. An implemetation sourced from the greenphone will be provided as a concrete example after some generalities are presented.</p>
+<ol type="1">
+<li>Subclass <tt>QtopiaIpcAdaptor</tt></li>
+<li>register with the Audio Volume Manager by issuing a QCop message to <tt>registerHandler()</tt></li>
+<li>Implement the member functions:<ol type="1">
+<li><tt>increaseVolume(int)</tt></li>
+<li><tt>decreaseVolume(int)</tt></li>
+</ol>
+<p>These functions will be invoked as QCop messages by the Audio Volume Manager after a hardware Volume Key press. In order to report the modified volume back to the Audio Volume Manager the developer must issue a QCop message with signature <tt>currentVolume(QString)</tt> to the Audio Volume Manager</p>
+</li>
+<li>QCop messages <tt>setActiveDomain(QString name)</tt> and <tt>resetActiveDomain(QString name)</tt> hold and relinquish control respectively of handler <tt>name</tt>.</li>
+<li>Unregister when control of the volume widget is no longer needed by issuing a QCop message to <tt>unregisterHandler()</tt></li>
+</ol>
+<a name="example"></a>
+<h3>Example</h3>
+<p>The greenphone provides an example where the device uses <tt>/dev/mixer</tt> to modify the master volume control of the soundcard. By registering itself with the Audio Volume Manager to gain control of volume hardware keys, it can display a volume widget to reflect this specific volume. The Audio Volume Manager writes this value into a <tt>QValueSpaceItem</tt> and the volume widget is updated accordingly.</p>
+<p>Heres the header file for reference.</p>
+<pre>    class GreenphoneVolumeService : public QtopiaIpcAdaptor
+    {
+        Q_OBJECT
+        enum AdjustType { Relative, Absolute };
+
+    public:
+        GreenphoneVolumeService();
+        ~GreenphoneVolumeService();
+
+    public slots:
+        void increaseVolume(int increment);
+        void decreaseVolume(int decrement);
+        void setMute(bool mute);
+
+    private slots:
+        void registerService();
+        void setCallDomain();
+
+    private:
+        void adjustVolume(int leftChannel, int rightChannel, AdjustType);
+
+        int m_leftChannelVolume;
+        int m_rightChannelVolume;
+
+        GreenphoneVolumeServicePrivate *m_d;
+    };</pre>
+<p>Important to note is that the relevant public slot functions correspond to QCop messages that are invoked by the Audio Volume Manager.</p>
+<p>The registration:</p>
+<pre>    void GreenphoneVolumeService::registerService()
+    {
+        QtopiaIpcEnvelope   e(&quot;QPE/AudioVolumeManager&quot;, &quot;registerHandler(QString,QString)&quot;);
+
+        e &lt;&lt; QString(&quot;Headset&quot;) &lt;&lt; QString(&quot;QPE/AudioVolumeManager/GreenphoneVolumeService&quot;);
+
+        QTimer::singleShot(0, this, SLOT(setCallDomain()));
+    }</pre>
+<p>A similar QCop message should be used to unregister.</p>
+<p>Taking a look at the implementation of the <tt>increaseVolume()</tt> function, we let the Audio Volume Manager know of the changed volume.</p>
+<pre>    void GreenphoneVolumeService::increaseVolume(int increment)
+    {
+        adjustVolume(increment, increment, Relative);
+        m_d-&gt;sendCurrentVolume();
+    }</pre>
+<p>Shown below is an implementation to report the modified volume back to the Audio Volume Manager.</p>
+<pre>    void sendCurrentVolume()
+    {
+            QString volume;
+            volume.setNum(currVolume);
+            QtopiaIpcEnvelope e(&quot;QPE/AudioVolumeManager&quot;,&quot;currentVolume(QString)&quot;);
+            e &lt;&lt; volume;
+    }</pre>
+<p>Please see: $QTOPIA_DEPO_PATH/src/server/media/volumemanagement/audiovolumemanager.{h,cpp}. Note: returned volume values should be in the range 0-100.</p>
+<p><tt>server/media/genericvolumeservice</tt> is a generic implementation that uses <tt>QAudioMixer</tt> for the audio system adjustment. This is used by qvfb and could be used for a device by adding server/media/genericvolumeservice to the devices project.pri file. The c3200 device profile has been changed to use this.</p>
+<p>Sometimes with alsa the auto-detect for the master volume can be incorrect. To override the auto-detect for the master volume control element and force use of a particular element set <tt>$HOME/Settings/Trolltech/Sound.conf [System] MasterName=&quot;PCM&quot;</tt> MasterControl set to true allows the service to save and restore MasterVolume. If MasterControl is false (default) then current volume is used instead and volume is not saved to config.</p>
+<p>See also <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> and <a href="qvaluespaceitem.html">QValueSpaceItem</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

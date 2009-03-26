@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Communications: Bluetooth</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Communications: Bluetooth<br><small>Functional Description</small></h1><p>Bluetooth is a wireless communications protocol which allows short range communication of typically 10 to 100 meters, between  Bluetooth-equipped devices.  The protocol supports authentication, service discovery and various forms of data transfer.  Typically this is used for file transfer, wireless headsets (audio), synchronization, dial-up networking, printing and other capabilities.  The services provided by the Bluetooth device are generally referred to as Profiles.  Qt Extended Bluetooth support can be enabled for any device with a Linux <nop>BlueZ compatible Bluetooth host adapter.  
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-115">Bluetooth service framework</a>
+<li><a href="#QTOPIA-114">Bluetooth Sockets API</a>
+<li><a href="#QTOPIA-121">Dependencies</a>
+<li><a href="#QTOPIA-113">Device Configuration</a>
+<li><a href="#QTOPIA-118">Dial-up Networking (DUN) (v1.1)</a>
+<li><a href="#QTOPIA-122">End-user device configuration</a>
+<li><a href="#QTOPIA-188">File Transfer Profile (FTP) (v1.1)</a>
+<li><a href="#QTOPIA-111">GAP</a>
+<li><a href="#QTOPIA-120">Hands-Free Profile (HFP) (v1.5)</a>
+<li><a href="#QTOPIA-119">Headset Profile (HSP) (v1.1)</a>
+<li><a href="#QTOPIA-7493">Integration with FIC Freerunner phone</a>
+<li><a href="#QTOPIA-116">OPP (v1.1)</a>
+<li><a href="#QTOPIA-112">SDAP</a>
+<li><a href="#QTOPIA-117">Sending and Receiving over Bluetooth</a>
+</ul><h3><a name=QTOPIA-115>Bluetooth service framework</a></h3>
+<p>A generic management framework for Bluetooth services allows Bluetooth services to be registered and handled under a common set of practices. For example, a service registered under this framework will automatically be able to be controlled through the BTSettings GUI application. Third-party developers will also be able to make use of this framework to integrate their own Bluetooth services into the system environment.
+<h3><a name=QTOPIA-114>Bluetooth Sockets API</a></h3>
+<p>Qt Extended supports RFCOMM, L2CAP and SCO sockets.  RFCOMM sockets are STREAM based sockets, similar to TCP sockets.  SCO and L2CAP sockets<br/>
+are SEQPACKET type sockets.  In general, they act similarly to TCP sockets, however the SEQPACKET type sockets preserve record boundaries.<br/>
+Finally, DGRAM type L2CAP sockets are also supported.  These sockets are similar to UDP sockets.
+<h3><a name=QTOPIA-121>Dependencies</a></h3>
+<p>Bluetooth uses uses services provided by Contacts for:
+<ul>
+	<li>Sending a business card over Bluetooth</li>
+	<li>Adding a received business card to the addressbook.</li>
+</ul>
+<h3><a name=QTOPIA-113>Device Configuration</a></h3>
+<p>The following device configuration options are available:
+<ol>
+	<li>switch the Bluetooth adapter on or off for example,  the device may need to be turned off to reduce power consumption.</li>
+	<li>control visibility -   visibility is controlled by two variables:
+	<ul>
+		<li><em>page scan</em> - controls whether remote devices can connect to the local device.</li>
+		<li><em>inquiry scan</em> - controls whether remote devices can discover local device. Allowing the user to set the 'discoverable' state by setting the inquiry scan variable.</li>
+	</ul>
+	</li>
+	<li>local device name - set to allow the user to identify the device quickly at a later time.</li>
+</ol>
+
+
+<p>Other attributes can also be viewed by the user, such as the device manufacturer and the Bluetooth protocol version the device supports and the user can scan for services(profiles) supported by the device.</p>
+<h3><a name=QTOPIA-118>Dial-up Networking (DUN) (v1.1)</a></h3>
+<p>Dial-up Networking allows the user to connect to the Internet via third party Bluetooth devices (client profile) and Qt Extended devices themselves can provide dial-up connections to third party Bluetooth devices (server profile). Essentially requests from the client are forwarded directly to the hardware modem.  Thus no PPP server is running on the server side.
+<h3><a name=QTOPIA-122>End-user device configuration</a></h3>
+<p>Qt Extended has a built-in Bluetooth Settings application that allows users to perform basic Bluetooth configuration operations, such as:
+<ul class="alternate" type="square">
+	<li>Setting the Bluetooth power state and discoverable mode</li>
+	<li>Creating and removing pairings with other Bluetooth devices</li>
+	<li>Configuring locally available Bluetooth services</li>
+	<li>Connecting to Bluetooth headsets and handsfree devices</li>
+	<li>Changing the name of the Bluetooth device</li>
+</ul>
+<h3><a name=QTOPIA-188>File Transfer Profile (FTP) (v1.1)</a></h3>
+<p>Qt Extended supports the Bluetooth FTP profile in both Client and Server modes.  The FTP profile provides a file and directory browsing capabilities, similar to the TCP/IP File Transfer Protocol.  Qt Extended's Bluetooth FTP implementation relies on the Qt Extended Document System for preserving document attributes such as mimetype and description.
+<h3><a name=QTOPIA-111>GAP</a></h3>
+<p>Qt Extended fully supports the Bluetooth Generic Access Profile (GAP) which handles discovery and establishment of connections between Bluetooth devices and defines how secure connections can be established between two devices by a mechanism referred to as 'pairing'.  It also defines the basic user-interface paradigm that must be used by all Bluetooth devices. 
+
+<p>The Qt Extended Bluetooth API allows its clients to discover remote devices and various relevant attributes, such as device name, device manufacturer, Bluetooth protocol version supported, etc.  It also supports the establishment of trust relationships by pairing remote devices.</p>
+<h3><a name=QTOPIA-120>Hands-Free Profile (HFP) (v1.5)</a></h3>
+<p>The Hands Free Profile is an expanded set of functionality compared to the headset profile.  Qt Extended supports the Hands-free profile functionality in the Modem Emulator module.  All control mechanisms available for HSP profile are also available for HFP profile.
+<h3><a name=QTOPIA-119>Headset Profile (HSP) (v1.1)</a></h3>
+<p>Headset profile is supported using the Headset Bluetooth service and integrated into the Bluetooth service framework.  The user is able to control the volume of the speaker and microphone of the Bluetooth headset.  The user is also able to connect, disconnect, pair and unpair the Bluetooth headset device.  The implementation of the headset profile assumes that the audio is routed over PCM (e.g. hardware assisted).  Audio routing over HCI (in software) is not currently supported.
+<h3><a name=QTOPIA-7493>Integration with FIC Freerunner phone</a></h3>
+<p>Qt Extended provides an example device profile for the FIC GTA01 (aka Neo 1973, aka OpenMoko) and FIC GTA02 (aka Freerunner) phones.
+<h3><a name=QTOPIA-116>OPP (v1.1)</a></h3>
+<p>Object Push Profile supports both client and server modes for applications that use the object push model of interaction.<br/>
+The client mode is used to initiate an object push request to a remote device.
+<h3><a name=QTOPIA-112>SDAP</a></h3>
+<p>SDAP describes how an application uses the Service Discovery Protocol (SDP) to discover services on a remote device.  Using the Qt Extended Bluetooth API, clients can enable any application to discover services running on a remote device.  
+
+<p>Two discovery modes are supported:<br/>
+   1. searching - to search for a specific service<br/>
+   2. browsing - to search for any services accessible from the public browse group.</p>
+<h3><a name=QTOPIA-117>Sending and Receiving over Bluetooth</a></h3>
+<p>The user can send and receive files over Bluetooth.  If a file is received, the user can monitor the progress of the file transfer, and choose to accept or discard the file received.  If a business card is received, the user has the option of saving it in the addressbook or discarding.
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

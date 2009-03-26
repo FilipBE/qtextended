@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Aims and Limitations</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Aims and Limitations<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#use-case">Use-case</a></li>
+<li><a href="#discussion-of-benefits">Discussion of Benefits</a></li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The primary objective of the first release SXE is to enable the user to download native applications, (which is currently limited to games) and be able to run these with confidence that they will not be able to compromise telephony software and services and cause billable events such as making unauthorized phone calls or sending SMS's.</p>
+<p>The secondary objectives of the initial release are to</p>
+<ul>
+<li>maintain the integrity of the Qt Extended system and availability of services and functionality</li>
+<li>provide improved performance, functionality and security over VM and other sandboxing models.</li>
+<li>ensure the confidentiality and integrity of user data.</li>
+<li>cause minimal impact and maximum usability for the end-user including performance considerations.</li>
+</ul>
+<a name="use-case"></a>
+<h2>Use-case</h2>
+<p>To define and circumscribe the security problem that the SXE system is intended to solve the following Use-Case is presented:</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Use-Case</th></tr></thead>
+<tr valign="top" class="odd"><td>A device end-user:<ul>
+<li>browses for a package</li>
+<li>downloads the package</li>
+<li>installs it on the device.</li>
+</ul>
+<p>The package may, without the users knowledge, contain flawed or malicious software.</p>
+<p>After installation the user expects to run the program and obtain the package's promised functionality.</p>
+</td></tr>
+<tr valign="top" class="even"><td><i>For telephony enabled devices the network provider expects the telephony software and service will not be compromised by malicious software knowingly installed by the user.</i></td></tr>
+</table></p>
+<a name="discussion-of-benefits"></a>
+<h2>Discussion of Benefits</h2>
+<ul>
+<li>Native applications will often have better performance, through code optimization and access to hardware.</li>
+<li>Native sandboxing allows the security policy to be tailored to the file systems and application stack, providing stronger and more robust security at the operating system level.</li>
+<li>Previous implementations of MIDP (v1.0) was not strong on security, and even with version 2, security is focused on normal network protocols, with limited ability to protect the file system.</li>
+<li>There are licensing issues with the Java approach.</li>
+</ul>
+<a name="limitations"></a>
+<h2>Limitations</h2>
+<p>SXE currently, is only intended to ensure the safe execution of downloaded games. Other types of applications may or may not be capable of operating within the sandbox provided. The sandbox will inherently limit functionality and so to further clarify a game is able to</p>
+<ul>
+<li>draw into the application region of the display</li>
+<li>play audio</li>
+<li>have write access to a sandboxed directory</li>
+<li>change the context bar</li>
+</ul>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<p>There are a few open issues (for the greenphone) that have been evaluated and have not been considered as a priority to address for the first release of SXE.</p>
+<p>Sandboxed applications can:</p>
+<ul>
+<li>consume all the memory available on the device, the effect of this is somewhat negated with <a href="syscust-oom.html">OOM handling</a></li>
+<li>fill up all the space in /tmp, preventing other applications that use /tmp from operating correctly</li>
+<li>use up all semaphores and shared memory available on the system.</li>
+<li>connect to any socket on the filesystem</li>
+</ul>
+<p>The first three issues are effectively denial of service attacks on the system, but the effects of these attacks are minimal since a simple reboot will restore the device back into a normal state. There should be no further problems unless the downloaded malware is run again. There is little to gain in performing such an attack.</p>
+<p>Regarding the fourth issue: To prevent spoofing of security messages, specific protections in the kernel can be applied to the /dev/log socket preventing all processes other than qpe from writing to it, as is the case for the greenphone. Other sockets such as the qws and document server sockets which are listened to by qpe may be safely connected to by untrusted applications since there are server side message verification protocols in place. The valuespace_layer socket, also listened to by qpe however does not have any message verification mechanisms in place; the potential for exploit depends upon how the valuespace is used. Various other sockets won't have protections, in the case of the greenphone it is believed that the possible exploitations would only cause nuisances to the user at worst. Having the valuespace_applayer socket protected by message verification and having proper access control in place for sockets in general are issues to be addressed in future releases.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

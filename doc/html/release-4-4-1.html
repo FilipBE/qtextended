@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended - 4.4&#x2e;1 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended - 4.4&#x2e;1 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#new-features">New Features</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qt Extended 4.4&#x2e;1 release (also known as Qtopia 4.4) is a feature release of Qt Extended that is based on Qt 4.4 technology. Note that starting with this release Qtopia has been renamed to Qt Extended. The version numbering remains consistent with previous Qtopia releases.</p>
+<p>The purpose of this release is to publish new Qt Extended API's, to allow device integrators to begin work on their projects. This release contains a number of significant quality issues, which will be corrected in future patch releases. Device integrators should not ship this version of Qt Extended on production devices.</p>
+<a name="new-features"></a>
+<h2>New Features</h2>
+<ol type="1">
+<li><b>Build System</b><ul>
+<li>This release introduces a new build tool, <b>QBuild</b>. The QBuild tool replaces qmake, allowing more efficient processing of the build instructions contained in .pro files and better management of dependencies.</li>
+<li>Qt Extended no longer supports the previously used concept of Editions. Editions were a shorthand for specifying the type of user-interface to be used and the default set of projects (modules) to be included in a build. The UI type and modules are now specified separately.</li>
+<li>Please see the <a href="buildsystem/chlog-4-4-1-1.html">build system changes</a> page for more detailed information on the build system changes.</li>
+</ul>
+</li>
+<li><b>Cleanup Wizard</b><ul>
+<li>Qt Extended now provides a <b>Cleanup Wizard</b>, which allows the user to delete old messages, calendar events and documents. The Cleanup Wizard will automatically be offered to the user if free storage falls below a level set by the device integrator.</li>
+</ul>
+</li>
+<li><b>Document Management</b><ul>
+<li>The Documents list now provides a <b>Rescan System</b> menu option, which causes the content system to rescan all controlled directories for documents and to repopulate the Documents list with this information. This allows the user to update the Documents list if they have changed the filesystem contents outside of Qt Extended.</li>
+</ul>
+</li>
+<li><b>Dynamic Rotation</b><ul>
+<li>Qt Extended now supports dynamic rotation of the display. The display can be rotated at runtime by using the Rotation Settings application or in response to hardware events from orientation sensors or slide switches.</li>
+</ul>
+</li>
+<li><b>Fast Load</b><ul>
+<li>Qt Extended now supports &quot;fast loading&quot; of selected applications. Applications marked as FastLoad are launched in the background when Qt Extended starts up. When the user chooses a FastLoad application from the launcher the application is brought to the foreground, appearing to launch instantly. The user can select an application for fast loading by choosing <b>FastLoad</b> from the Options menu when the application is highlighted in the launcher.</li>
+</ul>
+</li>
+<li><b>First Use Wizard</b><ul>
+<li>Qt Extended now provides a <b>First Use Wizard</b>, which allows the user to choose the initial Language and Date/Time settings for a device the first time the device is booted.</li>
+</ul>
+</li>
+<li><b>LED Indicator API</b><ul>
+<li>This release introduces a new LED Indicator API, providing a set of classes that allow developers to modify the state of a device's LED indicators in a consistent manner.</li>
+</ul>
+</li>
+<li><b>Location API</b><ul>
+<li>The release introduces a new Location API, providing a uniform way to access information from GPS receivers.</li>
+</ul>
+</li>
+<li><b>Messaging</b><ul>
+<li>The Messages application now allows email accounts to be regularly checked for new messages at a user-configurable interval. This feature is configured in the Account Settings dialog, where the user may also configure whether interval checking is disabled while roaming to reduce data download costs.</li>
+<li>If composition of a message is aborted by the user pressing the hangup key to return to the homescreen, the Messages application will offer to resume composing the message the next time it is launched.</li>
+<li>The Messages application now supports receipt and saving of class 0 (Flash) SMS messages.</li>
+<li>The Messages applicaiton now supports push email for IMAP servers that support the IDLE extension (RFC2177).</li>
+</ul>
+</li>
+<li><b>Multimedia</b><ul>
+<li>Qt Extended now supports rotation of video and fullscreen video playback.</li>
+<li>The Media Player application now supports display of album cover art.</li>
+<li>Phonon support is now available in Qt Extended.</li>
+</ul>
+</li>
+<li><b>Pictures</b><ul>
+<li>The Pictures application now allows the user to choose a picture to be set as the wallpaper for the Homescreen.</li>
+</ul>
+</li>
+<li><b>Test Framework</b><ul>
+<li>This release introduces <b><a href="qtuitest.html">QtUiTest</a></b>, a framework supporting automated unit-level testing and automated and semi-automated system-level testing. Unit-level tests are written in C++ and system-level tests can be written in either C++ or QtScript. A selection of unit-level and system-level test cases are also included in the source package to demonstrate the test framework. More information on this feature is available in the <a href="qtuitest-manual.html">QtUiTest Manual</a>.</li>
+</ul>
+</li>
+<li><b>USB</b><ul>
+<li>Qt Extended is now able to act as a USB Mass Storage device.</li>
+</ul>
+</li>
+<li><b>Virtual Framebuffer</b><ul>
+<li>The Qt Virtual Framebuffer (qvfb) now supports simulation of power management functionality, e.g&#x2e; screen blanking.</li>
+</ul>
+</li>
+<li><b>WebKit support</b><ul>
+<li>Qt Extended now includes support for WebKit. A sample WebKit-based browser is included for demonstration purposes.</li>
+</ul>
+</li>
+</ol>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Camera</b><ul>
+<li>The Camera application is now able to write image sensor data to an overlay display.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>The Predictive Keyboard now supports internationalization.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>The SIM Toolkit now includes support for USAT.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Build System</b><ul>
+<li>BUG 224317: Qt Extended fails to build for an x86_64 target.</li>
+<li>BUG 221387: The build system is currently unable to build a stand-alone SDK that does not depend on the source or build trees.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 226400: Creating a contact does not put that contact onto the SIM and the Contacts application provides no means to manually export a contact to the SIM.</li>
+</ul>
+</li>
+<li><b>GoogleTalk</b><ul>
+<li>BUG 211938: GTalk does not report connection progress and success/failure.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+</ul>
+</li>
+<li><b>Neo1973/Freerunner device</b><ul>
+<li>BUG 224035: The device does not play audio through the headset if the headset is plugged in when the device boots. Audio works correctly after the headset is disconnected and reconnected.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 215452: In the Home UI, Microphone audio of a speakerphone call is played through speaker.</li>
+<li>BUG 210972: Calls are initiated through speakerphone if the handset is not replaced after a previous call.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

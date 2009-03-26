@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtUiTest Manual</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtUiTest Manual<br /><span class="subtitle"></span>
+</h1>
+<p>The <a href="qtuitest.html">QtUiTest</a> framework is a tool for automatic and semi-automatic Ui/System level testing of Qt based applications and libraries, specifically applications developed for embedded/handheld devices. <a href="qtuitest.html">QtUiTest</a> provides functionality commonly found in system test frameworks but with a special attention for creating maintainable cross-platform tests.</p>
+<p>Contents: <ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#the-scripting-language">The Scripting Language</a></li>
+<ul><li><a href="#language-design-philosophy">Language design philosophy</a></li>
+<li><a href="#scripting-language-basics">Scripting language basics</a></li>
+</ul>
+<li><a href="#using-qtuitest">Using QtUiTest</a></li>
+<ul><li><a href="#qtuitest-source-code">QtUiTest source code</a></li>
+<li><a href="#test-locations">Test locations</a></li>
+<li><a href="#qtuitest-performance-impact">QtUiTest Performance Impact</a></li>
+<li><a href="#qtuitest-security">QtUiTest Security</a></li>
+<li><a href="#qtuitest-system-dependencies">QtUiTest System Dependencies</a></li>
+<li><a href="#preparing-qt-extended-for-system-testing">Preparing Qt Extended for System testing</a></li>
+<ul><li><a href="#configuring-the-system-under-test-sut">Configuring the System Under Test (SUT)</a></li>
+<li><a href="#connecting-the-device-to-the-desktop-host-machine">Connecting the device to the desktop (host) machine.</a></li>
+<li><a href="#running-qt-extended-in-test-mode">Running Qt Extended in Test mode.</a></li>
+</ul>
+<li><a href="#creating-a-test">Creating a Test</a></li>
+<ul><li><a href="#writing-a-manual-system-test">Writing a Manual System Test</a></li>
+</ul>
+<li><a href="#building-a-test">Building a Test</a></li>
+<li><a href="#running-a-test">Running a Test</a></li>
+<ul><li><a href="#running-a-test-with-additional-command-line-parameters">Running a Test with additional command line parameters</a></li>
+<li><a href="#running-tests-in-a-continuous-integration-system">Running tests in a Continuous Integration System</a></li>
+</ul>
+<li><a href="#qtuitest-tutorial">QtUiTest Tutorial</a></li>
+</ul>
+<li><a href="#qtuitest-api-overview">QtUiTest API Overview</a></li>
+<ul><li><a href="#system-architecture">System Architecture</a></li>
+<li><a href="#query-paths">Query Paths</a></li>
+<ul><li><a href="#labels">Labels</a></li>
+<li><a href="#signatures">Signatures</a></li>
+</ul>
+<li><a href="#learn-mode">Learn Mode</a></li>
+<li><a href="#application-management">Application Management</a></li>
+<li><a href="#file-management">File Management</a></li>
+<li><a href="#time-management">Time Management</a></li>
+<li><a href="#querying-objects">Querying Objects</a></li>
+<li><a href="#text-entry-and-navigation">Text Entry and Navigation</a></li>
+<li><a href="#keypad-simulation">Keypad Simulation</a></li>
+<li><a href="#mouse-touchscreen-simulation">Mouse / Touchscreen Simulation</a></li>
+<li><a href="#telephony-simulation">Telephony Simulation</a></li>
+<li><a href="#other">Other</a></li>
+</ul>
+<li><a href="#extending-qtuitest-for-custom-widgets">Extending QtUiTest for Custom Widgets</a></li>
+<li><a href="#qtuitest-api-reference">QtUiTest API Reference</a></li>
+</ul>
+</p>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p><a href="qtuitest.html">QtUiTest</a> is, by design, quite similar to the <a href="qtest.html">QTestLib API</a> that is used for Unit level testing. In contrast to <a href="qtestlib-manual.html">QTestLib</a> however, <a href="qtuitest.html">QtUiTest</a> based tests are written in QtScript. Please refer to the <a href="qtestlib-manual.html">QTestLib Manual</a> if you are looking for a Unit test framework.</p>
+<p><a href="qtuitest.html">QtUiTest</a> is a scripting test language plus some basic test execution tools and as such does not provide a complete Integrated Development Environment (IDE) to write and execute tests. Tests can be written with any standard editor or development IDE. Tests can be executed from the command line or in continuous integration test systems.</p>
+<a name="the-scripting-language"></a>
+<h2>The Scripting Language</h2>
+<a name="language-design-philosophy"></a>
+<h3>Language design philosophy</h3>
+<p><a href="qtuitest.html">QtUiTest</a> aims to provide a test scripting language that is:</p>
+<ul>
+<li>simple, reliable and easy to learn,</li>
+<li>resilient to UI changes,</li>
+<li>transparent to device changes (i.e&#x2e; a touchscreen and keyboard based device should run the same test),</li>
+<li>suitable for performance testing.</li>
+</ul>
+<p><a href="qtuitest.html">QtUiTest</a> scripts are written from a User perspective. When a User uses a GUI application all he/she does is apply a few concepts that form the basis of using a GUI application. For instance, a button can be clicked on and then 'the text on the button' will happen.</p>
+<p>It is irrelevant to the user that the actual UI implementation uses a button. The UI could just as well have been an html page with a hyperlink in it with a similar text as on the button. In both cases, the user will 'select' the text to initiate a certain action from the application. So, today the implementation can be a button, tommorrow it can be a hyperlink, the day after tomorrow it can be something that hasn't been invented yet: the principle remains the same.</p>
+<p>So conceptually a user does not 'click' keys, but rather uses the concept of a button to 'select' an action or hits keys on a real or virtual keyboard to 'enter' text. The user wants something to happen and has an understanding of what needs to be done to &quot;get there&quot;.</p>
+<p>On a new system a user first needs to learn the User Manual. The more the system behaves in a way the user already knows, and the more the system provides functionality in a way the user can predict, the more &quot;Intuitive&quot; and &quot;Usable&quot; the system is experienced by the user.</p>
+<p>System testing is, in our view, very much related to these fundamental issues and just like a real user, <a href="qtuitest.html">QtUiTest</a> understands the UI concepts that form the foundation of a UI application and uses a simple syntax to enable the tester to describe it's Use Cases.</p>
+<p>Next to being able to write tests in a language that is as close as possible to the user experience it is also important to write maintainable code. Automating tests is well known to be major investment, and tests being broken for every small UI change, or tests that need to be modified for each slightly different device (or Operating System) are a major problem. <a href="qtuitest.html">QtUiTest</a> is designed in such a way that the script will result in good readable and understandable code which reduces the need for additional documentation, as well as tests that are platform agnostic. For example:</p>
+<pre>    function create_contact()
+    {
+        var contact_name = &quot;John Doe&quot;;
+        var contact_email = &quot;johndoe@hotstuff.com&quot;;
+        var contact_company = &quot;HotStuff&quot;;
+
+        select( &quot;Contacts&quot;, launcherMenu() ); <span class="comment">// select and start the Contacts application from the Grid Menu</span>
+        select( &quot;New contact&quot;, optionsMenu() ) ; <span class="comment">// Open the Options menu and select &quot;New contact&quot;</span>
+        waitForTitle( &quot;New Contact&quot; ); <span class="comment">// Make sure that we are in the &quot;New Contact&quot; dialog</span>
+
+        select( &quot;Contact&quot;, tabBar() ); <span class="comment">// Go to the &quot;Contact&quot; tab</span>
+
+        enter( contact_name, &quot;Name&quot; ) ; <span class="comment">// enter a text in a field labeled &quot;Name&quot;</span>
+        compare( contact_email, &quot;Emails&quot; ) ; <span class="comment">// verify that the text in a field labeled &quot;Emails&quot; is 'contact_email'</span>
+
+        if (contact_company != undefined) { <span class="comment">// depending on the testdata ...</span>
+            setChecked( true, &quot;Business contact&quot; ); <span class="comment">// check a checkbox</span>
+            enter( contact_company, &quot;Business contact/Company&quot; ) ; <span class="comment">// and enter text in the &quot;Company&quot; field</span>
+        } else {
+            setChecked( false, &quot;Business contact&quot; ); <span class="comment">// or else uncheck the checkbox labeled &quot;Business contact&quot;</span>
+        }
+
+        select( &quot;Back&quot;, softMenu() ); <span class="comment">// select &quot;Back&quot; from the soft menu</span>
+
+        verify( getList().contains( contact_name ) ); <span class="comment">// verify that the contacts list displays the new contact</span>
+    }</pre>
+<p>As simple as this example may be, it shows many of the powerfull features of <a href="qtuitest.html">QtUiTest</a>:</p>
+<ul>
+<li>The four most important commands are <a href="qsystemtest.html#select">select()</a>, <a href="qsystemtest.html#enter">enter()</a>, <a href="qsystemtest.html#compare">compare()</a> and <a href="qsystemtest.html#verify">verify()</a>. These commands will be used in 99% of the script code.</li>
+<li>Every command is making verification steps along the way. For instance, <a href="qsystemtest.html#enter">enter()</a> will perform a verification at the end to ensure that the text has been entered correctly.</li>
+<li>There is no need to explicitely code key clicks or mouse clicks. The usage of key/mouse clicks typically results in low level code that is difficult to understand and should only be used in exceptional cases.</li>
+<li><a href="qtuitest.html">QtUiTest</a> understands the scope in which a command is given: selecting an option from the <a href="qsystemtest.html#optionsMenu">optionsMenu()</a> is significantly different from selecting an application from the <a href="qtopiasystemtest.html#launcherMenu">launcherMenu()</a> but from user perspective they are both used to select 'things'.</li>
+<li>The test can be executed equally well with a keyboard based and/or a touchscreen based device.</li>
+<li>There is almost no need for extra documentation in the script: once the concepts are understood any additional comments in a script (like in the example above) are noise that don't contribute anything.</li>
+<li>There is almost no need for explicit synchronisation steps such as a <a href="qsystemtest.html#wait">wait()</a>: <a href="qtuitest.html">QtUiTest</a> understands that certain actions may result in a background task and <a href="qtuitest.html">QtUiTest</a> will wait automatically. Other commands, such as <a href="qsystemtest.html#waitForTitle">waitForTitle()</a> have a build in wait and the call will fail if the system didn't respond within x seconds.</li>
+<li><a href="qtuitest.html">QtUiTest</a> uses the Labels that are visible on the screen to find the editable 'buddy fields'. There is hardly any need to hardcode field names using error prone semantics or mapping tables.</li>
+<li><a href="qtuitest.html">QtUiTest</a> is extremely forgiving to UI changes. For instance, the user &quot;Name&quot; field may start as a simple line edit, then may become a full text edit, and finally become a combobox but all this time the test will pass without as much as a single complaint: as long as a field labeled &quot;Name&quot; exists and a text can be successfully entered into a buddy field the test is a success from user perspective.</li>
+<li><a href="qtuitest.html">QtUiTest</a> is also extremely forgiving for layout changes. The &quot;Name&quot; field may start at the top of the dialog, may go to the bottom and finally end up in the middle: <a href="qtuitest.html">QtUiTest</a> doesn't care. As long as the field exists (and is visible) the test will pass.</li>
+<li><a href="qtuitest.html">QtUiTest</a> uses 'smart variables' to identify sections of the user interface such as <a href="qsystemtest.html#optionsMenu">optionsMenu()</a>, <a href="qtopiasystemtest.html#softMenu">softMenu()</a>, <a href="qtopiasystemtest.html#launcherMenu">launcherMenu()</a>, <a href="qsystemtest.html#tabBar">tabBar()</a>, etc.</li>
+<li>The first three lines in the example show variables being filled with data. In a real test we'll do these three lines in a separate function that is strictly used to populate the test with Test Data. So, Test Data and Test Logic are separated.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="scripting-language-basics"></a>
+<h3>Scripting language basics</h3>
+<p>For an introduction to the <a href="qtuitest.html">QtUiTest</a> scripting grammar please read the <a href="qtuitest-language.html">QtUiTest Scripting Language primer</a> and for details about writing scriptable Qt applications go to the <a href="qtscript.html">QtScript</a> documentation.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="using-qtuitest"></a>
+<h2>Using QtUiTest</h2>
+<a name="qtuitest-source-code"></a>
+<h3>QtUiTest source code</h3>
+<p><a href="qtuitest.html">QtUiTest</a> consists of a number of libraries and plugins that run on the System Under Test (SUT) i.e&#x2e; on the device side plus a script executer that runs on the desktop side. This code is compiled when Qt Extended is configured with the '-add-module qtuitest' configuration option.</p>
+<p>The code is located:</p>
+<ul>
+<li>src/libraries/qtuitest: contains part of the code that is generic for system testing and is used on the SUT side.</li>
+<li>src/plugins/qtuitest: contains plugins that implement customized details of <a href="qtuitest.html">QtUiTest</a> and is used on the SUT side.</li>
+<li>src/tools/qtuitestrunner: contains the script runner code that runs on a desktop machine.</li>
+</ul>
+<a name="test-locations"></a>
+<h3>Test locations</h3>
+<p>When developing/maintaining source code it is crucially important that all development attributes are kept together as close as possible and are stored in a version control system. To make this process as simple as possible all available tests for our libraries, applications, etc are integrated into the source tree. As a convention, all tests are put under &quot;tests&quot; subdirectories and can contain a combination of Unit, Integration, System and Performance tests.</p>
+<p>For example:</p>
+<pre>    src/applications/addressbook</pre>
+<p>contains all source code for the addressbook application, and</p>
+<pre>    src/applications/addressbook/tests/sys_addressbook</pre>
+<p>contains a System test for the addressbook application, and similarly</p>
+<pre>    src/libraries/qtopia</pre>
+<p>contains a great number of subdirectories such as tst_qtimezone and sys_contextkeymanager which all contain a Unit/System test.</p>
+<p>A crucial component in testing is the maintenance of test data. Test data is, depending on the situation, either kept separate for a specific test or needs to be shared between multiple tests.</p>
+<p>Code and data that is shared between multiple tests can be found in:</p>
+<pre>    tests/* which is a directory specific for testing. It contains helper scripts, shared data, etc.</pre>
+<a name="qtuitest-performance-impact"></a>
+<h3>QtUiTest Performance Impact</h3>
+<p><a href="qtuitest.html">QtUiTest</a> is designed with performance testing in mind, and should not have a big impact on device performance. Of course, a device running without <a href="qtuitest.html">QtUiTest</a> is likely to be slightly faster, which is at least erring towards the safe side.</p>
+<p><a href="qtuitest.html">QtUiTest</a> consists of a few extra libraries and plugins that are installed on a device, but are not required on a shipped product. Installation of these extra libraries is optional, and by default will not be installed (or build).</p>
+<a name="qtuitest-security"></a>
+<h3>QtUiTest Security</h3>
+<p>The <a href="qtuitest.html">QtUiTest</a> plugins provide unrestricted access to all parts of the System Under Test and as such create a security breach. To prevent security breaches on end-user devices the SUT must be compiled AND ran with extra commands to enable <a href="qtuitest.html">QtUiTest</a>. Without these commands the <a href="qtuitest.html">QtUiTest</a> code is not installed, or accessible, on the device.</p>
+<a name="qtuitest-system-dependencies"></a>
+<h3>QtUiTest System Dependencies</h3>
+<p>To be able to use <a href="qtuitest.html">QtUiTest</a> only Qt (Extended) is required. The test framework creates a small hook that accesses the object tree maintained by <a href="qapplication.html">QApplication</a>, and it will use a few basic classes such as the network classes to communicate with the script runner on the desktop (host) machine.</p>
+<p><a href="qtuitest.html">QtUiTest</a> can handle information from a great deal of Qt's Widget classes although by default only a subset of all Widgets are supported, typically those that can be found on small embedded devices. The remaining <a href="qwidget.html">QWidget</a> derived classes that aren't standard supported can be added via custom plugins.</p>
+<p>To emulate keyboard and mouse events the test system uses low level classes in Qt such as QWsKeyboardEvent and QEventFilter that form the core of Qt on target systems and as such should not impose a restriction to the applicability of <a href="qtuitest.html">QtUiTest</a> in many configurations.</p>
+<a name="preparing-qt-extended-for-system-testing"></a>
+<h3>Preparing Qt Extended for System testing</h3>
+<p>To be able to run System tests with <a href="qtuitest.html">QtUiTest</a> three steps must be taken:</p>
+<ul>
+<li>Qt Extended must be configured with the qtuitest module.</li>
+<li>The device must have an ethernet/usb connection to the desktop (host) machine.</li>
+<li>Qt Extended must be executed with system testing enabled.</li>
+</ul>
+<p>The difference between the two possible configurations (with and without the qtuitest module) is minimal from code impact point of view and it is therefore unlikely that a System tested with qtuitest included will have a different behaviour from one that is run without qtuitest.</p>
+<a name="configuring-the-system-under-test-sut"></a>
+<h4>Configuring the System Under Test (SUT)</h4>
+<p>To be able to run System tests the <a href="qtuitest.html">QtUiTest</a> code needs to be compiled and included in the image. For example:</p>
+<pre>        cd &lt;my-build-dir&gt;
+        &lt;my-depot-dir&gt;/configure -add-module qtuitest [other-config-options]
+        bin/qbuild
+        bin/qbuild image</pre>
+<p>Note that a System tests will fail when the SUT isn't configured with the qtuitest module.</p>
+<a name="connecting-the-device-to-the-desktop-host-machine"></a>
+<h4>Connecting the device to the desktop (host) machine.</h4>
+<p>The desktop (host) machine and device need to be set up appropriately so that an ethernet (socket) connection can be established between the desktop and the device, i.e&#x2e; <tt>&quot;ping &lt;your-device-ip&gt;&quot;</tt> or something similar should work. The system administrative tasks involved are beyond the scope of this document.</p>
+<a name="running-qt-extended-in-test-mode"></a>
+<h4>Running Qt Extended in Test mode.</h4>
+<p>Once the System is build with <a href="qtuitest.html">QtUiTest</a> enabled and the image is installed (which could mean 'flashed on a device') the last step is to activate the system test mode.</p>
+<p>Typically the &quot;Test Mode&quot; parameter is saved into a configuration file that is read once by the SUT upon startup, and applied afterwards. Depending on the SUT the configuration must be edited manually or can be modified via a settings application.</p>
+<p>For Qt Extended the configuration file can be modified via &quot;Settings-&gt;Startup Flags&quot;, checking the &quot;Test mode&quot; checkbox and then restarting Qt Extended.</p>
+<p>Typically this setting needs to be changed only once and the action only needs to be repeated when the device is fully flashed with a new version.</p>
+<p>Note that a System test will fail when it can't connect to the device in which case it will give you a hint to activate the &quot;Test mode&quot;.</p>
+<p>See also <a href="#qtuitest-security">QtUiTest Security</a>.</p>
+<a name="creating-a-test"></a>
+<h3>Creating a Test</h3>
+<p>Each System Test is stored in its own file ending with <tt>.js</tt> and should have a project file <tt>qbuild.pro</tt> that tells the build system how to build the test.</p>
+<p>Within the test script, a <tt>testcase</tt> object is created containing several test functions. Within each test function, the <a href="#qtuitest-api-reference">QtUiTest API</a> scripting commands may be used, as well as standard commands provided by <a href="qtscript.html">QtScript</a>.</p>
+<p>Helper functions and global variables can be written outside of the testcase object.</p>
+<p>For example:</p>
+<pre>    testcase = {
+        testFunction1: function() {
+            startApplication(&quot;Dog Walker&quot;);
+            select(&quot;Walk the dog...&quot;, optionsMenu());
+            compare( getText(), &quot;Dog was walked.&quot; );
+        },
+
+        testFunction2: function() {
+            var i = 1;
+            helper(i);
+        }
+    }
+
+    function helper(num) {
+        verify( num &gt; 0 );
+        ...
+    }</pre>
+<p>Tests can be put anywhere in a directory tree but as a convention each test is stored in a subdirectory under the application or library that it is testing. When using qbuild as the build system this has the added advantage that 'qbuild test' and/or 'make test' will execute all tests for the library/application that is being developed.</p>
+<p>For example, the 'tests' directory structure for the Qtopia library is something like this:</p>
+<pre>        src/libraries/qtopia/tests/sys_contextkeymanager/qbuild.pro
+        src/libraries/qtopia/tests/sys_contextkeymanager/sys_contextkeymanager.js
+        src/libraries/qtopia/tests/tst_qcontent/qbuild.pro
+        src/libraries/qtopia/tests/tst_qcontent/tst_qcontent.cpp</pre>
+<p>In this example the Qtopia library is tested by two tests: a System test (sys_contextkeymanager) and a Unit test (tst_qcontent). The actual testcode is in the .js and .cpp files, and the qbuild.pro files are required by the build system.</p>
+<p>The project files for System tests are usually very simple. The qbuild.pro for sys_contextkeymanager has the following contents:</p>
+<pre>        CONFIG+=systemtest
+        TARGET=sys_contextkeymanager
+        SOURCES+=sys_contextkeymanager.js</pre>
+<p>Project files for Unit tests may have a few extra lines. For instance qbuild.pro for the tst_content Unit Test has the following content:</p>
+<pre>        TEMPLATE=app
+        CONFIG+=qtopia unittest
+        TARGET=tst_qcontent
+        HEADERS*=my_special_header.h
+        SOURCES*=tst_qcontent.cpp</pre>
+<p>Please refer to the <a href="qtestlib-manual.html">QTestLib</a> Manual for more detailed instructions regarding Unit test project files.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="writing-a-manual-system-test"></a>
+<h4>Writing a Manual System Test</h4>
+<p>Writing a Manual System test is typically the first step in many test automation efforts. Unless the test can be recorded and instantly results in a series of understandable steps that can be re-run immediately it is far better to first put the test steps on paper and run through the steps manually to check that the idea is executable (and repeatable) before time is invested in automating all steps.</p>
+<p>The downside about Manual tests is that the test is usually 'somewhere else', i.e&#x2e; in a text document or spreadsheet that isn't necessarily saved in the same version control system as the source code it tests, or in a format that can be easily merged by the version control system.</p>
+<p><a href="qtuitest.html">QtUiTest</a> integrates the Manual test process into the Automation process and makes it possible to seemlessly transition from a full Manual to a Semi-Automatic to a Full-Automatic test. All work is done in the same (ascii) text file, and thus the intermediate steps are all recorded in the version control system for easy retrieval, merging and tracking.</p>
+<p>A Manual test is written by using the prompt() command:</p>
+<pre>        my_manual_test: function()
+        {
+            prompt( &quot;* Do something\n&quot;+
+                    &quot;* Do something else\n&quot;+
+                    &quot;* Verify that the result is as expected&quot;);
+        }</pre>
+<p>When a System test is executed it can be a combination of fully automated and semi-automated test functions. The automated tests simply execute without user intervention and result in a PASS/FAIL/etc. A Manual test will be executed until a prompt is detected at which time a Dialog is shown on the Desktop (host) machine containing the specified prompt text. In the dialog, the stars (*) will be replaced with &quot;1:&quot;, &quot;2:&quot;, etc to indicate the steps that need to be taken in sequence. The advantage of using stars (*) in the code is that lines can be inserted/removed without having to renumber the remaining steps until the end of the prompt.</p>
+<p>The Dialog will also contain &quot;Pass&quot; and &quot;Fail&quot; buttons as well as a &quot;Record&quot; button that puts the test system into recording mode. The Pass and Fail buttons obviously must be used to indicate the result of the manual step.</p>
+<p>It is perfectly fine, and to be expected, that prompts() will be combined with automated steps. For instance, one could launch an application and then select a few menu options before arriving at the section of the test that requires manual intervention.</p>
+<p>For instance:</p>
+<pre>        startApplication(&quot;Dog Walker&quot;);
+        select(&quot;Walk the dog...&quot;, optionsMenu());
+        prompt( &quot;* Verify that the dog is having a good time&quot;);</pre>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="building-a-test"></a>
+<h3>Building a Test</h3>
+<p>A test can be 'build' by invoking <tt>qbuild</tt>, the new optimized build system for Qt Extended. For backwards compatibility <tt>make</tt> is also supported so, wherever this documentation tells you to use <tt>qbuild</tt>, you can also use <tt>make</tt>.</p>
+<p>The result of the build depends on whether the test is a Unit or System test:</p>
+<ul>
+<li>For a Unit test the source code will be compiled into a binary that, by default, is saved into the project build directory.</li>
+<li>For a System test the build simply generates a small executable wrapper script that can be called from the command line to run the test.</li>
+</ul>
+<p>After a successfull build the result for both Unit and System testing is an 'executable' that has the same name as the test (or actually what is defined as the TARGET in the qbuild.pro file) and that can be ran from the command line just like any other executable.</p>
+<p>For example:</p>
+<pre>        cd src/libraries/qtopia/tests/sys_contextkeymanager
+        qbuild
+        ./sys_contextkeymanager</pre>
+<p>Note that the system will always attempt to build a test if it hasn't been build yet, so building is in most cases an implicit step that is done automatically as part of the test execution.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="running-a-test"></a>
+<h3>Running a Test</h3>
+<p>System tests are executed by a <a href="qtuitest.html">QtUiTest</a> Script Execution engine:</p>
+<pre>        qsystemtestrunner &lt;scriptname&gt; &lt;options&gt;</pre>
+<p>which runs on the desktop machine (host environment).</p>
+<p>When a System test is 'build' a small wrapper script is created that will take care of calling the script runner script with the appropriate parameters, so generally speaking there will never be a need to call <tt>qsystemtestrunner</tt> directly. For example:</p>
+<pre>        cd sys_dogwalker
+        ./sys_dogwalker -foobar</pre>
+<p>will call <tt>qsystemtestrunner</tt> with <tt>sys_dogwalker</tt> and <tt>-foobar</tt> as a parameter.</p>
+<p>Alternatively tests can be executed from anywhere within the source tree, in which case all tests within scope are build and executed.</p>
+<pre>        cd src/libraries/qtopia
+        qbuild test</pre>
+<p>This mechanism has the added advantage that it will run multiple tests (both System and Unit tests) with one command.</p>
+<a name="running-a-test-with-additional-command-line-parameters"></a>
+<h4>Running a Test with additional command line parameters</h4>
+<p>When running a System Test, the test will attempt to either run a new instance of Qt Extended, or connect to an existing instance. This behaviour and other system test specific behaviour can be controlled using the following command-line arguments:</p>
+<ul>
+<li><tt>-aut</tt> <i>command</i> <br /> Specify the command used to launch Qt Extended (the System Under Test). If omitted, an instance of Qt Extended must already be running.</li>
+<li><tt>-authost</tt> <i>hostname</i> <br /> Specify the hostname or IP address used to connect to Qt Extended. If omitted, defaults to 127.0&#x2e;0&#x2e;1 (the local host). By omitting the <tt>-aut</tt> option, and providing the <tt>-authost</tt> option, it is possible to run a system test against an instance of Qt Extended running on any network-accessible device, including a device such as the Greenphone.</li>
+<li><tt>-auto</tt> <br /> Causes any test functions which have manual verification steps to be skipped.</li>
+<li><tt>-keepaut</tt> <br /> Do not exit Qt Extended when the test is finished. By default, if the system test started Qt Extended, it will exit Qt Extended when the test finishes. If the system test didn't start Qt Extended, this option is ignored.</li>
+<li><tt>-noaut</tt> <br /> Run the test without any connected instance of Qt Extended. Useful for completely manual tests.</li>
+<li><tt>-silentaut</tt> <br /> When launching Qt Extended, hide its output (standard output and standard error). By default, Qt Extended's output is added to test logs. If the system test didn't start Qt Extended, this option is ignored.</li>
+<li><tt>-data</tt> <br /> Specify the location of the non-volatile test data. Defaults to the <tt>testdata</tt> subdirectory of the directory containing the test script.</li>
+<li><tt>-learn</tt> <br /> Enables learn mode. All new or changed <i>learnable</i> test data is added to the non-volatile test data following user verification. Refer to the <a href="qsystemtest.html">QSystemTest</a> documention for more information on <a href="#learn-mode">learn mode</a>.</li>
+<li><tt>-learn-all</tt> <br /> Enables learn all mode. All <i>learnable</i> test data (regardless of whether it differs from the reference data) is added to the non-volatile test data following user verification. Refer to the <a href="qsystemtest.html">QSystemTest</a> documention for more information on <a href="#learn-mode">learn mode</a>.</li>
+</ul>
+<p>Example, running the <tt>sys_dogwalker.js</tt> test against an already running Qt Extended instance on the local machine:</p>
+<pre>        cd sys_dogwalker
+        ./sys_dogwalker</pre>
+<p>Example, running the <tt>sys_dogwalker.js</tt> test against an existing Qt Extended instance on a device located at 10.10.10.20:</p>
+<pre>        cd sys_dogwalker
+        ./sys_dogwalker -authost 10.10.10.20</pre>
+<p>Example, running the <tt>walking_the_dog</tt> testfunction in <tt>sys_dogwalker.js</tt>, instructing the test to learn new and changed data:</p>
+<pre>        cd sys_dogwalker
+        ./sys_dogwalker -authost 10.10.10.20 -learn walking_the_dog</pre>
+<p>When running tests using the alternative <tt>make test</tt> or <tt>qbuild test</tt> call conventions, it is also possible to add additional parameters to the command. But because the parameters need to be passed up the chain to the actual script a small deviation to the syntax is required, and all parameters must be assigned to <tt>ARGS</tt> as a double quoted string:</p>
+<pre>        cd sys_dogwalker
+        &lt;build_dir&gt;/bin/qbuild test ARGS=&quot;-authost 10.10.10.20 -learn walking_the_dog&quot;</pre>
+<p>For a full list of possible command line options please run a test with the <tt>-help</tt> command, e.g&#x2e;</p>
+<pre>        cd sys_dogwalker
+        ./sys_dogwalker -help</pre>
+<p>or alternatively</p>
+<pre>        cd sys_dogwalker
+        &lt;build_dir&gt;/bin/qbuild test ARGS=&quot;-help&quot;</pre>
+<p>Note that the <tt>qbuild test</tt> syntax allows to run multiple tests in one go, e.g&#x2e;</p>
+<pre>        cd libraries/qtopia
+        &lt;build_dir&gt;/bin/qbuild test ARGS=&quot;-authost 10.10.10.20 -learn&quot;</pre>
+<p>will run all available tests for the <tt>qtopia</tt> library on a device with IP address 10.10.10.20 and it will learn all new and changed testdata.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="running-tests-in-a-continuous-integration-system"></a>
+<h4>Running tests in a Continuous Integration System</h4>
+<p><a href="qtuitest.html">QtUiTest</a> tests can be executed from the command line of a desktop (Host) machine and as such are perfectly suited to be executed in Continuous Integration Test Systems. Testdata, as well as binaries, that are required for the test-execution will be installed on the fly on a device when required. The output format of the test, the testresults, can be printed to the screen or saved into a file in a number of formats (such as XML) to allow easy post processing by test-reporting and defect-tracking systems.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="qtuitest-tutorial"></a>
+<h3>QtUiTest Tutorial</h3>
+<p>Please refer to the <a href="qtuitest-tutorial.html">QtUiTest Tutorial</a> for a detailed example about writing Qt Extended System tests.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="qtuitest-api-overview"></a>
+<h2>QtUiTest API Overview</h2>
+<p>To write a System Test, create a new file containing a test script, which defines a &quot;testcase&quot; object with one or more test functions.</p>
+<p>For example:</p>
+<pre>            testcase = {
+                testFunction1: function() {
+                    ...
+                },
+                testFunction2: function() {
+                    ...
+                }
+            }</pre>
+<p>The testfunctions can be written with a combination of standard QtScript and special <a href="qtuitest.html">QtUiTest</a> commands. In most cases what will be used from QtScript are a few constructs such as a <tt>for ... loop</tt>, <tt>if ... then .. else</tt> and variable assignments. The remaining 99% of the code will most likely be composed of the <a href="qtuitest.html">QtUiTest</a> commands which are grouped below.</p>
+<ul>
+<li><a href="#system-architecture">System Architecture</a> - briefly describes the architecture of <a href="qtuitest.html">QtUiTest</a>.</li>
+<li><a href="#query-paths">Query Paths</a> - specifying widgets and objects to access in Qt Extended.</li>
+<li><a href="#querying-objects">Querying Objects</a> - getting information from any widgets or object within Qt Extended.</li>
+<li><a href="#learn-mode">Learn Mode</a> - dynamically generating test data.</li>
+<li><a href="#application-management">Application Management</a> - starting and stopping applications within Qt Extended, or restarting Qt Extended itself.</li>
+<li><a href="#file-management">File Management</a> - accessing files on the test system.</li>
+<li><a href="#time-management">Time Management</a> - functionality to manage the system time on the device.</li>
+<li><a href="#keypad-simulation">Keypad Simulation</a> - simulating entering text, selection of items from the options menu or other menus/lists, and generation of arbitrary keypad events.</li>
+<li><a href="#mouse-touchscreen-simulation">Mouse / Touchscreen Simulation</a> - simulating user interaction via a mouse or touchscreen.</li>
+<li><a href="#telephony-simulation">Telephony Simulation</a> - simulating phone network events.</li>
+<li><a href="#other">Other</a> - some miscellaneous functionality, including Qt Extended specifics such as ValueSpace and Qt Extended IPC.</li>
+</ul>
+<a name="system-architecture"></a>
+<h3>System Architecture</h3>
+<p>The <a href="qtuitest.html">QtUiTest</a> framework is designed around a script execution engine that is executed on the desktop (host machine) and a set of <a href="qtuitest.html">QtUiTest</a> plugins that are loaded by the System Under Test (SUT). The plugins are running in the SUT process space, i.e&#x2e; may be running on a device, and communicate with the System Test script execution engine via a socket based communication protocol.</p>
+<p>Everything that a test can do is a query that is send to the SUT, and the script runner will be blocked until a positive or negative reply is received from the SUT. The code that runs on the device side is kept as minimalistic as possible and is written with performance (both in terms of speed as well as size) in mind.</p>
+<p>The set of queries that can be send to the SUT are designed in such a way that the overhead introduced by <a href="qtuitest.html">QtUiTest</a> is minimal but at the same time, does not limit the posibilities of a tester. In other words, things that will be done a lot require only a single turnaround and are completely handled by the <a href="qtuitest.html">QtUiTest</a> plugins whereas other, less used, features can be implemented (for instance in a helper script) by using more low level queries.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="query-paths"></a>
+<h3>Query Paths</h3>
+<p>Many of the QUiTest queries use so called 'query paths' to identify an application and/or widget. A complete queryPath specifies both the application and the object to access and adheres to the format: <tt>application:object</tt>.</p>
+<ul>
+<li>The <tt>application</tt> part identifies which application the object belongs to. This will generally be <tt>appname</tt> (where <tt>appname</tt> is the binary name of the application).<p>In cases where the System Under Test consists of a system of multiple applications with one application (the server) managing the behaviour of the other applications <a href="qtuitest.html">QtUiTest</a> will connect to the server and will communicate to the other applications via the server. In such cases the server would be accessible via e.g&#x2e; <tt>qpe:</tt> (where <tt>qpe</tt> is the name of the server) and <tt>qpe/addressbook:</tt> would be used to send a query to the addressbook binary that is controlled by the server.</p>
+<p>The application part is optional. If it isn't specified the query will automatically be sent to the current application. For a single application solution, such as a Qt desktop application, this will always be the one and only application under test, and for multi application systems, such as Qt Extended, this will be the application that currently has input focus.</p>
+</li>
+<li>The <tt>object</tt> part describes the Object on which the query needs to be performed. In most cases the object will be something like a <a href="qlineedit.html">QLineEdit</a>, <a href="qtextedit.html">QTextEdit</a>, <a href="porting4.html">QButton</a>, etc. (but you'll almost never have to specify the class type). The object part of the queryPath can be:<ul>
+<li>a Label</li>
+<li>a Signature</li>
+</ul>
+</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="labels"></a>
+<h4>Labels</h4>
+<p>A <b>Label</b> is a (usually static) text as can be seen on the screen and that is associated with an editable field. The Label and Edit field form a buddy pair and clicking on the Label will set the input focus on the Edit field. The buddy relationship can be hardcoded but from User perspective the expectancy usually is that a Label is shown just in front of the editable field or, in exceptional cases, just above the edit field (in a Left-to-Right language). Sometimes the Label is a buddy of itself, such as is the case for i.e&#x2e; a Radio Button in which case clicking on the Button text will set the input focus to the Radio button and may select/de-select the button.</p>
+<p>For example, the code below will enter the text &quot;dog walker&quot; in a text field next to a Label with text &quot;Occupation&quot;.</p>
+<pre>            enter( &quot;dog walker&quot;, &quot;Occupation&quot; );</pre>
+<p>In words the example says: &quot;enter the text 'dog walker' into a field labeled 'Occupation'.</p>
+<p>A special case of a Label is an empty string. This will resolve to the widget that currently has focus, or (for touchscreen devices) the first field in the dialog. Note that for tests that should run both on keyboard and touchscreen devices it may be risky to rely on this feature. Always explicitely specifying a Label is the most safe and portable thing to do.</p>
+<p>Using a Label to identify a field is the preferred mechanism for identifying fields. It is reliable, easy to write, easy to understand and easy to debug.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="signatures"></a>
+<h4>Signatures</h4>
+<p>In exceptional cases where multiple widgets have the same label text, or a widget has no Label the Labeltext form of the query path is ambiguous and an explicit <b>Signature</b> is required to identify the widget.</p>
+<p>A Signature is a full description of the Object/Widget and all its parents and is organised much like a directory path and may be implemented as a string of class names followed by a tag that uniquely identifies the object instances.</p>
+<p>A special function is available that can return a signature to access a 'difficult' object field.</p>
+<pre>            enter( &quot;dog walker&quot;, signature(&quot;Label&quot;,1));</pre>
+<p>The signature() function will return the 1st editable field BELOW the field that is associated with label &quot;Label&quot; and can be used in cases where the Label field is visible and associated with an editable field but the editable field just below (or above) is not paired to a buddy label.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="learn-mode"></a>
+<h3>Learn Mode</h3>
+<p>Some testcases require the existence of non-volatile test data, such as screen snapshots. To simplify the process of data gathering, the test system supports the concept of a learn mode. When a test is run in learn mode, certain actions will result in the generation of test data, which will be presented to the user to manually verify once, then stored for use in subsequent test runs. A system test is run in learn mode by supplying the <tt>-learn</tt> or <tt>-learn-all</tt> command line options.</p>
+<p>The system test framework will store generated test data in the <tt>testdata</tt> subdirectory of the directory containing the test script.</p>
+<p>NOTE: It is up to the tester to ensure that new learned elements are added to a version control system.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="application-management"></a>
+<h3>Application Management</h3>
+<p>Within a system test it is often necessary to start and close applications. The system test framework provides several functions for this purpose:</p>
+<ul>
+<li><a href="qsystemtest.html#startApplication">startApplication()</a>, <a href="qsystemtest.html#select">select()</a> - start an application.</li>
+<li><a href="qtopiasystemtest.html#gotoHome">gotoHome()</a>, <a href="qtopiasystemtest.html#backgroundAndGotoHome">backgroundAndGotoHome()</a> - either close or background all apps and return to the home screen.</li>
+<li><a href="qtopiasystemtest.html#restartQtopia">restartQtopia()</a>, <a href="qtopiasystemtest.html#reboot">reboot()</a> - restart Qt Extended, or reboot the device on which Qt Extended is running.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="file-management"></a>
+<h3>File Management</h3>
+<p>It is possible to access files on the System Under Test (even if this is another device) from within a system test.</p>
+<ul>
+<li><a href="qsystemtest.html#putFile">putFile()</a>, <a href="qsystemtest.html#putData">putData()</a> - copy data to the test system.</li>
+<li><a href="qsystemtest.html#deletePath">deletePath()</a> - delete files from the test system.</li>
+<li><a href="qsystemtest.html#getDirectoryEntries">getDirectoryEntries()</a> - read the contents of a directory on the test system.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="time-management"></a>
+<h3>Time Management</h3>
+<p>A frequently used mechanism when performing system tests is to modify the current date and/or time of the System Under Test (SUT) to simulate or test certain behavior. <a href="qtuitest.html">QtUiTest</a> helps out with a number of functions that are targeted towards manipulating the Time.</p>
+<p>A special case is setting the date/time in a virtual environment. In these situations the SUT usually runs as a 'normal' user in a virual environment on a desktop machine and as such might not have root permission to alter the date and time. <a href="qtuitest.html">QtUiTest</a> resolves this problem by 'overriding' the standard setsystemtime calls so that the system time is altered for the SUT but not for the desktop machine itself.</p>
+<p>The same mechanism is also used in performance testing, hence starting a performanc test, then changing the system time and then stopping the performance test will still result in an accurate measurement of the elapsed time.</p>
+<ul>
+<li><a href="qsystemtest.html#getDateTime">getDateTime()</a>, <a href="qsystemtest.html#setDateTime">setDateTime()</a> - set and get the date and time.</li>
+<li><a href="qsystemtest.html#synchronizeDateTime">synchronizeDateTime()</a>, <a href="qsystemtest.html#setTimeSynchronization">setTimeSynchronization()</a> - functions to alter the time synchronization mode.</li>
+<li><a href="qsystemtest.html#setDateFormat">setDateFormat()</a>, <a href="qsystemtest.html#dateFormat">dateFormat()</a>, <a href="qsystemtest.html#set12HourTimeFormat">set12HourTimeFormat()</a>, <a href="qsystemtest.html#timeFormat">timeFormat()</a> - set and get the currently used date and time formats.</li>
+<li><a href="qsystemtest.html#setTimeZone">setTimeZone()</a>, <a href="qsystemtest.html#timeZone">timeZone()</a> - set and get the used time zone.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="querying-objects"></a>
+<h3>Querying Objects</h3>
+<p>The system test framework provides powerful methods of obtaining information on particular objects and widgets in the system.</p>
+<ul>
+<li><a href="qsystemtest.html#isVisible">isVisible()</a>, <a href="qsystemtest.html#isChecked">isChecked()</a>, <a href="qsystemtest.html#isEnabled">isEnabled()</a> - retrieve simple information from widgets.</li>
+<li><a href="qsystemtest.html#getText">getText()</a>, <a href="qsystemtest.html#getSelectedText">getSelectedText()</a> - retrieve a textual representation of widgets.</li>
+<li><a href="qsystemtest.html#getProperty">getProperty()</a>, <a href="qsystemtest.html#setProperty">setProperty()</a>, <a href="qsystemtest.html#invokeMethod">invokeMethod()</a> - access Qt properties, signals and slots on any <a href="qobject.html">QObject</a>.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="text-entry-and-navigation"></a>
+<h3>Text Entry and Navigation</h3>
+<p>The system test framework provides several ways of entering text into widgets and for navigating through applications.</p>
+<ul>
+<li><a href="qsystemtest.html#enter">enter()</a> - navigate to a widget and enter any text.</li>
+<li><a href="qsystemtest.html#select">select()</a> - choose a particular item from a list, combo box, or the options menu or navigate to a particular widget or tab.</li>
+</ul>
+<p>These functions are input method independant and will have the same syntax for both Keyboard and Mouse/Touchscreen based devices and are therefore the preferred commands to use in tests.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="keypad-simulation"></a>
+<h3>Keypad Simulation</h3>
+<p>The system test framework provides several ways of generating arbitrary key events.</p>
+<ul>
+<li><a href="qsystemtest.html#keyPress">keyPress()</a>, <a href="qsystemtest.html#keyRelease">keyRelease()</a>, <a href="qsystemtest.html#keyRelease">keyRelease()</a>, <a href="qsystemtest.html#keyClickHold">keyClickHold()</a> - press/release/click/hold any key.</li>
+</ul>
+<p>Note that Keypad simulation is a less preferred technique that should be used in exceptional cases only since it makes the test specific for keyboard based devices. Other functions such as select() are the preferred mechanism to write tests because these will work both for Keyboard and Mouse/Touchscreen based devices.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="mouse-touchscreen-simulation"></a>
+<h3>Mouse / Touchscreen Simulation</h3>
+<p>The system test framework provides methods to simulate input from a mouse or touchscreen.</p>
+<ul>
+<li><a href="qsystemtest.html#mousePress">mousePress()</a>, <a href="qsystemtest.html#mouseRelease">mouseRelease()</a>, <a href="qsystemtest.html#mouseClick">mouseClick()</a>, <a href="qsystemtest.html#mouseClickHold">mouseClickHold()</a> - press/release/click with mouse or touchscreen.</li>
+</ul>
+<p>Note that Mouse simulation is a less preferred technique that should be used in exceptional cases only since it makes the test specific for mouse/touchscreen based devices. Other functions such as select() are the preferred machanism to write tests because these will work both for Keyboard and Mouse/Touchscreen based devices.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="telephony-simulation"></a>
+<h3>Telephony Simulation</h3>
+<p>The system test framework can be used to provide a simulated AT modem and hence simulate incoming phone calls.</p>
+<ul>
+<li><a href="qtopiasystemtest.html#testModem">testModem()</a> - create a <a href="qtopiasystemtestmodem.html">QtopiaSystemTestModem</a> object and force the System Under Test to use it as its modem.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="other"></a>
+<h3>Other</h3>
+<p>Some functionality does not fall into the aforementioned categories:</p>
+<ul>
+<li><a href="qsystemtest.html#setSetting">setSetting()</a>, <a href="qsystemtest.html#getSetting">getSetting()</a> - access any settings stored within <a href="qsettings.html">QSettings</a> objects.</li>
+<li><a href="qtopiasystemtest.html#ipcSend">ipcSend()</a> - send Inter Process Communication messages between applications that are running in the SUT.</li>
+</ul>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="extending-qtuitest-for-custom-widgets"></a>
+<h2>Extending QtUiTest for Custom Widgets</h2>
+<p><a href="qtuitest.html">QtUiTest</a>'s high-level commands require knowledge of the widgets they interact with. For example, <a href="qsystemtest.html#select">select()</a> must know how to select items from both a combobox and a list view.</p>
+<p>When testing an application which uses custom widgets, some additional steps may be required in order to use high-level <a href="qtuitest.html">QtUiTest</a> commands. The logic for interacting with custom widgets must be implemented either in the application under test or in a plugin.</p>
+<p>See <a href="qtuitest-plugins.html">Creating a QtUiTest Test Widget</a> for more details.</p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<a name="qtuitest-api-reference"></a>
+<h2>QtUiTest API Reference</h2>
+<p>For a complete description of the <a href="qtuitest.html">QtUiTest</a> API please refer to the provided documentation:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><a href="qsystemtest.html">QSystemTest API</a></td><td>a complete reference of commands for Qt applications.</td></tr>
+<tr valign="top" class="even"><td><a href="qtopiasystemtest.html">QtopiaSystemTest API</a></td><td>a complete reference of commands for Qt Extended applications.</td></tr>
+<tr valign="top" class="odd"><td><a href="qtopiasystemtestmodem.html">QtopiaSystemTestModem</a></td><td>an object that can be used to simulate an AT modem.</td></tr>
+</table></p>
+<p><a href="#introduction">Back to QtUiTest Manual</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,5 @@
+MODULE_NAME=project6
+
+DEPEND.TYPE=DEPENDS PERSISTED
+DEPEND.EVAL="message(Hi from project6)"
+

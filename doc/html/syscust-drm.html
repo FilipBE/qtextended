@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>DRM Agent Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">DRM Agent Integration<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#drm-agent-integration">DRM Agent Integration</a></li>
+<ul><li><a href="#license-management-and-settings-application">License Management and Settings Application</a></li>
+<li><a href="#drm-services">DRM Services</a></li>
+<li><a href="#installation">Installation</a></li>
+</ul>
+<li><a href="#beep-science-oma-drm-agent">Beep Science OMA DRM Agent</a></li>
+</ul>
+<a name="drm-agent-integration"></a>
+<h2>DRM Agent Integration</h2>
+<p>Qt Extended applications access DRM content through the use of plug-ins to the Qt Extended document system. These plug-ins implement the <a href="qdrmcontentplugin.html">QDrmContentPlugin</a> interface which is used to retrieve content permissions and meta-data, trigger the activation of content with invalid permissions, read unencrypted data from protected files, and update license constraints.</p>
+<p>A complete DRM agent integration is typically composed of three parts, a plug-in to the content system, a license and settings management application, and a Qt Extended service. The <a href="qdrmagentplugin.html">QDrmAgentPlugin</a> interface allows all three components to be delivered in a single plug-in library.</p>
+<a name="license-management-and-settings-application"></a>
+<h3>License Management and Settings Application</h3>
+<p>Qt Extended includes the 'Licenses' application as a common utility for DRM agents to host license management and settings widgets. It is composed of a single <a href="qtabwidget.html">QTabWidget</a> in which each tab contains a different widget from the set created by a calls to <a href="qdrmagentplugin.html#createManagerWidgets">QDrmAgentPlugin::createManagerWidgets</a>() for each loaded agent plug-in. Widgets are grouped according to the agent which created them and in the order returned.</p>
+<p>The source for the Licenses application is located at:</p>
+<pre>    src/settings/drmbrowser/</pre>
+<a name="drm-services"></a>
+<h3>DRM Services</h3>
+<p>Qt Extended utilizes <a href="datasharing.html">Qt Extended Data Sharing (QDS)</a> services to process data received through WAP Push, web download and MMS. Agents that wish to handle data received through these channels should provide a QDS service for each mime type handled. Data received through WAP push will be delivered to a service with the &quot;push&quot; attribute and a request data type matching the mime type of the data, web browsers and MMS clients will search for services with the &quot;handle&quot; attribute and possibly also the &quot;drm&quot; attribute. Services with the &quot;handle&quot; attribute (but not the &quot;push&quot; attribute) may also specify a response data type allowing conversion of some data types to a device localized format.</p>
+<p>The QDS definition for a service which installs an OMA DRM v1 XML rights objects may be:</p>
+<pre>    [handleXmlRightsObject]
+    RequestDataType=application/vnd.oma.drm.rights+xml
+    ResponseDataType=
+    Attributes=&quot;drm;handle;push&quot;
+    Description[]=Installs an OMA DRM v1 XML rights object.</pre>
+<p>A DRM service may also be used to perform activation actions requested of a DRM content plug-in. A DRM service may be hosted in an application with higher privileges than that of the application requesting the activation making it possible to successfully request an activation which requires a rights download from an application without network privileges for example. Also because the activation is performed in a separate process it is possible to use blocking operations without causing the user interface of the application requesting the activation to become unresponsive.</p>
+<p>Services provided by a DRM agent plug-in are hosted in the Licenses application and should have &quot;drmbrowser&quot; as the service application.</p>
+<a name="installation"></a>
+<h3>Installation</h3>
+<p>Agents that don't require a license management application or service, or wish to implement that functionality in their own application should create a plug-in library for a <a href="qdrmcontentplugin.html">QDrmContentPlugin</a> and install it to:</p>
+<pre>    $QPEDIR/plugins/drmcontent/</pre>
+<p>Agents that wish to utilize the common license management and settings application or expose a service in the DRM server process should should create a plug-in library for a <a href="qdrmagentplugin.html">QDrmAgentPlugin</a> and install it to:</p>
+<pre>    $QPEDIR/plugins/drmagent/</pre>
+<a name="beep-science-oma-drm-agent"></a>
+<h2>Beep Science OMA DRM Agent</h2>
+<p>Qt Extended includes a reference integration of the Beep Science OMA DRM agent version 2.4&#x2e;</p>
+<p>The Beep Science DRM agent plug-in can be included in a Qt Extended build by passing the -drm switch to configure or excluded with the -no-drm switch. The -drm switch is the default option for desktop builds of Qt Extended and -no-drm is the default for device builds.</p>
+<p>When Qt Extended is configured with the -drm switch it will attempt to build a small test program that links against the Beep Science DRM agent libraries to determine if the DRM agent plug-in can be built. The default installation path for agent headers is <tt>/usr/local/include/bscidrm2.4</tt> and for libraries <tt>/usr/local/lib/bscidrm2.4</tt>, if the agent is not installed to these locations or other standard include and library paths then the installation paths will need to passed to configure with the -I and -L switches. The default paths are absolute so if the libraries are not in the standard library paths of the tool chain then then the path to the library must be passed to configure. The library binaries are copied into the Qt Extended image so it is not necessary to have them installed in the rootfs of the device.</p>
+<p>Configure for DRM enabled desktop debug build with the agent headers and libraries installed in the default paths:</p>
+<p><tt>$QTOPIA_DEPOT_PATH/configure -debug -edition phone</tt></p>
+<p>Configure for DRM enabled greenphone build with the agent headers installed in the default path, and libraries in <tt>/opt/toolchains/greenphone/gcc-4.1.1-glibc-2.3.6/arm-linux/arm-linux/usr/local/lib/bscidrm2.4</tt></p>
+<p><tt>$QTOPIA_DEPOT_PATH/configure -device greenphone -drm -L/opt/toolchains/greenphone/gcc-4.1.1-glibc-2.3.6/arm-linux/arm-linux/usr/local/lib/bscidrm2.4</tt></p>
+<p>The directory in which the DRM agent's rights database and logs are stored on a device is obtained from the value of the <tt>BSCI_DATABASE_PATH</tt> which should be defined in the device's custom.h file. If <tt>BSCI_DATABASE_PATH</tt> is not defined then the agent will attempt to use the value of the environment variable <tt>BSCI_DATABASE_PATH</tt>, it that also fails then the path defaults to <tt>$HOME/Applications/Qtopia/DRM</tt>.</p>
+<p>The DRM agent database needs to be initialized with a device key and certificate chain in order to authenticate the device during ROAP transactions. When the database is constructed Qt Extended will import the key file <tt>BSCI_Device_1033.pem.key</tt> and certificate chain file BSCI_DeviceChain.pem.crt from the <tt>&lt;Qt Extended Runtime Prefix&gt;/etc/bscidrm</tt> directory. These files and the root certificate chain <tt>bscidrm2.crt</tt> are not included in a Qt Extended distribution and need to be added to the source tree in <tt>etc/bscidrm</tt>. The import step can be avoided by pre-installing a database on the device.</p>
+<p>The Beep Science DRM agent libraries can be acquired by contacting <a href="http://www.beepscience.com">Beep Science</a>.</p>
+<p>The source for the Beep Science DRM agent plug-in is located in:</p>
+<pre>    src/plugins/drmagent/bscidrmagent</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

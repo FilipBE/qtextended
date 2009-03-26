@@ -1,0 +1,469 @@
+#!/usr/bin/perl
+
+=pod
+
+For proper image installation you MUST do something like this:
+
+    pics.files=mypics/*
+    pics.path=/pics/myapp
+    pics.hint=pics
+    INSTALLS+=pics
+
+Given the above, the logic behind installing pictures is as follows:
+
+- Languages are handled by having an i18n directory.
+  If you want to translate an image you MUST NOT have an image with the same name
+  outside of the i18n directory.
+
+  eg.
+
+    mypics/foo.png
+    mypics/i18n/de/foo.png   <-- This file will NEVER be used
+
+  The correct way to handle translatable images is to put the default version in i18n/en_US.
+  The default will be used when a file for the selected language cannot be found.
+  
+  eg.
+
+    mypics/i18n/de/foo.png
+    mypics/i18n/en_US/foo.png   <-- This will be used for languages other than 'de'.
+
+- Icons must be in a subdirectory called icons/<size>.
+  The size can either be <width>x<height> or scalable.
+  SVG icons should be placed in the scalable directory.
+  Icons in other directories should be properly scaled.
+  You can have multiple sizes available. Any icon not found for the selected
+  size will be created by scaling a different size.
+
+  eg.
+
+    mypics/icons/14x14/foo.png
+    mypics/icons/16x16/foo.png
+    mypics/icons/16x16/bar.png
+
+    If the selected size is 14x14 then 16x16/bar.png will be scaled down to 14x14.
+
+  If a scalable icon exists, it will be used in preference to a sized icon.
+
+  eg.
+
+    mypics/icons/scalable/foo.svg
+    mypics/icons/14x14/foo.png   <-- This file will NOT be installed
+
+- Icons can be translated too. The i18n direcory MUST be placed inside the icons directory.
+  You CANNOT put an icons directory inside an i18n directory.
+  Note that all of the restrictions relating to i18n and icons apply.
+
+  eg.
+
+    mypics/icon/14x14/i18n/en_US/foo.png
+    mypics/icon/14x14/i18n/de/foo.png
+
+- Files that end in .ai are never installed.
+  These are Adobe Illustrator files that serve as the source material for the .svg files.
+
+- Files that end in .xcf are never installed.
+  These are GIMP files that serve as the source material for .png files.
+
+- If a file exists with multiple extensions, only 1 file will get installed.
+  The priority order for extensions is configurable.
+  
+  eg.
+  
+    configure -image-extension-order png,xpm
+
+  Note that .svg files ALWAYS have the highest priority.
+
+- Some files will be ignored if a .svg file exists.
+
+  eg.
+
+    mypics/foo.svg
+    mypics/foo_16.png   <-- This file will be ignored
+    mypics/foo_48.png   <-- This file will be ignored
+
+=cut
+
+use strict;
+use warnings;
+
+use File::Glob;
+use File::Copy;
+use File::Path;
+use Cwd;
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::File;
+use Qtopia::Opt;
+use Carp;
+#perl2exe_include Carp::Heavy
+$Carp::CarpLevel = 1;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/build/bin", $ARGV[0]);
+}
+
+Qtopia::Opt::read_config_cache();
+
+use constant OUTPUT => 1;
+use constant DEBUG => 0;
+
+my @SIZEDIRS = ();
+
+# Turn "en_US ja" into a hash map with each language as a key (easy lookup later)
+my %languages = ();
+defined($_ = shift(@ARGV)) or usage();
+s/^\s+//;
+s/\s+$//;
+map { $languages{$_}++ } split;
+# We MUST install en_US resources because they are used as a fallback
+$languages{"en_US"}++;
+# Handle non-underscored languages too (eg. 'en')
+for my $lang ( keys %languages ) {
+    if ( $lang =~ s/_.*// ) {
+        $languages{$lang}++;
+    }
+}
+
+$_ = shift(@ARGV) || usage();
+my @image_extension_order = ( "svg", split(/ /, $_) );
+
+while ($ARGV[0] =~ /^(\d+)(?:x(\d+))?$/ ) {
+    push @SIZEDIRS, $1."x".($2||$1);
+    shift @ARGV;
+}
+
+my $srcdir = shift(@ARGV) || usage();
+
+my $picsSource = undef;
+my $picsDest = shift(@ARGV) || usage();
+$picsDest =~ s,\\,/,g;
+
+if ( ! @ARGV ) {
+    usage();
+}
+
+my %pngscale_files;
+my @svgtopicture_files;
+processFiles( @ARGV );
+for my $key ( keys(%pngscale_files) ) {
+    my $data = $pngscale_files{$key};
+    my @list = @$data;
+    system("$SDKROOT/bin/pngscale", split(/\s+/, $key), @list) == 0 or exit 1;
+}
+if ( @svgtopicture_files ) {
+    system("$SDKROOT/bin/svgtopicture", @svgtopicture_files) == 0 or exit 1;
+}
+
+exit 0;
+
+
+sub usage
+{
+    print "Usage:  ".script_name($0)." \"languages\" \"image extension order\" <size1> ... [sizen] <source dir> <pics dest> <pics>\n";
+    exit 2;
+}
+
+sub processFiles
+{
+    my @files = @_;
+    foreach my $file ( @files ) {
+	$file =~ s,\\,/,g;
+        if ( $shadow && $file !~ /^\// ) {
+            $file = "$srcdir/$file";
+        }
+	# Windows doesn't glob. Lets try this again with a glob.
+	if ( $file =~ /\*/ ) {
+	    processFiles(glob($file));
+	    return;
+	}
+        my $filename = basename($file);
+        my ( $name, $ext ) = ( $filename =~ /(.+)\.(.+)/ );
+        if ( $ext ) {
+            # skip .ai files because they're huge
+            if ( $ext eq "ai" ) {
+                OUTPUT and print "skipping $file because it's a .ai file\n";
+                next;
+            }
+            # skip _16 and _48 files if there's a .svg file
+            if ( $name =~ /_(16|48)$/ ) {
+                $_ = $name;
+                s/_(16|48)$//;
+                my $svgfile = dirname($file)."/$_.svg";
+                if ( -f "$svgfile" ) {
+                    OUTPUT and print "skipping file $file because $_.svg exists\n";
+                    next;
+                }
+            }
+            # we only want to install 1 version of a file
+            my $skip = 0;
+            my $because = "";
+            my @versions = glob(dirname($file)."/$name.*");
+            my @all_extensions = @image_extension_order;
+            for my $version ( @versions ) {
+                my $filename = basename($version);
+                my ( $vname, $vext ) = ( $filename =~ /(.+)\.(.+)/ );
+                # skip files with no extension
+                next if ( ! $vext );
+                push(@all_extensions, $vext);
+            }
+            # Now we know all the extensions (in order).
+            # Score our current file to see if it's higher than anything in the glob.
+            my $score = scalar(@all_extensions);
+            #print "The score for $file is $score\n";
+            for ( my $i = 0; $i < $score; $i++ ) {
+                $score = $i if ( $all_extensions[$i] eq $ext );
+            }
+            for my $version ( @versions ) {
+                my $filename = basename($version);
+                my ( $vname, $vext ) = ( $filename =~ /(.+)\.(.+)/ );
+                for ( my $i = 0; $i < $score; $i++ ) {
+                    if ( $all_extensions[$i] eq $vext ) {
+                        $skip = 1;
+                        $because = $vext;
+                    }
+                }
+            }
+            if ( $skip ) {
+                OUTPUT and print "skipping file $file because $name.$because exists\n";
+                next;
+            }
+        }
+	DEBUG and print "processing file $file\n";
+	( $picsSource ) = $file =~ /(.*)\/.*/;
+        my $oldpwd = getcwd();
+        chdir $picsSource;
+        my $prevPicsSource = $picsSource;
+        $picsSource = getcwd();
+        chdir $oldpwd;
+	DEBUG and print "picsSource = $picsSource\n";
+	my $srcfile = $file;
+        $srcfile =~ s,^\Q$prevPicsSource\E,$picsSource,;
+	DEBUG and print "picsDest = $picsDest\n";
+	my $dest = "$picsDest/$srcfile";
+	DEBUG and print "dest = $dest\n";
+	if ( $picsSource ) {
+	    $dest =~ s,(.+)$picsSource/,$1,;
+        }
+	DEBUG and print "after munging dest = $dest\n";
+	installpic($srcfile, $dest);
+    }
+}
+
+sub installpic
+{
+    my ( $srcfile, $dest ) = @_;
+
+    if ( ! -d $srcfile ) {
+        # skip .ai files because they're huge
+        return if ( $srcfile =~ /\.ai$/ );
+	DEBUG and print "installing picture $srcfile\n";
+	if ( ! -d dirname($dest) ) {
+	    OUTPUT and print "mkdir ".dirname($dest)."\n";
+	    mkpath(dirname($dest));
+	}
+        if ( opt("svg_format") eq "pic" ) {
+            $dest =~ s/\.svg$/\.pic/;
+        }
+	if ( needCopy($srcfile, $dest) ) {
+            if ( opt("svg_format") eq "pic" && $srcfile =~ /\.svg$/ ) {
+                OUTPUT and print "svgtopicture $srcfile $dest\n";
+                push(@svgtopicture_files, $srcfile, $dest);
+            } else {
+                OUTPUT and print "install -c $srcfile $dest\n";
+                copy($srcfile, $dest);
+            }
+	}
+	return;
+    }
+
+    if ( -l $srcfile ) {
+        carp "Skipping link file $srcfile";
+        return;
+    }
+
+    DEBUG and print "installing dir $srcfile\n";
+    if ( ! -d $dest ) {
+	mkpath($dest);
+    }
+    OUTPUT and print "copyallpics $srcfile $dest\n";
+    copyallpics($srcfile, $dest);
+
+}
+
+sub installicons
+{
+    my ( $srcdir, $dest, $width, $height ) = @_;
+    return unless ( -d $srcdir );
+    mkpath($dest) unless ( -d $dest );
+
+    chdir($srcdir);
+    opendir(ICONDIR, "$srcdir") or croak "Could not open icon dir $srcdir: $!";
+    my @allicondirs = grep { /^\d+x\d+$/ || /^scalable$/; } readdir ICONDIR;
+    closedir ICONDIR;
+
+    # try to pick icons closest to the dest size.
+    my %iconinfo;
+    foreach my $icondir ( @allicondirs ) {
+	# should be either one twice the size, or the next biggest from the size given.
+	# for now, just the next biggest form the size given.
+	if ( -d $icondir ) {
+	    opendir(ICONDIR, "$icondir") or die "Could not open icon dir $srcdir/$icondir: $!";
+	    my @maybeicons = readdir ICONDIR;
+	    closedir ICONDIR;
+	    my ( $nwidth, $nheight ) = ( $icondir =~ /(\d+)x(\d+)/ );
+            my $nscalable = ( $icondir eq "scalable" );
+
+            my @allicons;
+	    foreach my $icon ( @maybeicons ) {
+                # skip .ai files because they're huge
+                next if ( $icon =~ /\.ai$/ );
+                # We install files here as well as files in i18n/<lang>
+                if ( -f "$icondir/$icon" ) {
+                    push(@allicons, $icon);
+                } elsif ( -d "$icondir/$icon" && "$icondir/$icon" =~ m{/i18n$} ) {
+                    for my $lang ( keys %languages ) {
+                        if ( -d "$icondir/$icon/$lang" ) {
+                            mkpath("$dest/$icon/$lang");
+                            for my $file ( glob("$icondir/$icon/$lang/*") ) {
+                                # skip .ai files because they're huge
+                                next if ( $file =~ /\.ai$/ );
+                                if ( -f $file ) {
+                                    # strip this bit off
+                                    $file =~ s/^\Q$icondir\E\///;
+                                    push(@allicons, $file);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+	    foreach my $iconfile ( @allicons ) {
+                my $icon = $iconfile;
+                # strip the extension
+                $icon =~ s/\.[^.]+//;
+		if (!defined($iconinfo{$icon})) {
+                    DEBUG and print "choose $icondir for $icon.  (initial)\n";
+		    $iconinfo{$icon} = +{
+                        "file" => $iconfile,
+                        "dir" => $icondir,
+                    };
+                } else {
+                    my $info = $iconinfo{$icon};
+                    if ( $info->{dir} eq "scalable" ) {
+                        # scalable icons are always preferred
+                        DEBUG and print "choose $info->{dir} over $icondir for $icon.  (scalable)\n";
+                    } else {
+                        my ( $cwidth, $cheight ) = ( $info->{dir} =~ /(\d+)x(\d+)/ );
+                        if ( $nscalable ) {
+                            # scalable icons are always preferred
+                            DEBUG and print "choose $icondir over $info->{dir} for $icon.  (scalable)\n";
+                            $info->{file} = $iconfile;
+                            $info->{dir} = $icondir;
+                        } elsif ($cheight < $height && $cwidth < $width) {
+                            # if it's bigger, use it
+                            if ($nheight > $cheight && $nwidth > $cwidth) {
+                                DEBUG and print "choose $icondir over $info->{dir} for $icon.  (bigger)\n";
+                                $info->{file} = $iconfile;
+                                $info->{dir} = $icondir;
+                            }
+                        } else {
+                            # current is larger or equal to match.
+                            # if it's smaller, but still bigger than the target height, use it
+                            if ($nheight < $cheight && $nwidth < $cwidth 
+                                && $nheight >= $height && $nwidth >= $width) {
+                                DEBUG and print "choose $icondir over $info->{dir} for $icon.  (closer)\n";
+                                $info->{file} = $iconfile;
+                                $info->{dir} = $icondir;
+                            }
+                        }
+                    }
+		}
+	    }
+	}
+    }
+
+    my $key = "-width $width -height $height";
+    my @files;
+    if ( exists($pngscale_files{$key}) ) {
+        my $data = $pngscale_files{$key};
+        @files = @$data;
+    }
+    foreach my $icon ( keys %iconinfo ) {
+        my $info = $iconinfo{$icon};
+        my $file = $info->{file};
+        my $dir = $info->{dir};
+	my $from = "$srcdir/$dir/$file";
+        my $to = basename($from);
+        if ( $from =~ m{/i18n/} ) {
+            $to = $from;
+            $to =~ s{^.*/(i18n/.*)}{$1};
+        }
+        $to =~ s{\d+x\d+/}{};
+        $to = "$dest/$to";
+	if (-f $from) {
+            if ( $dir ne "scalable" && needCopy($from, $to) ) {
+		OUTPUT and print "Generate $to from $from\n";
+                push(@files, $from, $to);
+            }
+        }
+    }
+    $pngscale_files{$key} = \@files;
+}
+
+sub copyallpics
+{
+    # Handles "icons" directories specially.
+
+    my ( $srcfile, $dest ) = @_;
+    if ( -f $srcfile ) {
+	if ( needCopy($srcfile, $dest) ) {
+	    DEBUG and print "copy $srcfile $dest\n";
+	    copy($srcfile, $dest);
+	}
+    } else {
+	if ( ! -d $dest ) {
+	    DEBUG and print "mkpath $dest\n";
+	    mkpath($dest);
+	}
+	if ( $dest =~ m{/icons$} && $srcfile !~ m{/scalable$} ) {
+	    foreach my $size ( @SIZEDIRS ) {
+		my ( $width, $height ) = ( $size =~ /(\d+)x(\d+)/ );
+		DEBUG and print "installicons $srcfile $dest ($size)\n";
+		installicons($srcfile, "$dest", $width, $height);
+	    }
+            if ( -d "$srcfile/scalable" ) {
+                OUTPUT and print "copyallpics $srcfile/scalable $dest\n";
+                copyallpics("$srcfile/scalable", "$dest");
+            }
+	} else {
+	    DEBUG and print "glob($srcfile/*)\n";
+	    my @maybe_tocp = glob("$srcfile/*");
+            my @tocp = ();
+            if ( $dest =~ m{/i18n$} ) {
+                # Only install i18n files for the selected languages
+                foreach my $file ( @maybe_tocp ) {
+                    if ( exists($languages{basename($file)}) ) {
+                        push(@tocp, $file);
+                    }
+                }
+            } else {
+                @tocp = @maybe_tocp;
+            }
+	    foreach my $file ( @tocp ) {
+                # skip .ai files because they're huge
+                next if ( $file =~ /\.ai$/ );
+                my $picdest = "$dest/".basename($file);
+                DEBUG and print "installpic $file $picdest\n";
+                    installpic($file, $picdest);
+	    }
+	}
+    }
+}
+
+

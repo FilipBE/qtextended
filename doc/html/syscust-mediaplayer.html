@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended Helix Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended Helix Integration<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#building-qt-extended-with-the-helix-source-package">Building Qt Extended with the Helix Source Package</a></li>
+<li><a href="#streaming-media">Streaming Media</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended supports the integration of the Helix DNA Client v3.1 (Atlas). To discuss access to Helix sources within a Commercial context, contact <a href="mailto:qt-sales@nokia.com">qt-sales@nokia.com</a>.</p>
+<a name="building-qt-extended-with-the-helix-source-package"></a>
+<h3>Building Qt Extended with the Helix Source Package</h3>
+<p>To build Qt Extended with Helix support enabled, follow these steps:</p>
+<p><i>extract</i> the Helix Integration Package into a fresh extraction of the Qt Extended source package. For example run:</p>
+<pre>    cd &lt;qt-extended-root-dir&gt;
+    tar -xzvf qtopia-helix-commercial-src-&lt;version&gt;.tar.gz</pre>
+<p><i>configure</i> Qt Extended via running :</p>
+<pre>    configure -qtopiamedia -mediaengines helix -helix-system-id &lt;SYSTEM_ID&gt; &lt;other configure options&gt;</pre>
+<p>To see the possible values of &lt;SYSTEM_ID&gt; to suit Linux systems run the following commands :</p>
+<pre>    cd &lt;qt-extended-root-dir&gt;
+    find src/3rdparty/libraries/helix/src/build/umakecf -name &quot;linux*.cf&quot; -printf &quot;%f\n&quot; | sed &quot;s/\(.*\).cf/\1/&quot;</pre>
+<p><i>while</i> configuring Qt Extended check that you see the following <tt>configure</tt> output :</p>
+<pre>    Testing for helix: PRESENT</pre>
+<p><i>Build</i> and install in the normal way (qbuild &amp;&amp; qbuild image).</p>
+<a name="streaming-media"></a>
+<h3>Streaming Media</h3>
+<p>Qt Extended supports streaming media through the Helix Integration. To stream media, send a setDocument() message to the MediaPlayer application, with the URL of the media to be streamed.</p>
+<pre>    QtopiaServiceRequest r(&quot;mediaplayer&quot;, &quot;setDocument(QString)&quot;);
+    r &lt;&lt; QString(&quot;rtsp:<span class="comment">//host/path&quot;);</span>
+    r.send();</pre>
+<p><b>Note:</b> The Helix engine is published under a number of licenses, ranging from Research and Development to commercial. For further information please refer to: <a href="https://helixcommunity.org">Helix Community</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

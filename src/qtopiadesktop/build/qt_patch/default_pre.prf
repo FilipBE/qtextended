@@ -1,0 +1,13 @@
+# Get Qt's version of this file
+load(default_pre)
+
+# Tell people we're building Qtopia
+QT_CONFIG+=qtopia
+
+QPE_CONFIG=$$(QPE_CONFIG)
+contains(QPE_CONFIG,build_qtopia_sqlite) {
+    # We need to set this now so that the sqlite code isn't built in.
+    # It will be sorted out correctly in default_post.prf
+    QTOPIACORE_CONFIG=$$(QTOPIACORE_CONFIG)
+    contains(QTOPIACORE_CONFIG,target):LIBS+=sqlite3
+}

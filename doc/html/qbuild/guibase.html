@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>GuiBase Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">GuiBase Class Reference</h1>
+<p>The GuiBase class manages the progress bar. <a href="#details">More...</a></p>
+<pre>    #include &lt;GuiBase&gt;</pre><ul>
+<li><a href="guibase-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="guibase.html#setRuleEngine">setRuleEngine</a></b> ( RuleEngine * <i>e</i> )</li>
+<li><div class="fn"/>void <b><a href="guibase.html#setRuleProgress">setRuleProgress</a></b> ( int <i>completed</i>, int <i>total</i>, bool <i>certain</i> )</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>GuiBase * <b><a href="guibase.html#instance">instance</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="guibase.html#write">write</a></b> ( int <i>fd</i>, const char * <i>buffer</i>, int <i>length</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The GuiBase class manages the progress bar.</p>
+<p>There is a GUI-based progress bar (-gui) and a console-based progress bar (-progress). They are both implemented as sub-classes of GuiBase.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="instance"></a>GuiBase * GuiBase::instance ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the singleton instance.</p>
+<h3 class="fn"><a name="setRuleEngine"></a>void GuiBase::setRuleEngine ( <a href="ruleengine.html">RuleEngine</a> * <i>e</i> )</h3>
+<p>The <a href="guibase.html">GuiBase</a> class has a longer life span than the <a href="ruleengine.html">RuleEngine</a>. Set <i>e</i> to the rule engine when it is created and set it to 0 when it is deleted.</p>
+<h3 class="fn"><a name="setRuleProgress"></a>void GuiBase::setRuleProgress ( int <i>completed</i>, int <i>total</i>, bool <i>certain</i> )</h3>
+<p>Set the <i>total</i> and <i>completed</i> values. Set <i>certain</i> to true if it is certain how many more rules there are to run.</p>
+<h3 class="fn"><a name="write"></a>void GuiBase::write ( int <i>fd</i>, const char * <i>buffer</i>, int <i>length</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This should be called when writing to stdout or stderr. It minimizes conflicts between the console-based progress bar and the regular output. Write to <i>fd</i>, from <i>buffer</i>, <i>length</i> characters.</p>
+<p>ie.</p>
+<pre>    ::write(1, buf, len);</pre>
+<p>becomes</p>
+<pre>    GuiBase::instance()-&gt;write(1, buf, len);</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

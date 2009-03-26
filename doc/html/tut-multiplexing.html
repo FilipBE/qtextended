@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Writing a Multiplexer Plug-in</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Writing a Multiplexer Plug-in<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#general-structure-of-a-multiplexer-plug-in">General Structure of a Multiplexer Plug-in</a></li>
+<li><a href="#gsm-07-10-with-modified-parameters">GSM 07.10 with Modified Parameters</a></li>
+<li><a href="#multiplexers-that-use-multiple-serial-ports">Multiplexers That Use Multiple Serial Ports</a></li>
+<li><a href="#complex-multiplexing-over-a-single-serial-port">Complex Multiplexing Over a Single Serial Port</a></li>
+</ul>
+<a name="multiplexer-plug-in"></a><a name="introduction"></a>
+<h2>Introduction</h2>
+<p>GSM 07.10 multiplexing is a common source of problems when integrating a GSM module with Qt Extended. During initial testing multiplexing can be disabled by setting the <tt>QTOPIA_PHONE_MUX</tt> environment variable to <i>no</i>. Qt Extended will still function, but you will be unable to make GPRS calls without multiplexing support.</p>
+<p>This tutorial describes how to write several types of multiplexer plug-in, that you will need to properly support the Qt Extended requirements. Existing plug-in examples can be found in the source code under <tt>&lt;qt-extended-root-dir&gt;/src/plugins/multiplexers</tt>.</p>
+<p>The <tt>QTOPIA_PHONE_VENDOR</tt> macro in <tt>custom.h</tt> is used to select the multiplexer plug-in. For example, setting <tt>QTOPIA_PHONE_VENDOR</tt> to <tt>wavecom</tt> will instruct Qt Extended to load <tt>libwavecommultiplex.so</tt> as its multiplexer implementation. The <tt>QTOPIA_PHONE_VENDOR</tt> environment variable can also be used for this purpose.</p>
+<p>If <tt>QTOPIA_PHONE_VENDOR</tt> is not set, Qt Extended will attempt to use 3GPP TS 07.10 in the default Basic mode with a frame size of 31. If that attempt fails, it will fall back to non-multiplexing mode.</p>
+<a name="general-structure-of-a-multiplexer-plug-in"></a>
+<h2>General Structure of a Multiplexer Plug-in</h2>
+<p>A multiplexer plug-in inherits from the <a href="qserialiodevicemultiplexerplugin.html">QSerialIODeviceMultiplexerPlugin</a> class and implements the two methods :</p>
+<ul>
+<li><tt>detect()</tt></li>
+<li><tt>create()</tt></li>
+</ul>
+<pre>    class FooMultiplexer : public QSerialIODeviceMultiplexerPlugin
+    {
+        Q_OBJECT
+    public:
+        FooMultiplexer( QObject *parent = 0 )
+            : QSerialIODeviceMultiplexerPlugin( parent ) {}
+
+        bool detect( QSerialIODevice *device );
+        QSerialIODeviceMultiplexer *create( QSerialIODevice *device );
+    };</pre>
+<p>The <tt>detect()</tt> method determines if the plug-in can be used with the specified serial <i>device</i>. It can issue AT commands with <a href="qserialiodevicemultiplexer.html#chat">QSerialIODeviceMultiplexer::chat</a>() to determine if the GSM module supports the multiplexing method, or it can merely return <tt>true</tt>.</p>
+<p>The serial <i>device</i> that is passed to the multiplexer is specified by the <tt>QTOPIA_PHONE_DEVICE</tt> setting.</p>
+<p>If the <tt>detect()</tt> method returns <tt>true</tt>, Qt Extended will then call <tt>create()</tt> to create an instance of <a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a>. The plug-in will typically define a subclass of <a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a> to implement the multiplexing details for the GSM module.</p>
+<a name="gsm-07-10-with-modified-parameters"></a>
+<h2>GSM 07.10 with Modified Parameters</h2>
+<p>Qt Extended has a built-in implementation of GSM 07.10 that it will use if there isn't an explicit multiplexer plug-in provided. The default parameters are GSM 07.10 in Basic mode with a frame size of 31. The vendor can change these defaults by writing a multiplexer plug-in. The following example increases the frame size to 256:</p>
+<pre>    class ModifiedGsm0710MultiplexerPlugin : public QSerialIODeviceMultiplexerPlugin
+    {
+        Q_OBJECT
+    public:
+        ModifiedGsm0710MultiplexerPlugin( QObject *parent = 0 )
+            : QSerialIODeviceMultiplexerPlugin( parent ) {}
+
+        bool detect( QSerialIODevice *device );
+        QSerialIODeviceMultiplexer *create( QSerialIODevice *device );
+    };
+
+    bool ModifiedGsm0710MultiplexerPlugin::detect( QSerialIODevice *device )
+    {
+        <span class="comment">// Determine if the module supports a frame size of 256.</span>
+        return QGsm0710Multiplexer::cmuxChat( device, 256 );
+    }
+
+    QSerialIODeviceMultiplexer *ModifiedGsm0710MultiplexerPlugin::create
+            ( QSerialIODevice *device )
+    {
+        <span class="comment">// Create the GSM 07.10 multiplexer with a frame size of 256.</span>
+        return new QGsm0710Multiplexer( device, 256 );
+    }
+
+    QTOPIA_EXPORT_PLUGIN( ModifiedGsm0710MultiplexerPlugin )</pre>
+<p>Once the plug-in has been compiled as <tt>libmodifiedgsm0710multiplex.so</tt>, the vendor can set the <tt>QTOPIA_PHONE_VENDOR</tt> environment variable to <i>modifiedgsm0710</i> to enable the multiplexer plug-in.</p>
+<a name="multiplexers-that-use-multiple-serial-ports"></a>
+<h2>Multiplexers That Use Multiple Serial Ports</h2>
+<p>Some GSM modules use multiple serial ports, one per channel. The <a href="qmultiportmultiplexer.html">QMultiPortMultiplexer</a> class can be used to support such modules. As an example, consider a module with the following serial ports:</p>
+<ul>
+<li><tt>/dev/mux0</tt> Primary AT command channel.</li>
+<li><tt>/dev/mux1</tt> Secondary AT command channel.</li>
+<li><tt>/dev/mux2</tt> GPRS data channel.</li>
+</ul>
+<p>To support such a module, first set <tt>QTOPIA_PHONE_DEVICE</tt> to <tt>/dev/mux0</tt> in the <tt>custom.h</tt> file for the platform. Then the <tt>detect()</tt> and <tt>create()</tt> methods would be implemented as follows:</p>
+<pre>    class MultiPortMultiplexerPlugin : public QSerialIODeviceMultiplexerPlugin
+    {
+        Q_OBJECT
+    public:
+        MultiPortMultiplexerPlugin( QObject *parent = 0 )
+            : QSerialIODeviceMultiplexerPlugin( parent ) {}
+
+        bool detect( QSerialIODevice *device );
+        QSerialIODeviceMultiplexer *create( QSerialIODevice *device );
+    };
+
+    bool MultiPortMultiplexerPlugin::detect( QSerialIODevice * )
+    {
+        return true;
+    }
+
+    QSerialIODeviceMultiplexer *MultiPortMultiplexerPlugin::create( QSerialIODevice *device )
+    {
+        <span class="comment">// The primary AT command device, /dev/mux0, is configured</span>
+        <span class="comment">// in the custom.h file as QTOPIA_PHONE_DEVICE and then passed</span>
+        <span class="comment">// down to us in the &quot;device&quot; parameter.</span>
+        QMultiPortMultiplexer *mux = new QMultiPortMultiplexer( device );
+
+        <span class="comment">// Add the secondary channel.</span>
+        QSerialPort *secondary = QSerialPort::create( &quot;/dev/mux1&quot; );
+        mux-&gt;addChannel( &quot;secondary&quot;, secondary );
+
+        <span class="comment">// Add the data channel.</span>
+        QSerialPort *data = QSerialPort::create( &quot;/dev/mux2&quot; );
+        mux-&gt;addChannel( &quot;data&quot;, data );
+
+        <span class="comment">// Add the data setup channel, which is the same as &quot;data&quot;.</span>
+        mux-&gt;addChannel( &quot;datasetup&quot;, data );
+        return mux;
+    }
+
+    QTOPIA_EXPORT_PLUGIN( MultiPortMultiplexerPlugin )</pre>
+<p>The first parameter to <a href="qmultiportmultiplexer.html#addChannel">QMultiPortMultiplexer::addChannel</a>() is the name of the channel that is being set. It may be one of the following standard names:</p>
+<ul>
+<li><tt>primary</tt> - primary AT command channel</li>
+<li><tt>secondary</tt> - secondary AT command channel</li>
+<li><tt>data</tt> GPRS - data channel</li>
+<li><tt>datasetup</tt> - channel that receives GPRS setup commands.</li>
+</ul>
+<p>Other channel names are possible. Refer to the documentation for <a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a> for further details.</p>
+<p>Some modules only have one AT command channel, not two. For such modules, both <tt>primary</tt> and <tt>secondary</tt> should be set to the same value:</p>
+<pre>    QMultiPortMultiplexer *mux = new QMultiPortMultiplexer( device );
+    mux-&gt;addChannel( &quot;secondary&quot;, device );</pre>
+<p>Some modules require that GPRS setup commands such as <tt>AT+CGDCONT</tt> and <tt>ATD</tt> must be sent on the primary AT command channel, not the data channel. For such modules, <tt>datasetup</tt> should be set to the same value as <tt>primary</tt>.</p>
+<a name="complex-multiplexing-over-a-single-serial-port"></a>
+<h2>Complex Multiplexing Over a Single Serial Port</h2>
+<p>The most complex kind of multiplexer is one which is neither a GSM 07.10 variant, nor a multi-port setup. The Wavecom multiplexer is an example of this kind of multiplexer.</p>
+<p>Refer to the source code under <tt>&lt;qt-extended-root-dir&gt;/src/plugins/multiplexers/wavecom</tt> if you need to write a multiplexer of this kind. The source code for <a href="qgsm0710multiplexer.html">QGsm0710Multiplexer</a> might also provide some clues as to how to handle this case.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

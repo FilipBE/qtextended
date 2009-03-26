@@ -1,0 +1,130 @@
+#!/bin/bash
+#/****************************************************************************
+#**
+#** This file is part of the Qt Extended Opensource Package.
+#**
+#** Copyright (C) 2009 Trolltech ASA.
+#**
+#****************************************************************************/
+
+# break on errors
+set -e
+
+if [ -n "$1" -a "$1" == "--descriptors" ]; then
+set "." $@ 
+fi
+
+pkg_dir=$1
+test -z $pkg_dir && pkg_dir=.
+
+function usage()
+{
+  echo "Usage: `basename $0` <path/to/webroot> [--descriptors http://10.10.10.21/feed]";
+  echo "    <path/to/web/packageroot>  - where http server will serve packages from";
+  echo "    [--descriptors URL] no packages.list file, instead make individual \".qpd\" package descriptor files";
+  echo "        URL is \"http://\" + <IP address of the server> + /packageroot with no terminating /";
+  exit 1;
+}
+
+function die()
+{
+    echo "$1"
+    usage;
+}
+
+if [ -z $pkg_dir ]; then
+    usage
+fi
+
+if [ ! -d $pkg_dir ]; then
+  echo "Package directory $pkg_dir not found"
+  usage
+fi
+
+
+URL="http://"
+if [ -z $2 ]; then
+    URL=""
+else
+    if [ $2 = "--descriptors" ]; then
+        URL=${3%/}
+    else
+        echo "Dont understand \"$2\""
+        usage
+    fi
+    if [ -z $URL ]; then
+        echo "If --descriptors, must specify URL"
+        usage
+    fi
+
+    ipf=${URL#http://}
+    ip=${ipf%%/*}
+    if [ -z $ip ]; then
+        die "URL looked wrong: $URL"
+    fi
+    ping -c 1 -W 1 $ip | grep " 0% packet loss" 2>&1 >/dev/null || echo "Something is wrong with the URL: $URL. Could not ping $ip"
+fi
+
+# See if there's packages in this directory to be installed in the 
+# package directory (as long as this isnt the package directory)
+if [ ! $pkg_dir = "." ]; then
+    set +e
+    qpk_list=`find . -name "*.qpk"`
+    if [ -z "$qpk_list" ]; then
+        echo "No packages found to install - do \"make packages\" ...?"
+        usage
+    fi
+    set -e
+    for inst_pkg in $qpk_list; do
+      cp -vuf $inst_pkg $pkg_dir
+    done
+fi
+
+test -e $pkg_dir/packages.list && rm $pkg_dir/packages.list
+
+function buildpkg()
+{
+    pkg=$1
+    filename=`basename $pkg`
+    pkgname=${filename%%_*}
+    echo "Adding to index: ${pkgname}" >&2
+    ## checking for multiple versions
+    oldflag=
+    for other in ${pkg_dir}/${pkgname}_*; do
+        if [ $pkg = $other -a !$pkg -nt $other ]; then
+            oldflag=y
+            break;
+        fi;
+    done;
+    if [ -z "$oldflag" ]; then \
+        file_size=$(du -b $pkg | awk '{print $1}')
+        md5sum=$(md5sum $pkg | awk '{print $1}')
+        # Take pains to make variable value sed-safe
+        sed_safe_pkg=`echo $filename | sed -e 's/\\//\\\\\\//g'`
+        tar -xzOf $pkg ./control | sed -e "s/^Filename:.*//g" | grep -v '^$' | sed -e "s/^Description:/Filename: $sed_safe_pkg\\
+Size: $file_size\\
+MD5Sum: $md5sum\\
+Description:/"
+    else
+        echo >&2 "Skipped old file: $pkg ($other is newer)"
+        mv $pkg $pkg_dir/old/
+    fi;
+}
+
+allpackages=`find $pkg_dir -maxdepth 1 -name '*.qpk' | sort`;
+
+if [ -z $URL ]; then
+    echo "Building $pkg_dir/packages.list";
+    for pkg in $allpackages; do
+        buildpkg $pkg;
+        echo "";
+    done >> $pkg_dir/packages.list
+else
+    for pkg in $allpackages; do
+        fname=`basename $pkg .qpk`
+        rm -f $pkg_dir/$fname.qpd
+        echo "Building $pkg_dir/$fname.qpd";
+        buildpkg $pkg >> $pkg_dir/$fname.qpd
+        echo "URL: $URL/$fname.qpk" >> $pkg_dir/$fname.qpd
+    done;
+fi

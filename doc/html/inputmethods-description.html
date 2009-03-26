@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Input Methods Documentation</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Input Methods Documentation<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#phone-keys">Phone Keys</a></li>
+<li><a href="#full-screen-handwriting">Full Screen Handwriting</a></li>
+<li><a href="#common-features-for-phone-keys-and-full-screen-handwriting">Common Features for Phone Keys and Full Screen Handwriting</a></li>
+<li><a href="#virtual-keyboards">Virtual Keyboards</a></li>
+<ul><li><a href="#the-qt-extended-keyboard">The Qt Extended Keyboard</a></li>
+<li><a href="#the-predictive-keyboard">The Predictive Keyboard</a></li>
+<ul><li><a href="#predictive-keyboard-strokes">Predictive Keyboard Strokes</a></li>
+</ul>
+</ul>
+</ul>
+<li><a href="#input-hinting">Input Hinting</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides two input channels to address the issue of text input, given the lack of both screen real-estate and convenient keyboards typical of mobile devices. The <i>Phone Keys</i> input method is intended for phones with the common 0-9, # and * buttons. The <i>Full Screen Handwriting</i> input method is intended primarily for touch screen devices, but can be used with any sort of pointing device, including a mouse. These input methods are not mutually exclusive, and a device equipped with both phone keys and a pointing device can take advantage of both.</p>
+<p>Additionally, Qt Extended offers virtual keyboards for devices with touch screens. These input methods offer a widget displaying the characters that can be touched or clicked on to input text. The precitive keyboard adds dictionary look-up capabilities, allowing it to be used with fingers instead of a stylus.</p>
+<a name="phone-keys"></a>
+<h3>Phone Keys</h3>
+<p>Given the standard 0-9, * and # keys, Qt Extended uses a dictionary to determine the most likely intended input. For example, the '6' key on most phones translates to 'm', 'n', or 'o'. Simply pressing the key twice will result in a best guess of &quot;no&quot;. The '*' key is used to select between different options. In this example , pressing the '*' key will toggle between &quot;no&quot; and &quot;on&quot; - the two matches for the input &quot;66&quot;.</p>
+<a name="full-screen-handwriting"></a>
+<h3>Full Screen Handwriting</h3>
+<p>When a pointing device such as a mouse or touch screen is available, the user can enter text by drawing a character at a time. Qt Extended is capable of composing characters out of multiple strokes, for example in the case of 't' or '4', provided the additional strokes are entered quickly. A shadow of the original stroke is left onscreen to help guide the next stroke. Qt Extended uses input hints to guide the input guess, such as in the case of the letter 's' and the number '5', where the strokes may be difficult to differentiate.</p>
+<a name="common-features-for-phone-keys-and-full-screen-handwriting"></a>
+<h3>Common Features for Phone Keys and Full Screen Handwriting</h3>
+<p>The user is able to change how the input method interprets input by switching between input modes. With <i>Phone Keys</i> this is accomplished by pressing and holding the '#' key. Using <i>Full Screen Handwriting</i>, the user enters the <i>mode select</i> stroke, which looks like a triangle pointing upwards, and is drawn from the bottom left counter-clockwise. Other commands to the input method are outlined in the table below:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Effect</th><th>Phone Keys</th><th>Full Screen</th><th>Stroke Directions</th><th>Stroke Diagram</th></tr></thead>
+<tr valign="top" class="odd"><td>Space/Accept Word</td><td>Press '#'</td><td>Draw a horizontal line, left-to-right.</td><td>Right</td><td><p align="center"><img src="images/accept_stroke.png" /></p></td></tr>
+<tr valign="top" class="even"><td>Mode Select</td><td>Hold '*' to change modes</td><td>Draw an upward-pointing triangle counter clockwise, starting in the bottom-left corner</td><td>Right, Up-Left, Down-Left.</td><td><p align="center"><img src="images/mode_stroke.png" /></p></td></tr>
+<tr valign="top" class="odd"><td>Next Guess</td><td>Press '*'</td><td>Draw a diagonal line from bottom-left to top-right and back again</td><td>Up-Right, Down-Left</td><td><p align="center"><img src="images/nextguess_stroke.png" /></p></td></tr>
+<tr valign="top" class="even"><td>Word Picker</td><td>Stroke Only</td><td>2 clock-wise circles on top of each other, starting from the top</td><td>Down-Right, Down-Left, Up-Left, Up-Right, Down-Right, Down-Left, Up-Left, Up-Right</td><td><p align="center"><img src="images/wordpicker_stroke.png" /></p></td></tr>
+<tr valign="top" class="odd"><td>Symbol Picker</td><td>Press and Hold '#'</td><td>2 counter-clock-wise circles on top of each other, starting from the top</td><td>Down-Left, Down-Right, Up-Right, Up-Left, Down-Left, Down-Right, Up-Right, Up-Left</td><td><p align="center"><img src="images/symbolpicker_stroke.png" /></p></td></tr>
+<tr valign="top" class="even"><td>Shift (next character capital)</td><td>Press '0'</td><td>Draw a vertical line from bottom to top</td><td>Up</td><td><p align="center"><img src="images/uppercase_stroke.png" /></p></td></tr>
+</table></p>
+<a name="virtual-keyboards"></a>
+<h3>Virtual Keyboards</h3>
+<p>Qt Extended currently offers 2 virtual keyboards.</p>
+<a name="the-qt-extended-keyboard"></a>
+<h4>The Qt Extended Keyboard</h4>
+<p>The first, The Qt Extended Keyboard, is a straightforward virtual keyboard. It shows a qwerty keyboard, and pressing a key on the keyboard creates a key event for that key and passes it on to the focus widget. Holding down a key will create autorepeats, just like a normal keyboard. There is a small arrow on the far right-hand side (next to the '' key) that will show and hide the insert, home, delete, end, page up, and page down keys.</p>
+<p>The Caps Lock, Shift, Control, and Alt keys are &quot;sticky&quot;, meaning that clicking on them toggles them on and off. This allows for complicated key-combinations to be performed with a single pointing device.</p>
+<p>The keyboard also uses the dictionary to suggest words based on the current input. These suggestions are displayed in the bar at the top of the keyboard, and clicking one of these suggestions enters the rest of that word followed by a space.</p>
+<p>The keyboard is packaged in two different ways. Normally, the keyboard widget &quot;floats&quot; over the text, and jumps to the top or bottom of the screen in order to not cover the cursor. In this mode, the keyboard widget can be hidden and shown from the context menu. As the DockedKeyboard, the keyboard is docked to the bottom of the screen, resizing the space available for applications.</p>
+<a name="the-predictive-keyboard"></a>
+<h4>The Predictive Keyboard</h4>
+<p>The second keyboard is the predicitve keyboard. This keyboard is designed for use with fingers, which are significantly less accurate than a pointing device. The predictive keyboard analyses uses a dictionary and analysis of the input to resolve ambiguities.</p>
+<p>The keyboard presents a familiar Qwerty keyboard. To use the keyboard, just press each letter in order, and then press your word on the bar above the keyboard to accept the word. If the word you intended is not the central word, pressing on it will bring it to the center, and a second press on it in the central position will accept it.</p>
+<p>If the word is not in the dictionary, the keyboard can also be used in a letter-at-a-time mode. Keep pressing on your letter until a small viewing bubble appears, and move your finger slightly to focus it on your letter and release to enter that character.</p>
+<a name="predictive-keyboard-strokes"></a>
+<h5>Predictive Keyboard Strokes</h5>
+<p>The predictive keyboard recognizes several strokes. To stroke, press somewhere on the keyboard and, keeping your finger pressed, move sharply in the appropriate direction.</p>
+<p>Stroking up and down changes &quot;board&quot;. For example, stroking up from the lowercase board will bring up the uppercase board. Stroking up again will bring up the symbols board, which contains punctuation, symbols, and the carriage return. Note that you must select symbols one at a time by holding down your finger, because the dictionary cannot be used to differentiate symbols.</p>
+<p>Stroking down from the lowercase board brings up the number board. The boards are cyclic, so stroking up from the symbol board will also get to the numbers board.</p>
+<p>Stroking to the right accepts words and enters spaces. Stroking to the left or pressing the backspace key will cancel a word. Stroking to the left while not entering the word will backspace.</p>
+<p>The predictive keyboard supports input hints, and will automatically switch to the most appropriate board for the input field. It also supports autocapitalisation, and on fields where this is hinted will automatically switch from upper to lowercase after the first letter.</p>
+<a name="input-hinting"></a>
+<h2>Input Hinting</h2>
+<p>An input widget may hint that it would prefer <i>int</i> or <i>phone</i> to indicate that numbers are more likely, or <i>text</i> or <i>words</i> that it would prefer letters. The <i>words</i> hint also suggests that a dictionary can be used to make better guesses at whole words, and allows the user to select from likely interpretations of a series of strokes. The <i>text</i> hint accepts characters one at a time, and is useful when unusual words are being entered, such as names or passwords.</p>
+<p>The following table describes the four modes used by input methods to enable or disable capitalization and guide input guessing:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Mode Name</th><th>Mode Type</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><i>aa</i></td><td>word recognition</td><td>the input method uses a dictionary to find likely matches to the input a word at a time (the <i>aa</i> indicates that two key-presses will result in input of two characters).</td></tr>
+<tr valign="top" class="even"><td><i>Aa</i></td><td>word recognition</td><td>as for <i>aa</i> however the first letter of the word is capitalized</td></tr>
+<tr valign="top" class="odd"><td><i>abc</i></td><td>character recognition</td><td>the input method allows the user to confirm each letter as it is entered.</td></tr>
+<tr valign="top" class="even"><td><i>Abc</i></td><td>character recognition</td><td>as for <i>abc</i> mode however the first letter of the word is capitalized</td></tr>
+</table></p>
+<p>These modes are handled differently depending on the input method used:</p>
+<ul>
+<li><i>Phone keys</i>: consecutive key presses will cycle through the available characters on that key. For example, pressing the 'a' key 3 times will result in an 'a', changed to a 'b', and finally a 'c' (hence the &quot;abc&quot; symbol for this mode).</li>
+<li><i>Full Screen Handwriting</i>: the user uses the '*' key or the &quot;Next Guess&quot; stroke to cycle through the guesses for that stroke. For example a 's' might cycle through '5', or even an '8' or a 'g', depending on the user's handwriting.</li>
+</ul>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

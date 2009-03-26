@@ -1,0 +1,78 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::Opt;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/build/bin", $ARGV[0]);
+}
+
+Qtopia::Opt::read_config_cache();
+
+use constant DEBUG => 0;
+use constant READ_BYTES => 4096;
+
+my $qtlib = shift(@ARGV) or die "You must supply the path to libQtCore\n";
+my $prefix;
+if ( @ARGV ) {
+    $prefix = shift(@ARGV);
+} else {
+    $prefix = opt("dprefix");
+}
+print "Patching $qtlib\n";
+print "Prefix   $prefix\n";
+
+my %qt_vars = (
+    "qt_prfxpath=" => "$prefix",
+    "qt_docspath=" => "doc",
+    "qt_hdrspath=" => "include",
+    "qt_libspath=" => "lib",
+    "qt_binspath=" => "bin",
+    "qt_plugpath=" => "qt_plugins",
+    "qt_datapath=" => "",
+    "qt_trnspath=" => "translations",
+    "qt_stngpath=" => "etc/default",
+);
+my %patch_offset;
+
+my $bytes;
+my $numbytes;
+my $offset = 0;
+open IN, '+<', $qtlib or die "Can't write $qtlib";
+binmode IN;
+while ( read(IN, $bytes, READ_BYTES) > 12 ) {
+    for ( keys %qt_vars ) {
+        my $index = index($bytes, $_);
+        if ( $index != -1 ) {
+            DEBUG and print "Found $_ at ".($offset + $index)."\n";
+            $patch_offset{$_} = $offset + $index;
+        }
+    }
+    $offset = tell(IN) - 12;
+    seek(IN, $offset, 0);
+}
+for ( keys %patch_offset ) {
+    $offset = $patch_offset{$_} + length($_);
+    seek(IN, $offset, 0);
+    read(IN, $bytes, 256);
+    DEBUG and print "Replacing $bytes with $qt_vars{$_}\n";
+    seek(IN, $offset, 0);
+    print IN pack("Z[256]", $qt_vars{$_});
+    if ( DEBUG ) {
+        seek(IN, $offset - length($_), 0);
+        read(IN, $bytes, 256);
+        print "Read back $bytes\n";
+    }
+}
+close IN;
+
+exit 0;
+

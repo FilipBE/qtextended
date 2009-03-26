@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>VoIP Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">VoIP Integration<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#voip-integration">VoIP Integration</a></li>
+<ul><li><a href="#qt-extended-phone-library">Qt Extended Phone Library</a></li>
+<li><a href="#basic-asterisk-telephony-service">Basic Asterisk Telephony Service</a></li>
+<li><a href="#starting-up-the-asterisk-agent">Starting up the Asterisk Agent</a></li>
+<li><a href="#service-checking">Service Checking</a></li>
+<li><a href="#network-registration">Network Registration</a></li>
+<li><a href="#phone-calls">Phone Calls</a></li>
+<li><a href="#presence">Presence</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#call-policy-managers">Call Policy Managers</a></li>
+<li><a href="#implementation-checklist">Implementation Checklist</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</ul>
+<a name="voip-integration"></a>
+<h2>VoIP Integration</h2>
+<p>This document describes how to integrate a third-party Voice over IP (VoIP) agent into Qt Extended. However large parts of this guide refer to general telephony interfaces and classes. This means that this document also describes the essential steps to integrate an arbitrary telephony service.</p>
+<p>Third parties need to supply at least three components as follows:</p>
+<ol type="1">
+<li>A VoIP agent daemon that provides the call management facilities to the Qt Extended telephony server. This is a Qt Extended application that links against the Qt Extended telephony libraries to communicate with the Qt Extended telephony server. It typically does not have any user interface and runs in the background as a daemon.</li>
+<li>A settings program that allows the user to configure the VoIP options for the VoIP agent daemon.</li>
+<li>A call policy manager task in the <tt>qpe</tt> server to provide user interface integration with the Qt Extended call screen.</li>
+</ol>
+<p>To demonstrate the process, this document describes how to integrate the IAX2 protocol used by the <a href="http://www.asterisk.org/">Asterisk</a> telephony server. We will use the open source <a href="http://iaxclient.sourceforge.net/">iaxclient</a> library to provide the IAX2 protocol implementation. The full source code for the Asterisk integration can be found in the Qt Extended source tree under <tt>examples/asterisk</tt>.</p>
+<p>Note that Asterisk does not support presence.</p>
+<p>In the examples below, the <tt>virtual</tt> keyword will be shown on methods that must be overridden from a parent class. If a method does not have the <tt>virtual</tt> keyword, then it is unique to the subclass.</p>
+<a name="qt-extended-phone-library"></a>
+<h3>Qt Extended Phone Library</h3>
+<p>The integration model for VoIP agents uses the <a href="phonelibrary.html">Phone Library</a> to provide the basic infrastructure. The phone library divides up all telephony functionality into <i>services</i> and <i>interfaces</i>.</p>
+<p>Handlers in the telephony system are referred to as services. Each service has a unique name, such as <tt>modem</tt>, <tt>voip</tt>, etc. By convention, service names are lower case. Within each service is a list of interfaces for functionality areas such as network registration, phone calls, presence, SMS, etc.</p>
+<p>Interface names correspond to class names in the Qt Extended Telephony API. For example, the <a href="qnetworkregistration.html">QNetworkRegistration</a> interface provides access to network registration features, and the QPresence interface provides methods to access user presence information.</p>
+<p>A more thorough overview of the library can be found on the <a href="phonelibrary.html">Phone Library</a> page in the documentation.</p>
+<p>Service names should be unique. The name <tt>modem</tt> is reserved for use by GSM modems, and the name <tt>voip</tt> is reserved for SIP-based VoIP services. The example in this document uses the name <tt>asterisk</tt>.</p>
+<a name="basic-asterisk-telephony-service"></a>
+<h3>Basic Asterisk Telephony Service</h3>
+<p>To integrate Asterisk, we need to provide a telephony service called <tt>asterisk</tt> which inherits from the <a href="qtelephonyservice.html">QTelephonyService</a> class. The most basic definition is as follows (from <tt>iaxtelephonyservice.h</tt>):</p>
+<pre>    class IaxTelephonyService : public QTelephonyService
+    {
+        Q_OBJECT
+    public:
+        IaxTelephonyService( const QString&amp; service, QObject *parent = 0 );
+        ~IaxTelephonyService();
+
+        virtual void initialize();
+
+        ...
+    };</pre>
+<p>The constructor and destructor initialize and shut down the iaxclient library (for the full details, see the source code in the <tt>examples/asterisk/iaxagent</tt> directory):</p>
+<pre>    IaxTelephonyService::IaxTelephonyService
+            ( const QString&amp; service, QObject *parent )
+        : QTelephonyService( service, parent )
+    {
+        <span class="comment">// Initialize the iaxclient library</span>
+        ...
+    }
+
+    IaxTelephonyService::~IaxTelephonyService()
+    {
+        <span class="comment">// Shut down the iaxclient library</span>
+        ...
+    }</pre>
+<p>All telephony services must override the initialize() method to create the telephony interfaces that it requires. For Asterisk, we need the <a href="qnetworkregistration.html">QNetworkRegistration</a>, <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a>, <a href="qservicechecker.html">QServiceChecker</a>, and <a href="qphonecallprovider.html">QPhoneCallProvider</a> interfaces:</p>
+<pre>    void IaxTelephonyService::initialize()
+    {
+        if ( !supports&lt;QNetworkRegistration&gt;() )
+            addInterface( new IaxNetworkRegistration( this ) );
+
+        if ( !supports&lt;QTelephonyConfiguration&gt;() )
+            addInterface( new IaxConfiguration( this ) );
+
+        if ( !supports&lt;QServiceChecker&gt;() )
+            addInterface( new IaxServiceChecker( this ) );
+
+        if ( !callProvider() )
+            setCallProvider( new IaxCallProvider( this ) );
+
+        QTelephonyService::initialize();
+    }</pre>
+<p>The telephony service must call the base <a href="qabstractipcinterfacegroup.html#initialize">QTelephonyService::initialize</a>() function to complete the initialization process.</p>
+<a name="starting-up-the-asterisk-agent"></a>
+<h3>Starting up the Asterisk Agent</h3>
+<p>When VoIP telephony services are started, they receive a QCop message <tt>Telephony::start()</tt> on their application channel. When they are shut down, they receive a QCop message <tt>Telephony::stop()</tt> on their application channel. For more information on QCop service messages, see the <a href="services.html">Qt Extended Services</a> documentation.</p>
+<p>We can intercept these messages using the <a href="qtopiaabstractservice.html">QtopiaAbstractService</a> class:</p>
+<pre>    class IaxTelephonyServiceQCop : public QtopiaAbstractService
+    {
+        Q_OBJECT
+    public:
+        IaxTelephonyServiceQCop( QObject *parent = 0 );
+        ~IaxTelephonyServiceQCop() {}
+
+    public slots:
+        void start();
+        void stop();
+
+    private:
+        IaxTelephonyService *service;
+    };
+
+    IaxTelephonyServiceQCop::IaxTelephonyServiceQCop( QObject *parent )
+        : QtopiaAbstractService( &quot;Telephony&quot;, parent )
+    {
+        publishAll();
+        service = 0;
+    }
+
+    void IaxTelephonyServiceQCop::start()
+    {
+        if ( !service ) {
+            <span class="comment">// Register a task to keep us alive while the service is running.</span>
+            QtopiaApplication::instance()-&gt;registerRunningTask
+                ( &quot;IaxTelephonyService&quot;, this );
+
+            <span class="comment">// Create the service handler, registered under the name &quot;asterisk&quot;.</span>
+            qLog(VoIP) &lt;&lt; &quot;Starting iaxclient service handler&quot;;
+            service = new IaxTelephonyService( &quot;asterisk&quot;, this );
+            service-&gt;initialize();
+        }
+    }
+
+    void IaxTelephonyServiceQCop::stop()
+    {
+        if ( service ) {
+            <span class="comment">// Delete the service handler.</span>
+            qLog(VoIP) &lt;&lt; &quot;Stopping iaxclient service handler&quot;;
+            delete service;
+            service = 0;
+
+            <span class="comment">// Deregister the task which allows this daemon to shut down.</span>
+            QtopiaApplication::instance()-&gt;unregisterRunningTask
+                ( &quot;IaxTelephonyService&quot; );
+        }
+    }</pre>
+<p>It is important that the agent register a running task using <a href="qtopiaapplication.html#registerRunningTask">QtopiaApplication::registerRunningTask</a>() so that Qt Extended will not shut down the agent prematurely. It is also important to create the telephony service properly, and to not forget the call to initialize():</p>
+<pre>    service = new IaxTelephonyService( &quot;asterisk&quot;, this );
+    service-&gt;initialize();</pre>
+<p>If you forget the call to initialize(), the service will not be registered with the system and phone calls will not work.</p>
+<p>The final coding step is to start the QCop service from the agent's main function. See <tt>main.cpp</tt> in the <tt>examples/asterisk/iaxagent</tt> directory for the details.</p>
+<p>We now need to register the <tt>iaxagent</tt> daemon as a Qt Extended telephony service by adding an <tt>iaxagent</tt> to the directory <tt>$QPEDIR/services/Telephony</tt> whose contents is as follows:</p>
+<pre>    [Extensions]
+    [Standard]
+    Version = 100</pre>
+<p>Now when Qt Extended starts up, it will detect the new telephony service and send it the <tt>Telephony::start()</tt> QCop message.</p>
+<a name="service-checking"></a>
+<h3>Service Checking</h3>
+<p>When a telephony service starts up, it may not be ready to register to the network immediately. Some time may be required to properly initialize the service, or the service may not be properly configured.</p>
+<p>The Qt Extended server uses the <a href="qservicechecker.html">QServiceChecker</a> interface to determine if the service is ready to be used. If the telephony service does not provide an implementation of <a href="qservicechecker.html">QServiceChecker</a>, then Qt Extended will assume that the service is ready to use as soon as initialize() returns.</p>
+<p>For our Asterisk service, we need to wait for the registration server to be configured in the <tt>Asterisk.conf</tt> file before it can be used. So we have to implement a new service checker as follows (the actual code is in <tt>iaxservicechecker.h</tt> and <tt>iaxservicechecker.cpp</tt>):</p>
+<pre>    class IaxServiceChecker : public QServiceChecker
+    {
+        Q_OBJECT
+    public:
+        explicit IaxServiceChecker( IaxTelephonyService *service );
+        ~IaxServiceChecker() {}
+
+    public slots:
+        void updateRegistrationConfig();
+    };
+
+    IaxServiceChecker::IaxServiceChecker( IaxTelephonyService *service )
+        : QServiceChecker( service-&gt;service(), service, Server )
+    {
+        updateRegistrationConfig();
+    }
+
+    void IaxServiceChecker::updateRegistrationConfig()
+    {
+        QSettings config( &quot;Trolltech&quot;, &quot;Asterisk&quot; );
+        config.beginGroup( &quot;Registration&quot; );
+        if ( config.value( &quot;Server&quot; ).toString().isEmpty() )
+            setValid( false );
+        else
+            setValid( true );
+    }</pre>
+<p>Now, we can call updateRegistrationConfig() whenever the configuration file is updated and it will notify Qt Extended of whether the Asterisk service can be used or not.</p>
+<a name="network-registration"></a>
+<h3>Network Registration</h3>
+<p>Once a telephony service has been successfully initialized and checked, the next step is to register to the network. Qt Extended uses the <a href="qnetworkregistration.html">QNetworkRegistration</a> interface to control the network registration state of telephony services.</p>
+<p>There are two general modes that can be used by a telephony service for network registration: automatic and manual. In automatic mode, the telephony service will attempt to register to the network as soon as possible after service initialization. In manual mode, the user must explicitly launch the appropriate settings program and request network registration.</p>
+<p>For Asterisk, we override the <a href="qnetworkregistration.html">QNetworkRegistration</a> interface to create the IaxNetworkRegistration class (the actual code is in <tt>iaxnetworkregistration.h</tt> and <tt>iaxnetworkregistration.cpp</tt>):</p>
+<pre>    class IaxNetworkRegistration : public QNetworkRegistrationServer
+    {
+        Q_OBJECT
+    public:
+        explicit IaxNetworkRegistration( IaxTelephonyService *service );
+        ~IaxNetworkRegistration();
+
+    public slots:
+        virtual void setCurrentOperator
+            ( QTelephony::OperatorMode mode, const QString&amp; id,
+              const QString&amp; technology );
+        virtual void requestAvailableOperators();
+        void registerToServer();
+        void deregisterFromServer();
+
+        ...
+
+    private:
+        bool pendingSetCurrentOperator;
+    };
+
+    IaxNetworkRegistration::IaxNetworkRegistration( IaxTelephonyService *service )
+        : QNetworkRegistrationServer( service-&gt;service(), service )
+    {
+        pendingSetCurrentOperator = false;
+    }
+
+    IaxNetworkRegistration::~IaxNetworkRegistration()
+    {
+        deregisterFromServer();
+    }
+
+    void IaxNetworkRegistration::setCurrentOperator
+            ( QTelephony::OperatorMode mode, const QString&amp;id,
+              const QString&amp; technology)
+    {
+        if ( mode == QTelephony::OperatorModeDeregister ) {
+            pendingSetCurrentOperator = true;
+            deregisterFromServer();
+        } else {
+            pendingSetCurrentOperator = true;
+            registerToServer();
+        }
+    }
+
+    void IaxNetworkRegistration::requestAvailableOperators()
+    {
+        QList&lt;QNetworkRegistration::AvailableOperator&gt; list;
+        emit availableOperators( list );
+    }
+
+    void IaxNetworkRegistration::registerToServer()
+    {
+        ...
+    }
+
+    void IaxNetworkRegistration::deregisterFromServer()
+    {
+        ...
+    }</pre>
+<p>The actual code that performs the registration and deregistration is not shown here. See the source code for the full details. The important point to note is that once the registration has completed, or been lost, the Asterisk service should call <a href="qnetworkregistrationserver.html#updateRegistrationState">QNetworkRegistrationServer::updateRegistrationState</a>() to update the registration state to one of the following values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationNone</a></td><td>Registration is not currently available.</td></tr>
+<tr valign="top" class="even"><td><a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationHome</a></td><td>The user is registered to their home network.</td></tr>
+<tr valign="top" class="odd"><td><a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationSearching</a></td><td>The service is attempting to register but has not done so yet.</td></tr>
+<tr valign="top" class="even"><td><a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationDenied</a></td><td>The service tried to register but was denied, probably because the user's authentication credentials were invalid.</td></tr>
+<tr valign="top" class="odd"><td><a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationUnknown</a></td><td>The registration state is unknown. This normally only makes sense for GSM networks. For VoIP implementations, use <a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationNone</a> instead.</td></tr>
+<tr valign="top" class="even"><td><a href="qtelephony.html#RegistrationState-enum">QTelephony::RegistrationRoaming</a></td><td>The user is registered to a network and can place calls, but it is not their usual home network.</td></tr>
+</table></p>
+<p>If the Asterisk service is set to the automatic registration mode, then these registration state changes will happen shortly after service initialization. If the service is set to the manual registration mode, then these registration state changes will only happen after the user launches the settings program and manually requests registration.</p>
+<p>The other main component of network registration is the list of available network operators. This is used by settings programs to allow the user to choose an alternative network in their current location.</p>
+<p>For Asterisk, there is only a single operator: the one configured by the user in the <tt>Asterisk.conf</tt> file. It therefore doesn't make sense to allow the user to choose another operator and we return an empty list from requestAvailableOperators().</p>
+<p>For other VoIP implementations, especially those that can roam between public WiFi hotspots, it may make sense to return a non-empty list from requestAvailableOperators(), giving the user to ability to choose from a list of the networks that are in range.</p>
+<a name="phone-calls"></a>
+<h3>Phone Calls</h3>
+<p>Once the service has been checked, and the network registered, the next step is to enable the placement of phone calls. Qt Extended achieves this in telephony services with the <a href="qphonecallprovider.html">QPhoneCallProvider</a> interface. Our Asterisk agent needs to inherit from <a href="qphonecallprovider.html">QPhoneCallProvider</a> and override the create() method (<tt>iaxcallprovider.h</tt> and <tt>iaxcallprovider.cpp</tt>):</p>
+<pre>    class IaxCallProvider : public QPhoneCallProvider
+    {
+        Q_OBJECT
+    public:
+        IaxCallProvider( IaxTelephonyService *service );
+        ~IaxCallProvider() {}
+
+        void stateEvent( struct iaxc_ev_call_state *e );
+
+    protected:
+        virtual QPhoneCallImpl *create
+            ( const QString&amp; identifier, const QString&amp; callType );
+    };
+
+    IaxCallProvider::IaxCallProvider( IaxTelephonyService *service )
+        : QPhoneCallProvider( service-&gt;service(), service )
+    {
+        setCallTypes( QStringList( &quot;Asterisk&quot; ) );
+        ...
+    }
+
+    QPhoneCallImpl *IaxCallProvider::create
+            ( const QString&amp; identifier, const QString&amp; callType )
+    {
+        return new IaxPhoneCall( this, identifier, callType, -1 );
+    }</pre>
+<p>The call to <a href="qphonecallprovider.html#setCallTypes">QPhoneCallProvider::setCallTypes</a>() in the constructor is very important. It publishes the call types that are understood by the telephony service into the value space. Qt Extended uses this information to select an appropriate service to place an outgoing call. If the setCallTypes() function is not called in the constructor, then it will not be possible to place phone calls using the service.</p>
+<p>Call types are typically simple names such as <tt>Voice</tt>, <tt>VoIP</tt>, <tt>Data</tt>, <tt>Fax</tt>, <tt>Video</tt>, etc. See the documentation for <a href="qphonecallmanager.html#create">QPhoneCallManager::create</a>() for a description of how call types are used to select an appropriate telephony service.</p>
+<p>The <tt>VoIP</tt> call type is reserved for use by SIP-based telephony services. We cannot use that for our IAX2 implementation, so we publish the service's call type as <tt>Asterisk</tt> instead.</p>
+<p>By convention, service names start with a lower-case letter, and call type names start with an upper-case letter. This convention is not strictly enforced by Qt Extended, but it can help when diagnosing telephony problems to be able to distinguish a word used as a service name and the same word used as a call type.</p>
+<p>This code creates an instance of IaxPhoneCall whenever the user attempts to place an outgoing phone call. It will then be followed by a call to IaxPhoneCall::dial(). The IaxPhoneCall class is declared as follows:</p>
+<pre>    class IaxPhoneCall : public QPhoneCallImpl
+    {
+        Q_OBJECT
+    public:
+        IaxPhoneCall( IaxCallProvider *provider, const QString&amp; identifier,
+                      const QString&amp; callType, int callNo );
+        virtual ~IaxPhoneCall();
+
+        virtual void dial( const QDialOptions&amp; options );
+        virtual void hangup( QPhoneCall::Scope scope );
+        virtual void accept();
+        virtual void hold();
+        virtual void activate( QPhoneCall::Scope scope );
+        virtual void tone( const QString&amp; tones );
+        virtual void transfer( const QString&amp; number );
+
+        void stateEvent( struct iaxc_ev_call_state *e );
+
+        ...
+    };</pre>
+<p>All telephony services must inherit from <a href="qphonecallimpl.html">QPhoneCallImpl</a> to provide the functions on phone calls. See the documentation for that class for more information on the functionality that is required.</p>
+<p>The above applies to outgoing calls. For incoming calls, the Asterisk service detects the call in IaxCallProvider::stateEvent() and then constructs an instance of IaxPhoneCall directly:</p>
+<pre>    void IaxCallProvider::stateEvent( struct iaxc_ev_call_state *e )
+    {
+        IaxPhoneCall *call = fromCallNo( e-&gt;callNo );
+        if ( call ) {
+            <span class="comment">// State change on a known call.</span>
+            call-&gt;stateEvent( e );
+        } else if ( ( e-&gt;state &amp; IAXC_CALL_STATE_RINGING ) != 0 ) {
+            <span class="comment">// Newly arrived incoming call.</span>
+            beginStateTransaction();
+            QString identifier = QUuid::createUuid().toString();
+            IaxPhoneCall *call = new IaxPhoneCall
+                ( this, identifier, &quot;Asterisk&quot;, e-&gt;callNo );
+            call-&gt;setNumber( e-&gt;remote );
+            call-&gt;setActions( QPhoneCallImpl::Transfer );
+            call-&gt;setState( QPhoneCall::Incoming );
+            endStateTransaction();
+        }
+    }</pre>
+<a name="presence"></a>
+<h3>Presence</h3>
+<p>While the IAX2 protocol does not support presence, most other VoIP protocols do. Presence can be handled by inheriting from QPresence:</p>
+<pre>    class SipPresence : public QPresence
+    {
+        Q_OBJECT
+    public:
+        SipPresence( SipTelephonyService *service );
+        ~SipPresence();
+
+    public slots:
+        virtual bool startMonitoring( const QString&amp; uri );
+        virtual bool stopMonitoring( const QString&amp; uri );
+        virtual void setLocalPresence( QPresence::Status status );
+
+        ...
+    };</pre>
+<p>The VoIP agent must also add two lines to the initialize() function to create the presence interface at startup time:</p>
+<pre>    if ( !supports&lt;QPresence&gt;() )
+        addInterface( new SipPresence( this ) );</pre>
+<p>See the documentation for QPresence for more information on the required functionality for the presence interface.</p>
+<a name="configuration"></a>
+<h3>Configuration</h3>
+<p>Configuration of VoIP services can be very complicated, which is why we recommend that you write a separate settings program that asks the user for the relevant details and then writes them to a configuration file that the agent daemon can access. For the Asterisk example, the source code for its settings program can be found under <tt>examples/asterisk/iaxsettings</tt>.</p>
+<p>Once the configuration file has been updated, it is necessary to notify the agent daemon that it needs to reload the configuration. If your VoIP agent already has a way of performing this notification, then you can stop here. Or you can use the <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a> interface that Qt Extended provides.</p>
+<p>Our Asterisk agent daemon understands two configuration messages from the iaxsettings program: <tt>registration</tt> and <tt>callerid</tt>. The former changes the registration settings, and the latter changes the user's caller-id (name and number) information. We implement this in the IaxConfiguration class (<tt>iaxconfiguration.h</tt> and <tt>iaxconfiguration.cpp</tt>):</p>
+<pre>    class IaxConfiguration : public QTelephonyConfiguration
+    {
+        Q_OBJECT
+    public:
+        IaxConfiguration( IaxTelephonyService *service );
+        ~IaxConfiguration() {}
+
+    public slots:
+        virtual void update( const QString&amp; name, const QString&amp; value );
+        virtual void request( const QString&amp; name );
+
+    private:
+        IaxTelephonyService *service;
+    };
+
+    IaxConfiguration::IaxConfiguration( IaxTelephonyService *service )
+        : QTelephonyConfiguration( service-&gt;service(), service, Server )
+    {
+        this-&gt;service = service;
+    }
+
+    void IaxConfiguration::update( const QString&amp; name, const QString&amp; )
+    {
+        <span class="comment">// Process messages from the &quot;iaxsettings&quot; program for config updates.</span>
+        if ( name == &quot;registration&quot; )
+            service-&gt;updateRegistrationConfig();
+        else if ( name == &quot;callerid&quot; )
+            service-&gt;updateCallerIdConfig();
+    }
+
+    void IaxConfiguration::request( const QString&amp; name )
+    {
+        <span class="comment">// Not supported - just return an empty value.</span>
+        emit notification( name, QString() );
+    }</pre>
+<p>There are two other forms of configuration that can be handled in a special manner: network registration changes and presence changes. The settings program can use <a href="qnetworkregistration.html#setCurrentOperator">QNetworkRegistration::setCurrentOperator</a>() to register to and deregister from the network, and it can use QPresence::setLocalPresence() to update the user's presence state.</p>
+<p>It is not a requirement that you use these configuration API's. If your VoIP agent has some other method for changing configuration settings, you are free to use that instead.</p>
+<a name="call-policy-managers"></a>
+<h3>Call Policy Managers</h3>
+<p>New VoIP services need some user interface support in the server to complete the integration. They do this by creating a server task that inherits from <a href="qabstractcallpolicymanager.html">QAbstractCallPolicyManager</a>.</p>
+<p>The call policy manager tells Qt Extended when the service is active, when network registration changes occur, what call type to use for outgoing call requests, and the icons to display to represent network registration and call types. For Asterisk, the call policy manager is declared as follows (<tt>asteriskmanager.h</tt> in the server sources):</p>
+<pre>    class AsteriskManager : public QAbstractCallPolicyManager
+    {
+        Q_OBJECT
+    public:
+        AsteriskManager( QObject *parent=0 );
+        ~AsteriskManager();
+
+        virtual QString callType() const;
+        virtual QString trCallType() const;
+        virtual QString callTypeIcon() const;
+        virtual QTelephony::RegistrationState registrationState() const;
+        virtual QAbstractCallPolicyManager::CallHandling handling(const QString&amp; number);
+        virtual bool isAvailable(const QString&amp; number);
+        virtual QString registrationMessage() const;
+        virtual QString registrationIcon() const;
+
+        ...
+    };
+
+    QTOPIA_TASK_INTERFACE(AsteriskManager);</pre>
+<p>The most important function is <a href="qabstractcallpolicymanager.html#handling">QAbstractCallPolicyManager::handling</a>(). This helps the server choose an appropriate telephony service when placing an outgoing call (incoming calls are handled implicitly by the service that first announced them). The handling() function inspects the phone number to determine if it can handle it at present. For Asterisk, the code is as follows (<tt>asteriskmanager.cpp</tt>):</p>
+<pre>    QAbstractCallPolicyManager::CallHandling AsteriskManager::handling
+            (const QString&amp; number)
+    {
+        <span class="comment">// Cannot handle URI's that contain '@' or ':'.</span>
+        if (number.contains(QChar('@')) || number.contains(QChar(':')))
+            return CannotHandle;
+
+        <span class="comment">// If no network registration, then cannot handle at this time.</span>
+        if (registrationState() != QTelephony::RegistrationHome)
+            return CannotHandle;
+
+        <span class="comment">// Assume that this is a number that we can dial.</span>
+        return CanHandle;
+    }</pre>
+<p>We first filter out URI's for SIP and other call types that do not use phone numbers. Then we check to see if the Asterisk service is currently registered to the user's home network. If it is, then we indicate that Asterisk can handle the call.</p>
+<p>The return value is used by Qt Extended to select the appropriate telephony service to make the call. If two or more call policy managers return CanHandle, then the user will be presented with a list to choose from. In the case of Asterisk, this may happen if the user is registered to both Asterisk via WiFi and a GSM cellular network at the same time.</p>
+<p>The allowable return values and their meanings are as follows:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><a href="qabstractcallpolicymanager.html#CallHandling-enum">QAbstractCallPolicyManager::CannotHandle</a></td><td>This telephony service cannot handle the requested number.</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractcallpolicymanager.html#CallHandling-enum">QAbstractCallPolicyManager::CanHandle</a></td><td>This telephony service can handle the requested number.</td></tr>
+<tr valign="top" class="odd"><td><a href="qabstractcallpolicymanager.html#CallHandling-enum">QAbstractCallPolicyManager::MustHandle</a></td><td>This telephony service must handle the requested number. This is typically used for special emergency calls that must be placed over a GSM network even if an Asterisk network is also registered at the same time. This value overrides the CanHandle answers from all other call policy managers.</td></tr>
+<tr valign="top" class="even"><td><a href="qabstractcallpolicymanager.html#CallHandling-enum">QAbstractCallPolicyManager::NeverHandle</a></td><td>This telephony service would normally return MustHandle because it is supposed to handle the call, but the call cannot be placed right now. This is typically used for emergency numbers when the phone device is in flight mode. This value causes Qt Extended to reject the call immediately without attempting to place it.</td></tr>
+</table></p>
+<a name="implementation-checklist"></a>
+<h3>Implementation Checklist</h3>
+<p>The following summarises the steps involved in integrating a third-party VoIP agent into Qt Extended:</p>
+<ul>
+<li>Implement the telephony service object that inherits from <a href="qtelephonyservice.html">QTelephonyService</a> (IaxTelephonyService in our example), overridding the initialize() function in particular.</li>
+<li>Implement the QCop service handler for processing the <tt>Telephony::start()</tt> and <tt>Telephony::stop()</tt> messages (IaxTelephonyServiceQCop in our example). Remember to call the service's initialize() function in start() and to register a running task.</li>
+<li>Register the daemon with the Qt Extended service system underneath <tt>$QPEDIR/services/Telephony</tt>.</li>
+<li>Implement a service checker that inherits from <a href="qservicechecker.html">QServiceChecker</a> if the telephony service will not be immediately ready for use after the initialize() function returns (IaxServiceChecker in our example).</li>
+<li>Implement a network registration interface that inherits from <a href="qnetworkregistrationserver.html">QNetworkRegistrationServer</a> (IaxNetworkRegistration in our example).</li>
+<li>Implement a phone call provider that inherits from <a href="qphonecallprovider.html">QPhoneCallProvider</a>, and an individual phone call handling class that inherits from <a href="qphonecallimpl.html">QPhoneCallImpl</a> (IaxCallProvider and IaxPhoneCall in our example).</li>
+<li>Implement a presence handler that inherits from QPresence if the VoIP agent supports presence.</li>
+<li>Implement a separate settings application to provide the user interface for the VoIP agent (<tt>iaxsettings</tt> in our example).</li>
+<li>Implement a configuration handler that inherits from <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a> if the VoIP agent does not have some other means to receive information about configuration changes (<tt>IaxConfiguration</tt> in our example).</li>
+<li>Implement a call policy manager task in the Qt Extended server to inform the server about the new VoIP agent and when to use it when placing outgoing calls (<tt>AsteriskManager</tt> in our example).</li>
+</ul>
+<a name="troubleshooting"></a>
+<h3>Troubleshooting</h3>
+<p>The following are the most common problems that you are likely to encounter while integrating a third-party VoIP agent:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>Service not started</td><td>You must add a service definition file to <tt>$QPEDIR/services/Telephony</tt> to tell the Qt Extended server how to launch your telephony service daemon.</td></tr>
+<tr valign="top" class="even"><td>Service starts and then immediately exits</td><td>You must use <a href="qtopiaapplication.html#registerRunningTask">QtopiaApplication::registerRunningTask</a>() to ensure that Qt Extended will keep the daemon running after the <tt>Telephony::start()</tt> QCop message is received. Upon shutdown, you can call <a href="qtopiaapplication.html#unregisterRunningTask">QtopiaApplication::unregisterRunningTask</a>() and your daemon will gracefully exit.</td></tr>
+<tr valign="top" class="odd"><td>Service not registered</td><td>The service will not be properly registered if you do not call the initialize() function on your <a href="qtelephonyservice.html">QTelephonyService</a> instance. You can detect if this is the case by using <a href="vsexplorer.html">vsexplorer</a> to inspect the value space underneath <tt>/Communications/QNetworkRegistration/asterisk</tt> where <tt>asterisk</tt> is replaced with the name of your service. There should be entries for <tt>requestChannel</tt> and <tt>responseChannel</tt> if the service is properly registered.</td></tr>
+<tr valign="top" class="even"><td>Call types are not registered</td><td>It will not be possible to place phone calls if the call types have not been properly registered with setCallTypes(). You can detect this by using <a href="vsexplorer.html">vsexplorer</a> to inspect the value space underneath <tt>/Communications/QPhoneCallProvider/CallTypes</tt>. There should be an entry for your service name (<tt>asterisk</tt> in our example} listing the supported call types.</td></tr>
+<tr valign="top" class="odd"><td>Incoming calls are not announced</td><td>Make sure that you have created the <a href="qphonecallimpl.html">QPhoneCallImpl</a> instance correctly, and have emitted a state change using <a href="qphonecallprovider.html#beginStateTransaction">QPhoneCallProvider::beginStateTransaction</a>() and <a href="qphonecallprovider.html#endStateTransaction">QPhoneCallProvider::endStateTransaction</a>(). The same applies when calls change state. If the state transaction is not sent, the rest of Qt Extended will be unaware that the call has changed state.</td></tr>
+<tr valign="top" class="even"><td>Call policy manager not registered</td><td>Make sure that <tt>QTOPIA_TASK_INTERFACE(AsteriskManager)</tt> appears in the .h file and that <tt>QTOPIA_TASK(Asterisk, AsteriskManager)</tt>, <tt>QTOPIA_TASK_PROVIDES(Asterisk, AsteriskManager)</tt>, and <tt>QTOPIA_TASK_PROVIDES(Asterisk, QAbstractCallPolicyManager)</tt> appear in the .cpp file, where <tt>Asterisk</tt> is replaced with the name of your telephony service.</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

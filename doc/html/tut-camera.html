@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Implementing and using a Camera Plugin</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Implementing and using a Camera Plugin<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This small tutorial covers the case where you want your camera device to be accessable in Qt Extended, in particular the camera application can then make use of this plugin.</p>
+<p>Limitations: Video capture including JPEG image capture is not yet implemented by the camera application. Controlable features (e.g brightness, saturation) is also not made use of in the application.</p>
+<a name="the-camera-plugin-mechanism"></a>
+<h2>The camera plugin mechanism</h2>
+<p>Please note: It is recommended to look at the implementation of the greenphone and Qvfb webcam plugins under their respective directories in <tt>$SOURCE_PATH/src/plugins/cameras/</tt> for reference. Certain features such as video capture are not implemented.</p>
+<p>Device cameras are implemented through a thin interface wrapper and exposed through the plugin mechanism, the API is available and documented in the qtopiavideo libraries.</p>
+<p>The main class is <tt>QCameraDevice</tt>, it can be queried for supported interfaces allowing Previewing of camera data (e.g in a view finder ), Still Shot capture or Video capture. Implementors overide this class and provide the Interfaces that they want to for their device.</p>
+<p>Users take this and call methods on these interfaces in an intuitive way.</p>
+<a name="implementing-the-device-and-plugin"></a>
+<h2>Implementing the device and plugin</h2>
+<p>Camera implementors must overide <tt>QCameraDevice</tt> and provide the interfaces they support to the user. They must then wrap it up in a plugin mechanism using <tt>QCameraDevicePlugin</tt>. The code goes in $BUILD_DIR/devices/{your_device}/src/plugins/cameras/{your_camera_name}. Please see the documentation and greenphone/qvfb plugins for reference.</p>
+<a name="loading-the-plugin"></a>
+<h2>Loading the plugin</h2>
+<p>Camera Devices are made queryable using the <tt>QCameraDeviceLoader</tt> class</p>
+<pre>    QCameraDeviceLoader *loader = QCameraDeviceLoader::instance();
+    QCameraDevice* device = loader-&gt;deviceWithOrientation(QCameraDevice::BackFacing);
+<span class="comment">    // or</span>
+    QList&lt;QCameraDevice*&gt; devices = loader-&gt;allAvailableCameras();
+    ...</pre>
+<a name="preview-data"></a>
+<h2>Preview Data</h2>
+<p>Preview (or view finder data) is available using the class <tt>QCameraPreviewCapture</tt>.</p>
+<pre>    QCameraPreviewCapture *preview;
+    connect(preview, SIGNAL(frameReady(QVideoFrame)), this, SLOT(useFrame(QVideoFrame)))
+    preview-&gt;start(...) <span class="comment">//start preview data flow</span>
+    ..
+    preview-&gt;stop(); <span class="comment">//stop preview data flow</span></pre>
+<a name="still-data"></a>
+<h2>Still Data</h2>
+<p>Still data is usually (but no neccesarily) for high resolution photos.</p>
+<pre>    QCameraStillCapture *still;
+    connect(still, SIGNAL(imageReady(...)), this, SLOT(imageReadyForUse(...))); <span class="comment">//received image data</span>
+    connect(still, SIGNAL(notifyPreSnap()), this, SLOT(imageAboutToBeTaken())); <span class="comment">//be notified just before the image is actually taken</span>
+    still-&gt;takeStillImage(...); <span class="comment">//take still image</span></pre>
+<p>Still data can be compressed (e.g JPEG) or raw pixel format encoded (e.g RGB, YUV data) The two cases are handled as follows: For raw pixel data the complete image is returned in the signal <tt>imageReady(...)</tt> For compressed data, a flag <tt>bool complete</tt> in the <tt>imageReady()</tt> signal indicates if there is more data available. If there is more data is should be appended to the existing image data until <tt>complete</tt> is <tt><i>true</i></tt> ).</p>
+<a name="video-data"></a>
+<h2>Video Data</h2>
+<p>Video data must be sent as raw bitstreams without container information. Examples of are mpeg4 and h.263</p>
+<pre>    QCameraVideoCapture *video;
+    video-&gt;start(...); <span class="comment">//start recording</span>
+<span class="comment">    // ...</span>
+<span class="comment">    //Use the QIODevice interface to be read video data</span>
+<span class="comment">    // ...</span>
+    video-&gt;stop(); <span class="comment">//stop recording</span></pre>
+<p>See also <a href="qcameradevice.html">QCameraDevice</a>, <a href="qtopiacamera.html">QtopiaCamera</a>, <a href="qtopiavideo.html">QtopiaVideo</a>, <a href="qcameradeviceplugin.html">QCameraDevicePlugin</a>, <a href="qcameradeviceloader.html">QCameraDeviceLoader</a>, <a href="qcamerapreviewcapture.html">QCameraPreviewCapture</a>, <a href="qcamerastillcapture.html">QCameraStillCapture</a>, and <a href="qcameravideocapture.html">QCameraVideoCapture</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

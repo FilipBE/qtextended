@@ -1,0 +1,97 @@
+#!/bin/bash
+# neo specific
+
+VENDOR=1457
+PRODUCT=0
+
+function get_dfu()
+{
+echo "need to fetch and build dfu-util"
+  svn checkout http://svn.openmoko.org/trunk/src/host/dfu-util
+  cd dfu-util
+  ./autogen.sh
+  ./configure && make && sudo make install
+}
+
+#function flash_uboot()
+#{
+  #sudo ./dfu-util -d 0x$VENDOR:0x$PRODUCT -a 1 -R -D $1
+
+#}
+
+function flash_kernel()
+{
+echo "flashing kernel $1 to the Neo"
+sleep 2
+  sudo ./dfu-util -d 0x$VENDOR:0x$PRODUCT -a "kernel" -R -D $1
+}
+
+
+function flash_image()
+{
+DFU=`which dfu-util`
+if [ -z $DFU ]; then
+ get_dfu
+fi
+echo "flashing image $1 to the Neo"
+sleep 2
+
+#  sudo ./dfu-util -a 5 -R -D $1
+ sudo dfu-util -d 0x$VENDOR:0x$PRODUCT -a "rootfs" -R -D $1
+}
+
+function find_product()
+{
+#various distros seem to have different product ids for the Neo
+  PRODUCT=`lsusb | grep 1457 | awk 'BEGIN{FS=" "}{print $6}' | awk 'BEGIN{FS=":"}{print $2}'`
+  echo $PRODUCT
+}
+
+function find_defaultimage()
+{
+    QTOPIA_IMAGE=`ls /opt/Qtopia/extras/images/qtopia-rootfs*`
+echo $QTOPIA_IMAGE
+
+}
+function show_help()
+{
+  echo "Usage: `basename $0` (-k <uImage kernel image> | -i <jffs2 flash image> )"
+}
+
+
+PRODUCT=`find_product`
+
+if [ $# -eq "0" ] 
+then
+
+flash_image find_defaultimage
+exit 0
+fi  
+
+
+echo "Plug the Neo into USB, hold the AUX button while pushing the power button."
+
+count=10
+ 
+ while (( count >= 0 ))
+ do
+  printf "Flashing will start in $count seconds...\r"
+  sleep 1
+  (( count-- ))
+ done
+echo
+if [ -z $PRODUCT ]; then
+echo "Neo USB phone could not be found. Please plug in and try again."
+fi
+
+while getopts ":k:i:hd" Option
+do
+  case $Option in
+    k ) flash_kernel $OPTARG ;;
+    i ) flash_image $OPTARG ;;
+    h ) show_help ;;
+    d ) flash_image find_defaultimage ;;
+   esac
+done
+shift $(($OPTIND - 1))
+

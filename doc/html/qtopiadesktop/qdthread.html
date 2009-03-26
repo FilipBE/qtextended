@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDThread Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDThread Class Reference</h1>
+<p>The QDThread class extends <a href="foo/../../qthread.html">QThread</a> to include basic synchronization with the calling thread. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDThread&gt;</pre><p>Inherits <a href="foo/../../qthread.html">QThread</a>.</p>
+<ul>
+<li><a href="qdthread-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdthread.html#QDThread">QDThread</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qdthread.html#dtor.QDThread">~QDThread</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qdthread.html#init">init</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qdthread.html#start">start</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qdthread.html#t_init">t_init</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qdthread.html#t_quit">t_quit</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qdthread.html#t_run">t_run</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>8 public functions inherited from <a href="foo/../../qthread.html#public-functions">QThread</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="foo/../../qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="foo/../../qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>3 public slots inherited from <a href="foo/../../qthread.html#public-slots">QThread</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="foo/../../qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>3 signals inherited from <a href="foo/../../qthread.html#signals">QThread</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="foo/../../qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="foo/../../qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>3 static public members inherited from <a href="foo/../../qthread.html#static-public-members">QThread</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="foo/../../qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected functions inherited from <a href="foo/../../qthread.html#protected-functions">QThread</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="foo/../../qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="foo/../../qobject.html#protected-variables">QObject</a></li>
+<li><div class="fn"/>4 static protected members inherited from <a href="foo/../../qthread.html#static-protected-members">QThread</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDThread class extends <a href="foo/../../qthread.html">QThread</a> to include basic synchronization with the calling thread.</p>
+<p><a href="foo/../../qthread.html">QThread</a> does not provide synchronization with the calling thread. The problem is that some objects need to be created on the new thread (due to Qt's threading rules) but need access to information that is not available until the thread is actually running. Another example is needing to do some on-thread setup before the calling thread continues.</p>
+<p>QDThread allows this by providing 2 methods to start the thread. <a href="qdthread.html#init">init</a>() brings the thread up and <a href="qdthread.html#start">start</a>() allows it to continue running. The <a href="qdthread.html#t_init">t_init</a>() function is called on-thread before <a href="qdthread.html#init">init</a>() returns. The <a href="qdthread.html#t_run">t_run</a>() function is called on the thread after <a href="qdthread.html#start">start</a>() is called. The <a href="qdthread.html#t_quit">t_quit</a>() function is called after <a href="qdthread.html#t_run">t_run</a>() returns.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDThread"></a>QDThread::QDThread ( <a href="foo/../../qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a <a href="qdthread.html">QDThread</a> instance with <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QDThread"></a>QDThread::~QDThread ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="init"></a>void QDThread::init ()</h3>
+<p>Bring up the thread. This causes <a href="qdthread.html#t_init">t_init</a>() to be called on the new thread. The init() function will not return until <a href="qdthread.html#t_init">t_init</a>() has completed.</p>
+<h3 class="fn"><a name="start"></a>void QDThread::start ()</h3>
+<p>Start the thread. This causes <a href="qdthread.html#t_run">t_run</a>() to be called on the new thread. If the thread has not been created <a href="qdthread.html#init">init</a>() will be called to bring it up.</p>
+<h3 class="fn"><a name="t_init"></a>void QDThread::t_init ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>On-thread initialization. Objects that need to live in the new thread should be constructed here.</p>
+<h3 class="fn"><a name="t_quit"></a>void QDThread::t_quit ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>On-thread cleanup. Objects created in <a href="qdthread.html#t_init">t_init</a>() should be destroyed here. This is called immediatley after <a href="qdthread.html#t_run">t_run</a>() returns.</p>
+<h3 class="fn"><a name="t_run"></a>void QDThread::t_run ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>This is the main run method. The thread is stopped when this method finishes. The default implementation calls <a href="foo/../../qthread.html#exec">QThread::exec</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

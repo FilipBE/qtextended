@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Test Plan for component 'src/libraries/qtopiacomm'</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Test Plan for component 'src/libraries/qtopiacomm'<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#environment-setup">Environment Setup</a></li>
+<li><a href="#component-test-strategy">Component Test Strategy</a></li>
+<li><a href="#test-details">Test Details</a></li>
+<ul><li><a href="#tst-iasdatabase-testsetattributes">tst_IasDatabase::testSetAttributes</a></li>
+<li><a href="#tst-iasdatabase-testgetattributes">tst_IasDatabase::testGetAttributes</a></li>
+<li><a href="#tst-iasdatabase-testremoveattributes">tst_IasDatabase::testRemoveAttributes</a></li>
+<li><a href="#tst-localdevice-testdevicelist">tst_LocalDevice::testDeviceList</a></li>
+<li><a href="#tst-localdevice-testbringupdown">tst_LocalDevice::testBringUpDown</a></li>
+<li><a href="#tst-localdevice-testqueryremote">tst_LocalDevice::testQueryRemote</a></li>
+<li><a href="#tst-qusbstoragegadget-providertests">tst_QUsbStorageGadget::providerTests</a></li>
+<li><a href="#tst-qusbstoragegadget-gadgettests">tst_QUsbStorageGadget::gadgetTests</a></li>
+<li><a href="#tst-qusbserialgadget-providertests">tst_QUsbSerialGadget::providerTests</a></li>
+<li><a href="#tst-qusbserialgadget-gadgettests">tst_QUsbSerialGadget::gadgetTests</a></li>
+<li><a href="#tst-qusbethernetgadget-providertests">tst_QUsbEthernetGadget::providerTests</a></li>
+<li><a href="#tst-qusbethernetgadget-gadgettests">tst_QUsbEthernetGadget::gadgetTests</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-constructor">tst_QBluetoothLocalDevice::constructor</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-constructor-qstring">tst_QBluetoothLocalDevice::constructor_qstring</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-constructor-qbluetoothaddress">tst_QBluetoothLocalDevice::constructor_qbluetoothaddress</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-address">tst_QBluetoothLocalDevice::address</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-manufacturer">tst_QBluetoothLocalDevice::manufacturer</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-version">tst_QBluetoothLocalDevice::version</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-revision">tst_QBluetoothLocalDevice::revision</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-company">tst_QBluetoothLocalDevice::company</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-name">tst_QBluetoothLocalDevice::name</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-setname">tst_QBluetoothLocalDevice::setName</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-discoverabletimeout">tst_QBluetoothLocalDevice::discoverableTimeout</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-setdiscoverabletimeout">tst_QBluetoothLocalDevice::setDiscoverableTimeout</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-discoverable">tst_QBluetoothLocalDevice::discoverable</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-connectable">tst_QBluetoothLocalDevice::connectable</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-isup">tst_QBluetoothLocalDevice::isUp</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-connections">tst_QBluetoothLocalDevice::connections</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-discoverremotedevices">tst_QBluetoothLocalDevice::discoverRemoteDevices</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-isconnected">tst_QBluetoothLocalDevice::isConnected</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-removeremotealias">tst_QBluetoothLocalDevice::removeRemoteAlias</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-setremotealias">tst_QBluetoothLocalDevice::setRemoteAlias</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-setperiodicdiscoveryenabled">tst_QBluetoothLocalDevice::setPeriodicDiscoveryEnabled</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-isperiodicdiscoveryenabled">tst_QBluetoothLocalDevice::isPeriodicDiscoveryEnabled</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-pincodelength">tst_QBluetoothLocalDevice::pinCodeLength</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-disconnectremotedevice">tst_QBluetoothLocalDevice::disconnectRemoteDevice</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-knowndevices">tst_QBluetoothLocalDevice::knownDevices</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotealias">tst_QBluetoothLocalDevice::remoteAlias</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-lastseen">tst_QBluetoothLocalDevice::lastSeen</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-lastused">tst_QBluetoothLocalDevice::lastUsed</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-paireddevices">tst_QBluetoothLocalDevice::pairedDevices</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-ispaired">tst_QBluetoothLocalDevice::isPaired</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-updateremotedevice">tst_QBluetoothLocalDevice::updateRemoteDevice</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-knowndevices-qdatetime">tst_QBluetoothLocalDevice::knownDevices_qdatetime</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-namechanged">tst_QBluetoothLocalDevice::nameChanged</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-statechanged">tst_QBluetoothLocalDevice::stateChanged</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-discoverabletimeoutchanged">tst_QBluetoothLocalDevice::discoverableTimeoutChanged</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotedeviceconnected">tst_QBluetoothLocalDevice::remoteDeviceConnected</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotedevicedisconnected">tst_QBluetoothLocalDevice::remoteDeviceDisconnected</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotedevicedisappeared">tst_QBluetoothLocalDevice::remoteDeviceDisappeared</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-discoverystarted">tst_QBluetoothLocalDevice::discoveryStarted</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-discoverycompleted">tst_QBluetoothLocalDevice::discoveryCompleted</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotealiaschanged">tst_QBluetoothLocalDevice::remoteAliasChanged</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotealiasremoved">tst_QBluetoothLocalDevice::remoteAliasRemoved</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-pairingcreated">tst_QBluetoothLocalDevice::pairingCreated</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-pairingremoved">tst_QBluetoothLocalDevice::pairingRemoved</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotenameupdated">tst_QBluetoothLocalDevice::remoteNameUpdated</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remotenamefailed">tst_QBluetoothLocalDevice::remoteNameFailed</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-remoteclassupdated">tst_QBluetoothLocalDevice::remoteClassUpdated</a></li>
+<li><a href="#tst-qbluetoothlocaldevice-disconnectremotedevicerequested">tst_QBluetoothLocalDevice::disconnectRemoteDeviceRequested</a></li>
+<li><a href="#tst-qbluetoothlocaldevicemanager-deviceadded">tst_QBluetoothLocalDeviceManager::deviceAdded</a></li>
+<li><a href="#tst-qbluetoothlocaldevicemanager-deviceremoved">tst_QBluetoothLocalDeviceManager::deviceRemoved</a></li>
+<li><a href="#tst-qbluetoothlocaldevicemanager-defaultdevicechanged">tst_QBluetoothLocalDeviceManager::defaultDeviceChanged</a></li>
+<li><a href="#tst-qbluetoothlocaldevicemanager-devices">tst_QBluetoothLocalDeviceManager::devices</a></li>
+<li><a href="#tst-qbluetoothlocaldevicemanager-defaultdevice">tst_QBluetoothLocalDeviceManager::defaultDevice</a></li>
+<li><a href="#tst-qatutils-testquote">tst_QAtUtils::testQuote</a></li>
+<li><a href="#tst-qatutils-testtohex">tst_QAtUtils::testToHex</a></li>
+<li><a href="#tst-qatutils-testfromhex">tst_QAtUtils::testFromHex</a></li>
+<li><a href="#tst-qatutils-testdecodenumber">tst_QAtUtils::testDecodeNumber</a></li>
+<li><a href="#tst-qatutils-testencodenumber">tst_QAtUtils::testEncodeNumber</a></li>
+<li><a href="#tst-qatutils-testnextstring">tst_QAtUtils::testNextString</a></li>
+<li><a href="#tst-qatutils-testparsenumber">tst_QAtUtils::testParseNumber</a></li>
+<li><a href="#tst-qatutils-testskipfield">tst_QAtUtils::testSkipField</a></li>
+<li><a href="#tst-qatutils-testpccp437codec">tst_QAtUtils::testPccp437Codec</a></li>
+<li><a href="#tst-qatutils-testpccp850codec">tst_QAtUtils::testPccp850Codec</a></li>
+<li><a href="#tst-qatutils-testucs2hexcodec">tst_QAtUtils::testUcs2HexCodec</a></li>
+<li><a href="#tst-qatutils-teststripnumber">tst_QAtUtils::testStripNumber</a></li>
+<li><a href="#tst-qatutils-testauxcodecs">tst_QAtUtils::testAuxCodecs</a></li>
+<li><a href="#tst-gsm0710-testcrc">tst_Gsm0710::testCrc</a></li>
+<li><a href="#tst-gsm0710-testcreate">tst_Gsm0710::testCreate</a></li>
+<li><a href="#tst-gsm0710-testcmux">tst_Gsm0710::testCMUX</a></li>
+<li><a href="#tst-gsm0710-teststartup">tst_Gsm0710::testStartup</a></li>
+<li><a href="#tst-gsm0710-testwriteframe">tst_Gsm0710::testWriteFrame</a></li>
+<li><a href="#tst-gsm0710-testopenclose">tst_Gsm0710::testOpenClose</a></li>
+<li><a href="#tst-gsm0710-testreadframe">tst_Gsm0710::testReadFrame</a></li>
+<li><a href="#tst-gsm0710-testreadjoinedframes">tst_Gsm0710::testReadJoinedFrames</a></li>
+<li><a href="#tst-qatresult-testcreate">tst_QAtResult::testCreate</a></li>
+<li><a href="#tst-qatresult-testmodify">tst_QAtResult::testModify</a></li>
+<li><a href="#tst-qatresult-testbasicresults">tst_QAtResult::testBasicResults</a></li>
+<li><a href="#tst-qatresult-testextendedresults">tst_QAtResult::testExtendedResults</a></li>
+<li><a href="#tst-qatresult-testuserdata">tst_QAtResult::testUserData</a></li>
+<li><a href="#tst-qatresult-testparsercreate">tst_QAtResult::testParserCreate</a></li>
+<li><a href="#tst-qatresult-testparsernext">tst_QAtResult::testParserNext</a></li>
+<li><a href="#tst-qatresult-testparserreset">tst_QAtResult::testParserReset</a></li>
+<li><a href="#tst-qatchat-testsettings">tst_QAtChat::testSettings</a></li>
+<li><a href="#tst-qatchat-testcpinterminator">tst_QAtChat::testCPINTerminator</a></li>
+<li><a href="#tst-qatchat-testabortdial">tst_QAtChat::testAbortDial</a></li>
+<li><a href="#tst-qgsmcodec-testfromunicode">tst_QGsmCodec::testFromUnicode</a></li>
+<li><a href="#tst-qgsmcodec-testtounicode">tst_QGsmCodec::testToUnicode</a></li>
+<li><a href="#tst-qgsmcodec-testallunicode">tst_QGsmCodec::testAllUnicode</a></li>
+</ul>
+</ul>
+<a name="environment-setup"></a>
+<h2>Environment Setup</h2>
+<p><a href="qt-extended-test-plan.html#general-environment-setup">General Environment Setup</a> procedures apply for this component.</p>
+<a name="component-test-strategy"></a>
+<h2>Component Test Strategy</h2>
+<p>The <a href="qt-extended-test-plan.html#general-test-strategy">general test strategy</a> applies for this component.</p>
+<a name="test-details"></a>
+<h2>Test Details</h2>
+<a name="tst-iasdatabase-testsetattributes"></a>
+<h3>tst_IasDatabase::testSetAttributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qiriasdatabase.html">QIrIasDatabase</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/ir/tst_iasdatabase/tst_iasdatabase.cpp</td></tr>
+</table></p>
+<a name="tst-iasdatabase-testgetattributes"></a>
+<h3>tst_IasDatabase::testGetAttributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qiriasdatabase.html">QIrIasDatabase</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/ir/tst_iasdatabase/tst_iasdatabase.cpp</td></tr>
+</table></p>
+<a name="tst-iasdatabase-testremoveattributes"></a>
+<h3>tst_IasDatabase::testRemoveAttributes</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qiriasdatabase.html">QIrIasDatabase</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/ir/tst_iasdatabase/tst_iasdatabase.cpp</td></tr>
+</table></p>
+<a name="tst-localdevice-testdevicelist"></a>
+<h3>tst_LocalDevice::testDeviceList</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qirlocaldevice.html">QIrLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/ir/tst_localdevice/tst_localdevice.cpp</td></tr>
+</table></p>
+<a name="tst-localdevice-testbringupdown"></a>
+<h3>tst_LocalDevice::testBringUpDown</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qirlocaldevice.html">QIrLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/ir/tst_localdevice/tst_localdevice.cpp</td></tr>
+</table></p>
+<a name="tst-localdevice-testqueryremote"></a>
+<h3>tst_LocalDevice::testQueryRemote</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qirlocaldevice.html">QIrLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/ir/tst_localdevice/tst_localdevice.cpp</td></tr>
+</table></p>
+<a name="tst-qusbstoragegadget-providertests"></a>
+<h3>tst_QUsbStorageGadget::providerTests</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qusbstoragegadget.html">QUsbStorageGadget</a>,<a href="qusbstoragegadgetprovider.html">QUsbStorageGadgetProvider</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/usb/tst_qusbstoragegadget/tst_qusbstoragegadget.cpp</td></tr>
+</table></p>
+<a name="tst-qusbstoragegadget-gadgettests"></a>
+<h3>tst_QUsbStorageGadget::gadgetTests</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qusbstoragegadget.html">QUsbStorageGadget</a>,<a href="qusbstoragegadgetprovider.html">QUsbStorageGadgetProvider</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/usb/tst_qusbstoragegadget/tst_qusbstoragegadget.cpp</td></tr>
+</table></p>
+<a name="tst-qusbserialgadget-providertests"></a>
+<h3>tst_QUsbSerialGadget::providerTests</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qusbserialgadget.html">QUsbSerialGadget</a>,<a href="qusbserialgadgetprovider.html">QUsbSerialGadgetProvider</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/usb/tst_qusbserialgadget/tst_qusbserialgadget.cpp</td></tr>
+</table></p>
+<a name="tst-qusbserialgadget-gadgettests"></a>
+<h3>tst_QUsbSerialGadget::gadgetTests</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qusbserialgadget.html">QUsbSerialGadget</a>,<a href="qusbserialgadgetprovider.html">QUsbSerialGadgetProvider</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/usb/tst_qusbserialgadget/tst_qusbserialgadget.cpp</td></tr>
+</table></p>
+<a name="tst-qusbethernetgadget-providertests"></a>
+<h3>tst_QUsbEthernetGadget::providerTests</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qusbethernetgadget.html">QUsbEthernetGadget</a>,<a href="qusbethernetgadgetprovider.html">QUsbEthernetGadgetProvider</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/usb/tst_qusbethernetgadget/tst_qusbethernetgadget.cpp</td></tr>
+</table></p>
+<a name="tst-qusbethernetgadget-gadgettests"></a>
+<h3>tst_QUsbEthernetGadget::gadgetTests</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qusbethernetgadget.html">QUsbEthernetGadget</a>,<a href="qusbethernetgadgetprovider.html">QUsbEthernetGadgetProvider</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/usb/tst_qusbethernetgadget/tst_qusbethernetgadget.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-constructor"></a>
+<h3>tst_QBluetoothLocalDevice::constructor</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-constructor-qstring"></a>
+<h3>tst_QBluetoothLocalDevice::constructor_qstring</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-constructor-qbluetoothaddress"></a>
+<h3>tst_QBluetoothLocalDevice::constructor_qbluetoothaddress</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-address"></a>
+<h3>tst_QBluetoothLocalDevice::address</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-manufacturer"></a>
+<h3>tst_QBluetoothLocalDevice::manufacturer</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-version"></a>
+<h3>tst_QBluetoothLocalDevice::version</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-revision"></a>
+<h3>tst_QBluetoothLocalDevice::revision</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-company"></a>
+<h3>tst_QBluetoothLocalDevice::company</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-name"></a>
+<h3>tst_QBluetoothLocalDevice::name</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-setname"></a>
+<h3>tst_QBluetoothLocalDevice::setName</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-discoverabletimeout"></a>
+<h3>tst_QBluetoothLocalDevice::discoverableTimeout</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-setdiscoverabletimeout"></a>
+<h3>tst_QBluetoothLocalDevice::setDiscoverableTimeout</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-discoverable"></a>
+<h3>tst_QBluetoothLocalDevice::discoverable</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-connectable"></a>
+<h3>tst_QBluetoothLocalDevice::connectable</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-isup"></a>
+<h3>tst_QBluetoothLocalDevice::isUp</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-connections"></a>
+<h3>tst_QBluetoothLocalDevice::connections</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-discoverremotedevices"></a>
+<h3>tst_QBluetoothLocalDevice::discoverRemoteDevices</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-isconnected"></a>
+<h3>tst_QBluetoothLocalDevice::isConnected</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-removeremotealias"></a>
+<h3>tst_QBluetoothLocalDevice::removeRemoteAlias</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-setremotealias"></a>
+<h3>tst_QBluetoothLocalDevice::setRemoteAlias</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-setperiodicdiscoveryenabled"></a>
+<h3>tst_QBluetoothLocalDevice::setPeriodicDiscoveryEnabled</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-isperiodicdiscoveryenabled"></a>
+<h3>tst_QBluetoothLocalDevice::isPeriodicDiscoveryEnabled</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-pincodelength"></a>
+<h3>tst_QBluetoothLocalDevice::pinCodeLength</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-disconnectremotedevice"></a>
+<h3>tst_QBluetoothLocalDevice::disconnectRemoteDevice</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-knowndevices"></a>
+<h3>tst_QBluetoothLocalDevice::knownDevices</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotealias"></a>
+<h3>tst_QBluetoothLocalDevice::remoteAlias</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-lastseen"></a>
+<h3>tst_QBluetoothLocalDevice::lastSeen</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-lastused"></a>
+<h3>tst_QBluetoothLocalDevice::lastUsed</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-paireddevices"></a>
+<h3>tst_QBluetoothLocalDevice::pairedDevices</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-ispaired"></a>
+<h3>tst_QBluetoothLocalDevice::isPaired</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-updateremotedevice"></a>
+<h3>tst_QBluetoothLocalDevice::updateRemoteDevice</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-knowndevices-qdatetime"></a>
+<h3>tst_QBluetoothLocalDevice::knownDevices_qdatetime</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-namechanged"></a>
+<h3>tst_QBluetoothLocalDevice::nameChanged</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-statechanged"></a>
+<h3>tst_QBluetoothLocalDevice::stateChanged</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-discoverabletimeoutchanged"></a>
+<h3>tst_QBluetoothLocalDevice::discoverableTimeoutChanged</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotedeviceconnected"></a>
+<h3>tst_QBluetoothLocalDevice::remoteDeviceConnected</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotedevicedisconnected"></a>
+<h3>tst_QBluetoothLocalDevice::remoteDeviceDisconnected</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotedevicedisappeared"></a>
+<h3>tst_QBluetoothLocalDevice::remoteDeviceDisappeared</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-discoverystarted"></a>
+<h3>tst_QBluetoothLocalDevice::discoveryStarted</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-discoverycompleted"></a>
+<h3>tst_QBluetoothLocalDevice::discoveryCompleted</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotealiaschanged"></a>
+<h3>tst_QBluetoothLocalDevice::remoteAliasChanged</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotealiasremoved"></a>
+<h3>tst_QBluetoothLocalDevice::remoteAliasRemoved</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-pairingcreated"></a>
+<h3>tst_QBluetoothLocalDevice::pairingCreated</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-pairingremoved"></a>
+<h3>tst_QBluetoothLocalDevice::pairingRemoved</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotenameupdated"></a>
+<h3>tst_QBluetoothLocalDevice::remoteNameUpdated</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remotenamefailed"></a>
+<h3>tst_QBluetoothLocalDevice::remoteNameFailed</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-remoteclassupdated"></a>
+<h3>tst_QBluetoothLocalDevice::remoteClassUpdated</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevice-disconnectremotedevicerequested"></a>
+<h3>tst_QBluetoothLocalDevice::disconnectRemoteDeviceRequested</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevice.html">QBluetoothLocalDevice</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevice/tst_qbluetoothlocaldevice.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevicemanager-deviceadded"></a>
+<h3>tst_QBluetoothLocalDeviceManager::deviceAdded</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevicemanager.html">QBluetoothLocalDeviceManager</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevicemanager/tst_qbluetoothlocaldevicemanager.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevicemanager-deviceremoved"></a>
+<h3>tst_QBluetoothLocalDeviceManager::deviceRemoved</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevicemanager.html">QBluetoothLocalDeviceManager</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevicemanager/tst_qbluetoothlocaldevicemanager.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevicemanager-defaultdevicechanged"></a>
+<h3>tst_QBluetoothLocalDeviceManager::defaultDeviceChanged</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevicemanager.html">QBluetoothLocalDeviceManager</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevicemanager/tst_qbluetoothlocaldevicemanager.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevicemanager-devices"></a>
+<h3>tst_QBluetoothLocalDeviceManager::devices</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevicemanager.html">QBluetoothLocalDeviceManager</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevicemanager/tst_qbluetoothlocaldevicemanager.cpp</td></tr>
+</table></p>
+<a name="tst-qbluetoothlocaldevicemanager-defaultdevice"></a>
+<h3>tst_QBluetoothLocalDeviceManager::defaultDevice</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Application</b></td><td><a href="qbluetoothlocaldevicemanager.html">QBluetoothLocalDeviceManager</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Integration Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/bluetooth/tst_qbluetoothlocaldevicemanager/tst_qbluetoothlocaldevicemanager.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testquote"></a>
+<h3>tst_QAtUtils::testQuote</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testtohex"></a>
+<h3>tst_QAtUtils::testToHex</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testfromhex"></a>
+<h3>tst_QAtUtils::testFromHex</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testdecodenumber"></a>
+<h3>tst_QAtUtils::testDecodeNumber</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testencodenumber"></a>
+<h3>tst_QAtUtils::testEncodeNumber</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testnextstring"></a>
+<h3>tst_QAtUtils::testNextString</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testparsenumber"></a>
+<h3>tst_QAtUtils::testParseNumber</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testskipfield"></a>
+<h3>tst_QAtUtils::testSkipField</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testpccp437codec"></a>
+<h3>tst_QAtUtils::testPccp437Codec</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testpccp850codec"></a>
+<h3>tst_QAtUtils::testPccp850Codec</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testucs2hexcodec"></a>
+<h3>tst_QAtUtils::testUcs2HexCodec</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-teststripnumber"></a>
+<h3>tst_QAtUtils::testStripNumber</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-qatutils-testauxcodecs"></a>
+<h3>tst_QAtUtils::testAuxCodecs</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatutils.html">QAtUtils</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatutils/tst_qatutils.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testcrc"></a>
+<h3>tst_Gsm0710::testCrc</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testcreate"></a>
+<h3>tst_Gsm0710::testCreate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testcmux"></a>
+<h3>tst_Gsm0710::testCMUX</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-teststartup"></a>
+<h3>tst_Gsm0710::testStartup</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testwriteframe"></a>
+<h3>tst_Gsm0710::testWriteFrame</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testopenclose"></a>
+<h3>tst_Gsm0710::testOpenClose</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testreadframe"></a>
+<h3>tst_Gsm0710::testReadFrame</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-gsm0710-testreadjoinedframes"></a>
+<h3>tst_Gsm0710::testReadJoinedFrames</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_gsm0710/tst_gsm0710.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testcreate"></a>
+<h3>tst_QAtResult::testCreate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testmodify"></a>
+<h3>tst_QAtResult::testModify</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testbasicresults"></a>
+<h3>tst_QAtResult::testBasicResults</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testextendedresults"></a>
+<h3>tst_QAtResult::testExtendedResults</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testuserdata"></a>
+<h3>tst_QAtResult::testUserData</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testparsercreate"></a>
+<h3>tst_QAtResult::testParserCreate</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testparsernext"></a>
+<h3>tst_QAtResult::testParserNext</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatresult-testparserreset"></a>
+<h3>tst_QAtResult::testParserReset</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatresult.html">QAtResult</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatresult/tst_qatresult.cpp</td></tr>
+</table></p>
+<a name="tst-qatchat-testsettings"></a>
+<h3>tst_QAtChat::testSettings</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatchat.html">QAtChat</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatchat/tst_qatchat.cpp</td></tr>
+</table></p>
+<a name="tst-qatchat-testcpinterminator"></a>
+<h3>tst_QAtChat::testCPINTerminator</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatchat.html">QAtChat</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatchat/tst_qatchat.cpp</td></tr>
+</table></p>
+<a name="tst-qatchat-testabortdial"></a>
+<h3>tst_QAtChat::testAbortDial</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qatchat.html">QAtChat</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qatchat/tst_qatchat.cpp</td></tr>
+</table></p>
+<a name="tst-qgsmcodec-testfromunicode"></a>
+<h3>tst_QGsmCodec::testFromUnicode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qgsmcodec.html">QGsmCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qgsmcodec/tst_qgsmcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qgsmcodec-testtounicode"></a>
+<h3>tst_QGsmCodec::testToUnicode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qgsmcodec.html">QGsmCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qgsmcodec/tst_qgsmcodec.cpp</td></tr>
+</table></p>
+<a name="tst-qgsmcodec-testallunicode"></a>
+<h3>tst_QGsmCodec::testAllUnicode</h3>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><b>Requirement Summary</b></td><td</td></tr>
+<tr valign="top" class="even"><td><b>Tested Class</b></td><td><a href="qgsmcodec.html">QGsmCodec</a></td></tr>
+<tr valign="top" class="odd"><td><b>Test Type</b></td><td>Automated Unit Test</td></tr>
+<tr valign="top" class="even"><td><b>File Name</b></td><td>&lt;basedir&gt;/src/libraries/qtopiacomm/tests/serial/tst_qgsmcodec/tst_qgsmcodec.cpp</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

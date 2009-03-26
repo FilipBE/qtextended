@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Opt System</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Opt System<br /><span class="subtitle"></span>
+</h1>
+<p>This document describes the opt system, used to decide which options are available in configure.</p>
+<ul><li><a href="#defining-a-new-opt-variable">Defining a new opt variable</a></li>
+<li><a href="#type">type</a></li>
+<li><a href="#setters">Setters</a></li>
+<li><a href="#accessing-variables">Accessing variables</a></li>
+<li><a href="#extra-attributes">Extra attributes</a></li>
+<li><a href="#default-values">Default values</a></li>
+<li><a href="#conditional-defaults">Conditional defaults</a></li>
+<li><a href="#undefined-values">Undefined values</a></li>
+<li><a href="#computed-defaults">Computed defaults</a></li>
+<li><a href="#attributes-that-take-multiple-types">Attributes that take multiple types</a></li>
+<li><a href="#config-pri">config_pri</a></li>
+<li><a href="#opt-call">opt_call</a></li>
+</ul>
+<a name="defining-a-new-opt-variable"></a>
+<h2>Defining a new opt variable</h2>
+<p>It's a little non-intuitive but easy enough to fill out.</p>
+<pre>    set_optvar(&quot;name&quot;, +{
+        &quot;attribute&quot; =&gt; &quot;value&quot;,
+        &quot;attribute&quot; =&gt; &quot;value&quot;,
+    });</pre>
+<p>There are a number of attributes with specific meanings:</p>
+<ul>
+<li>type<p>Specifies the type of option (mandatory).</p>
+</li>
+<li>set/unset/add/remove[func|aliases]<p>The setters. These are described below.</p>
+</li>
+<li>arg<p>The name of the value (displayed in the help output).</p>
+</li>
+<li>available<p>List the available values (value and list only).</p>
+</li>
+<li>default<p>Apply this default to the variable if the user does not enter one on the commandline.</p>
+</li>
+<li>value<p>The value of the variable. Can be undefined. For lists this is an array reference.</p>
+</li>
+<li>visible<p>Used to tell if the option is visible to the user.</p>
+</li>
+<li>autodep<p>Used to tell if the option is suitable for the current configuration (can have the default applied).</p>
+</li>
+<li>auto<p>Indicates an option that was taken from the default or generated. This should be set in code when generating a value.</p>
+</li>
+<li>silentignore<p>Silently ignore some of the switches if the option is not visible.</p>
+</li>
+<li><a href="#config-pri">config_pri</a><p>List the code that should be put into config.pri.</p>
+</li>
+<li>no_keep<p>Do not save this option in config.status.</p>
+</li>
+<li>force_default<p>Apply the default even if the option is not visible.</p>
+</li>
+<li>die_if_not_auto<p>Specify the argument to show the user if the default argument is not correct. This should only apply to hidden options like -helix.</p>
+</li>
+<li>tested<p>Indicates that this default is going to be tested (shows up in the help output as <tt>+</tt> instead of <tt>*</tt>).</p>
+</li>
+<li>feature<p>The option is a feature.</p>
+</li>
+<li>module<p>The option is controlled by a module. These exist for legacy compatibility.</p>
+</li>
+<li>deprecated<p>A message to be output that indicates this option is deprecated (used for variant switches too).</p>
+</li>
+</ul>
+<p>The order that options are presented to the user is based on the order that they appear in configure.</p>
+<a name="type"></a>
+<h2>type</h2>
+<p>The type is mandatory.</p>
+<ul>
+<li>bool<p>A boolean option. Has a value of 1 or 0.</p>
+</li>
+<li>value<p>A string.</p>
+</li>
+<li>list<p>A list. Defaults to an empty list.</p>
+</li>
+<li>placeholder<p>A placeholder exists to get values into config.cache/current.pri. It does not have switches.</p>
+</li>
+</ul>
+<p>Note that only the list type has a default value. The other types have a default value of <tt>undef</tt>.</p>
+<a name="setters"></a>
+<h2>Setters</h2>
+<p>There are 4 setters.</p>
+<ul>
+<li>set<p>Set the value.</p>
+</li>
+<li>unset<p>Clear the value (bool only).</p>
+</li>
+<li>add<p>Add to the value (list only).</p>
+</li>
+<li>remove<p>Remove from the value (list only).</p>
+</li>
+</ul>
+<p>There are 2 ways to define these depending on if you want help for each switch or one set of help for all switches. Using help for each switch is typically done for bool types.</p>
+<pre>    &quot;set&quot; =&gt; [ &quot;%&quot;, &quot;Enable foo.&quot; ],
+    &quot;unset&quot; =&gt; [ &quot;no-%&quot;, &quot;Disable foo.&quot; ],</pre>
+<p>Using help for all switches is typically done for list types.</p>
+<pre>    &quot;add&quot; =&gt; &quot;add-%=s&quot;,
+    &quot;remove&quot; =&gt; &quot;remove-%=s&quot;,
+    &quot;set&quot; =&gt; [ &quot;%s=s&quot;, &quot;Select the things to build.&quot; ],</pre>
+<p>Complex list types may wish to avoid <tt>set</tt> as it requires items to be split on comma or space.</p>
+<p>The <tt>%</tt> in the above is expanded to the opt name. Any <tt>_</tt> in the opt name are converted to <tt>-</tt> for the switch.</p>
+<p>Note that value and list types must have <tt>=s</tt> (which tells Getopt to accept an argument) and bool types cannot have this.</p>
+<p>List types should set arg to multiple values with a comma.</p>
+<pre>    set_optvar(&quot;myopts&quot;, +{
+        &quot;type&quot; =&gt; &quot;list&quot;,
+        &quot;add&quot; =&gt; [ &quot;%=s&quot;, &quot;Add opt.&quot; ],
+        &quot;remove&quot; =&gt; [ &quot;no-%=s&quot;, &quot;Remove opt.&quot; ],
+        &quot;set&quot; =&gt; [ &quot;set-%=s&quot;, &quot;Set all opts.&quot; ],
+        &quot;arg&quot; =&gt; &quot;opt,opt&quot;,
+    });</pre>
+<p>The opt system will only list up to the comma for the add and remove help.</p>
+<p>Note, an option that has <tt>&quot;hidden&quot;</tt> as its help will not be displayed in configure -help but will still be accepted.</p>
+<p>Aliases exist for compatibility. Every setter can have aliases. They are set as a list.</p>
+<pre>    set_optvar(&quot;myopt&quot;, +{
+        &quot;type&quot; =&gt; &quot;bool&quot;,
+        &quot;set&quot; =&gt; [ &quot;%&quot;, &quot;Enable foo.&quot; ],
+        &quot;setaliases&quot; =&gt; [ &quot;foo&quot;, &quot;bar&quot; ],
+    });</pre>
+<p>If the user enters one of these switches they will be given the following message.</p>
+<pre>    WARNING: -foo is deprecated. Please use -myopt instead.</pre>
+<p>Every setter can also have a function that is called after applying the value. This can be handy when turning on one option implies another option.</p>
+<pre>    set_optvar(&quot;myopt&quot;, +{
+        &quot;type&quot; =&gt; &quot;bool&quot;,
+        &quot;set&quot; =&gt; [ &quot;%&quot;, &quot;Enable foo.&quot; ],
+        &quot;setfunc&quot; =&gt; sub { opt(&quot;otheropt&quot;) = 1; },
+    });</pre>
+<a name="accessing-variables"></a>
+<h2>Accessing variables</h2>
+<p>The simple case is easy.</p>
+<pre>    opt(&quot;variable&quot;) = &quot;foo&quot;;
+    print &quot;I got &quot;.opt(&quot;variable&quot;).&quot;\n&quot;;</pre>
+<p>Lists are a bit harder.</p>
+<pre>    # Store the ref and access via stored copy
+    my $ref = opt(&quot;variable&quot;);
+    push(@$ref, &quot;foo&quot;);
+    print &quot;I got &quot;.join(&quot; &quot;, @$ref).&quot;\n&quot;;
+
+    # Access directly
+    for ( @{opt(&quot;variable&quot;)} ) {
+        print &quot;I got $_\n&quot;;
+    }</pre>
+<p>You can access indivitual attributes too. This could come in handy if you need to calculate a default (before opt_get_options() is called).</p>
+<pre>    opt(&quot;variable&quot;, &quot;default&quot;) = 2;</pre>
+<a name="extra-attributes"></a>
+<h2>Extra attributes</h2>
+<p>You can create your own attributes. It is recommended to declare your attributes up front, even if you give them an empty value. This is required for lists. Here's some extra attributes being initialised.</p>
+<pre>    &quot;color&quot; =&gt; &quot;&quot;,
+    &quot;frobnitz&quot; =&gt; [],</pre>
+<a name="default-values"></a>
+<h2>Default values</h2>
+<p>Part of the reason for implementing the new opt system was for default value detection and notification. However, there are some caveats here.</p>
+<ul>
+<li>Static defaults are easy, just set them before the options are obtained and they'll be set/reported fine.</li>
+<li>Generated defaults that can be calculated before the options are obtained are almost as easy. Call opt(&quot;variable&quot;, &quot;default&quot;) = 2; and they'll be set/reported fine.</li>
+<li>A default that shouldn't be reported should be saved to the <tt>value</tt> attribute rather than the <tt>default</tt> attribute.</li>
+</ul>
+<p>If you need to generate a default after the defaults have been assigned, you must do some extra work. I will include an example for the qvfb option since it relies on other options so it can't be figured out until after the defaults have been applied.</p>
+<ul>
+<li>value is not set (undef).</li>
+<li>setfunc sets the value to 1.</li>
+<li>unsetfunc sets the value to 0.</li>
+<li>If the value is still undef and <tt>opt(&quot;xplatform&quot;)</tt> has a value, the value is set to 0.</li>
+<li>If the value is still undef then the qconfig.pri file is examined. If QT_NO_QWS_VFB is found, the value is set to 0.</li>
+<li>If the value is still undef then the value is set to 1.</li>
+</ul>
+<p>If the value is changed from undef then the user needs to know it was an automatic default. Setting the <tt>auto</tt> attribute to a non-zero value will make this happen.</p>
+<pre>    opt(&quot;qvfb&quot;) = 1;
+    opt(&quot;qvfb&quot;, &quot;auto&quot;) = 1;</pre>
+<p>A caveat here is that list variables will not have a value of undef. Instead they will have a value equal to the reference to an empty list. In other words, don't set <tt>auto</tt> for a null list!</p>
+<a name="conditional-defaults"></a>
+<h2>Conditional defaults</h2>
+<p>Variables that are specific to Qt Extended or Qt Extended Sync Agent should use the <tt>visible</tt> and <tt>autodep</tt> attributes.</p>
+<pre>    set_optvar( &quot;quicklaunch&quot;, +{
+        &quot;set&quot; =&gt; [ &quot;%&quot;,
+            &quot;Use the quicklaunch method of speeding up application loading. &quot;.
+            &quot;Applications that allow it are built as plugins.&quot; ],
+        &quot;unset&quot; =&gt; [ &quot;no-quicklaunch&quot;,
+            &quot;Don't use the quicklaunch method of application loading.&quot; ],
+        &quot;default&quot; =&gt; 1,
+        &quot;visible&quot; =&gt; sub { $build_core || $build_pda || $build_phone },
+        &quot;autodep&quot; =&gt; sub { opt(&quot;edition&quot;) },
+    });</pre>
+<p>This means that the switches aren't available if you can't build Qt Extended and the default value stuff isn't displayed if <tt>opt(&quot;edition&quot;)</tt> isn't set (only Qt Extended Sync Agent is being built). These functions can also be used for platform-specific settings.</p>
+<a name="undefined-values"></a>
+<h2>Undefined values</h2>
+<p>If an opt variable have no <tt>default</tt> and the <tt>value</tt> is not set, it will have an undefined value. This can cause problems if you try to use the variable later. Here's some examples of how this can affect you. Specifically, you should ensure that warnings are not going to be produced.</p>
+<pre>    if ( opt(&quot;variable&quot;) ) {
+        # variable has a non-zero, defined value
+    }
+    if ( opt(&quot;variable&quot;) == 1 ) {
+        # variable has a value of 1 (will warn if the value is undefined)
+    }
+    if ( !opt(&quot;variable&quot;) ) {
+        # variable has a zero or undefined value
+    }
+    if ( !defined(opt(&quot;variable&quot;)) ) {
+        # variable has an undefined value
+    }
+    if ( defined(opt(&quot;variable&quot;)) &amp;&amp; opt(&quot;variable&quot;) == 0 ) {
+        # variable is defined and has a value of 0
+    }</pre>
+<a name="computed-defaults"></a>
+<h2>Computed defaults</h2>
+<p>If your generated default is merely dependant on another option, you can express that in this way.</p>
+<pre>    my %options = ( &quot;foo&quot; =&gt; &quot;1&quot;, &quot;bar&quot; =&gt; &quot;2&quot;, &quot;baz&quot; =&gt; &quot;3&quot; );
+    ...
+        &quot;default&quot; =&gt; sub { $options{opt_resolve(&quot;othervar&quot;)} },
+        &quot;visref&quot; =&gt; sub { opt(&quot;othervar&quot;) },
+        &quot;autodep&quot; =&gt; sub { opt(&quot;othervar&quot;) },</pre>
+<p><tt>opt_resolve</tt> causes the variable's real or default value to be returned. This is required when <tt>othervar</tt> might be null while the help is showing (eg. The <tt>edition</tt> value has a default but it's not yet applied during the help display).</p>
+<a name="attributes-that-take-multiple-types"></a>
+<h2>Attributes that take multiple types</h2>
+<p>There are some attributes that can take multiple types. All of these can accept a scalar, array or code block.</p>
+<ul>
+<li>array (available, <a href="#config-pri">config_pri</a>)<p>Scalars are treated as single-item arrays. Code blocks are evaluated in array context.</p>
+</li>
+<li>scalar (default, visible, autodep, showauto)<p>Arrays are joined with a space. Code blocks are evaluated in scalar context.</p>
+</li>
+</ul>
+<a name="config-pri"></a>
+<h2>config_pri</h2>
+<p>This attribute is handled by write_config_pri.</p>
+<p>If the option has the <tt>config_pri</tt> attribute and is visible, it is evaluated as a series of commands.</p>
+<p>If the command contains <tt>%</tt>, it is printed with <tt>%</tt> replaced by <tt>opt(&quot;option&quot;, &quot;value&quot;)</tt> and <tt>%{foo}</tt> replaced by <tt>opt(&quot;option&quot;, &quot;foo&quot;)</tt>.</p>
+<p>If the command doesn't contain <tt>%</tt> it is printed if the value is not null or empty.</p>
+<p>You can add flags by prefixing a command with <tt>()</tt>. The following flags are available:</p>
+<ul>
+<li>!<p>print the command if the value is null or empty (ie. reverse the logic).</p>
+</li>
+</ul>
+<a name="opt-call"></a>
+<h2>opt_call</h2>
+<p>Some options have side effects. Things like adding/removing modules, and anything with a setter func may have problems if you enable them in code with just:</p>
+<pre>    opt(&quot;option&quot;) = 1;</pre>
+<p>The <a href="#opt-call">opt_call</a> function allows you to invoke the function that is invoked when the users sets configure switches. This ensures that any side effects will also take place.</p>
+<pre>    opt_call(&quot;option&quot;, &quot;set&quot;, 1);</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

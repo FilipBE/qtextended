@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QIMActionDescription Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QIMActionDescription Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QIMActionDescription class provides a way to define a <a href="qaction.html">QAction</a> for a <a href="qtopiainputmethod.html">QtopiaInputMethod</a> in the <a href="qsoftmenubar.html">QSoftMenuBar</a> <a href="qmenu.html">QMenu</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;QIMActionDescription&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qimactiondescription-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qimactiondescription.html#QIMActionDescription">QIMActionDescription</a></b> ( const QIMActionDescription &amp; <i>original</i> )</li>
+<li><div class="fn"/><b><a href="qimactiondescription.html#QIMActionDescription-2">QIMActionDescription</a></b> ( int <i>id</i> = 0, QString <i>label</i> = QString(), QString <i>iconFileName</i> = QString() )</li>
+<li><div class="fn"/><b><a href="qimactiondescription.html#dtor.QIMActionDescription">~QIMActionDescription</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qimactiondescription.html#deserialize">deserialize</a></b> ( T &amp; <i>stream</i> )</li>
+<li><div class="fn"/>QString <b><a href="qimactiondescription.html#iconFileName">iconFileName</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qimactiondescription.html#id">id</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qimactiondescription.html#label">label</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qimactiondescription.html#serialize">serialize</a></b> ( T &amp; <i>stream</i> ) const</li>
+<li><div class="fn"/>void <b><a href="qimactiondescription.html#setIconFileName">setIconFileName</a></b> ( const QString &amp; <i>string</i> )</li>
+<li><div class="fn"/>void <b><a href="qimactiondescription.html#setId">setId</a></b> ( const int <i>id</i> )</li>
+<li><div class="fn"/>void <b><a href="qimactiondescription.html#setLabel">setLabel</a></b> ( const QString &amp; <i>string</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QIMActionDescription class provides a way to define a <a href="qaction.html">QAction</a> for a <a href="qtopiainputmethod.html">QtopiaInputMethod</a> in the <a href="qsoftmenubar.html">QSoftMenuBar</a> <a href="qmenu.html">QMenu</a>.</p>
+<p>The menu in which <a href="qtopiainputmethod.html">QtopiaInputMethod</a> actions will eventually displayed will typically be in a different process from the input method itself (which runs in the server). In order to avoid confusion, the simple QIMActionDescription is used rather than QActions on this side.</p>
+<p>The <i>label</i> attribute is used as the label of the final <a href="qaction.html">QAction</a>.</p>
+<p>the <i>iconFileName</i> argument is a <a href="qstring.html">QString</a>, and is used to find the icon for the action. Note that the file name must be fully qualified, as it will not necessarily be called with the same environment as the inputmethod.</p>
+<p>The <i>id</i> attribute will be passed back to the input method via <tt>menuActionActivated()</tt>, in order to differentiate different actions, so the id field must be unique for each action in an input-method.</p>
+<p><b>Note:</b> 0 is reserved for an unknown or unrecognised menu actions, and negative id values are reserved for system menus. Using these values is not recommended.</p>
+<p>IMActionDescriptions should be created on the heap. The server expects lists of pointers to QIMActionDescriptions, and will delete them when it is finished with them. If constructing the QIMActionDescription is expensive, the copy constructor is very fast, and can be used safely.</p>
+<p>See also <a href="qtopiainputmethod.html">QtopiaInputMethod</a> and <a href="qimactiondescription.html#QIMActionDescription">QIMActionDescription</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QIMActionDescription"></a>QIMActionDescription::QIMActionDescription ( const QIMActionDescription &amp; <i>original</i> )</h3>
+<p>Constructs a shallow copy of the given <a href="qimactiondescription.html">QIMActionDescription</a> <i>original</i>. For more information about shallow copies, see the Implicitly Shared Classes Qt documentation.</p>
+<h3 class="fn"><a name="QIMActionDescription-2"></a>QIMActionDescription::QIMActionDescription ( int <i>id</i> = 0, <a href="qstring.html">QString</a> <i>label</i> = QString(), <a href="qstring.html">QString</a> <i>iconFileName</i> = QString() )</h3>
+<p>The <a href="qimactiondescription.html">QIMActionDescription</a> takes an <i>id</i>, a unique identifier used in notification to differentiate the menu icons. The <i>iconFileName</i> argument is a <a href="qstring.html">QString</a> used to find the picture for the action. Note that the file name must be fully qualified, as it will not necessarily be called with the same environment as the inputmethod.</p>
+<p>The default constructor creates an <a href="qimactiondescription.html">QIMActionDescription</a> with <i>id</i> = 0 (), and empty QStrings for <i>label</i> and <i>iconFileName</i></p>
+<h3 class="fn"><a name="dtor.QIMActionDescription"></a>QIMActionDescription::~QIMActionDescription ()</h3>
+<p>Destroys the action description and cleans up</p>
+<h3 class="fn"><a name="deserialize"></a>void QIMActionDescription::deserialize ( T &amp; <i>stream</i> )</h3>
+<p>Convert data from <i>stream</i> to an action description. Used in converting <a href="qimactiondescription.html">QIMActionDescription</a> from <a href="qvariant.html">QVariant</a>.</p>
+<h3 class="fn"><a name="iconFileName"></a><a href="qstring.html">QString</a> QIMActionDescription::iconFileName () const</h3>
+<p>Returns the fully-qualified file name used to create the icon for this menu item.</p>
+<p>See also <a href="qimactiondescription.html#setIconFileName">setIconFileName</a>().</p>
+<h3 class="fn"><a name="id"></a>int QIMActionDescription::id () const</h3>
+<p>Returns the identifier for this menu action, used to differentiate actions in the one input method menu.</p>
+<p>See also <a href="qimactiondescription.html#setId">setId</a>().</p>
+<h3 class="fn"><a name="label"></a><a href="qstring.html">QString</a> QIMActionDescription::label () const</h3>
+<p>Returns the user-visible label to be displayed by this menu action.</p>
+<p>See also <a href="qimactiondescription.html#setLabel">setLabel</a>().</p>
+<h3 class="fn"><a name="serialize"></a>void QIMActionDescription::serialize ( T &amp; <i>stream</i> ) const</h3>
+<p>Convert data from an action description to <i>stream</i>. Used in converting <a href="qimactiondescription.html">QIMActionDescription</a> to <a href="qvariant.html">QVariant</a>.</p>
+<h3 class="fn"><a name="setIconFileName"></a>void QIMActionDescription::setIconFileName ( const <a href="qstring.html">QString</a> &amp; <i>string</i> )</h3>
+<p>Sets the icon file name for the input method action to the given <i>string</i>. <b>Note:</b> the icon file name must be fully qualified, as the menu is likely to be created by a seperate process that will not necessarily share the same local address as the input method.</p>
+<p>See also <a href="qimactiondescription.html#iconFileName">iconFileName</a>().</p>
+<h3 class="fn"><a name="setId"></a>void QIMActionDescription::setId ( const int <i>id</i> )</h3>
+<p>Sets the identifier for this menu action to the given <i>id</i>. This value is used to differentiate the actions in the input method menu.</p>
+<p>See also <a href="qimactiondescription.html#id">id</a>().</p>
+<h3 class="fn"><a name="setLabel"></a>void QIMActionDescription::setLabel ( const <a href="qstring.html">QString</a> &amp; <i>string</i> )</h3>
+<p>Sets the user-visible label to be displayed by this menu action to the given <i>string</i>.</p>
+<p>See also <a href="qimactiondescription.html#label">label</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

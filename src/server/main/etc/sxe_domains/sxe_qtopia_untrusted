@@ -1,0 +1,43 @@
+#!/bin/sh
+
+lidsconf -A -s ${BIN} -o /lib -j READONLY
+lidsconf -A -s ${BIN} -o /usr/lib -j READONLY
+
+lidsconf -A -s ${BIN} -o /usr/share -j READONLY
+lidsconf -A -s ${BIN} -o  CAP_DAC_OVERRIDE -j GRANT
+
+lidsconf -A -s ${BIN} -o /proc -j READONLY
+lidsconf -A -s ${BIN} -o /proc/lids -j DENY
+lidsconf -A -s ${BIN} -o /etc/ld.so.cache -j READONLY
+
+lidsconf -A -s ${BIN} -o /tmp -j READONLY
+
+touch ${QCOP_FILE}
+lidsconf -A -s ${BIN} -o ${QCOP_FILE} -j WRITE
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/lib -j READONLY
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/qt_plugins -j READONLY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/services -j READONLY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc -j READONLY
+
+#protect SXE database files
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc/installs -j DENY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc/keyfile -j DENY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc/keyfile.sequence -j DENY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc/manifest -j DENY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc/sxe.policy -j DENY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc/sxe.profiles -j DENY
+
+#give permissions to access resources
+lidsconf -A -s ${BIN} -o $QTOPIA_DIR/pics -j READONLY
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/pics -j READONLY
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/sounds -j READONLY
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/sounds -j READONLY
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/i18n -j READONLY
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/i18n -j READONLY
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/help -j READONLY 
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/help -j READONLY

@@ -1,0 +1,34 @@
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(depends.prf)
+# Process depenencies
+
+# Don't depend on yourself
+PROCESSED_DEPS=$$QTOPIA_ID
+
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(START DEPENDENCIES)
+else:echo(START DEPENDENCIES)
+
+# Strict roots (do this once, not heaps of times)
+STRICT_ROOTS=$$fixpath($$QTOPIA_DEPOT_PATH/src) $$fixpath($$QTOPIA_DEPOT_PATH/src/qtopiadesktop)
+
+!isEmpty(QTOPIA_DEPENDS):printdependrules.commands=$$COMMAND_HEADER\
+    echo DEPENDS: $$QTOPIA_ID depends on $$QTOPIA_DEPENDS
+
+QTOPIA_DEPENDS-=$$QTOPIA_DEPENDS_NO_WARN
+PREV_DEPS=$$QTOPIA_DEPENDS
+# include is used because a function would have issues with scope
+DEP_VAR=DEP_CMDS
+include(depends_block.pri)
+!equals(PREV_DEPS,$$QTOPIA_DEPENDS) {
+    exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(INDIRECT DEPENDENCIES)
+    for(l,forever) {
+        echo(INDIRECT DEPENDENCIES (level $$l))
+        PREV_PROCESSED=$$PROCESSED_DEPS
+        # include is used because a function would have issues with scope
+        DEP_VAR=DEP_I_CMDS
+        include(depends_block.pri)
+        equals(PREV_PROCESSED,$$PROCESSED_DEPS):break()
+    }
+}
+exists($$QPEDIR/src/qtopiadesktop/build/trace_on):message(END DEPENDENCIES)
+else:echo(END DEPENDENCIES)
+

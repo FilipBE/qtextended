@@ -1,0 +1,25 @@
+#!/bin/sh
+
+echo "RUNNING SXE QTOPIA SETUP"
+
+test -z $QTOPIA_DIR && { echo "\$QTOPIA_DIR not defined!"; exit 1; }
+
+# =============================================================================
+#
+# Set up update directory and SXE database
+#
+# =============================================================================
+test -z $UPDATE_DIR && { echo "\$UPDATE_DIR not defined!"; exit 1; }
+/bin/mkdir -p $UPDATE_DIR/bin
+
+test -z $SXE_DATABASE && { echo "\$SXE_DATABASE not defined!"; exit 1; }
+/bin/mkdir -p $SXE_DATABASE
+for i in manifest installs sxe.policy keyfile sxe.profiles keyfile.sequence; do
+    /bin/cp -a $QTOPIA_DIR/etc/$i $SXE_DATABASE/$i
+done
+
+$QTOPIA_DIR/bin/sxe_policy_runner $UPDATE_DIR:$QTOPIA_DIR $QTOPIA_DIR
+
+# must have this rule so packagemanager can be given write rule
+# to installed application binaries otherwise it can't delete them
+lidsconf -A -o $QTOPIA_DIR/plugins/application/libpackagemanager.so -j READONLY

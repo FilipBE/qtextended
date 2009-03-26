@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaSendVia Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaSendVia Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaSendVia class provides an easy way of sending files via communications services. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaSendVia&gt;</pre><ul>
+<li><a href="qtopiasendvia-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qtopiasendvia.html#isDataSupported">isDataSupported</a></b> ( const QString &amp; <i>mimetype</i> )</li>
+<li><div class="fn"/>bool <b><a href="qtopiasendvia.html#isFileSupported">isFileSupported</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qtopiasendvia.html#sendData">sendData</a></b> ( QWidget * <i>parent</i>, const QByteArray &amp; <i>data</i>, const QString &amp; <i>mimetype</i> )</li>
+<li><div class="fn"/>bool <b><a href="qtopiasendvia.html#sendFile">sendFile</a></b> ( QWidget * <i>parent</i>, const QString &amp; <i>filename</i>, const QString &amp; <i>mimetype</i>, const QString &amp; <i>description</i> = QString(), bool <i>autodelete</i> = false )</li>
+<li><div class="fn"/>bool <b><a href="qtopiasendvia.html#sendFile-2">sendFile</a></b> ( QWidget * <i>parent</i>, const QContent &amp; <i>content</i>, bool <i>autodelete</i> = false )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaSendVia class provides an easy way of sending files via communications services.</p>
+<p>QtopiaSendVia makes it easy to send files, business cards, tasks and calendar items to other devices via supported communications protocols, e.g&#x2e; Bluetooth, Infrared, SMS, Email, etc.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="isDataSupported"></a>bool QtopiaSendVia::isDataSupported ( const <a href="qstring.html">QString</a> &amp; <i>mimetype</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if there is a handler in the system that can handle sending the <i>mimetype</i>.</p>
+<p>See also <a href="qtopiasendvia.html#isFileSupported">isFileSupported</a>().</p>
+<h3 class="fn"><a name="isFileSupported"></a>bool QtopiaSendVia::isFileSupported ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if there is a handler in the system that can handle sending files. Not all services can send files, but some, like Bluetooth and Infrared can.</p>
+<p>See also <a href="qtopiasendvia.html#isDataSupported">isDataSupported</a>().</p>
+<h3 class="fn"><a name="sendData"></a>bool QtopiaSendVia::sendData ( <a href="qwidget.html">QWidget</a> * <i>parent</i>, const <a href="qbytearray.html">QByteArray</a> &amp; <i>data</i>, const <a href="qstring.html">QString</a> &amp; <i>mimetype</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Send <i>data</i> with <i>mimetype</i> via a communications link. The user will first be asked what communications medium to use via a standard dialog. Once the user has made their choice, the appropriate handler will be invoked and the data will be sent. The <i>parent</i> specifies the parent widget for the dialog. If the <i>parent</i> is NULL, then the choice dialog is constructed as a top level dialog.</p>
+<p>The user should use <a href="qtopiasendvia.html#isDataSupported">isDataSupported</a>() to check that the data can be sent.</p>
+<p>Returns true if the request could be started, and false otherwise.</p>
+<p>See also <a href="qtopiasendvia.html#sendFile">sendFile</a>(), <a href="qtopiasendvia.html#isDataSupported">isDataSupported</a>(), and <a href="qdialog.html">QDialog</a>.</p>
+<h3 class="fn"><a name="sendFile"></a>bool QtopiaSendVia::sendFile ( <a href="qwidget.html">QWidget</a> * <i>parent</i>, const <a href="qstring.html">QString</a> &amp; <i>filename</i>, const <a href="qstring.html">QString</a> &amp; <i>mimetype</i>, const <a href="qstring.html">QString</a> &amp; <i>description</i> = QString(), bool <i>autodelete</i> = false )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Send <i>filename</i> with <i>mimetype</i> via a communications link. The user will first be asked what communications medium to use via a standard dialog. Once the user has made their choice, the appropriate handler will be invoked and the data will be sent.</p>
+<p>The <i>description</i> will be used as a user-friendly description of the file where necessary in the user interface.</p>
+<p>The <i>parent</i> specifies the parent widget for the dialog. If the <i>parent</i> is NULL, then the choice dialog is constructed as a top level dialog.</p>
+<p>Set <i>autodelete</i> to true if the file is a temporary file. The invoked handler will take care of deleting the file once it has been sent. If you do not wish the file to be deleted, set <i>autodelete</i> to false.</p>
+<p>The user should use <a href="qtopiasendvia.html#isFileSupported">isFileSupported</a>() first to find out whether file sending is supported.</p>
+<p>Returns true if the request could be started, and false otherwise.</p>
+<p>See also <a href="qtopiasendvia.html#isFileSupported">isFileSupported</a>(), <a href="qtopiasendvia.html#sendData">sendData</a>(), and <a href="qdialog.html">QDialog</a>.</p>
+<h3 class="fn"><a name="sendFile-2"></a>bool QtopiaSendVia::sendFile ( <a href="qwidget.html">QWidget</a> * <i>parent</i>, const <a href="qcontent.html">QContent</a> &amp; <i>content</i>, bool <i>autodelete</i> = false )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>This version works on <a href="qcontent.html">QContent</a> objects.</p>
+<p>The file to send is given by <i>content</i>. Set <i>autodelete</i> to true if the file should be deleted once the request is processed. The <i>parent</i> holds the parent widget for the dialog that will be shown to the user.</p>
+<p>The <a href="qcontent.html#name">QContent::name</a>() of <i>content</i> will be used as a user-friendly description of the object to be sent.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

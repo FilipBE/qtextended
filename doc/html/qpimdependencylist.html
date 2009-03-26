@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPimDependencyList Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPimDependencyList Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>, <a href="qttelephonymodule.html">QtTelephonyModule</a>, <a href="qtuimodule.html">QtUiModule</a>]</span>
+</h1>
+<p>The QPimDependencyList class manages the dependencies between QPimRecords. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPimDependencyList&gt;</pre><ul>
+<li><a href="qpimdependencylist-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qpimdependencylist.html#addDependency">addDependency</a></b> ( const QUniqueId &amp; <i>srcid</i>, const QUniqueId &amp; <i>destid</i>, const QString &amp; <i>deptype</i> )</li>
+<li><div class="fn"/>QMap&lt;QString, QUniqueId&gt; <b><a href="qpimdependencylist.html#childrenRecords">childrenRecords</a></b> ( const QUniqueId &amp; <i>recid</i> )</li>
+<li><div class="fn"/>QString <b><a href="qpimdependencylist.html#parentDependencyType">parentDependencyType</a></b> ( const QUniqueId &amp; <i>recid</i> )</li>
+<li><div class="fn"/>QUniqueId <b><a href="qpimdependencylist.html#parentRecord">parentRecord</a></b> ( const QUniqueId &amp; <i>recid</i> )</li>
+<li><div class="fn"/>bool <b><a href="qpimdependencylist.html#removeDependency">removeDependency</a></b> ( const QUniqueId &amp; <i>srcid</i>, const QUniqueId &amp; <i>destid</i>, const QString &amp; <i>deptype</i> )</li>
+<li><div class="fn"/>QList&lt;QUniqueId&gt; <b><a href="qpimdependencylist.html#typedChildrenRecords">typedChildrenRecords</a></b> ( const QUniqueId &amp; <i>recid</i>, const QString &amp; <i>deptype</i> )</li>
+<li><div class="fn"/>bool <b><a href="qpimdependencylist.html#updateDependency">updateDependency</a></b> ( const QUniqueId &amp; <i>srcid</i>, const QUniqueId &amp; <i>destid</i>, const QString &amp; <i>deptype</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPimDependencyList class manages the dependencies between QPimRecords.</p>
+<p>This allows the relationships between certain types of records to be maintained. For example, a <a href="qcontact.html">QContact</a> may have a <a href="qappointment.html">QAppointment</a> that represents the birthday or anniversary of that contact. In this case, the <a href="qappointment.html">QAppointment</a> depends on the <a href="qcontact.html">QContact</a>. When the <a href="qcontact.html">QContact</a> is removed, the QAppointments will be removed as well.</p>
+<p>Currently there are three types of dependencies defined:</p>
+<ul>
+<li><tt>&quot;birthday&quot;</tt> - the parent record is a <a href="qcontact.html">QContact</a>, and the dependent record is the <a href="qappointment.html">QAppointment</a> representing that contact's birthday</li>
+<li><tt>&quot;anniversary&quot;</tt> - the parent record is a <a href="qcontact.html">QContact</a>, and the dependent record is the <a href="qappointment.html">QAppointment</a> representing that contact's anniversary</li>
+<li><tt>&quot;duedate&quot;</tt> - the parent record is a <a href="qtask.html">QTask</a>, and the dependent record is the <a href="qappointment.html">QAppointment</a> representing that task's due date.</li>
+</ul>
+<p>See also <a href="qpim-library.html">Pim Library</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="addDependency"></a>bool QPimDependencyList::addDependency ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>srcid</i>, const <a href="quniqueid.html">QUniqueId</a> &amp; <i>destid</i>, const <a href="qstring.html">QString</a> &amp; <i>deptype</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Records the dependency of the record given by <i>destid</i> on the parent record <i>srcid</i>, with the given dependency type <i>deptype</i>.</p>
+<p>Returns true on success, false otherwise.</p>
+<h3 class="fn"><a name="childrenRecords"></a><a href="qmap.html">QMap</a>&lt;<a href="qstring.html">QString</a>, <a href="quniqueid.html">QUniqueId</a>&gt; QPimDependencyList::childrenRecords ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>recid</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the dependency type and identifier of any records that are a dependant of the record with the given <i>recid</i></p>
+<p>See also <a href="qpimdependencylist.html#typedChildrenRecords">typedChildrenRecords</a>().</p>
+<h3 class="fn"><a name="parentDependencyType"></a><a href="qstring.html">QString</a> QPimDependencyList::parentDependencyType ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>recid</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>If the record identified by <i>recid</i> has a parent dependency, returns the type of the dependency. Otherwise returns a null string.</p>
+<p>See also <a href="qpimdependencylist.html#parentRecord">parentRecord</a>().</p>
+<h3 class="fn"><a name="parentRecord"></a><a href="quniqueid.html">QUniqueId</a> QPimDependencyList::parentRecord ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>recid</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>If the record identified by <i>recid</i> has a parent dependency, returns the identifier for that parent. Otherwise returns a null identifier.</p>
+<p>See also <a href="qpimdependencylist.html#parentDependencyType">parentDependencyType</a>().</p>
+<h3 class="fn"><a name="removeDependency"></a>bool QPimDependencyList::removeDependency ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>srcid</i>, const <a href="quniqueid.html">QUniqueId</a> &amp; <i>destid</i>, const <a href="qstring.html">QString</a> &amp; <i>deptype</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Removes the dependency from the record <i>destid</i> to the record <i>srcid</i>, with the specified dependency type <i>deptype</i>.</p>
+<p>Returns true on success, false otherwise.</p>
+<h3 class="fn"><a name="typedChildrenRecords"></a><a href="qlist.html">QList</a>&lt;<a href="quniqueid.html">QUniqueId</a>&gt; QPimDependencyList::typedChildrenRecords ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>recid</i>, const <a href="qstring.html">QString</a> &amp; <i>deptype</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the identifiers of any records that are a dependant of the record with the given <i>recid</i>, and have the given <i>deptype</i> of dependency.</p>
+<p>See also <a href="qpimdependencylist.html#childrenRecords">childrenRecords</a>().</p>
+<h3 class="fn"><a name="updateDependency"></a>bool QPimDependencyList::updateDependency ( const <a href="quniqueid.html">QUniqueId</a> &amp; <i>srcid</i>, const <a href="quniqueid.html">QUniqueId</a> &amp; <i>destid</i>, const <a href="qstring.html">QString</a> &amp; <i>deptype</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Updates the target of the dependency from the given <i>srcid</i> and type <i>deptype</i> to the new destination <i>destid</i>.</p>
+<p>Returns true on success, false otherwise.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

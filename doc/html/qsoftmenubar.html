@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSoftMenuBar Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSoftMenuBar Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSoftMenuBar class allows the labels in the phone soft menu bar to be set. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSoftMenuBar&gt;</pre><ul>
+<li><a href="qsoftmenubar-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qsoftmenubar.html#FocusState-enum">FocusState</a></b> { EditFocus, NavigationFocus, AnyFocus }</li>
+<li><div class="fn"/>enum <b><a href="qsoftmenubar.html#LabelType-enum">LabelType</a></b> { IconLabel, TextLabel }</li>
+<li><div class="fn"/>enum <b><a href="qsoftmenubar.html#StandardLabel-enum">StandardLabel</a></b> { NoLabel, Options, Ok, Edit, ..., Finish }</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#addMenuTo">addMenuTo</a></b> ( QWidget * <i>widget</i>, QMenu * <i>menu</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#clearLabel">clearLabel</a></b> ( QWidget * <i>widget</i>, int <i>key</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>QMenu * <b><a href="qsoftmenubar.html#createEditMenu">createEditMenu</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qsoftmenubar.html#hasMenu">hasMenu</a></b> ( QWidget * <i>widget</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>const QList&lt;int&gt; &amp; <b><a href="qsoftmenubar.html#keys">keys</a></b> ()</li>
+<li><div class="fn"/>QMenu * <b><a href="qsoftmenubar.html#menuFor">menuFor</a></b> ( QWidget * <i>widget</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>int <b><a href="qsoftmenubar.html#menuKey">menuKey</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#removeMenuFrom">removeMenuFrom</a></b> ( QWidget * <i>widget</i>, QMenu * <i>menu</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#setCancelEnabled">setCancelEnabled</a></b> ( QWidget * <i>widget</i>, bool <i>enable</i> )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#setHelpEnabled">setHelpEnabled</a></b> ( QWidget * <i>widget</i>, bool <i>enable</i> )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#setInputMethodEnabled">setInputMethodEnabled</a></b> ( QWidget * <i>widget</i>, bool <i>enable</i> )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#setLabel">setLabel</a></b> ( QWidget * <i>widget</i>, int <i>key</i>, const QString &amp; <i>pixmap</i>, const QString &amp; <i>text</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubar.html#setLabel-2">setLabel</a></b> ( QWidget * <i>widget</i>, int <i>key</i>, StandardLabel <i>label</i>, FocusState <i>state</i> = AnyFocus )</li>
+<li><div class="fn"/>QWidgetList <b><a href="qsoftmenubar.html#widgetsFor">widgetsFor</a></b> ( const QMenu * <i>menu</i>, FocusState <i>state</i> = AnyFocus )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSoftMenuBar class allows the labels in the phone soft menu bar to be set.</p>
+<p>QSoftMenuBar is used to set the icon/text in the soft menu bar to describe the action performed when pressing the associated soft button. Keep in mind that not all phones have soft keys and therefore may not have a visible soft menu bar. The application should be useable without soft key shortcuts.</p>
+<p>The labels are updated whenever a widget gains or loses focus or their navigation focus state changes. Therefore, the labels should be set for each widget that may gain focus, and will respond to a soft key. The standard Qt and Qt Extended widgets set the labels appropriately, so this is usually only necessary for custom widgets.</p>
+<p>The rule for determining what label is displayed on the soft menu bar and where the key events are delivered is:</p>
+<ul>
+<li>If the current focus widget has claimed the key, then the corresponding context label is shown.</li>
+<li>Otherwise, the widget's parent, grandparent and so on may set the label.</li>
+<li>If the focus widget has not claimed the key and an ancestor has, then the key event will be sent directly to the ancestor.</li>
+</ul>
+<p>QSoftMenuBar labels specify both a pixmap and a text label. The user can choose whether the text or pixmap labels are shown.</p>
+<p>QSoftMenuBar is only available in the Qt Extended Phone Edition.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="FocusState-enum"></a>enum QSoftMenuBar::FocusState</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::EditFocus</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">apply the label setting when the widget has edit focus.</td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::NavigationFocus</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">apply the label setting when the widget does not have edit focus.</td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::AnyFocus</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">apply the label setting regardless of focus state.</td></tr>
+</table></p>
+<h3 class="fn"><a name="LabelType-enum"></a>enum QSoftMenuBar::LabelType</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="40%">
+<tr><th width="60%">Constant</th><th width="40%">Value</th></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::IconLabel</tt></td><td align="center" valign="top"><tt>0</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::TextLabel</tt></td><td align="center" valign="top"><tt>1</tt></td></tr>
+</table></p>
+<h3 class="fn"><a name="StandardLabel-enum"></a>enum QSoftMenuBar::StandardLabel</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="40%">
+<tr><th width="60%">Constant</th><th width="40%">Value</th></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::NoLabel</tt></td><td align="center" valign="top"><tt>0</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Options</tt></td><td align="center" valign="top"><tt>1</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Ok</tt></td><td align="center" valign="top"><tt>2</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Edit</tt></td><td align="center" valign="top"><tt>3</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Select</tt></td><td align="center" valign="top"><tt>4</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::View</tt></td><td align="center" valign="top"><tt>5</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Cancel</tt></td><td align="center" valign="top"><tt>6</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Back</tt></td><td align="center" valign="top"><tt>7</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::BackSpace</tt></td><td align="center" valign="top"><tt>8</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Next</tt></td><td align="center" valign="top"><tt>9</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Previous</tt></td><td align="center" valign="top"><tt>10</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::EndEdit</tt></td><td align="center" valign="top"><tt>11</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::RevertEdit</tt></td><td align="center" valign="top"><tt>12</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Deselect</tt></td><td align="center" valign="top"><tt>13</tt></td></tr>
+<tr><td valign="top"><tt>QSoftMenuBar::Finish</tt></td><td align="center" valign="top"><tt>14</tt></td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="addMenuTo"></a>void QSoftMenuBar::addMenuTo ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, <a href="qmenu.html">QMenu</a> * <i>menu</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Adds <i>menu</i> to <i>widget</i> for focus <i>state</i>.</p>
+<p>See also <a href="qsoftmenubar.html#removeMenuFrom">removeMenuFrom</a>().</p>
+<h3 class="fn"><a name="clearLabel"></a>void QSoftMenuBar::clearLabel ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, int <i>key</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Clears any label set for <i>widget</i> and <i>key</i> in focus <i>state</i>.</p>
+<p>See also <a href="qsoftmenubar.html#setLabel">setLabel</a>().</p>
+<h3 class="fn"><a name="createEditMenu"></a><a href="qmenu.html">QMenu</a> * QSoftMenuBar::createEditMenu ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Creates and returns a standard &quot;Edit&quot; menu used for <a href="qlineedit.html">QLineEdit</a> and <a href="qtextedit.html">QTextEdit</a>.</p>
+<p>Returns 0 if the clipboard functionality has been disabled in Qt for Embedded Linux.</p>
+<h3 class="fn"><a name="hasMenu"></a>bool QSoftMenuBar::hasMenu ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if the <i>widget</i> has a menu assigned to it in focus <i>state</i>.</p>
+<p>See also <a href="qsoftmenubar.html#menuFor">menuFor</a>().</p>
+<h3 class="fn"><a name="keys"></a>const <a href="qlist.html">QList</a>&lt;int&gt; &amp; QSoftMenuBar::keys ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the list of soft keys (i.e&#x2e; keys with a corresponding label in the soft menu bar).</p>
+<h3 class="fn"><a name="menuFor"></a><a href="qmenu.html">QMenu</a> * QSoftMenuBar::menuFor ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the <a href="qmenu.html">QMenu</a> assigned to <i>widget</i> in focus <i>state</i>. If a <a href="qmenu.html">QMenu</a> does not yet exist for the widget, an empty menu will be created with <i>widget</i> as its parent.</p>
+<p>See also <a href="qsoftmenubar.html#addMenuTo">addMenuTo</a>().</p>
+<h3 class="fn"><a name="menuKey"></a>int QSoftMenuBar::menuKey ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the key that activates menus managed by the soft menu bar.</p>
+<h3 class="fn"><a name="removeMenuFrom"></a>void QSoftMenuBar::removeMenuFrom ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, <a href="qmenu.html">QMenu</a> * <i>menu</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Removes the <i>menu</i> from <i>widget</i> for focus <i>state</i>.</p>
+<p>See also <a href="qsoftmenubar.html#addMenuTo">addMenuTo</a>().</p>
+<h3 class="fn"><a name="setCancelEnabled"></a>void QSoftMenuBar::setCancelEnabled ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, bool <i>enable</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sets whether Cancel is available for <i>widget</i> when a menu associated with it is shown. The Cancel option is only shown if the widget's top level window is a <a href="qdialog.html">QDialog</a>. If <i>enable</i> is true a Cancel menu action will be displayed for a dialog.</p>
+<p>The default is true.</p>
+<h3 class="fn"><a name="setHelpEnabled"></a>void QSoftMenuBar::setHelpEnabled ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, bool <i>enable</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sets whether the Help menu option is available for <i>widget</i> when a menu associated with it is shown. The Help option will only be shown if there is a <a href="files.html#file-name-standards">help file</a> available. If <i>enable</i> is true the help menu option may be displayed for the widget.</p>
+<p>The default is true.</p>
+<h3 class="fn"><a name="setInputMethodEnabled"></a>void QSoftMenuBar::setInputMethodEnabled ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, bool <i>enable</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sets whether the Input Method menu option is available for <i>widget</i> when a menu associated with it is shown. If <i>enable</i> is true an Input Method menu action may be displayed for the widget.</p>
+<p>The default is true.</p>
+<h3 class="fn"><a name="setLabel"></a>void QSoftMenuBar::setLabel ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, int <i>key</i>, const <a href="qstring.html">QString</a> &amp; <i>pixmap</i>, const <a href="qstring.html">QString</a> &amp; <i>text</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>When <i>widget</i> gains the specified focus <i>state</i>, the label for <i>key</i> is set to <i>text</i> and <i>pixmap</i>.</p>
+<h3 class="fn"><a name="setLabel-2"></a>void QSoftMenuBar::setLabel ( <a href="qwidget.html">QWidget</a> * <i>widget</i>, int <i>key</i>, <a href="qsoftmenubar.html#StandardLabel-enum">StandardLabel</a> <i>label</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>When <i>widget</i> gains the specified focus <i>state</i>, the label for <i>key</i> is set to the standard <i>label</i>.</p>
+<h3 class="fn"><a name="widgetsFor"></a><a href="qwidget.html#QWidgetList-typedef">QWidgetList</a> QSoftMenuBar::widgetsFor ( const <a href="qmenu.html">QMenu</a> * <i>menu</i>, <a href="qsoftmenubar.html#FocusState-enum">FocusState</a> <i>state</i> = AnyFocus )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns all widgets that have added <i>menu</i> to the menu bar for focus <i>state</i>.</p>
+<p>See also <a href="qsoftmenubar.html#addMenuTo">addMenuTo</a>(), <a href="qsoftmenubar.html#removeMenuFrom">removeMenuFrom</a>(), <a href="qsoftmenubar.html#menuFor">menuFor</a>(), and <a href="qsoftmenubar.html#hasMenu">hasMenu</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

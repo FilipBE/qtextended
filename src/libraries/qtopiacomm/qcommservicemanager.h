@@ -1,0 +1,41 @@
+/****************************************************************************
+**
+** This file is part of the Qt Extended Opensource Package.
+**
+** Copyright (C) 2009 Trolltech ASA.
+**
+** Contact: Qt Extended Information (info@qtextended.org)
+**
+** This file may be used under the terms of the GNU General Public License
+** version 2.0 as published by the Free Software Foundation and appearing
+** in the file LICENSE.GPL included in the packaging of this file.
+**
+** Please review the following information to ensure GNU General Public
+** Licensing requirements will be met:
+**     http://www.fsf.org/licensing/licenses/info/GPLv2.html.
+**
+**
+****************************************************************************/
+
+#ifndef QCOMMSERVICEMANAGER_H
+#define QCOMMSERVICEMANAGER_H
+
+#include <qabstractipcinterfacegroupmanager.h>
+
+class QTOPIACOMM_EXPORT QCommServiceManager
+            : public QAbstractIpcInterfaceGroupManager
+{
+    Q_OBJECT
+public:
+    explicit QCommServiceManager( QObject *parent = 0 );
+    ~QCommServiceManager();
+
+    QStringList services() const;
+
+signals:
+    void servicesChanged();
+    void serviceAdded( const QString& service );
+    void serviceRemoved( const QString& service );
+};
+
+#endif

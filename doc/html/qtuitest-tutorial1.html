@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Chapter 1: Writing a System Test</title>
+  <link rel="contents" href="qtuitest-tutorial.html" />
+  <link rel="next" href="qtuitest-tutorial2.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[<a href="qtuitest-tutorial.html">Contents</a>]
+[Next: <a href="qtuitest-tutorial2.html">Chapter 2</a>]
+</p>
+<h1 class="title">Chapter 1: Writing a System Test<br /><span class="subtitle"></span>
+</h1>
+<p>In this first chapter we will demonstrate how to write a simple system test, and how to execute it.</p>
+<a name="setting-up-the-environment"></a>
+<h2>Setting up the environment</h2>
+<p>Tests are saved in directories, one directory per test. As a convention we keep the name of the directory the same as the test name although this isn't a requirement. Tests are further stored in a 'tests' directory immediately under the application or library that is being tested. So let's create our first test directory, and we'll be writing a test for the addressbook application.</p>
+<pre>    cd src/applications/addressbook
+    mkdir -p tests/sys_demo</pre>
+<p>Note that we write and save tests in the <tt>source</tt> tree, and we can execute them from the source as well as the build tree.</p>
+<p>The <tt>tests</tt> subdirectories have a special meaning when used in combination with QBuild, the Qt Extended build system. Anything below <tt>tests</tt> is ignored from a normal build. In other words, all code is compiled when 'configure &amp;&amp; qbuild &amp;&amp; qbuild image' is executed except for the testcases beneath <tt>tests</tt>.</p>
+<p>To run a testcase we do a <tt>qbuild test</tt> but more about that a little later.</p>
+<a name="writing-the-test"></a>
+<h2>Writing the Test</h2>
+<p>New system tests are defined by creating a new QtScript file (named ending with .js by convention), containing a <tt>testcase</tt> object with one or more test functions: So cd into <tt>tests/my_demo</tt> and create a file named <tt>sys_demo.js</tt> with the following content:</p>
+<pre>        testcase = {
+            testFunction1: function() {
+                print( &quot;Hello World&quot; );
+            },
+            testFunction2: function() {
+                print( &quot;Testfunction 2&quot; );
+            }
+        }</pre>
+<p>The example above shows the creation of a testcase object containing two test functions, <tt>testFunction1</tt> and <tt>testFunction2</tt>. Obviously not much exciting is going to happen when we run this test. But we'll get to that a little later.</p>
+<p>The second bit that needs to be done is tell the build system about our new project. For this we need to create a project file named <tt>qbuild.pro</tt>. The contents of the file is as follows:</p>
+<pre>        CONFIG+=systemtest
+        TARGET=sys_demo
+        SOURCES+=sys_demo.js</pre>
+<a name="running-the-test-for-the-first-time"></a>
+<h3>Running the test for the first time</h3>
+<p>Now that we have created a little test it's about time to run it for which we use QBuild again. <tt>qbuild</tt> is a binary that is created when <tt>configure</tt> is ran on the Qt Extended source tree and will end up in the bin directory of the build tree. Whenever we want to run tests, or re-compile parts of Qt Extended for that matter, it is important to call the qbuild binary from the build tree. The simplest mechanism to make that happen is to add the bin directory to our PATH variable:</p>
+<pre>        export PATH=~/build/qtopia/demo/bin:$PATH</pre>
+<p>(assuming that <tt>~/build/qtopia/demo</tt> is where the code has been build.</p>
+<p>Once the PATH is set correctly we can simply run the test as follows:</p>
+<pre>        cd &lt;your_src_location&gt;/src/applications/addressbook/tests/sys_demo
+        qbuild test</pre>
+<p>The test will be built and executed and results in something like this:</p>
+<pre>    1 echo '#!/bin/sh' &gt; &lt;your_build_dir&gt;/src/applications/addressbook/tests/sys_demo/sys_demo
+    2 echo 'exec &lt;your_build_dir&gt;/bin/qtuitestrunner &lt;your_src_location&gt;/src/applications/addressbook/tests/sys_demo/sys_demo.js &quot;$@&quot;' &gt;&gt; &lt;your_build_dir&gt;/src/applications/addressbook/tests/sys_demo/sys_demo
+    3 chmod 755 &lt;your_build_dir&gt;/src/applications/addressbook/tests/sys_demo/sys_demo
+    4 export QPEHOME=$(mktemp -d /tmp/qtopia_maketest_XXXXXX); &lt;your_build_dir&gt;/src/applications/addressbook/tests/sys_demo/sys_demo $ARGS; rm -rf $QPEHOME
+    5 ********* Start testing of sys_demo *********
+    6 Config: Using QTest library 4.4.2, Qt 4.4.2
+    7 PASS   : sys_demo::initTestCase()
+    8 QDEBUG : sys_demo::testFunction1() Hello World
+    9 PASS   : sys_demo::testFunction1()
+    10 QDEBUG : sys_demo::testFunction2() Testfunction 2
+    11 PASS   : sys_demo::testFunction2()
+    12 PASS   : sys_demo::cleanupTestCase()
+    13 Totals: 4 passed, 0 failed, 0 skipped
+    14 ********* Finished testing of sys_demo *********</pre>
+<p>In the above snippet line numbers have been added for clarity. Lines 1-4 are a bit of magic to create a subdirectory for the test in the build tree, and to create an 'executable' for the test. Once the executable is created, it is executed and the results are printed to stdout (or to a file if we use extra command line parameters).</p>
+<p>Line 5-14 are the result of the test being execute. Line 5 simply marks the start of the test. Line 6 shows the version numbers of Qt and Qtest that are used. Line 7 is the result of a special function named <tt>initTestCase</tt>. Note that we haven't written an initTestCase yet, so this function is empty (and shouldn't fail). Once the test is initialized (with initTestCase) the testrunner will start executing all testfunctions, in principle in the order in which they are discovered in the file. Line 8 is the result of the print statement we did in testFunction1. Note also that the output clearly marks this information as being a part of <tt>sys_demo::testFunction1</tt>. Line 9 is the final test result for testFunction1. Since we did nothing else but a print statement it PASSes the test. Line 10 and 11 show the results for testFunction2. Line 12 shows the result for the counterpart to initTestCase: after all testfunctions have been executed the system takes a moment to clean up any garbage that has been created during test execution. Just like it's init counterpart is cleanupTestCase <tt>always</tt> called, and called only once, at the end of a test. Since we haven't actually defined anything yet the cleanup is empty and we'd expect it to PASS. Line 13 shows the accumulated totals for the test and Line 14 finally marks the end of the test.</p>
+<p>In this example we have called <tt>qbuild test</tt> from the source tree, but we could have done the same, and with the same result from the build tree. This is because we're calling qbuild which knows everything about the actual configuration we're testing, as well as where to find it.</p>
+<a name="special-functions"></a>
+<h3>Special functions</h3>
+<p>As with <a href="qtestlib-manual.html">QTestLib</a> unit tests, special reserved functions include the four <a href="qtestlib-manual.html">init/cleanup functions</a>. These behave identically to their unit test counterparts but will be explained here for completeness.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>function</th><th>description</th></tr></thead>
+<tr valign="top" class="odd"><td>initTestCase</td><td>called once immediately after the test is started. If initTestCase fails, which could happen if you add verification steps in the function, no test will be executed. In normal circumstances, each test will be executed after initTestCase is finished.</td></tr>
+<tr valign="top" class="even"><td>init</td><td>called immediately <tt>before</tt> a test function is executed. If a test function has multiple test data sets (to be discussed later) then <tt>init()</tt> will also be called multiple times. When init() fails, the test function will be skipped.</td></tr>
+<tr valign="top" class="odd"><td>cleanup</td><td>called immediately after a test function has finished executing. cleanup() is guaranteed to be called, even if the test function has failed, i.e&#x2e; you still get a chance to cleanup the environment after a failure.</td></tr>
+<tr valign="top" class="even"><td>cleanupTestCase</td><td>called once after the last test function has been executed.</td></tr>
+</table></p>
+<p>Let's re-write our testcase a bit, but this time we use the special functions.</p>
+<pre>            testcase = {
+                initTestCase: function() {
+                    print( &quot;Init complete test&quot; );
+                },
+                cleanupTestCase: function() {
+                    print( &quot;Cleanup complete test&quot; );
+                },
+                init: function() {
+                    print( &quot;Init test function&quot; );
+                },
+                cleanup: function() {
+                    print( &quot;Cleanup test function&quot; );
+                },
+                testFunction1: function() {
+                    print( &quot;Hello World&quot; );
+                },
+                testFunction2: function() {
+                    print( &quot;Testfunction 2&quot; );
+                }
+            }</pre>
+<p>When we run <tt>qbuild test</tt> again we get the following output:</p>
+<pre>    ********* Start testing of sys_demo *********
+    Config: Using QTest library 4.4.2, Qt 4.4.2
+    QDEBUG : sys_demo::initTestCase() Init complete test
+    PASS   : sys_demo::initTestCase()
+    QDEBUG : sys_demo::testFunction1() Init test function
+    QDEBUG : sys_demo::testFunction1() Hello World
+    QDEBUG : sys_demo::testFunction1() Cleanup test function
+    PASS   : sys_demo::testFunction1()
+    QDEBUG : sys_demo::testFunction2() Init test function
+    QDEBUG : sys_demo::testFunction2() Testfunction 2
+    QDEBUG : sys_demo::testFunction2() Cleanup test function
+    PASS   : sys_demo::testFunction2()
+    QDEBUG : sys_demo::cleanupTestCase() Cleanup complete test
+    PASS   : sys_demo::cleanupTestCase()
+    Totals: 4 passed, 0 failed, 0 skipped
+    ********* Finished testing of sys_demo *********</pre>
+<a name="interacting-with-the-system-under-test"></a>
+<h3>Interacting with the System Under Test</h3>
+<p>System tests do not have direct access to the code under test. Instead, the system testrunner connects to Qt Extended, and sends and receives information via a communication protocol. This effectively controls access to the tested system, reducing the impact of tests on results and emulating standard user behaviour.</p>
+<p>Suppose we wish to create a simple test which launches an application; we first need to ensure that Qt Extended has finished loading successfully, since we can't be sure of the state of the system we have connected to. This is accomplished by using the <a href="qtopiasystemtest.html#waitForQtopiaStart">waitForQtopiaStart()</a> function in <a href="qtestlib-manual.html">initTestCase()</a>:</p>
+<pre>            initTestCase: function()
+            {
+                waitForQtopiaStart();
+            }</pre>
+<p>Since <tt>initTestCase()</tt> is called before any test functions are executed, this will pause test execution until it receives confirmation that Qt Extended has started. Now we're ready to start the application:</p>
+<pre>            testFunction1: function()
+            {
+                startApplication( &quot;Contacts&quot; );
+            }</pre>
+<p>The <a href="qsystemtest.html#startApplication">startApplication()</a> method will attempt to start the specified application (in this case, Contacts). If the specified application cannot be started, <tt>testFunction</tt> will generate a test failure and abort the test.</p>
+<p>Once the application has started, we can begin testing. While it is possible to execute as many actions in a test function as desired, the recommendation is to dedicate each test function to a single use case. The test function should then attempt to realistically simulate each step of the use case, and verify that the expected result occurs. For example, assume we need to test creating a new contact; a simple test function could look like this:</p>
+<pre>            creating_a_contact: function()
+            {
+                <span class="comment">// Start the application</span>
+                startApplication( &quot;Contacts&quot; );
+
+                <span class="comment">// Open the options menu and choose &quot;New contact&quot;</span>
+                select( &quot;New contact&quot;, optionsMenu() );
+
+                <span class="comment">// Enter some details in the &quot;Name&quot; and &quot;Emails&quot; fields</span>
+                enter( &quot;Frank Grimes&quot;, &quot;Name&quot; );
+                enter( &quot;frank@example.com&quot;, &quot;Emails&quot; );
+
+                <span class="comment">// Select 'Back' from the softkey menu to commit changes</span>
+                select( &quot;Back&quot;, softMenu() );
+
+                <span class="comment">// We should now be at the contacts list.</span>
+                <span class="comment">// Verify that we can select the contact we just created.</span>
+                select( &quot;Frank Grimes&quot; );
+
+                <span class="comment">// We should now be viewing the contact.</span>
+                <span class="comment">// Move to &quot;Details&quot; tab.</span>
+                select( &quot;Details&quot;, tabBar() );
+
+                <span class="comment">// Now verify that the details screen contains</span>
+                <span class="comment">// the expected details.</span>
+                var text = getText();
+                verify( text.contains(&quot;Frank Grimes&quot;) );
+                verify( text.contains(&quot;frank@example.com&quot;) );
+            }</pre>
+<p>This test function will start Contacts, navigate through several screens, input data, and verify that the data was successfully saved as a new contact. It is important to note that this test has not explicitly simulated any key or mouse events (although this can be done). This means that the same test can be used as-is on both a keyboard and touchscreen device. This is possible because the implementation of select() and enter() know how to select items and enter data on both keyboard and touchscreen devices.</p>
+<p>The next chapter gives more detail on how navigation works.</p>
+<p>
+[<a href="qtuitest-tutorial.html">Contents</a>]
+[Next: <a href="qtuitest-tutorial2.html">Chapter 2</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

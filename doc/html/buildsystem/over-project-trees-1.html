@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Project Trees</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Project Trees<br /><span class="subtitle"></span>
+</h1>
+<a name="files"></a>
+<h3>Files</h3>
+<a name="qbuild-solution"></a>
+<h4>qbuild.solution</h4>
+<p>This file informs QBuild where the top of the tree is.</p>
+<a name="src-projects-pri"></a>
+<h4>src/projects.pri</h4>
+<p>You must list projects to build in this file. The paths in this file are relative to the src directory. If your projects are not under src you can list them as <tt>../&lt;directory&gt;</tt>.</p>
+<a name="visibility"></a>
+<h3>Visibility</h3>
+<p>Normally when you build a project outside of the Qt Extended tree it can only see itself and the SDK. When you build in a project tree the project can also see the other projects within that project tree. There are important effects that this causes.</p>
+<p>Public includes are installed into the SDK, semi-private includes are installed into the project tree, private includes are not installed anywhere. Projects within the project tree can access semi-private includes.</p>
+<p>Dependencies can also be exposed for users of the SDK or just for projects in the same project tree.</p>
+<p>See also <a href="overviews.html">Overviews</a> and <a href="atask-create-a-new-project-tree-1.html">Create a new project tree</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

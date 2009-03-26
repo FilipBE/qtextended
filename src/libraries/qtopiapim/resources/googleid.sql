@@ -1,0 +1,3 @@
+CREATE TABLE googleid (
+        id INTEGER UNIQUE NOT NULL,
+        gid VARCHAR(255) UNIQUE NOT NULL);

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSerialSocket Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSerialSocket Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSerialSocket class provides a serial port abstraction via a TCP socket. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSerialSocket&gt;</pre><p>Inherits <a href="qserialiodevice.html">QSerialIODevice</a>.</p>
+<ul>
+<li><a href="qserialsocket-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qserialsocket.html#QSerialSocket">QSerialSocket</a></b> ( const QString &amp; <i>host</i>, quint16 <i>port</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qserialsocket.html#dtor.QSerialSocket">~QSerialSocket</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qserialsocket.html#close">close</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qserialsocket.html#open">open</a></b> ( OpenMode <i>mode</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>16 public functions inherited from <a href="qserialiodevice.html#public-functions">QSerialIODevice</a></li>
+<li><div class="fn"/>32 public functions inherited from <a href="qiodevice.html#public-functions">QIODevice</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qserialsocket.html#closed">closed</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 signals inherited from <a href="qserialiodevice.html#signals">QSerialIODevice</a></li>
+<li><div class="fn"/>4 signals inherited from <a href="qiodevice.html#signals">QIODevice</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>5 protected functions inherited from <a href="qiodevice.html#protected-functions">QIODevice</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>1 protected slot inherited from <a href="qserialiodevice.html#protected-slots">QSerialIODevice</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSerialSocket class provides a serial port abstraction via a TCP socket.</p>
+<p>This serial port abstraction implements the telnet protocol (RFC 854), to make it easy to debug AT command handlers using a telnet client.</p>
+<p>The QSerialSocket class is also used by data calls initiated by <a href="qphonecall.html">QPhoneCall</a> to pass the raw modem data and handshaking signals to client applications.</p>
+<p>See also <a href="qserialsocketserver.html">QSerialSocketServer</a>, <a href="qserialiodevice.html">QSerialIODevice</a>, and <a href="qphonecall.html">QPhoneCall</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSerialSocket"></a>QSerialSocket::QSerialSocket ( const <a href="qstring.html">QString</a> &amp; <i>host</i>, <a href="qtglobal.html#quint16-typedef">quint16</a> <i>port</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a serial-over-sockets session object and attach it to <i>parent</i>. The session will connect to <i>port</i> on <i>host</i>.</p>
+<h3 class="fn"><a name="dtor.QSerialSocket"></a>QSerialSocket::~QSerialSocket ()</h3>
+<p>Destroy this socket-based serial port abstraction.</p>
+<h3 class="fn"><a name="close"></a>void QSerialSocket::close ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Closes this serial I/O device. The socket will remain connected until this object is destroyed.</p>
+<p>Reimplemented from <a href="qiodevice.html#close">QIODevice</a>.</p>
+<h3 class="fn"><a name="closed"></a>void QSerialSocket::closed ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the socket is closed by the other end of the connection.</p>
+<h3 class="fn"><a name="open"></a>bool QSerialSocket::open ( <a href="qiodevice.html#OpenMode-typedef">OpenMode</a> <i>mode</i> )</h3>
+<p>Opens this serial I/O device in <i>mode</i>. This just sets the device to open. The actual connect is done during the constructor. Returns true if the device can be opened; false otherwise.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

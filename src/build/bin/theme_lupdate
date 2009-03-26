@@ -1,0 +1,148 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use XML::Parser;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/build/bin", $ARGV[0]);
+}
+
+
+use constant DEBUG => 0;
+
+my @LANGS = split(/\s+/,shift(@ARGV));
+my $STRING_LANGUAGE = shift(@ARGV);
+
+my $themecfg = shift(@ARGV) || usage();
+my $themedir = dirname($themecfg);
+my $themename;
+
+#open/read theme configration
+my @themePages = ();
+open CONFIG, "$themecfg" or die "Can't read $themecfg";
+my @contents = <CONFIG>;
+
+for ( @contents ) {
+    my ( $key, $value ) = ( /([^=]*?)\s*=\s*(.*)/ );
+    next if !defined $key;
+    if ( $key eq "Name[]" ) {
+        $value =~ s/ //g;
+        $themename = $value;
+        next;
+    }
+    if ( $key ne "TitleConfig" && $key ne "HomeConfig"
+            && $key ne "ContextConfig" && $key ne "CallScreenConfig"
+            && $key ne "DialerConfig" && $key ne "SecondaryTitleConfig" 
+            && $key ne "SecondaryHomeConfig" ) {
+        next;
+    }
+        
+    if ( $value =~ /^.*\.xml?/ ) {
+        @themePages = (@themePages, $value);
+    }
+}
+
+#parse all theme xml
+my %trMapping = ();
+my $index=0;
+for my $page (@themePages) {
+    $index=0;
+    parseFile($themedir, $page);
+}
+
+#write content to cpp file
+my $tmp = "tr$$.cpp";
+open CPP, ">$tmp" or die "Can't write $tmp";
+for my $entry ( keys %trMapping ) {
+    my @myarray  = split /-/,$entry;
+    print CPP "translate(\"$myarray[0]\",\"$trMapping{$entry}\", 0, QCoreApplication::UnicodeUTF8, 0);\n";
+}
+close CPP;
+
+my $tsfile = "Theme-$themename";
+my @output;
+push(@output, "SOURCES += $tmp");
+
+open CPP, ">$tmp.pro" or die "Can't write $tmp.pro";
+print CPP join("\n", @output)."\n";
+for my $lang ( @LANGS ) {
+    next if ( $lang eq $STRING_LANGUAGE );
+    my $filename = $tsfile."-".$lang.".ts";
+    print CPP "TRANSLATIONS += $filename\n";
+}
+close CPP;
+my $cmd = "$HOST_QT_BINS/lupdate -silent $tmp.pro";
+print "$cmd\n";
+system($cmd);
+
+if ( $STRING_LANGUAGE ) {
+    # Now strip out the languages and re-run lupdate for the string language with -pluralonly
+    open CPP, ">$tmp.pro" or die "Can't write $tmp.pro";
+    print CPP join("\n", @output)."\n";
+    my $filename = $tsfile."-".$STRING_LANGUAGE.".ts";
+    print CPP "TRANSLATIONS += $filename\n";
+    close CPP;
+    $cmd = "$HOST_QT_BINS/lupdate -silent -pluralonly $tmp.pro";
+    print "$cmd\n";
+    system($cmd);
+}
+
+unlink $tmp;
+unlink "$tmp.pro";
+
+my $pageName = undef;
+sub parseFile
+{
+    my ( $themedir, $page ) = @_;
+    my $filename = "$themedir/".basename($page);
+    if ( ! -f $filename ) {
+        $filename = "$themedir/$page";
+    }
+    $pageName = undef;
+    DEBUG and print "Parsing $filename\n";
+    my $parser = new XML::Parser(ErrorContext => 2);
+    $parser->setHandlers( Start => \&start_handler,
+                            Char => \&char_handler );
+    $parser->parsefile($filename);                                
+}
+
+sub start_handler
+{
+    my $p = shift;
+    my $element = shift;
+    if ( $element eq "page" ) {
+        while (@_) {
+            my $att = shift;
+            if ( $att eq "name" ) {
+               $pageName = shift;
+            }
+        }
+    }
+}
+
+sub char_handler
+{
+    my $p = shift;
+    my $text = shift;
+
+    if ( (length($text) > 0) && ($p->current_element eq "trtext") ) {
+        $trMapping{"$pageName-$index"} = $text;
+	$index++;
+    }
+}
+
+
+sub usage
+{
+    print "\nUsage: theme_lupdate \"lang1 lang2 ... langn\" theme.conf\n";
+    exit
+}
+

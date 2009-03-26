@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAudioStateConfiguration Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAudioStateConfiguration Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>, <a href="qtmediamodule.html">QtMediaModule</a>, <a href="qtpimmodule.html">QtPimModule</a>, <a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QAudioStateConfiguration class defines a read-only view to the current audio device configuration. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAudioStateConfiguration&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qaudiostateconfiguration-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qaudiostateconfiguration.html#QAudioStateConfiguration">QAudioStateConfiguration</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qaudiostateconfiguration.html#dtor.QAudioStateConfiguration">~QAudioStateConfiguration</a></b> ()</li>
+<li><div class="fn"/>QAudio::AudioCapabilities <b><a href="qaudiostateconfiguration.html#availableCapabilities">availableCapabilities</a></b> ( const QAudioStateInfo &amp; <i>state</i> ) const</li>
+<li><div class="fn"/>QAudio::AudioCapability <b><a href="qaudiostateconfiguration.html#currentCapability">currentCapability</a></b> () const</li>
+<li><div class="fn"/>QAudioStateInfo <b><a href="qaudiostateconfiguration.html#currentState">currentState</a></b> () const</li>
+<li><div class="fn"/>QSet&lt;QByteArray&gt; <b><a href="qaudiostateconfiguration.html#domains">domains</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qaudiostateconfiguration.html#isInitialized">isInitialized</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qaudiostateconfiguration.html#isStateAvailable">isStateAvailable</a></b> ( const QAudioStateInfo &amp; <i>state</i> ) const</li>
+<li><div class="fn"/>QSet&lt;QAudioStateInfo&gt; <b><a href="qaudiostateconfiguration.html#states">states</a></b> () const</li>
+<li><div class="fn"/>QSet&lt;QAudioStateInfo&gt; <b><a href="qaudiostateconfiguration.html#states-2">states</a></b> ( const QByteArray &amp; <i>domain</i> ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qaudiostateconfiguration.html#availabilityChanged">availabilityChanged</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qaudiostateconfiguration.html#configurationInitialized">configurationInitialized</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qaudiostateconfiguration.html#currentStateChanged">currentStateChanged</a></b> ( const QAudioStateInfo &amp; <i>state</i>, QAudio::AudioCapability <i>capability</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAudioStateConfiguration class defines a read-only view to the current audio device configuration.</p>
+<p>The QAudioStateConfiguration class provides a read-only view of the audio state configuration of the device. The user of this class can query all possible audio hardware paths that the current device supports, (e.g&#x2e; audio routed to the Headset, Speaker, Bluetooth Headset) as well as the capabilities of each audio state.</p>
+<p>See also <a href="qaudiostateinfo.html">QAudioStateInfo</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAudioStateConfiguration"></a>QAudioStateConfiguration::QAudioStateConfiguration ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new Audio Device Configuration object with <i>parent</i>. The configuration object is only a read-only view to the different set of audio states that the system supports. It is possible that the configuration has not been initialized yet, in this case the <a href="qaudiostateconfiguration.html#isInitialized">isInitialized</a>() method will return false.</p>
+<p>Once the configuration has been initialized, the <a href="qaudiostateconfiguration.html#configurationInitialized">configurationInitialized</a>() signal will be emitted.</p>
+<p>See also <a href="qaudiostateconfiguration.html#configurationInitialized">configurationInitialized</a>() and <a href="qaudiostateconfiguration.html#isInitialized">isInitialized</a>().</p>
+<h3 class="fn"><a name="dtor.QAudioStateConfiguration"></a>QAudioStateConfiguration::~QAudioStateConfiguration ()</h3>
+<p>Destroys an Audio Device Configuration object.</p>
+<h3 class="fn"><a name="availabilityChanged"></a>void QAudioStateConfiguration::availabilityChanged ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever changes have been made to the device configuration. This occurs ifthe available status of a state(s) has changed.</p>
+<p>See also <a href="qaudiostateconfiguration.html#configurationInitialized">configurationInitialized</a>().</p>
+<h3 class="fn"><a name="availableCapabilities"></a><a href="qaudio.html#AudioCapability-enum">QAudio::AudioCapabilities</a> QAudioStateConfiguration::availableCapabilities ( const <a href="qaudiostateinfo.html">QAudioStateInfo</a> &amp; <i>state</i> ) const</h3>
+<p>Returns all available capabilities for a particular <i>state</i>. Some devices support multiple multiple states (e.g&#x2e; half-duplex, full-duplex). For various reasons (e.g&#x2e; hardware capability, power consumption) it might be better to enable the state with only the capabilities that are required.</p>
+<p>Returns the audio capabilities supported by the state. Returns an empty set if the state is not found.</p>
+<p>See also <a href="qaudiostateconfiguration.html#isStateAvailable">isStateAvailable</a>().</p>
+<h3 class="fn"><a name="configurationInitialized"></a>void QAudioStateConfiguration::configurationInitialized ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the audio device configuration enters the initialized state. Once this signal is emitted the user can assume that the current object will return useful information about the current audio device configuration.</p>
+<p>See also <a href="qaudiostateconfiguration.html#availabilityChanged">availabilityChanged</a>().</p>
+<h3 class="fn"><a name="currentCapability"></a><a href="qaudio.html#AudioCapability-enum">QAudio::AudioCapability</a> QAudioStateConfiguration::currentCapability () const</h3>
+<p>Returns the current capability enabled for the audio device.</p>
+<p>See also <a href="qaudiostateconfiguration.html#currentState">currentState</a>() and <a href="qaudiostateconfiguration.html#currentStateChanged">currentStateChanged</a>().</p>
+<h3 class="fn"><a name="currentState"></a><a href="qaudiostateinfo.html">QAudioStateInfo</a> QAudioStateConfiguration::currentState () const</h3>
+<p>Returns the current state of the audio device.</p>
+<p>See also <a href="qaudiostateconfiguration.html#currentStateChanged">currentStateChanged</a>() and <a href="qaudiostateconfiguration.html#currentCapability">currentCapability</a>().</p>
+<h3 class="fn"><a name="currentStateChanged"></a>void QAudioStateConfiguration::currentStateChanged ( const <a href="qaudiostateinfo.html">QAudioStateInfo</a> &amp; <i>state</i>, <a href="qaudio.html#AudioCapability-enum">QAudio::AudioCapability</a> <i>capability</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever the current audio state has changed. The <i>state</i> contains the current audio state and <i>capability</i> contains the current capability.</p>
+<p>See also <a href="qaudiostateconfiguration.html#currentState">currentState</a>() and <a href="qaudiostateconfiguration.html#currentCapability">currentCapability</a>().</p>
+<h3 class="fn"><a name="domains"></a><a href="qset.html">QSet</a>&lt;<a href="qbytearray.html">QByteArray</a>&gt; QAudioStateConfiguration::domains () const</h3>
+<p>Returns a set of domains supported by the audio device. All devices should provide <tt>RingTone</tt>, <tt>Media</tt> and <tt>Phone</tt> domains.</p>
+<p>See also <a href="qaudiostateconfiguration.html#states">states</a>() and <a href="qaudiostateconfiguration.html#availabilityChanged">availabilityChanged</a>().</p>
+<h3 class="fn"><a name="isInitialized"></a>bool QAudioStateConfiguration::isInitialized () const</h3>
+<p>Returns whether the audio device configuration has been initialized. The <a href="qaudiostateconfiguration.html#configurationInitialized">configurationInitialized</a>() signal will be emitted once the configuration has been initialized.</p>
+<p>See also <a href="qaudiostateconfiguration.html#configurationInitialized">configurationInitialized</a>().</p>
+<h3 class="fn"><a name="isStateAvailable"></a>bool QAudioStateConfiguration::isStateAvailable ( const <a href="qaudiostateinfo.html">QAudioStateInfo</a> &amp; <i>state</i> ) const</h3>
+<p>Returns true whether the <i>state</i> is available. For instance, if the Headphones are not plugged in, then the state that encapsulates routing audio data to the headphones would not be available.</p>
+<p>See also <a href="qaudiostateconfiguration.html#availabilityChanged">availabilityChanged</a>().</p>
+<h3 class="fn"><a name="states"></a><a href="qset.html">QSet</a>&lt;<a href="qaudiostateinfo.html">QAudioStateInfo</a>&gt; QAudioStateConfiguration::states () const</h3>
+<p>Returns a set of states supported by the audio device.</p>
+<p>See also <a href="qaudiostateconfiguration.html#domains">domains</a>() and <a href="qaudiostateconfiguration.html#availabilityChanged">availabilityChanged</a>().</p>
+<h3 class="fn"><a name="states-2"></a><a href="qset.html">QSet</a>&lt;<a href="qaudiostateinfo.html">QAudioStateInfo</a>&gt; QAudioStateConfiguration::states ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>domain</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a set of states supported by the audio device for a particular <i>domain</i>.</p>
+<p>See also <a href="qaudiostateconfiguration.html#domains">domains</a>() and <a href="qaudiostateconfiguration.html#availabilityChanged">availabilityChanged</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

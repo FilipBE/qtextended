@@ -1,0 +1,632 @@
+exists($$QPEDIR/src/build/trace_on):message(functions.prf)
+# Functions
+
+# echo(val) outputs a message if debug is enabled
+defineTest(echo) {
+    debug=$$(QMAKE_DEBUG_ON)
+    exists($$QPEDIR/src/build/debug_on):debug=1
+    equals(debug,1):message($$1)
+}
+
+# $$tail(val) returns the last part of a path (even if there's only one part)
+defineReplace(tail) {
+    val=$$1
+    path=$$fixpath($$val)
+    return($$basename(path))
+}
+
+# dep(command) register a dependency command
+defineTest(dep) {
+    cmd=$$1
+    var=$$2
+    !isEmpty(var) {
+        eval($$cmd)
+        export($$var)
+    }
+    DEP_CMDS+="$$cmd"
+    export(DEP_CMDS)
+}
+
+# idep(command) register an indirect dependency command
+defineTest(idep) {
+    cmd=$$1
+    var=$$2
+    !isEmpty(var) {
+        eval($$cmd)
+        export($$var)
+    }
+    DEP_I_CMDS+="$$cmd"
+    export(DEP_I_CMDS)
+    DEP_CMDS+="$$cmd"
+    export(DEP_CMDS)
+}
+
+# depends() register a dependency
+defineTest(depends) {
+    idep(QTOPIA_DEPENDS*=$$1,QTOPIA_DEPENDS)
+    equals(2,fake) {
+        idep(QTOPIA_DEPENDS_NO_WARN*=$$1,QTOPIA_DEPENDS_NO_WARN)
+    }
+}
+
+# uses_export(name) assists in setting up the _EXPORT macro
+defineTest(uses_export) {
+    NAME=$$upper($$1)
+    DEFINES+=$${NAME}_MAKEDLL
+    export(DEFINES)
+    idep(DEFINES+=$${NAME}_DLL)
+}
+
+# qt_inc(name) assists in setting up Qt-style includes
+defineTest(qt_inc) {
+    NAME=$$1
+    qd=
+    qtopiadesktop:qd=qtopiadesktop/
+    idep(INCLUDEPATH+=$$QPEDIR/include/$$qd$$NAME,INCLUDEPATH)
+    idep(INCLUDEPATH+=$$QPEDIR/include/$$qd$$NAME/module,INCLUDEPATH)
+}
+
+# resolve_variables() resolve variables from a .pri file
+defineTest(resolve_variables) {
+    prefixes=$$1
+    variables=$$2
+    contains(QMAKE_BEHAVIORS,func_in_join):!contains(QMAKE_BEHAVIORS,var_split) {
+        prefixes=$$split(prefixes," ")
+        variables=$$split(variables," ")
+    }
+    for(v,variables) {
+        for(p,prefixes) {
+            var=$$eval($${p}_$${v})
+            !isEmpty(var):eval($${v}*=\$$var)
+        }
+        export($$v)
+    }
+}
+
+# resolve_include() convenience function that calls resolve_variables
+defineTest(resolve_include) {
+    resolve_variables($$PREFIX,FORMS HEADERS SOURCES PRIVATE_FORMS PRIVATE_HEADERS SEMI_PRIVATE_HEADERS PRIVATE_SOURES)
+    resolve_variables(PRIVATE,FORMS HEADERS SOURCES)
+}
+
+# $$fixpath(val) returns a platform-suitable path with no duplicated path separators
+defineReplace(fixpath) {
+    val="$$1"
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        val~=s/^"//
+        val~=s/"$//
+    }
+    win32 {
+        val~=s,/,\,g
+        lc="$$lower($$val)"
+        contains(QMAKE_BEHAVIORS,keep_quotes) {
+            lc~=s/^"//
+            lc~=s/"$//
+        }
+        lc~=s,^(.):.*,\1,
+        len="$$lc"
+        contains(QMAKE_BEHAVIORS,keep_quotes) {
+            len~=s/^"//
+            len~=s/"$//
+        }
+        len~=s,^.,,
+        isEmpty(len) {
+            val~=s,^.,,
+            val="$$lc$$val"
+            contains(QMAKE_BEHAVIORS,keep_quotes) {
+                val~=s/^"//
+                val~=s/"$//
+            }
+        }
+        val~=s,\\\\,\,g
+    } else {
+        val~=s,//,/,g
+    }
+    return($$val)
+}
+
+# $$unixpath(val) returns a unix path with no duplicated path separators
+defineReplace(unixpath) {
+    val="$$1"
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        val~=s/^"//
+        val~=s/"$//
+    }
+    win32 {
+        val~=s,\\\,/,g
+        lc="$$lower($$val)"
+        contains(QMAKE_BEHAVIORS,keep_quotes) {
+            lc~=s/^"//
+            lc~=s/"$//
+        }
+        lc~=s,^(.):.*,\1,
+        len="$$lc"
+        contains(QMAKE_BEHAVIORS,keep_quotes) {
+            len~=s/^"//
+            len~=s/"$//
+        }
+        len~=s,^.,,
+        isEmpty(len) {
+            val~=s,^.,,
+            val="$$lc$$val"
+            contains(QMAKE_BEHAVIORS,keep_quotes) {
+                val~=s/^"//
+                val~=s/"$//
+            }
+        }
+    }
+    val~=s,//,/,g
+    return($$val)
+}
+
+# containsre(val,regex,flags,splitchar) is like containstext() but it uses a regular expression
+defineTest(containsre) {
+    tmp="$$1"
+    contains(QMAKE_BEHAVIORS,keep_quotes) {
+        tmp~=s/^"//
+        tmp~=s/"$//
+    }
+    re=$$2
+    flags=$$3
+    splitter=$$4
+    isEmpty(splitter):splitter=,
+
+    eval(tmp~=s$$splitter\$$re$$splitter ___CONTAINSTEXT_FOUND_THE_TEXT___ $$splitter\$$flags)
+    contains(QMAKE_BEHAVIORS,var_split) {
+        tmp=$$tmp
+    } else {
+        tmp=$$split(tmp," ")
+    }
+    contains(tmp,___CONTAINSTEXT_FOUND_THE_TEXT___):return(1)
+    else:return(0)
+}
+
+# containstext(val,text,splitchar) is like contains() without the crappy "string must equal an element" assumption
+defineTest(containstext) {
+    val=$$1
+    text=$$2
+    splitter=$$3
+
+    containsre($$val,$$text,q,$$splitter):return(1)
+    else:return(0)
+}
+
+# qtopia_project() identify the project type
+defineTest(qtopia_project) {
+    exists($$QPEDIR/src/build/trace_on):message($$tail($$PWD).pro)
+    contains(PROCESSED_PRI,qtopia_project) {
+        CONFIG+=swallowed
+        export(CONFIG)
+        return(0)
+    }
+    PROCESSED_PRI*=qtopia_project
+    export(PROCESSED_PRI)
+
+    # Make sure we can process the keywords
+    arg=$$1
+    contains(QMAKE_BEHAVIORS,func_in_join):!contains(QMAKE_BEHAVIORS,var_split):arg=$$split(arg," ")
+    for(kw,PROJECT_KEYWORDS) {
+        contains(arg,$$kw) {
+            arg-=$$kw
+            PROJECT_TYPE+=$$kw
+        }
+    }
+    !isEmpty(arg):error($$self: unknown keyword(s) $$arg (valid keywords are $$PROJECT_KEYWORDS))
+
+    ###
+    ### NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+    ###
+    ### This code must match the logic found in src/build/bin/Qtopia/BlackMagic.pm
+    ###
+    ### NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE NOTE
+    ###
+
+    # Handle equivalency
+    HANDLED_TYPES=
+    for(l,forever) {
+        PREV_TYPES=$$HANDLED_TYPES
+        for(t,PROJECT_TYPE) {
+            contains(HANDLED_TYPES,$$t):next()
+            HANDLED_TYPES+=$$t
+            equiv=$$eval(keyword.$${t}.equiv)
+            !isEmpty(equiv):PROJECT_TYPE*=$$equiv
+        }
+        equals(PREV_TYPES,$$HANDLED_TYPES):break()
+    }
+
+    # Run the project keyword commands
+    for(t,PROJECT_TYPE) {
+        cmds=$$eval(keyword.$${t}.commands)
+        !isEmpty(cmds):for(c,cmds) {
+            contains(QMAKE_BEHAVIORS,keep_quotes) {
+                c~=s/^"//
+                c~=s/"$//
+            }
+            eval($$c)
+        }
+    }
+
+    # Load up any last minute config - stuff that depends on the results of qtopia_project()
+    # Since this is read from a function, the usual scoping rules apply.
+    eval(load(last_minute_config))
+
+    export(PROJECT_TYPE)
+    export(TEMPLATE)
+    export(CONFIG)
+    return(1)
+}
+
+# Turn a value as it appears in the QT variable into the Qt library name it represents
+defineReplace(resolveqt) {
+    # Adapted from $QT_DEPOT/mkspecs/features/qt.prf
+    equals(1,gui):return(QtGui)
+    else:equals(1,network):return(QtNetwork)
+    else:equals(1,xml):return(QtXml)
+    else:equals(1,xmlpatterns):return(QtXmlPatterns)
+    else:equals(1,opengl):return(QtOpenGL)
+    else:equals(1,sql):return(QtSql)
+    else:equals(1,core):return(QtCore)
+    else:equals(1,canvas):return(QtCanvas)
+    else:equals(1,qt3support):return(Qt3Support)
+    else:equals(1,svg):return(QtSvg)
+    else:equals(1,script):return(QtScript)
+    else:equals(1,testlib):return(QtTest)
+    else:equals(1,dbus):return(QtDBus)
+    else:equals(1,phonon):return(phonon)
+    else:equals(1,webkit):return(QtWebKit)
+    # Qtopia-specific additions
+    else:equals(1,qtestlib):return(QtTest)
+    else:equals(1,winmain):return(qtmain)
+    else:equals(1,control):return(QAxServer)
+    else:equals(1,container):return(QAxContainer)
+    else:equals(1,uitools):return(QtUiTools)
+    else:equals(1,WebCore):return(QtWebKit)
+    else:error(functions.prf: Unknown QT value $$1)
+}
+
+defineTest(runlast) {
+    cmd=$$1
+    LAST_CMDS+="$$cmd"
+    export(LAST_CMDS)
+    CONFIG*=runlast
+    export(CONFIG)
+}
+
+defineReplace(reverse) {
+    val=$$1
+    contains(QMAKE_BEHAVIORS,func_in_join):!contains(QMAKE_BEHAVIORS,var_split):val=$$split(val," ")
+    ret=
+    for(it,val) {
+        ret=$$it $$ret
+    }
+    return(ret)
+}
+
+# Specify the license conditions of a project
+defineTest(license) {
+    val=$$1
+    contains(QMAKE_BEHAVIORS,func_in_join):!contains(QMAKE_BEHAVIORS,var_split):val=$$split(val," ")
+    for(l,val) {
+        QTOPIA_LICENSE*="$$self:$$l"
+        export(QTOPIA_LICENSE)
+        idep(QTOPIA_DEP_LICENSE*="__SELF__:$$l")
+        idep(CONFIG*=license,CONFIG)
+
+        # Special case for LGPL projects that depend on Qt
+        equals(l,LGPL):qt:idep(QTOPIA_DEP_LICENSE*="__SELF__:LGPL_QT")
+    }
+}
+
+defineReplace(esc) {
+    contains(QMAKE_BEHAVIORS,quote_is_escape_expand) {
+        return($$escape_expand($$1))
+    } else {
+        return($$quote($$1))
+    }
+}
+
+# Debugging helper that compares two variables
+defineTest(compare_vars) {
+    var1=$$1
+    var2=$$2
+    val1=$$eval($$var1)
+    val2=$$eval($$var2)
+
+    message(-- comparing $$var1 to $$var2)
+
+    for(i,val1) {
+        !contains(val2,$$i):warning(-- -- << $$i)
+        val2-=$$i
+    }
+    !isEmpty(val2):for(i,val2) {
+        warning(-- -- >> $$i)
+    }
+}
+
+# Read variables from a file
+defineTest(fetch_vars_from_file) {
+    file=$$1
+    namespace=$$2
+
+    count=0
+    for(a,ARGS) {
+        equals(count,0) {
+            count=1
+            next()
+        }
+        equals(count,1) {
+            count=2
+            next()
+        }
+        eval($${a}=)
+    }
+
+    eval(include(\$$file))
+
+    count=0
+    for(a,ARGS) {
+        equals(count,0) {
+            count=1
+            next()
+        }
+        equals(count,1) {
+            count=2
+            next()
+        }
+        eval($${namespace}.$${a}=$$eval($$a))
+        export($${namespace}.$$a)
+    }
+}
+
+# Read variables from a cache file.
+defineTest(cachedinfo) {
+    cache=$$1
+    cache~=s,$$QTOPIA_DEPOT_PATH,$$QPEDIR,q
+    cache=$${cache}.cache
+
+    variables=
+    first=1
+    for(a,ARGS) {
+        equals(first,1) {
+            first=0
+            next()
+        }
+        variables+=$$a
+    }
+
+    variables=$$join(variables,",")
+    eval(fetch_vars_from_file(\$$cache,cache,$$variables))
+}
+
+# Take a variable and "resolve" it's files the same way qmake does (ie. look in the output dir then the source dir)
+defineTest(resolveRelativeFiles) {
+    var=$$1
+    in=$$eval($$var)
+    out=
+    search_vpath=$$2
+    for(i,in) {
+        found=0
+
+        # Check for files in the build directory
+        files=$$files($$OUT_PWD/$$i)
+        for(f,files) {
+            exists($$f) {
+                found=1
+                out+=$$f
+            }
+        }
+        equals(found,1):next()
+
+        # Check for files in the source directory
+        files=$$files($$SRCDIR/$$i)
+        for(f,files) {
+            exists($$f) {
+                found=1
+                out+=$$f
+            }
+        }
+        equals(found,1):next()
+
+        # Check for files in the VPATH directories (if requested)
+        equals(search_vpath,1) {
+            for(v,VPATH) {
+
+                # VPATH is normally relative to the project
+                files=$$files($$SRCDIR/$$v/$$i)
+                for(f,files) {
+                    exists($$f) {
+                        found=1
+                        out+=$$f
+                    }
+                }
+                equals(found,1):break()
+
+                # VPATH can also be absolute
+                files=$$files($$v/$$i)
+                for(f,files) {
+                    exists($$f) {
+                        found=1
+                        out+=$$f
+                    }
+                }
+                equals(found,1):break()
+
+            }
+            equals(found,1):next()
+        }
+
+        # Check for files specified with absolute paths
+        files=$$files($$i)
+        for(f,files) {
+            exists($$f) {
+                found=1
+                out+=$$f
+            }
+        }
+        equals(found,1):next()
+
+        # Finally check for files specified with absolute paths and no wildcards
+        # needed because /foo/bar/.directory fails the above check for some reason
+        files=$$i
+        for(f,files) {
+            exists($$f) {
+                found=1
+                out+=$$f
+            }
+        }
+        !equals(found,1):warning($$self: Could not find $$i)
+    }
+    eval($$var=\$$out)
+    export($$var)
+}
+
+# Generate a header with defines, based on a QMAKE variable
+defineTest(createHeader) {
+    file=$$1
+    style=$$2
+    val=$$3
+    contains(QMAKE_BEHAVIORS,func_in_join):!contains(QMAKE_BEHAVIORS,var_split) {
+        val=$$split(val," ")
+    }
+
+    c=ch_$$file
+    c~=s,\.,_,g
+    c~=s,-,_,g
+    eval(INPUT_$${c}=\$$QPEDIR/src/config.pri)
+    eval($${c}.input=INPUT_$${c})
+    commands=$$COMMAND_HEADER\
+        echo $${LITERAL_QUOTE}Generating ${QMAKE_FILE_OUT}$$LITERAL_QUOTE $$LINE_SEP\
+        rm -f ${QMAKE_FILE_OUT}
+    for(v,val) {
+        commands+=$${LINE_SEP}echo $${LITERAL_QUOTE}$${LITERAL_HASH}define $${style}$$upper($$v)$$LITERAL_QUOTE >>${QMAKE_FILE_OUT}
+    }
+    eval($${c}.commands=\$$commands)
+    eval($${c}.output=\$$OUT_PWD/\$$file)
+    eval($${c}.variable_out=HEADERS)
+    eval($${c}.name=Generate ${QMAKE_FILE_OUT})
+    eval($${c}.depends=Makefile.target)
+    QMAKE_EXTRA_COMPILERS+=$$c
+    ALL_DEPS+=$$file
+    export(INPUT_$${c})
+    export($${c}.input)
+    export($${c}.commands)
+    export($${c}.output)
+    export($${c}.variable_out)
+    export($${c}.name)
+    export($${c}.depends)
+    export(QMAKE_EXTRA_COMPILERS)
+    export(ALL_DEPS)
+}
+
+# Add something to CFLAGS and CXXFLAGS
+defineTest(addCFlags) {
+    QTOPIA_ADD_CFLAGS+=$$1
+    export(QTOPIA_ADD_CFLAGS)
+    QMAKE_CFLAGS+=$$1
+    export(QMAKE_CFLAGS)
+    QMAKE_CXXFLAGS+=$$1
+    export(QMAKE_CXXFLAGS)
+}
+
+# Create a raw Makefile dependency
+defineTest(create_raw_dependency) {
+    var=$$1
+    dep=$$2
+    eval($${var}.depends*=\$$dep)
+    export($${var}.depends)
+    QMAKE_EXTRA_TARGETS*=$$var
+    export(QMAKE_EXTRA_TARGETS)
+}
+
+# Check if a project is enabled
+defineTest(isProjectEnabled) {
+    root=$$1
+    proj=$$2
+    PROJECTS=
+    include($$root/projects.pri)
+    isEmpty(PROJECTS)|contains(PROJECTS,$$proj):return(1)
+    return(0)
+}
+
+# qmake doesn't do dependencies on .a files so we need to do it manually
+defineTest(register_static_dependency) {
+    file=$$QPEDIR/lib/lib$${1}.a
+    create_raw_dependency($$TARGET,$$file)
+}
+
+# Grab a wildcard match (used in subdirs and depends when matching dependencies with *)
+defineReplace(fetch_wildcard) {
+    dep=$$1
+    #message(fetch_wildcard $$dep)
+    ret=
+    for(w,WILD_CARD_MATCHES) {
+        #message(iterating matches $$w)
+        containstext($$w,$$dep::) {
+            ret=$$w
+            ret~=s,$$dep::,,q
+            #message(found match $$ret)
+            break()
+        }
+    }
+    return($$ret)
+}
+
+# Store a wildcard match (used in subdirs and depends when matching dependencies with *)
+defineTest(store_wildcard) {
+    dep=$$1
+    deps=$$2
+    #message(storing wildcard match $$dep::$$deps)
+    WILD_CARD_MATCHES="$$dep::$$deps"
+    export(WILD_CARD_MATCHES)
+}
+
+# Allow files in device/$$path to override files in $$path
+defineReplace(device_overrides) {
+    file=$$1
+    ret=
+    !isEmpty(DEVICE_CONFIG_PATH):exists($$DEVICE_CONFIG_PATH$$file) {
+        ret=$$DEVICE_CONFIG_PATH$$file
+    } else:isEmpty(DEVICE_CONFIG_PATH):exists($$QTOPIA_DEPOT_PATH/devices/default$$file) {
+        ret=$$QTOPIA_DEPOT_PATH/devices/default$$file
+    } else:exists($$QTOPIA_DEPOT_PATH/editions/$$QTOPIA_EDITION$$file) {
+        ret=$$QTOPIA_DEPOT_PATH/editions/$$QTOPIA_EDITION$$file
+    } else:exists($$QTOPIA_DEPOT_PATH$$file) {
+        ret=$$QTOPIA_DEPOT_PATH$$file
+    }
+    return($$ret)
+}
+
+# This is how you pull in a module in projects.pri
+defineTest(add_module) {
+    m=$$1
+    exists($$QTOPIA_DEPOT_PATH/src/module_$${m}.pri):eval(include($$QTOPIA_DEPOT_PATH/src/module_$${m}.pri))
+    else:error(Missing module_$${m}.pri)
+}
+
+# Conditional sources (for compatibility with QBuild)
+defineTest(CONDITIONAL_SOURCES) {
+    cs=$$1
+    cs_type=$$eval($${cs}.TYPE)
+    !contains(cs_type,CONDITIONAL_SOURCES):error(ERROR: Missing $${cs}.TYPE=CONDITIONAL_SOURCES)
+    cs_cond=$$eval($${cs}.CONDITION)
+    cs_prefix=$$eval($${cs}.PREFIX)
+    VARS=HEADERS SOURCES FORMS PRIVATE_HEADERS SEMI_PRIVATE_HEADERS RESOURCES
+    cs_ret=0
+    eval($${cs_cond}:cs_ret=1)
+    equals(cs_ret,1) {
+        #message($$cs is ON)
+        for(v,VARS) {
+            isEmpty(cs_prefix):cs_out=$$v
+            else:cs_out=$${cs_prefix}_$$v
+            eval($${cs_out}*=\$$eval(\$${cs}.$${v}))
+            export($$cs_out)
+        }
+    } else {
+        #message($$cs is OFF)
+        for(v,VARS) {
+            eval(TRANSLATABLES*=\$$eval(\$${cs}.$${v}))
+        }
+        export(TRANSLATABLES)
+    }
+}
+

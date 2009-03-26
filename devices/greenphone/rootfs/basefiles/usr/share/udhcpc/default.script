@@ -1,0 +1,65 @@
+#!/bin/sh
+
+update_resolv_conf()
+{
+	[ -n "$domain" ] && echo search $domain > /etc/resolvconf/$interface
+
+	for i in $dns; do
+		echo nameserver $i >> /etc/resolvconf/$interface
+	done
+}
+
+update_hosts()
+{
+    TMPHOSTS=$(mktemp /etc/hosts.XXXXXX)
+    awk -v interface=$1 -v ipaddress=$2 '
+        BEGIN {done = 0}
+        $2 == interface {printf "%s\t%s\n", ipaddress, $2 ; done = 1}
+        $2 != interface {print $0}
+        END { if (done == 0) printf "%s\t%s\n", ipaddress, interface }' /etc/hosts > $TMPHOSTS
+    mv -f $TMPHOSTS /etc/hosts
+}
+
+case $1 in
+	deconfig)
+		ifconfig $interface 0.0.0.0
+		;;
+	bound)
+		ifconfig $interface $ip broadcast $broadcast netmask $subnet
+        route delete default 2>/dev/null
+		route add default gw $router
+		update_resolv_conf
+
+        # update /etc/hosts
+        if [ "$interface" = "eth0" ]; then
+            update_hosts greenphone $ip
+        else
+            update_hosts greenphone-$interface $ip
+        fi
+        /etc/rc.d/rc.inetd reload
+		;;
+	renew)
+		ifconfig $interface $ip broadcast $broadcast netmask $subnet
+
+        # only update the default route if it is over this interface
+        if ! route -n | grep '^0\.0\.0\.0 *[^ ]* *0\.0\.0\.0 *UG.*'$interface'$' >/dev/null; then
+            route delete default 2>/dev/null
+            route add default gw $router
+        fi
+
+        update_resolv_conf
+
+        # update /etc/hosts
+        if [ "$interface" = "eth0" ]; then
+            update_hosts greenphone $ip
+        else
+            update_hosts greenphone-$interface $ip
+        fi
+
+        /etc/rc.d/rc.inetd reload
+		;;
+	nak)
+		echo NAK:$message
+		;;
+esac
+

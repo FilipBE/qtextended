@@ -1,0 +1,245 @@
+<html>
+<head>
+<link rel="stylesheet" href="default.css"/>
+</head>
+<body bgcolor='#333333' text='#ffffff'>
+<script>
+var battery = {
+    anim_level: 0,
+    anim_timer: undefined,
+
+    getImage: function (level) {
+        if (level < 20)
+            return 'battery0.png';
+        else if (level < 40)
+            return 'battery1.png';
+        else if (level < 60)
+            return 'battery2.png';
+        else if (level < 80)
+            return 'battery3.png';
+        else if (level < 100)
+            return 'battery4.png';
+        else
+            return 'battery5.png';
+    },
+
+    updateAnimation: function () {
+        this.anim_level += 20;
+        if (this.anim_level > 100)
+            this.anim_level = 0;
+        document.getElementById('battery_img').src = this.getImage(this.anim_level);
+    },
+
+    update: function() {
+        var charging = this.myvs.value("Charging");
+        if (charging) {
+            // We display a silly charging animation
+            if (this.anim_timer == undefined) {
+                var oThis = this;
+                this.anim_timer = window.setInterval(function() {battery.updateAnimation.apply(oThis)}, 1000);
+            }
+        } else {
+            var level = this.myvs.value("Charge");
+            document.getElementById('battery_img').src = this.getImage(level);
+            if (this.anim_timer != undefined) {
+                window.clearInterval(this.anim_timer);
+                this.anim_timer = undefined;
+            }
+        }
+    },
+
+    init: function() {
+        document.write("<img src='battery0.png' id='battery_img' style='position: absolute; left:92%; width:6%; top:6%; height:80%'>");
+        this.myvs = com.trolltech.valuespace("/Hardware/Accessories/QPowerSource/DefaultBattery");
+        this.myvs.contentsChanged.connect(this, this.update);
+        this.update();
+    }
+}
+</script>
+
+<script>
+var antenna = {
+
+    getImage: function (level) {
+        if (level < 20)
+            return 'antenna0.png';
+        else if (level < 40)
+            return 'antenna1.png';
+        else if (level < 60)
+            return 'antenna2.png';
+        else if (level < 80)
+            return 'antenna3.png';
+        else if (level < 100)
+            return 'antenna4.png';
+        else
+            return 'antenna5.png';
+    },
+
+    update: function() {
+        document.getElementById('antenna_img').src = this.getImage(this.myvs.value('SignalStrength'));
+    },
+
+    init: function() {
+        document.write("<img src='antenna0.png' id='antenna_img' style='position: absolute; left: 1.5%; top:5%; width:5%; height:90%'>");
+        this.myvs = com.trolltech.valuespace('/Hardware/Accessories/QSignalSource/DefaultSignal');
+        this.myvs.contentsChanged.connect(this, this.update);
+        this.update();
+    }
+}
+</script>
+
+<script>
+var cellulardata = {
+
+    update: function() {
+        var imgname = 'blank.png';
+        if (this.myvs.value('GPRSConnected'))
+            imgname = 'gprs-connected.png';
+        else if (this.myvs.value('GPRSEnabled'))
+            imgname = 'gprs-enabled.png';
+        else if (this.myvs.value('EDGEConnected'))
+            imgname = 'gprs-connected.png';
+        else if (this.myvs.value('EDGEEnabled'))
+            imgname = 'gprs-enabled.png';
+        else if (this.myvs.value('UMTSConnected'))
+            imgname = 'gprs-connected.png';
+        else if (this.myvs.value('UMTSEnabled'))
+            imgname = 'gprs-enabled.png';
+
+        document.getElementById('celldata_img').src = imgname;
+    },
+
+    init: function() {
+        document.write("<div id='celldata' style='position: absolute; left: 1.33%; top:0%; width:9%;'>" +
+        "<img src='blank.png' id='celldata_img'></div>");
+        this.myvs = com.trolltech.valuespace('/Network');
+        this.myvs.contentsChanged.connect(this, this.update);
+        this.update();
+    }
+}
+
+var caption = {
+    update: function() {
+        if (this.captionvs.value())
+            document.getElementById('caption').innerHTML = this.captionvs.value();
+        else if (this.operatorvs.value())
+            document.getElementById('caption').innerHTML = this.operatorvs.value();
+    },
+
+    init: function() {
+        document.write("<span id='caption' style='position: absolute; left: 10%; top:44%; width:80%; height:53%; text-align:center; font-weight:bold; font-size:18pt;'>&nbsp;</span>");
+        this.captionvs = com.trolltech.valuespace('/UI/ActiveWindow/Caption');
+        this.operatorvs = com.trolltech.valuespace('/Telephony/Status/OperatorName');
+        this.captionvs.contentsChanged.connect(this, this.update);
+        this.operatorvs.contentsChanged.connect(this, this.update);
+        this.update();
+    }
+}
+</script>
+
+<script>
+function Indicator(x, y, id, vsnode, on, off)
+{
+    this.myvs = com.trolltech.valuespace(vsnode);
+    this.imageon = on;
+    this.imageoff = off || 'blank.png';
+    this.imageid = id;
+    this.update = function() {
+        if (this.myvs.value())
+            document.getElementById(this.imageid + '_img').src = this.imageon;
+        else
+            document.getElementById(this.imageid + '_img').src = this.imageoff;
+    }
+
+    document.write("<div id='" + id + "' style='position:absolute; left:" + x + "; top:" + y + "; height:9%'>"
+                + "<img src='" + this.imageoff + "' id='" + id + "_img'></div>");
+
+    this.myvs.contentsChanged.connect(this, this.update);
+    this.update();
+}
+
+function TwoLevelIndicator(x, y, id, vsprimary, vssecondary, primaryon, secondaryon, off)
+{
+    this.primaryvs = com.trolltech.valuespace(vsprimary);
+    this.secondaryvs = com.trolltech.valuespace(vssecondary);
+    this.imageprimary = primaryon;
+    this.imagesecondary = secondaryon;
+    this.imageoff = off || 'blank.png';
+    this.imageid = id;
+    this.update = function() {
+        if (this.primaryvs.value())
+            document.getElementById(this.imageid + '_img').src = this.imageprimary;
+        else if (this.secondaryvs.value())
+            document.getElementById(this.imageid + '_img').src = this.imagesecondary;
+        else
+            document.getElementById(this.imageid + '_img').src = this.imageoff;
+    }
+
+    document.write("<div id='" + id + "' style='position:absolute; left:" + x + "; top:" + y + "; height:9%;'>"
+                + "<img src='" + this.imageoff + "' id='" + id + "_img'></div>");
+
+    this.primaryvs.contentsChanged.connect(this, this.update);
+    this.secondaryvs.contentsChanged.connect(this, this.update);
+    this.update();
+}
+
+</script>
+    <div id='title' style='position:absolute; left:0%; top:0%; width:100%; height:14.5%;'>
+        <div id='activecall' style='position:absolute; width:100%; height:100%; background-color:#00ff00; opacity:1.0;'></div>
+        <img src='titlebar-gradient.png' id='bgimage' style='position:absolute; width:100%; height:100%; opacity:0.5'>
+
+        <script>
+            battery.init();
+            antenna.init();
+            caption.init();
+
+            function updateBG() {
+                if (com.trolltech.valuespace('/Communications/Calls/ActiveCalls').value() > 0)
+                    document.getElementById('activecall').style.background = '#50d914';
+                else
+                    document.getElementById('activecall').style.background ='black';
+            }
+
+            com.trolltech.valuespace('/Communications/Calls/ActiveCalls').contentsChanged.connect(updateBG);
+            updateBG();
+        </script>
+
+        <div id='title_inner' style='position:absolute; left:11.5%; top:5%; width:62%; height:38%;'>
+            <div id='indicators' style='position:absolute; left:0%; top:0%; width:74%; height:88%;'>
+                <script>
+var ind_forwarding = new Indicator('13.6%','0%', 'callforwarding', '/Telephony/Status/CallDivert', 'callforwarding.png');
+var ind_roaming = new Indicator('38.32%','0%', 'roaming', '/Telephony/Status/Roaming', 'roaming.png');
+var ind_alarm = new Indicator('87.64%','0%', 'dailyalarm', '/UI/DailyAlarm', 'alarmbell.png');
+var ind_callock = new TwoLevelIndicator('26%', '0%', 'calllock', '/UI/KeyLock', '/Communications/Calls/ActiveCalls', 'lock.png', 'incall.png');
+
+var ind_bluetooth = new TwoLevelIndicator('50.65%', '0%', 'bluetoothstatus', '/Communications/Bluetooth/LocalDevice/Visible', '/Communications/Bluetooth/LocalDevice/Enabled', 'bluetooth-visible.png', 'bluetooth-enabled.png');
+
+var ind_messages = new TwoLevelIndicator('75.31%','0%', 'messagestatus', '/Telephony/Status/SMSMemoryFull', '/Communications/Messages/NewMessages', 'smsfull.png', 'messages.png');
+cellulardata.init();
+
+                </script>
+            </div>
+            <div id='imtime' style='position:absolute; left:74%; top:0%; width:26%;'>
+                <script>
+        // Time
+var timediv = {
+    updateTime: function() {
+        document.getElementById('timediv_span').innerHTML = this.myvs.value();
+    },
+
+
+    init: function() {
+        document.write("<span id='timediv_span' style='font-size: 14pt; font-weight:bold; text-shadow: white;'>&nbsp;</span>");
+        this.myvs = com.trolltech.valuespace('/UI/DisplayTime/Time');
+        this.myvs.contentsChanged.connect(this, this.updateTime);
+        this.updateTime();
+    }
+}
+
+timediv.init();
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

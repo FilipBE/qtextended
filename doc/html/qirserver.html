@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QIrServer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QIrServer Class Reference</h1>
+<p>The QIrServer class represents an Infrared TinyTP server socket. <a href="#details">More...</a></p>
+<pre>    #include &lt;QIrServer&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qirserver-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qirserver.html#QIrServer">QIrServer</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qirserver.html#dtor.QIrServer">~QIrServer</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qirserver.html#close">close</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qirserver.html#errorString">errorString</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qirserver.html#hasPendingConnections">hasPendingConnections</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qirserver.html#isListening">isListening</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qirserver.html#listen">listen</a></b> ( const QByteArray &amp; <i>service</i>, QIr::DeviceClasses <i>classes</i> = QIr::OBEX )</li>
+<li><div class="fn"/>int <b><a href="qirserver.html#maxPendingConnections">maxPendingConnections</a></b> () const</li>
+<li><div class="fn"/>QIrSocket * <b><a href="qirserver.html#nextPendingConnection">nextPendingConnection</a></b> ()</li>
+<li><div class="fn"/>QIr::DeviceClasses <b><a href="qirserver.html#serverDeviceClasses">serverDeviceClasses</a></b> () const</li>
+<li><div class="fn"/>QIrSocket::SocketError <b><a href="qirserver.html#serverError">serverError</a></b> () const</li>
+<li><div class="fn"/>QByteArray <b><a href="qirserver.html#serverService">serverService</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qirserver.html#setMaxPendingConnections">setMaxPendingConnections</a></b> ( int <i>numConnections</i> )</li>
+<li><div class="fn"/>int <b><a href="qirserver.html#socketDescriptor">socketDescriptor</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qirserver.html#waitForNewConnection">waitForNewConnection</a></b> ( int <i>msecs</i> = 0, bool * <i>timedOut</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qirserver.html#newConnection">newConnection</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QIrServer class represents an Infrared TinyTP server socket.</p>
+<p>This class makes it possible to accept incoming Infrared connections. You can specify the service identifier that this socket represents to be automatically advertised in the IAS database.</p>
+<p>Call <a href="qirserver.html#listen">listen</a>() to make the server listen for new connections. The <a href="qirserver.html#newConnection">newConnection</a>() signal will be emmited each time a client connects to the server.</p>
+<p>Call <a href="qirserver.html#nextPendingConnection">nextPendingConnection</a>() to accept the pending client connection.</p>
+<p>When listening for connections, server service descriptor is available by calling <a href="qirserver.html#serverService">serverService</a>().</p>
+<p>Calling <a href="qirserver.html#close">close</a>() will make the QIrServer stop listening for connections and delete all pending connections.</p>
+<p>See also <a href="qirsocket.html">QIrSocket</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QIrServer"></a>QIrServer::QIrServer ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new <a href="qirserver.html">QIrServer</a> with parent <i>parent</i>. The server is in the UnconnectedState.</p>
+<h3 class="fn"><a name="dtor.QIrServer"></a>QIrServer::~QIrServer ()</h3>
+<p>Destroys the server.</p>
+<h3 class="fn"><a name="close"></a>void QIrServer::close ()</h3>
+<p>Closes the server. The server will no longer listen for incoming connections and all pending connections will be closed.</p>
+<p>See also <a href="qirserver.html#isListening">isListening</a>() and <a href="qirserver.html#socketDescriptor">socketDescriptor</a>().</p>
+<h3 class="fn"><a name="errorString"></a><a href="qstring.html">QString</a> QIrServer::errorString () const</h3>
+<p>Returns a human-readable description of the last device error that occurred.</p>
+<p>See also <a href="qirserver.html#serverError">serverError</a>().</p>
+<h3 class="fn"><a name="hasPendingConnections"></a>bool QIrServer::hasPendingConnections () const</h3>
+<p>Returns true if the server has a pending connection(s); otherwise returns false.</p>
+<p>See also <a href="qirserver.html#nextPendingConnection">nextPendingConnection</a>() and <a href="qirserver.html#setMaxPendingConnections">setMaxPendingConnections</a>().</p>
+<h3 class="fn"><a name="isListening"></a>bool QIrServer::isListening () const</h3>
+<p>Returns true if the server is currently listening for remote connections, and false otherwise.</p>
+<p>See also <a href="qirserver.html#close">close</a>() and <a href="qirserver.html#socketDescriptor">socketDescriptor</a>().</p>
+<h3 class="fn"><a name="listen"></a>bool QIrServer::listen ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>service</i>, <a href="qir.html#DeviceClass-enum">QIr::DeviceClasses</a> <i>classes</i> = QIr::OBEX )</h3>
+<p>Tells the server to listen for incoming connections. The <i>service</i> will be automatically added to the IAS database and an Ir LSAP selector will be automatically chosen.</p>
+<p>The <i>classes</i> contains the service hints for this service. If the system supports setting of the service hints they will be set into the IAS database automatically, otherwise passing this parameter will have no effect.</p>
+<p>Returns true on success; otherwise returns false.</p>
+<p>See also <a href="qirserver.html#isListening">isListening</a>().</p>
+<h3 class="fn"><a name="maxPendingConnections"></a>int QIrServer::maxPendingConnections () const</h3>
+<p>Returns the maximum number of pending accepted connections. The default is 1.</p>
+<p>See also <a href="qirserver.html#setMaxPendingConnections">setMaxPendingConnections</a>() and <a href="qirserver.html#hasPendingConnections">hasPendingConnections</a>().</p>
+<h3 class="fn"><a name="newConnection"></a>void QIrServer::newConnection ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted every time a new connection is available. Call <a href="qirserver.html#nextPendingConnection">nextPendingConnection</a>() in order to accept the connection.</p>
+<p>See also <a href="qirserver.html#hasPendingConnections">hasPendingConnections</a>() and <a href="qirserver.html#nextPendingConnection">nextPendingConnection</a>().</p>
+<h3 class="fn"><a name="nextPendingConnection"></a><a href="qirsocket.html">QIrSocket</a> * QIrServer::nextPendingConnection ()</h3>
+<p>Returns the next pending connection as a connected <a href="qirsocket.html">QIrSocket</a> object. The function returns a pointer to a <a href="qirsocket.html">QIrSocket</a> in <a href="qirsocket.html#SocketState-enum">QIrSocket::ConnectedState</a> that you can use for communicating with the client.</p>
+<p>The socket is created as a child of the server, which means that it is automatically deleted when the <a href="qirserver.html">QIrServer</a> object is destroyed. It is still a good idea to delete the object explicitly when you are done with it, to avoid wasting memory.</p>
+<p>A NULL pointer is returned if this function is called when there are no pending connections.</p>
+<p>See also <a href="qirserver.html#hasPendingConnections">hasPendingConnections</a>().</p>
+<h3 class="fn"><a name="serverDeviceClasses"></a><a href="qir.html#DeviceClass-enum">QIr::DeviceClasses</a> QIrServer::serverDeviceClasses () const</h3>
+<p>Returns the service hint set that this socket has been created with. The service hints are added to the IAS database automatically.</p>
+<p>Note that this functionality might not be supported on some systems in which case this function will always return an empty set.</p>
+<p>See also <a href="qirserver.html#listen">listen</a>() and <a href="qirserver.html#serverService">serverService</a>().</p>
+<h3 class="fn"><a name="serverError"></a><a href="qirsocket.html#SocketError-enum">QIrSocket::SocketError</a> QIrServer::serverError () const</h3>
+<p>Returns the last error that has occurred.</p>
+<p>See also <a href="qirserver.html#errorString">errorString</a>().</p>
+<h3 class="fn"><a name="serverService"></a><a href="qbytearray.html">QByteArray</a> QIrServer::serverService () const</h3>
+<p>Returns the service descriptor this socket has been created with. The service descriptor is added to the IAS database automatically.</p>
+<p>See also <a href="qirserver.html#listen">listen</a>() and <a href="qirserver.html#serverDeviceClasses">serverDeviceClasses</a>().</p>
+<h3 class="fn"><a name="setMaxPendingConnections"></a>void QIrServer::setMaxPendingConnections ( int <i>numConnections</i> )</h3>
+<p>Sets the maximum number of pending accepted connections to <i>numConnections</i>. <a href="qirserver.html">QIrServer</a> will accept no more than <i>numConnections</i> incoming connections before <a href="qirserver.html#nextPendingConnection">nextPendingConnection</a>() is called. By default, the limit is 1 pending connection.</p>
+<p>See also <a href="qirserver.html#maxPendingConnections">maxPendingConnections</a>() and <a href="qirserver.html#hasPendingConnections">hasPendingConnections</a>().</p>
+<h3 class="fn"><a name="socketDescriptor"></a>int QIrServer::socketDescriptor () const</h3>
+<p>Returns the socket descriptor the server is currently listening on. If the server is not listening, then -1 is returned.</p>
+<p>See also <a href="qirserver.html#isListening">isListening</a>().</p>
+<h3 class="fn"><a name="waitForNewConnection"></a>bool QIrServer::waitForNewConnection ( int <i>msecs</i> = 0, bool * <i>timedOut</i> = 0 )</h3>
+<p>Waits for at most <i>msecs</i> milliseconds or until an incoming connection is available. Returns true if a connection is available; otherwise returns false. If the operation timed out and <i>timedOut</i> is not 0, *<i>timedOut</i> will be set to true.</p>
+<p>This is a blocking function call. Its use is not advised in a single-threaded GUI application, since the whole application will stop responding until the function returns. waitForNewConnection() is mostly useful when there is no event loop available.</p>
+<p>The non-blocking alternative is to connect to the <a href="qirserver.html#newConnection">newConnection</a>() signal.</p>
+<p>See also <a href="qirserver.html#hasPendingConnections">hasPendingConnections</a>() and <a href="qirserver.html#nextPendingConnection">nextPendingConnection</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

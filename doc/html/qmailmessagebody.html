@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailMessageBody Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailMessageBody Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>]</span>
+</h1>
+<p>The QMailMessageBody class contains the body element of a message or message part. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailMessageBody&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qmailmessagebody-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmailmessagebody.html#EncodingFormat-enum">EncodingFormat</a></b> { Encoded, Decoded }</li>
+<li><div class="fn"/>enum <b><a href="qmailmessagebody.html#EncodingStatus-enum">EncodingStatus</a></b> { AlreadyEncoded, RequiresEncoding }</li>
+<li><div class="fn"/>enum <b><a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a></b> { NoEncoding, SevenBit, EightBit, Base64, QuotedPrintable, Binary }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>QMailMessageContentType <b><a href="qmailmessagebody.html#contentType">contentType</a></b> () const</li>
+<li><div class="fn"/>QByteArray <b><a href="qmailmessagebody.html#data">data</a></b> ( EncodingFormat <i>format</i> ) const</li>
+<li><div class="fn"/>QString <b><a href="qmailmessagebody.html#data-2">data</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmailmessagebody.html#toFile">toFile</a></b> ( const QString &amp; <i>filename</i>, EncodingFormat <i>format</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailmessagebody.html#toStream">toStream</a></b> ( QDataStream &amp; <i>out</i>, EncodingFormat <i>format</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailmessagebody.html#toStream-2">toStream</a></b> ( QTextStream &amp; <i>out</i> ) const</li>
+<li><div class="fn"/>TransferEncoding <b><a href="qmailmessagebody.html#transferEncoding">transferEncoding</a></b> () const</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QMailMessageBody <b><a href="qmailmessagebody.html#fromData">fromData</a></b> ( const QByteArray &amp; <i>input</i>, const QMailMessageContentType &amp; <i>type</i>, TransferEncoding <i>encoding</i>, EncodingStatus <i>status</i> )</li>
+<li><div class="fn"/>QMailMessageBody <b><a href="qmailmessagebody.html#fromData-2">fromData</a></b> ( const QString &amp; <i>input</i>, const QMailMessageContentType &amp; <i>type</i>, TransferEncoding <i>encoding</i> )</li>
+<li><div class="fn"/>QMailMessageBody <b><a href="qmailmessagebody.html#fromFile">fromFile</a></b> ( const QString &amp; <i>filename</i>, const QMailMessageContentType &amp; <i>type</i>, TransferEncoding <i>encoding</i>, EncodingStatus <i>status</i> )</li>
+<li><div class="fn"/>QMailMessageBody <b><a href="qmailmessagebody.html#fromStream">fromStream</a></b> ( QDataStream &amp; <i>in</i>, const QMailMessageContentType &amp; <i>type</i>, TransferEncoding <i>encoding</i>, EncodingStatus <i>status</i> )</li>
+<li><div class="fn"/>QMailMessageBody <b><a href="qmailmessagebody.html#fromStream-2">fromStream</a></b> ( QTextStream &amp; <i>in</i>, const QMailMessageContentType &amp; <i>type</i>, TransferEncoding <i>encoding</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailMessageBody class contains the body element of a message or message part.</p>
+<p>The body of a message or message part is treated as an atomic unit by the Qt Extended messaging library. It can only be inserted into a message part container or extracted from one. It can be inserted or extracted using either a <a href="qbytearray.html">QByteArray</a>, a <a href="qdatastream.html">QDataStream</a> or to/from a file. In the case of unicode text data, the insertion and extraction can operate on either a <a href="qstring.html">QString</a>, a <a href="qtextstream.html">QTextStream</a> or to/from a file.</p>
+<p>The body data must be associated with a <a href="qmailmessagecontenttype.html">QMailMessageContentType</a> describing that data. When extracting body data from a message or part to unicode text, the content type description must include a parameter named 'charset'; this parameter is used to locate a <a href="qtextcodec.html">QTextCodec</a> to be used to extract unicode data from the body data octet stream.</p>
+<p>If the Content-Type of the data is a subtype of &quot;text&quot;, then line-ending translation will be used to ensure that the text is transmitted with CR/LF line endings. The text data supplied to QMailMessageBody must conform to the RFC 2822 restrictions on maximum line lengths: &quot;Each line of characters MUST be no more than 998 characters, and SHOULD be no more than 78 characters, excluding the CRLF.&quot; Textual message body data decoded from a QMailMessageBody object will have transmitted CR/LF line endings converted to <tt>\n</tt> on extraction.</p>
+<p>The body data can also be encoded from 8-bit octets to 7-bit ASCII characters for safe transmission through obsolete email systems. When creating an instance of the QMailMessageBody class, the encoding to be used must be specified using the <a href="qmailmessagebody.html#TransferEncoding-enum">QMailMessageBody::TransferEncoding</a> enum.</p>
+<p>See also <a href="qmailmessagepart.html">QMailMessagePart</a>, <a href="qmailmessage.html">QMailMessage</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="EncodingFormat-enum"></a>enum QMailMessageBody::EncodingFormat</h3>
+<p>This enum type is used to describe the format in which body data should be presented.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailMessageBody::Encoded</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The body data should be presented in encoded form.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::Decoded</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The body data should be presented in unencoded form.</td></tr>
+</table></p>
+<h3 class="fn"><a name="EncodingStatus-enum"></a>enum QMailMessageBody::EncodingStatus</h3>
+<p>This enum type is used to describe the encoding status of body data.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailMessageBody::AlreadyEncoded</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The body data is already encoded to the necessary encoding.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::RequiresEncoding</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The body data is unencoded, and thus requires encoding for transmission.</td></tr>
+</table></p>
+<h3 class="fn"><a name="TransferEncoding-enum"></a>enum QMailMessageBody::TransferEncoding</h3>
+<p>This enum type is used to describe a type of binary to text encoding. Encoding types used here are documented in <a href="http://www.ietf.org/rfc/rfc2045.txt">RFC 2045</a> &quot;Format of Internet Message Bodies&quot;</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QMailMessageBody::NoEncoding</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The encoding is not specified.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::SevenBit</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The data is not encoded, but contains only 7-bit ASCII data.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::EightBit</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The data is not encoded, but contains data using only 8-bit characters which form a superset of ASCII.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::Base64</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">A 65-character subset of US-ASCII is used, enabling 6 bits to be represented per printable character.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::QuotedPrintable</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">A method of encoding that tends to leave text similar to US-ASCII unmodified for readability.</td></tr>
+<tr><td valign="top"><tt>QMailMessageBody::Binary</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">The data is not encoded to any limited subset of octet values.</td></tr>
+</table></p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="contentType"></a><a href="qmailmessagecontenttype.html">QMailMessageContentType</a> QMailMessageBody::contentType () const</h3>
+<p>Returns the content type that the body was created with.</p>
+<h3 class="fn"><a name="data"></a><a href="qbytearray.html">QByteArray</a> QMailMessageBody::data ( <a href="qmailmessagebody.html#EncodingFormat-enum">EncodingFormat</a> <i>format</i> ) const</h3>
+<p>Returns the data of the message body as a <a href="qbytearray.html">QByteArray</a>. If <i>format</i> is <a href="qmailmessagebody.html#EncodingFormat-enum">QMailMessageBody::Encoded</a>, then the data is written in the transfer encoding it was created with; otherwise, it is written in unencoded form.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>.</p>
+<h3 class="fn"><a name="data-2"></a><a href="qstring.html">QString</a> QMailMessageBody::data () const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns the data of the message body as a <a href="qstring.html">QString</a>, in unencoded form. Line-endings transmitted as CR/LF pairs are converted to <tt>\n</tt> on extraction.</p>
+<p>The 'charset' parameter of the body's content type is used to locate the appropriate <a href="qtextcodec.html">QTextCodec</a> to convert the data from an octet stream to unicode, if necessary.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>, <a href="qmailmessagecontenttype.html">QMailMessageContentType</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<h3 class="fn"><a name="fromData"></a>QMailMessageBody QMailMessageBody::fromData ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>input</i>, const <a href="qmailmessagecontenttype.html">QMailMessageContentType</a> &amp; <i>type</i>, <a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a> <i>encoding</i>, <a href="qmailmessagebody.html#EncodingStatus-enum">EncodingStatus</a> <i>status</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Creates a message body from the data contained in <i>input</i>, having the content type <i>type</i>. If <i>status</i> is <a href="qmailmessagebody.html#EncodingStatus-enum">QMailMessageBody::RequiresEncoding</a>, the data from the file will be encoded to <i>encoding</i> for transmission; otherwise it must already be in that encoding, which will be reported to recipients of the data.</p>
+<p>If <i>type</i> is a subtype of &quot;text&quot;, the data will be treated as text, and line-ending translation will be employed. Otherwise, the file will be treated as containing binary data.</p>
+<p>If <i>encoding</i> is <a href="qmailmessagebody.html#TransferEncoding-enum">QMailMessageBody::QuotedPrintable</a>, encoding will be performed assuming conformance to RFC 2045.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a> and <a href="qmailquotedprintablecodec.html">QMailQuotedPrintableCodec</a>.</p>
+<h3 class="fn"><a name="fromData-2"></a>QMailMessageBody QMailMessageBody::fromData ( const <a href="qstring.html">QString</a> &amp; <i>input</i>, const <a href="qmailmessagecontenttype.html">QMailMessageContentType</a> &amp; <i>type</i>, <a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a> <i>encoding</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Creates a message body from the data contained in <i>input</i>, having the content type <i>type</i>. The data from <i>input</i> will be encoded to <i>encoding</i> for transmission, and line-ending translation will be employed. The unicode text data will be converted to an octet stream using a <a href="qtextcodec.html">QTextCodec</a> object identified by the 'charset' parameter of <i>type</i>.</p>
+<p>If <i>encoding</i> is <a href="qmailmessagebody.html#TransferEncoding-enum">QMailMessageBody::QuotedPrintable</a>, encoding will be performed assuming conformance to RFC 2045.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>, <a href="qmailmessagecontenttype.html">QMailMessageContentType</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<h3 class="fn"><a name="fromFile"></a>QMailMessageBody QMailMessageBody::fromFile ( const <a href="qstring.html">QString</a> &amp; <i>filename</i>, const <a href="qmailmessagecontenttype.html">QMailMessageContentType</a> &amp; <i>type</i>, <a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a> <i>encoding</i>, <a href="qmailmessagebody.html#EncodingStatus-enum">EncodingStatus</a> <i>status</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Creates a message body from the data contained in the file <i>filename</i>, having the content type <i>type</i>. If <i>status</i> is <a href="qmailmessagebody.html#EncodingStatus-enum">QMailMessageBody::RequiresEncoding</a>, the data from the file will be encoded to <i>encoding</i> for transmission; otherwise it must already be in that encoding, which will be reported to recipients of the data.</p>
+<p>If <i>type</i> is a subtype of &quot;text&quot;, the data will be treated as text, and line-ending translation will be employed. Otherwise, the file will be treated as containing binary data. If the file contains unicode text data, it will be converted to an octet stream using a <a href="qtextcodec.html">QTextCodec</a> object identified by the 'charset' parameter of <i>type</i>.</p>
+<p>If <i>encoding</i> is <a href="qmailmessagebody.html#TransferEncoding-enum">QMailMessageBody::QuotedPrintable</a>, encoding will be performed assuming conformance to RFC 2045.</p>
+<p>Note that the data is not actually read from the file until it is requested by another function.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>, <a href="qmailquotedprintablecodec.html">QMailQuotedPrintableCodec</a>, <a href="qmailmessagecontenttype.html">QMailMessageContentType</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<h3 class="fn"><a name="fromStream"></a>QMailMessageBody QMailMessageBody::fromStream ( <a href="qdatastream.html">QDataStream</a> &amp; <i>in</i>, const <a href="qmailmessagecontenttype.html">QMailMessageContentType</a> &amp; <i>type</i>, <a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a> <i>encoding</i>, <a href="qmailmessagebody.html#EncodingStatus-enum">EncodingStatus</a> <i>status</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Creates a message body from the data read from <i>in</i>, having the content type <i>type</i>. If <i>status</i> is <a href="qmailmessagebody.html#EncodingStatus-enum">QMailMessageBody::RequiresEncoding</a>, the data from the file will be encoded to <i>encoding</i> for transmission; otherwise it must already be in that encoding, which will be reported to recipients of the data.</p>
+<p>If <i>type</i> is a subtype of &quot;text&quot;, the data will be treated as text, and line-ending translation will be employed. Otherwise, the file will be treated as containing binary data.</p>
+<p>If <i>encoding</i> is <a href="qmailmessagebody.html#TransferEncoding-enum">QMailMessageBody::QuotedPrintable</a>, encoding will be performed assuming conformance to RFC 2045.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a> and <a href="qmailquotedprintablecodec.html">QMailQuotedPrintableCodec</a>.</p>
+<h3 class="fn"><a name="fromStream-2"></a>QMailMessageBody QMailMessageBody::fromStream ( <a href="qtextstream.html">QTextStream</a> &amp; <i>in</i>, const <a href="qmailmessagecontenttype.html">QMailMessageContentType</a> &amp; <i>type</i>, <a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a> <i>encoding</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Creates a message body from the data read from <i>in</i>, having the content type <i>type</i>. The data read from <i>in</i> will be encoded to <i>encoding</i> for transmission, and line-ending translation will be employed. The unicode text data will be converted to an octet stream using a <a href="qtextcodec.html">QTextCodec</a> object identified by the 'charset' parameter of <i>type</i>.</p>
+<p>If <i>encoding</i> is <a href="qmailmessagebody.html#TransferEncoding-enum">QMailMessageBody::QuotedPrintable</a>, encoding will be performed assuming conformance to RFC 2045.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>, <a href="qmailquotedprintablecodec.html">QMailQuotedPrintableCodec</a>, <a href="qmailmessagecontenttype.html">QMailMessageContentType</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<h3 class="fn"><a name="toFile"></a>bool QMailMessageBody::toFile ( const <a href="qstring.html">QString</a> &amp; <i>filename</i>, <a href="qmailmessagebody.html#EncodingFormat-enum">EncodingFormat</a> <i>format</i> ) const</h3>
+<p>Writes the data of the message body to the file named <i>filename</i>. If <i>format</i> is <a href="qmailmessagebody.html#EncodingFormat-enum">QMailMessageBody::Encoded</a>, then the data is written in the transfer encoding it was created with; otherwise, it is written in unencoded form.</p>
+<p>If the body has a content type with a <a href="qmailmessagecontenttype.html#type">QMailMessageContentType::type</a>() of &quot;text&quot;, and the content type parameter 'charset' is not empty, then the unencoded data will be written as unicode text data, using the charset parameter to locate the appropriate <a href="qtextcodec.html">QTextCodec</a>.</p>
+<p>Returns false if the operation causes an error; otherwise returns true.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>, <a href="qmailmessagecontenttype.html">QMailMessageContentType</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<h3 class="fn"><a name="toStream"></a>bool QMailMessageBody::toStream ( <a href="qdatastream.html">QDataStream</a> &amp; <i>out</i>, <a href="qmailmessagebody.html#EncodingFormat-enum">EncodingFormat</a> <i>format</i> ) const</h3>
+<p>Writes the data of the message body to the stream <i>out</i>. If <i>format</i> is <a href="qmailmessagebody.html#EncodingFormat-enum">QMailMessageBody::Encoded</a>, then the data is written in the transfer encoding it was created with; otherwise, it is written in unencoded form.</p>
+<p>Returns false if the operation causes an error; otherwise returns true.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>.</p>
+<h3 class="fn"><a name="toStream-2"></a>bool QMailMessageBody::toStream ( <a href="qtextstream.html">QTextStream</a> &amp; <i>out</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Writes the data of the message body to the stream <i>out</i>, in unencoded form. Line-endings transmitted as CR/LF pairs are converted to <tt>\n</tt> on extraction. Returns false if the operation causes an error; otherwise returns true.</p>
+<p>The 'charset' parameter of the body's content type is used to locate the appropriate <a href="qtextcodec.html">QTextCodec</a> to convert the data from an octet stream to unicode, if necessary.</p>
+<p>See also <a href="qmailcodec.html">QMailCodec</a>, <a href="qmailmessagecontenttype.html">QMailMessageContentType</a>, and <a href="qtextcodec.html">QTextCodec</a>.</p>
+<h3 class="fn"><a name="transferEncoding"></a><a href="qmailmessagebody.html#TransferEncoding-enum">TransferEncoding</a> QMailMessageBody::transferEncoding () const</h3>
+<p>Returns the transfer encoding type that the body was created with.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

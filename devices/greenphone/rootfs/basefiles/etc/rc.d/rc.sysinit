@@ -1,0 +1,26 @@
+#!/bin/sh
+
+splash -p + "Initialising System"
+
+/bin/hostname -F /etc/HOSTNAME
+/sbin/ifconfig lo 127.0.0.1 up
+/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
+
+# Generate SSH host keys
+HOSTKEYDIR=/etc/dropbear
+[ -d $HOSTKEYDIR ] || mkdir -p $HOSTKEYDIR
+for i in rsa dss; do
+    if [ ! -f $HOSTKEYDIR/dropbear_${i}_host_key ]; then
+        /usr/sbin/dropbearkey -t ${i} -f $HOSTKEYDIR/dropbear_${i}_host_key &
+    fi
+done
+
+[ "$(date +%Y)" = "1970" ] && date -s 100112002006
+
+touch /var/run/utmp
+touch /var/log/wtmp
+chgrp utmp /var/run/utmp /var/log/wtmp
+chmod 0664 /var/run/utmp /var/log/wtmp
+
+dmesg > /var/log/dmesg
+

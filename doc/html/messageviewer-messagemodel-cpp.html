@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>messagemodel.cpp Example File (messageviewer/messagemodel.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">messagemodel.cpp Example File<br /><span class="small-subtitle">messageviewer/messagemodel.cpp</span>
+</h1>
+<pre><span class="comment">    /****************************************************************************
+    **
+    ** This file is part of the Qt Extended Opensource Package.
+    **
+    ** Copyright (C) 2009 Trolltech ASA.
+    **
+    ** $QT_EXTENDED_DUAL_LICENSE$
+    **
+    ****************************************************************************/</span>
+
+    #include &quot;messagemodel.h&quot;
+    #include &quot;messagedelegate.h&quot;
+    #include &lt;QIcon&gt;
+    #include &lt;QMailMessageId&gt;
+    #include &lt;QMailMessageMetaData&gt;
+    #include &lt;QMailMessageKey&gt;
+    #include &lt;QMailMessageSortKey&gt;
+    #include &lt;QMailStore&gt;
+    #include &lt;QPhoneNumber&gt;
+    #include &lt;QStandardItem&gt;
+    #include &lt;QTimeString&gt;
+    #include &lt;QtopiaApplication&gt;
+
+    class MessageItem : public QStandardItem
+    {
+    public:
+        explicit MessageItem(const QMailMessageId&amp; id);
+        virtual ~MessageItem();
+
+        QMailMessageId messageId() const;
+
+    private:
+        QMailMessageId id;
+    };
+
+    MessageItem::MessageItem(const QMailMessageId&amp; id)
+        : QStandardItem(), id(id)
+    {
+        static QIcon sentMessageIcon(&quot;:icon/qtmail/sendmail&quot;);
+        static QIcon receivedMessageIcon(&quot;:icon/qtmail/getmail&quot;);
+        static QIcon smsIcon(&quot;:icon/txt&quot;);
+        static QIcon mmsIcon(&quot;:icon/multimedia&quot;);
+        static QIcon emailIcon(&quot;:icon/email&quot;);
+        static QIcon instantIcon(&quot;:icon/im&quot;);
+
+        <span class="comment">// Load the meta data for this message</span>
+        QMailMessageMetaData message(id);
+
+        <span class="comment">// Determine the properties we want to display</span>
+        QIcon* messageIcon = &amp;smsIcon;
+        if (message.messageType() == QMailMessage::Mms)
+            messageIcon = &amp;mmsIcon;
+        if (message.messageType() == QMailMessage::Email)
+            messageIcon = &amp;emailIcon;
+        if (message.messageType() == QMailMessage::Instant)
+            messageIcon = &amp;instantIcon;
+
+        bool sent(message.status() &amp; QMailMessage::Outgoing);
+
+        QDateTime messageTime(message.date().toLocalTime());
+
+        QString action(qApp-&gt;translate(&quot;MessageViewer&quot;, sent ? &quot;Sent&quot; : &quot;Received&quot;));
+        QString date(QTimeString::localMD(messageTime.date()));
+        QString time(QTimeString::localHM(messageTime.time(), QTimeString::Short));
+        QString sublabel(QString(&quot;%1 %2 %3&quot;).arg(action).arg(date).arg(time));
+
+        <span class="comment">// Configure this item</span>
+        setIcon(sent ? sentMessageIcon : receivedMessageIcon);
+        setText(message.subject());
+        setData(sublabel, MessageDelegate::SubLabelRole);
+        setData(*messageIcon, MessageDelegate::SecondaryDecorationRole);
+    }
+
+    MessageItem::~MessageItem()
+    {
+    }
+
+    QMailMessageId MessageItem::messageId() const
+    {
+        return id;
+    }
+
+    MessageModel::MessageModel(QObject *parent)
+        : QStandardItemModel(parent)
+    {
+    }
+
+    MessageModel::~MessageModel()
+    {
+    }
+
+    void MessageModel::setContact(const QContact&amp; contact)
+    {
+        clear();
+
+        if (contact.phoneNumbers().isEmpty() &amp;&amp; contact.emailList().isEmpty()) {
+            <span class="comment">// Nothing to match for this contact</span>
+            return;
+        }
+
+        <span class="comment">// Locate messages whose sender is this contact</span>
+        QMailMessageKey msgsFrom;
+
+        <span class="comment">// Locate messages whose recipients list contains this contact</span>
+        QMailMessageKey msgsTo;
+
+        <span class="comment">// Match on any of contact's phone numbers</span>
+        foreach(const QString&amp; number, contact.phoneNumbers().values()) {
+            msgsFrom |= QMailMessageKey(QMailMessageKey::Sender, number);
+            msgsTo |= QMailMessageKey(QMailMessageKey::Recipients, number, QMailDataComparator::Includes);
+        }
+
+        <span class="comment">// Match on any of contact's email addresses</span>
+        foreach(const QString&amp; address, contact.emailList()) {
+            msgsFrom |= QMailMessageKey(QMailMessageKey::Sender, address);
+            msgsTo |= QMailMessageKey(QMailMessageKey::Recipients, address, QMailDataComparator::Includes);
+        }
+
+        <span class="comment">// Sort messages by timestamp, newest to oldest</span>
+        QMailMessageSortKey sort(QMailMessageSortKey::TimeStamp, Qt::DescendingOrder);
+
+        <span class="comment">// Fetch the messages matching either of our queries, and return them sorted</span>
+        QMailMessageIdList matches(QMailStore::instance()-&gt;queryMessages(msgsFrom | msgsTo, sort));
+
+        <span class="comment">// Add each returned message to our data model</span>
+        foreach (const QMailMessageId&amp; id, matches)
+            appendRow(new MessageItem(id));
+    }
+
+    bool MessageModel::isEmpty() const
+    {
+        return (rowCount() == 0);
+    }
+
+    QMailMessageId MessageModel::messageId(const QModelIndex&amp; index)
+    {
+        if (index.isValid())
+            if (MessageItem* item = static_cast&lt;MessageItem*&gt;(itemFromIndex(index)))
+                return item-&gt;messageId();
+
+        return QMailMessageId();
+    }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

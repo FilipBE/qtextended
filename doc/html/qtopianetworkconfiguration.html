@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaNetworkConfiguration Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaNetworkConfiguration Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaNetworkConfiguration class defines the interface to network interface configurations. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaNetworkConfiguration&gt;</pre><ul>
+<li><a href="qtopianetworkconfiguration-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual <b><a href="qtopianetworkconfiguration.html#dtor.QtopiaNetworkConfiguration">~QtopiaNetworkConfiguration</a></b> ()</li>
+<li><div class="fn"/>virtual QString <b><a href="qtopianetworkconfiguration.html#configFile">configFile</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QDialog * <b><a href="qtopianetworkconfiguration.html#configure">configure</a></b> ( QWidget * <i>parent</i>, const QString &amp; <i>type</i> = QString() ) = 0</li>
+<li><div class="fn"/>virtual QtopiaNetworkProperties <b><a href="qtopianetworkconfiguration.html#getProperties">getProperties</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QVariant <b><a href="qtopianetworkconfiguration.html#property">property</a></b> ( const QString &amp; <i>key</i> ) const = 0</li>
+<li><div class="fn"/>virtual QStringList <b><a href="qtopianetworkconfiguration.html#types">types</a></b> () const = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtopianetworkconfiguration.html#writeProperties">writeProperties</a></b> ( const QtopiaNetworkProperties &amp; <i>properties</i> ) = 0</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaNetworkConfiguration class defines the interface to network interface configurations.</p>
+<p>Network interface parameter are stored in <a href="qtopianetworkconfiguration.html#configFile">configFile</a>(). They can be edited via a combination of <a href="qtopianetworkconfiguration.html#writeProperties">writeProperties</a>(), <a href="qtopianetworkconfiguration.html#getProperties">getProperties</a>() and <a href="qtopianetworkconfiguration.html#property">property</a>() or by calling <a href="qtopianetworkconfiguration.html#configure">configure</a>() which returns one or more user interface dialogs. The dialogs depend on the various configuration <a href="qtopianetworkconfiguration.html#types">types</a>() supported by the interface. The WLAN plug-in e.g&#x2e;, provides two configuration dialogs. The first dialog supports general interface parameter whereas the second dialog allows the configuration through an WLAN scanner interface.</p>
+<p>There is no default implementation available for this interface.</p>
+<p>See also <a href="qtopianetworkinterface.html">QtopiaNetworkInterface</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="dtor.QtopiaNetworkConfiguration"></a>QtopiaNetworkConfiguration::~QtopiaNetworkConfiguration ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the QtopaNetworkConfiguration instance.</p>
+<h3 class="fn"><a name="configFile"></a><a href="qstring.html">QString</a> QtopiaNetworkConfiguration::configFile () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the absolute path and filename of the network configuration file that defines the current interface. The return string can also be used as interface handle.</p>
+<h3 class="fn"><a name="configure"></a><a href="qdialog.html">QDialog</a> * QtopiaNetworkConfiguration::configure ( <a href="qwidget.html">QWidget</a> * <i>parent</i>, const <a href="qstring.html">QString</a> &amp; <i>type</i> = QString() )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the default configuration dialog that is shown to the user when he configures this interface. <i>parent</i> is the parent widget for the dialog. The valid values to <i>type</i> can be obtained by using <a href="qtopianetworkconfiguration.html#types">types</a>(). If <i>type</i> is unknown this function returns 0. The default configuration interface is returned if no type is passed.</p>
+<p><b>Note:</b> A plug-in can have additional configuration interfaces which are relevant to the plug-in but not essential. For example, the LAN plug-in has an additional user interfaces for WLAN scanning.</p>
+<p>See also <a href="qtopianetworkconfiguration.html#types">types</a>().</p>
+<h3 class="fn"><a name="getProperties"></a><a href="qtopianetworkproperties.html">QtopiaNetworkProperties</a> QtopiaNetworkConfiguration::getProperties () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns all properties of this interface. If only a single property is needed <a href="qtopianetworkconfiguration.html#property">property</a>() should be used.</p>
+<p>See also <a href="qtopianetworkconfiguration.html#property">property</a>().</p>
+<h3 class="fn"><a name="property"></a><a href="qvariant.html">QVariant</a> QtopiaNetworkConfiguration::property ( const <a href="qstring.html">QString</a> &amp; <i>key</i> ) const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>This is a quick way of accessing the configuration value for <i>key</i>. The following example quickly determines the human-readable name of this interface/configuration:</p>
+<pre>    QtopiaNetworkConfiguration* config = ...
+    QString value = config-&gt;property( &quot;Info/Name&quot; ).toString();</pre>
+<h3 class="fn"><a name="types"></a><a href="qstringlist.html">QStringList</a> QtopiaNetworkConfiguration::types () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns a list of all user interfaces. Each list entries are localised strings and can by used as a short description for the interface dialogs. The same strings are also used as identifiers for <a href="qtopianetworkconfiguration.html#configure">configure</a>() to request the user interface.</p>
+<p>The first entry in the list is the default configuration interface. The returned list must contain at least one entry (being the default interface).</p>
+<h3 class="fn"><a name="writeProperties"></a>void QtopiaNetworkConfiguration::writeProperties ( const <a href="qtopianetworkproperties.html">QtopiaNetworkProperties</a> &amp; <i>properties</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Writes <i>properties</i> out to the network configuration file.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

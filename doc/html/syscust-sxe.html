@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - System Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - System Integration<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#the-role-of-mac-in-sxe">The role of MAC in SXE</a></li>
+</ul>
+<li><a href="#lids-mac-kernel">LIDS MAC Kernel</a></li>
+<li><a href="#file-system-creation">File System Creation</a></li>
+<li><a href="#boot-process">Boot Process</a></li>
+<li><a href="#policy-file-creation">Policy File Creation</a></li>
+<li><a href="#qt-extended-sxe-and-lids-mac-integration-points">Qt Extended SXE and LIDS MAC Integration Points</a></li>
+<ul><li><a href="#qt-extended-sxe-domain-scripts">Qt Extended SXE Domain Scripts</a></li>
+</ul>
+<li><a href="#setting-up-the-security-log">Setting up the security log</a></li>
+<li><a href="#memory-limits">Memory Limits</a></li>
+<li><a href="#troubleshooting-lids-for-greenphone">Troubleshooting LIDS for Greenphone</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The <a href="sxe.html">Safe Execution Environment - (SXE)</a> is built into Qt Extended to provide a level of confidence to allow the download and execution of native 3rd-party binaries, such as games and utilities.</p>
+<p>At the application level, SXE acts like a firewall to prevent programs making unauthorized access to sensitive system services. Requests received by the Qt Extended server are first checked to see if the originating program has the correct security domain awarded to allow the sending of such messages.</p>
+<p>Downloaded programs must however, also be controlled at the file system level, to prevent them accessing sensitive system files, such as the <tt>sxe.policy</tt> file. Altering the policy file could result in the program awarding the security domain to itself.</p>
+<p>These file system level controls are achieved for SXE by a Mandatory Access Control (MAC) system.</p>
+<p>This document is to assist engineers with system integration to enable the MAC system for a device.</p>
+<p>The MAC system for SXE is provided by the LIDS (Linux Intrusion Detection System) project: <a href="http://www.lids.org/">http://www.lids.org/</a>. LIDS is discussed in the <a href="#lids-mac-kernel">LIDS MAC kernel</a> section below.</p>
+<p>There are four stages to enabling the LIDS MAC system:</p>
+<ol type="1">
+<li>building the LIDS enabled kernel</li>
+<li>building the LIDS user space utilities</li>
+<li>enabling LIDS during system boot and shutdown</li>
+<li>configuring the policy scripts.</li>
+</ol>
+<p>These stages for enabling LIDS MAC for a Qt Extended SXE device are described below.</p>
+<a name="the-role-of-mac-in-sxe"></a>
+<h3>The role of MAC in SXE</h3>
+<p>MAC policy can prevent a program from accessing the network or the modem device directly. This means that programs must route their requests via the application policy framework mentioned in the previous section.</p>
+<p>While the SXE system will run without MAC, it requires MAC to provide a guarantee of security as the modem, policy files, and other sensitive system resources are not otherwise protected.</p>
+<p>To reiterate, the SXE application level system continues to operate if the MAC system is not in place. However a malicious or flawed - &quot;Malware&quot; - program could simply alter SXE system files or directly operate on the devices hardware. The MAC system must be enabled in order for SXE to provide its level of guarantee of the security of the device.</p>
+<p>For this reason, the Security tab of the System Information application shows the current state of SXE and whether a supported underlying MAC implementation is available.</p>
+<p>The MAC system also provides System Hardening by the MAC bounding set. The bounding set comprises of global MAC rules which apply to all programs, unless specifically excepted. System hardening makes it much more difficult for a flawed or malicious downloaded program to compromise the device.</p>
+<a name="lids-mac-kernel"></a>
+<h2>LIDS MAC Kernel</h2>
+<p>The Linux kernel selected for use with the device must be patched to enable support for the LIDS Mandatory Access Control (MAC) system.</p>
+<p>LIDS kernel patches are available for both 2.4 and 2.6 series kernels. However there are some key differences between the LIDS system for the two kernel versions:</p>
+<ol type="1">
+<li>LIDS for Linux 2.6 uses the Linux Security Module (LSM) framework.</li>
+<li>LIDS for Linux 2.4 includes additional features such as the Trusted Domain Enforcement (TDE) system. The TDE system makes available the LIDS_SANDBOX Access Control List rule, which simplifies the task of creating a sandbox for untrusted programs. The 2.6 series LIDS system must instead detail all rules required to effectively sandbox the untrusted program, making the list of rules required longer. Efforts are underway to port the LIDS_SANDBOX feature to the 2.6 series.</li>
+</ol>
+<p>The Linux kernel patches required to enable LIDS are available from <a href="http://www.lids.org/">http://www.lids.org/</a> and <a href="http://qtextended.org/downloads/lids">http://qtextended.org/downloads/lids</a>.</p>
+<p>A full discussion of how to patch and install the LIDS enabled kernel is beyond the scope of this document. Refer to <a href="http://www.lids.org">http://www.lids.org</a> and the documentation included in the LIDS source packages for more details.</p>
+<p>Some <a href="http://www.secureos.jp/LIDS-JP/LIDS_en/index.html">resources for embedded LIDS</a> have been prepared by a Japanese user-group.</p>
+<p>The steps for compiling LIDS into the kernel are:</p>
+<ol type="1">
+<li>Determine the Linux kernel version - here the example of 2.6&#x2e;13 is used<pre>    export SXE_ROOT=$PWD
+    export LIDS=lids-2.2.1-2.6.13
+    export LIDS_DL=http:<span class="comment">//qtextended.org/downloads/lids/v2.6/2.6.13</span>
+    export LIDS_DIR=$SXE_ROOT/$LIDS</pre>
+</li>
+<li>Download and install the LIDS patches for that version. The following assumes that the kernel sources are located in <tt>$SXE_ROOT/linux</tt>:<pre>    wget $LIDS_DL/$LIDS.tar.gz
+    tar zvxf $LIDS.tar.gz
+    cd linux
+    patch -p0 &lt; ../$LIDS/$LIDS.patch</pre>
+</li>
+<li>Manually apply some patch hunks if required</li>
+<li>Configure the kernel as normal, ensuring that LIDS is enabled as either a module or built-in.</li>
+<li>Build Linux as normal, for example:<pre>     make bzImage
+     make modules</pre>
+</li>
+</ol>
+<a name="file-system-creation"></a>
+<h2>File System Creation</h2>
+<p>The LIDS enabled kernel requires the user space utilities <tt>/sbin/lidsconf</tt> and <tt>/sbin/lidsadm</tt>. These binaries must be installed in <tt>/sbin</tt> or LIDS will be disabled, as this path is hard-coded in the kernel.</p>
+<p>The other components required for LIDS are the default LIDS configuration files, installed in <tt>/etc/lids</tt>.</p>
+<p>The steps are:</p>
+<ol type="1">
+<li>Prepare your file system as normal. The following assumes that the target filesystem is located at <tt>$SXE_ROOT/target</tt>.</li>
+<li>Determine cross-compile arguments if needed, for example:<pre>     export LIDS_CROSS=&quot;--target=arm-linux --host=arm-linux --build=i586-linux-gnu&quot;</pre>
+</li>
+<li>Build the LIDS MAC user space utilities<pre>     cd $LIDS_DIR/lidstools*
+     ./configure $LIDS_CROSS KERNEL_DIR=$SXE_ROOT/linux LDFLAGS=-static
+     make</pre>
+</li>
+<li>Install the user space utilities, configuration files and LIDS kernel module into the target file system.<p><b>Note:</b> Here the example configuration files from the LIDS distribution are used.</p>
+<pre>     cp -u src/lidsadm src/lidsconf $SXE_ROOT/target/sbin
+     export LIST=`ls -1 example/*.cap example/*.conf example/*.ini example/*.pw`
+     for P in $LIST; do cp $P $SXE_ROOT/target/etc/lids; done
+
+     cd $SXE_ROOT/linux
+     make modules_install INSTALL_MOD_PATH=$SXE_ROOT/target</pre>
+</li>
+</ol>
+<a name="boot-process"></a>
+<h2>Boot Process</h2>
+<p>When a LIDS system boots, runs and shuts down, the system goes through the following stages:</p>
+<ol type="1">
+<li>BOOT - special privileges available, for example, <tt>mount</tt>, <tt>fsck</tt></li>
+<li>POSTBOOT - normal system operation</li>
+<li>SHUTDOWN - special privileges available, for example, <tt>kill</tt>, <tt>unmount</tt></li>
+</ol>
+<p>The system initialization scripts must be set up to run the command <tt>lidsadm -I</tt> at the completion of the BOOT phase. This should occur after the system initialization scripts have run to set up any mount points, networking, daemons etc. After this command, special privileges required for booting the device will be dropped, the kernel is <i>sealed</i> and the device is operating in secure mode.</p>
+<p>The system shutdown scripts should likewise be setup to run the command <tt>lidsadm -S -- +SHUTDOWN</tt> at the beginning of the device shutdown or reboot sequence.</p>
+<p>Initialization scripts must also be setup to provide the once-off LIDS initialization required, for example, via a script such as:</p>
+<pre>    if [ ! -f /etc/lids_initialized ]; then
+        echo &quot;*** First run, initializing LIDS.&quot;
+        /etc/lids/sxe_boot
+        lidsconf -U;
+        lidsconf -C;
+        lidsconf -P;
+        touch /etc/lids_initialized;
+    fi</pre>
+<p>Here the file <tt>/etc/lids/sxe_boot</tt> is a shell script which calls the LIDS policy file scripts mentioned in the next section, which will create the LIDS runtime rules for the device.</p>
+<a name="policy-file-creation"></a>
+<h2>Policy File Creation</h2>
+<p>The resources which are required to be protected on the file system should be listed in detail before commencing creating LIDS policies. The table below can be used as a basis for constructing this list.</p>
+<p>More general rules can be placed at the top of the table, with exceptions to the rules further down.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Item</th><th>Typical file system path</th><th>General rule</th></tr></thead>
+<tr valign="top" class="odd"><td>system configuration</td><td><tt>/etc</tt></td><td>Programs can read but not write</td></tr>
+<tr valign="top" class="even"><td>log file management</td><td><tt>/dev/log</tt>, <tt>/var/log</tt></td><td>Programs cannot access</td></tr>
+<tr valign="top" class="odd"><td>devices protections</td><td><tt>/dev/ttyS0</tt>, <tt>/dev/fb0</tt> and other sensitive devices</td><td>Programs cannot access (some programs may require access to <i>safe</i> character devices including)<ul>
+<li>/dev/zero</li>
+<li>/dev/null</li>
+<li>/dev/urandom</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>MAC system configuration</td><td><tt>/etc/lids</tt></td><td>Programs cannot access</td></tr>
+<tr valign="top" class="odd"><td>Qt Extended binaries</td><td><tt>/opt/Qtopia/bin</tt></td><td>No program ever launches these binaries except <tt>qpe</tt></td></tr>
+<tr valign="top" class="even"><td>Qt Extended libraries</td><td><tt>/opt/Qtopia/lib:/opt/Qtopia/plugins:/opt/Qtopia/qt_plugins</tt></td><td>Programs can read but not write</td></tr>
+<tr valign="top" class="odd"><td>system libraries</td><td><tt>/lib:/usr/lib</tt></td><td>Programs can read but not write</td><td></td></tr>
+<tr valign="top" class="even"><td>system binaries</td><td><tt>/bin:/sbin:/usr/bin:/usr/sbin</tt></td><td>Programs shouldn't be launching these binaries</td></tr>
+<tr valign="top" class="odd"><td>Qt Extended etc</td><td><tt>/opt/Qtopia/etc</tt></td><td>Programs can read but not write. Some configuration files are not readable, see next item.</td></tr>
+<tr valign="top" class="even"><td>SXE registry files</td><td><tt>/opt/Qtopia/etc/keyfile</tt>, <tt>/opt/Qtopia/etc/sxe.profiles</tt>, <tt>/opt/Qtopia/etc/sxe.policy</tt>, <tt>/opt/Qtopia/etc/manifest</tt>, <tt>/opt/Qtopia/etc/keyfile.sequence</tt>, <tt>/opt/Qtopia/etc/installs</tt></td><td>No program can read</td></tr>
+<tr valign="top" class="odd"><td>DRM system directory</td><td><tt>/opt/Qtopia/Applications/Qtopia/DRM</tt></td><td>Programs cannot access</td></tr>
+</table></p>
+<p>Once the list has been filled out, LIDS rules can be constructed in the form of shell scripts.</p>
+<pre>    lidsconf -A -s ${BIN} -o /lib -j READONLY
+    lidsconf -A -s ${BIN} -o /usr/lib -j READONLY
+
+    lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/qt_plugins -j READONLY
+    lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/services -j READONLY
+    lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc -j READONLY</pre>
+<a name="qt-extended-sxe-and-lids-mac-integration-points"></a>
+<h2>Qt Extended SXE and LIDS MAC Integration Points</h2>
+<p>The LIDS MAC installation for the device is heavily dependent on the configuration of the filesystem.</p>
+<p>In addition there are differences between the 2.6 and 2.4 series kernel implementations. Efforts are underway to reduce these differences, but at present integration by way of scripts is required in order to provide an interface for Qt Extended.</p>
+<p>This means that much of the interface between Qt Extended SXE and the LIDS MAC system must be done by SXE calling into scripts which are provided by the system integration engineers for the device.</p>
+<p>Qt Extended uses this system for other integration points where device specifics prevent Qt Extended code from making direct access, such as the <tt>pppd</tt> and network scripts which are called by the <tt>netsetup</tt> program.</p>
+<p>The SXE system provides a number of scripts that can serve as a starting point for the integration effort. The scripts and descriptions of their function are listed here:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Script Name</th><th>Call Signature</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><ul>
+<li><tt>sxe_sandbox</tt></li>
+</ul>
+</td><td><tt>sxe_sandbox &lt;/path/to/binary&gt; &lt;/path/to/sandbox&gt;</tt></td><td>Create LIDS MAC sandbox rule so that when the binary is launched it will be sandboxed to run in the directory <tt>/path/to/sandbox</tt>.<p>All system capabilities are denied. (Privileges such as library access is granted in the domain scripts)</p>
+<p><b>Note</b>: this script is run by the SXE <tt>packagemanager</tt> at install time, and causes policy to be written into the <tt>/etc/lids/*.conf</tt> control files.</p>
+</td></tr>
+<tr valign="top" class="even"><td><ul>
+<li><tt>sxe_unsandbox</tt></li>
+</ul>
+</td><td><tt>sxe_unsandbox &lt;/path/to/binary&gt; &lt;/path/to/sandbox&gt;</tt></td><td>Remove LIDS rules on binary <tt>/path/to/binary</tt>.<p><b>Note:</b> this script is run by the SXE <tt>packagemanager</tt> at uninstall time, and causes policy to be written into the <tt>/etc/lids/*.conf</tt> control files.</p>
+</td></tr>
+<tr valign="top" class="odd"><td><ul>
+<li><tt>sxe_reloadconf</tt></li>
+</ul>
+</td><td><tt>sxe_reloadconf</tt></td><td>Reload the lids configuration so any new rules written into <tt>/etc/lids/*.conf</tt> take effect.</td></tr>
+<tr valign="top" class="even"><td><ul>
+<li><tt>rc.lids</tt></li>
+</ul>
+</td><td><tt>rc.lids start|stop|first_boot</tt></td><td>Start the LIDS system at boot-time, sealing the kernel, or at shutdown time enter SHUTDOWN mode.<p>This script will call other scripts mentioned below.</p>
+<p>See the previous section on the <a href="#boot-process">boot process</a>.</p>
+</td></tr>
+<tr valign="top" class="odd"><td><ul>
+<li><tt>sxe_boot</tt></li>
+</ul>
+</td><td><tt>sxe_boot</tt></td><td>Setup environment variables and other LIDS related initialization as a prelude to calling <tt>sxe_bounding</tt> and <tt>sxe_qtopia</tt><p>This script is called by <tt>rc.lids first_boot</tt>, which occurs prior to sealing the kernel.</p>
+</td></tr>
+<tr valign="top" class="even"><td><ul>
+<li><tt>sxe_bounding</tt></li>
+</ul>
+</td><td><tt>sxe_bounding</tt></td><td>Sets up MAC rules for the root file system<p>This script is called by <tt>sxe_boot</tt> prior to generating Qt Extended specific rules.</p>
+</td></tr>
+<tr valign="top" class="odd"><td><ul>
+<li><tt>sxe_qtopia</tt></li>
+</ul>
+</td><td><tt>sxe_qtopia</tt></td><td>Sets up MAC rules and registry files for Qt Extended<p>This script is called by <tt>sxe_boot</tt>.</p>
+</td></tr>
+<tr valign="top" class="even"><td><ul>
+<li><tt>sxe_qtopia_&lt;domain-name&gt;</tt></li>
+</ul>
+</td><td><tt>sxe_qtopia_&lt;domain-name&gt;</tt> (Various parameters are passed as environment variables including but not limited to BIN, QTOPIA_DIR and PACKAGES_DIR)</td><td>Applies a set of MAC rules relevant for the domain to a specific binary.</td></tr>
+</table></p>
+<a name="qt-extended-sxe-domain-scripts"></a>
+<h3>Qt Extended SXE Domain Scripts</h3>
+<p>SXE domain scripts are used to award binaries with MAC privileges based on the SXE security domain assigned to the binary. The security domain required by an application is declared in the <tt>qbuild.pro</tt> file, via the <tt>target.domain</tt> variable. For example to award an application the <tt>trusted</tt> domain, the following line can be added to the applications <tt>qbuild.pro</tt> file:</p>
+<pre>    target [
+        hint=sxe
+        domain=untrusted
+    ]</pre>
+<p>The domain scripts are executed at package install time by <tt>packagemanager</tt>. (The domain scripts do not apply to pre-installed applications). For the domain awarded to a program the associated domain script, <tt>/opt/Qtopia/etc/sxe_domains/sxe_qtopia_&lt;domain-name&gt;</tt>, is executed. The full path of the binary awarded the security domain is passed to the script through the <tt>BIN</tt> environment variable.</p>
+<p>The default configuration of SXE includes two domains scripts <tt>trusted</tt> and <tt>untrusted</tt>. Applications in the <tt>trusted</tt> domain have unrestricted access to the devices hardware. Applications in the <tt>untrusted</tt> domain are only granted limited capabilities.</p>
+<a name="setting-up-the-security-log"></a>
+<h2>Setting up the security log</h2>
+<p>To setup security logging, both LIDS messages produced by the kernel and Qt Extended security messages produced by <tt>qpe</tt> need to be directed to the security log.</p>
+<p>Kernel messages (on the greenphone) have been directed to the <tt>user</tt> facility while Qt Extended security messages have been directed to the <tt>local6</tt> facility. SXE (on the greenphone) uses a customized syslogd daemon where alternate logs can be specified as extra options to syslogd like so:</p>
+<pre>    -A /mnt/documents/.log/sxe%s.log:user -A /mnt/documents/.log/sxe%s.log:local6</pre>
+<p>Log messages from both facilities will be directed to the security log so that breaches can be acted upon by the <a href="sxe-sxemonitor.html">SxeMonitor</a>.</p>
+<p>In addition ensure that the maximum log size used by the logging facility is the same as that specified in <a href="sxe-sxemonitor.html#sxe-conf">Sxe.conf</a>. Note that in <tt>Sxe.conf</tt>, the maximum size before rotation is specified in units of bytes, while the logging facility may use another base unit such as kilobytes.</p>
+<p>It may be convenient to use the <tt>sxe_boot</tt> script to create the directory that will contain the security log.</p>
+<a name="sxe-memory-limits"></a><a name="memory-limits"></a>
+<h2>Memory Limits</h2>
+<p>SXE allows limits to be placed on the memory of processes belonging downloaded applications (which applies to both trusted and untrusted programs). The limit is expressed as a proportion of the total available RAM on the device in <tt>Sxe.conf</tt>.</p>
+<pre>    [Limits]
+    MaxMemRatio=0.5</pre>
+<p>In this example, any process of a downloaded application may use up to 50% of the total available RAM. This mechanism is based on the the resource limit, RLIMIT_AS. If the limit is reached, calls for memory allocation will fail with a no memory error, and if the stack tries to expand beyond the limit, the process receives a SIGSEGV signal. Bear in mind that the limit is only applied on a per process basis, a process could fork and so the total memory of consumed by the application could exceed the limit.</p>
+<a name="troubleshooting-lids-for-greenphone"></a>
+<h2>Troubleshooting LIDS for Greenphone</h2>
+<p>If you are trying to track down issues with LIDS on the Greenphone, the following commands may be helpful after opening up a telnet or ssh session. Enter in &quot;greenphone&quot; (no quotations) if asked for a password.</p>
+<pre>    lidsadm -S -- -LIDS</pre>
+<p>This makes a LIDS free session meaning that for the current session, no LIDS rules are in effect. By doing this you can view and access files that would otherwise be hidden or made read-only by LIDS. (using +LIDS instead of -LIDS turns LIDS back on for the session)</p>
+<pre>    lidsconf -L
+    lidsconf -L POSTBOOT</pre>
+<p>These display the set of lids rules, note that these are not necessarily enforced, but will be the next time LIDS reloads its configuration.</p>
+<pre>    lidsconf -A -s &lt;subject&gt; -o &lt;object&gt; -j &lt;access type&gt;</pre>
+<p>Add a lids rule where the &lt;subject&gt; and &lt;object&gt; are the paths to files and &lt;access type&gt; is for example, READONLY or WRITE or DENY.</p>
+<pre>    lidsconf -D -s &lt;subject&gt;
+    lidsconf -D -o &lt;object&gt;
+    lidsconf -D -s &lt;subject&gt; -o &lt;object&gt;</pre>
+<p>Delete the rules for a particular subject or object, or delete the rule for a particular subject and object.</p>
+<pre>    lidsadm -S -- +RELOAD_CONF</pre>
+<p>Reloads the LIDS configuration.</p>
+<pre>    lidsadm -S -- -LIDS_GLOBAL</pre>
+<p>Turn off LIDS globally. (+LIDS_GLOBAL turns lids back on)</p>
+<p><b>Note</b> Refer to the LIDS documentation for a more comprehensive set of commands.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

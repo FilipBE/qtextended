@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>runqtopia Options</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">runqtopia Options<br /><span class="subtitle"></span>
+</h1>
+<p>The authorative source of the available runqtopia options (and defaults) is the script itself. Here is the output of <tt>runqtopia -help</tt> as it was when the documentation was built.</p>
+<a name="runqtopia-help"></a>
+<h3>runqtopia -help</h3>
+<pre>    Usage:  runqtopia [options]
+
+    The defaults (*) are usually acceptable. A plus (+) denotes a default
+    value that needs to be evaluated. If the evaluation succeeds, the
+    feature is included.
+
+    Here is a short explanation of each option:
+
+        -display num ...........  Use display number &lt;num&gt;.
+                                  Default: 2741
+        -skin skin .............  Use QVFb skin &lt;skin&gt;.
+                                  Available: Check your installation's runqtopia
+                                  -help for available skins
+                                  Default: Check your installation's runqtopia -help
+                                  for available skins
+        -rotation angle ........  Use rotation &lt;angle&gt;. Note that the transformed
+                                  driver must be enabled or this will fail.
+                                  Available: 0, 90, 180, 270
+                                  Default: 0
+        -home home .............  Use HOME &lt;home&gt;, defaults to $QPEHOME if set;
+                                  otherwise defaults to $QPEDIR/home.
+                                  Default: /home/test1/tmp/mksrcpackage_20873/qt-ext
+                                  ended-4.4.3/home
+        -qvfb arguments ........  Extra arguments for QVFb.
+        -qvfb-only .............  Only run QVFb.
+        -phonesim arguments ....  Extra arguments for phonesim.
+        -phonesim-port num .....  Use phonesim port number &lt;num&gt;.
+                                  Default: 12345
+
+      * -run-phonesim ..........  Run phonesim (QTOPIA_PHONE_DEVICE must be unset or
+                                  set to sim:localhost).
+        -no-run-phonesim .......  Do not run phonesim.
+
+        -restart-phonesim ......  Restart phonesim if it is running (kill any
+                                  processes using the phonesim port).
+      * -no-restart-phonesim ...  Do not restart phonesim if it is running.
+
+        -performance ...........  Run Qtopia in performance test mode (not
+                                  compatible with -exec or -runmode).
+        -test ..................  Enable test hooks in Qtopia.
+        -profile ...............  Enable gprof profiling (not compatible with
+                                  systemtesthelper runmode).
+        -qpe binary ............  Run a binary other than qpe. This applies to the
+                                  current runmode and even -exec (if $qpe appears in
+                                  the commandline) so sneaking in options may not
+                                  work.
+                                  Default: $QTOPIA_PREFIX/bin/qpe
+        -runmode mode ..........  Specify the run mode. Note that -exec overrides
+                                  this switch.
+                                  Available: normal, gdb, ddd, valgrind, memcheck,
+                                  callgrind, massif, strace, systemtesthelper
+                                  Default: normal
+
+            Pass -runmodehelp for detailed information about the run modes.
+
+        -exec shell code .......  Specify the command(s) to run. The argument is
+                                  interpreted by the shell so any shell code is
+                                  valid here.
+
+      * -rpath .................  Qtopia was built with an RPATH.
+        -no-rpath ..............  Qtopia was not built with an RPATH. Set
+                                  LD_LIBRARY_PATH so that it can work.
+
+    Run mode details:
+
+        normal .................  Run Qtopia normally (including server restarts).
+                                  Command: while [ -f $QTOPIA_RESTART_FILE ]; do qpe
+                                  &quot;$@&quot;; done
+        gdb ....................  Debug Qtopia using GDB.
+                                  Command: gdb &quot;$@&quot; qpe
+        ddd ....................  Debug Qtopia using DDD.
+                                  Command: ddd &quot;$@&quot; qpe
+        valgrind ...............  Run Qtopia under valgrind
+                                  Command: valgrind &quot;$@&quot; qpe
+        memcheck ...............  Run Qtopia under memcheck
+                                  Command: memcheck &quot;$@&quot; qpe
+        callgrind ..............  Run Qtopia under callgrind
+                                  Command: callgrind &quot;$@&quot; qpe
+        massif .................  Run Qtopia under massif
+                                  Command: massif &quot;$@&quot; qpe
+        strace .................  Run Qtopia under strace
+                                  Command: strace qpe &quot;$@&quot;
+        systemtesthelper .......  A helper for running system tests
+                                  Command: while [ -f $QTOPIA_RESTART_FILE ]; do qpe
+                                  &quot;$@&quot;; done
+
+        Note that extra switches (&quot;$@&quot;) are passed in like this:
+            runqtopia options -- extra switches</pre>
+<p>See also <a href="overviews.html">Overviews</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

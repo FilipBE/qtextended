@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File System Standards</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">File System Standards<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#definitions">Definitions</a></li>
+<li><a href="#file-name-standards">File Name Standards</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended software is installed in the <tt>/opt/Qtopia</tt> directory of the target system. Within this directory, applications must follow the file placement standards described in this document.</p>
+<a name="definitions"></a>
+<h2>Definitions</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Term</th><th>Definition</th></tr></thead>
+<tr valign="top" class="odd"><td>&lt;appname&gt;</td><td>this is the application's executable file name. It should be globally unique. Since this name is not intended to be seen or entered by the end-user, long and complex names such as &quot;abc-textedit-3&quot; can be used.</td></tr>
+<tr valign="top" class="even"><td><i>language</i></td><td>this is the ISO639 language code (e.g&#x2e; &quot;de&quot; for German).</td></tr>
+</table></p>
+<a name="file-name-standards"></a>
+<h2>File Name Standards</h2>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>File Type</th><th>Location</th></tr></thead>
+<tr valign="top" class="odd"><td>Executable</td><td><tt>/opt/Qtopia/bin/&lt;appname&gt;/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> This is the executable program. <b>Note:</b> It is not appropriate to use the same executable with arguments to modify it's behavior, since only one instance of each application will be run (additional attempts to run the application will merely raise the previous instance).</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Library</td><td><tt>/opt/Qtopia/lib/&lt;appname&gt;/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Applications may put libraries here as required</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Image</td><td><tt>/opt/Qtopia/pics/&lt;appname&gt;/*.{png,jpg,svg}</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Any image files the application needs to use should either be standard built-in images, or be files in this application-specific directory. The files can be referred to using <a href="qpixmap.html">QPixmap</a>(&quot;:image/&lt;name&gt;&quot;) for pictures belonging to the current application or the global context, and using <a href="qpixmap.html">QPixmap</a>(&quot;:image/&lt;appname&gt;/&lt;name&gt;&quot;) for pictures belonging to another application context.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Icon</td><td><tt>/opt/Qtopia/pics/&lt;appname&gt;/icons/&lt;IconSize&gt;x&lt;IconSize&gt;/*.{png,svg}</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Any icon files the application needs to use should either be standard built-in icons, or be files in this application-specific directory. The files can be referred to using <a href="qicon.html">QIcon</a>(&quot;:icon/<i>name</i>&quot;) for icons belonging to the current application or the global context, and using or <a href="qicon.html">QIcon</a>(&quot;:icon/&lt;appname&gt;/&lt;name&gt;&quot;) for icons belonging to another application context.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Sound</td><td><tt>/opt/Qtopia/sounds/&lt;appname&gt;/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Any sound files the application needs to use should either be standard built-in sounds, or be files in this application-specific directory.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Internationalization</td><td><tt>/opt/Qtopia/i18n/language/&lt;appname&gt;.qm</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> These files are translations of the software (see <a href="syscust-internat.html">Internationalization</a>).</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>English Online Documentation</td><td><tt>/opt/Qtopia/help/html/&lt;appname&gt;-suffixes.html</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> These files provide the English online documentation of the software (the <tt>-suffixes</tt> is optional). Note that on-line documentation can refer to images under the <tt>/opt/Qtopia/pics</tt> directory, so you can refer to icons and other images explicitly without duplicating the files.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Online Documentation</td><td><tt>/opt/Qtopia/help/language/html/&lt;appname&gt;-suffixes.html</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> These files are the online documentation of the software (the <tt>-suffixes</tt> is optional), in the language specified. The suffixes are the choice of the application developer, but Qt Extended will automatically connect the Help button in the window decorations to <tt>&lt;appname&gt;-widgetname.html</tt> if such a file exists, thereby allowing different application windows to have different associated help pages.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Qt plug-ins</td><td><tt>/opt/Qtopia/qt_plugins/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> These directory contains Qt plug-ins such as the gfx drivers, icon engines or file format plugins.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Mediaplayer Codecs</td><td><tt>/opt/Qtopia/plugins/codecs/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Mediaplayer codecs are placed in this directory.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Font</td><td><tt>/opt/Qtopia/lib/fonts/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Font files are placed in this directory.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Input Method Plug-ins</td><td><tt>/opt/Qtopia/plugins/inputmethods/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Input Method plug-ins are placed in this directory.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Network Setup</td><td><tt>/opt/Qtopia/plugins/network/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Network setup modules are placed in this directory.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Configuration</td><td><tt>/opt/Qtopia/etc/default/...</tt>, <tt>$HOME/Settings/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Configuration files are stored automatically in <tt>$HOME/Settings</tt> by using <a href="qsettings.html">QSettings</a>. If default configuration files are required, they should created and installed in <tt>/opt/Qtopia/etc/default/...</tt> as read only.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Service declarations</td><td><tt>/opt/Qtopia/services/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> These service files are used to lookup service details and their providers.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Application Data</td><td><tt>$HOME/Application/&lt;appname&gt;/...</tt></td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> Application specific data will be stored here, for example cache data.</td></tr>
+<thead><tr valign="top" class="qt-style"><th></th><th></th></tr></thead>
+<tr valign="top" class="odd"><td>Temporary Data</td><td><tt>/tmp/...</tt>, /tmp/qtopia-&lt;QWS ID&gt;/..&#x2e;, /tmp/qt-embedded-&lt;QWS ID&gt;/..&#x2e;</td></tr>
+<tr valign="top" class="even"><td></td><td><b>Description:</b> All temporary files are expected to be stored under /tmp; typically /tmp is a RAM hosted partition on a device. In particular a directory such as <tt>/tmp/qtopia-0/</tt> will be used by Qt Extended application for their temporary files.<p><b>Note:</b> The <tt>ramfs</tt> file system should not be used for the /tmp partition as it often incorrectly reports the amount of free space. Instead of using <tt>ramfs</tt> use <tt>tempfs</tt> for a RAM hosted /tmp partition.</p>
+</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

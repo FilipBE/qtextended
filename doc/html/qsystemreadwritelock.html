@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSystemReadWriteLock Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSystemReadWriteLock Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSystemReadWriteLock class provides read-write locking between processes. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSystemReadWriteLock&gt;</pre><ul>
+<li><a href="qsystemreadwritelock-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsystemreadwritelock.html#QSystemReadWriteLock">QSystemReadWriteLock</a></b> ( unsigned int <i>id</i>, bool <i>owner</i> )</li>
+<li><div class="fn"/><b><a href="qsystemreadwritelock.html#dtor.QSystemReadWriteLock">~QSystemReadWriteLock</a></b> ()</li>
+<li><div class="fn"/>unsigned int <b><a href="qsystemreadwritelock.html#id">id</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qsystemreadwritelock.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qsystemreadwritelock.html#lockForRead">lockForRead</a></b> ( int <i>milliSec</i> )</li>
+<li><div class="fn"/>bool <b><a href="qsystemreadwritelock.html#lockForWrite">lockForWrite</a></b> ( int <i>milliSec</i> )</li>
+<li><div class="fn"/>void <b><a href="qsystemreadwritelock.html#unlock">unlock</a></b> ()</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSystemReadWriteLock class provides read-write locking between processes.</p>
+<p>A read-write lock is a synchronization tool for protecting resources that can be accessed for reading and writing. This type of lock is useful if you want to allow multiple threads to have simultaneous read-only access, but as soon as one thread wants to write to the resource, all other threads must be blocked until the writing is complete.</p>
+<p>QSystemReadWriteLock behaves much like the <a href="qreadwritelock.html">QReadWriteLock</a> class, but it also works across multiple processes (although it also works perfectly well, albeit slightly less efficiently, in a single process). In order to clean up the system resources used to coordinate cross process synchronization, one <a href="qreadwritelock.html">QReadWriteLock</a> instance is designated the lock &quot;owner&quot;. This instance creates the required system resources, and removes them when it is destroyed. The lock owner should always be instantiated before any others.</p>
+<p>System locks are identified by a 32-bit integer, which allows other processes to share the same lock. While the selection of this identifier is left upto the caller, under Linux it is common to use the ftok(3) function call which uses the identity of a specified file to generate such an identifier.</p>
+<p>For example, to create the lock owner:</p>
+<pre>    int id = (int)::ftok(&quot;/tmp/my_lock_identifier&quot;, 0);
+
+    QSystemReadWriteLock lock(id, true);</pre>
+<p>The file passed to ftok(3) is only used to generate a unique identifier for the lock and is otherwise unrelated to the lock. It is possible, although bad practice due to potential unintended clashes with other applications that do the same, to simply make up a number for the lock id.</p>
+<p>Other applications can then easily create a non-owner reference to the lock:</p>
+<pre>    int id = (int)::ftok(&quot;/tmp/my_lock_identifier&quot;, 0);
+
+    QSystemReadWriteLock lock(id, false);</pre>
+<p>An ftok(3) call on the same file was used to ensure the owner and the non-owner use the same id and thus refer to the same system-global lock.</p>
+<a name="algorithm"></a>
+<a name="algorithm"></a>
+<h4>Algorithm</h4>
+<p>The QSystemReadWriteLock class uses Linux kernel semaphores to synchronize access between readers and writers. Two semaphores ReadCount and WriteCount are used to allow either multiple concurrent readers or a single exclusive writer. When writers are waiting, any new readers must wait until all writers complete. That is, writers can starve readers.</p>
+<p>The following semaphore conditions determine reader and writer operations.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Operation</th><th>Condition Steps</th></tr></thead>
+<tr valign="top" class="odd"><td>Reader Progression</td><td>WAIT(Increment ReadCount) AND WAIT(WriteCount == 0)</td></tr>
+<tr valign="top" class="even"><td>Reader Complete</td><td>WAIT(Decrement ReadCount)</td></tr>
+<tr valign="top" class="odd"><td>Writer Progression</td><td>WAIT(Increment WriteCount)</td></tr>
+<tr valign="top" class="even"><td></td><td>WAIT(ReadCount == 0)</td></tr>
+<tr valign="top" class="odd"><td>Writer Complete</td><td>WAIT(Decrement WriteCount)</td></tr>
+</table></p>
+<p>See also <a href="qsystemmutex.html">QSystemMutex</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSystemReadWriteLock"></a>QSystemReadWriteLock::QSystemReadWriteLock ( unsigned int <i>id</i>, bool <i>owner</i> )</h3>
+<p>Construct a system read write lock from the provided <i>id</i>. If <i>owner</i> is true, the instance will create the system resources required for the lock and will remove them when it is destructed.</p>
+<h3 class="fn"><a name="dtor.QSystemReadWriteLock"></a>QSystemReadWriteLock::~QSystemReadWriteLock ()</h3>
+<p>Destroy the lock instance. If owner was specified in the <a href="qsystemreadwritelock.html">QSystemReadWriteLock</a> constructor, all the system resources used by this lock will also be removed and further use of the lock by other threads or processes will fail.</p>
+<h3 class="fn"><a name="id"></a>unsigned int QSystemReadWriteLock::id () const</h3>
+<p>Return the id of lock as passed to the constructor.</p>
+<h3 class="fn"><a name="isNull"></a>bool QSystemReadWriteLock::isNull () const</h3>
+<p>Return true if the lock is invalid.</p>
+<h3 class="fn"><a name="lockForRead"></a>bool QSystemReadWriteLock::lockForRead ( int <i>milliSec</i> )</h3>
+<p>Attempt to acquire the read lock. This method will return true if the lock was successfully acquired, false otherwise.</p>
+<p>Aquisition of the read lock may fail if:</p>
+<p><i>The</i> timeout <i>milliSec</i>, in milliseconds, expired.</p>
+<p>If the caller wants to poll the lock in a non-blocking way, it should specify a timeout of 0. If the caller would prefer to block until the lock is acquired it should specify a timeout of -1.</p>
+<p>Currently, only systems that support the semtimedop(2) system call can perform non-blocking, or time blocked calls. All other systems will block indefinately until the lock is acquired, regardless of the <i>milliSec</i> value.</p>
+<p><i>The</i> <a href="qsystemreadwritelock.html">QSystemReadWriteLock</a> instance does not refer to a valid lock.</p>
+<p>Callers can check for an invalid lock using the <a href="qsystemreadwritelock.html#isNull">isNull</a>() method.</p>
+<h3 class="fn"><a name="lockForWrite"></a>bool QSystemReadWriteLock::lockForWrite ( int <i>milliSec</i> )</h3>
+<p>Attempt to acquire the write lock. This method will return true if the lock was successfully acquired, false otherwise.</p>
+<p>Aquisition of the write lock may fail if:</p>
+<p><i>The</i> timeout <i>milliSec</i>, in milliseconds, expired.</p>
+<p>If the caller wants to poll the lock in a non-blocking way, it should specify a timeout of 0. If the caller would prefer to block until the lock is acquired it should specify a timeout of -1.</p>
+<p>Currently, only systems that support the semtimedop(2) system call can perform non-blocking, or time blocked calls. All other systems will block indefinately until the lock is acquired, regardless of the <i>milliSec</i> value.</p>
+<p><i>The</i> <a href="qsystemreadwritelock.html">QSystemReadWriteLock</a> instance does not refer to a valid lock.</p>
+<p>Callers can check for an invalid lock using the <a href="qsystemreadwritelock.html#isNull">isNull</a>() method.</p>
+<h3 class="fn"><a name="unlock"></a>void QSystemReadWriteLock::unlock ()</h3>
+<p>Release the lock.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

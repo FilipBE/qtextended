@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>CONFIG</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">CONFIG<br /><span class="subtitle"></span>
+</h1>
+<p>CONFIG is a variable just like other qmake variables but there are special behaviours for CONFIG.</p>
+<p>Testing for values in a variable is done like this.</p>
+<pre>    VAR+=foo
+    contains(VAR,foo):message(foo)
+    !contains(VAR,bar):message(!bar)</pre>
+<p>While this also works with CONFIG, the following shorthand is generally used.</p>
+<pre>    CONFIG+=foo
+    foo:message(foo)
+    !bar:message(!bar)</pre>
+<p>There is a CONFIG() function to help with mutually-exclusive values too. Here's how it works.</p>
+<pre>    CONFIG+=debug
+    CONFIG+=release
+    debug:message(debug) # WRONG
+    CONFIG(debug,debug|release):message(debug) # CORRECT</pre>
+<p>Finally, after your qbuild.pro file is read the values in CONFIG are used to locate .prf files.</p>
+<pre>    CONFIG+=foo # will cause foo.prf to be loaded, if it exists</pre>
+<p>Since CONFIG is used for so many things there are some conventions to reduce the change of a naming conflict.</p>
+<ul>
+<li>The building of optional components should be set/checked with <a href="foo/../../building-guide.html">build_</a>* CONFIG values.</li>
+<li>The enabling of optional features should be set/checked with enable_* CONFIG values.</li>
+</ul>
+<p>See also <a href="variables.html">Variables</a> and <a href="config.html">CONFIG Values</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

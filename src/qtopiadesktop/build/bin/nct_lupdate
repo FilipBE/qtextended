@@ -1,0 +1,251 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/qtopiadesktop/build/bin", $ARGV[0]);
+}
+
+
+use constant DEBUG => 0;
+my $silent = "-silent";
+
+# Usage: nct_lupdate [ -nowarn ] [ -depot path ] [ -content trtarget ] "lang1 lang2 ... langn" string_language files
+
+my $global = 0;
+my $depot;
+my $warn_on = 1;
+my $content = 0;
+my $trtarget = "";
+if ( $ARGV[0] eq "-nowarn" ) {
+    shift(@ARGV);
+    $warn_on = 0;
+}
+if ( $ARGV[0] eq "-depot" ) {
+    shift(@ARGV);
+    $global = 1;
+    $depot = shift(@ARGV);
+}
+if ( $ARGV[0] eq "-content" ) {
+    shift(@ARGV);
+    $content = 1;
+    $trtarget = shift(@ARGV);
+}
+my @LANGS = split(/\s+/,shift(@ARGV));
+my $STRING_LANGUAGE = shift(@ARGV);
+my %contextinfo;
+
+my @files;
+if ( $content ) {
+    my $i = 0;
+    for my $file ( @ARGV ) {
+        $i++;
+        my $tmp = "content_$i.desktop";
+        open OUT, ">$tmp" or die "Can't write $tmp";
+        my $name = basename($file);
+        $name =~ s/\..*$//;
+        print OUT <<END;
+[Desktop Entry]
+Name[]=$name
+[Translation]
+File=$trtarget
+Context=Content
+END
+        close OUT;
+        push(@files, $tmp);
+    }
+} else {
+    @files = @ARGV;
+    if ( @files && $files[0] eq "-" ) {
+        @files = <STDIN>;
+        chomp(@files);
+    }
+}
+
+for my $file ( @files ) {
+    open CONFIG, "$file" or die "Can't read $file";
+    my @contents = <CONFIG>;
+    DEBUG and print "FL $file\n";
+    my $context;
+    my $tsfile;
+    my %v;
+    my %trcomments;
+    
+    # There are various formats this script can read...
+    if ( basename($file) eq "zone.tab" ) {
+	# Read a zone.tab file
+	$context = "QTimeZone";
+	$tsfile = "timezone";
+	#cat zone.tab | awk '/^[^#]/{print $3}' | sed 's/\//\n/g' | sort -u | sed 's/_/ /g'
+	CONFIG: for ( @contents ) {
+	    next if ( /^\s*#/ );
+	    my @bits = split;
+	    my $citystring = $bits[2];
+	    for ( split(/\//, $citystring) ) {
+		s/_/ /g;
+		$v{$_} = $_;
+	    }
+	}
+    } else {
+	# Read a Config-format file
+	my $group = "";
+	for ( my $repeat = 1; $repeat; ) {
+	    $repeat = 0;
+	    CONFIG: for ( @contents ) {
+		if ( /^\[(.*)\]$/ ) {
+		    $group = $1;
+		} else {
+		    my ( $key, $value ) = ( /([^=]*?)\s*=\s*(.*)/ );
+                    next if !defined $key;
+		    DEBUG and print "KV $key = $value\n";
+		    if ( $key =~ /(.*)\[(.*)\]$/ ) {
+                        my $val1 = $1;
+                        my $val2 = $2;
+                        if ( $value =~ /^"(.*)"$/ ) {
+                            $value = $1;
+                        }
+			if ( $group eq "Translation") {
+			    if ($val2 && $val1 eq "Comment") {
+				$trcomments{"$val2"} = $value;
+			    }
+			} else {
+			    if ( $val2 ) {
+				warn "WARNING: Old-style translation for $val1 in $file\n";
+			    }
+			    $v{"$group/$val1"} = $value;
+			}
+		    }
+		    if ( $group eq "Translation" ) {
+			if ( $key eq "Context" ) {
+			    $context = $value;
+			} elsif ( $key eq "File" ) {
+			    if ( ! $tsfile ) {
+				# Start from the top because some files have the File= line after foo[]= entries
+				$tsfile = $value;
+				$repeat = 1;
+				last CONFIG;
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }
+
+    if ( $tsfile && $context ) {
+	#file => context => list
+	my %info;
+        my $comment;
+        my $value;
+	if ( $contextinfo{$tsfile} ) {
+	    my $tmp = $contextinfo{$tsfile};
+	    %info = %$tmp;
+	}
+	my %list;
+	if ( $info{$context} ) {
+	    my $tmp = $info{$context};
+	    %list = %$tmp;
+	}
+        for my $key ( keys %v ) {
+            $value = $v{$key};
+            if (exists $trcomments{$key}) {
+                $comment = $trcomments{$key};
+            } else {
+                $comment = "";
+            }
+            $list{$value} = $comment;
+        }
+	$info{$context} = \%list;
+	$contextinfo{$tsfile} = \%info;
+    } elsif ( $warn_on ) {
+	warn "Missing translation info for file $file\n";
+    }
+
+    close CONFIG;
+}
+
+DEBUG and print "\n\n\n\n";
+
+my $tmp = "tr$$.cpp";
+for my $tsfile ( keys %contextinfo ) {
+    DEBUG and print "File $tsfile\n";
+    my $info = $contextinfo{$tsfile};
+    open CPP, ">$tmp" or die "Can't write $tmp";
+    for my $context ( keys %$info ) {
+        DEBUG and print "Context $context\n";
+        my $list = $$info{$context};
+        for my $value ( keys %$list ) {
+            DEBUG and print "Message $value\n";
+            #Desktop files have encoding format that is not quite UTF8 conform
+            #Add escape character (\xc2) for soft hyphens
+            my $replacement = $value;
+            $replacement =~ s/\\xad/\\xc2\\xad/g;
+            print CPP "translate(\"$context\",\"$replacement\", \"$$list{$value}\", UnicodeUTF8);\n"
+        }
+    }
+    close CPP;
+    my @output;
+    push(@output, "SOURCES += $tmp");
+
+    open CPP, ">$tmp.pro" or die "Can't write $tmp.pro";
+    print CPP join("\n", @output)."\n";
+    for my $lang ( @LANGS ) {
+        next if ( $lang eq $STRING_LANGUAGE );
+	my $filename;
+	if ( $global ) {
+	    $filename = $depot."/i18n/".$lang;
+            if ( ! -e $filename ) {
+                mkdir ($filename, 0755) || print "Failed to create $filename\n";
+            }
+	    $filename = $filename."/".$tsfile.".ts";
+	} else {
+	    $filename = $tsfile."-".$lang.".ts";
+	}
+        print CPP "TRANSLATIONS += $filename\n";
+    }
+    close CPP;
+    my $cmd = "$HOST_QT_BINS/lupdate $silent $tmp.pro";
+    print "$cmd\n";
+    system($cmd);
+
+    if ( $STRING_LANGUAGE ) {
+        # Now strip out the languages and re-run lupdate for the string language with -pluralonly
+        open CPP, ">$tmp.pro" or die "Can't write $tmp.pro";
+        print CPP join("\n", @output)."\n";
+	my $filename;
+	if ( $global ) {
+	    $filename = $depot."/i18n/".$STRING_LANGUAGE;
+            if ( ! -e $filename ) {
+                mkdir ($filename, 0755) || print "Failed to create $filename\n";
+            }
+	    $filename = $filename."/".$tsfile.".ts";
+	} else {
+	    $filename = $tsfile."-".$STRING_LANGUAGE.".ts";
+	}
+        print CPP "TRANSLATIONS += $filename\n";
+        close CPP;
+        $cmd = "$HOST_QT_BINS/lupdate $silent -pluralonly $tmp.pro";
+        print "$cmd\n";
+        system($cmd);
+    }
+
+    unlink $tmp;
+    unlink "$tmp.pro";
+}
+
+if ( $content ) {
+    for ( @files ) {
+        unlink $_;
+    }
+}
+
+exit 0;
+

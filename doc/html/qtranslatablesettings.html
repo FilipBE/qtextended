@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QTranslatableSettings Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QTranslatableSettings Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QTranslatableSettings class provides persistent application settings that can be translated. <a href="#details">More...</a></p>
+<pre>    #include &lt;QTranslatableSettings&gt;</pre><p>Inherits <a href="qsettings.html">QSettings</a>.</p>
+<ul>
+<li><a href="qtranslatablesettings-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtranslatablesettings.html#QTranslatableSettings">QTranslatableSettings</a></b> ( const QString &amp; <i>organization</i>, const QString &amp; <i>application</i> = QString(), QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtranslatablesettings.html#QTranslatableSettings-2">QTranslatableSettings</a></b> ( Scope <i>scope</i>, const QString &amp; <i>organization</i>, const QString &amp; <i>application</i> = QString(), QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtranslatablesettings.html#QTranslatableSettings-3">QTranslatableSettings</a></b> ( Format <i>format</i>, Scope <i>scope</i>, const QString &amp; <i>organization</i>, const QString &amp; <i>application</i> = QString(), QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtranslatablesettings.html#QTranslatableSettings-4">QTranslatableSettings</a></b> ( const QString &amp; <i>fileName</i>, Format <i>format</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtranslatablesettings.html#QTranslatableSettings-5">QTranslatableSettings</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qtranslatablesettings.html#dtor.QTranslatableSettings">~QTranslatableSettings</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qtranslatablesettings.html#allKeys">allKeys</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="qtranslatablesettings.html#childKeys">childKeys</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtranslatablesettings.html#contains">contains</a></b> ( const QString &amp; <i>key</i> ) const</li>
+<li><div class="fn"/>QVariant <b><a href="qtranslatablesettings.html#value">value</a></b> ( const QString &amp; <i>key</i>, const QVariant &amp; <i>defaultValue</i> = QVariant() ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>25 public functions inherited from <a href="qsettings.html#public-functions">QSettings</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qsettings.html#static-public-members">QSettings</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QTranslatableSettings class provides persistent application settings that can be translated.</p>
+<p>QTranslatableSettings is functionally equivalent to <a href="qsettings.html">QSettings</a> except that strings read by QTranslatableSettings can be translated.</p>
+<p>Translatable settings are denoted in the settings file by square brackets '[]' in the key. For example:</p>
+<pre>    [Plugin]
+    Name[] = Clock
+    [Translation]
+    File=clockplugin
+    Context=Clock</pre>
+<p>The <i>Name</i> key is translatable and the [Translation] group specifies the file containing the translations.</p>
+<p>Caution should be used when passing a QTranslatableSettings object to a function that takes a <a href="qsettings.html">QSettings</a>&amp; argument, since that function will <i>not</i> use any translations.</p>
+<p>See also <a href="qsettings.html">QSettings</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QTranslatableSettings"></a>QTranslatableSettings::QTranslatableSettings ( const <a href="qstring.html">QString</a> &amp; <i>organization</i>, const <a href="qstring.html">QString</a> &amp; <i>application</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qtranslatablesettings.html">QTranslatableSettings</a> object to access settings of the application called <i>application</i> from the organization called <i>organization</i> with parent <i>parent</i>.</p>
+<p>For example:</p>
+<pre>    QTranslatableSettings settings(&quot;Moose Tech&quot;, &quot;Facturo-Pro&quot;);</pre>
+<p>The scope is <a href="qsettings.html#Scope-enum">QSettings::UserScope</a> and the format is <a href="qsettings.html#Format-enum">QSettings::NativeFormat</a>.</p>
+<p>See also <a href="qsettings.html">Fallback Mechanism</a>.</p>
+<h3 class="fn"><a name="QTranslatableSettings-2"></a>QTranslatableSettings::QTranslatableSettings ( <a href="qsettings.html#Scope-enum">Scope</a> <i>scope</i>, const <a href="qstring.html">QString</a> &amp; <i>organization</i>, const <a href="qstring.html">QString</a> &amp; <i>application</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qtranslatablesettings.html">QTranslatableSettings</a> object to access settings of the application called <i>application</i> from the organization called <i>organization</i> with parent <i>parent</i>.</p>
+<p>If <i>scope</i> is <a href="qsettings.html#Scope-enum">QSettings::UserScope</a>, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object searches user-specific settings before searching system-wide settings as a fallback. If <i>scope</i> is <a href="qsettings.html#Scope-enum">QSettings::SystemScope</a>, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object ignores user-specific settings and provides access to system-wide settings.</p>
+<p>The storage format is always <a href="qsettings.html#Format-enum">QSettings::NativeFormat</a>.</p>
+<p>If no application name is given, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object will only access the organization-wide <a href="qsettings.html">locations</a>.</p>
+<h3 class="fn"><a name="QTranslatableSettings-3"></a>QTranslatableSettings::QTranslatableSettings ( <a href="qsettings.html#Format-enum">Format</a> <i>format</i>, <a href="qsettings.html#Scope-enum">Scope</a> <i>scope</i>, const <a href="qstring.html">QString</a> &amp; <i>organization</i>, const <a href="qstring.html">QString</a> &amp; <i>application</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qtranslatablesettings.html">QTranslatableSettings</a> object to access settings of the application called <i>application</i> from the organization called <i>organization</i> with parent <i>parent</i>.</p>
+<p>If <i>scope</i> is <a href="qsettings.html#Scope-enum">QSettings::UserScope</a>, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object searches user-specific settings before searching system-wide settings as a fallback. If <i>scope</i> is <a href="qsettings.html#Scope-enum">QSettings::SystemScope</a>, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object ignores user-specific settings and provides access to system-wide settings.</p>
+<p>If <i>format</i> is <a href="qsettings.html#Format-enum">QSettings::NativeFormat</a>, the native API is used for storing settings. If <i>format</i> is <a href="qsettings.html#Format-enum">QSettings::IniFormat</a>, the INI format is used.</p>
+<p>If no application name is given, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object will only access the organization-wide <a href="qsettings.html">locations</a>.</p>
+<h3 class="fn"><a name="QTranslatableSettings-4"></a>QTranslatableSettings::QTranslatableSettings ( const <a href="qstring.html">QString</a> &amp; <i>fileName</i>, <a href="qsettings.html#Format-enum">Format</a> <i>format</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qtranslatablesettings.html">QTranslatableSettings</a> object to access the settings stored in the file called <i>fileName</i>, with parent <i>parent</i>. The file is created if it does not exist.</p>
+<p>If <i>format</i> is <a href="qsettings.html#Format-enum">QSettings::NativeFormat</a>, the meaning of <i>fileName</i> depends on the platform as follows:</p>
+<ul>
+<li>Unix/X11 - <i>fileName</i> is the name of an INI file</li>
+<li>Mac OS X - <i>fileName</i> is the name of a .plist file</li>
+<li>Windows - <i>fileName</i> is a path in the system registry.</li>
+</ul>
+<p>If <i>format</i> is <a href="qsettings.html#Format-enum">QSettings::IniFormat</a>, <i>fileName</i> is the name of an INI file.</p>
+<p>See also <a href="qsettings.html#fileName">QSettings::fileName</a>().</p>
+<h3 class="fn"><a name="QTranslatableSettings-5"></a>QTranslatableSettings::QTranslatableSettings ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a <a href="qtranslatablesettings.html">QTranslatableSettings</a> object for accessing settings of the application and organization set previously with a call to <a href="qcoreapplication.html#organizationName-prop">QCoreApplication::setOrganizationName</a>(), <a href="qcoreapplication.html#organizationDomain-prop">QCoreApplication::setOrganizationDomain</a>(), and <a href="qcoreapplication.html#applicationName-prop">QCoreApplication::setApplicationName</a>().</p>
+<p>The scope is <a href="qsettings.html#Scope-enum">QSettings::UserScope</a> and the format is <a href="qsettings.html#Format-enum">QSettings::NativeFormat</a>.</p>
+<p>The code</p>
+<pre>    QSettings settings(&quot;Moose Soft&quot;, &quot;Facturo-Pro&quot;);</pre>
+<p>is equivalent to</p>
+<pre>    QCoreApplication::setOrganizationName(&quot;Moose Soft&quot;);
+    QCoreApplication::setApplicationName(&quot;Facturo-Pro&quot;);
+    QSettings settings;</pre>
+<p>If <a href="qcoreapplication.html#organizationName-prop">QCoreApplication::setOrganizationName</a>() and <a href="qcoreapplication.html#applicationName-prop">QCoreApplication::setApplicationName</a>() has not been previously called, the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object will not be able to read or write any settings, and <a href="qsettings.html#status">QSettings::status</a>() will return <a href="qsettings.html#Status-enum">AccessError</a>.</p>
+<p>On Mac OS X, if both a name and an Internet domain are specified for the organization, the domain is preferred over the name. On other platforms, the name is preferred over the domain.</p>
+<p>See also <a href="qcoreapplication.html#organizationName-prop">QCoreApplication::setOrganizationName</a>(), <a href="qcoreapplication.html#organizationDomain-prop">QCoreApplication::setOrganizationDomain</a>(), and <a href="qcoreapplication.html#applicationName-prop">QCoreApplication::setApplicationName</a>().</p>
+<h3 class="fn"><a name="dtor.QTranslatableSettings"></a>QTranslatableSettings::~QTranslatableSettings ()</h3>
+<p>Destroys the <a href="qtranslatablesettings.html">QTranslatableSettings</a> object.</p>
+<p>Any unsaved changes will eventually be written to permanent storage.</p>
+<h3 class="fn"><a name="allKeys"></a><a href="qstringlist.html">QStringList</a> QTranslatableSettings::allKeys () const</h3>
+<p>Reimplemented for internal reasons.</p>
+<p>See also <a href="qsettings.html#allKeys">QSettings::allKeys</a>().</p>
+<h3 class="fn"><a name="childKeys"></a><a href="qstringlist.html">QStringList</a> QTranslatableSettings::childKeys () const</h3>
+<p>Reimplemented for internal reasons.</p>
+<p>See also <a href="qsettings.html#childKeys">QSettings::childKeys</a>().</p>
+<h3 class="fn"><a name="contains"></a>bool QTranslatableSettings::contains ( const <a href="qstring.html">QString</a> &amp; <i>key</i> ) const</h3>
+<p>Reimplemented for internal reasons.</p>
+<p>Returns true if there exists a setting called <i>key</i>; returns false otherwise.</p>
+<p>If a group is set using <a href="qsettings.html#beginGroup">beginGroup</a>(), <i>key</i> is taken to be relative to that group.</p>
+<p>See also <a href="qsettings.html#contains">QSettings::contains</a>().</p>
+<h3 class="fn"><a name="value"></a><a href="qvariant.html">QVariant</a> QTranslatableSettings::value ( const <a href="qstring.html">QString</a> &amp; <i>key</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>defaultValue</i> = QVariant() ) const</h3>
+<p>Returns the value for setting <i>key</i>. If the setting does not exist <i>defaultValue</i> is returned.</p>
+<p>If no default value is specified, a default <a href="qvariant.html">QVariant</a> is returned.</p>
+<p>If the key is translatable, that is, it has square brackets [] after it in the INI settings file, the translated value will be returned.</p>
+<p>for example:</p>
+<pre>    QTranslatableSettings settings;
+    settings.setValue(&quot;animal/snake&quot;, 58);
+    settings.value(&quot;animal/snake&quot;, 1024).toInt();   <span class="comment">// returns 58</span>
+    settings.value(&quot;animal/zebra&quot;, 1024).toInt();   <span class="comment">// returns 1024</span>
+    settings.value(&quot;animal/zebra&quot;).toInt();         <span class="comment">// returns 0</span></pre>
+<p>See also <a href="qsettings.html#setValue">QSettings::setValue</a>(), <a href="qtranslatablesettings.html#contains">contains</a>(), and <a href="qsettings.html#remove">QSettings::remove</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

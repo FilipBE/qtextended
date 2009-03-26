@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SystemShutdownHandler Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SystemShutdownHandler Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The SystemShutdownHandler class notifies tasks when the system is shutting down or restarting. <a href="#details">More...</a></p>
+<pre>    #include &lt;SystemShutdownHandler&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="applicationshutdowntask.html">ApplicationShutdownTask</a>, <a href="contentservertask.html">ContentServerTask</a>, <a href="documentservertask.html">DocumentServerTask</a>, <a href="mediaservercontroltask.html">MediaServerControlTask</a>, <a href="securitymonitortask.html">SecurityMonitorTask</a>, and <a href="shutdownsplashscreen.html">ShutdownSplashScreen</a>.</p>
+<ul>
+<li><a href="systemshutdownhandler-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual bool <b><a href="systemshutdownhandler.html#systemRestart">systemRestart</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="systemshutdownhandler.html#systemShutdown">systemShutdown</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="systemshutdownhandler.html#proceed">proceed</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>int <b><a href="systemshutdownhandler.html#timeout">timeout</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The SystemShutdownHandler class notifies tasks when the system is shutting down or restarting.</p>
+<p>The SystemShutdownHandler provides a Qt Extended Server Task interface. Qt Extended Server Tasks are documented in full in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class documentation.</p>
+<p>Server components can use the SystemShutdownHandler to integrate into the shutdown mechanism.</p>
+<p>Tasks that provide the SystemShutdownHandler interface are called when the system is shutting down or restarting. By providing this interface, tasks can ensure that they clean up appropriately before a shutdown or restart.</p>
+<p>During shutdown or restart, the <a href="systemshutdownhandler.html#systemShutdown">systemShutdown</a>() or <a href="systemshutdownhandler.html#systemRestart">systemRestart</a>() methods are invoked respectively. If a task cannot complete its cleanup synchronously in this invocation, it may return false which indicates that it has not completed. Other handlers will continue to be invoked, but the final shutdown or restart will not occur until all such incomplete handlers have emitted the <a href="systemshutdownhandler.html#proceed">proceed</a>() signal.</p>
+<p>All shutdown handlers must successfully complete shutdown within <a href="systemshutdownhandler.html#timeout">timeout</a>() milliseconds.</p>
+<p>Shutdown is controlled through the <a href="qtopiaserverapplication.html#shutdown">QtopiaServerApplication::shutdown</a>() method.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="qtopiaserverapplication.html">QtopiaServerApplication</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="proceed"></a>void SystemShutdownHandler::proceed ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted to indicate the completion of this instances portion of shutdown or restart. This signal should only ever be emitted after the class has delayed the completion of a shutdown or restart by returning false from the <a href="systemshutdownhandler.html#systemRestart">systemRestart</a>() or <a href="systemshutdownhandler.html#systemShutdown">systemShutdown</a>() methods.</p>
+<h3 class="fn"><a name="systemRestart"></a>bool SystemShutdownHandler::systemRestart ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Invoked whenever the system is restarting. If the implementer returns true (the default), the system will continue to restart. If it returns false, the system restart will not complete until the instance emits the <a href="systemshutdownhandler.html#proceed">proceed</a>() signal.</p>
+<h3 class="fn"><a name="systemShutdown"></a>bool SystemShutdownHandler::systemShutdown ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Invoked whenever the system is shutting down. If the implementer returns true (the default), the system will continue to shut down. If it returns false, the system shut down will not complete until the instance emits the <a href="systemshutdownhandler.html#proceed">proceed</a>() signal.</p>
+<h3 class="fn"><a name="timeout"></a>int SystemShutdownHandler::timeout ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns an upper bound on the amount of time a shutdown handler may take to process a shutdown request, in milliseconds. If a shutdown handler has not finished in this time, the server may forcibly proceed with the shutdown.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailNewMessageHandler Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailNewMessageHandler Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>]</span>
+</h1>
+<p>The QMailNewMessageHandler class provides a convenient interface for responding to new message arrival notifications emitted by the message server. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailNewMessageHandler&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qtopiaabstractservice.html">QtopiaAbstractService</a>.</p>
+<p>Inherited by <a href="qmailnewemailhandler.html">QMailNewEmailHandler</a>, <a href="qmailnewinstantmessagehandler.html">QMailNewInstantMessageHandler</a>, <a href="qmailnewmmshandler.html">QMailNewMmsHandler</a>, <a href="qmailnewsmshandler.html">QMailNewSmsHandler</a>, and <a href="qmailnewsystemmessagehandler.html">QMailNewSystemMessageHandler</a>.</p>
+<ul>
+<li><a href="qmailnewmessagehandler-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailnewmessagehandler.html#QMailNewMessageHandler">QMailNewMessageHandler</a></b> ( const QString &amp; <i>service</i>, QObject * <i>parent</i> )</li>
+<li><div class="fn"/>virtual QMailMessage::MessageType <b><a href="qmailnewmessagehandler.html#messageType">messageType</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailnewmessagehandler.html#setHandled">setHandled</a></b> ( bool <i>b</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qmailnewmessagehandler.html#newCountChanged">newCountChanged</a></b> ( uint <i>newCount</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qtopiaabstractservice.html#protected-functions">QtopiaAbstractService</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailNewMessageHandler class provides a convenient interface for responding to new message arrival notifications emitted by the message server.</p>
+<p>Clients should instantiate handlers derived from QMailNewMessageHandler for each type of new message notification that they wish to handle.</p>
+<p>When a new message of some type is reported by the message server, each process that has registered to handle the 'New&lt;MessageType&gt;Arrival' service will be raised to handle the event. If the raised process instantiates a handler derived from QMailNewMessageHandler, the handler object will process the service request and emit the <a href="qmailnewmessagehandler.html#newCountChanged">newCountChanged</a>() signal.</p>
+<p>In response to the <a href="qmailnewmessagehandler.html#newCountChanged">newCountChanged</a>() signal, the handler process should invoke the <a href="qmailnewmessagehandler.html#setHandled">setHandled</a>() slot, to communicate whether or not they have handled the event to the message server. If any handler process reports the event as handled, then the count of new messages of the specified type will be reset, and those messages will have the <a href="qmailmessagemetadata.html#New-var">QMailMessage::New</a> status flag unset.</p>
+<p>The process may invoke <a href="qmailnewmessagehandler.html#setHandled">setHandled</a>() asynchronously, so it is possible to wait for a user response before responding to the event.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailNewMessageHandler"></a>QMailNewMessageHandler::QMailNewMessageHandler ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, <a href="qobject.html">QObject</a> * <i>parent</i> )</h3>
+<p>Constructs a new handler for the service <i>service</i>, with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="messageType"></a><a href="qmailmessagemetadata.html#MessageType-enum">QMailMessage::MessageType</a> QMailNewMessageHandler::messageType () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the type of message handled by this event handler.</p>
+<h3 class="fn"><a name="newCountChanged"></a>void QMailNewMessageHandler::newCountChanged ( <a href="qtglobal.html#uint-typedef">uint</a> <i>newCount</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the arrival of new messages of the type returned by <a href="qmailnewmessagehandler.html#messageType">messageType</a>() causes the count of new messages to increase. The increased count of new messages is <i>newCount</i>.</p>
+<h3 class="fn"><a name="setHandled"></a>void QMailNewMessageHandler::setHandled ( bool <i>b</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>If <i>b</i> is true, responds to the message server that the new message arrival event has been handled. If the event is reported as handled, then the count of new messages of the type returned by <a href="qmailnewmessagehandler.html#messageType">messageType</a>() will be reset, and those messages will have the <a href="qmailmessagemetadata.html#New-var">QMailMessage::New</a> status flag unset.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

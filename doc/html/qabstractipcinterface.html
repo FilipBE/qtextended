@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAbstractIpcInterface Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAbstractIpcInterface Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QAbstractIpcInterface class provides facilities for implementing the client and server sides of IPC communications paths. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAbstractIpcInterface&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="qcollectivemessenger.html">QCollectiveMessenger</a>, <a href="qcollectivepresence.html">QCollectivePresence</a>, <a href="qcomminterface.html">QCommInterface</a>, <a href="qhardwareinterface.html">QHardwareInterface</a>, and <a href="qusbgadget.html">QUsbGadget</a>.</p>
+<ul>
+<li><a href="qabstractipcinterface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qabstractipcinterface.html#Mode-enum">Mode</a></b> { Client, Server, Invalid }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qabstractipcinterface.html#QAbstractIpcInterface">QAbstractIpcInterface</a></b> ( const QString &amp; <i>valueSpaceLocation</i>, const QString &amp; <i>interfaceName</i>, const QString &amp; <i>groupName</i> = QString(), QObject * <i>parent</i> = 0, QAbstractIpcInterface::Mode <i>mode</i> = Client )</li>
+<li><div class="fn"/><b><a href="qabstractipcinterface.html#dtor.QAbstractIpcInterface">~QAbstractIpcInterface</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qabstractipcinterface.html#available">available</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qabstractipcinterface.html#groupName">groupName</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qabstractipcinterface.html#interfaceName">interfaceName</a></b> () const</li>
+<li><div class="fn"/>QAbstractIpcInterface::Mode <b><a href="qabstractipcinterface.html#mode">mode</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#disconnected">disconnected</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="protected-types"></a>
+<h3>Protected Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qabstractipcinterface.html#SyncType-enum">SyncType</a></b> { Immediate, Delayed }</li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qabstractipcinterface.html#groupInitialized">groupInitialized</a></b> ( QAbstractIpcInterfaceGroup * <i>group</i> )</li>
+<li><div class="fn"/>QtopiaIpcSendEnvelope <b><a href="qabstractipcinterface.html#invoke">invoke</a></b> ( const QByteArray &amp; <i>name</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#invoke-2">invoke</a></b> ( const QByteArray &amp; <i>name</i>, QVariant <i>arg1</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#invoke-3">invoke</a></b> ( const QByteArray &amp; <i>name</i>, QVariant <i>arg1</i>, QVariant <i>arg2</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#invoke-4">invoke</a></b> ( const QByteArray &amp; <i>name</i>, QVariant <i>arg1</i>, QVariant <i>arg2</i>, QVariant <i>arg3</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#invoke-5">invoke</a></b> ( const QByteArray &amp; <i>name</i>, const QList&lt;QVariant&gt; &amp; <i>args</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#proxy">proxy</a></b> ( const QByteArray &amp; <i>member</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#proxyAll">proxyAll</a></b> ( const QMetaObject &amp; <i>meta</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#proxyAll-2">proxyAll</a></b> ( const QMetaObject &amp; <i>meta</i>, const QString &amp; <i>subInterfaceName</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#removeValue">removeValue</a></b> ( const QString &amp; <i>name</i>, QAbstractIpcInterface::SyncType <i>sync</i> = Immediate )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#setPriority">setPriority</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qabstractipcinterface.html#setValue">setValue</a></b> ( const QString &amp; <i>name</i>, const QVariant &amp; <i>value</i>, QAbstractIpcInterface::SyncType <i>sync</i> = Immediate )</li>
+<li><div class="fn"/>QVariant <b><a href="qabstractipcinterface.html#value">value</a></b> ( const QString &amp; <i>name</i>, const QVariant &amp; <i>def</i> = QVariant() ) const</li>
+<li><div class="fn"/>QList&lt;QString&gt; <b><a href="qabstractipcinterface.html#valueNames">valueNames</a></b> ( const QString &amp; <i>path</i> = QString() ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAbstractIpcInterface class provides facilities for implementing the client and server sides of IPC communications paths.</p>
+<p>This class makes it easier to implement IPC mechanisms using Qtopia. It is used extensively by the Qt Extended Telephony, Bluetooth, Hardware Accessory, and Multimedia libraries.</p>
+<p>Subclasses that inherit this class implement the client side of the communication. Subclasses of the client implement the server side, overriding the client functionality with server code.</p>
+<p>As an example, we will show how to implement a client/server &quot;echo&quot; interface. The client side has a <tt>send()</tt> slot which sends a string to the server. The server responds by emitting the <tt>receive()</tt> signal with the same string. The signal is delivered back to the client and emitted as <tt>receive()</tt>. First, the client class declaration:</p>
+<pre>    class QEcho : public QAbstractIpcInterface
+    {
+        Q_OBJECT
+    public:
+        QEcho( const QString&amp; group = QString(),
+               QObject *parent = 0, QAbstractIpcInterface::Mode mode = Client );
+
+    public slots:
+        virtual void send( const QString&amp; msg );
+
+    signals:
+        void receive( const QString&amp; msg );
+    };</pre>
+<p>This declares the basic interface that all client applications will see. A client application can instantiate this class and use it like a regular <a href="qobject.html">QObject</a> instance:</p>
+<pre>    QEcho *echo = new QEcho();
+    connect( echo, SIGNAL(receive(QString)),
+             this, SLOT(myReceive(QString)) );
+    echo-&gt;send( &quot;foo&quot; );</pre>
+<p>In this example, we have left the group name null. This tells QAbstractIpcInterface to look up the default implementation of the <tt>QEcho</tt> interface.</p>
+<p>If there is more than one group implementing the echo functionality, and the default is not suitable, the caller can supply an explicit group name to the <tt>QEcho</tt> constructor. Or the <a href="qabstractipcinterfacegroupmanager.html">QAbstractIpcInterfaceGroupManager</a> class can be used to look up a list of all groups that implement a particular interface.</p>
+<p>As indicated above, the <tt>QEcho</tt> class is the client implementation of the functionality. We need to supply some extra code to complete the client side:</p>
+<pre>    QEcho::QEcho( const QString&amp; group, QObject *parent,
+                  QAbstractIpcInterface::Mode mode )
+        : QAbstractIpcInterface( &quot;/EchoInterfaces&quot;, &quot;QEcho&quot;,
+                                 group, parent, mode )
+    {
+        proxy( SIGNAL(receive(QString)) );
+        proxy( SLOT(send(QString)) );
+    }
+
+    void QEcho::send( const QString&amp; msg )
+    {
+        invoke( SLOT(send(QString)), qVariantFromValue( msg ) );
+    }</pre>
+<p>The constructor calls <tt>proxy()</tt> for every signal and slot that it wishes to have delivered between the client and server. It can also call <a href="qabstractipcinterface.html#proxyAll">proxyAll</a>() to proxy all signals and public slots. The <tt>/EchoInterfaces</tt> parameter specifies the location in the value space to place information about the interface.</p>
+<p>The implementation of the <tt>send()</tt> slot uses <tt>invoke()</tt> to pass the request on to the server.</p>
+<p>Now we turn our attention to the server side. The server class, <tt>QEchoServer</tt>, inherits from <tt>QEcho</tt> and overrides the <tt>send()</tt> slot to implement the server functionality.</p>
+<pre>    class QEchoServer : public QEcho
+    {
+        Q_OBJECT
+    public:
+        QEchoServer( QObject *parent ) : QEcho( &quot;Echo&quot;, parent, Server ) {}
+
+    public slots:
+        void send( const QString&amp; msg ) { emit receive( msg ); }
+    }</pre>
+<p>We can also add another group implementing the echo functionality, which echos the value twice for every send:</p>
+<pre>    class QEchoTwiceServer : public QEcho
+    {
+        Q_OBJECT
+    public:
+        QEchoTwiceServer( QObject *parent )
+            : QEcho( &quot;EchoTwice&quot;, parent, Server )
+            { setPriority(1); }
+
+    public slots:
+        void send( const QString&amp; msg ) { emit receive( msg + msg ); }
+    }</pre>
+<p>Now that we have two group implementations, the client must choose between them. It can either supply the group name explicitly or it can let the system choose. The system will choose the group with the highest priority value. If there is more than one group with the same priority, the one selected is undefined.</p>
+<p>Here, we have set the priority of <tt>QEchoTwiceServer</tt> to 1, which will give it higher priority than <tt>QEchoServer</tt> which has the default priority of 0. Priorities can change over the lifetime of a server. For example, a VoIP group might have a higher priority than a GSM group when the phone is in range of a WiFi access point, but a lower priority when WiFi is not available. This way, the user gets the best group based on their current network coverage.</p>
+<p>See also <a href="qabstractipcinterfacegroup.html">QAbstractIpcInterfaceGroup</a>, <a href="qabstractipcinterfacegroupmanager.html">QAbstractIpcInterfaceGroupManager</a>, <a href="qcomminterface.html">QCommInterface</a>, and <a href="qhardwareinterface.html">QHardwareInterface</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Mode-enum"></a>enum QAbstractIpcInterface::Mode</h3>
+<p>Defines the client/server mode for an interface object.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QAbstractIpcInterface::Client</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Object is operating in client mode.</td></tr>
+<tr><td valign="top"><tt>QAbstractIpcInterface::Server</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Object is operating in server mode.</td></tr>
+<tr><td valign="top"><tt>QAbstractIpcInterface::Invalid</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Object is invalid. This indicates that the connection to the server could not be established, or it has been lost.</td></tr>
+</table></p>
+<h3 class="fn"><a name="SyncType-enum"></a>enum QAbstractIpcInterface::SyncType</h3>
+<p>Defines whether interface values should be published by <a href="qabstractipcinterface.html#setValue">QAbstractIpcInterface::setValue</a>() immediately or not.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QAbstractIpcInterface::Immediate</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Synchronize values with the client immediately.</td></tr>
+<tr><td valign="top"><tt>QAbstractIpcInterface::Delayed</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Delay synchronization until the server re-enters the Qt event loop.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAbstractIpcInterface"></a>QAbstractIpcInterface::QAbstractIpcInterface ( const <a href="qstring.html">QString</a> &amp; <i>valueSpaceLocation</i>, const <a href="qstring.html">QString</a> &amp; <i>interfaceName</i>, const <a href="qstring.html">QString</a> &amp; <i>groupName</i> = QString(), <a href="qobject.html">QObject</a> * <i>parent</i> = 0, <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Mode</a> <i>mode</i> = Client )</h3>
+<p>Construct a new interface object for the interface called <i>interfaceName</i> on <i>groupName</i> and attach it to <i>parent</i>. If <i>mode</i> is <tt>Server</tt>, then the object is constructed in server mode and <i>groupName</i> must not be empty. If <i>mode</i> is <tt>Client</tt>, then the object is constructed in client mode and <i>groupName</i> may be empty to indicate the default group that implements this type of interface.</p>
+<p>The <i>valueSpaceLocation</i> parameter specifies the location the value space to place all information about this interface. Subclasses such as <a href="qcomminterface.html">QCommInterface</a> will set this to a particular value meeting their requirements.</p>
+<h3 class="fn"><a name="dtor.QAbstractIpcInterface"></a>QAbstractIpcInterface::~QAbstractIpcInterface ()</h3>
+<p>Destroy this interface object. If the object is operating in client mode, then the connection to the server will be severed. If the object is operating in server mode, then it will be deregistered and all communicating clients will receive the <a href="qabstractipcinterface.html#disconnected">disconnected</a>() signal.</p>
+<h3 class="fn"><a name="available"></a>bool QAbstractIpcInterface::available () const</h3>
+<p>Returns true if the server is available for use; otherwise returns false. This is normally used by a client just after the constructor is called to determine if the constructor could locate a suitable server.</p>
+<p>See also <a href="qabstractipcinterface.html#mode">mode</a>().</p>
+<h3 class="fn"><a name="disconnected"></a>void QAbstractIpcInterface::disconnected ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted on the client if the server disconnects before the client object is destroyed, or if the client could not connect at all because the server does not exist. Not used on the server.</p>
+<p>The <a href="qabstractipcinterface.html#mode">mode</a>() of the interface object will be <tt>Invalid</tt> when this signal is emitted.</p>
+<p>See also <a href="qabstractipcinterface.html#mode">mode</a>().</p>
+<h3 class="fn"><a name="groupInitialized"></a>void QAbstractIpcInterface::groupInitialized ( <a href="qabstractipcinterfacegroup.html">QAbstractIpcInterfaceGroup</a> * <i>group</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Initializes server-side functionality within this interface after all interfaces in the group have been created. This is called by <a href="qabstractipcinterfacegroup.html#initialize">QAbstractIpcInterfaceGroup::initialize</a>() after all interface handling objects on <i>group</i> have been created. It will not be called if the interface is not associated with a <a href="qabstractipcinterfacegroup.html">QAbstractIpcInterfaceGroup</a> instance.</p>
+<p>Subclasses typically override this method so that they can connect to signals on other interfaces which may not have existed when the interface constructor was called.</p>
+<p>See also <a href="qabstractipcinterfacegroup.html#initialize">QAbstractIpcInterfaceGroup::initialize</a>().</p>
+<h3 class="fn"><a name="groupName"></a><a href="qstring.html">QString</a> QAbstractIpcInterface::groupName () const</h3>
+<p>Returns the name of the group associated with this interface object.</p>
+<p>See also <a href="qabstractipcinterface.html#interfaceName">interfaceName</a>().</p>
+<h3 class="fn"><a name="interfaceName"></a><a href="qstring.html">QString</a> QAbstractIpcInterface::interfaceName () const</h3>
+<p>Returns the interface name associated with this interface object. If this object is known by more than one interface name, the interface name passed in the last call to <a href="qabstractipcinterface.html#proxyAll">proxyAll</a>() will be returned.</p>
+<p>See also <a href="qabstractipcinterface.html#groupName">groupName</a>().</p>
+<h3 class="fn"><a name="invoke"></a><a href="qtopiaipcsendenvelope.html">QtopiaIpcSendEnvelope</a> QAbstractIpcInterface::invoke ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>name</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Performs a call to the zero-argument slot <i>name</i> from the client to the server. Ignored on the server.</p>
+<h3 class="fn"><a name="invoke-2"></a>void QAbstractIpcInterface::invoke ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>name</i>, <a href="qvariant.html">QVariant</a> <i>arg1</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Performs a call to the one-argument slot <i>name</i> from the client to the server, with the argument <i>arg1</i>. Ignored on the server.</p>
+<h3 class="fn"><a name="invoke-3"></a>void QAbstractIpcInterface::invoke ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>name</i>, <a href="qvariant.html">QVariant</a> <i>arg1</i>, <a href="qvariant.html">QVariant</a> <i>arg2</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Performs a call to the two-argument slot <i>name</i> from the client to the server, with the arguments <i>arg1</i> and <i>arg2</i>. Ignored on the server.</p>
+<h3 class="fn"><a name="invoke-4"></a>void QAbstractIpcInterface::invoke ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>name</i>, <a href="qvariant.html">QVariant</a> <i>arg1</i>, <a href="qvariant.html">QVariant</a> <i>arg2</i>, <a href="qvariant.html">QVariant</a> <i>arg3</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Performs a call to the three-argument slot <i>name</i> from the client to the server, with the arguments <i>arg1</i>, <i>arg2</i>, and <i>arg3</i>. Ignored on the server.</p>
+<h3 class="fn"><a name="invoke-5"></a>void QAbstractIpcInterface::invoke ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>name</i>, const <a href="qlist.html">QList</a>&lt;<a href="qvariant.html">QVariant</a>&gt; &amp; <i>args</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Performs a call to the multi-argument slot <i>name</i> from the client to the server, with the arguments in the list <i>args</i>. Ignored on the server.</p>
+<h3 class="fn"><a name="mode"></a><a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Mode</a> QAbstractIpcInterface::mode () const</h3>
+<p>Returns the mode that this interface object is operating in. Returns <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Client</a> for client mode, <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Server</a> for server mode, and <a href="qabstractipcinterface.html#Mode-enum">QAbstractIpcInterface::Invalid</a> if the client's connection to the server could not be established or has been lost.</p>
+<p>See also <a href="qabstractipcinterface.html#available">available</a>().</p>
+<h3 class="fn"><a name="proxy"></a>void QAbstractIpcInterface::proxy ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>member</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Proxies <i>member</i> so that it will be delivered between the client and server. This is typically called from the constructor of the immediate subclass of <a href="qabstractipcinterface.html">QAbstractIpcInterface</a> for all signals and slots that will cross the client/server boundary.</p>
+<p>This method is useful when the subclass has only a few signals and slots that need to be proxied. Or it contains signals and slots that must not be proxied because they are private to the client or server sides. The related <a href="qabstractipcinterface.html#proxyAll">proxyAll</a>() method is simpler to use if the subclass has many signals and slots and they must all be proxied.</p>
+<p>See also <a href="qabstractipcinterface.html#proxyAll">proxyAll</a>().</p>
+<h3 class="fn"><a name="proxyAll"></a>void QAbstractIpcInterface::proxyAll ( const <a href="qmetaobject.html">QMetaObject</a> &amp; <i>meta</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets up remote invocation proxies for all signals and public slots on this object, starting at the class specified by <i>meta</i>.</p>
+<p>Normally <i>meta</i> will be the <tt>staticMetaObject</tt> value for the immediate subclass of <a href="qabstractipcinterface.html">QAbstractIpcInterface</a>. It allows the proxying to be limited to a subset of the class hierarchy if more derived classes have signals and slots that should not be proxied.</p>
+<p>This method is useful when the subclass has many signals and slots, and it would be error-prone to proxy them individually with <a href="qabstractipcinterface.html#proxy">proxy</a>().</p>
+<p>See also <a href="qabstractipcinterface.html#proxy">proxy</a>().</p>
+<h3 class="fn"><a name="proxyAll-2"></a>void QAbstractIpcInterface::proxyAll ( const <a href="qmetaobject.html">QMetaObject</a> &amp; <i>meta</i>, const <a href="qstring.html">QString</a> &amp; <i>subInterfaceName</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Sets up remote invocation proxies for all signals and public slots on this object, starting at the class specified by <i>meta</i>. Also register <i>subInterfaceName</i> as a sub-interface name for this object's primary interface name. After this call, <a href="qabstractipcinterface.html#interfaceName">interfaceName</a>() will return <i>subInterfaceName</i>.</p>
+<h3 class="fn"><a name="removeValue"></a>void QAbstractIpcInterface::removeValue ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, <a href="qabstractipcinterface.html#SyncType-enum">QAbstractIpcInterface::SyncType</a> <i>sync</i> = Immediate )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Removes the value associated with <i>name</i> from the auxiliary value space.</p>
+<p>If <i>sync</i> is <tt>Delayed</tt>, then delay publication of the value to clients until the server re-enters the Qt event loop. This may be more efficient if the server needs to set or remove several values at once. The default value for <i>sync</i> is <tt>Immediate</tt>.</p>
+<p>See also <a href="qabstractipcinterface.html#value">value</a>() and <a href="qabstractipcinterface.html#setValue">setValue</a>().</p>
+<h3 class="fn"><a name="setPriority"></a>void QAbstractIpcInterface::setPriority ( int <i>value</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the priority of this server to <i>value</i>. Ignored on the client.</p>
+<h3 class="fn"><a name="setValue"></a>void QAbstractIpcInterface::setValue ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i>, <a href="qabstractipcinterface.html#SyncType-enum">QAbstractIpcInterface::SyncType</a> <i>sync</i> = Immediate )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets <i>name</i> to <i>value</i> in the auxiliary value space for this interface object. This is called by the server to notify clients of a change in <i>name</i>. Ignored on the client.</p>
+<p>If <i>sync</i> is <tt>Delayed</tt>, then delay publication of the value to clients until the server re-enters the Qt event loop. This may be more efficient if the server needs to set or remove several values at once. The default value for <i>sync</i> is <tt>Immediate</tt>.</p>
+<p>See also <a href="qabstractipcinterface.html#value">value</a>() and <a href="qabstractipcinterface.html#removeValue">removeValue</a>().</p>
+<h3 class="fn"><a name="value"></a><a href="qvariant.html">QVariant</a> QAbstractIpcInterface::value ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>def</i> = QVariant() ) const&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Returns the value associated with <i>name</i> in the auxiliary value space for this interface object. Returns <i>def</i> if the name does not exist. This can be called on either the client or the server (but usually the client).</p>
+<p>See also <a href="qabstractipcinterface.html#setValue">setValue</a>() and <a href="qabstractipcinterface.html#removeValue">removeValue</a>().</p>
+<h3 class="fn"><a name="valueNames"></a><a href="qlist.html">QList</a>&lt;<a href="qstring.html">QString</a>&gt; QAbstractIpcInterface::valueNames ( const <a href="qstring.html">QString</a> &amp; <i>path</i> = QString() ) const&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Returns a list of all value names in the auxiliary value space for this interface object contained within <i>path</i>.</p>
+<p>See also <a href="qabstractipcinterface.html#value">value</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

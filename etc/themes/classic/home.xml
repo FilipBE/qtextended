@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="home" base="themes/classic">
+  <group name="background-group">
+    <plugin name="background-plugin"/>
+    <plugin name="homescreen-image-plugin"/>
+  </group>
+  <rect rect="0,9.5%,0x12pt">
+    <text name="location" rect="0,0,0x0" size="5" bold="yes" color="#000000" align="left,vcenter" outline="#eeeeee" transient="yes" active="expr:@/UI/HomeScreen/ShowLocation">
+      expr:" " . @/Telephony/Status/CellLocation
+    </text>
+    <text name="profile" rect="0,0,0x0" size="5" bold="yes" color="#000000" align="right,vcenter" outline="#eeeeee" transient="yes" active="expr:@/UI/HomeScreen/ShowProfile &amp;&amp; !@/UI/Profile/Default">
+      expr:@/UI/Profile/Name . " "
+    </text>
+    </rect>
+    <layout rect="0,78,0x45pt" align="hcenter">
+	  <rect name="calls" rect="0,0,0x0" transient="yes" active="expr:@/Communications/Calls/MissedCalls > 0" interactive="yes">
+        <layout align="hcenter">
+          <rect rect="0,0,24ptx42pt">
+            <image rect="0,0,24ptx24pt" src="call.svg" scale="yes"/>
+          </rect>
+        </layout>
+        <text name="calls" rect="0,25pt,0x9pt" align="hcenter" format="RichText" outline="#eeeeee" >
+          <tr><trtext>%1 missed</trtext><trarg>@/Communications/Calls/MissedCalls</trarg></tr>
+        </text>
+	  </rect>
+	  <rect name="messages" rect="0,0,0x0" transient="yes" active="expr:@/Communications/Messages/NewMessages > 0 || @/Telephony/Status/SMSMemoryFull > 0" interactive="yes">
+        <layout align="hcenter">
+          <rect rect="0,0,24ptx24pt">
+            <image rect="0,0,24ptx24pt" src="message.svg" scale="yes"/>
+          </rect>
+        </layout>
+        <rect rect="0,25pt,0x18pt">
+          <text rect="0,0,0x9pt" align="hcenter" format="RichText" outline="#eeeeee" transient="yes" active="expr:@/Communications/Messages/NewMessages > 0">
+		    <tr><trtext>%1 new</trtext><trarg>@/Communications/Messages/NewMessages</trarg></tr>
+          </text>
+          <text rect="0,0,0x9pt" align="hcenter" format="RichText" outline="#eeeeee" transient="yes" active="expr:@/Telephony/Status/SMSMemoryFull > 0 &amp;&amp; @/Communications/Messages/NewMessages == 0">SMS full</text>
+          <text rect="0,50%,0x9pt" align="hcenter,bottom" format="RichText" outline="#eeeeee" transient="yes" active="expr:@/Telephony/Status/SMSMemoryFull > 0 &amp;&amp; @/Communications/Messages/NewMessages > 0">(SMS full)</text>
+        </rect>
+	  </rect>
+    </layout>
+    <text name="operator" rect="0,74%,0x9pt" align="hcenter,vcenter" bold="yes" outline="#eeeeee" active="expr:@/UI/HomeScreen/ShowOperator">
+      expr:@/Telephony/Status/OperatorName
+    </text>
+    <layout rect="0,81%,0x9pt" align="hcenter">
+      <text rect="0,0,100x0" align="hcenter" name="date" transient="yes" short ="yes" bold="yes" active="expr:@/UI/HomeScreen/ShowDate" outline="#eeeeee">
+        expr:@/UI/DisplayTime/Date
+      </text>
+      <text name="time" rect="0,0,100x0" align="hcenter" transient="yes" short ="yes" bold="yes" active="expr:@/UI/HomeScreen/ShowTime" outline="#eeeeee">
+        expr:@/UI/DisplayTime/Time
+      </text>
+    </layout>
+    <rect name="infobox" rect="5%,50%,90%x20%" color="Text" brush="Background" alpha="150" transient="yes" active="no">
+      <image name="infobox-image" rect="0,0,40x100%"/>
+      <text name="infobox-text" rect="40,0,-3,-1" size="6" bold="yes" color="Text" align="hcenter,vcenter"/>
+    </rect>
+    <image name="dialer" rect="58,123,-57,-33" src="default/dialerbutton" onclick="src=default/dialerbuttonp;color=Highlight" interactive="yes" keypad="no" scale="yes"/>
+    <layout name="pinbox" rect="0,9.5%,0,-10%" orientation="vertical" transient="yes" active="no" keypad="no">
+	<rect name="pinbox" rect="0,0,0,40" color="#72715a" brush="Base">
+	    <image name="pinbox" rect="0,0,40x40"/>
+	    <text name="pinbox" rect="40,0,-3,50" size="6" color="Text" align="hcenter,vcenter"/>
+	</rect>
+	<layout name="vertical" rect="0,0,0x132" orientation="vertical" spacing="-1" align="hcenter">
+	    <layout name="horizontal" rect="0,0,0x33" orientation="horizontal" spacing="-1" align="hcenter">
+		<group rect="0,0,44x33" name="one" interactive="yes">
+		    <image rect="0,0,0,0" name="one_bg" src="default/r1" onclick="src=default/r1p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="one_fg" src="default/1" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="two" interactive="yes">
+		    <image rect="0,0,0,0" name="two_bg" src="default/r1" onclick="src=default/r1p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="two_fg" src="default/2" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="three" interactive="yes">
+		    <image rect="0,0,0,0" name="three_bg" src="default/r1" onclick="src=default/r1p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="three_fg" src="default/3" scale="yes"/>
+		</group>
+	    </layout>
+	    <layout rect="0,0,0x33" orientation="horizontal" spacing="-1" align="hcenter">
+		<group rect="0,0,44x33" name="four" interactive="yes">
+		    <image rect="0,0,0,0" name="four_bg" src="default/r2" onclick="src=default/r2p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="four_fg" src="default/4" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="five" interactive="yes">
+		    <image rect="0,0,0,0" name="five_bg" src="default/r2" onclick="src=default/r2p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="five_fg" src="default/5" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="six" interactive="yes">
+		    <image rect="0,0,0,0" name="six_bg" src="default/r2" onclick="src=default/r2p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="six_fg" src="default/6" scale="yes"/>
+		</group>
+	    </layout>
+	    <layout rect="0,0,0x33" orientation="horizontal" spacing="-1" align="hcenter">
+		<group rect="0,0,44x33" name="seven" interactive="yes">
+		    <image rect="0,0,0,0" name="seven_bg" src="default/r3" onclick="src=default/r3p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="seven_fg" src="default/7" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="eight" interactive="yes">
+		    <image rect="0,0,0,0" name="eight_bg" src="default/r3" onclick="src=default/r3p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="eight_fg" src="default/8" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="nine" interactive="yes">
+		    <image rect="0,0,0,0" name="nine_bg" src="default/r3" onclick="src=default/r3p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="nine_fg" src="default/9" scale="yes"/>
+		</group>
+	    </layout>
+	    <layout rect="0,0,0x33" orientation="horizontal" spacing="-1" align="hcenter">
+		<group rect="0,0,44x33" name="star" interactive="yes">
+		    <image rect="0,0,0,0" name="star_bg" src="default/r4" onclick="src=default/r4p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="star_fg" src="default/star" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="zero" interactive="yes">
+		    <image rect="0,0,0,0" name="zero_bg" src="default/r4" onclick="src=default/r4p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="zero_fg" src="default/0" scale="yes"/>
+		</group>
+		<group rect="0,0,44x33" name="hash" interactive="yes">
+		    <image rect="0,0,0,0" name="hash_bg" src="default/r4" onclick="src=default/r4p" scale="yes" />
+		    <image rect="5,6,-5,-5" name="hash_fg" src="default/hash" scale="yes"/>
+		</group>
+	    </layout>
+	</layout>
+    </layout>
+</page>

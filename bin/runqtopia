@@ -1,0 +1,815 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename;
+use lib ( dirname($0)."/../src/build/bin" );
+use Qtopia::Paths;
+use Qtopia::Opt;
+use Hash::Ordered;
+use File::Path;
+use File::Fuser;
+use POSIX;
+
+# help variables
+my $optiondesc;
+my $optionhelp;
+my $optionstar = " ";
+my $optiondef = "";
+my $optionavail = "";
+
+my $cols = $ENV{COLUMNS};
+$cols = 80 unless ( $cols );
+# the width of the first column (calculated in _init_formats)
+my $fcwidth;
+
+# The "en_US" below is irrelevant - but the "UTF-8" is needed for initializations
+# prior to Qtopia setting LANG from the user's settings.
+$ENV{LANG}="en_US.UTF-8";
+
+# This script works even if configure has not been run (but only for displaying -help)
+eval { Qtopia::Paths::get_paths(); };
+my $no_qpedir_error = "";
+if ( $@ ) {
+    $no_qpedir_error = $@;
+    $QPEDIR = undef;
+    # Big hack! Assume we're running the script from the source tree.
+    $depotpath = $cwd;
+    if ( ! -e "$depotpath/configure" ) {
+        die "Can't find configure";
+    }
+    # Big hack! Assume we're a source package, not a depot build.
+    $qt_depot_path = "$cwd/qtopiacore/qt";
+    if ( ! -e "$qt_depot_path/configure" ) {
+        die "Can't find qtopiacore/qt/configure";
+    }
+}
+
+use constant DEBUG => 0;
+
+# By default assume we don't have an X11 build.
+my $x11 = 0;
+# By default assume RPATH is set.
+my $rpath = 1;
+my $device;
+my $device_skin;
+my $qbuild = 0;
+my $dynamic_rotation = 0;
+# We can only find this out if we have a build (ie. this can't influence the docs)
+if ( $QPEDIR ) {
+    open IN, "$QPEDIR/config.cache" or die "Can't read $QPEDIR/config.cache";
+    my @data = <IN>;
+    my @tmp = grep(/^opt\.qws\.value=/, @data);
+    if ( @tmp && $tmp[0] =~ /^opt\.qws\.value=(.*)/ ) {
+        $x11 = !$1;
+    }
+    @tmp = grep(/^opt\.rpath\.value=/, @data);
+    if ( @tmp && $tmp[0] =~ /^opt\.rpath\.value=(.*)/ ) {
+        $rpath = $1;
+    }
+    @tmp = grep(/^opt\.device\.value=/, @data);
+    if ( @tmp && $tmp[0] =~ /^opt\.device\.value=(.*)/ ) {
+        $device = $1;
+    }
+    @tmp = grep(/^opt\.device\.skin=/, @data);
+    if ( @tmp && $tmp[0] =~ /^opt\.device\.skin=(.*)/ ) {
+        $device_skin = $1;
+    }
+    @tmp = grep(/^opt\.qbuild\.value=/, @data);
+    if ( @tmp && $tmp[0] =~ /^opt\.qbuild\.value=(.*)/ ) {
+        $qbuild = $1;
+    }
+    @tmp = grep(/^opt\.dynamic_rotation\.value=/, @data);
+    if ( @tmp && $tmp[0] =~ /^opt\.dynamic_rotation\.value=(.*)/ && $1 ne "undef" ) {
+        $dynamic_rotation = $1;
+    }
+    close IN;
+}
+
+# Options
+set_optvar( "help", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+});
+set_optvar( "display", +{
+    "type" => "value",
+    "set" => [ "%=s", "Use display number <num>." ],
+    "arg" => "num",
+    "default" => sub {
+        my $def;
+        if ( !$x11 ) {
+            if ( ! $ENV{QWS_DISPLAY} ) {
+                $def = "0";
+            } else {
+                $def = $ENV{QWS_DISPLAY};
+                $def =~ s/.*://;
+            }
+        } else {
+            if ( ! $ENV{QTOPIA_DISPLAY} ) {
+                # Use display 10 for qvfb by default under X, because 0
+                # will typically be the user's desktop X server.
+                $def = "10";
+            } else {
+                $def = $ENV{QTOPIA_DISPLAY};
+                $def =~ s/.*://;
+            }
+        }
+        $def;
+    },
+});
+set_optvar( "skin", +{
+    "type" => "value",
+    "set" => [ "%=s", "Use QVFb skin <skin>." ],
+    "arg" => "skin",
+    "available" => sub {
+        my @avail;
+        if ( $SDKROOT ) {
+            for ( glob("$SDKROOT/src/tools/qt/qvfb/*.skin") ) {
+                s/\.skin$//;
+                push(@avail, basename($_));
+            }
+        } else {
+            push(@avail, "Check your installation's runqtopia -help for available skins");
+        }
+        @avail;
+    },
+    "default" => sub {
+        my @avail = Qtopia::Opt::_resolve_to_array(opt("skin", "available"));
+        my $def;
+        if ( @avail ) {
+            $def = $avail[0];
+            my @list = ( "Greenphone", "Trolltech-Keypad", "Trolltech-Touchscreen" );
+            if ( $device_skin ) {
+                unshift(@list, $device_skin);
+            }
+            OUTER: for my $pref ( @list ) {
+                for my $it ( @avail ) {
+                    if ( $pref eq $it ) {
+                        $def = $it;
+                        last OUTER;
+                    }
+                }
+            }
+        }
+        $def;
+    },
+});
+set_optvar( "rotation", +{
+    "type" => "value",
+    "set" => [ "%=s", "Use rotation <angle>.".
+                      " Note that the transformed driver must be enabled or this will fail." ],
+    "arg" => "angle",
+    "available" => [ "0", "90", "180", "270" ],
+    "default" => "0",
+});
+set_optvar( "home", +{
+    "type" => "value",
+    "set" => [ "%=s", "Use HOME <home>, defaults to \$QPEHOME if set; otherwise defaults to \$QPEDIR/home." ],
+    "arg" => "home",
+    "default" => sub {
+        my $def;
+        if ( ! $ENV{QPEHOME} ) {
+            if ( $QPEDIR ) {
+                $def = "$QPEDIR/home";
+            } else {
+                $def = "$depotpath/home";
+            }
+        } else {
+            $def = $ENV{QPEHOME};
+        }
+        $def;
+    },
+});
+set_optvar( "qvfb", +{
+    "type" => "value",
+    "set" => [ "%=s", "Extra arguments for QVFb." ],
+    "arg" => "arguments",
+    "value" => "",
+});
+set_optvar( "qvfb_only", +{
+    "type" => "bool",
+    "set" => [ "%", "Only run QVFb." ],
+});
+set_optvar( "phonesim", +{
+    "type" => "value",
+    "set" => [ "%=s", "Extra arguments for phonesim." ],
+    "arg" => "arguments",
+    "value" => "",
+    "visible" => sub { ( !$ENV{QTOPIA_PHONE_DEVICE} || $ENV{QTOPIA_PHONE_DEVICE} =~ /^sim:localhost/ ); },
+});
+set_optvar( "phonesim_port", +{
+    "type" => "value",
+    "set" => [ "%=s", "Use phonesim port number <num>." ],
+    "arg" => "num",
+    "setfunc" => sub {
+        opt("phonesim_port") = $_[1];
+        if ( opt("phonesim_port") < 1024 ) {
+            warn "\nWARNING: Ports below 1024 are generally not usable by non-root accounts.\n\n";
+        }
+    },
+    "default" => sub {
+        my $def = "12345";
+        if ( $ENV{QTOPIA_PHONE_DEVICE} && $ENV{QTOPIA_PHONE_DEVICE} =~ /^sim:localhost:(\d+)$/ ) {
+            $def = $1;
+        }
+        $def;
+    },
+    "visible" => sub { ( !$ENV{QTOPIA_PHONE_DEVICE} || $ENV{QTOPIA_PHONE_DEVICE} =~ /^sim:localhost/ ); },
+});
+set_optvar( "run_phonesim", +{
+    "type" => "bool",
+    "set" => [ "%", "Run phonesim (QTOPIA_PHONE_DEVICE must be unset or set to sim:localhost)." ],
+    "unset" => [ "no-%", "Do not run phonesim." ],
+    "setfunc" => sub {
+        if ( !$ENV{QTOPIA_PHONE_DEVICE} || $ENV{QTOPIA_PHONE_DEVICE} =~ /^sim:localhost/ ) {
+            opt("run_phonesim") = 1;
+        } else {
+            die "Cannot run phonesim because QTOPIA_PHONE_DEVICE is set to ".$ENV{QTOPIA_PHONE_DEVICE}."\n";
+        }
+    },
+    "default" => sub {
+        my $def = 0;
+        if ( !opt("test") && (!$ENV{QTOPIA_PHONE_DEVICE} || $ENV{QTOPIA_PHONE_DEVICE} =~ /^sim:localhost/) ) {
+            $def = 1;
+        }
+        $def;
+    },
+});
+set_optvar( "restart_phonesim", +{
+    "type" => "bool",
+    "set" => [ "%", "Restart phonesim if it is running (kill any processes using the phonesim port)." ],
+    "unset" => [ "no-%", "Do not restart phonesim if it is running." ],
+    "default" => 0,
+    "visible" => sub { ( !$ENV{QTOPIA_PHONE_DEVICE} || $ENV{QTOPIA_PHONE_DEVICE} =~ /^sim:localhost/ ); },
+});
+set_optvar( "performance", +{
+    "type" => "bool",
+    "set" => [ "%", "Run Qtopia in performance test mode (not compatible with -exec or -runmode)." ],
+    "setfunc" => sub { opt("performance") = 1; opt("exec") = <<'END'; },
+export QTOPIA_PERFTEST=1
+export QTOPIA_RESTART_FILE=/tmp/qtopia-${display}/restart-qtopia
+touch $QTOPIA_RESTART_FILE
+while [ -f $QTOPIA_RESTART_FILE ]; do
+    export QTOPIA_UPTIME_AT_LAUNCH="$(cat /proc/uptime)"
+    $qpe "$@" || exit $?
+done
+END
+});
+set_optvar( "test", +{
+    "type" => "bool",
+    "set" => [ "%", "Enable test hooks in Qtopia." ],
+    "env" => "QTOPIA_TEST=1",
+});
+set_optvar( "sxe_discovery", +{
+    "type" => "bool",
+    "set" => [ "%", "Enable SXE discovery mode." ],
+    "env" => "SXE_DISCOVERY_MODE=1",
+    "visible" => sub {
+        my $vis = 0;
+        if ( $QPEDIR && open IN, "$QPEDIR/config.cache" ) {
+            while ( defined($_ = <IN>) ) {
+                if ( /^opt\.sxe_discovery\.value=(.*)/ ) {
+                    if ( $1 eq "1" ) {
+                        $vis = 1;
+                    }
+                    last;
+                }
+            }
+            close IN;
+        }
+        $vis;
+    },
+});
+set_optvar( "profile", +{
+    "type" => "bool",
+    "set" => [ "%", "Enable gprof profiling (not compatible with systemtesthelper runmode)." ],
+    "env" => 'LD_PRELOAD=$PWD/lib/gprof-helper.so',
+});
+set_optvar( "qpe", +{
+    "type" => "value",
+    "set" => [ "%=s", "Run a binary other than qpe. This applies to the ".
+                      "current runmode and even -exec (if \$qpe appears in the commandline) ".
+                      "so sneaking in options may not work." ],
+    "arg" => "binary",
+    "default" => "\$QTOPIA_PREFIX/bin/qpe",
+});
+set_optvar( "runmode", +{
+    "type" => "value",
+    "set" => [ "%=s", "Specify the run mode. Note that -exec overrides this switch." ],
+    "arg" => "mode",
+    "modes" => [
+        # Entries should be of the form:
+        # [ "short name", "description", 'command (short form)', 'command' ], 
+        [ "normal", "Run Qtopia normally (including server restarts).",
+          'while [ -f $QTOPIA_RESTART_FILE ]; do qpe "$@"; done', <<'END' ],
+export QTOPIA_RESTART_FILE=/tmp/qtopia-${display}/restart-qtopia
+touch $QTOPIA_RESTART_FILE
+while [ -f $QTOPIA_RESTART_FILE ]; do
+    export QTOPIA_UPTIME_AT_LAUNCH="$(cat /proc/uptime)"
+    $qpe "$@" || exit $?
+done
+END
+        [ "gdb", "Debug Qtopia using GDB.", 'gdb "$@" qpe', 'gdb "$@" $qpe' ],
+        [ "ddd", "Debug Qtopia using DDD.", 'ddd "$@" qpe', 'ddd --args "$@" $qpe' ],
+        [ "valgrind", "Run Qtopia under valgrind", 'valgrind "$@" qpe',
+          'valgrind "$@" $qpe' ],
+        [ "memcheck", "Run Qtopia under memcheck", 'memcheck "$@" qpe',
+          'valgrind --tool=memcheck "$@" $qpe' ],
+        [ "callgrind", "Run Qtopia under callgrind", 'callgrind "$@" qpe',
+          'valgrind --tool=callgrind "$@" $qpe' ],
+        [ "massif", "Run Qtopia under massif", 'massif "$@" qpe',
+          'valgrind --tool=massif "$@" $qpe' ],
+        [ "strace", "Run Qtopia under strace", 'strace qpe "$@"', <<'END' ],
+echo "******* See $PWD/strace.out for strace output ********"
+strace -o strace.out $qpe "$@"
+END
+        [ "systemtesthelper", "A helper for running system tests",
+          'while [ -f $QTOPIA_RESTART_FILE ]; do qpe "$@"; done', <<'END' ],
+rm -f /tmp/qtopia-${display}/qtuitest_cmds
+export QTOPIA_SYSTEMTESTHELPER=1
+export QTOPIA_RESTART_FILE=/tmp/qtopia-${display}/restart-qtopia
+touch $QTOPIA_RESTART_FILE
+while [ -f $QTOPIA_RESTART_FILE ]; do
+    ( export LD_PRELOAD=$QTOPIA_PREFIX/lib/libqtuitestoverrides.so.1;
+      eval `cat /tmp/qtopia-${display}/qtuitest_cmds 2>/dev/null`;
+      export QTOPIA_UPTIME_AT_LAUNCH="$(cat /proc/uptime)";
+      $qpe "$@"; ) || exit $?
+done
+END
+    ],
+    "available" => sub {
+        my @avail;
+        my $ref = opt("runmode", "modes");
+        for ( @$ref ) {
+            push(@avail, $$_[0]);
+        }
+        @avail;
+    },
+    "default" => "normal",
+});
+add_note("Pass -runmodehelp for detailed information about the run modes.");
+set_optvar( "runmodehelp", +{
+    "type" => "bool",
+    "set" => [ "%", "hidden" ],
+});
+set_optvar( "exec", +{
+    "type" => "value",
+    "set" => [ "%=s", "Specify the command(s) to run. The argument is interpreted by the shell ".
+                      "so any shell code is valid here." ],
+    "arg" => "shell code",
+});
+set_optvar( "rpath", +{
+    "type" => "bool",
+    "set" => [ "%", "Qtopia was built with an RPATH." ],
+    "unset" => [ "no-%", "Qtopia was not built with an RPATH. Set LD_LIBRARY_PATH so that it can work." ],
+    "default" => $rpath,
+});
+
+
+my $ok = opt_get_options( "nohelp" );
+if ( !$ok || opt("help") ) {
+    Qtopia::Opt::get_help( "noexit" );
+    if ( opt("runmodehelp") ) {
+        dump_runmodes();
+    }
+    exit 2;
+} else {
+    if ( opt("runmodehelp") ) {
+        dump_runmodes();
+        exit 2;
+    }
+    if ( ! $QPEDIR ) {
+        die "$no_qpedir_error\n";
+    }
+}
+
+opt_apply_defaults();
+
+my $script = "/tmp/runqtopia.$$";
+die "No skins!" if ( !opt("skin") );
+my $skin = "$SDKROOT/src/tools/qt/qvfb/".opt("skin").".skin";
+
+if ( opt("runmode") eq "systemtesthelper" ) {
+    # Cleanly handle the INT (Ctrl+C) and TERM (kill) signals
+    sub kill_children {
+        $SIG{INT} = "DEFAULT";
+        $SIG{TERM} = "DEFAULT";
+        unlink($script);
+        my $GID=getpgrp;
+        kill "TERM", -$GID;
+        exit(0);
+    }
+    $SIG{INT} = \&kill_children;
+    $SIG{TERM} = $SIG{INT};
+    # Run in a separate process group so we can later kill all processes
+    # in that group.
+    setpgrp;
+}
+
+# QWS_DISPLAY is used by the Qtopia Core windowing system
+my $QWS_DISPLAY;
+if ( $dynamic_rotation ) {
+    $QWS_DISPLAY = "Transformed:Rot".opt("rotation").":";
+} elsif ( opt("rotation") != 0 ) {
+    $QWS_DISPLAY = "Transformed:Rot".opt("rotation").":";
+}
+if ( opt("performance") ) {
+    $QWS_DISPLAY .= "perftestqvfb:";
+} else {
+    $QWS_DISPLAY .= "QVFb:";
+}
+if ( open IN, "$skin/defaultbuttons.conf" ) {
+    while ( defined($_ = <IN>) ) {
+        if ( /QWS_DISPLAY=(.*)/ ) {
+            $_ = $1;
+            if ( /Multi: (.*) (.*) :\d+$/ ) {
+                my $screen1 = $1;
+                my $screen2 = $2;
+                $screen1 =~ s/:\d+$//;
+                $screen1 =~ s/^LinuxFb://;
+                $screen2 =~ s/:\d+$//;
+                $screen2 =~ s/^LinuxFb://;
+                $QWS_DISPLAY = "Multi: $QWS_DISPLAY$screen1:".opt("display")." QVFb:$screen2:".(opt("display")+1)." :";
+                last;
+            } else {
+                my $screen1 = $_;
+                $screen1 =~ s/:\d+$//;
+                $screen1 =~ s/^LinuxFb://;
+                $QWS_DISPLAY = "$QWS_DISPLAY$screen1:";
+            }
+        }
+    }
+    close IN;
+}
+$QWS_DISPLAY .= opt("display");
+print "Using QWS_DISPLAY $QWS_DISPLAY\n";
+
+# DISPLAY is used by the X windowing system
+my $DISPLAY = ":".opt("display");
+
+# Set QWS_DISPLAY if QWS.  Don't set DISPLAY here for X11 or it will
+# interfere with the startup of qvfb.  DISPLAY is set just before qpe.
+if ( ! $x11 ) {
+    DEBUG and print "export QWS_DISPLAY=\"$QWS_DISPLAY\"\n";
+    $ENV{QWS_DISPLAY} = $QWS_DISPLAY;
+}
+
+my $ret = 0;
+
+$ret = check_ownership();
+exit $ret if ( $ret );
+
+$ret = run_qvfb();
+exit $ret if ( $ret );
+
+if ( opt("qvfb_only") ) {
+    exit $ret;
+}
+
+if ( opt("run_phonesim") ) {
+    $ret = run_phonesim();
+    exit $ret if ( $ret );
+}
+
+$ret = run_qtopia();
+exit $ret;
+
+
+sub run_qvfb
+{
+    my $qvfb_mouse = "/tmp/.qtvfb_mouse-".opt("display");
+    if ( fuser($qvfb_mouse) ) {
+        print "WARNING: QVFb display ".opt("display")." is already running (see /tmp/.qtvfb_*-".opt("display").")\n";
+        return 0;
+    }
+    my $qvfb_path = "$SDKROOT/bin/qvfb";
+    if ( $qbuild ) {
+        $qvfb_path = "$SDKROOT/qtopiacore/host/bin/qvfb";
+    }
+    my $skin_path = "$SDKROOT/src/tools/qt/qvfb";
+
+    print "Waiting for QVFb to start...\n";
+    print "Saving QVFb output to /tmp/.qtvfb_log-".opt("display")."\n";
+    my $display_opt;
+    my $mapfile;
+    if ( ! $x11 ) {
+        $display_opt = "-qwsdisplay";
+        $mapfile = $qvfb_mouse;
+    } else {
+        $display_opt = "-x11display";
+        $mapfile = "/tmp/.X11-unix/X".opt("display");
+    }
+    my $qvfb_command = "$qvfb_path $display_opt :".opt("display")." -skin $skin ".opt("qvfb")." >/tmp/.qtvfb_log-".opt("display")." 2>&1";
+    # we'll wait for this file so remove it now (if it exists)
+    if ( -e $mapfile ) {
+        unlink $mapfile;
+    }
+    DEBUG and print "$qvfb_command\n";
+    chdir $skin_path;
+
+    # Ensure qvfb does not have any opened file descriptors.
+    # Holding file descriptors open can cause qbuild to hang.
+    if (0 == fork()) {
+        for my $i (1..1024) {
+            POSIX::close($i);
+        }
+        exit( system($qvfb_command) );
+    }
+    # wait for qvfb to come up
+    while ( ! -e $mapfile ) {
+        sleep 1;
+    }
+
+    # Set the dpi on the new display.
+    if ( $x11 ) {
+        my $resources = $mapfile."-res";
+        open OUT, ">$resources" or die "Cannot write $resources";
+        print OUT "Xft.dpi: 80";
+        close OUT;
+        system("xrdb -merge -nocpp -display $DISPLAY $resources");
+        unlink $resources;
+    }
+
+    # Start up a window manager on the display.
+    if ( $x11 ) {
+        if ( -e "/usr/local/bin/matchbox-window-manager" ) {
+            system("/usr/local/bin/matchbox-window-manager -display $DISPLAY -use_titlebar no &");
+        } else {
+            system("kwin -display $DISPLAY &");
+        }
+    }
+
+    return 0;
+}
+
+sub run_qtopia
+{
+    open IN, "$QPEDIR/config.cache" or die "Cannot read $QPEDIR/config.cache";
+    my $prefix;
+    while ( defined($_ = <IN>) ) {
+        if ( /^opt\.prefix\.value=(.*)/ ) {
+            $prefix = $1;
+            last;
+        }
+    }
+    close IN;
+    if ( !$prefix ) {
+        die "Can't read opt.prefix.value from $QPEDIR/config.cache!";
+    }
+
+    mkpath(opt("home"));
+    print "\n".
+          "**********************************************************\n".
+          "* Qtopia is using HOME=".opt("home")."\n".
+          "**********************************************************\n".
+          "\n";
+
+    if ( $x11 ) {
+        DEBUG and print "export DISPLAY=\"$DISPLAY\"\n";
+        $ENV{DISPLAY} = $DISPLAY;
+    }
+
+    # We must use the original Xauthority file, not the one in
+    # the new HOME that we are about to set below.
+    $ENV{XAUTHORITY} = "$ENV{HOME}/.Xauthority";
+
+    $ENV{HOME} = opt("home");
+
+    my $phone_device = $ENV{QTOPIA_PHONE_DEVICE};
+    if ( !$phone_device || $phone_device =~ /^sim:localhost/ ) {
+        $phone_device = "sim:localhost:".opt("phonesim_port");
+    }
+    $ENV{QTOPIA_PHONE_DEVICE} = $phone_device;
+    if ( !opt("rpath") ) {
+        $ENV{LD_LIBRARY_PATH} = "$prefix/lib";
+    }
+
+    chdir($prefix);
+
+    open OUT, ">$script" or die "Cannot write $script";
+    print OUT <<'END';
+#!/bin/sh
+
+# Set some ulimits to prevent runaway processes
+ulimit -Sd 102400          # max data size of a program is 100 MB
+ulimit -Ss 8192            # max stack size of a program is 8 MB
+ulimit -Sm 102400          # max resident set size is 100 MB
+
+if [ -f bin/qtopia-dbus-daemon ]; then
+   echo "Killing all previous qtopia-dbus-daemons..."
+   killall qtopia-dbus-daemon
+   echo "Launching bin/qtopia-dbus-daemon..."
+   export DBUS_SESSION_BUS_ADDRESS=`qtopia-dbus-daemon`
+   echo "DBUS address is: $DBUS_SESSION_BUS_ADDRESS"
+fi
+
+END
+    print OUT 'QTOPIA_PREFIX="'.$prefix.'"'."\n";
+    print OUT 'qpe="'.opt("qpe").'"'."\n\n";
+    print OUT 'display="'.opt("display").'"'."\n\n";
+    for ( @Qtopia::Opt::ordered_optvar_keys ) {
+        next if ( /^-/ );
+        my $env = opt("$_", "env");
+        if ( opt("$_") && $env ) {
+            print OUT "export $env\n";
+        }
+    }
+
+    if ( opt("exec") ) {
+        print OUT opt("exec")."\n";
+    } else {
+        my $ref = opt("runmode", "modes");
+        for ( @$ref ) {
+            my ( $name, $descr, $scmd, $cmd ) = @$_;
+            if ( opt("runmode") eq $name ) {
+                print OUT "$cmd\n";
+                last;
+            }
+        }
+    }
+    close OUT;
+    chmod 0755, $script;
+
+    my $ret = system($script." ".join(" ", @ARGV));
+    $ret = $ret >> 8;
+    unlink $script;
+    return $ret;
+}
+
+sub dump_runmodes
+{
+    # print out some help
+    my @helpinfo;
+    my $ref = opt("runmode", "modes");
+    for ( @$ref ) {
+        my ( $name, $descr, $scmd, $cmd ) = @$_;
+        push(@helpinfo, $name, $descr, $scmd);
+    }
+    # Setup the terminal-width-dependant formats;
+    _init_formats(@helpinfo);
+    print "Run mode details:\n\n";
+    while ( @helpinfo ) {
+        $optiondesc = shift(@helpinfo);
+        if ( length($optiondesc) < $fcwidth ) {
+            $optiondesc .= " ";
+            while ( length($optiondesc) < $fcwidth ) {
+                $optiondesc .= ".";
+            }
+        }
+        $optionhelp = shift(@helpinfo);
+        $optiondef = shift(@helpinfo);
+        format_name STDOUT "LONGHELP";
+        write;
+    }
+    print "\n".
+          "    Note that extra switches (\"\$\@\") are passed in like this:\n".
+          "        runqtopia options -- extra switches\n\n";
+}
+
+sub _init_formats
+{
+    my @helpinfo = @_;
+
+    # work out a good width for the first column
+    $fcwidth = 24;
+
+    my $qscr = $cols / 4;
+    if ( $qscr > 24 ) {
+        while ( @helpinfo ) {
+            $optiondesc = shift(@helpinfo);
+            $optionhelp = shift(@helpinfo);
+            $optiondef = shift(@helpinfo);
+
+            if ( length($optiondesc) > $fcwidth ) {
+                $fcwidth = length($optiondesc);
+            }
+        }
+        if ( $fcwidth > $qscr ) {
+            $fcwidth = $qscr;
+        }
+    }
+
+    my $scwidth = $cols - $fcwidth - 7;
+    my $fmt = "format LONGHELP =\n".
+              '  @ ^'.'<'x($fcwidth).' ^'.'<'x($scwidth)."\n".
+              '  $optionstar, $optiondesc,  $optionhelp'."\n".
+              '~~   ^'.'<'x($fcwidth-1).' ^'.'<'x($scwidth)."\n".
+              '     $optiondesc,            $optionhelp'."\n".
+              '~     '.' 'x($fcwidth-1).' Available: ^'.'<'x($scwidth-11)."\n".
+              '                             $optionavail'."\n".
+              '~~    '.' 'x($fcwidth-1).' ^'.'<'x($scwidth)."\n".
+              '                             $optionavail'."\n".
+              '~     '.' 'x($fcwidth-1).' Command: ^'.'<'x($scwidth-9)."\n".
+              '                             $optiondef'."\n".
+              '~~    '.' 'x($fcwidth-1).' ^'.'<'x($scwidth)."\n".
+              '                             $optiondef'."\n".
+              ".\n";
+    eval $fmt;
+    die $@ if ( $@ );
+
+    # Only split on spaces, not the - character
+    $: = " ";
+}
+
+sub check_ownership
+{
+    my $ret = 0;
+
+    my $qt_datadir = "/tmp/qtembedded-".opt("display");
+    my $qt_socket = $qt_datadir."/QtEmbedded-".opt("display");
+
+    if ( ! -e $qt_datadir ) {
+        mkdir($qt_datadir);
+        chmod(0700, $qt_datadir);
+    }
+    if ( ! -d $qt_datadir ) {
+        warn "Qtopia Core data directory ($qt_datadir) is not a directory.\n";
+        $ret = 1;
+    }
+    #my ($dev,$ino,$mode,$nlink,$uid,$gid,$rdev,$size,$atime,$mtime,$ctime,$blksize,$blocks) = stat($qt_datadir);
+    #my ($name,$passwd,$uid,$gid,$quota,$comment,$gcos,$dir,$shell,$expire) = getpwuid($<);
+    my $fuid = (stat($qt_datadir))[4];
+    my $uid = (getpwuid($<))[2];
+    if ( $uid != $fuid ) {
+        warn "Qtopia Core data directory ($qt_datadir) is owned by $fuid but it should be owned by $uid.\n".
+         "Please remove the directory or use ``chown -R $uid $qt_datadir'' to correct the problem.\n";
+        $ret = 1;
+    }
+
+    my $qtopia_datadir = "/tmp/qtopia-".opt("display");
+
+    if ( ! -e $qtopia_datadir ) {
+        mkdir($qtopia_datadir);
+        chmod(0700, $qtopia_datadir);
+    }
+    if ( ! -d $qtopia_datadir ) {
+        warn "Qtopia data directory ($qtopia_datadir) is not a directory.\n";
+        $ret = 1;
+    }
+    $fuid = (stat($qtopia_datadir))[4];
+    if ( $uid != $fuid ) {
+        warn "Qtopia data directory ($qtopia_datadir) is owned by $fuid but it should be owned by $uid.\n".
+             "Please remove the directory or use ``chown -R $uid $qtopia_datadir'' to correct the problem.\n";
+        $ret = 1;
+    }
+
+    my $qvfb_key = "/tmp/.qtvfb_keyboard-".opt("display");
+    my $qvfb_mouse = "/tmp/.qtvfb_mouse-".opt("display");
+    my $qvfb_screen = "/tmp/.qtvfb_screen-".opt("display");
+    my @files = (
+        "keyboard" => $qvfb_key,
+        "mouse" => $qvfb_mouse,
+        "screen" => $qvfb_screen,
+    );
+
+    while ( @files ) {
+        my $name = shift(@files);
+        my $file = shift(@files);
+
+        if ( -e $file ) {
+            $fuid = (stat($file))[4];
+            if ( $uid != $fuid ) {
+                warn "QVFb $name pipe ($file) is owned by $fuid but it should be owned by $uid.\n".
+                     "Please remove the file or use ``chown $uid $file'' to correct the problem.\n"; 
+                $ret = 1;
+            }
+        }
+    }
+
+    return $ret;
+}
+
+sub run_phonesim
+{
+    my $start = 0;
+    if ( open IN, "fuser -n tcp ".opt("phonesim_port")." 2>&1 |" ) {
+        my @data = <IN>;
+        close IN;
+        if ( @data ) {
+            if ( opt("restart_phonesim") ) {
+                for ( @data ) {
+                    if ( /(\d+)$/ ) {
+                        kill "TERM", $1;
+                    }
+                }
+                $start = 1;
+            } else {
+                warn "Phonesim is already running!\n";
+            }
+        } else {
+            $start = 1;
+        }
+    } else {
+        warn "fuser is not installed. Cannot detect if phonesim is running.\n";
+    }
+
+    if ( $start ) {
+        print "Saving phonesim output to /tmp/.phonesim_log-".opt("phonesim_port")."\n";
+        system("$SDKROOT/bin/phonesim ".opt("phonesim")." -p ".opt("phonesim_port").
+               " $depotpath/src/tools/phonesim/troll.xml >/tmp/.phonesim_log-".opt("phonesim_port").
+               " 2>&1 &");
+    }
+
+    return 0;
+}
+

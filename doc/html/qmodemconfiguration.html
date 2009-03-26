@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QModemConfiguration Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QModemConfiguration Class Reference<br /><span class="small-subtitle">[<a href="qtcellmodule.html">QtCellModule</a>]</span>
+</h1>
+<p>The QModemConfiguration class provides information about the modem such as its manufacturer and serial number. <a href="#details">More...</a></p>
+<pre>    #include &lt;QModemConfiguration&gt;</pre><p>Inherits <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a>.</p>
+<ul>
+<li><a href="qmodemconfiguration-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmodemconfiguration.html#QModemConfiguration">QModemConfiguration</a></b> ( QModemService * <i>service</i> )</li>
+<li><div class="fn"/><b><a href="qmodemconfiguration.html#dtor.QModemConfiguration">~QModemConfiguration</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public function inherited from <a href="qcomminterface.html#public-functions">QCommInterface</a></li>
+<li><div class="fn"/>4 public functions inherited from <a href="qabstractipcinterface.html#public-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>2 public slots inherited from <a href="qtelephonyconfiguration.html#public-slots">QTelephonyConfiguration</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qtelephonyconfiguration.html#signals">QTelephonyConfiguration</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qabstractipcinterface.html#signals">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>14 protected functions inherited from <a href="qabstractipcinterface.html#protected-functions">QAbstractIpcInterface</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QModemConfiguration class provides information about the modem such as its manufacturer and serial number.</p>
+<p>The following read-only configuration values are available:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Name</th><th>Description</th><th>AT command</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>manufacturer</tt></td><td>Name of the modem's manufacturer</td><td><tt>AT+CGMI</tt></td></tr>
+<tr valign="top" class="even"><td><tt>model</tt></td><td>Name of the modem's modem</td><td><tt>AT+CGMM</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>revision</tt></td><td>Name of the modem's revision</td><td><tt>AT+CGMR</tt></td></tr>
+<tr valign="top" class="even"><td><tt>serial</tt></td><td>Serial number for the modem</td><td><tt>AT+CGSN</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>extraVersion</tt></td><td>Extra manufacturer-specific version information.</td></tr>
+</table></p>
+<p>Modem vendor plug-ins may inherit this class and override <a href="qtelephonyconfiguration.html#request">request</a>() if they use different AT commands from those listed above.</p>
+<p>The <tt>extraVersion</tt> value is intended to return additional version information beyond that supplied by <tt>revision</tt>.</p>
+<p>QModemConfiguration implements the <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a> telephony interface. Client applications should use the <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a> class instead of this class to access the modem's configuration values.</p>
+<p>See also <a href="qtelephonyconfiguration.html">QTelephonyConfiguration</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QModemConfiguration"></a>QModemConfiguration::QModemConfiguration ( <a href="qmodemservice.html">QModemService</a> * <i>service</i> )</h3>
+<p>Create a modem configuration object for <i>service</i>.</p>
+<h3 class="fn"><a name="dtor.QModemConfiguration"></a>QModemConfiguration::~QModemConfiguration ()</h3>
+<p>Destroy this modem configuration object.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

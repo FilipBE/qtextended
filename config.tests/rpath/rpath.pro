@@ -1,0 +1,1 @@
+message(QMAKE_RPATH $$QTOPIA_RPATH)

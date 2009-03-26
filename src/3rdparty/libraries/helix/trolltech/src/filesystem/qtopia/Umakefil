@@ -1,0 +1,41 @@
+# Author: Qt Extended
+#
+# Licensees holding a valid license agreement for the use of the
+# Helix DNA code base may use this file in accordance with that license.
+#
+# This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
+# WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+#
+# Contact info@qtextended.org if any conditions of this licensing are
+# not clear to you.
+#
+
+UmakefileVersion(2,1)
+
+project.AddModuleIncludes("common/include",
+                          "common/dbgtool/pub",
+						  "common/system/pub")
+
+project.AddIncludes(os.path.join(GetSDKPath("qt"),"include"))
+project.AddIncludes(os.path.join(GetSDKPath("qt"),"include","Qt"))
+project.AddIncludes(os.path.join(GetSDKPath("qt"),"include","QtGui"))
+project.AddIncludes(os.path.join(GetSDKPath("qt"),"include","QtCore"))
+
+project.AddIncludes(os.path.join(GetSDKPath("qtopia"),"include"))
+project.AddIncludes(os.path.join(GetSDKPath("qtopia"),"include","qtopia"))
+project.AddIncludes(os.path.join(GetSDKPath("qtopia"),"include","qtopiabase"))
+
+project.AddSystemPaths("-L" + os.path.join(GetSDKPath("qt"),"lib"))
+project.AddSystemLibraries("QtCore")
+
+project.AddSystemPaths("-L" + os.path.join(GetSDKPath("qtopia"),"lib"))
+project.AddSystemLibraries("qtopia");
+
+project.AddSources('qtopiafileobject.cpp', 'qtopiafilesystem.cpp')
+
+project.ExportFunction("RMACreateInstance",
+                       "IUnknown** ppObj",
+                       "common/include",
+                       "hxcom.h")
+
+DLLTarget('qtopiafsys')

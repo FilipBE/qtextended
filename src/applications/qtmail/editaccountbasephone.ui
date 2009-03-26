@@ -1,0 +1,873 @@
+<ui version="4.0" >
+ <class>EditAccountBase</class>
+ <widget class="QDialog" name="EditAccountBase" >
+  <property name="windowModality" >
+   <enum>Qt::ApplicationModal</enum>
+  </property>
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>603</width>
+    <height>458</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Edit Account</string>
+  </property>
+  <property name="layoutDirection" >
+   <enum>Qt::LeftToRight</enum>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="focusPolicy" >
+      <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>Incoming</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_2" >
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy" >
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="widgetResizable" >
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents_2" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>595</width>
+            <height>428</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="typeLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Type</string>
+             </property>
+             <property name="buddy" >
+              <cstring>accountType</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QComboBox" name="accountType" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text" >
+               <string>POP</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>IMAP</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="usernameLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Username</string>
+             </property>
+             <property name="buddy" >
+              <cstring>mailUserInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QLineEdit" name="mailUserInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="passwordLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Password</string>
+             </property>
+             <property name="buddy" >
+              <cstring>mailPasswInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="QLineEdit" name="mailPasswInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="echoMode" >
+              <enum>QLineEdit::Password</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="serverLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Server</string>
+             </property>
+             <property name="buddy" >
+              <cstring>mailServerInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <widget class="QLineEdit" name="mailServerInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="portLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Port</string>
+             </property>
+             <property name="buddy" >
+              <cstring>mailPortInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="QLineEdit" name="mailPortInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" >
+            <widget class="QLabel" name="lblEncryptionIncoming" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Encryption</string>
+             </property>
+             <property name="buddy" >
+              <cstring>encryptionIncoming</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <widget class="QComboBox" name="encryptionIncoming" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text" >
+               <string>None</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>SSL</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>TLS</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="2" >
+            <widget class="QCheckBox" name="deleteCheckBox" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Delete mail</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" >
+            <widget class="QCheckBox" name="thresholdCheckBox" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Skip larger</string>
+             </property>
+             <property name="checked" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0" colspan="2" >
+            <widget class="QCheckBox" name="pushCheckBox" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Push Enabled</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0" >
+            <widget class="QCheckBox" name="intervalCheckBox" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Interval</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0" colspan="2" >
+            <widget class="QCheckBox" name="roamingCheckBox" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize" >
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string>Disable when Roaming</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0" >
+            <widget class="QLabel" name="baseFolderLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Base folder</string>
+             </property>
+             <property name="buddy" >
+              <cstring>imapBaseDir</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="1" >
+            <layout class="QHBoxLayout" >
+             <item>
+              <widget class="QLineEdit" name="imapBaseDir" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="mailboxButton" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize" >
+                <size>
+                 <width>24</width>
+                 <height>26</height>
+                </size>
+               </property>
+               <property name="baseSize" >
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="9" column="1" >
+            <widget class="QSpinBox" name="intervalPeriod" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="suffix" >
+              <string comment="short for minutes">min</string>
+             </property>
+             <property name="minimum" >
+              <number>10</number>
+             </property>
+             <property name="maximum" >
+              <number>1440</number>
+             </property>
+             <property name="singleStep" >
+              <number>10</number>
+             </property>
+             <property name="value" >
+              <number>60</number>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1" >
+            <widget class="QSpinBox" name="maxSize" >
+             <property name="enabled" >
+              <bool>true</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="suffix" >
+              <string>K</string>
+             </property>
+             <property name="minimum" >
+              <number>5</number>
+             </property>
+             <property name="maximum" >
+              <number>5000</number>
+             </property>
+             <property name="singleStep" >
+              <number>5</number>
+             </property>
+             <property name="value" >
+              <number>20</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <attribute name="title" >
+       <string>Outgoing</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QScrollArea" name="scrollArea" >
+         <property name="focusPolicy" >
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="horizontalScrollBarPolicy" >
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="widgetResizable" >
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents" >
+          <property name="geometry" >
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>595</width>
+            <height>428</height>
+           </rect>
+          </property>
+          <layout class="QGridLayout" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="nameLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>From</string>
+             </property>
+             <property name="buddy" >
+              <cstring>nameInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1" >
+            <widget class="QLineEdit" name="nameInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QLabel" name="emailLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Email</string>
+             </property>
+             <property name="buddy" >
+              <cstring>emailInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1" >
+            <widget class="QLineEdit" name="emailInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" >
+            <widget class="QLabel" name="serverLabel_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Server</string>
+             </property>
+             <property name="buddy" >
+              <cstring>smtpServerInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1" >
+            <widget class="QLineEdit" name="smtpServerInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" >
+            <widget class="QLabel" name="portLabel_2" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Port</string>
+             </property>
+             <property name="buddy" >
+              <cstring>smtpPortInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1" >
+            <widget class="QLineEdit" name="smtpPortInput" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" >
+            <widget class="QLabel" name="lblEncryption" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Encryption</string>
+             </property>
+             <property name="buddy" >
+              <cstring>encryption</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1" >
+            <widget class="QComboBox" name="encryption" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text" >
+               <string>None</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>SSL</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>TLS</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="5" column="0" >
+            <widget class="QLabel" name="lblAuthentication" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Authentication</string>
+             </property>
+             <property name="buddy" >
+              <cstring>authentication</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1" >
+            <widget class="QComboBox" name="authentication" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <item>
+              <property name="text" >
+               <string>None</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Login</string>
+              </property>
+             </item>
+             <item>
+              <property name="text" >
+               <string>Plain</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="6" column="0" >
+            <widget class="QLabel" name="lblSmtpUsername" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Username</string>
+             </property>
+             <property name="buddy" >
+              <cstring>smtpUsernameInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" >
+            <widget class="QLineEdit" name="smtpUsernameInput" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" >
+            <widget class="QLabel" name="lblSmtpPassword" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Password</string>
+             </property>
+             <property name="buddy" >
+              <cstring>smtpPasswordInput</cstring>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1" >
+            <widget class="QLineEdit" name="smtpPasswordInput" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="echoMode" >
+              <enum>QLineEdit::Password</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0" >
+            <widget class="QCheckBox" name="sigCheckBox" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Signature</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1" >
+            <widget class="QToolButton" name="setSignatureButton" >
+             <property name="enabled" >
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Set...</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0" colspan="2" >
+            <widget class="QCheckBox" name="defaultMailCheckBox" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text" >
+              <string>Default sending account</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>accountType</tabstop>
+  <tabstop>mailUserInput</tabstop>
+  <tabstop>mailPasswInput</tabstop>
+  <tabstop>mailServerInput</tabstop>
+  <tabstop>mailPortInput</tabstop>
+  <tabstop>encryptionIncoming</tabstop>
+  <tabstop>deleteCheckBox</tabstop>
+  <tabstop>thresholdCheckBox</tabstop>
+  <tabstop>maxSize</tabstop>
+  <tabstop>pushCheckBox</tabstop>
+  <tabstop>intervalCheckBox</tabstop>
+  <tabstop>intervalPeriod</tabstop>
+  <tabstop>roamingCheckBox</tabstop>
+  <tabstop>imapBaseDir</tabstop>
+  <tabstop>mailboxButton</tabstop>
+  <tabstop>nameInput</tabstop>
+  <tabstop>emailInput</tabstop>
+  <tabstop>smtpServerInput</tabstop>
+  <tabstop>smtpPortInput</tabstop>
+  <tabstop>encryption</tabstop>
+  <tabstop>authentication</tabstop>
+  <tabstop>smtpUsernameInput</tabstop>
+  <tabstop>smtpPasswordInput</tabstop>
+  <tabstop>sigCheckBox</tabstop>
+  <tabstop>setSignatureButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>sigCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>setSignatureButton</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>167</x>
+     <y>274</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>218</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>thresholdCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>maxSize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>80</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>179</x>
+     <y>232</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>intervalCheckBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>intervalPeriod</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>151</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>389</x>
+     <y>277</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

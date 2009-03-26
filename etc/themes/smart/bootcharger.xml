@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="bootcharger" base="themes/smart" rect="0,0,0x0">
+    <image rect="0,0,0x0" src="background" tile="no" scale="vertical" color="Highlight">
+        <level name="battery" rect="25%,10%,50%x9.95%" src="battery-big.svg" count="6" min="0" max="100" scale="yes" delay="1000" loop="0" play="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charging == true">
+            expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge
+        </level>
+        <rect rect="5%,50%,90%x20%" color="#eeeeee" brush="#eeeeee" alpha="150">
+            <layout rect="3,0,40x100%" align="vcenter">
+                <image rect="0,0,40x40" src="charge.svg"/>
+            </layout>
+            <exclusive>
+                <text rect="40,0,-3,-1" size="6" bold="yes" color="Text" align="hcenter,vcenter" format="RichText" transient="yes" active="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge &lt; 100">
+                    <tr><trtext>Charging battery</trtext></tr>
+                </text>
+                <text rect="40,0,-3,-1" size="6" bold="yes" color="Text" align="hcenter,vcenter" format="RichText" transient="yes" active="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge == 100">
+                    <tr><trtext>Battery fully charged</trtext></tr>
+                </text>
+                <text name="loading" rect="40,0,-3,-1" size="6" bold="yes" color="Text" align="hcenter,vcenter" format="RichText" transient="yes" active="no">
+                    <tr><trtext>Loading Qtopia</trtext></tr>
+                </text>
+                <text name="poweroff" rect="40,0,-3,-1" size="6" bold="yes" color="Text" align="hcenter,vcenter" format="RichText" transient="yes" active="no">
+                    <tr><trtext>Powering off</trtext></tr>
+                </text>
+            </exclusive>
+        </rect>
+    </image>
+</page>

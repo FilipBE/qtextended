@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Modem Emulator - Phonebook Operations</title>
+  <link rel="prev" href="modememulator-controlandstatus.html" />
+  <link rel="next" href="modememulator-identification.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="modememulator-controlandstatus.html">Modem Emulator - Control and Status</a>]
+[Next: <a href="modememulator-identification.html">Modem Emulator - Identification</a>]
+</p>
+<h1 class="title">Modem Emulator - Phonebook Operations<br /><span class="subtitle"></span>
+</h1>
+<a name="phonebook-operations"></a>
+<h2>Phonebook Operations</h2>
+<p>The AT commands in this section are used for accessing the SIM phone book.</p>
+<p><b>AT+CPBF Find phonebook entries</b></p>
+<p>The <tt>AT+CPBF</tt> command allows for searching the phonebook entries from the current phonebook memory storage selected with <tt>+CPBS</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CPBF=&lt;findtext&gt;</tt></td><td><tt>[+CPBF: &lt;index1&gt;,&lt;number&gt;,&lt;type&gt;,&lt;text&gt;[&lt;hidden&gt;][[...]&lt;CR&gt;&lt;LF&gt; +CPBF: &lt;index2&gt;,&lt;number&gt;,&lt;type&gt;,&lt;text&gt;[&lt;hidden&gt;]]]</tt>, <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPBF=?</tt></td><td><tt>+CPBF: [&lt;nlength&gt;],[&lt;tlength&gt;]</tt>, <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+</table></p>
+<p>Test command returns the maximum length of <tt>&lt;number&gt;</tt> and <tt>&lt;text&gt;</tt> fields.</p>
+<p>The set command returns a set of four parameters, each representing an entry in the phonebook memory. If the memory has several entries which alphanumeric field start with <tt>&lt;findtext&gt;</tt> each entry is returned on a separate line. The search is caseinsensitive.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;index1&gt;, &lt;index2&gt;</tt></td><td>integer number indicating the location number of a phonebook entry</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;number&gt;</tt></td><td>string type phone number of format <tt>&lt;type&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td>string type, phone number of format <tt>&lt;type&gt;</tt>; default 145 when dialling string includes &quot;+&quot;, otherwise 129</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;text&gt;</tt></td><td>string type, character set as specified by selected character set <tt>+CSCS</tt></td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CPBR Read phonebook entries</b></p>
+<p>The <tt>AT+CPBR</tt> command allows for reading the phonebook entries from the current phonebook memory storage selected with <tt>+CPBS</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CBPR=&lt;index1&gt;[,&lt;index2&gt;]</tt></td><td><tt>[+CPBR: &lt;index1&gt;,&lt;number&gt;,&lt;type&gt;,&lt;text&gt;[[...]&lt;CR&gt;&lt;LF&gt; +CPBR: &lt;index2&gt;,&lt;number&gt;,&lt;type&gt;,&lt;text&gt;]]</tt>, <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPBR=?</tt></td><td><tt>+CPBR (list of supported &lt;index&gt;s), [&lt;nlength&gt;], [&lt;tlength&gt;]</tt>, <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+</table></p>
+<p>Test command returns the available location indices, the maximum length of phone number fields and the maximum length of text fields.</p>
+<p>The set command returns a set of four parameters, each representing an entry in the phonebook memory. If the memory has several entries each entry is returned on a separate line.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;index&gt;, &lt;index1&gt;, &lt;index2&gt;</tt></td><td>integer number indicating the location number of a phonebook entry</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;number&gt;</tt></td><td>string type phone number of format <tt>&lt;type&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td>string type, phone number of format <tt>&lt;type&gt;</tt>; default 145 when dialling string includes &quot;+&quot;, otherwise 129</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;text&gt;</tt></td><td>string type, character set as specified by selected character set <tt>+CSCS</tt></td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CPBS Select phonebook memory storage</b></p>
+<p>The <tt>AT+CPBS</tt> command allows for querying and selecting the phone book storage.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CBPS=&lt;storage&gt;</tt></td><td><tt>OK</tt>, <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPBS?</tt></td><td><tt>+CPBS: &lt;storage&gt;,[&lt;used&gt;,&lt;total&gt;]</tt>, <tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CPBS=?</tt></td><td><tt>+CPBS (list of &lt;storage&gt;s)</tt></td></tr>
+</table></p>
+<p>The set command sets the selected phonebook memroy to &lt;storage&gt;. A list of available phonebook memories can be obtained when using the test command.</p>
+<p>The Read command returns the currently selected storage and the used/total number of locations in the selected memory.</p>
+<p>This implementation is not entirely conform with 3GPP TS 27.007. It is not possible to set a password for phone book stores.</p>
+<p><b>AT+CPBW Write phonebook entry</b></p>
+<p>The <tt>AT+CPBW</tt> command allows for writing of the phonebook entries from the current phonebook memory storage selected with <tt>+CPBS</tt>.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CBPW=[&lt;index&gt;][,&lt;number&gt;[,&lt;type&gt;,&lt;text&gt;]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CPBW=?</tt></td><td><ul>
+<li><tt>+CPBW (list of supported &lt;index&gt;s), [&lt;nlength&gt;], (list of supported &lt;type&gt;s), [&lt;tlength&gt;]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Test command returns the available location indices, the maximum length of phone number fields, the supported number formats of the storage and the maximum length of text fields.</p>
+<p>The set command expects a set of four parameters. <tt>&lt;index&gt;</tt> determines the location where the current write operation takes place. In addition the entry field contains the phone number <tt>&lt;number&gt;</tt> (in the format <tt>&lt;type&gt;</tt>), and the text associated with the given number. If these fields are omitted the phonebook entry at <tt>&lt;index&gt;</tt> is deleted. If <tt>&lt;index&gt;</tt> is omitted but <tt>&lt;number&gt;</tt> is given the entry is saved at the first free location in the phonebook.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;index&gt;</tt></td><td>integer number indicating the location number of a phonebook memory entry</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;number&gt;</tt></td><td>string type phone number of format <tt>&lt;type&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td>string type, phone number of format <tt>&lt;type&gt;</tt>; default 145 when dialling string includes &quot;+&quot;, otherwise 129</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;text&gt;</tt></td><td>string type, character set as specified by selected character set <tt>+CSCS</tt></td></tr>
+</table></p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p>
+[Previous: <a href="modememulator-controlandstatus.html">Modem Emulator - Control and Status</a>]
+[Next: <a href="modememulator-identification.html">Modem Emulator - Identification</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,9 @@
+#!/bin/sh
+qbuild -script
+result=$?
+./defines >output
+result=$?
+if [ "$result" -eq 0 ]; then
+    diff output template
+    result=$?
+fi

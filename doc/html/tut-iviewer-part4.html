@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Image Viewer Tutorial: Part 4</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Image Viewer Tutorial: Part 4<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><p>Welcome back to the image viewer tutorial. In this part, the list screen will be enhanced with some actions and an input dialog will be created.</p>
+<a name="enhancing-the-list-screen"></a>
+<h2>Enhancing the list screen</h2>
+<a name="the-rename-action"></a>
+<h3>The rename action</h3>
+<p>The rename action will provide a way to rename a selected image. For that purpose, a new rename action has to be created in the list screen.</p>
+<pre>    void ListScreen::createActions()
+    {
+        ...
+        _renameAction = new QAction(&quot;Rename&quot;, this);
+        connect(_renameAction, SIGNAL(triggered()), this, SLOT(onRenameImage()));
+        ...
+    }</pre>
+<p>The rename action will trigger the <tt>onRenameImage()</tt> slot. The rename action should also be added to the options menu</p>
+<pre>    void ListScreen::createMenu()
+    {
+        ...
+        menu-&gt;addAction(_renameAction);
+        ...
+    }</pre>
+<p>The onRenameImage slot needs to launch an input dialog. When the dialog is accepted, the image will be renamed. Qt Extended does not support the <a href="qinputdialog.html">QInputDialog</a>, so a custom input dialog should be created. This is fairly easy. Our input dialog derives from a <a href="qdialog.html">QDialog</a>.</p>
+<pre>    #ifndef INPUTDIALOG_H
+    #define INPUTDIALOG_H
+
+    #include &lt;QDialog&gt;
+    #include &lt;QLineEdit&gt;
+
+    class QkeyEvent;
+
+    class InputDialog : public QDialog
+    {
+        Q_OBJECT
+    public:
+        InputDialog(QWidget *parent);
+        void setText(const QString &amp;text);
+        QString text();
+    private:
+        QLineEdit* _edit;
+    };
+
+    #endif</pre>
+<p>The <tt>setText()</tt> method puts the name of the image into the dialog. The <tt>text()</tt> method will retrieve the new name for the image.</p>
+<p>The dialog consists of only one widget: a <a href="qlineedit.html">QLineEdit</a>, which is arranged in a <a href="qvboxlayout.html">QVBoxLayout</a>. Using the <tt>setText()</tt> method, the text will be set on the <a href="qlineedit.html">QLineEdit</a>. The <tt>text()</tt> method retrieves the text from the <a href="qlineedit.html">QLineEdit</a>. There is currently no verification of the input. This feature could be added later.</p>
+<pre>    #include &quot;inputdialog.h&quot;
+
+    #include &lt;QVBoxLayout&gt;
+    #include &lt;QKeyEvent&gt;
+
+    InputDialog::InputDialog(QWidget *parent)
+    : QDialog(parent)
+    {
+        QVBoxLayout* layout = new QVBoxLayout(this);
+        _edit = new QLineEdit(this);
+        layout-&gt;addWidget(_edit);
+        setLayout(layout);
+    }
+
+    void InputDialog::setText(const QString &amp;text)
+    {
+        _edit-&gt;setText(text);
+    }
+
+    QString InputDialog::text()
+    {
+        return _edit-&gt;text();
+    }</pre>
+<p>In the <tt>onRenameImage()</tt> method, the content object is first retrieved according to the selected row and the InputDialog() is created. Then the image name is set as the dialog text. The dialog is launched with the <tt>QtopiaApplication::execDialog()</tt> method. If the dialog is accepted, the <tt>execDialog()</tt> method returns a <a href="qdialog.html#DialogCode-enum">QDialog::Accepted</a> and the new name can be retrieved from the dialog. The new name is set on the content and the changes are commited. The commit function must be called to commit the changes. At the end, the dialog is deleted. Storing the dialog for later usage could be another option. <tt>QtopiaApplication::execDialog(dlg)</tt> call is used to place the dialog on the bottom of the screen, just above the soft menubar, so it looks much more like a phone interface. (the <tt>Dialog.exec()</tt> method could have been used but it would have placed the dialog according to Qt dialog behaviour, i.e&#x2e; on the center of the screen with a minimal size.</p>
+<pre>    void ListScreen::onRenameImage()
+    {
+        QContent c   = _cs-&gt;content(currentIndex().row());
+        QString name = c.name();
+        InputDialog *dlg = new InputDialog(this);
+        dlg-&gt;setText(name);
+        dlg-&gt;setWindowTitle(&quot;Rename Image:&quot;);
+        int ans = QtopiaApplication::execDialog(dlg);
+        if (ans == QDialog::Accepted) {
+            QString newName = dlg-&gt;text();
+            if (newName.isEmpty())
+                return;
+            c.setName(newName);
+            c.commit();
+        }
+        delete dlg;
+    }</pre>
+<p>To edit the content, the select key has to be pressed. As the dialog is in key navigation mode, &quot;select&quot; has to be pressed to select the <a href="qlineedit.html">QLineEdit</a> and then &quot;edit&quot; to go into the edit mode. After finishing editing, &quot;ok&quot; must be pressed to go back to the navigation mode. Then, pressing back accepts the dialog. Pressing Cancel in the options menu will cancel the dialog.</p>
+<p>Here the sequence:</p>
+<ul>
+<li>1.launch dialog (navigation mode)</li>
+<li>2.press select (goes to edit mode)</li>
+<li>3.edit text</li>
+<li>4.press ok (goes to navigation mode)</li>
+<li>5.press back to accept dialog</li>
+</ul>
+<p>This is quite complicated and can be made easier!</p>
+<a name="enhancing-the-rename-dialog"></a>
+<h3>Enhancing the Rename Dialog</h3>
+<p>The Ok and Cancel behaviour of the dialog can not be achieved currently. This is due to the fact that the delete and cut/copy/paste functions must be supported with the softkeys. But a more user-friendly interface can be found..&#x2e;</p>
+<p>The input dialog must be changed: the edit widget will be introducted as the focus proxy of the dialog. This means that when the dialog receives focus, it forwards the focus to the edit widget. By doing that, the edit widget does not have to be selected any more in order to go to the edit state.</p>
+<p>In addition, the key events will be intercepted and if a <a href="qt.html#Key-enum">Qt::Key_Select</a> arrives (which is used to go out of the edit mode normally), the button will be accepted:</p>
+<p>For the input dialog constructor:</p>
+<pre>    InputDialog::InputDialog(QWidget *parent)
+    : QDialog(parent)
+    {
+        ...
+        setFocusProxy(_edit);
+        ...
+    }</pre>
+<p>And to intercept the key events:</p>
+<pre>    void InputDialog::keyPressEvent(QKeyEvent *event)
+    {
+        if (event-&gt;key() == Qt::Key_Select) {
+            accept();
+        } else {
+            QDialog::keyPressEvent(event);
+        }
+    }</pre>
+<p>Now, the list has to be refreshed in order to display the new name. In that purpose,a slot that populates the list must be created:</p>
+<p>File: listscreen.h</p>
+<pre>    class ListScreen : public QListWidget
+    {
+        ...
+    private slots:
+        void updateList(QContentIdList a,QContent::ChangeType b);
+        ...
+    };</pre>
+<p>File: listscreen.cpp</p>
+<pre>    void ListScreen::updateList(QContentIdList a, QContent::ChangeType b)
+    {
+        populate();
+    }</pre>
+<p>This slot has to be connected to the <tt>QContentSet::changed(...)</tt> method in the ListScreen constructor. By doing that, the list will be repopulated each time a change occurs in the <a href="qcontentset.html">QContentSet</a> (item added, item renamed/updtated/, item deleted)</p>
+<p>File: listscreen.cpp</p>
+<pre>    ListScreen::ListScreen(IViewer *viewer)
+    : QListWidget(viewer), _viewer(viewer)
+    {
+        ...
+        connect(_cs,SIGNAL(changed(QContentIdList,QContent::ChangeType)),
+                this,SLOT(updateList(QContentIdList,QContent::ChangeType)));
+        ...
+    }</pre>
+<p>Now, every item in the list can be renamed. The next step is to provide a way to delete those items.</p>
+<a name="the-delete-action"></a>
+<h3>The delete action</h3>
+<p>A delete action needs to be added to the menu. This is the same procedure as seen before. The delete action should call a onDeleteImage() slot.</p>
+<p>In the delete image slot, the content is retrieved by row. This time, a message box displays a question. If the yes option is selected, the content is removed via the Content::removeFiles() method. Again, calling <tt>commit()</tt> is mandatory to commit the changes.</p>
+<pre>    void ListScreen::onDeleteImage()
+    {
+        QContent c = _cs-&gt;content(currentIndex().row());
+        QString file = c.file();
+        int ans = QMessageBox::question(this, &quot;Delete Image&quot;, file, QMessageBox::Yes, QMessageBox::No);
+        if (ans == QMessageBox::No)
+            return;
+        c.removeFiles();
+        c.commit();
+    }</pre>
+<p>Time to compile and restart the application. Now there are two new options (rename and delete) that can be tried out.</p>
+<a name="summary"></a>
+<h3>Summary</h3>
+<p>This part talked about ways to implement a custom dialog and to change the default implementation in order to have a dialog behaving nicely. The use of the <a href="qmessagebox.html">QMessageBox</a> class and the use of the <a href="qcontent.html">QContent</a> class have been explained.</p>
+<p><a href="tut-iviewer-part3.html">Prev</a>|<a href="#top">Top</a>|<a href="tut-iviewer-part1.html">Start Page</a>|<a href="tut-iviewer-part5.html">Next</a></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

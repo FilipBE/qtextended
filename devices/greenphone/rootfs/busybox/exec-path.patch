@@ -1,0 +1,74 @@
+--- busybox-1.2.1/applets/install.sh	2006-07-01 08:42:12.000000000 +1000
++++ busybox-1.2.1-greenphone/applets/install.sh	2007-02-16 13:27:55.000000000 +1000
+@@ -20,6 +20,8 @@
+ 	*)           echo "Unknown install option: $2"; exit 1;;
+ esac
+ 
++BUSYBOX_EXEC_PATH=$( awk '/^#define CONFIG_BUSYBOX_EXEC_PATH/ { print $3 }' < include/bb_config.h | tr -d \" )
++
+ if [ -n "$DO_INSTALL_LIBS" ] && [ "$DO_INSTALL_LIBS" != "n" ]; then
+ 	# get the target dir for the libs
+ 	# assume it starts with lib
+@@ -39,8 +41,8 @@
+ 	done
+ fi
+ 
+-if [ "$cleanup" = "1" ] && [ -e "$prefix/bin/busybox" ]; then
+-	inode=`ls -i "$prefix/bin/busybox" | awk '{print $1}'`
++if [ "$cleanup" = "1" ] && [ -e "$prefix/$BUSYBOX_EXEC_PATH" ]; then
++	inode=`ls -i "$prefix/$BUSYBOX_EXEC_PATH" | awk '{print $1}'`
+ 	sub_shell_it=`
+ 	cd "$prefix"
+ 	for d in usr/sbin usr/bin sbin bin ; do
+@@ -54,34 +56,29 @@
+ 	`
+ fi
+ 
+-rm -f $prefix/bin/busybox || exit 1
+-mkdir -p $prefix/bin || exit 1
+-install -m 755 busybox $prefix/bin/busybox || exit 1
++rm -f $prefix/$BUSYBOX_EXEC_PATH || exit 1
++mkdir -p $prefix/$( dirname $BUSYBOX_EXEC_PATH  ) || exit 1
++install -m 755 busybox $prefix/$BUSYBOX_EXEC_PATH || exit 1
+ 
+ for i in $h ; do
+ 	appdir=`dirname $i`
+ 	mkdir -p $prefix/$appdir || exit 1
+ 	if [ "$2" = "--hardlinks" ]; then
+-		bb_path="$prefix/bin/busybox"
++		bb_path="$prefix/$BUSYBOX_EXEC_PATH"
+ 	else
+-		case "$appdir" in
+-		/)
+-			bb_path="bin/busybox"
+-		;;
+-		/bin)
+-			bb_path="busybox"
+-		;;
+-		/sbin)
+-			bb_path="../bin/busybox"
+-		;;
+-		/usr/bin|/usr/sbin)
+-			bb_path="../../bin/busybox"
+-		;;
+-		*)
+-		echo "Unknown installation directory: $appdir"
+-		exit 1
+-		;;
+-		esac
++		if [ "$appdir" = "/" ]; then
++			bb_path=${BUSYBOX_EXEC_PATH#/}
++		elif [ "$appdir" = "$( dirname $BUSYBOX_EXEC_PATH )" ]; then
++			bb_path="$( basename $BUSYBOX_EXEC_PATH )"
++		else
++			app_depth=$( echo -n "$appdir" | sed -e 's/[^\/]//g' | wc -c )
++                        bb_path=""
++                        while [ $app_depth -gt 0 ]; do
++                            bb_path="../$bb_path"
++                            app_depth=$(( $app_depth - 1 ))
++                        done
++                        bb_path=${bb_path%/}$BUSYBOX_EXEC_PATH
++		fi
+ 	fi
+ 	if [ "$noclobber" = "0" ] || [ ! -e "$prefix$i" ]; then
+ 		echo "  $prefix$i -> $bb_path"

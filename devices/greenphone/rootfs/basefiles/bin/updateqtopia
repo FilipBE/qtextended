@@ -1,0 +1,179 @@
+#!/bin/sh
+
+# This script updates the Greenphone with a new Qtopia image
+
+usage()
+{
+    echo "Usage: $0 [options] <Qtopia image>"
+    echo "    --force-flash           Force a reflash even if it is detected that the"
+    echo "                            installed image is the same as the update image"
+    echo "    --no-questions          Don't ask any questions"
+}
+
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+
+# Process command line options
+OPTION_FORCE_FLASH=0
+OPTION_NO_QUESTIONS=0
+QTOPIA_IMAGE_PATH=""
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        --force-flash)
+            OPTION_FORCE_FLASH=1
+            ;;
+        --no-questions)
+            OPTION_NO_QUESTIONS=1
+            ;;
+        --help)
+            usage
+            exit 1
+            ;;
+        --*)
+            echo "Unknown option $1, ignoring."
+            ;;
+        *)
+            QTOPIA_IMAGE_PATH="$1"
+            ;;
+    esac
+    shift
+done
+
+if [ "$QTOPIA_IMAGE_PATH" = "" ]; then
+    echo "Qtopia image not specified."
+    usage
+    exit 1
+fi
+
+cd "$QTOPIA_IMAGE_PATH"
+
+# Path where status images are stored
+STATUS_IMAGE_PATH=/usr/share/updateqtopia
+
+# The following files are used by this script. If --remove-flash-files is
+# sepcified all of these files will be removed from the installation medium.
+QTOPIA_IMAGE="qtopia.cramfs"
+STATUS_IMAGES="flash-status-fail-fserror.gif \
+               flash-status-fail-fsversion.gif \
+               flash-status-fail-files.gif \
+               flash-status-fail-space.gif \
+               flash-status-fail-initqtopia.gif \
+               flash-status-flashing.gif \
+               flash-status-pass.gif"
+
+# Block device where QTOPIA_IMAGE is installed to
+QTOPIA_IMAGE_DEVICE=/dev/tffsa2
+
+contains_update_image()
+{
+    # check for update image
+    for i in $QTOPIA_IMAGE $STATUS_IMAGES; do
+        [ ! -r $QTOPIA_IMAGE_PATH/$i ] && return 1
+    done
+    return 0
+}
+
+contains_old_update_image()
+{
+    # check for old update image
+    [ -f $QTOPIA_IMAGE_PATH/trolltech_flash.sh ]
+}
+
+check_free_space()
+{
+    # Find size of QTOPIA_IMAGE_DEVICE
+    local DEVICE=$(basename $QTOPIA_IMAGE_DEVICE)
+    if grep $DEVICE /proc/partitions >/dev/null; then
+        local AVAILABLE_SPACE=$(awk "/$DEVICE/ {print \$3}" /proc/partitions)
+    else
+        local AVAILABLE_SPACE=0
+    fi
+
+    local REQUIRED_SPACE=$(ls -s $QTOPIA_IMAGE_PATH/qtopia.cramfs | awk '{print $1}')
+
+    [ $AVAILABLE_SPACE -lt $REQUIRED_SPACE ]
+}
+
+same_update_image()
+{
+    # check if update image is different to installed image
+    # We use the first 48 bytes of the super block in qtopia.cramfs for this.
+    # The structure of the first 48 bytes of the cramfs super block is:
+    # Bytes     Description     Contents
+    # 0 - 3     Magic number    0x28cd3d45
+    # 4 - 7     Size            <variable>
+    # 8 - 11    Flags           0x00000003
+    # 12 - 15   Future          0x00000000
+    # 16 - 31   Signiture       "Compressed ROMSFS"
+    # 32 - 35   CRC             <variable>
+    # 36 - 39   Edition         0x00000000
+    # 40 - 43   Blocks          <variable>
+    # 44 - 47   Files           <variable>
+    INST_ID=$( hexdump -e '"%08x"' -n 48 $QTOPIA_IMAGE_DEVICE )
+    NEW_ID=$( hexdump -e '"%08x"' -n 48 $QTOPIA_IMAGE_PATH/$QTOPIA_IMAGE )
+
+    [ "$INST_ID" = "$NEW_ID" ]
+}
+
+flash_status()
+{
+    echo "Update Qtopia: $2"
+    if [ -f $QTOPIA_IMAGE_PATH/$1.gif ]; then
+        gifanim $QTOPIA_IMAGE_PATH/$1.gif
+    elif [ -f $STATUS_IMAGE_PATH/$1.gif ]; then
+        gifanim $STATUS_IMAGE_PATH/$1.gif
+    fi
+}
+
+question()
+{
+    # usage: question <image?> <question?>
+    # returns: 0 for left context, 1 for right context
+    flash_status "$1" "$2"
+
+    while true; do
+        KEYCODE=$(getkeycode)
+
+        [ "$KEYCODE" = "19" ] && return 0
+        [ "$KEYCODE" = "26" ] && return 1
+    done
+}
+
+if ! contains_update_image; then
+    echo "Update Qtopia: Update image not found"
+    exit 1
+fi
+
+if contains_old_update_image; then
+    flash_status flash-status-fail-fsversion "Old Update Qtopia image, not supported with this root filesystem"
+    sleep 30
+    exit 1
+fi
+
+if check_free_space; then
+    flash_status flash-status-fail-space "Insufficient space on system storage"
+    sleep 30
+    exit 1
+fi
+
+if same_update_image && [ $OPTION_FORCE_FLASH -eq 0 ]; then
+    echo "Update Qtopia: Update image already installed"
+    exit 1
+fi
+
+if [ $OPTION_NO_QUESTIONS -eq 0 ]; then
+    if ! question flash-status-proceed "Install new Qtopia image?"; then
+        flash_status flash-status-user-abort "User aborted flash"
+        exit 1
+    fi
+fi
+
+flash_status flash-status-flashing "Installing new Qtopia image"
+
+dd if=$QTOPIA_IMAGE_PATH/$QTOPIA_IMAGE of=$QTOPIA_IMAGE_DEVICE bs=1M
+
+# Force LIDS rules to be regenerated at reboot
+rm -f /etc/lids/lids_initialized
+
+flash_status flash-status-pass "Qtopia update complete"
+

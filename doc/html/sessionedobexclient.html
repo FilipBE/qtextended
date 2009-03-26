@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SessionedObexClient Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SessionedObexClient Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>, <a href="qtinfraredmodule.html">QtInfraredModule</a>]</span>
+</h1>
+<p>The SessionedObexClient class provides a base implementation for performing an OBEX Put request inside of a device session for a particular hardware device. <a href="#details">More...</a></p>
+<pre>    #include &lt;SessionedObexClient&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="sessionedobexclient-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="sessionedobexclient.html#SessionedObexClient">SessionedObexClient</a></b> ( const QByteArray &amp; <i>deviceId</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual void <b><a href="sessionedobexclient.html#abort">abort</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="sessionedobexclient.html#begin">begin</a></b> ( const QObexHeader &amp; <i>header</i>, QIODevice * <i>dataToSend</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="sessionedobexclient.html#dataSendProgress">dataSendProgress</a></b> ( qint64 <i>done</i>, qint64 <i>total</i> )</li>
+<li><div class="fn"/>void <b><a href="sessionedobexclient.html#done">done</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="sessionedobexclient.html#requestFinished">requestFinished</a></b> ( bool <i>error</i>, bool <i>aborted</i> )</li>
+<li><div class="fn"/>void <b><a href="sessionedobexclient.html#requestStarted">requestStarted</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="sessionedobexclient.html#closedDeviceSession">closedDeviceSession</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="sessionedobexclient.html#forceAbort">forceAbort</a></b> () = 0</li>
+<li><div class="fn"/>virtual void <b><a href="sessionedobexclient.html#openedDeviceSession">openedDeviceSession</a></b> ( bool <i>error</i> ) = 0</li>
+<li><div class="fn"/>void <b><a href="sessionedobexclient.html#sendRequest">sendRequest</a></b> ( QIODevice * <i>socket</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The SessionedObexClient class provides a base implementation for performing an OBEX Put request inside of a device session for a particular hardware device.</p>
+<p>A SessionedObexClient will open a device session for the relevant hardware device before sending the specified OBEX request. Once the request is completed, the device session will be closed.</p>
+<p>The use of device sessions ensures the Qt Extended device manager is aware that a hardware device is currently in use, so that the device manager will try to keep the device open while the OBEX request is in progress.</p>
+<p>If you want to send OBEX requests without using device sessions, just use <a href="qobexclientsession.html">QObexClientSession</a>.</p>
+<p>This class enables the <a href="bluetoothfilesendservice.html">BluetoothFileSendService</a> and the <a href="irfilesendservice.html">IrFileSendService</a>.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<a name="subclassing-sessionedobexclient"></a>
+<h3>Subclassing SessionedObexClient</h3>
+<p>SessionedObexClient needs to be subclassed to provide the transport socket for the OBEX client request. When start() is called, the client will attempt to open a device session. When the session is opened (or fails to open), <a href="sessionedobexclient.html#openedDeviceSession">openedDeviceSession</a>() is called. Subclasses should override this <a href="sessionedobexclient.html#openedDeviceSession">openedDeviceSession</a>() to create an appropriate transport socket and then call <a href="sessionedobexclient.html#sendRequest">sendRequest</a>() with the socket object in order to begin the OBEX request.</p>
+<p>The subclass can call <a href="sessionedobexclient.html#abort">abort</a>() if the session should be ended prematurely.</p>
+<p>See also <a href="qcommdevicesession.html">QCommDeviceSession</a> and <a href="qabstractcommdevicemanager.html">QAbstractCommDeviceManager</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="SessionedObexClient"></a>SessionedObexClient::SessionedObexClient ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>deviceId</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a client that will operate on a device session for the hardware device with the given <i>deviceId</i>.</p>
+<p>The <i>parent</i> is the <a href="qobject.html">QObject</a> parent object for the client.</p>
+<h3 class="fn"><a name="abort"></a>void SessionedObexClient::abort ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Aborts the OBEX request and closes the device session.</p>
+<p>If the OBEX request has been sent (i.e&#x2e; <a href="sessionedobexclient.html#begin">begin</a>() and <a href="sessionedobexclient.html#sendRequest">sendRequest</a>() have been called) and the request has not yet finished, the client will attempt to abort the transfer to the server. If this is successful, <a href="sessionedobexclient.html#requestFinished">requestFinished</a>() is emitted with <tt>aborted</tt> set to <tt>true</tt>. Then, the device session is closed, <a href="sessionedobexclient.html#closedDeviceSession">closedDeviceSession</a>() is called and <a href="sessionedobexclient.html#done">done</a>() is emitted.</p>
+<p>Otherwise, this will just close the device session, call <a href="sessionedobexclient.html#closedDeviceSession">closedDeviceSession</a>() and emit <a href="sessionedobexclient.html#done">done</a>().</p>
+<h3 class="fn"><a name="begin"></a>void SessionedObexClient::begin ( const <a href="qobexheader.html">QObexHeader</a> &amp; <i>header</i>, <a href="qiodevice.html">QIODevice</a> * <i>dataToSend</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Starts the client. Once the client is ready, it will send an OBEX Put request with <i>header</i> and the contents of <i>dataToSend</i>.</p>
+<h3 class="fn"><a name="closedDeviceSession"></a>void SessionedObexClient::closedDeviceSession ()&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Called when the device session for this client has been closed.</p>
+<p>The device session could be closed because <a href="sessionedobexclient.html#abort">abort</a>() has been called, or an external party has closed the session (e.g&#x2e; by bringing down the associated hardware device).</p>
+<h3 class="fn"><a name="dataSendProgress"></a>void SessionedObexClient::dataSendProgress ( <a href="qtglobal.html#qint64-typedef">qint64</a> <i>done</i>, <a href="qtglobal.html#qint64-typedef">qint64</a> <i>total</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted after the request has started to indicate the progress of the data transfer. The <i>done</i> value is the number of bytes that have been sent or received so far, and <i>total</i> is the total number of bytes to be sent or received. If the total amount cannot be determined, <i>total</i> is set to 0.</p>
+<h3 class="fn"><a name="done"></a>void SessionedObexClient::done ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted once the device session has closed and <a href="sessionedobexclient.html#closedDeviceSession">closedDeviceSession</a>() has been called.</p>
+<h3 class="fn"><a name="forceAbort"></a>void SessionedObexClient::forceAbort ()&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Called when <a href="sessionedobexclient.html#abort">abort</a>() has been called but the OBEX server has not responded to the Abort request. In this case, the subclass should try to force the cancelation of the request - for example, by disconnecting the transport connection.</p>
+<h3 class="fn"><a name="openedDeviceSession"></a>void SessionedObexClient::openedDeviceSession ( bool <i>error</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>When <a href="sessionedobexclient.html#begin">begin</a>() is called, the client will open the device session. Once the device session is opened (or has failed to open), this method will be called. <i>error</i> is true if the session failed to open.</p>
+<p>Subclasses should override this to call <a href="sessionedobexclient.html#sendRequest">sendRequest</a>() with an appropriate socket object if the session was opened successfully.</p>
+<h3 class="fn"><a name="requestFinished"></a>void SessionedObexClient::requestFinished ( bool <i>error</i>, bool <i>aborted</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the OBEX request has finished. <i>error</i> is set to <tt>true</tt> if an error occurred during the request, and <i>aborted</i> is set to <tt>true</tt> if the request was aborted by a call to <a href="sessionedobexclient.html#abort">abort</a>().</p>
+<h3 class="fn"><a name="requestStarted"></a>void SessionedObexClient::requestStarted ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the OBEX request has started. The request will not start until <a href="sessionedobexclient.html#sendRequest">sendRequest</a>() has been called by the subclass.</p>
+<h3 class="fn"><a name="sendRequest"></a>void SessionedObexClient::sendRequest ( <a href="qiodevice.html">QIODevice</a> * <i>socket</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sends the OBEX Put request specified in <a href="sessionedobexclient.html#begin">begin</a>() over the given <i>socket</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QtopiaTimer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QtopiaTimer Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QtopiaTimer class provides timers that can pause automatically when the screen is off. <a href="#details">More...</a></p>
+<pre>    #include &lt;QtopiaTimer&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qtopiatimer-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qtopiatimer.html#Type-enum">Type</a></b> { Normal, PauseWhenInactive }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopiatimer.html#QtopiaTimer">QtopiaTimer</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qtopiatimer.html#dtor.QtopiaTimer">~QtopiaTimer</a></b> ()</li>
+<li><div class="fn"/>int <b><a href="qtopiatimer.html#interval">interval</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtopiatimer.html#isActive">isActive</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtopiatimer.html#isSingleShot">isSingleShot</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qtopiatimer.html#setInterval">setInterval</a></b> ( int <i>msec</i>, QtopiaTimer::Type <i>type</i> = Normal )</li>
+<li><div class="fn"/>void <b><a href="qtopiatimer.html#setSingleShot">setSingleShot</a></b> ( bool <i>singleShot</i> )</li>
+<li><div class="fn"/>Type <b><a href="qtopiatimer.html#type">type</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtopiatimer.html#start">start</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtopiatimer.html#start-2">start</a></b> ( int <i>msec</i>, QtopiaTimer::Type <i>type</i> = Normal )</li>
+<li><div class="fn"/>void <b><a href="qtopiatimer.html#stop">stop</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtopiatimer.html#timeout">timeout</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QtopiaTimer class provides timers that can pause automatically when the screen is off.</p>
+<p>The use of this class is similar to <a href="qtimer.html">QTimer</a> as the API is the same, except <a href="qtopiatimer.html#setInterval">setInterval</a>() and <a href="qtopiatimer.html#start">start</a>() now have an optional argument that is the <a href="qtopiatimer.html#type">type</a>() of pausing behavior to use.</p>
+<p>When the type is <a href="qtopiatimer.html#Type-enum">PauseWhenInactive</a>, the timer will pause while the screen is off. This allows applications to more easily suspend repetitive processing when the user is not able to interact with the application.</p>
+<p>See also <a href="qtimer.html">QTimer</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Type-enum"></a>enum QtopiaTimer::Type</h3>
+<p>This enum type specifies the behavior that <a href="qtopiatimer.html">QtopiaTimer</a> uses.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QtopiaTimer::Normal</tt></td><td align="center" valign="top"><tt>0x0000</tt></td><td valign="top">operate as a <a href="qtimer.html">QTimer</a>.</td></tr>
+<tr><td valign="top"><tt>QtopiaTimer::PauseWhenInactive</tt></td><td align="center" valign="top"><tt>0x0001</tt></td><td valign="top">pause while the screen turns off.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QtopiaTimer"></a>QtopiaTimer::QtopiaTimer ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a new <a href="qtopiatimer.html">QtopiaTimer</a> instance with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QtopiaTimer"></a>QtopiaTimer::~QtopiaTimer ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qtopiatimer.html">QtopiaTimer</a> instance.</p>
+<h3 class="fn"><a name="interval"></a>int QtopiaTimer::interval () const</h3>
+<p>Returns the number of milliseconds that the <a href="qtopiatimer.html">QtopiaTimer</a> will wait. A value of 0 means that the timer will time out as soon as all the events in the window system event queue have been processed.</p>
+<p>See also <a href="qtopiatimer.html#setInterval">setInterval</a>().</p>
+<h3 class="fn"><a name="isActive"></a>bool QtopiaTimer::isActive () const</h3>
+<p>Returns true if the timer is active; false otherwise.</p>
+<p>See also <a href="qtopiatimer.html#start">start</a>() and <a href="qtopiatimer.html#stop">stop</a>().</p>
+<h3 class="fn"><a name="isSingleShot"></a>bool QtopiaTimer::isSingleShot () const</h3>
+<p>Returns true if the timer is a single-shot timer; false otherwise. Single-shot timers do not restart automatically.</p>
+<p>See also <a href="qtopiatimer.html#setSingleShot">setSingleShot</a>().</p>
+<h3 class="fn"><a name="setInterval"></a>void QtopiaTimer::setInterval ( int <i>msec</i>, <a href="qtopiatimer.html#Type-enum">QtopiaTimer::Type</a> <i>type</i> = Normal )</h3>
+<p>Sets the timer to wait <i>msec</i> milliseconds before triggering. The type is set to <i>type</i>.</p>
+<p>See also <a href="qtopiatimer.html#interval">interval</a>() and <a href="qtopiatimer.html#type">type</a>().</p>
+<h3 class="fn"><a name="setSingleShot"></a>void QtopiaTimer::setSingleShot ( bool <i>singleShot</i> )</h3>
+<p>Sets the timer to be a single-shot timer if <i>singleShot</i> is true. If <i>singleShot</i> is false the timer will restart automatically.</p>
+<p>See also <a href="qtopiatimer.html#isSingleShot">isSingleShot</a>().</p>
+<h3 class="fn"><a name="start"></a>void QtopiaTimer::start ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Starts the timer using the previously-set values.</p>
+<p>See also <a href="qtopiatimer.html#setInterval">setInterval</a>().</p>
+<h3 class="fn"><a name="start-2"></a>void QtopiaTimer::start ( int <i>msec</i>, <a href="qtopiatimer.html#Type-enum">QtopiaTimer::Type</a> <i>type</i> = Normal )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Starts the timer with a new interval <i>msec</i> and <i>type</i>.</p>
+<p>See also <a href="qtopiatimer.html#setInterval">setInterval</a>() and <a href="qtopiatimer.html#start">start</a>().</p>
+<h3 class="fn"><a name="stop"></a>void QtopiaTimer::stop ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Stops the timer.</p>
+<p>See also <a href="qtopiatimer.html#isActive">isActive</a>().</p>
+<h3 class="fn"><a name="timeout"></a>void QtopiaTimer::timeout ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the timer interval has elapsed. Unless the timer is a single-shot timer, it will automatically restart and so trigger after the interval passes again.</p>
+<p>See also <a href="qtopiatimer.html#start">start</a>(), <a href="qtopiatimer.html#stop">stop</a>(), and <a href="qtopiatimer.html#setSingleShot">setSingleShot</a>().</p>
+<h3 class="fn"><a name="type"></a><a href="qtopiatimer.html#Type-enum">Type</a> QtopiaTimer::type () const</h3>
+<p>Returns the type of the timer.</p>
+<p>See also <a href="qtopiatimer.html#Type-enum">QtopiaTimer::Type</a> and <a href="qtopiatimer.html#setInterval">setInterval</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

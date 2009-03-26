@@ -1,0 +1,14 @@
+#!/bin/sh
+test $1 != "" || { echo "Usage: $0 <executable> <sandbox dir>\n first parameter is empty"; exit 1; }
+test $2 != "" || { echo "Usage: $0 <executable> <sandbox dir>\n second parameter is empty"; exit 1; }
+#Aside: we can't check that $1 is an executable or that the dir $2 exists because we must delete
+#the application first otherwise there is a window of opporunity for an application to
+#be executed without restriction between the time of unsandboxing and deletion.  Therefore
+#we delete first then unsandbox.
+
+lidsconf -D POSTBOOT -s $1 
+lidsconf -D -s $1
+lidsconf -D POSTBOOT -o $1 
+lidsconf -D -o $1
+
+lidsconf -D -s $1 -o "$2/bin"

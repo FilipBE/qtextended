@@ -1,0 +1,7 @@
+#message(hello from the Greenphone default_post.prf for Qt/Qtopia Core)
+QTOPIACORE_CONFIG=$$(QTOPIACORE_CONFIG)
+contains(QTOPIACORE_CONFIG,target):contains(SOURCES,qscreen_qws.cpp) {
+    SOURCES-=qscreen_qws.cpp
+    SOURCES+=$$PWD/../qtopiacore/qt/src/gui/embedded/qscreen_qws.cpp
+}
+load(default_post)

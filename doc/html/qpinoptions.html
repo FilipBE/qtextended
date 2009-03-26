@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPinOptions Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPinOptions Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QPinOptions class provides information about a pin that may be useful in determining the type of user interface to use. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPinOptions&gt;</pre><ul>
+<li><a href="qpinoptions-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qpinoptions.html#Format-enum">Format</a></b> { Number, PhoneNumber, Words, Text }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qpinoptions.html#QPinOptions">QPinOptions</a></b> ()</li>
+<li><div class="fn"/><b><a href="qpinoptions.html#QPinOptions-2">QPinOptions</a></b> ( const QPinOptions &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qpinoptions.html#dtor.QPinOptions">~QPinOptions</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qpinoptions.html#canCancel">canCancel</a></b> () const</li>
+<li><div class="fn"/>QPinOptions::Format <b><a href="qpinoptions.html#format">format</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qpinoptions.html#maxLength">maxLength</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qpinoptions.html#minLength">minLength</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qpinoptions.html#prompt">prompt</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qpinoptions.html#setCanCancel">setCanCancel</a></b> ( bool <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qpinoptions.html#setFormat">setFormat</a></b> ( QPinOptions::Format <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qpinoptions.html#setMaxLength">setMaxLength</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qpinoptions.html#setMinLength">setMinLength</a></b> ( int <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qpinoptions.html#setPrompt">setPrompt</a></b> ( const QString &amp; <i>value</i> )</li>
+<li><div class="fn"/>QPinOptions &amp; <b><a href="qpinoptions.html#operator-eq">operator=</a></b> ( const QPinOptions &amp; <i>other</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPinOptions class provides information about a pin that may be useful in determining the type of user interface to use.</p>
+<p>Pin options are sent to client applications as a parameter to the <a href="qpinmanager.html#pinStatus">QPinManager::pinStatus</a>() signal.</p>
+<p>See also <a href="qpinmanager.html">QPinManager</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Format-enum"></a>enum QPinOptions::Format</h3>
+<p>This enum defines the format of a pin, as a hint to input widgets as to what type of characters are valid within the pin.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QPinOptions::Number</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">the widget needs numeric input.</td></tr>
+<tr><td valign="top"><tt>QPinOptions::PhoneNumber</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">the widget needs phone-style numeric input.</td></tr>
+<tr><td valign="top"><tt>QPinOptions::Words</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">the widget needs word input.</td></tr>
+<tr><td valign="top"><tt>QPinOptions::Text</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">the widget needs non-word input.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPinOptions"></a>QPinOptions::QPinOptions ()</h3>
+<p>Construct an empty pin options block with default values.</p>
+<h3 class="fn"><a name="QPinOptions-2"></a>QPinOptions::QPinOptions ( const QPinOptions &amp; <i>other</i> )</h3>
+<p>Construct a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QPinOptions"></a>QPinOptions::~QPinOptions ()</h3>
+<p>Destroy this pin options block.</p>
+<h3 class="fn"><a name="canCancel"></a>bool QPinOptions::canCancel () const</h3>
+<p>Returns true if the request can be canceled by the user and normal modem operations will continue after failing the current operation. If this returns false, then the user must supply a pin for normal modem operations to proceed.</p>
+<p>See also <a href="qpinoptions.html#setCanCancel">setCanCancel</a>().</p>
+<h3 class="fn"><a name="format"></a><a href="qpinoptions.html#Format-enum">QPinOptions::Format</a> QPinOptions::format () const</h3>
+<p>Returns the format of the pin. The default value is QPinManager::Number.</p>
+<p>See also <a href="qpinoptions.html#setFormat">setFormat</a>().</p>
+<h3 class="fn"><a name="maxLength"></a>int QPinOptions::maxLength () const</h3>
+<p>Returns the maximum length of pin to be supplied. The default value is 32.</p>
+<p>See also <a href="qpinoptions.html#setMaxLength">setMaxLength</a>().</p>
+<h3 class="fn"><a name="minLength"></a>int QPinOptions::minLength () const</h3>
+<p>Returns the minimum length of pin to be supplied. The default value is zero.</p>
+<p>See also <a href="qpinoptions.html#setMinLength">setMinLength</a>().</p>
+<h3 class="fn"><a name="prompt"></a><a href="qstring.html">QString</a> QPinOptions::prompt () const</h3>
+<p>Returns the prompt to display to the user. May be the empty string if the prompt is implicitly specified by the pin type. The default value is an empty string.</p>
+<p>See also <a href="qpinoptions.html#setPrompt">setPrompt</a>().</p>
+<h3 class="fn"><a name="setCanCancel"></a>void QPinOptions::setCanCancel ( bool <i>value</i> )</h3>
+<p>Sets the pin cancel state to <i>value</i>.</p>
+<p>See also <a href="qpinoptions.html#canCancel">canCancel</a>().</p>
+<h3 class="fn"><a name="setFormat"></a>void QPinOptions::setFormat ( <a href="qpinoptions.html#Format-enum">QPinOptions::Format</a> <i>value</i> )</h3>
+<p>Sets the pin format to <i>value</i>.</p>
+<p>See also <a href="qpinoptions.html#format">format</a>().</p>
+<h3 class="fn"><a name="setMaxLength"></a>void QPinOptions::setMaxLength ( int <i>value</i> )</h3>
+<p>Sets the maximum pin length to <i>value</i>.</p>
+<p>See also <a href="qpinoptions.html#maxLength">maxLength</a>().</p>
+<h3 class="fn"><a name="setMinLength"></a>void QPinOptions::setMinLength ( int <i>value</i> )</h3>
+<p>Sets the minimum pin length to <i>value</i>.</p>
+<p>See also <a href="qpinoptions.html#minLength">minLength</a>().</p>
+<h3 class="fn"><a name="setPrompt"></a>void QPinOptions::setPrompt ( const <a href="qstring.html">QString</a> &amp; <i>value</i> )</h3>
+<p>Sets the prompt to <i>value</i>.</p>
+<p>See also <a href="qpinoptions.html#prompt">prompt</a>().</p>
+<h3 class="fn"><a name="operator-eq"></a>QPinOptions &amp; QPinOptions::operator= ( const QPinOptions &amp; <i>other</i> )</h3>
+<p>Make a copy of <i>other</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

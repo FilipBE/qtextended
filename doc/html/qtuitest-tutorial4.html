@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Chapter 4: Putting It All Together</title>
+  <link rel="prev" href="qtuitest-tutorial3.html" />
+  <link rel="contents" href="qtuitest-tutorial.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtuitest-tutorial3.html">Chapter 3</a>]
+[<a href="qtuitest-tutorial.html">Contents</a>]
+</p>
+<h1 class="title">Chapter 4: Putting It All Together<br /><span class="subtitle"></span>
+</h1>
+<p>Using the simple building blocks of textual input and output and navigation functions, with the data driven testing approach, a full testcase can be written for creating a new contact. Note that the functions for creating and verifying a contact have been moved out into helper functions; this allows them to be reused for subsequent tests. This is very useful for cases where, for instance, one test's precondition might be that a contact has been successfully created.</p>
+<pre>    testcase = {
+        initTestCase: function() {
+            <span class="comment">// Start &quot;Contacts&quot; when the testcase starts.</span>
+            startApplication( &quot;Contacts&quot; );
+        },
+
+        creating_a_contact: function(name, emails, company, jobTitle, businessPhone) {
+            create_contact(name, emails, company, jobTitle, businessPhone);
+            verify_contact(name, emails, company, jobTitle, businessPhone);
+        },
+
+        creating_a_contact_data: {
+            simple:           [ &quot;Billy Jones&quot;,      &quot;billy@example.com&quot;,   &quot;Hotdog Inc.&quot;,     &quot;Hotdog Engineer&quot;,    &quot;12345&quot;   ],
+            letters_in_phone: [ &quot;Joan Example&quot;,     &quot;joan@example.com&quot;,    &quot;Example Inc.&quot;,    &quot;Exemplary Engineer&quot;, &quot;555 EXA&quot; ],
+            three_names:      [ &quot;Jon John Johnson&quot;, &quot;jjj@example.com&quot;,     &quot;Sillynames Inc.&quot;, &quot;Dog Walker&quot;,         &quot;12345&quot;   ],
+            no_job:           [ &quot;William Doe&quot;,      &quot;bill@example.net&quot;,     undefined,         undefined,            undefined ]
+        }
+    }
+
+<span class="comment">    // Create a contact with the given details.</span>
+    function create_contact(name, emails, company, jobTitle, businessPhone) {
+        <span class="comment">// Verify that we're on the home screen of the &quot;Contacts&quot; app.</span>
+        waitForTitle( &quot;Contacts&quot; );
+
+        <span class="comment">// Select &quot;New contact&quot; from context menu.</span>
+        select( &quot;New contact&quot;, optionsMenu() );
+
+        <span class="comment">// Navigate to the &quot;Contact&quot; tab.</span>
+        <span class="comment">// This is the default tab, but with this code we ensure the</span>
+        <span class="comment">// test will work if it becomes no longer the default.</span>
+        select( &quot;Contact&quot;, tabBar() );
+
+        <span class="comment">// Fill in fields on the &quot;Contact&quot; tab.</span>
+        <span class="comment">// enter() returns immediately if we try to enter an undefined</span>
+        <span class="comment">// value.</span>
+        enter( name,   &quot;Name&quot; );
+        enter( emails, &quot;Emails&quot; );
+
+        <span class="comment">// Navigate to the &quot;Business&quot; tab.</span>
+        select( &quot;Business&quot;, tabBar() );
+
+        <span class="comment">// Fill in fields on the &quot;Business&quot; tab.</span>
+        enter( company,       &quot;Company&quot; );
+        enter( jobTitle,      &quot;Title&quot; );
+        enter( businessPhone, &quot;Phone&quot; );
+
+        <span class="comment">// Press the Back key to commit the new contact</span>
+        select( &quot;Back&quot;, softMenu() );
+    }
+
+<span class="comment">    // Verify that a contact with the given details exists.</span>
+    function verify_contact(name, emails, company, jobTitle, businessPhone) {
+        <span class="comment">// Verify that we're on the contacts list.</span>
+        waitForTitle( &quot;Contacts&quot; );
+
+        <span class="comment">// Select the contact with the given name.</span>
+        select( name );
+
+        <span class="comment">// Navigate to the &quot;Details&quot; tab and get the displayed text.</span>
+        select( &quot;Details&quot;, tabBar() );
+        var details = getText();
+
+        <span class="comment">// Now verify that the details contains all of the non-null information</span>
+        <span class="comment">// for the contact.</span>
+        if (name != undefined)          verify( details.contains(name) );
+        if (emails != undefined)        verify( details.contains(emails) );
+        if (company != undefined)       verify( details.contains(company) );
+        if (jobTitle != undefined)      verify( details.contains(jobTitle) );
+        if (businessPhone != undefined) verify( details.contains(businessPhone) );
+    }</pre>
+<p>The above test has been written to be reasonably permissive; it will succeed as long as the text shown by the contacts application contains all of the information for the created contact, and it does not test things such as the formatting of the given text, and does not test every single field. However, this test is well insulated against minor changes to the tested application GUI.</p>
+<p><a href="qtuitest.html">QtUiTest</a> allows the tester to decide how strict a test should be. If pixel-perfect accuracy is required for output, a test can be written to test every screen with <a href="qsystemtest.html#verifyImage">verifyImage()</a>. In contrast, a high-level text-based approach as shown above can result in effective tests which remain correct even when significant UI changes occur.</p>
+<p>There are many other methods available for use; for further information, refer to the <a href="qsystemtest.html">QSystemTest</a> documentation.</p>
+<p>
+[Previous: <a href="qtuitest-tutorial3.html">Chapter 3</a>]
+[<a href="qtuitest-tutorial.html">Contents</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

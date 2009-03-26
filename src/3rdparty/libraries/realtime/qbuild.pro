@@ -1,0 +1,5 @@
+MODULE_NAME=realtime
+DEP.libs [
+    TYPE=DEPENDS PERSISTED SDK
+    EVAL="LIBS+=-lrt"
+]

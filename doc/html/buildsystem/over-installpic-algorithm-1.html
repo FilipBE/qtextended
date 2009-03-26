@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>installpic Algorithm</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">installpic Algorithm<br /><span class="subtitle"></span>
+</h1>
+<p>The installpic perl script is used when running &quot;qbuild image&quot; on a Qt Extended project, to install pictures for the project.</p>
+<pre>    For proper image installation you MUST do something like this:
+
+        pics.files=mypics<span class="comment">/*
+        pics.path=/pics/myapp
+        pics.hint=pics
+        INSTALLS+=pics
+
+    Given the above, the logic behind installing pictures is as follows:
+
+    - Languages are handled by having an i18n directory.
+      If you want to translate an image you MUST NOT have an image with the same name
+      outside of the i18n directory.
+
+      eg.
+
+        mypics/foo.png
+        mypics/i18n/de/foo.png   &lt;-- This file will NEVER be used
+
+      The correct way to handle translatable images is to put the default version in i18n/en_US.
+      The default will be used when a file for the selected language cannot be found.
+
+      eg.
+
+        mypics/i18n/de/foo.png
+        mypics/i18n/en_US/foo.png   &lt;-- This will be used for languages other than 'de'.
+
+    - Icons must be in a subdirectory called icons/&lt;size&gt;.
+      The size can either be &lt;width&gt;x&lt;height&gt; or scalable.
+      SVG icons should be placed in the scalable directory.
+      Icons in other directories should be properly scaled.
+      You can have multiple sizes available. Any icon not found for the selected
+      size will be created by scaling a different size.
+
+      eg.
+
+        mypics/icons/14x14/foo.png
+        mypics/icons/16x16/foo.png
+        mypics/icons/16x16/bar.png
+
+        If the selected size is 14x14 then 16x16/bar.png will be scaled down to 14x14.
+
+      If a scalable icon exists, it will be used in preference to a sized icon.
+
+      eg.
+
+        mypics/icons/scalable/foo.svg
+        mypics/icons/14x14/foo.png   &lt;-- This file will NOT be installed
+
+    - Icons can be translated too. The i18n direcory MUST be placed inside the icons directory.
+      You CANNOT put an icons directory inside an i18n directory.
+      Note that all of the restrictions relating to i18n and icons apply.
+
+      eg.
+
+        mypics/icon/14x14/i18n/en_US/foo.png
+        mypics/icon/14x14/i18n/de/foo.png
+
+    - Files that end in .ai are never installed.
+      These are Adobe Illustrator files that serve as the source material for the .svg files.
+
+    - Files that end in .xcf are never installed.
+      These are GIMP files that serve as the source material for .png files.
+
+    - If a file exists with multiple extensions, only 1 file will get installed.
+      The priority order for extensions is configurable.
+
+      eg.
+
+        configure -image-extension-order png,xpm
+
+      Note that .svg files ALWAYS have the highest priority.
+
+    - Some files will be ignored if a .svg file exists.
+
+      eg.
+
+        mypics/foo.svg
+        mypics/foo_16.png   &lt;-- This file will be ignored
+        mypics/foo_48.png   &lt;-- This file will be ignored</pre>
+<p>See also <a href="overviews.html">Overviews</a> and <a href="hint-pics-1.html">hint=pics</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

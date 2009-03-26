@@ -1,0 +1,31 @@
+REQUIRES=enable_cell
+SERVER_DEPS*=\
+    /src/server/core_server\
+    /src/server/phone/samples/e1\
+    /src/server/phone/browserscreen/abstract\
+    /src/server/ui/taskmanager\
+
+HEADERS+=\
+    e2_header.h\
+    e2_launcher.h\
+    e2_frames.h\
+    e2_bar.h\
+    e2_telephony.h\
+    e2_callscreen.h\
+    e2_dialer.h\
+    e2_browser.h\
+    e2_taskmanager.h\
+    e2_telephonybar.h\
+    e2_colors.h
+
+SOURCES+=\
+    e2_header.cpp\
+    e2_launcher.cpp\
+    e2_frames.cpp\
+    e2_bar.cpp\
+    e2_taskmanager.cpp\
+    e2_telephony.cpp\
+    e2_callscreen.cpp\
+    e2_dialer.cpp\
+    e2_browser.cpp\
+    e2_telephonybar.cpp

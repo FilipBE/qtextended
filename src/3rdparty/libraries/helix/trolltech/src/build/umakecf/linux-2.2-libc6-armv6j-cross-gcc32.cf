@@ -1,0 +1,82 @@
+# -*- python -*- 
+#  
+# ***** BEGIN LICENSE BLOCK *****
+# Source last modified: $Id: linux-2.2-libc6-armv4l-cross-gcc2.95.cf,v 1.5 2005/02/23 17:45:30 neotron Exp $
+# 
+# Portions Copyright (c) 1995-2004 RealNetworks, Inc. All Rights Reserved.
+# 
+# The contents of this file, and the files included with this file,
+# are subject to the current version of the RealNetworks Public
+# Source License (the "RPSL") available at
+# http://www.helixcommunity.org/content/rpsl unless you have licensed
+# the file under the current version of the RealNetworks Community
+# Source License (the "RCSL") available at
+# http://www.helixcommunity.org/content/rcsl, in which case the RCSL
+# will apply. You may also obtain the license terms directly from
+# RealNetworks.  You may not use this file except in compliance with
+# the RPSL or, if you have a valid RCSL with RealNetworks applicable
+# to this file, the RCSL.  Please see the applicable RPSL or RCSL for
+# the rights, obligations and limitations governing use of the
+# contents of the file.
+# 
+# Alternatively, the contents of this file may be used under the
+# terms of the GNU General Public License Version 2 or later (the
+# "GPL") in which case the provisions of the GPL are applicable
+# instead of those above. If you wish to allow use of your version of
+# this file only under the terms of the GPL, and not to allow others
+# to use your version of this file under the terms of either the RPSL
+# or RCSL, indicate your decision by deleting the provisions above
+# and replace them with the notice and other provisions required by
+# the GPL. If you do not delete the provisions above, a recipient may
+# use your version of this file under the terms of any one of the
+# RPSL, the RCSL or the GPL.
+# 
+# This file is part of the Helix DNA Technology. RealNetworks is the
+# developer of the Original Code and owns the copyrights in the
+# portions it created.
+# 
+# This file, and the files included with this file, is distributed
+# and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY
+# KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS
+# ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET
+# ENJOYMENT OR NON-INFRINGEMENT.
+# 
+# Technology Compatibility Kit Test Suite(s) Location:
+#    http://www.helixcommunity.org/content/tck
+# 
+# Contributor(s):
+# 
+# ***** END LICENSE BLOCK *****
+# 
+##"""Linux libc6 using i386 gcc 2.95, cross-compiling for an ARM."""
+
+exec_config_file('linux-2.2-libc6-armv4l.cf') 
+
+## cross compiling tools  
+platform.cc.cmd = 'arm-linux-gcc'
+platform.cxx.cmd = 'arm-linux-g++'
+platform.link.xplatform = "arm-linux-"
+
+## make GCC 2.95.x permissive so it won"t barf on our code
+platform.cc.args["default"] = \
+    "-pipe -W -Wreturn-type -fno-exceptions " \
+    "-march=armv6j "
+
+platform.cxx.args["default"] = platform.cc.args["default"] + " --permissive -fno-rtti"
+
+
+## Enable compile time flags needed for rlink to work.
+if not project.BuildOption("debug") and project.IsDefined('HELIX_CONFIG_USE_RLINK'):
+    platform.cc.args["default"] = platform.cc.args["default"] + " -ffunction-sections -fdata-sections"
+    platform.cxx.args["default"] = platform.cxx.args["default"] + " -ffunction-sections -fdata-sections"
+
+## tell certain .pcf files we are using gcc. 
+project.AddDefines('QT_CLEAN_NAMESPACE',
+                   '__GCC__')
+
+DisableRTTIIfNecessary() 
+
+# Compile without X11
+project.RemoveDefines('USE_XWINDOWS')
+

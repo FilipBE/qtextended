@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StartupScript Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">StartupScript Class Reference</h1>
+<p>The StartupScript class manages running the QBuild startup scripts. <a href="#details">More...</a></p>
+<pre>    #include &lt;StartupScript&gt;</pre><ul>
+<li><a href="startupscript-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="startupscript-option.html">Option</a></b></li>
+<li><div class="fn"/>class <b><a href="startupscript-optiondesc.html">OptionDesc</a></b></li>
+<li><div class="fn"/>class <b><a href="startupscript-scripterror.html">ScriptError</a></b></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The StartupScript class manages running the QBuild startup scripts.</p>
+<p>Examines the &lt;QBuild Executable Directory&gt;/qbuild.startup.args file for argument descriptors and runs the &lt;QBuild Executable Directory&gt;/qbuild.startup.js startup script.</p>
+<p>The format of the qbuild.startup.args file is zero or more repetitions of the form:</p>
+<pre>    &lt;Option Name&gt; [&lt;Option argument count&gt;]
+    &lt;Tab&gt;&lt;Help line 1&gt;
+    &lt;Tab&gt;&lt;Help line 2&gt;
+    ...</pre>
+<p>The following object types are added:</p>
+<pre>    CommandLineOption {
+        name
+        arguments[]
+    }</pre>
+<p>The following properties are exported:</p>
+<ul>
+<li>qbuild.arguments<p>The arguments passed to qbuild (read only)</p>
+</li>
+<li>qbuild.mkspec<p>The default mkspec (read/write)</p>
+</li>
+</ul>
+<p>The following functions are bound:</p>
+<pre>    qbuild.env(&lt;variable&gt;): Returns the environment variable &lt;variable&gt;
+    qbuild.value(&lt;name&gt;, &lt;value&gt;): Returns an exported value
+    qbuild.setValue(&lt;name&gt;, &lt;value&gt;): Sets an exported value
+    qbuild.showHelp(&lt;message&gt;):
+    qbuild.error(&lt;message&gt;):
+    qbuild.addExtensions(&lt;path&gt;)
+    qbuild.addMkspecs(&lt;path&gt;)
+
+    startupfile(&lt;filename&gt;): Absolute or solution filename
+        .value(&lt;prop name&gt;)
+        .properties(&lt;prop name&gt;)
+        .property(&lt;prop name&gt;)
+
+    solution().isSolution(&lt;name&gt;)
+    solution().addSolution(&lt;name&gt;, &lt;path&gt;)
+
+    solution(&lt;name&gt;)
+        .files(&lt;path&gt;)
+        .paths(&lt;path&gt;)
+        .exists(&lt;name&gt;)
+        .realToSolution(&lt;path&gt;)
+        .addPath(&lt;solution path&gt;, &lt;fs path&gt;)</pre>
+<p>See also <a href="file-qbuild-startup-args-1.html">qbuild.startup.args</a> and <a href="file-qbuild-startup-js-1.html">qbuild.startup.js</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

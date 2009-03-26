@@ -1,0 +1,149 @@
+<ui version="4.0" >
+ <class>DeviceUpdaterBase</class>
+ <widget class="QWidget" name="DeviceUpdaterBase" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>413</height>
+   </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle" >
+   <string>Device Updater</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset>textunder.svg</iconset>
+  </property>
+  <layout class="QVBoxLayout" >
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QListView" name="packageListView" >
+       <property name="toolTip" >
+        <string>Check the package to send to the greenphone</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="QPushButton" name="configurePushButton" >
+         <property name="toolTip" >
+          <string>Click to open the configure dialog</string>
+         </property>
+         <property name="text" >
+          <string>Configure</string>
+         </property>
+         <property name="icon" >
+          <iconset>package_green.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="updateListButton" >
+         <property name="text" >
+          <string>Refresh</string>
+         </property>
+         <property name="icon" >
+          <iconset>loop.svg</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="sendButton" >
+         <property name="toolTip" >
+          <string>send the checked packages to the device</string>
+         </property>
+         <property name="text" >
+          <string>Send</string>
+         </property>
+         <property name="icon" >
+          <iconset>package.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="httpServerGroupBox" >
+         <property name="toolTip" >
+          <string>Status of the internal Package Server</string>
+         </property>
+         <property name="title" >
+          <string>Package Server</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <item>
+           <widget class="QRadioButton" name="serverOffRadioButton" >
+            <property name="text" >
+             <string>Disabled</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="serverOnRadioButton" >
+            <property name="text" >
+             <string>Running</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>105</width>
+           <height>61</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="quitButton" >
+         <property name="text" >
+          <string>Quit</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="statusLabel" >
+     <property name="frameShape" >
+      <enum>QFrame::Panel</enum>
+     </property>
+     <property name="frameShadow" >
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <property name="text" >
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBar" >
+     <property name="value" >
+      <number>24</number>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

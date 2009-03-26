@@ -1,0 +1,26 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+allow-hotplug usb0
+mapping hotplug
+    script grep
+    map usb0
+iface usb0 inet static
+    address 192.168.0.200
+    netmask 255.255.255.0
+    network 192.168.0.0
+    up iptables -A POSTROUTING -t nat -j MASQUERADE -s 192.168.0.0/24 &
+    up echo 1 > /proc/sys/net/ipv4/ip_forward &
+    up iptables -P FORWARD ACCEPT &
+    down iptables -D POSTROUTING -t nat -j MASQUERADE -s 192.168.0.0/24 &
+
+iface eth1 inet dhcp
+        

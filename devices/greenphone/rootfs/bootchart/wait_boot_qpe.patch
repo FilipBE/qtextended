@@ -1,0 +1,19 @@
+diff -ur bootchart-0.9/script/bootchartd bootchart-0.9_modified/script/bootchartd
+--- bootchart-0.9/script/bootchartd	2005-11-14 03:40:01.000000000 +1000
++++ bootchart-0.9_modified/script/bootchartd	2007-08-17 15:03:08.000000000 +1000
+@@ -117,14 +117,8 @@
+ 	local runlevel=$( sed -n 's/.*:\(.*\):initdefault:.*/\1/gp' /etc/inittab )
+ 
+ 	# The processes we have to wait for
+-	local exit_proc="gdmgreeter gdm-binary kdm_greet kdm"
+-	# early_login in FC4 starts gdm early, so fall back to mingetty
+-	local early_login="no"
+-	grep -q early_login /proc/cmdline && early_login="yes"
+-	if [ "$runlevel" -eq "2" -o "$runlevel" -eq "3" -o "$early_login" = "yes" ]; then
+-		exit_proc="mingetty agetty rungetty getty"
+-	fi
++	local exit_proc="qpe"
+ 	while [ -f "$BOOTLOG_LOCK" ]; do
+ 		if [ -n "$( pidof $exit_proc )" ]; then
+ 			# Give the exit process some time to start
+ 

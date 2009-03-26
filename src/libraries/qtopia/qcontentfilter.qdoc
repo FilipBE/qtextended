@@ -1,0 +1,119 @@
+/*!
+    \class QContentFilter
+    \inpublicgroup QtBaseModule
+
+    \brief The QContentFilter class defines criteria for defining a sub-set of all available content.
+
+    Instances of QContentSet and QDocumentSelector use content filters to define their visible set of content.  A basic filter
+    is composed of a string value and an attribute of QContent specified by the \l FilterType enumeration, so that
+    any content with the specified attribute matching the given value is passed.. These basic filters can be combined
+    by using the and (&), or (|) and negation (~) operators to create complex filters which pass any content that
+    matches the logical combination of the base filters.
+
+    If two filters that are not negated are combined with an operand common to both filters (or one or both have no operand) the filter
+    arguments are simply merged to create a new filter with the common operand.  If however there is no common operand or a filter is negated
+    then the combined filters become sub filters of the new filter which has no arguments of its own.
+
+    \section1 File paths
+
+    \l Location and \l Directory filters filter content based on their file path, they differ in that a Directory filter will
+    only pass content in the directory given in the argument of the filter whereas the Location filter will also pass content
+    in any sub-directory of that directory.  Directory filter arguments may include a wild card.
+
+    Filter for all content in the \c /Documents directory:
+    \code
+        QContentFilter filter( QContentFilter::Directory, "/Documents" );
+    \endcode
+
+    Filter for all content in the sub-directories of \c /Documents but not in the directory itself:
+    \code
+        QContentFilter filter( QContentFilter::Directory, "/Documents/*" );
+    \endcode
+
+    Filter for all content in the \c /Documents directory or any of it's sub-directories:
+    \code
+        QContentFilter filter( QContentFilter::Location, "/Documents" );
+    \endcode
+    Alternatively this could be achieved by combining two directory filters:
+    \code
+        QContentFilter filter
+                = QContentFilter( QContentFilter::Directory, "/Documents" )
+                | QContentFilter( QContentFilter::Directory, "/Documents/*" );
+    \endcode
+
+    \section1 Roles
+
+    \l Role filters filter content based on the \l QContent::role() attribute which defines the intended
+    usage of the QContent.  A role filter may be constructed using the Role filter type or from the
+    \l QContent::Role enumeration.  Most application content sets will only be interested in displaying user documents
+    and so should apply a role filter on \l QContent::Document to all content sets.
+
+    Limiting an existing filter to only include documents with the \l{QContent::Document}{Document} role:
+    \code
+        QContentFilter final = existingFilter & QContentFilter( QContentFilter::Role, "Document" );
+    \endcode
+    The same filter constructed from the \l QContent::Role enumeration:
+    \code
+        QContentFilter final = existingFilter & QContentFilter( QContent::Document );
+    \endcode
+
+    \section1 Mime types
+
+    \l MimeType filters filters content on the \l QContent::type() attribute. They may be constructed using
+    the MimeType filter type or from a QMimeType.  Wild cards may be used on mime type arguments to match the
+    major type only.
+
+    Filter for all PNG images:
+    \code
+        QContentFilter png( QContentFilter::MimeType, "image/png" );
+    \endcode
+    The same filter using QMimeType:
+    \code
+        QContentFilter png( QMimeType( "image/png" ) );
+    \endcode
+    Filter for all images:
+    \code
+        QContentFilter image( QContentFilter::MimeType, "image/*" );
+    \endcode
+
+    \section1 Categories
+
+    \l Category filters filter content based on the categories they've been assigned. The argument for a category
+    filter is the ID of the category, alternatively a category filter can be constructed from a QCategoryFilter.
+
+    Filter for content with the \c Business or \c Personal categories:
+    \code
+        QContentFilter categories
+            = QContentFilter( QContentFilter::Category, "Business" )
+            | QContentFilter( QContentFilter::Category, "Personal" );
+    \endcode
+    Content that has not been assigned any categories implicitly belongs to the \c Unfiled category and can be filtered for
+    using the \c Unfiled category ID string or a QCategoryFilter as below:
+    \code
+        QContentFilter unfiled( QCategoryFilter( QCategoryFilter::Unfiled ) );
+    \endcode
+
+    \section1 DRM
+
+    \l{Document System: DRM Integration}{DRM} filters filter content based on the QContent::drmState() attribute.  The only valid
+    arguments for a DRM filter are \l{QContent::Protected}{Protected} and \l{QContent::Unprotected}{Unprotected} which filter 
+    protected and unprotected content respectively.  Alternatively a DRM filter may be constructed from the QContent::DrmState enum.
+
+    \section1 Properties
+
+    \l Synthetic filters filter content based on their \l{QContent::property()}{properties}.  The argument for a synthetic filter is composed
+    of the property group and key concatenated with the expected value in the form \c [group]/[key]/[value], if the property
+    does not belong to a group the argument should be of the form \c none/[key]/[value].  If the property belongs to the
+    QContent::Property enumeration the filter may be constructed from that enumeration and the expected value.
+
+    Filter for content with the author "SomeAuthor":
+    \code
+        QContentFilter author( QContentFilter::Synthetic, "none/Author/SomeAuthor" );
+    \endcode
+    The same filter using the QContent::Property enumeration:
+    \code
+        QContentFilter author( QContent::Author, "SomeAuthor" );
+    \endcode
+
+  \ingroup content
+*/

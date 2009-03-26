@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="title" base="themes/classic">
+    <image rect="0,0,0x0" src="titlebar-gradient" tile="yes" scale="vertical" color="Highlight" alpha="192">
+      <image rect="0,0,1x0" src="titlebar-endcap" color="Highlight" scale="vertical"/>
+      <image rect="-1,0,1x0" src="titlebar-endcap" color="Highlight" scale="vertical"/>
+	<exclusive>
+	    <group>
+          <level name="battery" rect="2.27%,19.04%,25%x52.38%" src="battery-big.svg" count="6" min="0" max="100" scale="yes" delay="1000" loop="0" play="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charging == true">
+            expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge
+          </level>
+          <level name="signal" rect="-27.27%,19.04%,25%x52.38%" scale="yes" src="signal-big.svg" count="6" min="0" max="100" active="expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength">
+				expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength
+		  </level>
+		<image rect="28.41%,14.29%,-28.97%,80.95%" src="statusbar.svg" scale="yes">
+			<status name="lock" rect="7,17.65%,12%x52.94%" imageon="lock_on" scale="yes" on="expr:@/UI/KeyLock"/>
+			<status name="calldivert" rect="19,17.65%,9x9" imageon="calldivert" on="expr:@/Telephony/Status/CallDivert"/>
+            <status name="alarm" rect="29,25.65%,12x9" imageon="bell_on" on="expr:@/UI/DailyAlarm" interactive="yes"/>
+			<status name="roaming" rect="41,25.65%,9x9" imageon="roaming" on="expr:@/Telephony/Status/Roaming"/>
+            <group rect="-51,20%,12x11">
+              <status name="messages" imageon="mailalert" on="expr:@/Communications/Messages/NewMessages > 0"/>
+              <status name="smsfull" imageon="smsfull" on="expr:@/Telephony/Status/SMSMemoryFull"/>
+            </group>
+			<status name="bluetooth" rect="-38,17.65%,8x12" imageon="bluetooth" on="expr:@/Communications/Bluetooth/LocalDevice/Enabled"/>
+			<status name="headphones" rect="-30,25.65%,10x10" imageon="headphones" on="expr:@/Communications/QBluetoothAudioGateway/BluetoothHeadset/AudioEnabled || @/Communications/QBluetoothAudioGateway/BluetoothHandsfree/AudioEnabled"/>
+			<status name="call_active" rect="-19,17.65%,5x12" imageon="incall" on="expr:@/Communications/Calls/ActiveCalls > 0"/>
+			<status name="voip_active" rect="-13,25.65%,8x8" imageon="voipactive" on="expr:@/Telephony/Status/VoIP/Present &amp;&amp; @/Telephony/Status/VoIP/Registered"/>
+		</image>
+	    </group>
+	    <group name="caption" transient="yes" active="expr:@/UI/ActiveWindow/Caption != false">
+		<text rect="2.27%,0,-58%,95.24%" name="caption" outline="Highlight" bold="yes" color="HighlightedText" align="left,vcenter" elided="right" transient="yes">
+		    expr:@/UI/ActiveWindow/Caption 
+		</text>
+		<image rect="-56.82%,14.29%,-14.77%,80.95%" src="statusbar.svg" scale="yes">
+			<status name="messages" rect="6%,21.43%,18%x64.29%" imageon="mailalert" on="expr:@/Communications/Messages/NewMessages > 0"/>
+			<status name="roaming" rect="17%,21.43%,18%x64.29%" imageon="roaming" on="expr:@/Telephony/Status/Roaming"/>
+			<status name="headphones" rect="31%,28.65%,10x10" imageon="headphones" on="expr:@/Communications/QBluetoothAudioGateway/BluetoothHeadset/AudioEnabled || @/Communications/QBluetoothAudioGateway/BluetoothHandsfree/AudioEnabled"/>			
+              <status name="call_active" rect="42.67%,21.43%,5x12" imageon="incall" on="expr:@/Communications/Calls/ActiveCalls > 0"/>
+		    <text name="time" rect="-60%,0,-8%,100%" size="5" align="right,vcenter" color="#000000" bold="yes">
+			expr:@/UI/DisplayTime/Time
+		    </text>
+		</image>
+        <group active="expr:!@/UI/IMVisible">
+			<level name="battery" rect="-12%,12.5%,4.5%x70%" src="battery-small.svg" scale="yes" count="6" min="0" max="100" delay="1000" loop="0" play="expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charging == true">
+                            expr:@/Hardware/Accessories/QPowerSource/DefaultBattery/Charge
+			</level>
+            <level name="signal" rect="-6%,12.5%,4.5%x70%" src="signal-small.svg" scale="yes" count="6" min="0" max="100">
+			    expr:@/Hardware/Accessories/QSignalSource/DefaultSignal/SignalStrength
+			</level>
+        </group>
+        <inputmethods-plugin rect="-12%,4.76%,12%x90.48%" transient="yes" active="expr:@/UI/IMVisible"/>
+	</group>
+	</exclusive>
+    </image>
+</page>

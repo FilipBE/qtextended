@@ -1,0 +1,353 @@
+<ui version="4.0" >
+ <author></author>
+ <comment></comment>
+ <exportmacro></exportmacro>
+ <class>PrintDialogBase</class>
+ <widget class="QWidget" name="PrintDialogBase" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>200</width>
+    <height>274</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Print Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" >
+   <property name="margin" >
+    <number>0</number>
+   </property>
+   <property name="spacing" >
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="destTab" >
+      <attribute name="title" >
+       <string>Destination</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>3</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="destGroup" >
+         <property name="title" >
+          <string>Print destination</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>3</number>
+          </property>
+          <property name="spacing" >
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QRadioButton" name="printToPrinterButton" >
+            <property name="text" >
+             <string>Print to printer</string>
+            </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="printToFileButton" >
+            <property name="text" >
+             <string>Print to file</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="fileName" >
+            <property name="enabled" >
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="printerTab" >
+      <attribute name="title" >
+       <string>Printer</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>3</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="printerGroup" >
+         <property name="title" >
+          <string>Printer settings</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>3</number>
+          </property>
+          <property name="spacing" >
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QRadioButton" name="printColor" >
+            <property name="text" >
+             <string>Print in color if available</string>
+            </property>
+            <property name="checked" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="printGray" >
+            <property name="text" >
+             <string>Print in grayscale</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="paperGroup" >
+         <property name="title" >
+          <string>Paper format</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>3</number>
+          </property>
+          <property name="spacing" >
+           <number>5</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="orientationCombo" >
+            <item>
+             <property name="text" >
+              <string>Portrait</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Landscape</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="sizeCombo" />
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="optionTab" >
+      <attribute name="title" >
+       <string>Options</string>
+      </attribute>
+      <layout class="QVBoxLayout" >
+       <property name="margin" >
+        <number>3</number>
+       </property>
+       <property name="spacing" >
+        <number>6</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" >
+         <property name="margin" >
+          <number>0</number>
+         </property>
+         <property name="spacing" >
+          <number>6</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label" >
+           <property name="text" >
+            <string>No. of copies</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="copies" >
+           <property name="minimum" >
+            <number>1</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="rangeGroup" >
+         <property name="title" >
+          <string>Print range</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>3</number>
+          </property>
+          <property name="spacing" >
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="rangeCombo" />
+          </item>
+          <item>
+           <layout class="QHBoxLayout" >
+            <property name="margin" >
+             <number>0</number>
+            </property>
+            <property name="spacing" >
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="firstPageLabel" >
+                <property name="text" >
+                 <string>From</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="firstPage" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="minimum" >
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" >
+              <property name="margin" >
+               <number>0</number>
+              </property>
+              <property name="spacing" >
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lastPageLabel" >
+                <property name="text" >
+                 <string>To</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="lastPage" >
+                <property name="enabled" >
+                 <bool>false</bool>
+                </property>
+                <property name="minimum" >
+                 <number>1</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="orderGroup" >
+         <property name="title" >
+          <string>Print order</string>
+         </property>
+         <layout class="QVBoxLayout" >
+          <property name="margin" >
+           <number>3</number>
+          </property>
+          <property name="spacing" >
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="pageOrderCombo" >
+            <item>
+             <property name="text" >
+              <string>Print first page first</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Print last page last</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <pixmapfunction></pixmapfunction>
+ <resources/>
+ <connections/>
+</ui>

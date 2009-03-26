@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QCommDeviceController Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QCommDeviceController Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QCommDeviceController class provides facilities to control the power state of a hardware communications device <a href="#details">More...</a></p>
+<pre>    #include &lt;QCommDeviceController&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qcommdevicecontroller-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qcommdevicecontroller.html#PowerState-enum">PowerState</a></b> { On, Off, OnOneItem, OnTimed }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qcommdevicecontroller.html#QCommDeviceController">QCommDeviceController</a></b> ( const QByteArray &amp; <i>devId</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qcommdevicecontroller.html#dtor.QCommDeviceController">~QCommDeviceController</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#bringDown">bringDown</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#bringUp">bringUp</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#bringUpOneItem">bringUpOneItem</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#bringUpTimed">bringUpTimed</a></b> ( int <i>secs</i> )</li>
+<li><div class="fn"/>const QByteArray &amp; <b><a href="qcommdevicecontroller.html#deviceId">deviceId</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qcommdevicecontroller.html#isUp">isUp</a></b> () const</li>
+<li><div class="fn"/>PowerState <b><a href="qcommdevicecontroller.html#powerState">powerState</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qcommdevicecontroller.html#sessionsActive">sessionsActive</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#down">down</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#powerStateChanged">powerStateChanged</a></b> ( QCommDeviceController::PowerState <i>state</i> )</li>
+<li><div class="fn"/>void <b><a href="qcommdevicecontroller.html#up">up</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QCommDeviceController class provides facilities to control the power state of a hardware communications device</p>
+<p>Using the QCommDeviceController class it is possible to control the power state of a Bluetooth or Infrared hardware device. This class is generally useful only to settings applications which need to control the device state directly. For typical useage, please see the <a href="qcommdevicesession.html">QCommDeviceSession</a> class.</p>
+<p>The device can be in four power states: on, off, on for one item, and on for a period of time.</p>
+<p>See also <a href="qcommdevicesession.html">QCommDeviceSession</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="PowerState-enum"></a>enum QCommDeviceController::PowerState</h3>
+<p>The current state of the device.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QCommDeviceController::On</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The device is on permanently.</td></tr>
+<tr><td valign="top"><tt>QCommDeviceController::Off</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The device is off.</td></tr>
+<tr><td valign="top"><tt>QCommDeviceController::OnOneItem</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The device is on until the last device session is closed.</td></tr>
+<tr><td valign="top"><tt>QCommDeviceController::OnTimed</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">The device is on for a specified period of time, at which time it is either turned off if there are no sessions open, or enters the OnOneItem state.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QCommDeviceController"></a>QCommDeviceController::QCommDeviceController ( const <a href="qbytearray.html">QByteArray</a> &amp; <i>devId</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new <a href="qcommdevicecontroller.html">QCommDeviceController</a> object. The <i>devId</i> specifies the device id. This is usually equivalent to the hardware device id of the device. E.g&#x2e; irdaX for Infrared devices and hciX for Bluetooth devices.</p>
+<p>The <i>parent</i> parameter is passed to the <a href="qobject.html">QObject</a> constructor.</p>
+<p>See also <a href="qcommdevicecontroller.html#deviceId">deviceId</a>().</p>
+<h3 class="fn"><a name="dtor.QCommDeviceController"></a>QCommDeviceController::~QCommDeviceController ()</h3>
+<p>Destructor.</p>
+<h3 class="fn"><a name="bringDown"></a>void QCommDeviceController::bringDown ()</h3>
+<p>Brings down the device. The device will attempt to enter the <b>Off</b> mode.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringUp">bringUp</a>().</p>
+<h3 class="fn"><a name="bringUp"></a>void QCommDeviceController::bringUp ()</h3>
+<p>Brings up the device. The device will attempt to enter the <b>On</b> mode.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringDown">bringDown</a>(), <a href="qcommdevicecontroller.html#bringUpTimed">bringUpTimed</a>(), and <a href="qcommdevicecontroller.html#bringUpOneItem">bringUpOneItem</a>().</p>
+<h3 class="fn"><a name="bringUpOneItem"></a>void QCommDeviceController::bringUpOneItem ()</h3>
+<p>Brings up the device for one item. The device will attempt to enter the <b><a href="qcommdevicecontroller.html#PowerState-enum">OnOneItem</a></b> mode.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringUp">bringUp</a>() and <a href="qcommdevicecontroller.html#bringUpTimed">bringUpTimed</a>().</p>
+<h3 class="fn"><a name="bringUpTimed"></a>void QCommDeviceController::bringUpTimed ( int <i>secs</i> )</h3>
+<p>Brings up the device in timed mode. The device will attempt to enter the <b><a href="qcommdevicecontroller.html#PowerState-enum">OnTimed</a></b> mode. The device will remain in this mode for <i>secs</i> seconds.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringUp">bringUp</a>() and <a href="qcommdevicecontroller.html#bringUpOneItem">bringUpOneItem</a>().</p>
+<h3 class="fn"><a name="deviceId"></a>const <a href="qbytearray.html">QByteArray</a> &amp; QCommDeviceController::deviceId () const</h3>
+<p>Returns the id of the device.</p>
+<h3 class="fn"><a name="down"></a>void QCommDeviceController::down ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the device is turned off.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringDown">bringDown</a>().</p>
+<h3 class="fn"><a name="isUp"></a>bool QCommDeviceController::isUp () const</h3>
+<p>Returns true if the device is currently turned on. E.g&#x2e; it is in On, <a href="qcommdevicecontroller.html#PowerState-enum">OnTimed</a> or <a href="qcommdevicecontroller.html#PowerState-enum">OnOneItem</a> mode.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringUp">bringUp</a>(), <a href="qcommdevicecontroller.html#bringDown">bringDown</a>(), and <a href="qcommdevicecontroller.html#powerState">powerState</a>().</p>
+<h3 class="fn"><a name="powerState"></a><a href="qcommdevicecontroller.html#PowerState-enum">PowerState</a> QCommDeviceController::powerState () const</h3>
+<p>Returns the current power state of the device.</p>
+<p>See also <a href="qcommdevicecontroller.html#isUp">isUp</a>().</p>
+<h3 class="fn"><a name="powerStateChanged"></a>void QCommDeviceController::powerStateChanged ( <a href="qcommdevicecontroller.html#PowerState-enum">QCommDeviceController::PowerState</a> <i>state</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when a device's power state has been changed. The <i>state</i> parameter holds the new power state.</p>
+<p>See also <a href="qcommdevicecontroller.html#powerState">powerState</a>().</p>
+<h3 class="fn"><a name="sessionsActive"></a>bool QCommDeviceController::sessionsActive () const</h3>
+<p>Returns true if there are applications using this device.</p>
+<h3 class="fn"><a name="up"></a>void QCommDeviceController::up ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when the device is turned on.</p>
+<p>See also <a href="qcommdevicecontroller.html#bringUp">bringUp</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

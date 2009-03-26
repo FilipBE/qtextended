@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.2&#x2e;5 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.2&#x2e;5 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.2&#x2e;5 release is a maintenance release of Qtopia that is based on Qt 4.2 technology. This release provides a number of bug fixes and documentation updates.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Bluetooth</b> Bluetooth support is provided in this release only as a technology preview. When building Qtopia, Bluetooth is disabled by default, but may be enabled by specifying the -bluetooth configure switch.</li>
+<li><b>Documentation</b><p>Many of the non-class documentation pages have been revised and/or expanded for this release, and a number of new documentation pages have been added. (The class documentation has already been revised in the earlier 4.2&#x2e;3 release.)</p>
+</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>BUG 168192: Audio functions did not work with Bluetooth headsets.</li>
+<li>BUG 169927: VCalendar files received via Bluetooth were not being opened in the Calendar application.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 168189: The path specified in .desktop files was ignored. The path in which the .desktop file lived in the source tree was incorrectly used to determine which menu the corresponding application appeared in.</li>
+<li>BUG 171665: The configure script incorrectly reported failure of the -Woverloaded-virtual test.</li>
+</ul>
+</li>
+<li><b>Calendar</b><ul>
+<li>BUG 170457: When importing vcalendar files, the reminder time was not set correctly.</li>
+</ul>
+</li>
+<li><b>Call Management</b><ul>
+<li>BUG 139661: GCF abbreviated SIM Phonebook dialing sequences did not work.</li>
+<li>BUG 139670, 162015: The &quot;1 SEND&quot; function (to clear the current call and accept a waiting call) did not work.</li>
+<li>BUG 143230: The alarm clock dialog would hide the call screen, preventing the user from seeing incoming calls.</li>
+<li>BUG 162821: The &quot;SEND&quot; function was not available if there was no active call.</li>
+<li>BUG 164140: The Call Screen did not show the call number of each call, making it difficult to correctly enter GCF command sequences when there were multiple calls. The call number for each call is now shown in brackets before the phone number or contact name.</li>
+<li>BUG 170067: The keypad phone dialer screen did not yield focus to applications that it invoked.</li>
+<li>BUG 173113: Pressing the Select key did not place a new call while there was an active call.</li>
+</ul>
+</li>
+<li><b>Call Options</b><ul>
+<li>BUG 165280: PIN2 protection on Fixed dialing did not prevent stored numbers being changed.</li>
+</ul>
+</li>
+<li><b>Camera</b><ul>
+<li>BUG 148971: When attempting to save a photo to a contact, there was a delay of up to thirty seconds before the contact list appeared.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 150126: Starting the Contacts application without a SIM in the device resulted in a permanent &quot;Loading SIM..&#x2e;&quot; message appearing in the contacts list.</li>
+<li>BUG 150233: The Contacts application would occasionally freeze when importing vcard files.</li>
+</ul>
+</li>
+<li><b>Emergency Calls</b><ul>
+<li>BUG 173424: When entering the SIM PIN, pressing the Unlock button would unexpectedly dial emergency services if the entered PIN matched an emergency number. Now the user must press the Call button to place an emergency call.</li>
+</ul>
+</li>
+<li><b>Games</b><ul>
+<li>BUG 170355: After exiting the Asteroids game, the system would become less responsive for a few minutes before reporting that the Asteroids application has crashed.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 142348: The Keyboard input method would sometimes popup without being commanded to do so.</li>
+</ul>
+</li>
+<li><b>Messages</b><ul>
+<li>BUG 112831: The Messages application would not report failure to connect to a POP account until 20 minutes had elapsed.</li>
+<li>BUG 124378, 148423: MMS messages saved to the Drafts folder lost their images when reopened.</li>
+<li>BUG 128613: The Forward function did not forward email attachments.</li>
+<li>BUG 140806: The user was not audibly notified when an MMS message was received.</li>
+</ul>
+</li>
+<li><b>Package Manager</b><ul>
+<li>BUG 169478: Package Manager failed to save newly configured package feeds.</li>
+<li>BUG 172165: Package Manager failed to filter packages for incompatible architectures out of downloaded package lists.</li>
+<li>BUG 172529: It was not possible to remove the default package feed on devices that store the Qtopia binaries on a read-only filesystem.</li>
+</ul>
+</li>
+<li><b>Phone Simulator</b><ul>
+<li>BUG 165284: Phonesim did not apply Fixed Dialing restrictions.</li>
+<li>BUG 171426: Phonesim would not allow extension of phone numbers when Fixed Dialing was enabled.</li>
+<li>BUG 174334: On failed PUK entry the phonesim would incorrectly ask for the SIM PIN instead of asking for the PUK again.</li>
+</ul>
+</li>
+<li><b>Pictures</b><ul>
+<li>BUG 142355: The Pictures application crashed rather than failing gracefully when there was insufficient memory to load a large image file in edit mode. The memory usage of edit mode has also been reduced.</li>
+<li>BUG 168392: New image files saved from edit mode did not appear in the Documents menu until after a Qtopia restart.</li>
+</ul>
+</li>
+<li><b>Profiles</b><ul>
+<li>BUG 175215: When browsing available ringtones, previews were not played for every second ringtone in the list.</li>
+</ul>
+</li>
+<li><b>Server</b><ul>
+<li>BUG 177418: If the bootcharger task was enabled, the server would occasionally crash on the first keypress after startup.</li>
+</ul>
+</li>
+<li><b>User Interface</b><ul>
+<li>BUG 177106: Popup widgets (e.g&#x2e; drop-down lists belonging to comboboxes) were not hidden when an application was backgrounded by the multitasking feature.</li>
+</ul>
+</li>
+<li><b>World Time</b><ul>
+<li>BUG 167343: The World Time application would crash when leaving the map if a city had not been selected from the combobox before browsing the map.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+</ul>
+</li>
+<li><b>Messages</b>:<ul>
+<li>BUG 120160: Messages doesn't start/stop network when fetching mail.</li>
+<li>BUG 123694: Outgoing messages are saved in Drafts instead of Outbox in Airplane Safe Mode.</li>
+<li>BUG 139837: Messages refuses to process attachments larger than 2Mb.</li>
+<li>BUG 142744: MMS audio doesn't play to completion if the audio track is longer than the slideshow.</li>
+</ul>
+</li>
+<li><b>Server</b>:<ul>
+<li>BUG 123850: Files with Chinese names are only presented (and used) properly if the LANG environment variable is set prior to starting Qtopia Server to any language ending with .UTF8, for example: 'export LANG=&lt;yourlanguage&gt;.UTF8'.</li>
+<li>BUG 135563: Softkey Menu does not become scrollable when too big for the screen.</li>
+</ul>
+</li>
+<li><b>Server Widgets</b>:<ul>
+<li>BUG 148987: The Task Manager list only works correctly with the Standard Qtopia server widgets.</li>
+</ul>
+</li>
+<li><b>Touchscreen</b>:<ul>
+<li>Cannot access some controls on <tt>Touchscreen</tt> Phone</li>
+</ul>
+</li>
+<li><b>Words</b>:<ul>
+<li>Input widgets do not emit <tt>textChanged</tt> messages in response to changes in composing text.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

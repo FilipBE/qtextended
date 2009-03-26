@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QTextEntryProxy Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QTextEntryProxy Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QTextEntryProxy class provides a text entry widget for overlaying list widgets. <a href="#details">More...</a></p>
+<pre>    #include &lt;QTextEntryProxy&gt;</pre><p><b>This class is under development and is subject to change.</b></p>
+<p>Inherits <a href="qwidget.html">QWidget</a>.</p>
+<p>This class was introduced in Qtopia 4.3.</p>
+<ul>
+<li><a href="qtextentryproxy-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtextentryproxy.html#QTextEntryProxy">QTextEntryProxy</a></b> ( QWidget * <i>parent</i>, QWidget * <i>target</i> )</li>
+<li><div class="fn"/><b><a href="qtextentryproxy.html#dtor.QTextEntryProxy">~QTextEntryProxy</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtextentryproxy.html#clear">clear</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qtextentryproxy.html#setTarget">setTarget</a></b> ( QWidget * <i>target</i> )</li>
+<li><div class="fn"/>QString <b><a href="qtextentryproxy.html#text">text</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>206 public functions inherited from <a href="qwidget.html#public-functions">QWidget</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>14 public functions inherited from <a href="qpaintdevice.html#public-functions">QPaintDevice</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtextentryproxy.html#textChanged">textChanged</a></b> ( const QString &amp; <i>text</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qwidget.html#signals">QWidget</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>57 properties inherited from <a href="qwidget.html#properties">QWidget</a></li>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>19 public slots inherited from <a href="qwidget.html#public-slots">QWidget</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qwidget.html#static-public-members">QWidget</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>38 protected functions inherited from <a href="qwidget.html#protected-functions">QWidget</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qpaintdevice.html#protected-functions">QPaintDevice</a></li>
+<li><div class="fn"/>1 protected slot inherited from <a href="qwidget.html#protected-slots">QWidget</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+<li><div class="fn"/>1 protected type inherited from <a href="qpaintdevice.html#protected-variables">QPaintDevice</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QTextEntryProxy class provides a text entry widget for overlaying list widgets.</p>
+<p>QTextEntryProxy is a helper widget for overlaying on listboxes (or other widgets) which need a text based display of the currently entered text, whilst still allowing the proxied widget to retain focus.</p>
+<pre>    QTextEntryProxy *textEntry = new QTextEntryProxy(this, listbox);
+
+    int mFindHeight = textEntry-&gt;sizeHint().height();
+    QLabel *findIcon = new QLabel;
+    findIcon-&gt;setPixmap(QIcon(&quot;:icon/find&quot;).pixmap(mFindHeight-2, mFindHeight-2));
+    findIcon-&gt;setMargin(2);
+    findIcon-&gt;setFocusPolicy(Qt::NoFocus);
+
+    QHBoxLayout *findLayout = new QHBoxLayout;
+    findLayout-&gt;addWidget(findIcon);
+    findLayout-&gt;addWidget(textEntry);
+    qobject_cast&lt;QVBoxLayout*&gt;(this-&gt;layout())-&gt;addLayout(findLayout);
+
+    connect(textEntry, SIGNAL(textChanged(QString)), this, SLOT(textEntrytextChanged(QString)));</pre>
+<p>To Note: QTextEntryProxy has no way of determining what the SoftMenuBar context labels are/were, so it will replace the back key location with <a href="qsoftmenubar.html#StandardLabel-enum">QSoftMenuBar::Back</a> when no text is displayed by the object. As this handles 90% of use cases, no further work is scheduled on this until necessary.</p>
+<p>See also <a href="qtextentryproxy.html#setTarget">setTarget</a>().</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QTextEntryProxy"></a>QTextEntryProxy::QTextEntryProxy ( <a href="qwidget.html">QWidget</a> * <i>parent</i>, <a href="qwidget.html">QWidget</a> * <i>target</i> )</h3>
+<p>Constructs a new text entry proxy object setting <i>parent</i> and <i>target</i> widgets.</p>
+<h3 class="fn"><a name="dtor.QTextEntryProxy"></a>QTextEntryProxy::~QTextEntryProxy ()</h3>
+<p>Destroys this object</p>
+<h3 class="fn"><a name="clear"></a>void QTextEntryProxy::clear ()</h3>
+<p>Deletes all the text in the text entry.</p>
+<h3 class="fn"><a name="setTarget"></a>void QTextEntryProxy::setTarget ( <a href="qwidget.html">QWidget</a> * <i>target</i> )</h3>
+<p>Sets the <i>target</i> of this object. This involves creating an <a href="qobject.html#installEventFilter">event filter</a> on the target object, so that it can filter events that it is interested in. If this object was previously targeted at another widget, it removes the eventfilters placed upon the original object.</p>
+<h3 class="fn"><a name="text"></a><a href="qstring.html">QString</a> QTextEntryProxy::text () const</h3>
+<p>Returns the current text displayed in the widget</p>
+<h3 class="fn"><a name="textChanged"></a>void QTextEntryProxy::textChanged ( const <a href="qstring.html">QString</a> &amp; <i>text</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted whenever the <i>text</i> for this control is updated via user input to the target control.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

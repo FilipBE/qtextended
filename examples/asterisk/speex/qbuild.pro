@@ -1,0 +1,92 @@
+requires(enable_voip)
+TEMPLATE=lib
+TARGET=speex
+MODULE_NAME=speex
+VERSION=1.0.0
+
+CONFIG+=embedded
+MODULES+=mathlib
+
+VPATH+=include/speex
+INCLUDEPATH+=$$path(include,project)
+DEFINES+=FIXED_POINT
+
+HEADERS=\
+    arch.h\
+    cb_search_arm4.h\
+    cb_search.h\
+    cb_search_sse.h\
+    filters_arm4.h\
+    filters.h\
+    filters_sse.h\
+    fixed_arm4.h\
+    fixed_arm5e.h\
+    fixed_debug.h\
+    fixed_generic.h\
+    speex_bits.h\
+    speex_callbacks.h\
+    speex_config_types.h\
+    speex_echo.h\
+    speex.h\
+    speex_header.h\
+    speex_jitter.h\
+    speex_noglobals.h\
+    speex_preprocess.h\
+    speex_stereo.h\
+    speex_types.h\
+    lpc.h\
+    lsp.h\
+    ltp_arm4.h\
+    ltp.h\
+    ltp_sse.h\
+    math_approx.h\
+    medfilter.h\
+    misc.h\
+    modes.h\
+    nb_celp.h\
+    quant_lsp.h\
+    sb_celp.h\
+    smallft.h\
+    stack_alloc.h\
+    vbr.h\
+    vq_arm4.h\
+    vq.h
+
+SOURCES=\
+    bits.c\
+    cb_search.c\
+    exc_10_16_table.c\
+    exc_10_32_table.c\
+    exc_20_32_table.c\
+    exc_5_256_table.c\
+    exc_5_64_table.c\
+    exc_8_128_table.c\
+    filters.c\
+    gain_table.c\
+    gain_table_lbr.c\
+    hexc_10_32_table.c\
+    hexc_table.c\
+    high_lsp_tables.c\
+    jitter.c\
+    lbr_48k_tables.c\
+    lpc.c\
+    lsp.c\
+    lsp_tables_nb.c\
+    ltp.c\
+    math_approx.c\
+    mdf.c\
+    medfilter.c\
+    misc.c\
+    modes.c\
+    nb_celp.c\
+    preprocess.c\
+    quant_lsp.c\
+    sb_celp.c\
+    smallft.c\
+    speex.c\
+    speex_callbacks.c\
+    speex_header.c\
+    stereo.c\
+    vbr.c\
+    vq.c
+

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SystemSuspend Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SystemSuspend Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The SystemSuspend class manages entering and leaving system suspend. <a href="#details">More...</a></p>
+<pre>    #include &lt;SystemSuspend&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="systemsuspend-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual bool <b><a href="systemsuspend.html#suspendSystem">suspendSystem</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="systemsuspend.html#systemActive">systemActive</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="systemsuspend.html#systemSuspendCanceled">systemSuspendCanceled</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="systemsuspend.html#systemSuspending">systemSuspending</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="systemsuspend.html#systemWaking">systemWaking</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The SystemSuspend class manages entering and leaving system suspend.</p>
+<p>The SystemSuspend provides a Qt Extended Server Task. Qt Extended Server Tasks are documented in full in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class documentation.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>Task Name</td><td>SystemSuspend</td></tr>
+<tr valign="top" class="even"><td>Interfaces</td><td>SystemSuspend</td></tr>
+<tr valign="top" class="odd"><td>Services</td><td>Suspend</td></tr>
+</table></p>
+<p>Server components may directly use the SystemSuspend interface to enter and monitor the suspend state. Non-server based applications should use the <a href="suspendservice.html">SuspendService</a> to do the same.</p>
+<p>The system suspend state is expected to be a very low, but non-destructive, power saving state. As some hardware devices may need to be shutdown before or reinitialized after entry into the suspend state, integrators can provide objects that implement the <a href="systemsuspendhandler.html">SystemSuspendHandler</a> interface that will be called before the system enters suspend and after the system leaves it.</p>
+<p>As SystemSuspend is a server task, and not a class, components within the server must access it as such. For example, for a server component to put the device into suspend,</p>
+<pre>    SystemSuspend *suspend = qtopiaTask&lt;SystemSuspend&gt;();
+    qWarning() &lt;&lt; &quot;About to suspend!&quot;;
+    if(suspend-&gt;suspendSystem())
+      qWarning() &lt;&lt; &quot;Resumed from suspend!&quot;;
+    else
+      qWarning() &lt;&lt; &quot;Suspend failed&quot;;</pre>
+<p>As applications cannot access server tasks directly, they may use the Suspend service.</p>
+<pre>    QtopiaServiceRequest req(&quot;Suspend&quot;, &quot;suspend()&quot;);
+    req.send();</pre>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="systemsuspendhandler.html">SystemSuspendHandler</a> and <a href="suspendservice.html">SuspendService</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="suspendSystem"></a>bool SystemSuspend::suspendSystem ()&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Request that the system be suspended. The system will block in this method until execution is resumed. The method returns true if the suspension was successful, and false otherwise.</p>
+<p>When called, all tasks in the system that implement the <a href="systemsuspendhandler.html">SystemSuspendHandler</a> are instantiated. If any of these tasks returns false from the <a href="systemsuspendhandler.html#canSuspend">SystemSuspendHandler::canSuspend</a>() method, the suspend is canceled and the <a href="systemsuspend.html#systemSuspendCanceled">systemSuspendCanceled</a>() signal is emitted. Otherwise, the <a href="systemsuspendhandler.html#suspend">SystemSuspendHandler::suspend</a>() methods are called on the tasks in reverse order. That is, the task with the highest interface priority is called last. It is assumed that this last task will actually perform the hardware suspend - possibly using the standard &quot;apm --suspend&quot; system call.</p>
+<p>Once all the tasks have successfully completed the suspend, the <a href="systemsuspendhandler.html#wake">SystemSuspendHandler::wake</a>() method is invoked on each in-order. This is done immediately after the last invokation of the <a href="systemsuspendhandler.html#suspend">SystemSuspendHandler::suspend</a>() method, so it is important that this last handler actually suspends the device or, from the users perspective, the device will suspend and immediately resume.</p>
+<h3 class="fn"><a name="systemActive"></a>void SystemSuspend::systemActive ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the system has completed resuming from suspend.</p>
+<h3 class="fn"><a name="systemSuspendCanceled"></a>void SystemSuspend::systemSuspendCanceled ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever a system suspend has been requested but a <a href="systemsuspendhandler.html">SystemSuspendHandler</a> reported that it was not in a state to suspend. The <a href="systemsuspend.html#suspendSystem">suspendSystem</a>() call that requested the suspend will return false.</p>
+<h3 class="fn"><a name="systemSuspending"></a>void SystemSuspend::systemSuspending ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the system begins suspending. This is emitted after the SystemSuspendHandlers have all reported that the system is in a state to suspend.</p>
+<p>Following the systemSuspending() signal, a <a href="systemsuspend.html#systemWaking">systemWaking</a>() and <a href="systemsuspend.html#systemActive">systemActive</a>() signals are guarenteed.</p>
+<h3 class="fn"><a name="systemWaking"></a>void SystemSuspend::systemWaking ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the system is in the process of resuming from suspend.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

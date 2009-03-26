@@ -1,0 +1,51 @@
+#!/bin/sh
+
+lidsconf -A -s ${BIN} -o /lib -j READONLY
+lidsconf -A -s ${BIN} -o /usr/lib -j READONLY
+
+lidsconf -A -s ${BIN} -o /usr/share -j READONLY
+lidsconf -A -s ${BIN} -o  CAP_DAC_OVERRIDE -j GRANT
+
+lidsconf -A -s ${BIN} -o /proc -j READONLY
+lidsconf -A -s ${BIN} -o /proc/lids -j DENY
+lidsconf -A -s ${BIN} -o /etc/ld.so.cache -j READONLY
+
+lidsconf -A -s ${BIN} -o /dev/fb -j READONLY
+
+lidsconf -A -s ${BIN} -o /tmp -j READONLY
+
+touch ${QCOP_FILE}
+lidsconf -A -s ${BIN} -o ${QCOP_FILE} -j WRITE
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/lib -j READONLY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/qt_plugins -j READONLY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/services -j READONLY
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/etc -j READONLY
+lidsconf -A -s ${BIN} -o ${HOME}/Settings -j READONLY
+
+#create directories in update directory so that 
+#packages can get access to them in the event
+#something updates the update directory
+for i in lib qt_plugins services etc help pics sounds i18n; do
+    if [ ! -d ${UPDATE_DIR}/$i ]; then
+        mkdir -p ${UPDATE_DIR}/$i
+    fi
+    lidsconf -A -s ${BIN} -o ${UPDATE_DIR}/$i -j READONLY
+done
+
+#protect sxe database files, on greenphone
+#the used database files are in the update directory
+lidsconf -A -s ${BIN} -o ${UPDATE_DIR}/etc/sxe -j DENY
+
+#give permissions to access/lookup resources
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/help -j READONLY 
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/help -j READONLY
+
+lidsconf -A -s ${BIN} -o $QTOPIA_DIR/pics -j READONLY
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/pics -j READONLY
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/sounds -j READONLY
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/sounds -j READONLY
+
+lidsconf -A -s ${BIN} -o ${QTOPIA_DIR}/i18n -j READONLY
+lidsconf -A -s ${BIN} -o ${PACKAGES_DIR}/i18n -j READONLY

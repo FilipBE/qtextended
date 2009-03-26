@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PackageManager - Browser Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PackageManager - Browser Integration<br /><span class="subtitle"></span>
+</h1>
+<p>This document describes why and how to integrate a browser with <tt>PackageManager</tt> and how to make Qt Extended packages available via a web-page.</p>
+<ul><li><a href="#use-case">Use Case</a></li>
+<li><a href="#web-browser-modification">Web-Browser Modification</a></li>
+<li><a href="#how-to-make-a-qt-extended-package-available-via-a-web-page">How to Make a Qt Extended Package Available via a Web Page</a></li>
+<ul><li><a href="#qt-extended-package-descriptor-and-web-page">Qt Extended Package Descriptor and Web Page</a></li>
+<li><a href="#web-server-configuration">Web Server Configuration</a></li>
+</ul>
+</ul>
+<a name="use-case"></a>
+<h2>Use Case</h2>
+<p>The basic sequence for a user wanting to install a package is:</p>
+<ol type="1">
+<li>Invoke the <tt>PackageManager</tt>.</li>
+<li>Use <tt>PackageManager</tt> to connect to a web server and display the list of packages offered.</li>
+<li>The user selects the required package and installs it</li>
+</ol>
+<p>While this approach is functional, there is little the content provider can do to advertise and differentiate their packages. The browser integration enables the user to visit any web site and install packages from there.</p>
+<p>The process is now becomes:</p>
+<ol type="1">
+<li>A web page offers a list of links to Qt Extended package file <a href="sxe-pkgmgr-ctlfile.html#qpd-descriptor">descriptors</a> which are text files containing information about a package as well as an exact URL indicating the download location.</li>
+<li>The user clicks the required link and the descriptor is downloaded and passed to the <tt>PackageManager</tt>.</li>
+<li>The user reads the package requirements.</li>
+<li>The user clicks the install button and the package is downloaded and installed.</li>
+</ol>
+<p>This package behaves like any other package, that is, it can be un-installed and is subject to SXE security.</p>
+<a name="pkgmgr-browser-modification"></a><a name="web-browser-modification"></a>
+<h2>Web-Browser Modification</h2>
+<p>Upon downloading a descriptor file of mime type, <tt>application/qtopia-package</tt>, the browser needs to:</p>
+<ol type="1">
+<li>Create an instance of <a href="qdsservices.html">QDSServices</a> with the requestDataType, <tt>application/qtopia-package</tt> and attribute, <tt>install</tt>. (The responseDataType should be &quot;*&quot;).</li>
+<li>The <a href="qdsservices.html">QDSServices</a> object should contain a <a href="qdsserviceinfo.html">QDSServiceInfo</a> object corresponding to <tt>PackageManager</tt>, use that to create a <a href="qdsaction.html">QDSAction</a> object.</li>
+<li>Create a <a href="qdsdata.html">QDSData</a> object with the downloaded <tt>qpd</tt> file and <tt>application/qtopia-package</tt> mime type.</li>
+<li>Invoke the <tt>exec()</tt> function of the <a href="qdsaction.html">QDSAction</a> object with the <a href="qdsdata.html">QDSData</a> object as a parameter. Via the services framework, this will invoke <tt>PackageManager</tt> to begin the installation process and prompt the user to confirm installation.</li>
+</ol>
+<p>There are two ways to add this functionality to a web browser:</p>
+<ol type="A">
+<li>Integrate it into the web browser code (this may not always be possible due to licensing issues or if the web browser application is in binary format).</li>
+<li>Create an application invoked by the browser on recognition of a particular mime type. Contemporary browsers such as Firefox or Opera can be configured in this way. After the Qt Extended package descriptor file is downloaded it is passed as a parameter to this application, which implements the above functionality of finding and invoking the <tt>PackageManager</tt> service.</li>
+</ol>
+<a name="how-to-make-a-qt-extended-package-available-via-a-web-page"></a>
+<h2>How to Make a Qt Extended Package Available via a Web Page</h2>
+<p>To make a Qt Extended packages available via a web page:</p>
+<ul>
+<li>A Qt Extended package descriptor file needs to be provided for each package.</li>
+<li>A minor change of the web server configuration with regard to the mime types is required.</li>
+</ul>
+<a name="qt-extended-package-descriptor-and-web-page"></a>
+<h3>Qt Extended Package Descriptor and Web Page</h3>
+<p>For every package offered for download a Qt Extended package descriptor file must be provided. These files contain meta-data about the package which includes a URL indicating the package download location. The <tt>mkPackages</tt> script is used to generate descriptor file, further details can be found <a href="sxe-pkgmgr-ctlfile.html#qpd-descriptor">here</a>.</p>
+<p>The link on the web page points to the descriptor file and is processed by the <tt>PackageManager</tt> which extracts the URL and, upon confirmation by the user, downloads and installs the package.</p>
+<a name="webconfig"></a><a name="web-server-configuration"></a>
+<h3>Web Server Configuration</h3>
+<p>For the browser to detect the Qt Extended package descriptor the web server must set the appropriate mime type (<tt>application/qtopia-package</tt>) in the HTTP header for that file. This means that on the web server a new mime type mapping must be configured for the extension of the Qt Extended package descriptor, which is <tt>*.qpd</tt>.</p>
+<p>The following table describes the mime type mapping for two common browsers:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Browser</th><th>Mapping Instructions</th></tr></thead>
+<tr valign="top" class="odd"><td>Apache 2</td><td>Edit the <tt>mime.types</tt> file, usually found under <tt>/etc/apache2</tt> Append a line containing:<pre>    application/qtopia-package qpd</pre>
+</td></tr>
+<tr valign="top" class="even"><td>IIS</td><td><ul>
+<li>Add mime entries to the following registry location: <tt>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\InetInfo\Parameters\MimeMap</tt> by opening the <tt>MimeMap</tt> key and choosing <tt>Edit Value</tt> or <tt>Add Value</tt>.</li>
+<li>The mime information must be placed in the <tt>Value Name</tt> box.</li>
+<li>The data type for the entry must be set to <tt>REG_SZ</tt> and the string field is left blank.</li>
+</ul>
+</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

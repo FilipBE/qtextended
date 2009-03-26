@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qtopia - 4.2&#x2e;2 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qtopia - 4.2&#x2e;2 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#optimizations">Optimizations</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qtopia 4.2&#x2e;2 release is a maintenance release of Qtopia that is based on Qt 4.2 technology. This release provides a number of bug fixes and performance improvements, both general and Greenphone-specific.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<ol type="1">
+<li><b>Bluetooth</b> Bluetooth support is provided in this release only as a technology preview. When building Qtopia, Bluetooth is disabled by default, but may be enabled by specifying the -bluetooth configure switch.</li>
+<li><b>Clock</b> The Clock application has been made consistent with other Qtopia applications by using a tabbed window to present the three different screens rather than using entries in the context menu to switch between the three screens.</li>
+<li><b>Greenphone</b> The Greenphone now displays information about its progress during startup and shutdown.</li>
+<li><b>Signal Strength Indication</b> The signal strength indicator can now be used to indicate the signal strength of any communications medium, not just GSM modem signal strength. This is done by writing appropriate values to the Qtopia Valuespace. Note that this change requires minor modifications to all custom themes that display signal strength as described in <a href="porting.html">Porting Between Qtopia/Qt Extended Versions</a>.</li>
+</ol>
+<a name="optimizations"></a>
+<h2>Optimizations</h2>
+<ol type="1">
+<li>BUG 147448, 154004: eliminated several instances of unnecessary painting in Calendar application.</li>
+<li>BUG 149521: The performance of seeking within a video in Media Player has been improved.</li>
+<li>BUG 151985: The performance of volume adjustment in Media Player has been improved.</li>
+</ol>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>BUG 139659, 146570: Local and remote device names were not diaplyed correctly if they contained non-latin1 text.</li>
+<li>BUG 147440: Received files did not appear in the Documents list until the Qtopia Server was restarted.</li>
+<li>BUG 148791: Qtopia Server crashed when a headset was enabled but not connected.</li>
+<li>BUG 146899: Qtopia Server crashed in Accept File dialog when the underlying connection was lost.</li>
+<li>BUG 158371: Qtopia Server crashed when attempting to send a document from the Docuemnts list.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 149111: The build system was passing the &quot;-mcpu&quot; option to gcc. This option is deprecated for gcc 4.x&#x2e;</li>
+<li>BUG 149363: The build system was incorrectly installing .directory files for plugins into the build image of a singleexec build.</li>
+<li>BUG 156588: The dbmigrate, atinterface, printserver and vsexplorer utilities were not being built for singleexec builds.</li>
+</ul>
+</li>
+<li><b>Calendar</b><ul>
+<li>BUG 147297: On the alarm screen, the &quot;Show Details&quot; button did not do anything. Now, the details of each due event can be accessed directly from the alarm screen.</li>
+<li>BUG 147312: The appearance of the calendar widget was not consistent in all places that it is used.</li>
+<li>BUG 147744: It was not clear to the user whether filtering on multiple categories matched any or all selected categories.</li>
+<li>BUG 147876: The Event Details screen would exit after beaming the event or cancelling deletion.</li>
+<li>BUG 149895: Changes to the configured day start time were not reflected in the day view until the application was restarted.</li>
+<li>BUG 154010: Could not select the highlighted item in day view after using Month view.</li>
+<li>BUG 154099: Could not enter dates via keypad in calendar popups if the Month View was active in the main window.</li>
+</ul>
+</li>
+<li><b>Call Management</b><ul>
+<li>BUG 132397: Failure to join or transfer calls was not reported to the user.</li>
+</ul>
+</li>
+<li><b>Call Options</b><ul>
+<li>BUG 138098: Options that require a SIM card to be present were not disabled when a SIM was not present.</li>
+</ul>
+</li>
+<li><b>Camera</b><ul>
+<li>BUG 138676: When attempting to view a captured image, the viewfinder image was displayed instead.</li>
+</ul>
+</li>
+<li><b>Clock</b><ul>
+<li>BUG 138725: In stopwatch mode, the side-by-side Start/Stop and Lap/Split buttons did not have the same size on some displays.</li>
+<li>BUG 142758: In stopwatch mode, the Lap/Split arrow buttons did not work properly in keypad mode. Instead, the user can now use the up and down arrows on the keypad to perform the same function.</li>
+<li>BUG 151791: In stopwatch mode, holding the Start/Stop button would rapidly start and stop the timer, flooding the event loop with events.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 124220: The same vCard could be imported multiple times, resulting in duplicated contacts entries.</li>
+<li>BUG 148614: The New Contact dialog was not preventing empty contacts from being created.</li>
+<li>BUG 153644: The New Contact dialog painted the Name field in incorrect colours on the second and subsequent invocations.</li>
+</ul>
+</li>
+<li><b>Content</b><ul>
+<li>BUG 148615: The Applications, Settings and Games menus were repainted multiple times if they were visible when a memory card was inserted.</li>
+<li>BUG 148802: The Documents list was repainting excessively and scrolled incorrectly when the user moved a document between storage locations.</li>
+<li>BUG 150824: If the ID3 data of a file on removable media was edited outside of Qtopia, the changes would not be visible when subsequently viewing the data in Qtopia.</li>
+<li>BUG 156830: The content_installer incorrectly assumed that each .desktop file would contain an entry &quot;Exec=foo&quot; where &quot;foo&quot; was the base name of the file. This would result in some launcher items appearing blank.</li>
+<li>BUG 156852: The content_installer would not correctly create database entries from an application's .dekstop file if &quot;make install&quot; was executed when the $LANG environment variable did not end with &quot;.utf8&quot;. This would result in some launcher items appearing blank.</li>
+</ul>
+</li>
+<li><b>Dialer</b><ul>
+<li>BUG 142552, 150430: When entering the first digit of a phone number, the time taken to begin filtering the contacts list would sometimes incorrectly cause the Speed Dial function to be activated.</li>
+</ul>
+</li>
+<li><b>Greenphone</b><ul>
+<li>BUG 141228: Media Player did not respond to the Greenphone's volume adjustment keys.</li>
+<li>BUG 144561: Locking the device would prevent input via the keypad but not via the touchscreen.</li>
+<li>BUG 149136: Rotated log files were not recognized by the Documents list.</li>
+<li>BUG 152698: Greenphone would sometimes power off instead of booting due to misinterpreting the reason for powering on.</li>
+<li>BUG 155369: Quicklauncher sometimes failed to start, causing applications to launch slowly.</li>
+<li>BUG 156628: Greenphone would not reboot after completion of the usbflash process. Note that this fix requires reflashing the device's bootloader.</li>
+<li>BUG 157651: Packages of larger than 2Mb could not be installed.</li>
+</ul>
+</li>
+<li><b>Help Browser</b><ul>
+<li>BUG 136464: Pressing the Select key would change focus incorrectly, causing the background colour of the help window to change unexpectedly.</li>
+<li>BUG 142358, 148801: A layout error caused a spurious horizontal scrollbar to display at the bottom of the help window. This scrollbar would obscure the last line of each help page and prevent hyperlinks on the last line being selected with the keypad.</li>
+<li>BUG 148799: In a small number of help pages, pre-processor directives were displayed to the user instead of being processed.</li>
+</ul>
+</li>
+<li><b>Input Methods</b><ul>
+<li>BUG 112705: Keys would not autorepeat. Keys without press-and-hold functions now autorepeat correctly.</li>
+<li>BUG 113888: The full-screen handwriting widget could appear with a black background rather than being transparent on some non-standard displays.</li>
+<li>BUG 124214: The international multitap popup could appear partly off the edge of the screen.</li>
+<li>BUG 138721: The Handwriting Settings application's character picker could not be driven via the keypad.</li>
+<li>BUG 143275: Virtual keyboards would give double characters.</li>
+<li>BUG 148408: Additional input language selections did not take effect until the Language Settings application was reloaded.</li>
+<li>BUG 148613: The full-screen handwriting input method was interfering with normal click and click-through behaviour.</li>
+<li>BUG 152701: Changing to Phone-key Input Method from another IM did not activate PkIM until there was a focus change.</li>
+<li>BUG 154247: Words could still be entered with predictive input after being deleted from the word list.</li>
+</ul>
+</li>
+<li><b>Internet</b><ul>
+<li>BUG 148074: The Internet application would allow applications to extend the lifetime of their network sessions when using network devices that were not started by the Internet application.</li>
+</ul>
+</li>
+<li><b>IrDA</b><ul>
+<li>BUG 124376: Buttons on the infrared received dialog were positioned off-screen.</li>
+<li>BUG 148830: Infrared was shown in the &quot;Send Via&quot; dialog when no Infrared device was available.</li>
+</ul>
+</li>
+<li><b>Media Player</b><ul>
+<li>BUG 141060: Media playback would not pause correctly when interrupted by SMS receipt.</li>
+<li>BUG 141498: Media Player would not repaint properly if brought to the foreground using the multitasking feature while a video was playing.</li>
+<li>BUG 141499: Media Player did not disable power management while playing videos, allowing the device to blank the screen while a long video was playing.</li>
+<li>BUG 142343: Video playback would flicker noticably when direct paint mode was used.</li>
+<li>BUG 148622: Changes to volume settings were not saved when Media Player exited.</li>
+<li>BUG 150222: Online help could not be accessed from within Media Player.</li>
+<li>BUG 154971: Media Player would crash if the user attempted to clear an empty playlist.</li>
+</ul>
+</li>
+<li><b>Messages</b><ul>
+<li>BUG 140807: The user was alerted twice for each received MMS message.</li>
+<li>BUG 145255: vCards could not be sent via email.</li>
+</ul>
+</li>
+<li><b>Package Manager</b><ul>
+<li>BUG 143189: The &quot;Downloading&quot; dialog was not correctly sized or positioned.</li>
+<li>BUG 143194, 143199: The tree view showing installed and available packages was not adjusted correctly as packages were installed and uninstalled.</li>
+<li>BUG 150311: Installed packages could not be uninstalled.</li>
+<li>BUG 150312: The same package could be installed more than once.</li>
+<li>BUG 150666: An installed package's icon would not be displayed in the launcher if it had the same base file name as the package itself.</li>
+<li>BUG 157461: Packages for incompatible Qtopia versions were not filteed out of the &quot;Downloads Available&quot; list.</li>
+<li>BUG 157648: Some error conditions that could occur during package download and installation were not correctly detected.</li>
+</ul>
+</li>
+<li><b>Server</b><ul>
+<li>BUG 120419: The Qtopia Server would crash when attempting to shutdown.</li>
+<li>BUG 136473: Visible context menus were not repainting correctly when their contents changed.</li>
+<li>BUG 150452: The Auto Key Lock function generated spurious key events which would prevent the device from sleeping.</li>
+</ul>
+</li>
+<li><b>Server Widgets</b><ul>
+<li>BUG 148957: Pressing the Back button on the Home Screen while using the &quot;Example 1&quot; server widgets would cuase the user-interface to freeze.</li>
+</ul>
+</li>
+<li><b>Themes</b><ul>
+<li>BUG 138107: Title bars were not painted correctly when using the Crisp or Portal themes.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>Call Options</b>:<ul>
+<li>BUG 138102: Phone numbers cannot be added to the Fixed Dialing list.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 142554: After a call ends, Media Player incorrectly resumes playback of media file if the file was paused when the call was received.</li>
+</ul>
+</li>
+<li><b>Messages</b>:<ul>
+<li>BUG 120160: Messages doesn't start/stop network when fetching mail.</li>
+<li>BUG 123694: Outgoing messages are saved in Drafts instead of Outbox in Airplane Safe Mode.</li>
+<li>BUG 139837: Messages refuses to process attachments larger than 2Mb.</li>
+<li>BUG 140806: The user is not audibly notified when an MMS message is received.</li>
+<li>BUG 142744: MMS audio doesn't play to completion if the audio track is longer than the slideshow.</li>
+<li>BUG 148423: MMS messages saved to drafts cannot be subsequently edited.</li>
+</ul>
+</li>
+<li><b>Pictures</b>:<ul>
+<li>BUG 142355: Pictures crashes if launched from Documents with a large image file.</li>
+</ul>
+</li>
+<li><b>Rotation</b>:<ul>
+<li>BUG 147437: Application windows receive unrotated geometry when using transformed driver.</li>
+</ul>
+</li>
+<li><b>Server</b>:<ul>
+<li>BUG 123850: Files with Chinese names are only presented (and used) properly if the LANG environment variable is set prior to starting Qtopia Server to any language ending with .UTF8, for example: 'export LANG=&lt;yourlanguage&gt;.UTF8'.</li>
+<li>BUG 135563: Softkey Menu does not become scrollable when too big for the screen.</li>
+</ul>
+</li>
+<li><b>Server Widgets</b>:<ul>
+<li>BUG 148987: The Task Manager list only works correctly with the Standard Qtopia server widgets.</li>
+</ul>
+</li>
+<li><b>Touchscreen</b>:<ul>
+<li>Cannot access some controls on <tt>Touchscreen</tt> Phone</li>
+</ul>
+</li>
+<li><b>Words</b>:<ul>
+<li>Input widgets do not emit <tt>textChanged</tt> messages in response to changes in composing text.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

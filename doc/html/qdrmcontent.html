@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QDrmContent Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QDrmContent Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QDrmContent class provides applications with access to DRM protected content. <a href="#details">More...</a></p>
+<pre>    #include &lt;QDrmContent&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qdrmcontent-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qdrmcontent.html#LicenseOption-enum">LicenseOption</a></b> { NoLicenseOptions, Activate, Reactivate, Handover, Default }</li>
+<li><div class="fn"/>flags <b><a href="qdrmcontent.html#LicenseOption-enum">LicenseOptions</a></b></li>
+<li><div class="fn"/>enum <b><a href="qdrmcontent.html#RenderState-enum">RenderState</a></b> { Started, Paused, Stopped }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qdrmcontent.html#QDrmContent">QDrmContent</a></b> ( QDrmRights::Permission <i>permission</i> = QDrmRights::Unrestricted, LicenseOptions <i>options</i> = Default, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qdrmcontent.html#dtor.QDrmContent">~QDrmContent</a></b> ()</li>
+<li><div class="fn"/>QContent <b><a href="qdrmcontent.html#content">content</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#disableLicenseOptions">disableLicenseOptions</a></b> ( LicenseOptions <i>options</i> )</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#enableLicenseOptions">enableLicenseOptions</a></b> ( LicenseOptions <i>options</i> )</li>
+<li><div class="fn"/>QWidget * <b><a href="qdrmcontent.html#focusWidget">focusWidget</a></b> () const</li>
+<li><div class="fn"/>LicenseOptions <b><a href="qdrmcontent.html#licenseOptions">licenseOptions</a></b> () const</li>
+<li><div class="fn"/>QDrmRights::Permission <b><a href="qdrmcontent.html#permission">permission</a></b> () const</li>
+<li><div class="fn"/>RenderState <b><a href="qdrmcontent.html#renderState">renderState</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#setFocusWidget">setFocusWidget</a></b> ( QWidget * <i>widget</i> )</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#setLicenseOptions">setLicenseOptions</a></b> ( LicenseOptions <i>options</i> )</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#setPermission">setPermission</a></b> ( QDrmRights::Permission <i>permission</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#releaseLicense">releaseLicense</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#renderPaused">renderPaused</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#renderStarted">renderStarted</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#renderStopped">renderStopped</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qdrmcontent.html#requestLicense">requestLicense</a></b> ( const QContent &amp; <i>content</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#licenseDenied">licenseDenied</a></b> ( const QContent &amp; <i>content</i> )</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#licenseGranted">licenseGranted</a></b> ( const QContent &amp; <i>content</i> )</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#renderStateChanged">renderStateChanged</a></b> ( const QDrmContent &amp; <i>content</i> )</li>
+<li><div class="fn"/>void <b><a href="qdrmcontent.html#rightsExpired">rightsExpired</a></b> ( const QDrmContent &amp; <i>content</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qdrmcontent.html#activate">activate</a></b> ( const QContent &amp; <i>content</i>, QWidget * <i>focus</i> = 0 )</li>
+<li><div class="fn"/>bool <b><a href="qdrmcontent.html#canActivate">canActivate</a></b> ( const QContent &amp; <i>content</i> )</li>
+<li><div class="fn"/>QList&lt;QPair&lt;QString, QString&gt; &gt; <b><a href="qdrmcontent.html#httpHeaders">httpHeaders</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qdrmcontent.html#supportedTypes">supportedTypes</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QDrmContent class provides applications with access to DRM protected content.</p>
+<p>In order to enforce the constraints placed on DRM protected content it is neccessary to validate the content's permissions before rendering, and to meter usage and revalidate permissions during rendering. QDrmContent provides the interface through which applications can request access to DRM protected content and DRM agents can monitor content usage. An individual QDrmContent object allows access to a single item of content at a time, concurrent access to multiple content items requires a QDrmContent object for each item of content.</p>
+<p>File access to DRM content is requested using the the <a href="qdrmcontent.html#requestLicense">requestLicense</a>() method. If <a href="qdrmcontent.html#requestLicense">requestLicense</a>() returns true access to the content has been granted and it is possible to access the content using the standard Qt file API. Calling <a href="qdrmcontent.html#releaseLicense">releaseLicense</a>() will relinquish access rights to the content, QDrmContent will automatically release any already held licenses when a new license is requested but a license should be released as soon as possible once done with a file to close access to the file.</p>
+<p>To enforce time and use based rights the DRM agent needs to notified of the number of uses and the duration of each use. The renderStarted, renderPaused and renderStopped slots track this information and should be called as appropriate when usage state changes.</p>
+<p>QDrmContent will emit a <a href="qdrmcontent.html#rightsExpired">rightsExpired</a>() signal if the rights to the content expires while being rendered. If a DRM protected file is open when this signal is emitted it will remain open, however it will not be possible to reopen the file once it is closed.</p>
+<p>An implementation for a simple media player would be:</p>
+<pre>    class MediaPlayer : public QWidget
+    {
+    public:
+        MediaPlayer( QWidget *parent = 0 );
+    public slots:
+        bool open( const QContent &amp;content );
+        void play();
+        void pause();
+        void stop();
+
+    signals:
+        void playing();
+        void paused();
+        void stopped();
+
+    private:
+        QDrmContent openContent;
+    };
+
+    MediaPlayer::MediaPlayer( QWidget *parent = 0 )
+        : QWidget( parent )
+    {
+        openContent.setPermission( QDrmRights::Play );
+
+        <span class="comment">// Connect status signals and slots.</span>
+        connect( this, SIGNAL(playing()), &amp;openContent, SLOT(renderStarted()));
+        connect( this, SIGNAL(paused()), &amp;openContent, SLOT(renderPaused()));
+        connect( this, SIGNAL(stopped()), &amp;openContent, SLOT(renderStopped()));
+
+        <span class="comment">// Stop playback when the rights have expired.</span>
+        connect( &amp;openContent, SIGNAL(rightsExpired(QDrmContent)), this, SLOT(stop()) );
+
+        <span class="comment">// Perform initialisation.</span>
+    }
+
+    bool MediaPlayer::open( const QContent &amp;content )
+    {
+        if( openContent.requestLicense( content ) )
+        {
+            <span class="comment">// Open file as normal.</span>
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    void MediaPlayer::close()
+    {
+        <span class="comment">// Close file as normal.</span>
+
+        openContent.releaseLicense();
+    }</pre>
+<p>By default if a license is requested for content without any current rights QDrmContent will prompt the user to activate the content which if successful will result in a license being granted. QDrmContent will also prompt the user to reactivate content which has expired or will in expire in the immediate future when a license for it is released. Both prompts can be disabled by clearing the <a href="qdrmcontent.html#LicenseOption-enum">QDrmContent::Activate</a> and <a href="qdrmcontent.html#LicenseOption-enum">QDrmContent::Reactivate</a> license options respectively.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="flags"><a name="LicenseOption-enum"></a>enum QDrmContent::LicenseOption<br />flags QDrmContent::LicenseOptions</h3>
+<p>Specifies options for content licenses.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QDrmContent::NoLicenseOptions</tt></td><td align="center" valign="top"><tt>0x00</tt></td><td valign="top">Do not display any notifications and set the inital render state to <tt>Stopped</tt>.</td></tr>
+<tr><td valign="top"><tt>QDrmContent::Activate</tt></td><td align="center" valign="top"><tt>0x01</tt></td><td valign="top">Attempt to activate content if it has no valid rights when requesting a license.</td></tr>
+<tr><td valign="top"><tt>QDrmContent::Reactivate</tt></td><td align="center" valign="top"><tt>0x02</tt></td><td valign="top">When a license is no longer valid or will soon be invalidated when released, prompt the user to reactivate the license.</td></tr>
+<tr><td valign="top"><tt>QDrmContent::Handover</tt></td><td align="center" valign="top"><tt>0x04</tt></td><td valign="top">Set the inital render state to <i>Paused</i>. This allows the updating of rights for a single use to be spread accross multiple licenses.</td></tr>
+<tr><td valign="top"><tt>QDrmContent::Default</tt></td><td align="center" valign="top"><tt>Activate | Reactivate</tt></td><td valign="top">Activate content with invalid rights when requesting or releasing a content license.</td></tr>
+</table></p>
+<p>The LicenseOptions type is a typedef for <a href="qflags.html">QFlags</a>&lt;LicenseOption&gt;. It stores an OR combination of LicenseOption values.</p>
+<h3 class="fn"><a name="RenderState-enum"></a>enum QDrmContent::RenderState</h3>
+<p>Represents the current state of a render or usage of content.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QDrmContent::Started</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Content is currently being rendered. The time in which the content is in this state counts towards any timed usage allowance.</td></tr>
+<tr><td valign="top"><tt>QDrmContent::Paused</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Rendering of the content has started but been interrupted. Continuing the render will not count as an additional use and time does not count towards timed usage allowance.</td></tr>
+<tr><td valign="top"><tt>QDrmContent::Stopped</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The content is not currently being rendered. Starting a render from this state is considered a use.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QDrmContent"></a>QDrmContent::QDrmContent ( <a href="qdrmrights.html#Permission-enum">QDrmRights::Permission</a> <i>permission</i> = QDrmRights::Unrestricted, <a href="qdrmcontent.html#LicenseOption-enum">LicenseOptions</a> <i>options</i> = Default, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a new <a href="qdrmcontent.html">QDrmContent</a> object for accessing content using the given <i>permission</i> and license <i>options</i> with the parent <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QDrmContent"></a>QDrmContent::~QDrmContent ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys a <a href="qdrmcontent.html">QDrmContent</a> object.</p>
+<h3 class="fn"><a name="activate"></a>bool QDrmContent::activate ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i>, <a href="qwidget.html">QWidget</a> * <i>focus</i> = 0 )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Initiates an attempt to retrieve rights for the given <i>content</i>.</p>
+<p>Returns true if the content has a valid option for activating the content.</p>
+<p>Content activation is typically performed asynchronously (i.e&#x2e; opening a web page where the user may purchase rights.) so rights may not be available until some time after this method is called.</p>
+<p>Any dialogs displayed will be parented off the given <i>focus</i> widget.</p>
+<p>See also <a href="qdrmcontent.html#canActivate">canActivate</a>().</p>
+<h3 class="fn"><a name="canActivate"></a>bool QDrmContent::canActivate ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns true if options exist to activate the given <i>content</i>; otherwise returns false.</p>
+<p>See also <a href="qdrmcontent.html#activate">activate</a>().</p>
+<h3 class="fn"><a name="content"></a><a href="qcontent.html">QContent</a> QDrmContent::content () const</h3>
+<p>Returns the currently licensed <a href="qcontent.html">QContent</a>.</p>
+<h3 class="fn"><a name="disableLicenseOptions"></a>void QDrmContent::disableLicenseOptions ( <a href="qdrmcontent.html#LicenseOption-enum">LicenseOptions</a> <i>options</i> )</h3>
+<p>Disables the given license <i>options</i>.</p>
+<p>See also <a href="qdrmcontent.html#licenseOptions">licenseOptions</a>(), <a href="qdrmcontent.html#setLicenseOptions">setLicenseOptions</a>(), and <a href="qdrmcontent.html#enableLicenseOptions">enableLicenseOptions</a>().</p>
+<h3 class="fn"><a name="enableLicenseOptions"></a>void QDrmContent::enableLicenseOptions ( <a href="qdrmcontent.html#LicenseOption-enum">LicenseOptions</a> <i>options</i> )</h3>
+<p>Enables the given license <i>options</i>.</p>
+<p>See also <a href="qdrmcontent.html#licenseOptions">licenseOptions</a>(), <a href="qdrmcontent.html#setLicenseOptions">setLicenseOptions</a>(), and <a href="qdrmcontent.html#disableLicenseOptions">disableLicenseOptions</a>().</p>
+<h3 class="fn"><a name="focusWidget"></a><a href="qwidget.html">QWidget</a> * QDrmContent::focusWidget () const</h3>
+<p>Returns the widget that parents any dialogs displayed when activating or reactivating content when requesting and releasing licenses.</p>
+<p>See also <a href="qdrmcontent.html#setFocusWidget">setFocusWidget</a>().</p>
+<h3 class="fn"><a name="httpHeaders"></a><a href="qlist.html">QList</a>&lt;<a href="qpair.html">QPair</a>&lt;<a href="qstring.html">QString</a>, <a href="qstring.html">QString</a>&gt; &gt; QDrmContent::httpHeaders ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of HTTP header name/value pairs web applications should use in requests to identify installed DRM agents</p>
+<h3 class="fn"><a name="licenseDenied"></a>void QDrmContent::licenseDenied ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that a call to <a href="qdrmcontent.html#requestLicense">QDrmContent::requestLicense</a>() to request a license to render <i>content</i> failed.</p>
+<p>See also <a href="qdrmcontent.html#requestLicense">requestLicense</a>() and <a href="qdrmcontent.html#licenseGranted">licenseGranted</a>().</p>
+<h3 class="fn"><a name="licenseGranted"></a>void QDrmContent::licenseGranted ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that a call to <a href="qdrmcontent.html#requestLicense">QDrmContent::requestLicense</a>() to request a license to render <i>content</i> succeeded.</p>
+<p>See also <a href="qdrmcontent.html#requestLicense">requestLicense</a>() and <a href="qdrmcontent.html#licenseDenied">licenseDenied</a>().</p>
+<h3 class="fn"><a name="licenseOptions"></a><a href="qdrmcontent.html#LicenseOption-enum">LicenseOptions</a> QDrmContent::licenseOptions () const</h3>
+<p>Returns the license options indicating how the user should be prompted if the content has invalid rights and the type of license that should be requested.</p>
+<p>See also <a href="qdrmcontent.html#setLicenseOptions">setLicenseOptions</a>(), <a href="qdrmcontent.html#enableLicenseOptions">enableLicenseOptions</a>(), and <a href="qdrmcontent.html#disableLicenseOptions">disableLicenseOptions</a>().</p>
+<h3 class="fn"><a name="permission"></a><a href="qdrmrights.html#Permission-enum">QDrmRights::Permission</a> QDrmContent::permission () const</h3>
+<p>Returns the default permission type or the permission type of the last requested license.</p>
+<p>See also <a href="qdrmcontent.html#setPermission">setPermission</a>().</p>
+<h3 class="fn"><a name="releaseLicense"></a>void QDrmContent::releaseLicense ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Releases the currently held content license. No further file access will be possible after this unless a new license is requested.</p>
+<p>If the permissions have expired or are about to expire the user may be prompted to acquire new permissions, this prompt can be disabled by clearing the Reactivate license option using <a href="qdrmcontent.html#disableLicenseOptions">disableLicenseOptions</a>().</p>
+<p>Requesting a new license will automatically release a previously held one.</p>
+<p>See also <a href="qdrmcontent.html#requestLicense">requestLicense</a>().</p>
+<h3 class="fn"><a name="renderPaused"></a>void QDrmContent::renderPaused ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Notifies the DRM agent that rendering of the content has been paused.</p>
+<p>See also <a href="qdrmcontent.html#renderStarted">renderStarted</a>() and <a href="qdrmcontent.html#renderStopped">renderStopped</a>().</p>
+<h3 class="fn"><a name="renderStarted"></a>void QDrmContent::renderStarted ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Notifies the DRM agent that rendering of the content has started.</p>
+<p>See also <a href="qdrmcontent.html#renderStopped">renderStopped</a>() and <a href="qdrmcontent.html#renderPaused">renderPaused</a>().</p>
+<h3 class="fn"><a name="renderState"></a><a href="qdrmcontent.html#RenderState-enum">RenderState</a> QDrmContent::renderState () const</h3>
+<p>Returns the current render state.</p>
+<h3 class="fn"><a name="renderStateChanged"></a>void QDrmContent::renderStateChanged ( const QDrmContent &amp; <i>content</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the render state of <i>content</i> has changed.</p>
+<h3 class="fn"><a name="renderStopped"></a>void QDrmContent::renderStopped ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Notifies the DRM agent that rendering of the content has ended.</p>
+<p>See also <a href="qdrmcontent.html#renderStarted">renderStarted</a>() and <a href="qdrmcontent.html#renderPaused">renderPaused</a>().</p>
+<h3 class="fn"><a name="requestLicense"></a>bool QDrmContent::requestLicense ( const <a href="qcontent.html">QContent</a> &amp; <i>content</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Requests a license to render DRM <i>content</i> using the currently assigned permission type.</p>
+<p>If there are no current permissions to render the content the user will be prompted to acquire new permissions or informed that the content can not be rendered. If the permissions are valid or the user succeeds in acquiring new permissions the <a href="qdrmcontent.html#licenseGranted">licenseGranted</a>() signal will be emitted and true returned. If the permissions are invalid and user cannnot acquire new permissions, or must go through an external agent such as a web browser to acquire new permissions the <a href="qdrmcontent.html#licenseDenied">licenseDenied</a>() signal will be emitted and false returned.</p>
+<p>Activatation can be turned off by clearing the Activate license option using disableLicenceOptions().</p>
+<p>See also <a href="qdrmcontent.html#licenseGranted">licenseGranted</a>(), <a href="qdrmcontent.html#licenseDenied">licenseDenied</a>(), and <a href="qdrmcontent.html#permission">permission</a>().</p>
+<h3 class="fn"><a name="rightsExpired"></a>void QDrmContent::rightsExpired ( const QDrmContent &amp; <i>content</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signals that the rights to <i>content</i> have expired.</p>
+<h3 class="fn"><a name="setFocusWidget"></a>void QDrmContent::setFocusWidget ( <a href="qwidget.html">QWidget</a> * <i>widget</i> )</h3>
+<p>Sets a <i>widget</i> that will parent any dialogs displayed when activating or reactivating content when requesting and releasing licenses.</p>
+<p>See also <a href="qdrmcontent.html#focusWidget">focusWidget</a>().</p>
+<h3 class="fn"><a name="setLicenseOptions"></a>void QDrmContent::setLicenseOptions ( <a href="qdrmcontent.html#LicenseOption-enum">LicenseOptions</a> <i>options</i> )</h3>
+<p>Sets the license <i>options</i> indicating how the user should be prompted if the content has invalid rights and the type of license that should be requested.</p>
+<p>See also <a href="qdrmcontent.html#licenseOptions">licenseOptions</a>(), <a href="qdrmcontent.html#enableLicenseOptions">enableLicenseOptions</a>(), and <a href="qdrmcontent.html#disableLicenseOptions">disableLicenseOptions</a>().</p>
+<h3 class="fn"><a name="setPermission"></a>void QDrmContent::setPermission ( <a href="qdrmrights.html#Permission-enum">QDrmRights::Permission</a> <i>permission</i> )</h3>
+<p>Sets the default render <i>permission</i>.</p>
+<p>This will only succeed if no license is currently held.</p>
+<p>See also <a href="qdrmcontent.html#permission">permission</a>().</p>
+<h3 class="fn"><a name="supportedTypes"></a><a href="qstringlist.html">QStringList</a> QDrmContent::supportedTypes ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list of all supported DRM types. Applications should use this list when they need to advertise support for DRM types, for example HTTP accept headers.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

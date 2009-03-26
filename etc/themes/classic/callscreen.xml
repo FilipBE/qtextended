@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="callscreen" base="themes/default">
+    <rect color="None" brush="Background"/>
+    <image name="background"/>
+    <layout orientation="vertical" spacing="0" rect="0,0,0,0">
+        <list expanding="yes" name="callscreen" rect="0,0,0x-1" vspath="/UI/CallScreen" separator="1" size="7">
+                <template name="active" rect="0,0,0x21pt">
+                <image name="active_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="#50D914"/>
+                <status name="conference" rect="0,0,16x16" imageon="conference" on="expr:@Conference"/>
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+		    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="incoming" rect="0,0,0x21pt">
+                <image name="incoming_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="Base" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="outgoing" rect="0,0,0x21pt">
+                <image name="outgoing_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="Background" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="onhold" rect="0,0,0x21pt">
+                <image name="onhold_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="#A3A10E" />
+                <status name="conference" rect="0,0,16x16" imageon="conference" on="expr:@Conference == true" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="dropped" rect="0,0,0x21pt">
+                <image name="dropped_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="#AA2222" />
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+            <template name="selected" rect="0,0,0x21pt">
+                <image name="selected_bg" rect="0,0,0,0" tile="yes" scale="vertical" src="callitem_bg"  color="Highlight" />
+                <status name="conference" rect="0,0,16x16" imageon="conference" on="expr:@Conference == true"/>
+                <text name="identifier" rect="2%,2pt,0x11pt" elided="right" size="7" bold="yes">
+                    expr:@CallId . @Identifier
+                </text>
+                <text name="status" rect="4%,-10pt,0x8pt" size="6" bold="yes">
+                    expr:@Duration . @State
+                </text>
+                <image name="contact" rect="-17pt,0,17ptx21pt" scale="yes" src="expr:@Photo"/>
+            </template>
+	</list>
+	<widget name="callscreennumber" rect="0,0,0x-1" bold="yes" color="Text" size="12"/>
+	<rect name="keypad-box" rect="0,-101,0,0"  brush="Base" alpha="100" transient="yes" active="no" keypad="no">
+	    <rect name="keypad-hide-container" rect="-18,2,16x16" alpha="100" color="None" brush="Base" align="hcenter" interactive="yes">
+		<image rect="0,0,16x16" name="keypad-bg" src="r3" onclick="src=r1p" scale="yes" />
+		<image name="keypad-hide" rect="2,2,12x12" src="keypad-hide" scale="yes" interactive="yes"/>
+	    </rect>
+	    <layout name="keypad" rect="0,0,0x101" orientation="vertical" spacing="0" align="vcenter" separator="1">
+		<layout name="horizontal" rect="0,0,0x24" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="0,4,32x24" name="one" interactive="yes">
+			<image rect="0,0,0,0" name="one_bg" src="r1" onclick="src=r1p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="one_fg" src="1" scale="yes"/>
+		    </group>
+		    <group rect="0,4,32x24" name="two" interactive="yes">
+			<image rect="0,0,0,0" name="two_bg" src="r1" onclick="src=r1p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="two_fg" src="2" scale="yes"/>
+		    </group>
+		    <group rect="0,4,32x24" name="three" interactive="yes">
+			<image rect="0,0,0,0" name="three_bg" src="r1" onclick="src=r1p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-1,-1" name="three_fg" src="3" scale="yes"/>
+		    </group>
+		</layout>
+		<layout rect="0,0,0x24" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="00,0,32x24" name="four" interactive="yes">
+			<image rect="0,0,0,0" name="four_bg" src="r2" onclick="src=r2p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="four_fg" src="4" scale="yes"/>
+		    </group>
+		    <group rect="0,0,32x24" name="five" interactive="yes">
+			<image rect="0,0,0,0" name="five_bg" src="r2" onclick="src=r2p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="five_fg" src="5" scale="yes"/>
+		    </group>
+		    <group rect="0,0,32x24" name="six" interactive="yes">
+			<image rect="0,0,0,0" name="six_bg" src="r2" onclick="src=r2p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="six_fg" src="6" scale="yes"/>
+		    </group>
+		</layout>
+		<layout rect="0,0,0x24" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="0,0,32x24" name="seven" interactive="yes">
+			<image rect="0,0,0,0" name="seven_bg" src="r3" onclick="src=r3p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="seven_fg" src="7" scale="yes"/>
+		    </group>
+		    <group rect="0,0,32x24" name="eight" interactive="yes">
+			<image rect="0,0,0,0" name="eight_bg" src="r3" onclick="src=r3p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="eight_fg" src="8" scale="yes"/>
+		    </group>
+		    <group rect="0,0,32x24" name="nine" interactive="yes">
+			<image rect="0,0,0,0" name="nine_bg" src="r3" onclick="src=r3p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="nine_fg" src="9" scale="yes"/>
+		    </group>
+		</layout>
+		<layout rect="0,0,0x24" orientation="horizontal" spacing="-1" align="hcenter">
+		    <group rect="0,0,32x24" name="star" interactive="yes">
+			<image rect="0,0,0,0" name="star_bg" src="r4" onclick="src=r4p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="star_fg" src="star" scale="yes"/>
+		    </group>
+		    <group rect="0,0,32x24" name="zero" interactive="yes">
+			<image rect="0,0,0,0" name="zero_bg" src="r4" onclick="src=r4p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="zero_fg" src="0" scale="yes"/>
+		    </group>
+		    <group rect="0,0,32x24" name="hash" interactive="yes">
+			<image rect="0,0,0,0" name="hash_bg" src="r4" onclick="src=r4p" scale="yes" interactive="yes"/>
+			<image rect="1,1,-2,-2" name="hash_fg" src="hash" scale="yes"/>
+		    </group>
+		</layout>
+	    </layout>
+	</rect>
+	<rect name="keypad-show-container" rect="0,-24,0x24" alpha="100" brush="Base" align="hcenter" interactive="yes"  keypad="no" transient="yes" active="yes">
+	    <layout name="keypad-show" rect="0,0,0x24" orientation="horizontal" spacing="-1" align="hcenter" >
+		<image name="keypad-show" rect="1,-23,22x22" src="default/dialerbutton" onclick="src=default/dialerbuttonp;color=Highlight" interactive="no" keypad="no" scale="yes"/>
+	    </layout>
+	</rect>
+    </layout>
+</page>

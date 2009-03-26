@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QWhereaboutsCoordinate Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QWhereaboutsCoordinate Class Reference<br /><span class="small-subtitle">[<a href="qtlocationmodule.html">QtLocationModule</a>]</span>
+</h1>
+<p>The QWhereaboutsCoordinate class contains a geographical coordinate. <a href="#details">More...</a></p>
+<pre>    #include &lt;QWhereaboutsCoordinate&gt;</pre><ul>
+<li><a href="qwhereaboutscoordinate-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">CoordinateFormat</a></b> { DecimalDegrees, DecimalDegreesWithHemisphere, DegreesMinutes, DegreesMinutesWithHemisphere, DegreesMinutesSeconds, DegreesMinutesSecondsWithHemisphere }</li>
+<li><div class="fn"/>enum <b><a href="qwhereaboutscoordinate.html#CoordinateType-enum">CoordinateType</a></b> { InvalidCoordinate, Coordinate2D, Coordinate3D }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qwhereaboutscoordinate.html#QWhereaboutsCoordinate">QWhereaboutsCoordinate</a></b> ()</li>
+<li><div class="fn"/><b><a href="qwhereaboutscoordinate.html#QWhereaboutsCoordinate-2">QWhereaboutsCoordinate</a></b> ( double <i>latitude</i>, double <i>longitude</i> )</li>
+<li><div class="fn"/><b><a href="qwhereaboutscoordinate.html#QWhereaboutsCoordinate-3">QWhereaboutsCoordinate</a></b> ( double <i>latitude</i>, double <i>longitude</i>, double <i>altitude</i> )</li>
+<li><div class="fn"/><b><a href="qwhereaboutscoordinate.html#QWhereaboutsCoordinate-4">QWhereaboutsCoordinate</a></b> ( const QWhereaboutsCoordinate &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qwhereaboutscoordinate.html#dtor.QWhereaboutsCoordinate">~QWhereaboutsCoordinate</a></b> ()</li>
+<li><div class="fn"/>double <b><a href="qwhereaboutscoordinate.html#altitude">altitude</a></b> () const</li>
+<li><div class="fn"/>qreal <b><a href="qwhereaboutscoordinate.html#azimuthTo">azimuthTo</a></b> ( const QWhereaboutsCoordinate &amp; <i>other</i> )</li>
+<li><div class="fn"/>qreal <b><a href="qwhereaboutscoordinate.html#distanceTo">distanceTo</a></b> ( const QWhereaboutsCoordinate &amp; <i>other</i> )</li>
+<li><div class="fn"/>bool <b><a href="qwhereaboutscoordinate.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>double <b><a href="qwhereaboutscoordinate.html#latitude">latitude</a></b> () const</li>
+<li><div class="fn"/>double <b><a href="qwhereaboutscoordinate.html#longitude">longitude</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qwhereaboutscoordinate.html#setAltitude">setAltitude</a></b> ( double <i>altitude</i> )</li>
+<li><div class="fn"/>void <b><a href="qwhereaboutscoordinate.html#setLatitude">setLatitude</a></b> ( double <i>latitude</i> )</li>
+<li><div class="fn"/>void <b><a href="qwhereaboutscoordinate.html#setLongitude">setLongitude</a></b> ( double <i>longitude</i> )</li>
+<li><div class="fn"/>QString <b><a href="qwhereaboutscoordinate.html#toString">toString</a></b> ( CoordinateFormat <i>format</i> = DegreesMinutesSecondsWithHemisphere ) const</li>
+<li><div class="fn"/>CoordinateType <b><a href="qwhereaboutscoordinate.html#type">type</a></b> () const</li>
+<li><div class="fn"/>QWhereaboutsCoordinate &amp; <b><a href="qwhereaboutscoordinate.html#operator-eq">operator=</a></b> ( const QWhereaboutsCoordinate &amp; <i>other</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QWhereaboutsCoordinate class contains a geographical coordinate.</p>
+<p>A QWhereaboutsCoordinate has a latitude and longitude, and optionally, an altitude.</p>
+<p>Use <a href="qwhereaboutscoordinate.html#type">type</a>() to determine whether a coordinate is a 2D coordinate (has latitude and longitude only) or 3D coordinate (has latitude, longitude and altitude). Use <a href="qwhereaboutscoordinate.html#distanceTo">distanceTo</a>() and <a href="qwhereaboutscoordinate.html#azimuthTo">azimuthTo</a>() to calculate the distance and bearing between coordinates.</p>
+<p>See also <a href="qwhereabouts.html">QWhereabouts</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="CoordinateFormat-enum"></a>enum QWhereaboutsCoordinate::CoordinateFormat</h3>
+<p>Defines the possible formatting options for <a href="qwhereaboutscoordinate.html#toString">toString</a>().</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::DecimalDegrees</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Returns a string representation of the coordinates in decimal degrees format.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::DecimalDegreesWithHemisphere</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Returns a string representation of the coordinates in decimal degrees format, using 'N', 'S', 'E' or 'W' to indicate the hemispheres of the coordinates.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::DegreesMinutes</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">Returns a string representation of the coordinates in degrees-minutes format.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::DegreesMinutesWithHemisphere</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Returns a string representation of the coordinates in degrees-minutes format, using 'N', 'S', 'E' or 'W' to indicate the hemispheres of the coordinates.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::DegreesMinutesSeconds</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Returns a string representation of the coordinates in degrees-minutes-seconds format.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::DegreesMinutesSecondsWithHemisphere</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">Returns a string representation of the coordinates in degrees-minutes-seconds format, using 'N', 'S', 'E' or 'W' to indicate the hemispheres of the coordinates.</td></tr>
+</table></p>
+<p>See also <a href="qwhereaboutscoordinate.html#toString">toString</a>().</p>
+<h3 class="fn"><a name="CoordinateType-enum"></a>enum QWhereaboutsCoordinate::CoordinateType</h3>
+<p>Defines the possible types for a coordinate.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::InvalidCoordinate</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The coordinate is neither a 2D nor 3D coordinate.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::Coordinate2D</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The coordinate has valid latitude and longitude values.</td></tr>
+<tr><td valign="top"><tt>QWhereaboutsCoordinate::Coordinate3D</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The coordinate has valid latitude, longitude and altitude values.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QWhereaboutsCoordinate"></a>QWhereaboutsCoordinate::QWhereaboutsCoordinate ()</h3>
+<p>Constructs a coordinate. The coordinate will be invalid until <a href="qwhereaboutscoordinate.html#setLatitude">setLatitude</a>() and <a href="qwhereaboutscoordinate.html#setLongitude">setLongitude</a>() have been called.</p>
+<h3 class="fn"><a name="QWhereaboutsCoordinate-2"></a>QWhereaboutsCoordinate::QWhereaboutsCoordinate ( double <i>latitude</i>, double <i>longitude</i> )</h3>
+<p>Constructs a coordinate with the given <i>latitude</i> and <i>longitude</i>.</p>
+<h3 class="fn"><a name="QWhereaboutsCoordinate-3"></a>QWhereaboutsCoordinate::QWhereaboutsCoordinate ( double <i>latitude</i>, double <i>longitude</i>, double <i>altitude</i> )</h3>
+<p>Constructs a coordinate with the given <i>latitude</i>, <i>longitude</i> and <i>altitude</i>.</p>
+<h3 class="fn"><a name="QWhereaboutsCoordinate-4"></a>QWhereaboutsCoordinate::QWhereaboutsCoordinate ( const QWhereaboutsCoordinate &amp; <i>other</i> )</h3>
+<p>Constructs a coordinate from the contents of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QWhereaboutsCoordinate"></a>QWhereaboutsCoordinate::~QWhereaboutsCoordinate ()</h3>
+<p>Destroys the coordinate object.</p>
+<h3 class="fn"><a name="altitude"></a>double QWhereaboutsCoordinate::altitude () const</h3>
+<p>Returns the altitude (meters above sea level).</p>
+<p>See also <a href="qwhereaboutscoordinate.html#setAltitude">setAltitude</a>().</p>
+<h3 class="fn"><a name="azimuthTo"></a><a href="qtglobal.html#qreal-typedef">qreal</a> QWhereaboutsCoordinate::azimuthTo ( const QWhereaboutsCoordinate &amp; <i>other</i> )</h3>
+<p>Returns the azimuth (or bearing) in degrees from this coordinate to the coordinate specified by <i>other</i>. Altitude is not used in the calculation.</p>
+<p>The calculation does not take the aspects of the geoid into account.</p>
+<p>Returns 0 if the type of this coordinate or the type of <i>other</i> is <a href="qwhereaboutscoordinate.html#CoordinateType-enum">QWhereaboutsCoordinate::InvalidCoordinate</a>.</p>
+<h3 class="fn"><a name="distanceTo"></a><a href="qtglobal.html#qreal-typedef">qreal</a> QWhereaboutsCoordinate::distanceTo ( const QWhereaboutsCoordinate &amp; <i>other</i> )</h3>
+<p>Returns the distance (in meters) from this coordinate to the coordinate specified by <i>other</i>. Altitude is not used in the calculation.</p>
+<p>This calculation returns the great-circle distance between the two coordinates, without taking the aspects of the geoid into account.</p>
+<p>Returns 0 if the type of this coordinate or the type of <i>other</i> is <a href="qwhereaboutscoordinate.html#CoordinateType-enum">QWhereaboutsCoordinate::InvalidCoordinate</a>.</p>
+<h3 class="fn"><a name="isNull"></a>bool QWhereaboutsCoordinate::isNull () const</h3>
+<p>Returns <tt>true</tt> if no attributes have been set for this coordinate.</p>
+<h3 class="fn"><a name="latitude"></a>double QWhereaboutsCoordinate::latitude () const</h3>
+<p>Returns the latitude, in decimal degrees. A positive latitude indicates the Northern Hemisphere, and a negative latitude indicates the Southern Hemisphere.</p>
+<p>See also <a href="qwhereaboutscoordinate.html#setLatitude">setLatitude</a>().</p>
+<h3 class="fn"><a name="longitude"></a>double QWhereaboutsCoordinate::longitude () const</h3>
+<p>Returns the longitude, in decimal degrees. A positive longitude indicates the Eastern Hemisphere, and a negative longitude indicates the Western Hemisphere.</p>
+<p>See also <a href="qwhereaboutscoordinate.html#setLongitude">setLongitude</a>().</p>
+<h3 class="fn"><a name="setAltitude"></a>void QWhereaboutsCoordinate::setAltitude ( double <i>altitude</i> )</h3>
+<p>Sets the altitude (meters above sea level) to <i>altitude</i>.</p>
+<p>See also <a href="qwhereaboutscoordinate.html#altitude">altitude</a>().</p>
+<h3 class="fn"><a name="setLatitude"></a>void QWhereaboutsCoordinate::setLatitude ( double <i>latitude</i> )</h3>
+<p>Sets the latitude (in decimal degrees) to <i>latitude</i>. The value should be in the WGS84 datum.</p>
+<p>To be valid, the latitude must be between -90 to 90 inclusive.</p>
+<p>See also <a href="qwhereaboutscoordinate.html#latitude">latitude</a>().</p>
+<h3 class="fn"><a name="setLongitude"></a>void QWhereaboutsCoordinate::setLongitude ( double <i>longitude</i> )</h3>
+<p>Sets the longitude (in decimal degrees) to <i>longitude</i>. The value should be in the WGS84 datum.</p>
+<p>To be valid, the longitude must be between -180 to 180 inclusive.</p>
+<p>See also <a href="qwhereaboutscoordinate.html#longitude">longitude</a>().</p>
+<h3 class="fn"><a name="toString"></a><a href="qstring.html">QString</a> QWhereaboutsCoordinate::toString ( <a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">CoordinateFormat</a> <i>format</i> = DegreesMinutesSecondsWithHemisphere ) const</h3>
+<p>Returns this coordinate as a string in the specified <i>format</i>.</p>
+<p>For example, if this coordinate latitude-longitude coordinates of (-27.46758°, 153.027892°), these are the strings that are returned depending on <i>format</i>:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th><i>format</i> value</th><th>Returned string</th></tr></thead>
+<tr valign="top" class="odd"><td><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">DecimalDegrees</a></td><td>-27.46758°, 153.02789°</td></tr>
+<tr valign="top" class="even"><td><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">DecimalDegreesWithHemisphere</a></td><td>27.46758° S, 153.02789° E</td></tr>
+<tr valign="top" class="odd"><td><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">DegreesMinutes</a></td><td>-27° 28.054', 153° 1.673'</td></tr>
+<tr valign="top" class="even"><td><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">DegreesMinutesWithHemisphere</a></td><td>27° 28.054 S', 153° 1.673' E</td></tr>
+<tr valign="top" class="odd"><td><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">DegreesMinutesSeconds</a></td><td>-27° 28' 3.2&quot;, 153° 1' 40.4&quot;</td></tr>
+<tr valign="top" class="even"><td><a href="qwhereaboutscoordinate.html#CoordinateFormat-enum">DegreesMinutesSecondsWithHemisphere</a></td><td>27° 28' 3.2&quot; S, 153° 1' 40.4&quot; E</td></tr>
+</table></p>
+<h3 class="fn"><a name="type"></a><a href="qwhereaboutscoordinate.html#CoordinateType-enum">CoordinateType</a> QWhereaboutsCoordinate::type () const</h3>
+<p>Returns the type of this coordinate.</p>
+<h3 class="fn"><a name="operator-eq"></a>QWhereaboutsCoordinate &amp; QWhereaboutsCoordinate::operator= ( const QWhereaboutsCoordinate &amp; <i>other</i> )</h3>
+<p>Assigns <i>other</i> to this coordinate and returns a reference to this coordinate.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

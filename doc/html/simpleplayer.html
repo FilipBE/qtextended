@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Simple Media Player</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Simple Media Player<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="simpleplayer-basicmedia-cpp.html">simpleplayer/basicmedia.cpp</a></li>
+<li><a href="simpleplayer-basicmedia-h.html">simpleplayer/basicmedia.h</a></li>
+<li><a href="simpleplayer-simpleplayer-cpp.html">simpleplayer/simpleplayer.cpp</a></li>
+<li><a href="simpleplayer-simpleplayer-h.html">simpleplayer/simpleplayer.h</a></li>
+<li><a href="simpleplayer-simpleplayerbase-ui.html">simpleplayer/simpleplayerbase.ui</a></li>
+<li><a href="simpleplayer-main-cpp.html">simpleplayer/main.cpp</a></li>
+<li><a href="simpleplayer-qbuild-pro.html">simpleplayer/qbuild.pro</a></li>
+</ul>
+<p>The Simple Media Player application tutorial shows how to use the Qt Extended Media API to create a simple Media player application. It also demonstrates using a <a href="qdocumentselectordialog.html">QDocumentSelectorDialog</a> to get audio/video selections from the document system.</p>
+<p>The Simple Player application displays a list of audio/video files. When a file is selected the the Media API is called and the media is played.</p>
+<p>Firstly a container for all player objects is created.</p>
+<pre>    context = new QMediaContentContext(this);</pre>
+<p>Then a watch is added for media control.</p>
+<pre>    controlNotifier = new QMediaControlNotifier(QMediaControl::name(), this);
+    connect(controlNotifier, SIGNAL(valid()), this, SLOT(mediaControlValid()));
+    context-&gt;addObject(controlNotifier);</pre>
+<p>Then a watch is added for the video as well.</p>
+<pre>    videoNotifier = new QMediaControlNotifier(QMediaVideoControl::name(), this);
+    connect(videoNotifier, SIGNAL(valid()), this, SLOT(mediaVideoControlValid()));
+    context-&gt;addObject(videoNotifier);</pre>
+<p>Once you have a file to play.</p>
+<pre>    QContent content(filename);
+    m_mediaContent = new QMediaContent(content);
+    context-&gt;setMediaContent(m_mediaContent);</pre>
+<p>The Media API will emit the valid signal that you have attached to mediaControlValid()</p>
+<pre>    m_control = new QMediaControl(m_mediaContent);
+    m_control-&gt;start();</pre>
+<p>If it has video it will then emit the valid signal you have attached to mediaVideoControlValid()</p>
+<pre>    m_video = new QMediaVideoControl(m_mediaContent);
+    videoWidget = m_video-&gt;createVideoWidget(this);
+    videoWidget-&gt;setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    layout-&gt;addWidget(videoWidget);</pre>
+<a name="basicmedia-class-definition"></a>
+<h2>BasicMedia Class Definition</h2>
+<pre>    class BasicMedia : public QWidget
+    {
+    Q_OBJECT
+
+    public:
+        BasicMedia(QWidget* parent);
+        ~BasicMedia();
+
+        void stop();
+        void start();
+        void setFilename(QString filename);
+        void volumeup();
+        void volumedown();
+
+    protected:
+        void keyReleaseEvent( QKeyEvent * );
+
+    private:
+        QMediaContentContext* context;
+        QMediaContent*        m_mediaContent;
+        QMediaControl*        m_control;
+        QMediaVideoControl*   m_video;
+
+        int  m_state;
+        int  volume;
+
+    private slots:
+        void mediaVideoControlValid();
+        void mediaControlValid();
+
+    private:
+        QWidget*     videoWidget;
+        QString      vfile;
+        QVBoxLayout* layout;
+    };</pre>
+<p>The BasicMedia class is used by the simpleplayerbase.ui and is called PlayScreen.</p>
+<a name="simpleplayer-class-definition"></a>
+<h2>SimplePlayer Class Definition</h2>
+<p>The SimplePlayer class sets up the ui,buttons and uses <a href="qdocumentselectordialog.html">QDocumentSelectorDialog</a> to get access to the Document System. For more see the following classes called from basicmedia.cpp <a href="qmediacontrolnotifier.html">QMediaControlNotifier</a> <a href="qmediacontentcontext.html">QMediaContentContext</a> <a href="qmediavideocontrol.html">QMediaVideoControl</a> <a href="qmediacontent.html">QMediaContent</a> <a href="qmediacontrol.html">QMediaControl</a></p>
+<a name="building-the-simple-media-player-application"></a>
+<h2>Building the Simple Media Player application</h2>
+<p>To install and run the demonstration, carry out the following steps.</p>
+<ol type="1">
+<li>Create a new directory (e.g&#x2e; $HOME/src/simpleplayer) and copy all the example files to that directory.<pre>        mkdir $HOME/src/simpleplayer
+        cd $HOME/src/simpleplayer
+        cp -r &lt;qt-extended-source-directory&gt;/examples/simpleplayer/* .
+        chmod +w *</pre>
+</li>
+<li>Build the new application.<pre>        export QPEDIR=&lt;qt-extended-build-directory&gt;
+        $QPEDIR/bin/qbuild
+        $QPEDIR/bin/qbuild image</pre>
+</li>
+<li>Run Qt Extended.<pre>        $QPEDIR/bin/runqtopia</pre>
+</li>
+<li>Go into the list of Applications and scroll down until you find the <tt>Simple Player</tt> application.</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QFileSystemFilter Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QFileSystemFilter Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QFileSystemFilter class is used to restrict the available filesystems returned from <a href="qstoragemetainfo.html">QStorageMetaInfo</a>. <a href="#details">More...</a></p>
+<pre>    #include &lt;QFileSystemFilter&gt;</pre><ul>
+<li><a href="qfilesystemfilter-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qfilesystemfilter.html#FilterOption-enum">FilterOption</a></b> { Set, NotSet, Either }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qfilesystemfilter.html#QFileSystemFilter">QFileSystemFilter</a></b> ()</li>
+<li><div class="fn"/>virtual <b><a href="qfilesystemfilter.html#dtor.QFileSystemFilter">~QFileSystemFilter</a></b> ()</li>
+<li><div class="fn"/>virtual bool <b><a href="qfilesystemfilter.html#filter">filter</a></b> ( QFileSystem * <i>fs</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QFileSystemFilter class is used to restrict the available filesystems returned from <a href="qstoragemetainfo.html">QStorageMetaInfo</a>.</p>
+<p>Extending the filter class is relatively simple.</p>
+<pre>    class WriteableFileSystemFilter : public QFileSystemFilter
+    {
+    public:
+        WriteableFileSystemFilter()
+            : writable( QFileSystemFilter::Either )
+        {
+        }
+
+        bool filter( QFileSystem *fs )
+        {
+            if ( (writable == QFileSystemFilter::Set &amp;&amp; !fs-&gt;isWritable()) ||
+                 (writable == QFileSystemFilter::NotSet &amp;&amp; fs-&gt;isWritable()) )
+                return false;
+            else
+                return QFileSystemFilter::filter(fs);
+        }
+
+        QFileSystemFilter::FilterOption writable;
+    };</pre>
+<p>See also <a href="qstoragemetainfo.html">QStorageMetaInfo</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="FilterOption-enum"></a>enum QFileSystemFilter::FilterOption</h3>
+<p>This enum is used to describe the filter conditions for file systems.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QFileSystemFilter::Set</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">The filter matches if the connected condition is set.</td></tr>
+<tr><td valign="top"><tt>QFileSystemFilter::NotSet</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The filter matches if the connected condition is not set</td></tr>
+<tr><td valign="top"><tt>QFileSystemFilter::Either</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">The filter always matches.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QFileSystemFilter"></a>QFileSystemFilter::QFileSystemFilter ()</h3>
+<p>Constructor that initializes the filter to allow any filesystem.</p>
+<h3 class="fn"><a name="dtor.QFileSystemFilter"></a>QFileSystemFilter::~QFileSystemFilter ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destructor</p>
+<h3 class="fn"><a name="filter"></a>bool QFileSystemFilter::filter ( <a href="qfilesystem.html">QFileSystem</a> * <i>fs</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns true if the <i>fs</i> matches the filter; otherwise returns false.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

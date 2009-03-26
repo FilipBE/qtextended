@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Dependencies</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Dependencies<br /><span class="subtitle"></span>
+</h1>
+<p>The Qt Extended build system has dependency information embedded into the qbuild.pro files. This makes it possible to build everything in the most efficient way as well as giving us flexibility. For example, a library can be renamed with a single change in a single file. Without the dependency system, many files would need to be changed. The dependency information also gives us the ability to graph interdependencies between projects as well as dependencies on external libraries.</p>
+<p><b>Do not put LIBS+= or INCLUDEPATH+= lines in your qbuild.pro files. Use MODULES instead.</b></p>
+<p>This applies even if you need to depend on something that isn't built (ie. part of the system). Simply create a stub project for it with .EVAL commands. This keeps our dependencies clearly defined.</p>
+<p>If your app can handle a missing dependency you should do something like this:</p>
+<pre>    contains(PROJECTS,mydep):CONFIG+=enable_mydep
+    enable_mydep:depends(mydep)
+    else:DEFINES+=QTOPIA_NO_MYDEP</pre>
+<p>Use the presence or absence of <tt>enable_mydep</tt> in the qbuild.pro file (eg. disable whole files that use the depdendency). Use the presence or absence of <tt>QTOPIA_NO_MYDEP</tt> to handle code that interfaces with the dependency.</p>
+<p>See also <a href="overviews.html">Overviews</a>, <a href="var-projects-1.html">PROJECTS</a>, <a href="var-config-1.html">CONFIG</a>, and <a href="var-defines-1.html">DEFINES</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

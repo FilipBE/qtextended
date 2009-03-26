@@ -1,0 +1,48 @@
+
+The "modemsanity" test checks that the GSM modem is acting in a reasonably
+sane manner with respect to common telephony operations.  It will report
+deviations from the behavior that Qtopia expects.  Such deviations will
+typically need to be addressed in the modem vendor plugin.
+
+By default, the phone simulator is checked for sanity.  To test an actual
+modem, the "Settings/Trolltech/ModemSanity.conf" file must be provided to
+configure the tests to be performed.  The following example demonstrates
+how a wavecom modem might be configured for testing:
+
+    [Modem]
+    Device=/dev/ttyS0:115200
+    Vendor=wavecom
+    Multiplexing=true
+
+    [Security]
+    Pin=1234
+    Pin2=4321
+
+    [Operator]
+    Name=Foobar
+
+Modem/Device
+    Name of the serial device to use to connect to the modem.
+    Default is "sim:localhost".
+
+Modem/Vendor
+    Name of the vendor, which indicates which multiplexer and
+    phonevendor plugins to load.  Use an empty string to auto-detect.
+    Default is an emtpy string.
+
+Modem/Multiplexing
+    Set to true or false to indicate whether multiplexing should
+    be used on the modem.  Default is true.
+
+Security/Pin
+    Value to use when the modem requests SIM PIN.  Default is empty,
+    indicating that no SIM PIN is expected.
+
+Security/Pin2
+    Value to use when the modem requests SIM PIN2.  Default is empty,
+    indicating that no SIM PIN2 is expected.
+
+Operator/Name
+    Name of the network operator that is expected upon network registration.
+    The default value of empty indicates that the operator name should not
+    be checked.

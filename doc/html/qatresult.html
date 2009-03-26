@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAtResult Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAtResult Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QAtResult class provides access to the results of AT modem commands and unsolicited notifications <a href="#details">More...</a></p>
+<pre>    #include &lt;QAtResult&gt;</pre><ul>
+<li><a href="qatresult-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qatresult-userdata.html">UserData</a></b></li>
+<li><div class="fn"/>enum <b><a href="qatresult.html#ResultCode-enum">ResultCode</a></b> { OK, Connect, NoCarrier, Error, ..., UnknownError }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qatresult.html#QAtResult">QAtResult</a></b> ()</li>
+<li><div class="fn"/><b><a href="qatresult.html#QAtResult-2">QAtResult</a></b> ( const QAtResult &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="qatresult.html#dtor.QAtResult">~QAtResult</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qatresult.html#append">append</a></b> ( const QString &amp; <i>value</i> )</li>
+<li><div class="fn"/>QString <b><a href="qatresult.html#content">content</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qatresult.html#ok">ok</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qatresult.html#result">result</a></b> () const</li>
+<li><div class="fn"/>QAtResult::ResultCode <b><a href="qatresult.html#resultCode">resultCode</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qatresult.html#setContent">setContent</a></b> ( const QString &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qatresult.html#setResult">setResult</a></b> ( const QString &amp; <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qatresult.html#setResultCode">setResultCode</a></b> ( QAtResult::ResultCode <i>value</i> )</li>
+<li><div class="fn"/>void <b><a href="qatresult.html#setUserData">setUserData</a></b> ( QAtResult::UserData * <i>value</i> )</li>
+<li><div class="fn"/>QAtResult::UserData * <b><a href="qatresult.html#userData">userData</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qatresult.html#verboseResult">verboseResult</a></b> () const</li>
+<li><div class="fn"/>QAtResult &amp; <b><a href="qatresult.html#operator-eq">operator=</a></b> ( const QAtResult &amp; <i>other</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAtResult class provides access to the results of AT modem commands and unsolicited notifications</p>
+<p>AT commands that are sent to a modem with <a href="qatchat.html#chat">QAtChat::chat</a>() result in a QAtResult object being made available to describe the result of the command when it completes.</p>
+<p>The <a href="qatresult.html#resultCode">resultCode</a>() method can be used to determine the exact cause of an AT modem command failure. The <a href="qatresult.html#content">content</a>() method can be used to access the response content that was returned from the command. For complex response contents, the <a href="qatresultparser.html">QAtResultParser</a> class can be used to decode the response.</p>
+<p>See also <a href="qatchat.html">QAtChat</a> and <a href="qatresultparser.html">QAtResultParser</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="ResultCode-enum"></a>enum QAtResult::ResultCode</h3>
+<p>Result codes for AT modem commands.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QAtResult::OK</tt></td><td align="center" valign="top"><tt>-1</tt></td><td valign="top">Command responded with <tt>OK</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::Connect</tt></td><td align="center" valign="top"><tt>-2</tt></td><td valign="top">Command responded with <tt>CONNECT</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::NoCarrier</tt></td><td align="center" valign="top"><tt>-3</tt></td><td valign="top">Command responded with <tt>NO CARRIER</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::Error</tt></td><td align="center" valign="top"><tt>-4</tt></td><td valign="top">Command responded with <tt>ERROR</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::NoDialtone</tt></td><td align="center" valign="top"><tt>-5</tt></td><td valign="top">Command responded with <tt>NO DIALTONE</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::Busy</tt></td><td align="center" valign="top"><tt>-6</tt></td><td valign="top">Command responded with <tt>BUSY</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::NoAnswer</tt></td><td align="center" valign="top"><tt>-7</tt></td><td valign="top">Command responded with <tt>NO ANSWER</tt></td></tr>
+<tr><td valign="top"><tt>QAtResult::Dead</tt></td><td align="center" valign="top"><tt>-8</tt></td><td valign="top">The link is dead</td></tr>
+<tr><td valign="top"><tt>QAtResult::PhoneFailure</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">GSM 27.07 code 0: phone failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoConnectionToPhone</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">GSM 27.07 code 1: no connection to phone</td></tr>
+<tr><td valign="top"><tt>QAtResult::PhoneAdapterLinkReserved</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">GSM 27.07 code 2: phone-adaptor link reserved</td></tr>
+<tr><td valign="top"><tt>QAtResult::OperationNotAllowed</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">GSM 27.07 code 3: operation not allowed</td></tr>
+<tr><td valign="top"><tt>QAtResult::OperationNotSupported</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">GSM 27.07 code 4: operation not supported</td></tr>
+<tr><td valign="top"><tt>QAtResult::PhSimPinRequired</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">GSM 27.07 code 5: PH-SIM PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::PhFSimPinRequired</tt></td><td align="center" valign="top"><tt>6</tt></td><td valign="top">GSM 27.07 code 6: PH-FSIM PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::PhFSimPukRequired</tt></td><td align="center" valign="top"><tt>7</tt></td><td valign="top">GSM 27.07 code 7: PH-FSIM PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimNotInserted</tt></td><td align="center" valign="top"><tt>10</tt></td><td valign="top">GSM 27.07 code 10: SIM not inserted</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimPinRequired</tt></td><td align="center" valign="top"><tt>11</tt></td><td valign="top">GSM 27.07 code 11: SIM PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimPukRequired</tt></td><td align="center" valign="top"><tt>12</tt></td><td valign="top">GSM 27.07 code 12: SIM PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimFailure</tt></td><td align="center" valign="top"><tt>13</tt></td><td valign="top">GSM 27.07 code 13: SIM failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimBusy</tt></td><td align="center" valign="top"><tt>14</tt></td><td valign="top">GSM 27.07 code 14: SIM busy</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimWrong</tt></td><td align="center" valign="top"><tt>15</tt></td><td valign="top">GSM 27.07 code 15: SIM wrong</td></tr>
+<tr><td valign="top"><tt>QAtResult::IncorrectPassword</tt></td><td align="center" valign="top"><tt>16</tt></td><td valign="top">GSM 27.07 code 16: incorrect password</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimPin2Required</tt></td><td align="center" valign="top"><tt>17</tt></td><td valign="top">GSM 27.07 code 17: SIM PIN2 required</td></tr>
+<tr><td valign="top"><tt>QAtResult::SimPuk2Required</tt></td><td align="center" valign="top"><tt>18</tt></td><td valign="top">GSM 27.07 code 18: SIM PUK2 required</td></tr>
+<tr><td valign="top"><tt>QAtResult::MemoryFull</tt></td><td align="center" valign="top"><tt>20</tt></td><td valign="top">GSM 27.07 code 20: memory full</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidIndex</tt></td><td align="center" valign="top"><tt>21</tt></td><td valign="top">GSM 27.07 code 21: invalid index</td></tr>
+<tr><td valign="top"><tt>QAtResult::NotFound</tt></td><td align="center" valign="top"><tt>22</tt></td><td valign="top">GSM 27.07 code 22: not found</td></tr>
+<tr><td valign="top"><tt>QAtResult::MemoryFailure</tt></td><td align="center" valign="top"><tt>23</tt></td><td valign="top">GSM 27.07 code 23: memory failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::TextStringTooLong</tt></td><td align="center" valign="top"><tt>24</tt></td><td valign="top">GSM 27.07 code 24: text string too long</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidCharsInTextString</tt></td><td align="center" valign="top"><tt>25</tt></td><td valign="top">GSM 27.07 code 25: invalid characters in text string</td></tr>
+<tr><td valign="top"><tt>QAtResult::DialStringTooLong</tt></td><td align="center" valign="top"><tt>26</tt></td><td valign="top">GSM 27.07 code 26: dial string too long</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidCharsInDialString</tt></td><td align="center" valign="top"><tt>27</tt></td><td valign="top">GSM 27.07 code 27: invalid characters in dial string</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoNetworkService</tt></td><td align="center" valign="top"><tt>30</tt></td><td valign="top">GSM 27.07 code 30: no network service</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetworkTimeout</tt></td><td align="center" valign="top"><tt>31</tt></td><td valign="top">GSM 27.07 code 31: network timeout</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetworkNotAllowed</tt></td><td align="center" valign="top"><tt>32</tt></td><td valign="top">GSM 27.07 code 32: network not allowed - emergency calls only</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetPersPinRequired</tt></td><td align="center" valign="top"><tt>40</tt></td><td valign="top">GSM 27.07 code 40: network personalization PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetPersPukRequired</tt></td><td align="center" valign="top"><tt>41</tt></td><td valign="top">GSM 27.07 code 41: network personalization PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetSubsetPersPinRequired</tt></td><td align="center" valign="top"><tt>42</tt></td><td valign="top">GSM 27.07 code 42: network subset personalization PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetSubsetPersPukRequired</tt></td><td align="center" valign="top"><tt>43</tt></td><td valign="top">GSM 27.07 code 43: network subset personalization PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::ServProvPersPinRequired</tt></td><td align="center" valign="top"><tt>44</tt></td><td valign="top">GSM 27.07 code 44: service provider personalization PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::ServProvPersPukRequired</tt></td><td align="center" valign="top"><tt>45</tt></td><td valign="top">GSM 27.07 code 45: service provider personalization PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::CorpPersPinRequired</tt></td><td align="center" valign="top"><tt>46</tt></td><td valign="top">GSM 27.07 code 46: corporate personalization PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::CorpPersPukRequired</tt></td><td align="center" valign="top"><tt>47</tt></td><td valign="top">GSM 27.07 code 47: corporate personalization PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::HiddenKeyRequired</tt></td><td align="center" valign="top"><tt>48</tt></td><td valign="top">GSM 27.07 code 48: hidden key required</td></tr>
+<tr><td valign="top"><tt>QAtResult::Unknown</tt></td><td align="center" valign="top"><tt>100</tt></td><td valign="top">GSM 27.07 code 100: unknown</td></tr>
+<tr><td valign="top"><tt>QAtResult::IllegalMS</tt></td><td align="center" valign="top"><tt>103</tt></td><td valign="top">GSM 27.07 code 103: Illegal MS</td></tr>
+<tr><td valign="top"><tt>QAtResult::IllegalME</tt></td><td align="center" valign="top"><tt>106</tt></td><td valign="top">GSM 27.07 code 106: Illegal ME</td></tr>
+<tr><td valign="top"><tt>QAtResult::GPRSServicesNotAllowed</tt></td><td align="center" valign="top"><tt>107</tt></td><td valign="top">GSM 27.07 code 107: GPRS services not allowed</td></tr>
+<tr><td valign="top"><tt>QAtResult::PLMNNotAllowed</tt></td><td align="center" valign="top"><tt>111</tt></td><td valign="top">GSM 27.07 code 111: PLMN not allowed</td></tr>
+<tr><td valign="top"><tt>QAtResult::LocationAreaNotAllowed</tt></td><td align="center" valign="top"><tt>112</tt></td><td valign="top">GSM 27.07 code 112: Location area not allowed</td></tr>
+<tr><td valign="top"><tt>QAtResult::RoamingNotAllowed</tt></td><td align="center" valign="top"><tt>113</tt></td><td valign="top">GSM 27.07 code 113: Roaming not allowed in this location area</td></tr>
+<tr><td valign="top"><tt>QAtResult::ServiceOptionNotSupported</tt></td><td align="center" valign="top"><tt>132</tt></td><td valign="top">GSM 27.07 code 132: service option not supported</td></tr>
+<tr><td valign="top"><tt>QAtResult::ServiceOptionNotSubscribed</tt></td><td align="center" valign="top"><tt>133</tt></td><td valign="top">GSM 27.07 code 133: service option not subscribed</td></tr>
+<tr><td valign="top"><tt>QAtResult::ServiceOptionOutOfOrder</tt></td><td align="center" valign="top"><tt>134</tt></td><td valign="top">GSM 27.07 code 134: service option temporarily out of order</td></tr>
+<tr><td valign="top"><tt>QAtResult::UnspecifiedGPRSError</tt></td><td align="center" valign="top"><tt>148</tt></td><td valign="top">GSM 27.07 code 148: unspecified GPRS error</td></tr>
+<tr><td valign="top"><tt>QAtResult::PDPAuthenticationFailure</tt></td><td align="center" valign="top"><tt>149</tt></td><td valign="top">GSM 27.07 code 149: PDP authentication failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidMobileClass</tt></td><td align="center" valign="top"><tt>150</tt></td><td valign="top">GSM 27.07 code 150: invalid mobile class</td></tr>
+<tr><td valign="top"><tt>QAtResult::VBSVGCSNotSupported</tt></td><td align="center" valign="top"><tt>151</tt></td><td valign="top">GSM 27.07 code 151: VBS/VGCS not supported by the network</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoServiceSubscriptionOnSim</tt></td><td align="center" valign="top"><tt>152</tt></td><td valign="top">GSM 27.07 code 152: No service subscription on SIM</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoSubscriptionForGroupId</tt></td><td align="center" valign="top"><tt>153</tt></td><td valign="top">GSM 27.07 code 153: No subscription for group ID</td></tr>
+<tr><td valign="top"><tt>QAtResult::GroupIdNotActivatedOnSim</tt></td><td align="center" valign="top"><tt>154</tt></td><td valign="top">GSM 27.07 code 154: Group Id not activated on SIM</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoMatchingNotification</tt></td><td align="center" valign="top"><tt>155</tt></td><td valign="top">GSM 27.07 code 155: No matching notification</td></tr>
+<tr><td valign="top"><tt>QAtResult::VBSVGCSCallAlreadyPresent</tt></td><td align="center" valign="top"><tt>156</tt></td><td valign="top">GSM 27.07 code 156: VBS/VGCS call already present</td></tr>
+<tr><td valign="top"><tt>QAtResult::Congestion</tt></td><td align="center" valign="top"><tt>157</tt></td><td valign="top">GSM 27.07 code 157: Congestion</td></tr>
+<tr><td valign="top"><tt>QAtResult::NetworkFailure</tt></td><td align="center" valign="top"><tt>158</tt></td><td valign="top">GSM 27.07 code 158: Network failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::UplinkBusy</tt></td><td align="center" valign="top"><tt>159</tt></td><td valign="top">GSM 27.07 code 159: Uplink busy</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoAccessRightsForSimFile</tt></td><td align="center" valign="top"><tt>160</tt></td><td valign="top">GSM 27.07 code 160: No access rights for SIM file</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoSubscriptionForPriority</tt></td><td align="center" valign="top"><tt>161</tt></td><td valign="top">GSM 27.07 code 161: No subscription for priority</td></tr>
+<tr><td valign="top"><tt>QAtResult::OperationNotApplicable</tt></td><td align="center" valign="top"><tt>162</tt></td><td valign="top">GSM 27.07 code 162: operation not applicable or not possible</td></tr>
+<tr><td valign="top"><tt>QAtResult::MEFailure</tt></td><td align="center" valign="top"><tt>300</tt></td><td valign="top">GSM 27.05 code 300: ME failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSServiceOfMEReserved</tt></td><td align="center" valign="top"><tt>301</tt></td><td valign="top">GSM 27.05 code 301: SMS service of ME reserved</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSOperationNotAllowed</tt></td><td align="center" valign="top"><tt>302</tt></td><td valign="top">GSM 27.05 code 302: operation not allowed</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSOperationNotSupported</tt></td><td align="center" valign="top"><tt>303</tt></td><td valign="top">GSM 27.05 code 303: operation not supported</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidPDUModeParameter</tt></td><td align="center" valign="top"><tt>304</tt></td><td valign="top">GSM 27.05 code 304: invalid PDU mode parameter</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidTextModeParameter</tt></td><td align="center" valign="top"><tt>305</tt></td><td valign="top">GSM 27.05 code 305: invalid text mode parameter</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimNotInserted</tt></td><td align="center" valign="top"><tt>310</tt></td><td valign="top">GSM 27.05 code 310: (U)SIM not inserted</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimPinRequired</tt></td><td align="center" valign="top"><tt>311</tt></td><td valign="top">GSM 27.05 code 311: (U)SIM PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::PHUSimPinRequired</tt></td><td align="center" valign="top"><tt>312</tt></td><td valign="top">GSM 27.05 code 312: PH-(U)SIM PIN required</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimFailure</tt></td><td align="center" valign="top"><tt>313</tt></td><td valign="top">GSM 27.05 code 313: (U)SIM failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimBusy</tt></td><td align="center" valign="top"><tt>314</tt></td><td valign="top">GSM 27.05 code 314: (U)SIM busy</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimWrong</tt></td><td align="center" valign="top"><tt>315</tt></td><td valign="top">GSM 27.05 code 315: (U)SIM wrong</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimPukRequired</tt></td><td align="center" valign="top"><tt>316</tt></td><td valign="top">GSM 27.05 code 316: (U)SIM PUK required</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimPin2Required</tt></td><td align="center" valign="top"><tt>317</tt></td><td valign="top">GSM 27.05 code 317: (U)SIM PIN2 required</td></tr>
+<tr><td valign="top"><tt>QAtResult::USimPuk2Required</tt></td><td align="center" valign="top"><tt>318</tt></td><td valign="top">GSM 27.05 code 318: (U)SIM PUK2 required</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSMemoryFailure</tt></td><td align="center" valign="top"><tt>320</tt></td><td valign="top">GSM 27.05 code 320: memory failure</td></tr>
+<tr><td valign="top"><tt>QAtResult::InvalidMemoryIndex</tt></td><td align="center" valign="top"><tt>321</tt></td><td valign="top">GSM 27.05 code 321: invalid memory index</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSMemoryFull</tt></td><td align="center" valign="top"><tt>322</tt></td><td valign="top">GSM 27.05 code 322: memory full</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSCAddressUnknown</tt></td><td align="center" valign="top"><tt>330</tt></td><td valign="top">GSM 27.05 code 330: SMSC address unknown</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSNoNetworkService</tt></td><td align="center" valign="top"><tt>331</tt></td><td valign="top">GSM 27.05 code 331: no network service</td></tr>
+<tr><td valign="top"><tt>QAtResult::SMSNetworkTimeout</tt></td><td align="center" valign="top"><tt>332</tt></td><td valign="top">GSM 27.05 code 332: network timeout</td></tr>
+<tr><td valign="top"><tt>QAtResult::NoCNMAAckExpected</tt></td><td align="center" valign="top"><tt>340</tt></td><td valign="top">GSM 27.05 code 340: no +CNMA acknowledgment expected</td></tr>
+<tr><td valign="top"><tt>QAtResult::UnknownError</tt></td><td align="center" valign="top"><tt>500</tt></td><td valign="top">GSM 27.05 code 500: unknown error</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAtResult"></a>QAtResult::QAtResult ()</h3>
+<p>Construct a new <a href="qatresult.html">QAtResult</a> object. The <a href="qatresult.html#result">result</a>() will be <tt>OK</tt>, and the <a href="qatresult.html#content">content</a>() empty.</p>
+<h3 class="fn"><a name="QAtResult-2"></a>QAtResult::QAtResult ( const QAtResult &amp; <i>other</i> )</h3>
+<p>Construct a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QAtResult"></a>QAtResult::~QAtResult ()</h3>
+<p>Destruct this <a href="qatresult.html">QAtResult</a> object.</p>
+<h3 class="fn"><a name="append"></a>void QAtResult::append ( const <a href="qstring.html">QString</a> &amp; <i>value</i> )</h3>
+<p>Append <i>value</i> to the current content, after a line terminator.</p>
+<p>See also <a href="qatresult.html#content">content</a>() and <a href="qatresult.html#setContent">setContent</a>().</p>
+<h3 class="fn"><a name="content"></a><a href="qstring.html">QString</a> QAtResult::content () const</h3>
+<p>Returns the content that was returned with an AT command's result.</p>
+<p>See also <a href="qatresult.html#setContent">setContent</a>() and <a href="qatresult.html#append">append</a>().</p>
+<h3 class="fn"><a name="ok"></a>bool QAtResult::ok () const</h3>
+<p>Returns true if this result indicates a successful command; false otherwise. Success is indicated when <a href="qatresult.html#resultCode">resultCode</a>() returns either <a href="qatresult.html#ResultCode-enum">QAtResult::OK</a> or <a href="qatresult.html#ResultCode-enum">QAtResult::Connect</a>. All other result codes indicate failure.</p>
+<p>See also <a href="qatresult.html#resultCode">resultCode</a>().</p>
+<h3 class="fn"><a name="result"></a><a href="qstring.html">QString</a> QAtResult::result () const</h3>
+<p>Returns the result line that terminated the command's response. This is usually a string such as <tt>OK</tt>, <tt>ERROR</tt>, <tt>+CME ERROR: N</tt>, and so on.</p>
+<p>The <a href="qatresult.html#resultCode">resultCode</a>() function is a better way to determine why a command failed, but sometimes it is necessary to parse the text result line. For example, for <tt>CONNECT baudrate</tt>, the caller may be interested in the baud rate.</p>
+<p>See also <a href="qatresult.html#setResult">setResult</a>(), <a href="qatresult.html#resultCode">resultCode</a>(), and <a href="qatresult.html#ok">ok</a>().</p>
+<h3 class="fn"><a name="resultCode"></a><a href="qatresult.html#ResultCode-enum">QAtResult::ResultCode</a> QAtResult::resultCode () const</h3>
+<p>Returns the numeric result code associated with <a href="qatresult.html#result">result</a>().</p>
+<p>Extended error codes are only possible if the appropriate modem error mode has been enabled (e.g&#x2e; with the <tt>AT+CMEE=1</tt> command). Otherwise most errors will simply be reported as <a href="qatresult.html#ResultCode-enum">QAtResult::Error</a>.</p>
+<p>See also <a href="qatresult.html#setResultCode">setResultCode</a>(), <a href="qatresult.html#result">result</a>(), and <a href="qatresult.html#ok">ok</a>().</p>
+<h3 class="fn"><a name="setContent"></a>void QAtResult::setContent ( const <a href="qstring.html">QString</a> &amp; <i>value</i> )</h3>
+<p>Sets the content that was returned with an AT command's result to <i>value</i>.</p>
+<p>See also <a href="qatresult.html#content">content</a>() and <a href="qatresult.html#append">append</a>().</p>
+<h3 class="fn"><a name="setResult"></a>void QAtResult::setResult ( const <a href="qstring.html">QString</a> &amp; <i>value</i> )</h3>
+<p>Sets the result line that terminated the command's response to <i>value</i>. This will also update <a href="qatresult.html#resultCode">resultCode</a>() to reflect the appropriate code.</p>
+<p>See also <a href="qatresult.html#result">result</a>() and <a href="qatresult.html#resultCode">resultCode</a>().</p>
+<h3 class="fn"><a name="setResultCode"></a>void QAtResult::setResultCode ( <a href="qatresult.html#ResultCode-enum">QAtResult::ResultCode</a> <i>value</i> )</h3>
+<p>Sets the numeric result code to <i>value</i>, and update <a href="qatresult.html#result">result</a>() to reflect the value.</p>
+<p>See also <a href="qatresult.html#resultCode">resultCode</a>() and <a href="qatresult.html#result">result</a>().</p>
+<h3 class="fn"><a name="setUserData"></a>void QAtResult::setUserData ( <a href="qatresult-userdata.html">QAtResult::UserData</a> * <i>value</i> )</h3>
+<p>Sets the user data associated with this result object to <i>value</i>.</p>
+<p>See also <a href="qatresult.html#userData">userData</a>().</p>
+<h3 class="fn"><a name="userData"></a><a href="qatresult-userdata.html">QAtResult::UserData</a> * QAtResult::userData () const</h3>
+<p>Returns the user data associated with this result object.</p>
+<p>See also <a href="qatresult.html#setUserData">setUserData</a>().</p>
+<h3 class="fn"><a name="verboseResult"></a><a href="qstring.html">QString</a> QAtResult::verboseResult () const</h3>
+<p>Returns a more verbose version of <a href="qatresult.html#result">result</a>(), suitable for debug output. Many modems report extended errors by number (e.g&#x2e; <tt>+CME ERROR: 4</tt>), which can be difficult to use when diagnosing problems. This function returns a string that is more suitable for diagnostic output than <a href="qatresult.html#result">result</a>(). If <a href="qatresult.html#result">result</a>() is already verbose, it will be returned as-is.</p>
+<p>See also <a href="qatresult.html#result">result</a>().</p>
+<h3 class="fn"><a name="operator-eq"></a>QAtResult &amp; QAtResult::operator= ( const QAtResult &amp; <i>other</i> )</h3>
+<p>Assign the contents of <i>other</i> to this object.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

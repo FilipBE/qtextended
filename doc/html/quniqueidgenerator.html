@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QUniqueIdGenerator Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QUniqueIdGenerator Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QUniqueIdGenerator class provides a generator of unique identifiers. <a href="#details">More...</a></p>
+<pre>    #include &lt;QUniqueIdGenerator&gt;</pre><ul>
+<li><a href="quniqueidgenerator-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="quniqueidgenerator.html#QUniqueIdGenerator">QUniqueIdGenerator</a></b> ( const QUuid &amp; <i>context</i> )</li>
+<li><div class="fn"/><b><a href="quniqueidgenerator.html#QUniqueIdGenerator-2">QUniqueIdGenerator</a></b> ( const QUniqueIdGenerator &amp; <i>other</i> )</li>
+<li><div class="fn"/><b><a href="quniqueidgenerator.html#dtor.QUniqueIdGenerator">~QUniqueIdGenerator</a></b> ()</li>
+<li><div class="fn"/>QUniqueId <b><a href="quniqueidgenerator.html#constructUniqueId">constructUniqueId</a></b> ( uint <i>index</i> )</li>
+<li><div class="fn"/>QUniqueId <b><a href="quniqueidgenerator.html#createUniqueId">createUniqueId</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="quniqueidgenerator.html#isValid">isValid</a></b> () const</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QUniqueId <b><a href="quniqueidgenerator.html#constructTemporaryId">constructTemporaryId</a></b> ( uint <i>index</i> )</li>
+<li><div class="fn"/>QUniqueId <b><a href="quniqueidgenerator.html#createTemporaryId">createTemporaryId</a></b> ()</li>
+<li><div class="fn"/>uint <b><a href="quniqueidgenerator.html#mappedContext">mappedContext</a></b> ( const QUuid &amp; <i>context</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QUniqueIdGenerator class provides a generator of unique identifiers.</p>
+<p>The unique identifiers that are generated are 32 bits and are unique within the device they are created upon. If you require an identifier that is unique across multiple devices use <a href="quuid.html">QUuid</a> instead.</p>
+<p>The identifiers are are generated with a <a href="quuid.html">QUuid</a> context identifier and an index. The context should be generated with a program such as <i>uuidgen</i> and represent the data store or context within which the identifier is generated. For example SQL and SIM card storage for QContacts each have their own context. The context is mapped to a 8 bit value allowing for 255 contexts for a single device.</p>
+<p>The usual approach to constructing QUniqueIds is:</p>
+<pre>    QUniqueIdGenerator generator(myContext);
+    id = generator.createId();</pre>
+<p>QUniqueIdGenerator is suitable in cases where you need to generate an average of 100 identifiers a day or less and require a low number of bits when stored. If your program is likely to need more than 100 unique identifiers a day or does not benefit from the low 32bit storage size it is recommended you look at another type of unique id such as <a href="quuid.html">QUuid</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QUniqueIdGenerator"></a>QUniqueIdGenerator::QUniqueIdGenerator ( const <a href="quuid.html">QUuid</a> &amp; <i>context</i> )</h3>
+<p>Constructs a <a href="quniqueidgenerator.html">QUniqueIdGenerator</a> with the given <i>context</i>. It is recommended that the context be hard coded into your application.</p>
+<p>Example:</p>
+<pre>    QUniqueIdGenerator(QUUid(&quot;bd668b78-d892-4345-b0a3-77502d684f06&quot;));</pre>
+<p>You can generate the context string using the <tt>uuidgen</tt> program. As there are only 255 available contexts, you should generate the context when developing your application, not as part of the application's execution.</p>
+<h3 class="fn"><a name="QUniqueIdGenerator-2"></a>QUniqueIdGenerator::QUniqueIdGenerator ( const QUniqueIdGenerator &amp; <i>other</i> )</h3>
+<p>Constructs a copy of <i>other</i>.</p>
+<h3 class="fn"><a name="dtor.QUniqueIdGenerator"></a>QUniqueIdGenerator::~QUniqueIdGenerator ()</h3>
+<p>Destroys the <a href="quniqueidgenerator.html">QUniqueIdGenerator</a>.</p>
+<h3 class="fn"><a name="constructTemporaryId"></a><a href="quniqueid.html">QUniqueId</a> QUniqueIdGenerator::constructTemporaryId ( <a href="qtglobal.html#uint-typedef">uint</a> <i>index</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns an identifier that is valid only within a single application with the given <i>index</i> component. This identifier should not be shared or persisted between different applications or different executions of the same application. This function does not ensure the constructed identifier is not in conflict with past or future <a href="quniqueid.html">QUniqueId</a> objects.</p>
+<p>This function is not threadsafe.</p>
+<h3 class="fn"><a name="constructUniqueId"></a><a href="quniqueid.html">QUniqueId</a> QUniqueIdGenerator::constructUniqueId ( <a href="qtglobal.html#uint-typedef">uint</a> <i>index</i> )</h3>
+<p>Returns a identifier with the given <i>index</i> component. Does not ensure the constructed identifier is not in conflict with past or future <a href="quniqueid.html">QUniqueId</a> objects.</p>
+<p>See also <a href="quniqueidgenerator.html#createUniqueId">createUniqueId</a>().</p>
+<h3 class="fn"><a name="createTemporaryId"></a><a href="quniqueid.html">QUniqueId</a> QUniqueIdGenerator::createTemporaryId ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a identifier that is valid only within a single application. This identifier should not be shared or persisted between different applications or different executions of the same application.</p>
+<p>This function is not threadsafe.</p>
+<h3 class="fn"><a name="createUniqueId"></a><a href="quniqueid.html">QUniqueId</a> QUniqueIdGenerator::createUniqueId ()</h3>
+<p>Returns an identifier with the same context component as the generator and an index component that is unique against other identifiers generated with this function for the same context and device.</p>
+<p>See also <a href="quniqueidgenerator.html#constructUniqueId">constructUniqueId</a>().</p>
+<h3 class="fn"><a name="isValid"></a>bool QUniqueIdGenerator::isValid () const</h3>
+<p>Returns true if the generator is valid and can be used to create or construct unique identifers. Otherwise returns false.</p>
+<p>This function should only be needed during debugging as only a generator constructed using null QUuids will be invalid.</p>
+<h3 class="fn"><a name="mappedContext"></a><a href="qtglobal.html#uint-typedef">uint</a> QUniqueIdGenerator::mappedContext ( const <a href="quuid.html">QUuid</a> &amp; <i>context</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a locally mapped integer value for <i>context</i> suitable for efficiently checking if a <a href="quniqueid.html">QUniqueId</a> was generated from an equivalent <a href="quniqueidgenerator.html">QUniqueIdGenerator</a>.</p>
+<p>See also <a href="quniqueid.html#mappedContext">QUniqueId::mappedContext</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

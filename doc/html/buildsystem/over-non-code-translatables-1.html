@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Non-code Translatables</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Non-code Translatables<br /><span class="subtitle"></span>
+</h1>
+<p>Non-code translatables are processed with nct_lupdate. This script can extract data from the following formats:</p>
+<ul>
+<li>zone.tab<p>This is a special case used to extract city names from the timezone database</p>
+</li>
+<li><a href="foo/../../qsettings.html">QSettings</a><p>Many of the Qt Extended configuration files deal with translated values. These config files are in the <a href="foo/../../qsettings.html">QSettings</a> format.</p>
+</li>
+</ul>
+<p>A translatable settings file looks like this:</p>
+<pre>    [Translation]
+    File=QtopiaApplications
+    Context=Calendar
+    Comment[Desktop Entry/Name]=Use soft hyphen (char U00AD) to indicate hyphenation
+    [Desktop Entry]
+    Comment[]=A Calendar and Scheduling Program
+    Exec=datebook
+    Icon=datebook/DateBook
+    Type=Application
+    Name[]=Cal\xad\x65n\xad\x64\x61r
+    MimeType=text/x-vcalendar</pre>
+<p>This example is <tt>datebook.desktop</tt>. The important parts are the <tt>[Translation]</tt> section and the <tt>Var[]=Value</tt> lines.</p>
+<pre>    File=QtopiaApplications</pre>
+<p>This line instructs the build system to store the translations in a file called <tt>QtopiaApplications.ts</tt>. The files in Qt Extended are generally stored in a few global .ts files but third party applications will need to use their own files.</p>
+<pre>    Context=Calendar</pre>
+<p>This line specifies the context to use for the translations. When <a href="foo/../../qobject.html#tr">QObject::tr</a>() is called an implicit context is used but <a href="foo/../../qcoreapplication.html#translate">QApplication::translate</a>() allows the context to be set. This must be somewhat unique so that translators do not have to deal with unrelated strings when translating content.</p>
+<pre>    Comment[Desktop Entry/Name]=Use soft hyphen (char U00AD) to indicate hyphenation</pre>
+<p>This line will put a comment in the .ts file for translators. In this case, the value <tt>Name</tt> in the <tt>[Desktop Entry]</tt> section is given a comment.</p>
+<pre>    Name[]=Cal\xad\x65n\xad\x64\x61r</pre>
+<p>When Qt Extended reads this value, it will try to translate it.</p>
+<p>See also <a href="overviews.html">Overviews</a>, <a href="hint-nct-1.html">hint=nct</a>, and <a href="over-internationalization-build-system-1.html">Internationalization (build system)</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

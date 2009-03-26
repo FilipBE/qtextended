@@ -1,0 +1,127 @@
+#!/bin/sh
+#
+# PLEASE NOTE: You probably want to look at src/build/bin/configure
+#              instead of this file.
+#
+# This file does not handle options, it merely passes them on.
+#
+
+DEBUG=0
+log()
+{
+    if [ "$DEBUG" = 1 ]; then
+        echo "$@"
+    fi
+}
+
+# the build tree is here
+BUILD="$(/bin/pwd)"
+
+# locate the source tree
+SOURCE="$(dirname "$0")"
+# it could be relative... resolve to absolute
+cd "$SOURCE"
+SOURCE="$(/bin/pwd)"
+
+# capture the commandline options
+userargs=
+for word in "$@"; do
+    [ -n "$userargs" ] && userargs="${userargs} "
+    userargs="${userargs}'$word'"
+done
+
+_which()
+{
+(
+# copied from $SOURCE/qtopiacore/qt/config.tests/unix/which.test
+HOME=/dev/null
+export HOME
+
+unset which
+
+WHICH=`which which 2>/dev/null`
+if echo $WHICH | grep 'shell built-in command' >/dev/null 2>&1; then
+    WHICH=which
+elif [ -z "$WHICH" ]; then
+    if which which >/dev/null 2>&1; then
+	WHICH=which
+    else
+	for a in /usr/ucb /usr/bin /bin /usr/local/bin; do
+	    if [ -x $a/which ]; then
+		WHICH=$a/which
+		break;
+	    fi
+	done
+    fi
+fi
+
+if [ -z "$WHICH" ]; then
+    IFS=:
+    for a in $PATH; do
+	if [ -x $a/$1 ]; then
+	    echo "$a/$1"
+	    exit 0
+	fi
+    done
+else
+    a=`"$WHICH" "$1" 2>/dev/null`
+    if [ ! -z "$a" -a -x "$a" ]; then
+	echo "$a"
+	exit 0
+    fi
+fi
+exit 1
+)
+}
+
+# find a make command (export MAKE to override)
+if [ -z "$MAKE" ]; then
+    MAKE=
+    for mk in gmake make; do
+        if "_which" $mk >/dev/null 2>&1; then
+            MAKE=`_which $mk`
+            break
+        fi
+    done
+    if [ -z "$MAKE" ]; then
+        echo >&2 "You don't seem to have 'make' or 'gmake' in your PATH."
+        echo >&2 "Cannot proceed."
+        exit 1
+    fi
+fi
+
+# write out a new args file (if the user arguments are different to the last run)
+mkdir -p "$BUILD/src/build/mkconf"
+argsfile="$BUILD/src/build/mkconf/userargs"
+writeargs=1
+if [ -f "$argsfile" ]; then
+    prevargs="$(cat "$argsfile")"
+    if [ "$prevargs" = "$userargs" ]; then
+        writeargs=0
+    fi
+fi
+if [ "$writeargs" = 1 ]; then
+    log "Writing arguments $userargs"
+    rm -f "$argsfile"
+    echo "$userargs" > "$argsfile"
+else
+    log "Using the same arguments as last time ($userargs)"
+fi
+
+# FIXME should escape all shell/make special characters
+escape()
+{
+    echo "$1" | sed 's/ /\\ /g'
+}
+SOURCE="$(escape "$SOURCE")"
+
+DEPOT=0
+if grep depot "$SOURCE/.configureoptions" >/dev/null 2>&1; then
+    DEPOT=1
+fi
+
+# start the mkconf process
+MAKEARGS="--no-print-directory"
+[ "$DEBUG" = 1 ] || MAKEARGS="$MAKEARGS -s"
+exec $MAKE $MAKEARGS -C "$BUILD" -f "$SOURCE/src/build/mkconf/configure.mk" "SOURCE=$SOURCE" "DEPOT=$DEPOT"
+

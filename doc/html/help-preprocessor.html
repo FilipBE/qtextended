@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Help Browser Preprocessor</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Help Browser Preprocessor<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#syntax">Syntax</a></li>
+<ul><li><a href="#flow-control">Flow Control</a></li>
+<li><a href="#variable-substitution">Variable Substitution</a></li>
+<li><a href="#file-inclusion">File Inclusion</a></li>
+<li><a href="#command-execution">Command Execution</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#valuespace-integration">Valuespace Integration</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Help Browser includes a preprocessor that allows a single source of html help files from which device-specific help can be extracted for presentation to the user. This allows packages to be distributed with on-line help that adapts to the user's actual device.</p>
+<a name="syntax"></a>
+<h2>Syntax</h2>
+<p>The supported syntax is a subset of Server Side Includes (SSI). This syntax was chosen so that the documentation can alternatively be served by an appropriately-configured web browser.</p>
+<a name="flow-control"></a>
+<h3>Flow Control</h3>
+<p>SSI <tt>if-else-endif</tt> can be used (but not <tt>elif</tt>), with the expression being a set of variable references separated by &quot;||&quot;. Variables that are non-empty are &quot;true&quot; and variables that are empty (or not defined) are &quot;false&quot;.</p>
+<pre>    &lt;!--#if expr=&quot;$CELL || $VOIP&quot;--&gt;
+    ...
+    &lt;!--#else--&gt;
+    ...
+    &lt;!--#endif--&gt;</pre>
+<p>The following variables are pre-defined (or not, depending on configuration) for Qt Extended Documentation:</p>
+<ul>
+<li>VOIP - Device supports VoIP (determined by build time configuration)</li>
+<li>CELL - Device supports cellular telephony (GSM or other) (determined by build time configuration)</li>
+<li>TELEPHONY - Device supports some form of telephony (determined by build time configuration)</li>
+<li>INFRARED - Device supports Infrared beaming (determined by build time configuration)</li>
+<li>BLUETOOTH - Device supports Blueooth beaming (determined by build time configuration)</li>
+<li>TOUCH - Device has a touch screen as the primary input (see <a href="qtopia.html#mousePreferred">Qtopia::mousePreferred</a>())</li>
+<li>KEYPAD - Device has a keypad as the primary input (see <a href="qtopia.html#mousePreferred">Qtopia::mousePreferred</a>())</li>
+<li>FLIP - Device can open/close (if <a href="qt.html#Key-enum">Qt::Key_Flip</a> is available)</li>
+<li>CLIPBOARD - Device supports clipboard functionality (i.e&#x2e; not configured with <tt>-D QT_NO_CLIPBOARD</tt>)</li>
+<li>MULTISCREEN - Device supports more than one screen (e.g&#x2e; primary and secondary displays on a flip phone)</li>
+<li>VPN - Device supports Virtual Private Networking</li>
+<li>USERGUIDE - Not on device - intended for printed manual</li>
+</ul>
+<a name="variable-substitution"></a>
+<h3>Variable Substitution</h3>
+<p>The string</p>
+<pre>    &lt;!--#echo var=&quot;MYVAR&quot;--&gt;</pre>
+<p>is replaced with the value of the variable MYVAR.</p>
+<p>The syntax for setting a variable is:</p>
+<pre>    &lt;!--#set var=&quot;MYVAR&quot; value=&quot;some text&quot;--&gt;</pre>
+<p>It is usually useful to define variables inside configuration blocks. Like this:</p>
+<pre>    &lt;!--#if expr=&quot;$CELL&quot;--&gt;
+     &lt;!--#set var=&quot;YOURDEV&quot; value=&quot;your cellphone&quot;--&gt;
+    &lt;!--#else--&gt;
+     &lt;!--#if expr=&quot;$TELEPHONY&quot;--&gt;
+      &lt;!--#set var=&quot;YOURDEV&quot; value=&quot;the phone&quot;--&gt;
+     &lt;!--#else--&gt;
+      &lt;!--#set var=&quot;YOURDEV&quot; value=&quot;the device&quot;--&gt;
+     &lt;!--#endif--&gt;
+    &lt;!--#endif--&gt;
+    ...
+    Do not wash &lt;!--#echo var=&quot;YOURDEV&quot;--&gt;!</pre>
+<a name="file-inclusion"></a>
+<h3>File Inclusion</h3>
+<p>The string</p>
+<pre>    &lt;!--#include file=&quot;FILENAME&quot;--&gt;</pre>
+<p>is replaced with the contents of the file FILENAME, which is recursively processed in the manner described here.</p>
+<p>One use for this is device-specific documentation. The Qt Extended help attempts to put anything that might vary between devices into a device-specific file. These files all start with &quot;device-&quot; (such as &quot;device-keys.html&quot; and &quot;device-name.html&quot;). By replacing these files, the Qt Extended help can document a different device.</p>
+<a name="command-execution"></a>
+<h3>Command Execution</h3>
+<p>The string</p>
+<pre>    &lt;!--#exec cmd=&quot;CMD ARGS&quot;--&gt;</pre>
+<p>is replaced with the output of the command CMD.</p>
+<p>For security reasons only a fixed set of built-in commands are permitted:</p>
+<ul>
+<li><pre>     qpe-list-content type</pre>
+<p>- list content of a given type (eg. &quot;Applications&quot;)</p>
+</li>
+<li><pre>     qpe-list-help-pages filter</pre>
+<p>- list and link help pages (eg. &quot;foo-*.html&quot;)</p>
+</li>
+</ul>
+<a name="examples"></a>
+<h3>Examples</h3>
+<pre>    &lt;!--#if expr=&quot;$CELL&quot;--&gt;
+    Stuff for the cell phone...
+    &lt;!--#endif--&gt;</pre>
+<pre>    &lt;!--#if expr=&quot;$TELEPHONY&quot;--&gt;
+    Stuff for any Phone
+    &lt;!--#if expr=&quot;$KEYPAD&quot;--&gt;
+    Stuff for a Keypad Phone
+    &lt;!--#endif--&gt;
+    &lt;!--#endif--&gt;</pre>
+<pre>    &lt;!--#include file=&quot;device-colors.html&quot;--&gt;
+    Press the &lt;!--#echo var=&quot;color-offswitch&quot;--&gt; button to turn off the device.</pre>
+<a name="valuespace-integration"></a>
+<h3>Valuespace Integration</h3>
+<p>The preprocessor can set variables to the result of valuespace expressions. The syntax is:</p>
+<pre>    &lt;!--#set var=&quot;MYVAR&quot; valuespace=&quot;1 + 1&quot; value=&quot;some text&quot;--&gt;</pre>
+<p>The valuespace attribute can be any valid <a href="qexpressionevaluator.html">QExpressionEvaluator</a> expression.</p>
+<p>The value attribute is used by SSI implementations that do not support the valuespace attribute and is not used by the help preprocessor.</p>
+<p>The existence of a valuespace keys can be tested for with the syntax:</p>
+<pre>    &lt;!--#set var=&quot;MYVAR&quot; valuespace=&quot;exists(@/ValueSpace/path)&quot; value=&quot;some text&quot;--&gt;</pre>
+<p>To minimized the number of files that use nonstandard SSI features a single file should be used to set variables from valuespace expressions. Other help files can make use of these variables by using <a href="#file-inclusion">File Inclusion</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

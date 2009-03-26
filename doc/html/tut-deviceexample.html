@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Implementing a Device Plug-in</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Implementing a Device Plug-in<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#keyboard">Keyboard</a></li>
+<ul><li><a href="#keyboard-handler">Keyboard Handler</a></li>
+<li><a href="#keyboard-plug-in">Keyboard Plug-in</a></li>
+<li><a href="#building-and-testing-the-plug-in">Building and testing the plug-in</a></li>
+</ul>
+<li><a href="#touchscreen-mouse">Touchscreen/Mouse</a></li>
+<ul><li><a href="#mouse-handler">Mouse Handler</a></li>
+<li><a href="#touchscreen-mouse-plug-in">Touchscreen/Mouse Plug-in</a></li>
+<li><a href="#building-and-testing-the-plug-in">Building and testing the plug-in</a></li>
+</ul>
+<li><a href="#creating-a-custom-screen-driver">Creating a Custom Screen Driver</a></li>
+<li><a href="#creating-network-scripts">Creating network scripts</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The primary purpose of tutorial describes how to write keyboard and touchscreen/mouse input plug-ins for a device. Qt for Embedded Linux includes <a href="qt-embedded-charinput.html">keyboard</a> and <a href="qt-embedded-pointer.html">mouse</a> handlers for some common devices. The source code for these drivers is located in the <tt>&lt;qt-root-dir&gt;/src/gui/embedded</tt> directory. These handlers may be appropriate for your device. Additional plug-in examples can be found under the <a href="buildsystem/over-device-profiles-1.html">Device Profiles</a> for various devices, see <tt>&lt;qt-extended-root-dir&gt;/devices/&lt;device&gt;/src/plugins/qtopiacore</tt>.</p>
+<p>This tutorial assumes that you will be using and have set up a <a href="buildsystem/over-device-profiles-1.html">device profile</a> for your device.</p>
+<p>The following directories are of particular interest:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Directory</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>mkspecs</tt></td><td>contains the <tt>qmake</tt> configuration file used to build for the device</td></tr>
+<tr valign="top" class="even"><td><tt>src</tt></td><td>contains the source code for the plug-in drivers for keyboard and touchscreen</td></tr>
+</table></p>
+<p>This tutorial assumes that debugging using <tt>qLog()</tt> is enabled. To activate debugging:</p>
+<ul>
+<li>edit <tt>&lt;image directory&gt;/etc/default/Trolltech/Log.conf</tt> and enable <tt>Input</tt></li>
+<li>restart Qt Extended to implement the change and <tt>qLog()</tt> messages will be displayed.</li>
+</ul>
+<p>This functionality is available in both debug and release builds.</p>
+<p>The steps taken to implement a new plug-in depend on whether you are implementing a keyboard plug-in or a touchscreen/mouse plug-in. This tutorial provides the steps for both.</p>
+<a name="keyboard"></a>
+<h2>Keyboard</h2>
+<p>To create a keyboard plug-in we need to create two classes. The first class will be a subclass of <a href="qwskeyboardhandler.html">QWSKeyboardHandler</a> and will implement the actual keyboard handler. The second class will be a subclass of <a href="qkbddriverplugin.html">QKbdDriverPlugin</a> and links our keyboard handler with the Qt for Embedded Linux keyboard input system.</p>
+<p>In this tutorial we will be implementing a keyboard plug-in for the Linux event interface. The full source for this plug-in is available in the <tt>&lt;qt-extended-root-dir&gt;/examples/kbddriver</tt> directory. When creating your own keyboard plug-ins your source code should be located in the <tt>&lt;qt-extended-root-dir&gt;/devices/&lt;device profile&gt;/src/plugins/qtopiacore/kbddrivers/&lt;driver name&gt;</tt> directory.</p>
+<a name="keyboard-handler"></a>
+<h3>Keyboard Handler</h3>
+<p>The class definition for our keyboard handler is (<tt>examplekbdhandler.h</tt>):</p>
+<pre>    class ExampleKbdHandler : public QObject, public QWSKeyboardHandler
+    {
+        Q_OBJECT
+    public:
+        ExampleKbdHandler(const QString &amp;device = QString(&quot;/dev/input/event0&quot;));
+        ~ExampleKbdHandler();
+
+    private:
+        QSocketNotifier *m_notify;
+        int  kbdFd;
+        bool shift;
+
+    private Q_SLOTS:
+        void readKbdData();
+    };</pre>
+<p>The implementation consists of the class constructor and destructor and the <tt>readKbdData()</tt> slot.</p>
+<p>The constructor opens the keyboard device, <tt>/dev/input/event0</tt>. A <a href="qsocketnotifier.html">QSocketNotifier</a> is used to get asynchronous notification on the availability of data from the device. The <tt>readKbdData()</tt> slot is connected to the <a href="qsocketnotifier.html#activated">QSocketNotifier::activated</a>() signal and will be called whenever data is available to be read from the device.</p>
+<pre>    ExampleKbdHandler::ExampleKbdHandler(const QString &amp;device)
+    {
+        qLog(Input) &lt;&lt; &quot;Loaded Example keyboard plugin!&quot;;
+        setObjectName(&quot;Example Keypad Handler&quot;);
+        kbdFd = ::open(device.toLocal8Bit().constData(), O_RDONLY, 0);
+        if (kbdFd &gt;= 0) {
+            qLog(Input) &lt;&lt; &quot;Opened&quot; &lt;&lt; device &lt;&lt; &quot;as keyboard input&quot;;
+            m_notify = new QSocketNotifier(kbdFd, QSocketNotifier::Read, this);
+            connect(m_notify, SIGNAL(activated(int)), this, SLOT(readKbdData()));
+        } else {
+            qWarning(&quot;Cannot open %s for keyboard input (%s)&quot;,
+                     device.toLocal8Bit().constData(), strerror(errno));
+            return;
+        }
+        shift = false;
+    }</pre>
+<p>In the destructor we close the device.</p>
+<pre>    ExampleKbdHandler::~ExampleKbdHandler()
+    {
+        if (kbdFd &gt;= 0)
+            ::close(kbdFd);
+    }</pre>
+<p>The ExampleInput structure defines the format of the data read from the device. The Linux event interface uses 16 byte packets.</p>
+<pre>    struct ExampleInput {
+        unsigned int   dummy1;
+        unsigned int   dummy2;
+        unsigned short type;
+        unsigned short code;
+        unsigned int   value;
+    };</pre>
+<p>Whenever data is available to be read from the device the <tt>readKbdData()</tt> slot will be invoked by the <a href="qsocketnotifier.html">QSocketNotifier</a>. <tt>readKbdData()</tt> reads and processes a single packet from the device.</p>
+<pre>    void ExampleKbdHandler::readKbdData()
+    {
+        ExampleInput event;
+
+        int n = read(kbdFd, &amp;event, sizeof(ExampleInput));
+        if (n != 16) {
+            qLog(Input) &lt;&lt; &quot;keypressed: n=&quot; &lt;&lt; n;
+            return;
+        }
+
+        qLog(Input) &lt;&lt; &quot;keypressed: type=&quot; &lt;&lt; event.type
+                    &lt;&lt; &quot;code=&quot; &lt;&lt; event.code
+                    &lt;&lt; &quot;value=&quot; &lt;&lt; event.value
+                    &lt;&lt; ((event.value != 0) ? &quot;(Down)&quot; : &quot;(Up)&quot;);</pre>
+<p>A switch statement is used to convert events into <a href="qt.html#Key-enum">Qt::Key</a> and Unicode mappings.</p>
+<pre>        Qt::KeyboardModifiers modifiers = Qt::NoModifier;
+        int unicode = 0xffff;
+        int key_code = 0;
+
+        switch (event.code) {
+        case 0x110:
+            key_code = Qt::Key_Context1;
+            unicode  = 0xffff;
+            break;
+        case 0x111:
+            key_code = Qt::Key_Back;
+            unicode  = 0xffff;
+            break;
+        case 0xA9:
+            key_code = Qt::Key_Call;
+            unicode  = 0xffff;
+            break;
+        ...
+        }
+        if (shift) modifiers |= Qt::ShiftModifier;</pre>
+<p><a href="qwskeyboardhandler.html#processKeyEvent">QWSKeyboardHandler::processKeyEvent</a>() is called to process the key event.</p>
+<pre>        processKeyEvent(unicode, key_code, modifiers, event.value!=0, false);
+    }</pre>
+<a name="keyboard-plug-in"></a>
+<h3>Keyboard Plug-in</h3>
+<p>The class definition of the keyboard driver plug-in (<tt>examplekbddriverplugin.h</tt>):</p>
+<pre>    #include &lt;QtGui/QWSKeyboardHandlerFactoryInterface&gt;
+
+    class ExampleKbdDriverPlugin : public QKbdDriverPlugin {
+        Q_OBJECT
+    public:
+        ExampleKbdDriverPlugin( QObject *parent  = 0 );
+        ~ExampleKbdDriverPlugin();
+
+        QWSKeyboardHandler* create(const QString&amp; driver, const QString&amp; device);
+        QWSKeyboardHandler* create(const QString&amp; driver);
+        QStringList keys() const;
+    };</pre>
+<p>The keys function returns the list of drivers that this plug-in provides. Our plug-in only provides the &quot;examplekbdhandler&quot; driver.</p>
+<pre>    QStringList ExampleKbdDriverPlugin::keys() const
+    {
+        return QStringList() &lt;&lt; &quot;examplekbdhandler&quot;;
+    }</pre>
+<p>The create functions are responsible for returning an instance of the keyboard driver. We do this only if the driver parameter matches our key.</p>
+<p>The device parameter is the driver specific options specified in the <a href="qt-embedded-envvars.html">QWS_KEYBOARD</a> environment variable. For our driver we use this to specify the device name. If no device name is specified the driver defaults to <tt>/dev/input/event0</tt>.</p>
+<pre>    QWSKeyboardHandler* ExampleKbdDriverPlugin::create(const QString&amp; driver,
+                                                       const QString&amp; device)
+    {
+        if (driver.toLower() == &quot;examplekbdhandler&quot;) {
+            qLog(Input) &lt;&lt; &quot;Before call ExampleKbdHandler()&quot;;
+            return new ExampleKbdHandler(device);
+        }
+        return 0;
+    }
+
+    QWSKeyboardHandler* ExampleKbdDriverPlugin::create(const QString&amp; driver)
+    {
+        if (driver.toLower() == &quot;examplekbdhandler&quot;) {
+            qLog(Input) &lt;&lt; &quot;Before call ExampleKbdHandler()&quot;;
+            return new ExampleKbdHandler();
+        }
+        return 0;
+    }</pre>
+<p>Finally export the plug-in using the QTOPIA_EXPORT_QT_PLUGIN macro.</p>
+<pre>    QTOPIA_EXPORT_QT_PLUGIN(ExampleKbdDriverPlugin)</pre>
+<a name="building-and-testing-the-plug-in"></a>
+<h3>Building and testing the plug-in</h3>
+<p>The project file for the plug-in (qbuild.pro):</p>
+<pre>    requires(qws)
+    TEMPLATE=plugin
+    PLUGIN_FOR=qt
+    PLUGIN_TYPE=kbddrivers
+
+    TARGET=examplekbdhandler
+
+    CONFIG+=qtopia
+    QTOPIA=base
+
+    HEADERS=\
+        examplekbddriverplugin.h\
+        examplekbdhandler.h
+
+    SOURCES=\
+        examplekbddriverplugin.cpp\
+        examplekbdhandler.cpp</pre>
+<p>Ensure that the plug-in will be built by adding the following line to the <tt>&lt;qt-extended-root-dir&gt;/devices/&lt;device profile&gt;/src/projects.pri</tt> file.</p>
+<pre>    PROJECTS *= plugins/qtopiacore/kbddrivers/example</pre>
+<p>Build and install Qt Extended.</p>
+<p><b>Note:</b> When creating a plug-in it is not necessary to rebuild all of Qt Extended to enable it. Simply rebuild the plug-in and copy the files to the <tt>image/Qtopia</tt> directory and restart Qt Extended.</p>
+<p>Set the <a href="qt-embedded-envvars.html">QWS_KEYBOARD</a> environment variable</p>
+<pre>    export QWS_KEYBOARD=examplekbdhandler</pre>
+<p>or if the keyboard device is different from the default, for example <tt>/dev/input/event1</tt>:</p>
+<pre>    export QWS_KEYBOARD=examplekbdhandler:/dev/input/event1</pre>
+<p>Start Qt Extended.</p>
+<a name="touchscreen-mouse"></a>
+<h2>Touchscreen/Mouse</h2>
+<p>To create a touchscreen/mouse plug-in we need to create two classes. The first class will be a subclass of <a href="qwscalibratedmousehandler.html">QWSCalibratedMouseHandler</a> and will implement the actual touchscreen handler. The second class will be a subclass of <a href="qmousedriverplugin.html">QMouseDriverPlugin</a> and links our touchscreen handler with the Qt for Embedded Linux mouse input system.</p>
+<p>In this tutorial we will be implementing a mouse plug-in for the Linux event interface. The full source for this plug-in is available in the <tt>&lt;qt-extended-root-dir/examples/mousedriver</tt> directory. When creating your own mouse plug-ins your source code should be located in the <tt>&lt;qt-extended-root-dir&gt;/devices/&lt;device profile&gt;/src/plugins/qtopiacore/mousedrivers/&lt;driver name&gt;</tt> directory.</p>
+<p>As touchscreen drivers may output noisy samples, we will be implementing basic filtering of the input data in our handler.</p>
+<a name="mouse-handler"></a>
+<h3>Mouse Handler</h3>
+<p>The class definition for our mouse handler contains numerous data members which are used by the filtering code. The class definition is (<tt>examplemousehandler.h</tt>):</p>
+<pre>    #define TS_SAMPLES   5
+
+    class ExampleMouseHandler : public QObject, public QWSCalibratedMouseHandler {
+        Q_OBJECT
+    public:
+        ExampleMouseHandler(const QString &amp;device = QString(&quot;/dev/input/event1&quot;));
+        ~ExampleMouseHandler();
+
+        void suspend();
+        void resume();
+
+    private:
+        int  nX, nY;
+        int  sx[TS_SAMPLES+3], sy[TS_SAMPLES+3];
+        int  index_x1, index_x2, index_y1, index_y2, min_x, min_y;
+        int  mouseIdx;
+        static const int mouseBufSize = 2048;
+        uchar mouseBuf[mouseBufSize];
+        QPoint oldmouse;
+
+        QSocketNotifier *m_notify;
+        int  mouseFd;
+
+    private Q_SLOTS:
+        void readMouseData();
+    };</pre>
+<p>The constructor opens the mouse device, <tt>/dev/input/event1</tt>. A <a href="qsocketnotifier.html">QSocketNotifier</a> is used to get asynchronous notification on the availability of data from the device. The <tt>readMouseData()</tt> slot is connected tot he <a href="qsocketnotifier.html#activated">QSocketNotifier::activated</a>() signal and will be called whenever data is available to be read from the device.</p>
+<pre>    ExampleMouseHandler::ExampleMouseHandler(const QString &amp;device)
+        : nX(0), nY(0), min_x(INT_MAX), min_y(INT_MAX), mouseIdx(0)
+    {
+        qLog(Input) &lt;&lt; &quot;Loaded Example touchscreen plugin!&quot;;
+        setObjectName(&quot;Example Mouse Handler&quot;);
+        mouseFd = ::open(device.toLocal8Bit().constData(), O_RDONLY | O_NDELAY);
+        if (mouseFd &gt;= 0) {
+            qLog(Input) &lt;&lt; &quot;Opened&quot; &lt;&lt; device &lt;&lt; &quot;as touchscreen input&quot;;
+            m_notify = new QSocketNotifier(mouseFd, QSocketNotifier::Read, this);
+            connect(m_notify, SIGNAL(activated(int)), this, SLOT(readMouseData()));
+        } else {
+            qWarning(&quot;Cannot open %s for touchscreen input (%s)&quot;,
+                     device.toLocal8Bit().constData(), strerror(errno));
+            return;
+        }
+    }</pre>
+<p>In the destructor we close the device.</p>
+<pre>    ExampleMouseHandler::~ExampleMouseHandler()
+    {
+        if (mouseFd &gt;= 0)
+            ::close(mouseFd);
+    }</pre>
+<p>The <tt>suspend()</tt> and <tt>resume()</tt> functions are called to stop and start the flow of mouse events to the system. We just enable and disable notifications from <a href="qsocketnotifier.html">QSocketNotifier</a>.</p>
+<pre>    void ExampleMouseHandler::suspend()
+    {
+        m_notify-&gt;setEnabled( false );
+    }
+
+    void ExampleMouseHandler::resume()
+    {
+        m_notify-&gt;setEnabled( true );
+    }</pre>
+<p>The ExampleInput structure defines the format of the data read from the device. The Linux event interface uses 16 byte packets.</p>
+<pre>    struct ExampleInput {
+        unsigned int   dummy1;
+        unsigned int   dummy2;
+        unsigned short type;
+        unsigned short code;
+        unsigned int   value;
+    };</pre>
+<p>Whenever data is available to be read from the device the <tt>readMouseData()</tt> slot will be invoked by the <a href="qsocketnotifier.html">QSocketNotifier</a>. <tt>readMouseData()</tt> reads and processes all available mouse events.</p>
+<pre>    void ExampleMouseHandler::readMouseData()
+    {
+        if (!qt_screen)
+            return;
+
+        int n;
+
+        do {
+            n = read(mouseFd, mouseBuf+mouseIdx, mouseBufSize-mouseIdx);
+            if (n &gt; 0)
+                mouseIdx += n;</pre>
+<p>Each packet read from the device only contains information on a single axis. Process packets until we have <tt>TS_SAMPLES</tt> complete sample.</p>
+<pre>            ExampleInput *data;
+            int idx = 0;
+
+            while (mouseIdx-idx &gt;= (int)sizeof(ExampleInput)) {
+                uchar *mb = mouseBuf+idx;
+                data = (ExampleInput*)mb;
+                if (data-&gt;code == 0) {
+                    <span class="comment">// x value</span>
+                    sx[nX] = data-&gt;value;
+                    nX++;
+                } else if (data-&gt;code == 1) {
+                    <span class="comment">// y value</span>
+                    sy[nY] = data-&gt;value;
+                    nY++;
+                }</pre>
+<p>Our simple filtering algorithm uses the average of the two closest points in the last <tt>TS_SAMPLES</tt> samples.</p>
+<pre>                if (nX &gt;= TS_SAMPLES &amp;&amp; nY &gt;= TS_SAMPLES) {
+                    int ss = (nX &lt; nY) ? nX : nY;
+
+                    for (int i = 0; i &lt; ss - 1; i++) {
+                        for (int j = i + 1; j &lt; ss; j++) {
+                            int dx = sx[i] - sx[j];
+                            if (dx &lt; 0)
+                                dx = -dx;
+                            int dy = sy[i] - sy[j];
+                            if (dy &lt; 0)
+                                dy = -dy;
+                            if (min_x &gt; dx) {
+                                min_x = dx;
+                                index_x1 = i;
+                                index_x2 = j;
+                            }
+                            if (min_y &gt; dy) {
+                                min_y = dy;
+                                index_y1 = i;
+                                index_y2 = j;
+                            }
+                        }
+                    }
+
+                    QPoint pos((sx[index_x1] + sx[index_x2])/2,
+                               (sy[index_y1] + sy[index_y2])/2);
+
+                    nX = 0;
+                    nY = 0;
+                    min_x = INT_MAX;
+                    min_y = INT_MAX;</pre>
+<p>The filtered touchscreen sample is transformed from device coordinates to screen coordinates, and a <tt>mouseChanged()</tt> signal is emitted.</p>
+<pre>                    oldmouse = transform( pos );
+                    if (oldmouse.x() &lt; MOUSE_SAMPLE_MIN || oldmouse.x() &gt; MOUSE_SAMPLE_MAX ||
+                        oldmouse.y() &lt; MOUSE_SAMPLE_MIN || oldmouse.y() &gt; MOUSE_SAMPLE_MAX) {
+                        qLog(Input) &lt;&lt; &quot;*BAD Mouse sample :x=&quot;
+                                    &lt;&lt; oldmouse.x() &lt;&lt; &quot;,y=&quot; &lt;&lt; oldmouse.y();
+                        oldmouse.setX(0);
+                        oldmouse.setY(0);
+                    } else {
+                        qLog(Input) &lt;&lt; &quot;Mouse Down:x=&quot;
+                                    &lt;&lt; oldmouse.x() &lt;&lt; &quot;,y=&quot; &lt;&lt; oldmouse.y();
+                        emit mouseChanged(oldmouse, Qt::LeftButton);
+                    }
+                }</pre>
+<p>Emit <tt>mouseChanged()</tt> signal when the stylus is removed from the screen.</p>
+<pre>                if ((data-&gt;code == 24) &amp;&amp; (data-&gt;value == 0)) {
+                    <span class="comment">// Removed pen from screen</span>
+                    qLog(Input) &lt;&lt; &quot;Mouse Up  :x=&quot; &lt;&lt; oldmouse.x() &lt;&lt; &quot;,y=&quot; &lt;&lt; oldmouse.y();
+                    emit mouseChanged(oldmouse, 0);
+                    nX = 0;
+                    nY = 0;</pre>
+<p>Move pointers to process the next packet.</p>
+<pre>                }
+                idx += sizeof(ExampleInput);
+            }
+            int surplus = mouseIdx - idx;
+            for (int i = 0; i &lt; surplus; i++)
+                mouseBuf[i] = mouseBuf[idx+i];
+            mouseIdx = surplus;
+        } while (n &gt; 0);
+    }</pre>
+<a name="touchscreen-mouse-plug-in"></a>
+<h3>Touchscreen/Mouse Plug-in</h3>
+<p>The class definition of the mouse driver plug-in (<tt>examplemousedriverplugin.h</tt>):</p>
+<pre>    #include &lt;QtGui/QWSMouseHandlerFactoryInterface&gt;
+
+    class ExampleMouseDriverPlugin : public QMouseDriverPlugin {
+        Q_OBJECT
+    public:
+        ExampleMouseDriverPlugin( QObject *parent  = 0 );
+        ~ExampleMouseDriverPlugin();
+
+        QWSMouseHandler* create(const QString&amp; driver);
+        QWSMouseHandler* create(const QString&amp; driver, const QString&amp; device);
+        QStringList keys()const;
+    };</pre>
+<p>The keys function returns the list of drivers that this plug-in provides. Our plug-in only provides the &quot;examplemousehandler&quot; driver.</p>
+<pre>    QStringList ExampleMouseDriverPlugin::keys() const
+    {
+        return QStringList() &lt;&lt; &quot;examplemousehandler&quot;;
+    }</pre>
+<p>The create functions are responsible for returning an instance of the mouse driver. We do this only if the driver parameter matches our key.</p>
+<p>The device parameter is the driver specific options specified in the <a href="qt-embedded-envvars.html">QWS_MOUSE_PROTO</a> environment variable. For our driver we use this to specify the device name. If no device name is specified the driver defaults to <tt>/dev/input/event1</tt>.</p>
+<pre>    QWSMouseHandler* ExampleMouseDriverPlugin::create(const QString&amp; driver, const QString&amp; device)
+    {
+        if ( driver.toLower() == &quot;examplemousehandler&quot; ) {
+            qLog(Input) &lt;&lt; &quot;Before call ExampleMouseHandler()&quot;;
+            return new ExampleMouseHandler(device);
+        }
+        return 0;
+    }
+
+    QWSMouseHandler* ExampleMouseDriverPlugin::create(const QString&amp; driver)
+    {
+        if( driver.toLower() == &quot;examplemousehandler&quot; ) {
+            qLog(Input) &lt;&lt; &quot;Before call ExampleMouseHandler()&quot;;
+            return new ExampleMouseHandler();
+        }
+        return 0;
+    }</pre>
+<p>Finally export the plug-in using the QTOPIA_EXPORT_QT_PLUGIN macro.</p>
+<pre>    QTOPIA_EXPORT_QT_PLUGIN(ExampleMouseDriverPlugin)</pre>
+<a name="building-and-testing-the-plug-in"></a>
+<h3>Building and testing the plug-in</h3>
+<p>The project file for the plug-in (qbuild.pro):</p>
+<pre>    requires(qws)
+    TEMPLATE=plugin
+    PLUGIN_FOR=qt
+    PLUGIN_TYPE=mousedrivers
+
+    TARGET=examplemousehandler
+
+    CONFIG+=qtopia
+    QTOPIA=base
+
+    HEADERS=\
+        examplemousedriverplugin.h\
+        examplemousehandler.h
+
+    SOURCES=\
+        examplemousedriverplugin.cpp\
+        examplemousehandler.cpp</pre>
+<p>Ensure that the plug-in will be built by adding the following line to the <tt>&lt;qt-extended-root-dir&gt;/devices/&lt;device profile&gt;/src/projects.pri</tt> file.</p>
+<pre>    PROJECTS *= plugins/qtopiacore/mousedrivers/example</pre>
+<p>Build and install Qt Extended.</p>
+<p><b>Note:</b> When creating a plug-in it is not necessary to rebuild all of Qt Extended to enable it. Simply rebuild the plug-in and copy the files to the <tt>image/Qtopia</tt> directory and restart Qt Extended.</p>
+<p>Set the <a href="qt-embedded-envvars.html">QWS_MOUSE_PROTO</a> environment variable</p>
+<pre>    export QWS_MOUSE_PROTO=examplemousehandler</pre>
+<p>or if the mouse device is different from the default, for example <tt>/dev/input/event2</tt>:</p>
+<pre>    export QWS_MOUSE_PROTO=examplemousehandler:/dev/input/event2</pre>
+<a name="creating-a-custom-screen-driver"></a>
+<h2>Creating a Custom Screen Driver</h2>
+<p>For some hardware there is a need to make minor changes to how the screen is written to the device. One such example is where there needs to be an ioctl sent to the framebuffer device after each frame update. To see how one might create a <a href="qscreendriverplugin.html">QScreenDriverPlugin</a> plugin to do that, see <tt>examples/gfxdriver</tt> and modify the <tt>ExampleScreen::exposeRegion</tt> function to send the ioctl required.</p>
+<p>To make use of this created screen driver plugin set <a href="qt-embedded-envvars.html">QWS_DISPLAY</a>, for example:</p>
+<pre>        export QWS_DISPLAY=examplescreen</pre>
+<a name="creating-network-scripts"></a>
+<h2>Creating network scripts</h2>
+<p>Qt Extended devices use a variety of file systems. This requires customized network scripts which provide the link between the Qt Extended network code and the file system. It is their responsibility to start, stop and configure the various network interfaces.</p>
+<p>For more details check out <tt>src/plugins/network/</tt></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

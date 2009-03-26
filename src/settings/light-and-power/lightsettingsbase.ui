@@ -1,0 +1,336 @@
+<ui version="4.0" >
+ <class>LightSettingsBase</class>
+ <widget class="QWidget" name="LightSettingsBase" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>228</width>
+    <height>339</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Power Management</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2" >
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout" >
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>183</width>
+         <height>30</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QFormLayout" name="formLayout" >
+       <property name="rowWrapPolicy" >
+        <enum>QFormLayout::WrapLongRows</enum>
+       </property>
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>Settings when</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buddy" >
+          <cstring>powerSource</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QComboBox" name="powerSource" >
+         <item>
+          <property name="text" >
+           <string>On Battery</string>
+          </property>
+         </item>
+         <item>
+          <property name="text" >
+           <string>Plugged In</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation" >
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0" >
+        <size>
+         <width>183</width>
+         <height>30</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="GroupBox3" >
+     <property name="sizePolicy" >
+      <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title" >
+      <string/>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout" >
+      <item>
+       <layout class="QHBoxLayout" >
+        <property name="spacing" >
+         <number>6</number>
+        </property>
+        <property name="margin" >
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="officon" >
+          <property name="minimumSize" >
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="scaledContents" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_6" >
+          <property name="text" >
+           <string>Brightness</string>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="buddy" >
+           <cstring>brightness</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="brighticon" >
+          <property name="minimumSize" >
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize" >
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="scaledContents" >
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QSlider" name="brightness" >
+        <property name="minimum" >
+         <number>100</number>
+        </property>
+        <property name="maximum" >
+         <number>255</number>
+        </property>
+        <property name="singleStep" >
+         <number>16</number>
+        </property>
+        <property name="pageStep" >
+         <number>16</number>
+        </property>
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickInterval" >
+         <number>32</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Line" name="line" >
+        <property name="orientation" >
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout_2" >
+        <property name="sizeConstraint" >
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="rowWrapPolicy" >
+         <enum>QFormLayout::WrapLongRows</enum>
+        </property>
+        <property name="verticalSpacing" >
+         <number>-1</number>
+        </property>
+        <item row="0" column="0" >
+         <widget class="QLabel" name="label_2" >
+          <property name="text" >
+           <string>Dim light</string>
+          </property>
+          <property name="buddy" >
+           <cstring>interval_dim</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1" >
+         <widget class="MinSecSpinBox" name="interval_dim" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum" >
+           <number>0</number>
+          </property>
+          <property name="maximum" >
+           <number>60</number>
+          </property>
+          <property name="singleStep" >
+           <number>10</number>
+          </property>
+          <property name="value" >
+           <number>20</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" >
+         <widget class="QLabel" name="label_4" >
+          <property name="text" >
+           <string>Display off</string>
+          </property>
+          <property name="buddy" >
+           <cstring>interval_lightoff</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1" >
+         <widget class="MinSecSpinBox" name="interval_lightoff" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum" >
+           <number>0</number>
+          </property>
+          <property name="maximum" >
+           <number>180</number>
+          </property>
+          <property name="singleStep" >
+           <number>10</number>
+          </property>
+          <property name="value" >
+           <number>30</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" >
+         <widget class="QLabel" name="label_suspend" >
+          <property name="text" >
+           <string>Suspend</string>
+          </property>
+          <property name="buddy" >
+           <cstring>interval_suspend</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" >
+         <widget class="MinSecSpinBox" name="interval_suspend" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="alignment" >
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="minimum" >
+           <number>0</number>
+          </property>
+          <property name="maximum" >
+           <number>300</number>
+          </property>
+          <property name="singleStep" >
+           <number>10</number>
+          </property>
+          <property name="value" >
+           <number>30</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="notnetworkedsuspend" >
+        <property name="text" >
+         <string>Disable suspend while online</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer" >
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MinSecSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>minsecspinbox.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>powerSource</tabstop>
+  <tabstop>brightness</tabstop>
+  <tabstop>interval_dim</tabstop>
+  <tabstop>interval_lightoff</tabstop>
+  <tabstop>interval_suspend</tabstop>
+  <tabstop>notnetworkedsuspend</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Modem Emulator - Network</title>
+  <link rel="prev" href="modememulator-identification.html" />
+  <link rel="next" href="modememulator-supplementaryservices.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="modememulator-identification.html">Modem Emulator - Identification</a>]
+[Next: <a href="modememulator-supplementaryservices.html">Modem Emulator - Supplementary Services</a>]
+</p>
+<h1 class="title">Modem Emulator - Network<br /><span class="subtitle"></span>
+</h1>
+<p>The AT commands in this section are used for accessing network services on GSM and similar networks.</p>
+<p><b>AT+CNUM Subscriber Number</b></p>
+<p>The <tt>AT+CNUM</tt> command retrieves the MSISDN's related to the subscriber from the SIM.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CNUM</tt></td><td><pre>    +CNUM: [&lt;alpha&gt;],&lt;number&gt;,&lt;type&gt;[,&lt;speed&gt;,&lt;service&gt;[,&lt;itc&gt;]]
+    ...</pre>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CNUM=?</tt></td><td></td></tr>
+</table></p>
+<p>Execution command returns the MSISDN's related to the subscriber from the SIM. If the subscriber has different MSISDN's for different services, each MSISDN is returned on a separate line.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;alpha&gt;</tt></td><td>String indicating the name of a phonebook entry corresponding to <tt>&lt;number&gt;</tt>. Usually this is empty.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;number&gt;</tt></td><td>String type phone number of calling address in format specified by <tt>&lt;type&gt;</tt>.</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;type&gt;</tt></td><td>Type of address octet in integer format (refer 3GPP TS 24.008).</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;speed&gt;</tt></td><td>GSM bearer speed value. See 3GPP TS 27.007 for more information.</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;service&gt;</tt></td><td><ul>
+<li>Asynchronous modem</li>
+<li>Synchronous modem</li>
+<li>PAD access</li>
+<li>Packet access</li>
+<li>Voice</li>
+<li>Reserved for future use: Fax</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;itc&gt;</tt></td><td><ul>
+<li>0 3.1 kHz</li>
+<li>1 UDI</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+COPS Operator Selection</b></p>
+<p>The <tt>AT+COPS</tt> command is used to select operators, to request the current operator details, and to request a list of the available operators.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+COPS=[&lt;mode&gt;[,&lt;format&gt;[,&lt;oper&gt;[,&lt;AcT&gt;]]]]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+COPS?</tt></td><td><tt>+COPS: &lt;mode&gt;[,&lt;format&gt;,&lt;oper&gt;[,&lt;AcT&gt;]]</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+COPS=?</tt></td><td><tt>+COPS: [list of supported (&lt;stat&gt;,long &lt;oper&gt;,short &lt;oper&gt;,numeric &lt;oper&gt;[,&lt;AcT&gt;])][,,(list of supported &lt;mode&gt;s),(list of supported &lt;format&gt;s)]</tt></td></tr>
+</table></p>
+<p>Set command forces an attempt to select and register the network operator. <tt>&lt;mode&gt;</tt> is used to select whether the selection is done automatically by the MT or is forced by this command to use operator <tt>&lt;oper&gt;</tt>. If the selected operator is not available, no other operator shall be selected (except for <tt>&lt;mode&gt;</tt>=4). The selected operator name format shall apply to further read commands. <tt>&lt;mode&gt;</tt>=2 forces an attempt to deregister from the network.</p>
+<p>Read command returns the current mode, the currently selected operator and the current access technology (AcT). If no operator is selected, <tt>&lt;format&gt;</tt>, <tt>&lt;oper&gt;</tt>, and <tt>&lt;AcT&gt;</tt> are omitted.</p>
+<p>Test command returns a set of five parameters, each representing an operator present in the network. Each set consists of a <tt>&lt;stat&gt;</tt> integer indicating the availability of the operator, long and short alphanumeric names for the operator, the numeric name for the operator, and the access technology.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;mode&gt;</tt></td><td><ul>
+<li>0 automatic</li>
+<li>1 manual</li>
+<li>2 deregister from the network</li>
+<li>3 set only <tt>&lt;format&gt;</tt></li>
+<li>4 manual/automatic; if manual selection fails, use automatic</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;format&gt;</tt></td><td><ul>
+<li>0 long format alphanumeric <tt>&lt;oper&gt;</tt></li>
+<li>1 short format alphanumeric <tt>&lt;oper&gt;</tt></li>
+<li>2 numeric <tt>&lt;oper&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;oper&gt;</tt></td><td>String type indicating the name of the operator according to <tt>&lt;format&gt;</tt>.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;stat&gt;</tt></td><td><ul>
+<li>0 unknown</li>
+<li>1 available</li>
+<li>2 current</li>
+<li>3 forbidden</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;AcT&gt;</tt></td><td><ul>
+<li>0 GSM</li>
+<li>1 GSM Compact</li>
+<li>2 UTRAN</li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CREG Network Registration</b></p>
+<p>The <tt>AT+CREG</tt> command control the presentation of unsolicited network registration changes.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CREG=[&lt;n&gt;]</tt></td><td><ul>
+<li><tt>OK</tt></li>
+<li><tt>+CME ERROR: 3</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CREG?</tt></td><td><tt>+CREG: &lt;n&gt;,&lt;stat&gt;[,&lt;lac&gt;,&lt;ci&gt;]</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CREG=?</tt></td><td><tt>+CREG: (0-2)</tt></td></tr>
+</table></p>
+<p>Set command controls the presentation of an unsolicited result code <tt>+CREG: &lt;stat&gt;[,&lt;lac&gt;,&lt;ci&gt;]</tt> when there is a change in the network registration status.</p>
+<p>Read command returns the presentation value and the current network registration status.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>&lt;n&gt;</tt></td><td><ul>
+<li>0 disable network registration result code</li>
+<li>1 enable network registration unsolicited result code <tt>+CREG: &lt;stat&gt;</tt></li>
+<li>2 enable network registration unsolicited result code <tt>+CREG: &lt;stat&gt;[,&lt;lac&gt;,&lt;ci&gt;]</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;stat&gt;</tt></td><td><ul>
+<li>0 not registered and not currently searching for a network</li>
+<li>1 registered, home network</li>
+<li>2 not registered and searching for a network</li>
+<li>3 registration denied</li>
+<li>4 unknown</li>
+<li>5 registered, roaming</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>&lt;lac&gt;</tt></td><td>String type, indicating the two byte location area code in hexadecimal format.</td></tr>
+<tr valign="top" class="even"><td><tt>&lt;ci&gt;</tt></td><td>String type, indicating the two byte cell ID in hexadecimal format.</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CTFR Call Deflection</b></p>
+<p>The <tt>AT+CTFR</tt> command causes an incoming alerting call to be forwarded to a specific number.</p>
+<p>Call Deflection is only available to Teleservice 11.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CTFR=&lt;number&gt;[,&lt;type&gt;[,&lt;subaddr&gt;[,&lt;satype&gt;]]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>AT+CTFR=?</tt></td><td></td></tr>
+</table></p>
+<p>The <tt>&lt;type&gt;</tt>,<tt>&lt;subaddr&gt;</tt> and <tt>&lt;satype&gt;</tt> parameters are ignored in this implementation. The <tt>&lt;number&gt;</tt> parameter is a string type phone number.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CAOC Advice of Charge</b></p>
+<p>The <tt>AT+CAOC</tt> command enables the subscriber to get information about the cost of calls.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CAOC[=&lt;mode&gt;]</tt></td><td><ul>
+<li><tt>[+CAOC: &lt;ccm&gt;]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CAOC?</tt></td><td><tt>+CAOC: &lt;mode&gt;</tt></td></tr>
+<tr valign="top" class="odd"><td><tt>AT+CAOC=?</tt></td><td><tt>[+CAOC:</tt>(list of supported <tt>&lt;mode&gt;</tt>s)</td></tr>
+</table></p>
+<p>The <tt>&lt;mode&gt;</tt> parameter can take the following values:</p>
+<ul>
+<li>0 Query CCM value</li>
+<li>1 Deactivate the unsolicited reporting of CCM value</li>
+<li>2 Activate the unsolicited reporting of CCM value</li>
+</ul>
+<p>The unsolicited result code <tt>+CCCM: &lt;ccm&gt;</tt> is sent when the CCM value changes, but not more than every ten seconds, if enabled.</p>
+<p><tt>&lt;ccm&gt;</tt> is a string type; 3 bytes of the current call meter value in hexadecimal format.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><b>AT+CPLS Selection of Preferred PLMN List</b></p>
+<p>The <tt>AT+CPLS</tt> command can be used to select one PLMN Selector With Access Technology list from the SIM card or active application in the UICC, which is used by the <tt>AT+CPOL</tt> command.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>+CPLS=&lt;list&gt;</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>+CPLS?</tt></td><td><ul>
+<li><tt>+CPLS: &lt;list&gt;</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>+CPLS=?</tt></td><td><ul>
+<li><tt>+CPLS:</tt> (list of supported <tt>&lt;list&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>The <tt>&lt;list&gt;</tt> parameter can take the following values:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>0</td><td>User controlled PLMN Selector With Access Technology list</td></tr>
+<tr valign="top" class="even"><td>1</td><td>Operator controlled PLMN Selector With Access Technology list</td></tr>
+<tr valign="top" class="odd"><td>2</td><td>HPLMN Selector With Access Technology list</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p>/sa AT+CPOL</p>
+<p><b>AT+CPOL Preferred PLMN List </b></p>
+<p>The <tt>AT+CPOL</tt> command is used to edit the PLMN Selector With Access Technology lists in the SIM card or active application in the UICC.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>+CPOL=[&lt;index&gt;][,&lt;format&gt;[,&lt;oper&gt;[,&lt;GSM_AcT&gt;, &lt;GSM_Compact_AcT&gt;,&lt;UTRAN_AcT&gt;]]]</tt></td><td><tt>+CME ERROR: &lt;err&gt;</tt></td></tr>
+<tr valign="top" class="even"><td><tt>+CPOL?</tt></td><td><ul>
+<li><tt>+CPOL: &lt;index1&gt;,&lt;format&gt;,&lt;oper1&gt;[,&lt;GSM_AcT1&gt;,&lt;GSM_Compact_AcT1&gt;,&lt;UTRAN_AcT1&gt;]</tt> <tt>[&lt;CR&gt;&lt;LF&gt;+CPOL: &lt;index2&gt;,&lt;format&gt;,&lt;oper2&gt;[,&lt;GSM_AcT2&gt;,&lt;GSM_Compact_AcT2&gt;,&lt;UTRAN_AcT2&gt;]</tt></li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>+CPOL=?</tt></td><td><ul>
+<li><tt>+CPOL:</tt>(list of supported <tt>&lt;index&gt;</tt>s),list of supported <tt>&lt;format&gt;</tt>s)</li>
+<li><tt>+CME ERROR: &lt;err&gt;</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p>/sa AT+CPLS</p>
+<p><b>AT+CIMI Request International Mobile Subscriber Identity</b></p>
+<p>The <tt>AT+CIMI</tt> command retrieves the IMSI value from the SIM.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Command</th><th>Possible Responses</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>AT+CIMI</tt></td><td><ul>
+<li><tt>&lt;IMSI&gt;</tt></li>
+<li><tt>+CME ERROR: 10</tt></li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td><tt>AT+CIMI=?</tt></td><td></td></tr>
+</table></p>
+<p>An error will be returned if there is no SIM present, or the SIM is still being initialized and the IMSI is not available yet.</p>
+<p>Conforms with: 3GPP TS 27.007.</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+</table></p>
+<p>
+[Previous: <a href="modememulator-identification.html">Modem Emulator - Identification</a>]
+[Next: <a href="modememulator-supplementaryservices.html">Modem Emulator - Supplementary Services</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

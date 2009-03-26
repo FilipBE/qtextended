@@ -1,0 +1,30 @@
+#!/bin/sh
+
+. /opt/Qtopia/SDK/scripts/functions
+
+QPEVER=`version`
+
+export QTOPIA_PHONE_DEVICE="sim:127.0.0.1"
+
+. /opt/Qtopia/SDK/scripts/devel-x86.sh
+
+if [ ! -z "$QPEHOME" ]; then
+    HOME=$QPEHOME
+fi
+# copy default settings
+if [ ! -e $HOME/Settings/Trolltech ]; then
+		mkdir -p $HOME/Settings/Trolltech
+		cp -a /opt/Qtopia/SDK/$QPEVER/$DEVICE/devices/$DEVICE/etc/default/Trolltech/* $HOME/Settings/Trolltech
+fi
+
+home-runqvfb &
+runphonesim &
+sleep 2
+
+if [ "$1" = "$DEVICE" ] ; then
+  export QTOPIA_PHONE_DEVICE=sim:${PHONEIP}
+  export QTOPIA_PHONE_VENDOR=${DEVICE}
+  gph -net
+fi
+
+/opt/Qtopia/SDK/scripts/runqpe-x86 2>&1 | logger -t 'x86'

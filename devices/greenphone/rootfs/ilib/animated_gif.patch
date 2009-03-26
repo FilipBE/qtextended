@@ -1,0 +1,284 @@
+diff -Nur diff/Ilib-1.1.9/lib/IGIF.c Ilib-1.1.9/lib/IGIF.c
+--- diff/Ilib-1.1.9/lib/IGIF.c	2004-10-25 10:46:44.000000000 +1000
++++ Ilib-1.1.9/lib/IGIF.c	2007-06-08 12:02:47.000000000 +1000
+@@ -251,6 +251,8 @@
+ IOptions options;
+ IImageP **image_return;
+ {
++  IImageP *head = NULL;
++  IImageP *last = NULL;
+   IImageP *image = NULL;
+   GifFileType *gft;
+   GifRecordType rt;
+@@ -263,9 +265,12 @@
+   unsigned int temp;
+   char *comments = NULL;
+   unsigned int transparent_ind;
++  unsigned int animation_delay;
+   int trans_set = 0;
+   IColor transcolor;
+ 
++  int imageCount = 0;
++
+   fd = fileno ( fp );
+ 
+   if ( ( gft = DGifOpenFileHandle ( fd ) ) == NULL )
+@@ -273,13 +278,19 @@
+ 
+   while ( image == NULL ) {
+     rt = UNDEFINED_RECORD_TYPE;
+-    if ( DGifGetRecordType ( gft, &rt ) == GIF_ERROR )
+-      return ( IGIFError );
++    if ( DGifGetRecordType ( gft, &rt ) == GIF_ERROR ) {
++        if (imageCount > 0)
++            break;
++        else
++          return ( IGIFError );
++    }
+     if ( rt == IMAGE_DESC_RECORD_TYPE ) {
++      imageCount++;
+       if ( DGifGetImageDesc ( gft ) == GIF_ERROR )
+         return ( IGIFError );
+-      image = (IImageP *) ICreateImage ( gft->Image.Width,
+-        gft->Image.Height, IOPTION_NONE );
++      image = (IImageP *) ICreateImage ( gft->Image.Width, gft->Image.Height, IOPTION_NONE );
++      image->left = gft->Image.Left;
++      image->top = gft->Image.Top;
+       gifdata = (GifPixelType *) malloc ( image->width  * image->height );
+       /* we read the lines out of order for interlaced images (yuck) */
+       if ( gft->Image.Interlace ) {
+@@ -315,6 +326,8 @@
+           }
+         }
+       }
++      if ( gifdata )
++        free ( gifdata );
+     } else if ( rt == EXTENSION_RECORD_TYPE ) {
+       /* ignore all extensions except comments */
+       DGifGetExtension ( gft, &extcode, &extension );
+@@ -330,6 +343,7 @@
+             trans_set = 1;
+             transparent_ind = extension[4];
+           }
++          animation_delay = extension[3] * 256 + extension[2];
+         } else {
+           /*
+           fprintf ( stderr, "Ignoring unknown extension: %d\n",
+@@ -339,6 +353,23 @@
+         DGifGetExtensionNext ( gft, &extension );
+       }
+     }
++    if (image) {
++      image->firstFrame = NULL;
++      image->nextFrame = NULL;
++      if (head == NULL) {
++        head = image;
++        head->firstFrame = head;
++      } else {
++        last->nextFrame = image;
++        image->firstFrame = head;
++      }
++
++      image->delay = animation_delay;
++
++      last = image;  
++      image = NULL;
++      animation_delay = 0;
++    }
+   }
+ 
+   /* lookup transparent color from colormap IF it exists -- GLM 2000*/
+@@ -347,16 +378,14 @@
+       gft->SColorMap->Colors[transparent_ind].Red,
+       gft->SColorMap->Colors[transparent_ind].Green,
+       gft->SColorMap->Colors[transparent_ind].Blue );
+-    ISetTransparent ( image, transcolor );
++    ISetTransparent ( head, transcolor );
+   }
+ 
+-  image->comments = comments;
++  head->comments = comments;
+ 
+-  if ( gifdata )
+-    free ( gifdata );
+   DGifCloseFile ( gft );
+ 
+-  *image_return = image;
++  *image_return = head;
+ 
+   return ( INoError );
+ }
+diff -Nur diff/Ilib-1.1.9/lib/IImage.c Ilib-1.1.9/lib/IImage.c
+--- diff/Ilib-1.1.9/lib/IImage.c	2004-10-25 03:34:53.000000000 +1000
++++ Ilib-1.1.9/lib/IImage.c	2007-06-08 13:03:27.000000000 +1000
+@@ -48,6 +48,46 @@
+   return ( (IImage)image );
+ }
+ 
++IError IFlattenImage ( image, gc )
++IImage image;
++IGC gc;
++{
++    IImageP *firstFrame = (IImageP *)image;
++
++    if ( firstFrame ) {
++        if ( firstFrame->magic != IMAGIC_IMAGE )
++            return IInvalidImage;
++    } else {
++        return IInvalidImage;
++    }
++
++    IImageP *lastFrame = firstFrame;
++    IImageP *currFrame = (IImageP *)firstFrame->nextFrame;
++    while (currFrame != NULL) {
++        IImage newFrame;
++
++        IDuplicateImage ( (IImage)lastFrame, &newFrame );
++
++        ICopyImage(currFrame, newFrame, gc, 0, 0, currFrame->width, currFrame->height, currFrame->left, currFrame->top);
++
++        IImageP *newFrameP = (IImageP *)newFrame;
++
++        newFrameP->delay = currFrame->delay;
++
++        newFrameP->firstFrame = (struct IImageP *)firstFrame;
++        newFrameP->nextFrame = currFrame->nextFrame;
++        lastFrame->nextFrame = (struct IImageP *)newFrameP;
++        
++        currFrame->firstFrame = NULL;
++        currFrame->nextFrame = NULL;
++
++        IFreeImage(currFrame);
++
++        lastFrame = newFrameP;
++        currFrame = (IImageP *)newFrameP->nextFrame;
++    }
++    return INoError;
++}
+ 
+ IError IDuplicateImage ( image, image_return )
+ IImage image;
+@@ -161,7 +201,45 @@
+   return ( ret );
+ }
+ 
++IError IFirstFrame ( image, image_return )
++IImage image;
++IImage *image_return;
++{
++    *image_return = (IImage)(((IImageP *)image)->firstFrame);
++    return INoError;
++}
++
++IError INextFrame ( image, image_return )
++IImage image;
++IImage *image_return;
++{
++    IImageP *imagep = (IImageP *)image;
+ 
++    if (imagep) {
++        if (imagep->magic != IMAGIC_IMAGE)
++            return IInvalidImage;
++    } else {
++        return IInvalidImage;
++    }
++    
++    *(IImageP **)image_return = (IImage)imagep->nextFrame;
++    return INoError;
++}
++
++unsigned int IFrameDelay ( image )
++IImage image;
++{
++    IImageP *imagep = (IImageP *)image;
++
++    if (imagep) {
++        if (imagep->magic != IMAGIC_IMAGE)
++            return 0;
++    } else {
++        return 0;
++    }
++
++    return imagep->delay * 10000;
++}
+ 
+ IError IReadImageFile ( fp, format, options, image_return )
+ FILE *fp;
+diff -Nur diff/Ilib-1.1.9/lib/Ilib.h Ilib-1.1.9/lib/Ilib.h
+--- diff/Ilib-1.1.9/lib/Ilib.h	2004-10-26 07:20:38.000000000 +1000
++++ Ilib-1.1.9/lib/Ilib.h	2007-06-05 12:46:39.000000000 +1000
+@@ -257,6 +258,16 @@
+ );
+ 
+ /*
++** Flattens an animated image.
++*/
++IError IFlattenImage (
++#ifndef _NO_PROTO
++IImage image,
++IGC gc
++#endif
++);
++
++/*
+ ** Copies all of an image to another image by scaling it to fit.
+ */
+ IError ICopyImageScaled (
+@@ -337,6 +348,35 @@
+ );
+ 
+ /*
++** Returns the first frame in the animation
++*/
++IError IFirstFrame (
++#ifndef _NO_PROTO
++  IImage image,
++  IImage *image_return		/* out: returned image on success */
++#endif
++);
++
++/*
++** Returns the next frame in the animation
++*/
++IError INextFrame (
++#ifndef _NO_PROTO
++  IImage image,
++  IImage *image_return		/* out: returned image on success */
++#endif
++);
++
++/*
++** Returns the required delay after this frame
++*/
++unsigned int IFrameDelay (
++#ifndef _NO_PROTO
++  IImage image
++#endif
++);
++
++/*
+ ** Creates an image from an image file.
+ ** Currently can read raw PPM (IFORMAT_PPM), XPM (IFORMAT_XPM),
+ ** GIF (IFORMAT_GIF), PNG (IFORMAT_PNG), and JPEG (IFORMAT_JPEG) files.
+diff -Nur diff/Ilib-1.1.9/lib/IlibP.h Ilib-1.1.9/lib/IlibP.h
+--- diff/Ilib-1.1.9/lib/IlibP.h	2004-10-26 06:51:08.000000000 +1000
++++ Ilib-1.1.9/lib/IlibP.h	2007-06-05 08:56:41.000000000 +1000
+@@ -63,6 +63,8 @@
+ 
+ typedef struct {
+   unsigned int magic;		/* memory verification */
++  int left;             /* offset from left */
++  int top;              /* offset from top */
+   int width;			/* width */
+   int height;			/* height */
+   char *comments;		/* comments */
+@@ -70,6 +72,9 @@
+   unsigned short interlaced;	/* interlaced output? */
+   unsigned short greyscale;	/* greyscale? */
+   IColorP *transparent;		/* transparent color */
++  struct IImageP *nextFrame;       /* next frame in animation */
++  struct IImageP *firstFrame;      /* first frame in animation */
++  unsigned short delay;
+ } IImageP;
+ 
+ typedef struct {

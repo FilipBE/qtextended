@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSerialIODeviceMultiplexer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSerialIODeviceMultiplexer Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSerialIODeviceMultiplexer class provides a base class for serial device multiplexing on AT-based modems. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSerialIODeviceMultiplexer&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="qgsm0710multiplexer.html">QGsm0710Multiplexer</a>, <a href="qmultiportmultiplexer.html">QMultiPortMultiplexer</a>, and <a href="qnullserialiodevicemultiplexer.html">QNullSerialIODeviceMultiplexer</a>.</p>
+<ul>
+<li><a href="qserialiodevicemultiplexer-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qserialiodevicemultiplexer.html#QSerialIODeviceMultiplexer">QSerialIODeviceMultiplexer</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qserialiodevicemultiplexer.html#dtor.QSerialIODeviceMultiplexer">~QSerialIODeviceMultiplexer</a></b> ()</li>
+<li><div class="fn"/>virtual QSerialIODevice * <b><a href="qserialiodevicemultiplexer.html#channel">channel</a></b> ( const QString &amp; <i>name</i> ) = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qserialiodevicemultiplexer.html#chat">chat</a></b> ( QSerialIODevice * <i>device</i>, const QString &amp; <i>cmd</i> )</li>
+<li><div class="fn"/>QString <b><a href="qserialiodevicemultiplexer.html#chatWithResponse">chatWithResponse</a></b> ( QSerialIODevice * <i>device</i>, const QString &amp; <i>cmd</i> )</li>
+<li><div class="fn"/>QSerialIODeviceMultiplexer * <b><a href="qserialiodevicemultiplexer.html#create">create</a></b> ( QSerialIODevice * <i>device</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSerialIODeviceMultiplexer class provides a base class for serial device multiplexing on AT-based modems.</p>
+<p>A multiplexer manages one or more channels, identified by their names. The standard names are:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>primary</tt></td><td>Primary AT command channel.</td></tr>
+<tr valign="top" class="even"><td><tt>secondary</tt></td><td>Secondary AT command channel for slow AT commands. Should return the same as <tt>primary</tt> if there is no explicit secondary channel on the modem.</td></tr>
+<tr valign="top" class="odd"><td><tt>data</tt></td><td>Data channel for GPRS and similar data sessions. Should return null if there is no explicit data channel on the modem.</td></tr>
+<tr valign="top" class="even"><td><tt>datasetup</tt></td><td>Channel for data call setup commands. Should return null if <tt>data</tt> is null.</td></tr>
+</table></p>
+<p>Sometimes these channels may overlap. For example, <tt>datasetup</tt> may be the same as <tt>data</tt> if data call setup should be sent on the same channel as the data itself; or it may be the same as <tt>primary</tt> if data call setup should be sent on the primary AT command channel.</p>
+<p>If a channel is not supported, the <a href="qserialiodevicemultiplexer.html#channel">channel</a>() method returns null. The <tt>primary</tt> and <tt>secondary</tt> channels must always be supported, even if they are the same.</p>
+<p>Auxiliary channels can be created and released dynamically. The channel name should begin with <tt>aux</tt>. The rest of the name gives an indication as to the type of auxiliary data: <tt>auxdata</tt>, <tt>auxvideo</tt>, etc. The multiplexer may return a pre-defined channel (e.g&#x2e; <tt>data</tt>) if the number of channels on the multiplexer is limited. The <a href="qiodevice.html#isOpen">QSerialIODevice::isOpen</a>() method can be used to determine if the channel is already in use, or is free for auxiliary traffic.</p>
+<p>Several standard multiplexer implementations are provided with Qtopia:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><a href="qgsm0710multiplexer.html">QGsm0710Multiplexer</a></td><td>Implementation of 3GPP TS 07.10/27.010 multiplexing.</td></tr>
+<tr valign="top" class="even"><td><a href="qmultiportmultiplexer.html">QMultiPortMultiplexer</a></td><td>Implementation of multiplexing over several serial ports, where each port corresponds to a single channel.</td></tr>
+<tr valign="top" class="odd"><td><a href="qnullserialiodevicemultiplexer.html">QNullSerialIODeviceMultiplexer</a></td><td>Null multiplexer with a single channel wrapped around a serial port, for modems that do not support proper multiplexing.</td></tr>
+</table></p>
+<p>New multiplexer implementations can be added using a multiplexer plug-in. See the <a href="tut-multiplexing.html">Tutorial: Writing a Multiplexer Plug-in</a> for more information on how to write a multiplexer plug-in.</p>
+<p>See also <a href="qgsm0710multiplexer.html">QGsm0710Multiplexer</a>, <a href="qmultiportmultiplexer.html">QMultiPortMultiplexer</a>, <a href="qnullserialiodevicemultiplexer.html">QNullSerialIODeviceMultiplexer</a>, and <a href="qserialiodevicemultiplexerplugin.html">QSerialIODeviceMultiplexerPlugin</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSerialIODeviceMultiplexer"></a>QSerialIODeviceMultiplexer::QSerialIODeviceMultiplexer ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a new multiplexer attached to <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QSerialIODeviceMultiplexer"></a>QSerialIODeviceMultiplexer::~QSerialIODeviceMultiplexer ()</h3>
+<p>Destruct a multiplexer.</p>
+<h3 class="fn"><a name="channel"></a><a href="qserialiodevice.html">QSerialIODevice</a> * QSerialIODeviceMultiplexer::channel ( const <a href="qstring.html">QString</a> &amp; <i>name</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the serial device corresponding the channel <i>name</i>. If the indicated channel does not exist, it should be created if possible. Some multiplexers may not be able to create all types of channels, and will return null for unsupported channels. All multiplexers must support at least <tt>primary</tt> and <tt>secondary</tt>.</p>
+<h3 class="fn"><a name="chat"></a>bool QSerialIODeviceMultiplexer::chat ( <a href="qserialiodevice.html">QSerialIODevice</a> * <i>device</i>, const <a href="qstring.html">QString</a> &amp; <i>cmd</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sends <i>cmd</i> to the specified serial <i>device</i> and wait for the response. Returns true if the command responds with <tt>OK</tt>, or false if the command responds with an error or it times out.</p>
+<p>This function is typically used by multiplexing plug-ins to turn on multiplexing prior to creating a subclass of <a href="qserialiodevicemultiplexer.html">QSerialIODeviceMultiplexer</a>.</p>
+<p>See also <a href="qserialiodevicemultiplexer.html#chatWithResponse">chatWithResponse</a>().</p>
+<h3 class="fn"><a name="chatWithResponse"></a><a href="qstring.html">QString</a> QSerialIODeviceMultiplexer::chatWithResponse ( <a href="qserialiodevice.html">QSerialIODevice</a> * <i>device</i>, const <a href="qstring.html">QString</a> &amp; <i>cmd</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Sends <i>cmd</i> to the specified serial <i>device</i> and wait for the response. Returns a null string if the command fails or times out, or the contents of the command's response if <tt>OK</tt>.</p>
+<p>This function can be used to issue commands such as <tt>AT+CGMI</tt> where the caller is interested in the text of the response.</p>
+<p>See also <a href="qserialiodevicemultiplexer.html#chat">chat</a>().</p>
+<h3 class="fn"><a name="create"></a>QSerialIODeviceMultiplexer * QSerialIODeviceMultiplexer::create ( <a href="qserialiodevice.html">QSerialIODevice</a> * <i>device</i> = 0 )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Create a multiplexer for handling the communications traffic on <i>device</i>. If <i>device</i> is null, a default device handler will be created based on the <tt>QTOPIA_PHONE_DEVICE</tt> setting.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Packages (overview)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Build System Home</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="userguide.html"><font color="#004faf">User Guide</font></a>&nbsp;&middot; <a href="internals.html"><font color="#004faf">Internals</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Packages (overview)<br /><span class="subtitle"></span>
+</h1>
+<p>Projects are automatically setup to be built into packages if they define one of the pkg. variables. By default, a single package is built. It is called <tt>pkg</tt> and its contents are the result of running <tt>qbuild image</tt>. It can be configured by modifying its properties.</p>
+<pre>    pkg.name=myapp
+    pkg.desc=My Great App
+    pkg.version=1.0</pre>
+<p>You can create other structures and assign them to the PACKAGES variable to create more than one package though this is not well tested.</p>
+<p>Here is the definition of the package structure.</p>
+<pre>    struct package {
+        name       # eg. $name.ipk
+        desc       # one line summary
+        deps       # packages that this ipk depends on
+        multi      # put multiple projects in a single package
+        version    # package version
+        license    # package license
+        maintainer # package maintainer
+        targets    # targets to run (ie. install stuff)
+    }</pre>
+<p><i>Notes</i></p>
+<ul>
+<li>multi<p>The values here are compared to the <a href="var-projects-1.html">PROJECTS</a> variable and only enabled projects are addded. The other projects must not install <tt>.directory</tt> or <tt>.desktop</tt> files.</p>
+</li>
+</ul>
+<p>Note that <tt>pkg.domain</tt> is automatically set to include target.domain and the domains of any app/script you have installed with <a href="hint-sxe-1.html">hint=sxe</a> so you should not need to set it. However, this feature is only available for the default package and you must manually assign <tt>.domain</tt> for additional packages.</p>
+<a name="package-limitations"></a>
+<h3>Package Limitations</h3>
+<p>There are restrictions on what can be installed. For example, <tt>.directory</tt> and <tt>.desktop</tt> files are handled differently. See <a href="task-create-a-launcher-folder-1.html#a-note-on-packages">A note on packages</a> for information about <tt>.directory</tt> files.</p>
+<p>Packages cannot contain quicklaunched applications. You should omit the <a href="conf-quicklaunch-1.html">quicklaunch</a> CONFIG value.</p>
+<a name="alternate-package-formats"></a>
+<h3>Alternate package formats</h3>
+<p>You can create packages in <tt>ipk</tt> or <tt>rpm</tt> formats instead of the default QPK. These package formats cannot be installed by the Qt Extended package installer so you will need to provide an alternative package installer. You specify the format of the packages to create with the <tt>FORMAT</tt> variable.</p>
+<p>The restrictions on <tt>.directory</tt> and <tt>.desktop</tt> files still apply to IPK and RPM formats but the quicklauncher restriction does not apply because these formats are designed for updating the system instead of sandboxed installation.</p>
+<pre>    make packages FORMAT=ipk</pre>
+<p>Note that these formats default to creating separate <tt>-i18n</tt> packages. If you do not want this set the <tt>SPLIT_I18N</tt> variable.</p>
+<pre>    make packages FORMAT=ipk SPLIT_I18N=0</pre>
+<p>See also <a href="overviews.html">Overviews</a>, <a href="var-packages-1.html">PACKAGES</a>, <a href="hint-sxe-1.html">hint=sxe</a>, and <a href="foo/../../quicklaunch.html">Quicklauncher</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - Build System Documentation</div></td>
+</tr></table></div></address></body>
+</html>

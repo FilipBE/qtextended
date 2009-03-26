@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAtChatScript Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAtChatScript Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QAtChatScript class provides a mechanism to run pppd chat scripts. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAtChatScript&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qatchatscript-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qatchatscript.html#QAtChatScript">QAtChatScript</a></b> ( QAtChat * <i>atchat</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qatchatscript.html#dtor.QAtChatScript">~QAtChatScript</a></b> ()</li>
+<li><div class="fn"/>int <b><a href="qatchatscript.html#successfulCommands">successfulCommands</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qatchatscript.html#totalCommands">totalCommands</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qatchatscript.html#runChat">runChat</a></b> ( const QString &amp; <i>chatScript</i> )</li>
+<li><div class="fn"/>void <b><a href="qatchatscript.html#runChat-2">runChat</a></b> ( const QStringList &amp; <i>commands</i> )</li>
+<li><div class="fn"/>void <b><a href="qatchatscript.html#runChatFile">runChatFile</a></b> ( const QString &amp; <i>filename</i> )</li>
+<li><div class="fn"/>void <b><a href="qatchatscript.html#stop">stop</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qatchatscript.html#done">done</a></b> ( bool <i>ok</i>, const QAtResult &amp; <i>result</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAtChatScript class provides a mechanism to run pppd chat scripts.</p>
+<p>This class is intended for use by the Qt Extended network component. Other components should use <a href="qatchat.html">QAtChat</a>.</p>
+<p>Chat scripts are started by calling <a href="qatchatscript.html#runChat">runChat</a>() or <a href="qatchatscript.html#runChatFile">runChatFile</a>(). When the script completes successfully or unsuccessfully, the <a href="qatchatscript.html#done">done</a>() signal will be emitted. Scripts can be aborted prematurely by calling <a href="qatchatscript.html#stop">stop</a>().</p>
+<p>The chat script format is based on that used by the Unix <tt>chat(8)</tt> utility.</p>
+<p>See also <a href="qatchat.html">QAtChat</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAtChatScript"></a>QAtChatScript::QAtChatScript ( <a href="qatchat.html">QAtChat</a> * <i>atchat</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Construct a chat script object that sends AT commands from the script on <i>atchat</i>. The new object will be attached to <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QAtChatScript"></a>QAtChatScript::~QAtChatScript ()</h3>
+<p>Destruct this chat script object.</p>
+<h3 class="fn"><a name="done"></a>void QAtChatScript::done ( bool <i>ok</i>, const <a href="qatresult.html">QAtResult</a> &amp; <i>result</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the chat script is done. The <i>ok</i> flag indicates whether the script succeeded or failed, and <i>result</i> indicates more information about the failure (busy, no carrier, etc).</p>
+<p>See also <a href="qatchatscript.html#runChat">runChat</a>(), <a href="qatchatscript.html#runChatFile">runChatFile</a>(), and <a href="qatchatscript.html#successfulCommands">successfulCommands</a>().</p>
+<h3 class="fn"><a name="runChat"></a>void QAtChatScript::runChat ( const <a href="qstring.html">QString</a> &amp; <i>chatScript</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Run a literal <i>chatScript</i>. The <a href="qatchatscript.html#done">done</a>() signal will be emitted when the script completes.</p>
+<p>The chat script format is based on that used by the Unix <tt>chat(8)</tt> utility.</p>
+<p>See also <a href="qatchatscript.html#runChatFile">runChatFile</a>() and <a href="qatchatscript.html#done">done</a>().</p>
+<h3 class="fn"><a name="runChat-2"></a>void QAtChatScript::runChat ( const <a href="qstringlist.html">QStringList</a> &amp; <i>commands</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Run a list of <i>commands</i> which have already been parsed from a chat script. The <a href="qatchatscript.html#done">done</a>() signal will be emitted when the script completes.</p>
+<p>See also <a href="qatchatscript.html#runChatFile">runChatFile</a>() and <a href="qatchatscript.html#done">done</a>().</p>
+<h3 class="fn"><a name="runChatFile"></a>void QAtChatScript::runChatFile ( const <a href="qstring.html">QString</a> &amp; <i>filename</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Run the chat script within <i>filename</i>. The <a href="qatchatscript.html#done">done</a>() signal will be emitted when the script completes.</p>
+<p>The chat script format is based on that used by the Unix <tt>chat(8)</tt> utility.</p>
+<p>See also <a href="qatchatscript.html#runChat">runChat</a>() and <a href="qatchatscript.html#done">done</a>().</p>
+<h3 class="fn"><a name="stop"></a>void QAtChatScript::stop ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Stop the chat script.</p>
+<p>See also <a href="qatchatscript.html#runChat">runChat</a>() and <a href="qatchatscript.html#runChatFile">runChatFile</a>().</p>
+<h3 class="fn"><a name="successfulCommands"></a>int QAtChatScript::successfulCommands () const</h3>
+<p>Returns the number of commands that were successful. If this is less than <a href="qatchatscript.html#totalCommands">totalCommands</a>() when the <a href="qatchatscript.html#done">done</a>() signal is emitted, then the script stopped with an error before the whole script could be executed.</p>
+<p>See also <a href="qatchatscript.html#totalCommands">totalCommands</a>() and <a href="qatchatscript.html#done">done</a>().</p>
+<h3 class="fn"><a name="totalCommands"></a>int QAtChatScript::totalCommands () const</h3>
+<p>Returns the total number of commands to be executed in the chat script.</p>
+<p>See also <a href="qatchatscript.html#successfulCommands">successfulCommands</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

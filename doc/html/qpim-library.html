@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>PIM Library</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">PIM Library<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#concurrent-access-to-pim-data">Concurrent Access to PIM Data</a></li>
+<li><a href="#abstraction-of-pim-data-storage-mechanism">Abstraction of PIM Data Storage Mechanism</a></li>
+<li><a href="#pim-data-synchronization">PIM Data Synchronization</a></li>
+<li><a href="#sorting-searching-and-filtering-functionality">Sorting, Searching and Filtering Functionality</a></li>
+<li><a href="#additional-pim-widgets">Additional PIM Widgets</a></li>
+<li><a href="#assumptions-and-dependencies">Assumptions and Dependencies</a></li>
+</ul>
+<a name="overview"></a>
+<h2>Overview</h2>
+<p>The Qt Extended PIM library provides a set of APIs for accessing Qt Extended PIM data. Classes are provided to retrieve, edit and save <tt>Contacts</tt>, <tt>Tasks</tt>, and <tt>Appointments</tt>. For detailed class information refer to: <a href="qpepim-class-overview.html">PIM Class Overview</a>.</p>
+<p>The Qt Extended PIM library provides unified access to the PIM data on a Qt Extended device including concurrent access to PIM data by multiple applications and independence from the mechanism used to store the PIM data on the device.</p>
+<a name="concurrent-access-to-pim-data"></a>
+<h2>Concurrent Access to PIM Data</h2>
+<p>The Qt Extended PIM library provides a level of concurrent access to PIM data by multiple applications. The concurrent access does guarantee that data won't be corrupted by concurrent access, however does not give any guarantees as to performance of PIM data access if accessed concurrently by multiple applications.</p>
+<a name="abstraction-of-pim-data-storage-mechanism"></a>
+<h2>Abstraction of PIM Data Storage Mechanism</h2>
+<p>The Qt Extended PIM library abstracts the storage method used to store PIM data. On a device the Qt Extended PIM library will only read and write the primary storage mechanism and synchronizing mechanism.</p>
+<a name="pim-data-synchronization"></a>
+<h2>PIM Data Synchronization</h2>
+<p>The Qt Extended PIM library prepares the PIM data for <a href="qpepim-synchronization.html">synchronizing</a> with Qt Extended <a href="qtopiadesktop/over-desktop-synchronization-1.html">Sync Agent</a>, as well as integrating updates to the PIM data provided by Qt Extended Sync Agent. The Qt Extended PIM library however does not monitor notification for start and end of synchronizing, this monitoring is the responsibility of PIM applications.</p>
+<a name="sorting-searching-and-filtering-functionality"></a>
+<h2>Sorting, Searching and Filtering Functionality</h2>
+<p>The Qt Extended PIM library provides a number of sort, search and filter functions to aid in selecting data most useful to the view requested. This reduces the burden on the application for managing the PIM data, as well as allowing better use of the underlying storage mechanism.</p>
+<p>The design for sorting is to specify a key order and is always done in ascending order.</p>
+<p>Preset filters are provided appropriate to each PIM data type. For example filtering by:</p>
+<ul>
+<li>category</li>
+<li>Task completion status</li>
+<li>SIM card or non SIM card <tt>Contacts</tt>.</li>
+</ul>
+<p>Due to the difficulty in predicting all possible ways the data might need to be filtered, filtering that does not fit in the provided functions should be provided by using <a href="qproxymodel.html">QProxyModel</a> or accessing the database directly.</p>
+<a name="additional-pim-widgets"></a>
+<h2>Additional PIM Widgets</h2>
+<p>The Qt Extended PIM library provides some GUI controls if they are commonly used by applications casually accessing PIM data. It does not provide GUI controls that are primarily used by PIM applications. For example a <tt>Contact</tt> selector is provided, but not a <tt>Contact</tt> edit dialog.</p>
+<a name="assumptions-and-dependencies"></a>
+<h2>Assumptions and Dependencies</h2>
+<p>The Qt Extended PIM library requires SQL support either through the include <a href="legal-sqlite.html">SQLite</a> or through some other SQL engine and it also relies on the ability to send and receive QCop messages.</p>
+<p>The responsibilities of a PIM application include:</p>
+<ul>
+<li>provision of dialogs for editing and viewing PIM data</li>
+<li>provision of QDL support</li>
+<li>handling of notification of synchronizing</li>
+<li>beaming or otherwise sending and receiving PIM data.</li>
+</ul>
+<p>Refer to: <a href="services.html">Services</a> detailed information on PIM applications.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

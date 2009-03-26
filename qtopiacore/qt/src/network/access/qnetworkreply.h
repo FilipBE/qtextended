@@ -1,0 +1,167 @@
+/****************************************************************************
+**
+** Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies).
+** Contact: Qt Software Information (qt-info@nokia.com)
+**
+** This file is part of the QtNetwork module of the Qt Toolkit.
+**
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and Nokia.
+**
+**
+** GNU General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU
+** General Public License versions 2.0 or 3.0 as published by the Free
+** Software Foundation and appearing in the file LICENSE.GPL included in
+** the packaging of this file.  Please review the following information
+** to ensure GNU General Public Licensing requirements will be met:
+** http://www.fsf.org/licensing/licenses/info/GPLv2.html and
+** http://www.gnu.org/copyleft/gpl.html.  In addition, as a special
+** exception, Nokia gives you certain additional rights. These rights
+** are described in the Nokia Qt GPL Exception version 1.3, included in
+** the file GPL_EXCEPTION.txt in this package.
+**
+** Qt for Windows(R) Licensees
+** As a special exception, Nokia, as the sole copyright holder for Qt
+** Designer, grants users of the Qt/Eclipse Integration plug-in the
+** right for the Qt/Eclipse Integration to link to functionality
+** provided by Qt Designer and its related libraries.
+**
+** If you are unsure which license is appropriate for your use, please
+** contact the sales department at qt-sales@nokia.com.
+**
+****************************************************************************/
+
+#ifndef QNETWORKREPLY_H
+#define QNETWORKREPLY_H
+
+#include <QtCore/QIODevice>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
+
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkAccessManager>
+
+QT_BEGIN_HEADER
+
+QT_BEGIN_NAMESPACE
+
+QT_MODULE(Network)
+
+class QUrl;
+class QVariant;
+class QAuthenticator;
+class QSslConfiguration;
+class QSslError;
+
+class QNetworkReplyPrivate;
+class Q_NETWORK_EXPORT QNetworkReply: public QIODevice
+{
+    Q_OBJECT
+    Q_ENUMS(NetworkError)
+public:
+    enum NetworkError {
+        NoError = 0,
+
+        // network layer errors [relating to the destination server] (1-99):
+        ConnectionRefusedError = 1,
+        RemoteHostClosedError,
+        HostNotFoundError,
+        TimeoutError,
+        OperationCanceledError,
+        SslHandshakeFailedError,
+        UnknownNetworkError = 99,
+
+        // proxy errors (101-199):
+        ProxyConnectionRefusedError = 101,
+        ProxyConnectionClosedError,
+        ProxyNotFoundError,
+        ProxyTimeoutError,
+        ProxyAuthenticationRequiredError,
+        UnknownProxyError = 199,
+
+        // content errors (201-299):
+        ContentAccessDenied = 201,
+        ContentOperationNotPermittedError,
+        ContentNotFoundError,
+        AuthenticationRequiredError,
+        UnknownContentError = 299,
+
+        // protocol errors
+        ProtocolUnknownError = 301,
+        ProtocolInvalidOperationError,
+        ProtocolFailure = 399
+    };
+
+    ~QNetworkReply();
+    virtual void abort() = 0;
+
+    // reimplemented from QIODevice
+    virtual void close();
+    virtual bool isSequential() const;
+
+    // like QAbstractSocket:
+    qint64 readBufferSize() const;
+    virtual void setReadBufferSize(qint64 size);
+
+    QNetworkAccessManager *manager() const;
+    QNetworkAccessManager::Operation operation() const;
+    QNetworkRequest request() const;
+    NetworkError error() const;
+    QUrl url() const;
+
+    // "cooked" headers
+    QVariant header(QNetworkRequest::KnownHeaders header) const;
+
+    // raw headers:
+    bool hasRawHeader(const QByteArray &headerName) const;
+    QList<QByteArray> rawHeaderList() const;
+    QByteArray rawHeader(const QByteArray &headerName) const;
+
+    // attributes
+    QVariant attribute(QNetworkRequest::Attribute code) const;
+
+#ifndef QT_NO_OPENSSL
+    QSslConfiguration sslConfiguration() const;
+    void setSslConfiguration(const QSslConfiguration &configuration);
+#endif
+
+public Q_SLOTS:
+    virtual void ignoreSslErrors();
+
+Q_SIGNALS:
+    void metaDataChanged();
+    void finished();
+    void error(QNetworkReply::NetworkError);
+#ifndef QT_NO_OPENSSL
+    void sslErrors(const QList<QSslError> &errors);
+#endif
+
+    void uploadProgress(qint64 bytesSent, qint64 bytesTotal);
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+
+protected:
+    QNetworkReply(QObject *parent = 0);
+    QNetworkReply(QNetworkReplyPrivate &dd, QObject *parent);
+    virtual qint64 writeData(const char *data, qint64 len);
+
+    void setOperation(QNetworkAccessManager::Operation operation);
+    void setRequest(const QNetworkRequest &request);
+    void setError(NetworkError errorCode, const QString &errorString);
+    void setUrl(const QUrl &url);
+    void setHeader(QNetworkRequest::KnownHeaders header, const QVariant &value);
+    void setRawHeader(const QByteArray &headerName, const QByteArray &value);
+    void setAttribute(QNetworkRequest::Attribute code, const QVariant &value);
+
+private:
+    Q_DECLARE_PRIVATE(QNetworkReply)
+};
+
+QT_END_NAMESPACE
+
+QT_END_HEADER
+
+#endif

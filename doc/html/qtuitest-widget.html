@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Widget Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Widget Class Reference<br /><span class="small-subtitle">(QtUiTest::Widget)<br />[<a href="qtuitestmodule.html">QtUiTestModule</a>]</span>
+</h1>
+<p>The Widget class provides an abstract base class for all test widgets. <a href="#details">More...</a></p>
+<p><b>This class is under development and is subject to change.</b></p>
+<ul>
+<li><a href="qtuitest-widget-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual const QObjectList &amp; <b><a href="qtuitest-widget.html#children">children</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QRegion <b><a href="qtuitest-widget.html#childrenVisibleRegion">childrenVisibleRegion</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qtuitest-widget.html#ensureVisiblePoint">ensureVisiblePoint</a></b> ( const QPoint &amp; <i>point</i> )</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#ensureVisibleRegion">ensureVisibleRegion</a></b> ( const QRegion &amp; <i>region</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qtuitest-widget.html#focusOutEvent">focusOutEvent</a></b> ()</li>
+<li><div class="fn"/>virtual const QRect &amp; <b><a href="qtuitest-widget.html#geometry">geometry</a></b> () const = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#hasEditFocus">hasEditFocus</a></b> () const = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#hasFocus">hasFocus</a></b> () const = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#inherits">inherits</a></b> ( QtUiTest::WidgetType <i>type</i> ) const</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#isVisible">isVisible</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QPoint <b><a href="qtuitest-widget.html#mapFromGlobal">mapFromGlobal</a></b> ( const QPoint &amp; <i>pos</i> ) const = 0</li>
+<li><div class="fn"/>virtual QPoint <b><a href="qtuitest-widget.html#mapToGlobal">mapToGlobal</a></b> ( const QPoint &amp; <i>pos</i> ) const = 0</li>
+<li><div class="fn"/>virtual QObject * <b><a href="qtuitest-widget.html#parent">parent</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QRect <b><a href="qtuitest-widget.html#rect">rect</a></b> () const</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#setEditFocus">setEditFocus</a></b> ( bool <i>enable</i> ) = 0</li>
+<li><div class="fn"/>virtual bool <b><a href="qtuitest-widget.html#setFocus">setFocus</a></b> ()</li>
+<li><div class="fn"/>virtual QRegion <b><a href="qtuitest-widget.html#visibleRegion">visibleRegion</a></b> () const = 0</li>
+<li><div class="fn"/>virtual Qt::WindowFlags <b><a href="qtuitest-widget.html#windowFlags">windowFlags</a></b> () const</li>
+<li><div class="fn"/>virtual QString <b><a href="qtuitest-widget.html#windowTitle">windowTitle</a></b> () const</li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qtuitest-widget.html#gotFocus">gotFocus</a></b> ()</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The Widget class provides an abstract base class for all test widgets.</p>
+<p>QtUiTest::Widget contains functionality which maps closely to <a href="qwidget.html">QWidget</a>. It encapsulates important information and functionality related to two-dimensional GUI elements.</p>
+<p>All Qt Extended test widgets should implement the QtUiTest::Widget interface, using multiple inheritance to implement other <a href="qtuitest.html">QtUiTest</a> interfaces where suitable.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="children"></a>const <a href="qobject.html#QObjectList-typedef">QObjectList</a> &amp; Widget::children () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns all children of this widget.</p>
+<p>The returned objects may be actual <a href="qwidget.html">QWidget</a> instances, or may be wrapping test widgets. Therefore, the only safe way to use the returned objects are to cast them to the desired <a href="qtuitest.html">QtUiTest</a> interface using <a href="qtuitest.html">qtuitest_cast</a>.</p>
+<p>Reimplementing this function allows widgets which are conceptually widgets but are not <a href="qobject.html">QObject</a> subclasses to be wrapped. This can be achieved by returning a list of test widgets which do not necessarily have underlying <a href="qwidget.html">QWidget</a> instances.</p>
+<p>See also <a href="qobject.html#children">QObject::children</a>() and <a href="qtuitest-widget.html#parent">parent</a>().</p>
+<h3 class="fn"><a name="childrenVisibleRegion"></a><a href="qregion.html">QRegion</a> Widget::childrenVisibleRegion () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the currently on-screen, unobscured region of all child widgets of this widget, in widget coordinates. This does not include the visible region of this widget.</p>
+<p>The base implementation calculates the visible region by calling <a href="qtuitest-widget.html#visibleRegion">visibleRegion</a>() and childrenVisibleRegion() on all <a href="qtuitest-widget.html#children">children</a>().</p>
+<p>See also <a href="qwidget.html#visibleRegion">QWidget::visibleRegion</a>(), <a href="qtuitest-widget.html#children">children</a>(), and <a href="qtuitest-widget.html#visibleRegion">visibleRegion</a>().</p>
+<h3 class="fn"><a name="ensureVisiblePoint"></a>bool Widget::ensureVisiblePoint ( const <a href="qpoint.html">QPoint</a> &amp; <i>point</i> )</h3>
+<p>Simulate whatever user input is necessary to ensure that <i>point</i> (in local coordinates) is on-screen and unobscured.</p>
+<p>This convenience function calls <a href="qtuitest-widget.html#ensureVisibleRegion">ensureVisibleRegion</a>() with a region containing only <i>point</i>.</p>
+<p>Returns true if <i>point</i> was successfully made visible.</p>
+<p>See also <a href="qtuitest-widget.html#visibleRegion">visibleRegion</a>() and <a href="qtuitest-widget.html#ensureVisibleRegion">ensureVisibleRegion</a>().</p>
+<h3 class="fn"><a name="ensureVisibleRegion"></a>bool Widget::ensureVisibleRegion ( const <a href="qregion.html">QRegion</a> &amp; <i>region</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Simulate whatever user input is necessary to ensure that <i>region</i> (in local coordinates) is on-screen and unobscured.</p>
+<p>Returns true if <i>region</i> was successfully made visible.</p>
+<p>See also <a href="qtuitest-widget.html#visibleRegion">visibleRegion</a>().</p>
+<h3 class="fn"><a name="focusOutEvent"></a>void Widget::focusOutEvent ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>This function is called when this widget is about to lose keyboard focus. The base implementation does nothing.</p>
+<p>This function should be reimplemented to put this widget in a state where subsequent up/down key clicks will result in non-destructive navigation between widgets.</p>
+<p>For example, if this function is called on a combo box which currently has a list popped up, it should dismiss the list so that subsequent key clicks will navigate between widgets rather than navigating within the list.</p>
+<pre>    void MyComboBox::focusOutEvent() {
+        <span class="comment">// Assuming q is a QComboBox...</span>
+        <span class="comment">// If the list is currently popped up...</span>
+        if (q-&gt;view()-&gt;isVisible()) {
+            <span class="comment">// Press the Select key to commit the currently highlighted</span>
+            <span class="comment">// item and ensure we are ready to navigate by keys.</span>
+            QtUiTest::keyClick(Qt::Key_Select);
+        }
+    }</pre>
+<p>See also <a href="qwidget.html#focusOutEvent">QWidget::focusOutEvent</a>(), <a href="qtuitest-widget.html#setFocus">setFocus</a>(), and <a href="qtuitest-widget.html#hasFocus">hasFocus</a>().</p>
+<h3 class="fn"><a name="geometry"></a>const <a href="qrect.html">QRect</a> &amp; Widget::geometry () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the geometry of this widget in parent coordinates.</p>
+<p>See also <a href="qwidget.html#geometry-prop">QWidget::geometry</a>().</p>
+<h3 class="fn"><a name="gotFocus"></a>void Widget::gotFocus ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when this widget gains focus by any means.</p>
+<p>See also <a href="qapplication.html#focusChanged">QApplication::focusChanged</a>().</p>
+<h3 class="fn"><a name="hasEditFocus"></a>bool Widget::hasEditFocus () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if this widget currently has edit focus.</p>
+<p>The concept of edit focus only exists in Qt Embedded. This function must be implemented on Qt Embedded. On other platforms, the base implementation will return the same as <a href="qtuitest-widget.html#hasFocus">hasFocus</a>().</p>
+<p>See also <a href="qwidget.html#hasEditFocus">QWidget::hasEditFocus</a>() and <a href="qtuitest-widget.html#setEditFocus">setEditFocus</a>().</p>
+<h3 class="fn"><a name="hasFocus"></a>bool Widget::hasFocus () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if this widget currently has keyboard focus.</p>
+<p>See also <a href="qwidget.html#focus-prop">QWidget::hasFocus</a>().</p>
+<h3 class="fn"><a name="inherits"></a>bool Widget::inherits ( <a href="qtuitest.html#WidgetType-enum">QtUiTest::WidgetType</a> <i>type</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns true if this widget is of the given <i>type</i>.</p>
+<p>The base implementation always returns false.</p>
+<h3 class="fn"><a name="isVisible"></a>bool Widget::isVisible () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns true if this widget is currently visible.</p>
+<p>In this context, &quot;visible&quot; has the same meaning as in <a href="qwidget.html#visible-prop">QWidget::isVisible</a>(). Therefore, this function returning <tt>true</tt> is not a guarantee that this widget is currently on screen and unobscured. To test this, <a href="qtuitest-widget.html#visibleRegion">visibleRegion</a>() can be used.</p>
+<p>See also <a href="qwidget.html#visible-prop">QWidget::isVisible</a>() and <a href="qtuitest-widget.html#visibleRegion">visibleRegion</a>().</p>
+<h3 class="fn"><a name="mapFromGlobal"></a><a href="qpoint.html">QPoint</a> Widget::mapFromGlobal ( const <a href="qpoint.html">QPoint</a> &amp; <i>pos</i> ) const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Maps <i>pos</i> from global screen coordinates to widget coordinates and returns the result.</p>
+<p>See also <a href="qwidget.html#mapFromGlobal">QWidget::mapFromGlobal</a>().</p>
+<h3 class="fn"><a name="mapToGlobal"></a><a href="qpoint.html">QPoint</a> Widget::mapToGlobal ( const <a href="qpoint.html">QPoint</a> &amp; <i>pos</i> ) const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Maps <i>pos</i> from widget coordinates to global screen coordinates and returns the result.</p>
+<p>See also <a href="qwidget.html#mapToGlobal">QWidget::mapToGlobal</a>().</p>
+<h3 class="fn"><a name="parent"></a><a href="qobject.html">QObject</a> * Widget::parent () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the parent of this widget, or 0 if this widget has no parent.</p>
+<p>The returned object may be an actual <a href="qwidget.html">QWidget</a>, or may be a wrapping test widget. Therefore, the only safe way to use the returned value of this function is to cast it to the desired <a href="qtuitest.html">QtUiTest</a> interface using <a href="qtuitest.html">qtuitest_cast</a>.</p>
+<p>See also <a href="qobject.html#parent">QObject::parent</a>(), <a href="qwidget.html#parentWidget">QWidget::parentWidget</a>(), and <a href="qtuitest-widget.html#children">children</a>().</p>
+<h3 class="fn"><a name="rect"></a><a href="qrect.html">QRect</a> Widget::rect () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the bounding rect of this widget in widget coordinates.</p>
+<p>The base implementation returns <a href="qtuitest-widget.html#geometry">geometry</a>(), transformed to widget coordinates.</p>
+<p>See also <a href="qwidget.html#rect-prop">QWidget::rect</a>().</p>
+<h3 class="fn"><a name="setEditFocus"></a>bool Widget::setEditFocus ( bool <i>enable</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Simulate the user input necessary to <i>enable</i> or disable edit focus for this widget. Enabling edit focus will implicitly call <a href="qtuitest-widget.html#setFocus">setFocus</a>() when necessary.</p>
+<p>The concept of edit focus only exists in Qt Embedded. This function must be implemented when using Qt Embedded. On other platforms, this function will behave the same as <a href="qtuitest-widget.html#setFocus">setFocus</a>() when enable is true, and will have no effect when enable is false.</p>
+<p>Returns true if edit focus was successfully enabled or disabled for this widget, false otherwise.</p>
+<p>See also <a href="qwidget.html#setEditFocus">QWidget::setEditFocus</a>() and <a href="qtuitest-widget.html#hasEditFocus">hasEditFocus</a>().</p>
+<h3 class="fn"><a name="setFocus"></a>bool Widget::setFocus ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Simulate the user input necessary to move keyboard focus to this widget.</p>
+<p>The base implementation uses the result of <a href="qtuitest-widget.html#hasFocus">hasFocus</a>() to determine if the widget currently has focus. If in keypad mode, a sequence of Up or Down key presses will be used to move focus until this widget has focus. If in mouse mode, the center of this widget will be clicked once.</p>
+<p>Due to the way this function works in keypad mode, it is very important that <a href="qtuitest-widget.html#focusOutEvent">focusOutEvent</a>() is correctly implemented for all widgets to dismiss any &quot;grab&quot; effects on keyboard focus.</p>
+<p>When reimplementing this function, it is necessary to call <a href="qtuitest-widget.html#focusOutEvent">focusOutEvent</a>() on any widget before taking any action which could cause that widget to lose focus.</p>
+<p>Returns true if focus was successfully given to this widget, false otherwise.</p>
+<p>See also <a href="qtuitest-widget.html#hasFocus">hasFocus</a>(), <a href="qwidget.html#setFocus">QWidget::setFocus</a>(), and <a href="qtuitest-widget.html#focusOutEvent">focusOutEvent</a>().</p>
+<h3 class="fn"><a name="visibleRegion"></a><a href="qregion.html">QRegion</a> Widget::visibleRegion () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the currently on-screen, unobscured region of this widget, in widget coordinates.</p>
+<p>See also <a href="qwidget.html#visibleRegion">QWidget::visibleRegion</a>().</p>
+<h3 class="fn"><a name="windowFlags"></a><a href="qt.html#WindowFlags-typedef">Qt::WindowFlags</a> Widget::windowFlags () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the flags set on this widget.</p>
+<p>The default implementation returns 0, which is equivalent to a plain <a href="qt.html#WindowType-enum">Qt::Widget</a> with no special flags set.</p>
+<h3 class="fn"><a name="windowTitle"></a><a href="qstring.html">QString</a> Widget::windowTitle () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the window title (caption).</p>
+<p>The returned string will typically be empty for all widgets other than top-level widgets.</p>
+<p>The default implementation returns an empty string.</p>
+<p>See also <a href="qwidget.html#windowTitle-prop">QWidget::windowTitle</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

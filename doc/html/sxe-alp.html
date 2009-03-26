@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - Application Level Policy</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - Application Level Policy<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#service-access-control">Service Access Control</a></li>
+<li><a href="#request-authentication-and-authorization-procedure">Request Authentication and Authorization Procedure</a></li>
+<li><a href="#program-identification">Program Identification</a></li>
+</ul>
+<a name="service-request"></a><a name="service-access-control"></a>
+<h2>Service Access Control</h2>
+<p>In general programs may access services, which in the context of the SXE, can mean low level graphical display services provided by QWS to high level <a href="services.html">Application Services</a>. Service access is achieved by sending IPC calls to the Qt Extended system, for example via <tt>QCop</tt> messages. Application level policy refers to policy which dictates what services a program may and may not access.</p>
+<p>In the current implementation of Qt Embedded the IPC calls are in the form of streamed data sent through a Unix Domain Socket (UDS). Currently the entire graphics subsystem is implemented via a system of <tt>QWSCommands</tt> over this socket, combined with reads/writes to a piece of shared memory.</p>
+<p>Because a program requires access to the well known path to the Unix Domain Socket for the <tt>QCop</tt> system in order to send low-level requests to the Qt Extended windowing system, it is not practical to use MAC file system rules to control access to services.</p>
+<p>Control of access to services involves two important steps:</p>
+<ol type="1">
+<li><b>authentication</b> : identify profile of the program which sent the request</li>
+<li><b>authorization</b> : check the policy rule for that profile and request</li>
+</ol>
+<p>Now the terms <b>program</b> and <b>request</b> require definition.</p>
+<p>A downloaded application package may be thought of as containing one <b>program</b> such as a game, or an image manager.</p>
+<p>That application may however be made up of a number of binaries, and other files. In some cases a single binary may make up the totality of the package but sometimes the picture is more complex than that.</p>
+<p>For example, a game may have a level editor, the main game binary, and a daemon process. While the game itself and the level editor may also be thought of separate applications, both are considered to be part of the same program.</p>
+<p>The SXE system applies policy rules to each <b>program</b> component by associating a <tt>progId</tt> with all the components of that application. The <tt>progId</tt> has a one to one relationship with the domain the application operates under, therefore all untrusted applications have the same <tt>progId</tt> while all trusted applications have another.</p>
+<p>When a program wants to access functionality available via Qt Extended in general it must use the <tt>QWSCommand</tt> system, or send a <tt>QCop</tt> message or otherwise ask for an application service. Generally these accesses can be expressed as a string for example in the case of a <tt>QCop</tt> message requesting a wait indicator to be displayed: <tt>QPE/System/notBusy()</tt></p>
+<p>Such an access for a service, and the string representing it, is referred to as a <b>request</b>.</p>
+<a name="request-authentication-and-authorization-procedure"></a>
+<h2>Request Authentication and Authorization Procedure</h2>
+<p>The procedure for authentication and authorization is presented in the following steps:</p>
+<ol type="1">
+<li>Process an incoming message:<ul>
+<li>Verify that the message is a valid message</li>
+<li>If the transport is untrusted, confirming validity requires a Message Authentication Code.</li>
+<li>Check if authentication information is included</li>
+<li>Un-marshall the message and prepare to process the request</li>
+<li>if the request is in an <b>allow</b> whitelist, procedure complete, process request</li>
+</ul>
+</li>
+<li>Determine the <i>progId</i> and hence profile of the program that is sending an incoming message:<ul>
+<li>if the message transport is trusted either a simple shared secret or Unix domain socket ancillary data identification will suffice.</li>
+<li>if the message transport is connection oriented the program identity may be cached against the file descriptor or other identifier for the connection.</li>
+<li>the program identity need only be extracted from authentication information included in the message once validity is confirmed</li>
+<li>if the shared secret is incorrect then<ul>
+<li>deny any requests not in the allow list.</li>
+<li>if a threshold of 5 or more failed authentications in minute occurs, log a security breach to lockdown all downloaded applications. See <a href="sxe-sxemonitor.html">SxeMonitor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Check the policy for the request using the <tt>progId</tt>:<ul>
+<li>look up the security profile/domain awarded to that <tt>progId</tt> in sxe.policy.</li>
+<li>look up the list of requests allowed for that profile in sxe.profiles.</li>
+<li>if the request is in one of the profiles the message is processed normally.</li>
+<li>if the request is not in one of those profiles:<ul>
+<li>deny the request</li>
+<li>log the security breach so that <a href="sxe-sxemonitor.html">SxeMonitor</a> can respond</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<a name="program-identification"></a>
+<h2>Program Identification</h2>
+<p>In the authorization procedure described above it states that the authentication may be done simply if the message transport is trusted.</p>
+<p>If the <i>message transport is trusted</i> <b>four</b> assumptions must be fulfilled. The table below lists these assumptions and how, or if, they hold in the <a href="qtbasemodule.html">Qt Extended Base module</a>.</p>
+<p><table width="100%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Assumption</th><th>Comments</th></tr></thead>
+<tr valign="top" class="odd"><td>The transport cannot be intercepted for example, as in a <i>man-in-the-middle</i> attack or <i>traffic-sniffing</i> scenario.</td><td>Unix domain socket traffic cannot be sniffed or rewritten on a standard Linux kernel. However, the following can be sniffed/intercepted:<ul>
+<li>files</li>
+<li>UDP</li>
+<li>shared memory</li>
+<li>message queues.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>The transport end-points cannot be spoofed or subjected to a symlink attack.</td><td><ul>
+<li>Unix domain socket end-points can be subjected to symlink attack and process identity can be spoofed; but both of these can be prevented using specifically crafted MAC kernel rules.</li>
+<li>Files are subject to symlink attacks, and IP endpoints can be spoofed, though TCP will break down since the <tt>syn/ack</tt> will not work.</li>
+<li>The kernel will ensure the identifier key for message queues</li>
+</ul>
+</td></tr>
+<tr valign="top" class="odd"><td>The transport is reliable and well-behaved as determined by the platforms kernel and/or network stack</td><td><ul>
+<li>UDP is not reliable, other transports generally are.</li>
+<li>Kernels should be audited and supplied by trusted partners.</li>
+</ul>
+</td></tr>
+<tr valign="top" class="even"><td>The client program cannot be compromised for example by an <tt>LD_PRELOAD</tt> attack or by directly accessing the binary image file on disk</td><td><ul>
+<li>MAC rules can prevent accesses to the binaries.</li>
+<li>If access is prevented the <tt>LD_PRELOAD</tt> attack is not a problem but there may be some cases where a binary needs to be launched by an untrusted program. This seems unlikely but if so, the MAC kernel can be specifically configured to clean the environment passed to <tt>execve</tt></li>
+</ul>
+</td></tr>
+</table></p>
+<p><b>Note:</b> Current <tt>QCop</tt> messaging (which is used for almost all service requests in Qt Extended) uses Unix Domain Sockets.</p>
+<p><b>Summarizing the above table</b></p>
+<p>If the assumptions hold - the kernel and MAC controls can be relied upon to prevent a range of security risks - a simple password-based mechanism can be used at connection setup time to authenticate the connection, or Unix Domain Socket ancillary data can be used.</p>
+<p>The second option is more complex than the password method, and carries a portability warning. However if the Unix Domain Sockets rights methods are required for passing file handles that method can be used.</p>
+<p>In several scenarios where one or two of these assumptions are not valid the password based mechanism can be simply expanded to HMAC-MD5 message authentication.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

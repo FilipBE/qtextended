@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>DtmfAudio Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">DtmfAudio Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The DtmfAudio class provides a simple interface for playing DTMF tones. <a href="#details">More...</a></p>
+<pre>    #include &lt;DtmfAudio&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="dtmfaudio-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="properties"></a>
+<h3>Properties</h3>
+<ul>
+<li><div class="fn"/><b><a href="dtmfaudio.html#duration-prop">duration</a></b> : int</li>
+<li><div class="fn"/><b><a href="dtmfaudio.html#exclusivePlay-prop">exclusivePlay</a></b> : bool</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="dtmfaudio.html#DtmfAudio">DtmfAudio</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="dtmfaudio.html#dtor.DtmfAudio">~DtmfAudio</a></b> ()</li>
+<li><div class="fn"/>int <b><a href="dtmfaudio.html#duration-prop">duration</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="dtmfaudio.html#exclusivePlay-prop">exclusivePlay</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="dtmfaudio.html#playDtmfTone">playDtmfTone</a></b> ( QTelephonyTones::Tone <i>tone</i>, int <i>duration</i> = -1 )</li>
+<li><div class="fn"/>void <b><a href="dtmfaudio.html#duration-prop">setDuration</a></b> ( int <i>duration</i> )</li>
+<li><div class="fn"/>void <b><a href="dtmfaudio.html#exclusivePlay-prop">setExclusivePlay</a></b> ( bool <i>exclusive</i> )</li>
+<li><div class="fn"/>void <b><a href="dtmfaudio.html#stopDtmfTone">stopDtmfTone</a></b> ( const QString &amp; <i>toneId</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="dtmfaudio.html#playDtmfKeyTone">playDtmfKeyTone</a></b> ( int <i>keycode</i> )</li>
+<li><div class="fn"/>void <b><a href="dtmfaudio.html#stopAllTones">stopAllTones</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="dtmfaudio.html#toneStopped">toneStopped</a></b> ( const QString &amp; <i>toneId</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The DtmfAudio class provides a simple interface for playing DTMF tones.</p>
+<p>DTMF tones can be played concurrently or mutually exclusive. If the exclusive behavior is chosen any currently playing tone is stopped and the new tone played. The <a href="dtmfaudio.html#exclusivePlay-prop">exclusivePlay</a>() property should be used to determine the behaviour. The <a href="dtmfaudio.html#duration-prop">duration</a>() determines for how long a DTMF is played.</p>
+<p><a href="dtmfaudio.html#playDtmfTone">playDtmfTone</a>() can be used to play a tone indefinitely by using -1 as duration parameter.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="qtelephonytones.html">QTelephonyTones</a>.</p>
+<hr />
+<h2>Property Documentation</h2>
+<h3 class="fn"><a name="duration-prop"></a>duration : int</h3>
+<p>This property holds how long the DTMF tone should be played.</p>
+<p>This property indicates the number of milliseconds to play a tone before automatically stopping. The property value must be greater then 0.</p>
+<p>By default this property is set to 200.</p>
+<p>Access functions:</p>
+<ul>
+<li><div class="fn"/><b>int duration () const</b></li>
+<li><div class="fn"/><b>void setDuration ( int <i>duration</i> )</b></li>
+</ul>
+<h3 class="fn"><a name="exclusivePlay-prop"></a>exclusivePlay : bool</h3>
+<p>This property holds whether a request to play a DTMF tone should stop already playing dtmf tones.</p>
+<p>Setting this property to true announces to the system that any new request to play a DTMF tone should stop already playing tones.</p>
+<p>By default this property is set to true.</p>
+<p>Access functions:</p>
+<ul>
+<li><div class="fn"/><b>bool exclusivePlay () const</b></li>
+<li><div class="fn"/><b>void setExclusivePlay ( bool <i>exclusive</i> )</b></li>
+</ul>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="DtmfAudio"></a>DtmfAudio::DtmfAudio ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a new <a href="dtmfaudio.html">DtmfAudio</a> instance with the given <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.DtmfAudio"></a>DtmfAudio::~DtmfAudio ()</h3>
+<p>Destroys the <a href="dtmfaudio.html">DtmfAudio</a> object.</p>
+<h3 class="fn"><a name="playDtmfKeyTone"></a>void DtmfAudio::playDtmfKeyTone ( int <i>keycode</i> )&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>This function determines the DTMF tone for the given Qt <i>keycode</i> and plays the tone for the given <a href="dtmfaudio.html#duration-prop">duration</a>().</p>
+<h3 class="fn"><a name="playDtmfTone"></a><a href="qstring.html">QString</a> DtmfAudio::playDtmfTone ( <a href="qtelephonytones.html#Tone-enum">QTelephonyTones::Tone</a> <i>tone</i>, int <i>duration</i> = -1 )</h3>
+<p>This function plays the given DTMF <i>tone</i> for the given <i>duration</i>. If <i>duration</i> is -1 the tone will be played indefinitely. Note that the <a href="dtmfaudio.html#duration-prop">duration</a>() property is ignored when calling this function.</p>
+<p>The returned value identifies the tone and casn be used to stop it via <a href="dtmfaudio.html#stopDtmfTone">stopDtmfTone</a>().</p>
+<p>/sa <a href="dtmfaudio.html#stopDtmfTone">stopDtmfTone</a>()</p>
+<h3 class="fn"><a name="stopAllTones"></a>void DtmfAudio::stopAllTones ()&nbsp;&nbsp;<tt> [slot]</tt></h3>
+<p>Stops all currently playing DTMF tones started by this object.</p>
+<h3 class="fn"><a name="stopDtmfTone"></a>void DtmfAudio::stopDtmfTone ( const <a href="qstring.html">QString</a> &amp; <i>toneId</i> )</h3>
+<p>This function stops the tone identified by <i>toneId</i>.</p>
+<p>See also <a href="dtmfaudio.html#playDtmfTone">playDtmfTone</a>().</p>
+<h3 class="fn"><a name="toneStopped"></a>void DtmfAudio::toneStopped ( const <a href="qstring.html">QString</a> &amp; <i>toneId</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted when the DTMF tone identified by <i>toneId</i> stopped playing. This can happen due to a a call to <a href="dtmfaudio.html#stopAllTones">stopAllTones</a>(), <a href="dtmfaudio.html#stopDtmfTone">stopDtmfTone</a>() or when the playing stopped due to a given timeout.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

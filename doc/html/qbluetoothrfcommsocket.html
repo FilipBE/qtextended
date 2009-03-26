@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothRfcommSocket Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothRfcommSocket Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothRfcommSocket class represents an RFCOMM client socket. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothRfcommSocket&gt;</pre><p>Inherits <a href="qbluetoothabstractsocket.html">QBluetoothAbstractSocket</a>.</p>
+<ul>
+<li><a href="qbluetoothrfcommsocket-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothrfcommsocket.html#QBluetoothRfcommSocket">QBluetoothRfcommSocket</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qbluetoothrfcommsocket.html#dtor.QBluetoothRfcommSocket">~QBluetoothRfcommSocket</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothrfcommsocket.html#connect">connect</a></b> ( const QBluetoothAddress &amp; <i>local</i>, const QBluetoothAddress &amp; <i>remote</i>, int <i>channel</i>, QBluetooth::SecurityOptions <i>options</i> = 0 )</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothrfcommsocket.html#isAuthenticated">isAuthenticated</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothrfcommsocket.html#isEncrypted">isEncrypted</a></b> () const</li>
+<li><div class="fn"/>QBluetoothAddress <b><a href="qbluetoothrfcommsocket.html#localAddress">localAddress</a></b> () const</li>
+<li><div class="fn"/>QBluetoothAddress <b><a href="qbluetoothrfcommsocket.html#remoteAddress">remoteAddress</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qbluetoothrfcommsocket.html#remoteChannel">remoteChannel</a></b> () const</li>
+<li><div class="fn"/>QBluetooth::SecurityOptions <b><a href="qbluetoothrfcommsocket.html#securityOptions">securityOptions</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>15 public functions inherited from <a href="qbluetoothabstractsocket.html#public-functions">QBluetoothAbstractSocket</a></li>
+<li><div class="fn"/>32 public functions inherited from <a href="qiodevice.html#public-functions">QIODevice</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>4 signals inherited from <a href="qbluetoothabstractsocket.html#signals">QBluetoothAbstractSocket</a></li>
+<li><div class="fn"/>4 signals inherited from <a href="qiodevice.html#signals">QIODevice</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>5 protected functions inherited from <a href="qiodevice.html#protected-functions">QIODevice</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothRfcommSocket class represents an RFCOMM client socket.</p>
+<p>The Bluetooth RFCOMM protocol provides emulation of serial ports over the lower-level protocols of Bluetooth, namely L2CAP. The implementation of RFCOMM protocol under Linux uses sockets, and is in general very similar to TCP socket programming. QBluetoothRfcommSockets are thus stream oriented network sockets and share many of the interface aspects of the Qt TCP sockets.</p>
+<p>The channel and address of the connected peer are fetched by calling <a href="qbluetoothrfcommsocket.html#remoteChannel">remoteChannel</a>() and <a href="qbluetoothrfcommsocket.html#remoteAddress">remoteAddress</a>(). <a href="qbluetoothrfcommsocket.html#localAddress">localAddress</a>() return address of the local socket.</p>
+<p>See also <a href="qbluetoothrfcommserver.html">QBluetoothRfcommServer</a> and <a href="qbluetoothabstractsocket.html">QBluetoothAbstractSocket</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothRfcommSocket"></a>QBluetoothRfcommSocket::QBluetoothRfcommSocket ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new <a href="qbluetoothrfcommsocket.html">QBluetoothRfcommSocket</a> object. The <i>parent</i> parameter is passed to the <a href="qobject.html">QObject</a> constructor.</p>
+<h3 class="fn"><a name="dtor.QBluetoothRfcommSocket"></a>QBluetoothRfcommSocket::~QBluetoothRfcommSocket ()</h3>
+<p>Destroys the socket.</p>
+<h3 class="fn"><a name="connect"></a>bool QBluetoothRfcommSocket::connect ( const <a href="qbluetoothaddress.html">QBluetoothAddress</a> &amp; <i>local</i>, const <a href="qbluetoothaddress.html">QBluetoothAddress</a> &amp; <i>remote</i>, int <i>channel</i>, <a href="qbluetooth.html#SecurityOption-enum">QBluetooth::SecurityOptions</a> <i>options</i> = 0 )</h3>
+<p>Attempts to open a RFCOMM connection between the local device with address <i>local</i> and the remote device with address <i>remote</i>. The RFCOMM channel to use is given by <i>channel</i>. This function should generally return immediately, and the socket will enter into the <tt>ConnectingState</tt>.</p>
+<p>Optionally the client can request that the connection be secured by specifying the <i>options</i> parameter. <b>NOTE</b>: This feature might not work under some systems. The options will be set but might be ignored by the implementation.</p>
+<p>The function returns true if the connection process could be started, and false otherwise.</p>
+<p>Note that the connection could still fail, the state of the socket will be sent in the <a href="qbluetoothabstractsocket.html#stateChanged">stateChanged</a>() signal.</p>
+<p>See also <a href="qbluetoothabstractsocket.html#state">state</a>(), <a href="qbluetoothabstractsocket.html#connected">connected</a>(), and <a href="qbluetoothabstractsocket.html#waitForConnected">waitForConnected</a>().</p>
+<h3 class="fn"><a name="isAuthenticated"></a>bool QBluetoothRfcommSocket::isAuthenticated () const</h3>
+<p>Returns true if the socket is authenticated.</p>
+<p>See also <a href="qbluetoothrfcommsocket.html#securityOptions">securityOptions</a>() and <a href="qbluetoothrfcommsocket.html#isEncrypted">isEncrypted</a>().</p>
+<h3 class="fn"><a name="isEncrypted"></a>bool QBluetoothRfcommSocket::isEncrypted () const</h3>
+<p>Returns true if the socket is encrypted.</p>
+<p>See also <a href="qbluetoothrfcommsocket.html#securityOptions">securityOptions</a>() and <a href="qbluetoothrfcommsocket.html#isAuthenticated">isAuthenticated</a>().</p>
+<h3 class="fn"><a name="localAddress"></a><a href="qbluetoothaddress.html">QBluetoothAddress</a> QBluetoothRfcommSocket::localAddress () const</h3>
+<p>Returns the address of the local device. If the socket is not currently connected, returns <a href="qbluetoothaddress.html#invalid-var">QBluetoothAddress::invalid</a>.</p>
+<p>See also <a href="qbluetoothrfcommsocket.html#remoteAddress">remoteAddress</a>() and <a href="qbluetoothrfcommsocket.html#remoteChannel">remoteChannel</a>().</p>
+<h3 class="fn"><a name="remoteAddress"></a><a href="qbluetoothaddress.html">QBluetoothAddress</a> QBluetoothRfcommSocket::remoteAddress () const</h3>
+<p>Returns the address of the remote device. If the socket is not currently connected, returns <a href="qbluetoothaddress.html#invalid-var">QBluetoothAddress::invalid</a>.</p>
+<p>See also <a href="qbluetoothrfcommsocket.html#localAddress">localAddress</a>() and <a href="qbluetoothrfcommsocket.html#remoteChannel">remoteChannel</a>().</p>
+<h3 class="fn"><a name="remoteChannel"></a>int QBluetoothRfcommSocket::remoteChannel () const</h3>
+<p>Returns the RFCOMM channel of the remote device. If the socket is not currently connected, returns -1.</p>
+<p>See also <a href="qbluetoothrfcommsocket.html#remoteAddress">remoteAddress</a>() and <a href="qbluetoothrfcommsocket.html#localAddress">localAddress</a>().</p>
+<h3 class="fn"><a name="securityOptions"></a><a href="qbluetooth.html#SecurityOption-enum">QBluetooth::SecurityOptions</a> QBluetoothRfcommSocket::securityOptions () const</h3>
+<p>Returns the security options currently active for the socket.</p>
+<p>See also <a href="qbluetoothrfcommsocket.html#isAuthenticated">isAuthenticated</a>() and <a href="qbluetoothrfcommsocket.html#isEncrypted">isEncrypted</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

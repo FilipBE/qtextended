@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPhoneCallManager Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPhoneCallManager Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QPhoneCallManager class provides access to the phone's call list. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPhoneCallManager&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qphonecallmanager-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qphonecallmanager.html#QPhoneCallManager">QPhoneCallManager</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qphonecallmanager.html#dtor.QPhoneCallManager">~QPhoneCallManager</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qphonecallmanager.html#callTypes">callTypes</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="qphonecallmanager.html#callTypes-2">callTypes</a></b> ( const QString &amp; <i>service</i> ) const</li>
+<li><div class="fn"/>QList&lt;QPhoneCall&gt; <b><a href="qphonecallmanager.html#calls">calls</a></b> () const</li>
+<li><div class="fn"/>QPhoneCall <b><a href="qphonecallmanager.html#create">create</a></b> ( const QString &amp; <i>type</i> )</li>
+<li><div class="fn"/>QPhoneCall <b><a href="qphonecallmanager.html#create-2">create</a></b> ( const QString &amp; <i>type</i>, const QString &amp; <i>service</i> )</li>
+<li><div class="fn"/>QPhoneCall <b><a href="qphonecallmanager.html#fromModemIdentifier">fromModemIdentifier</a></b> ( int <i>id</i> ) const</li>
+<li><div class="fn"/>QStringList <b><a href="qphonecallmanager.html#services">services</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="qphonecallmanager.html#services-2">services</a></b> ( const QString &amp; <i>type</i> ) const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qphonecallmanager.html#callTypesChanged">callTypesChanged</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qphonecallmanager.html#newCall">newCall</a></b> ( const QPhoneCall &amp; <i>call</i> )</li>
+<li><div class="fn"/>void <b><a href="qphonecallmanager.html#statesChanged">statesChanged</a></b> ( const QList&lt;QPhoneCall&gt; &amp; <i>calls</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPhoneCallManager class provides access to the phone's call list.</p>
+<p>The current list of calls in the system can be inspected with QPhoneCallManager, and new outgoing calls can be created with <a href="qphonecallmanager.html#create">create</a>().</p>
+<p>The <a href="qphonecallmanager.html#calls">calls</a>() method returns a list of all active calls in the system. Active calls are those that are dialing, incoming, connected, or on hold. Idle and dropped calls are not included in the list.</p>
+<p>New calls are added to the call list whenever a client application creates a call with <a href="qphonecallmanager.html#create">create</a>(), or when an incoming call is detected by the back-end telephony services. The <a href="qphonecallmanager.html#newCall">newCall</a>() signal is emitted when either of these conditions occurs.</p>
+<p>As calls change state, the <a href="qphonecallmanager.html#statesChanged">statesChanged</a>() signal is emitted, providing a list of all calls affected by the state change. More than one call may be affected by a state change in cases where an entire group of calls are hung up, put on hold, or swapped with an active call group.</p>
+<p>State changes on individual calls can be tracked using <a href="qphonecall.html#connectStateChanged">QPhoneCall::connectStateChanged</a>(), but this does not allow group operations to be tracked atomically. The <a href="qphonecallmanager.html#statesChanged">statesChanged</a>() signal allows atomic tracking of group operations.</p>
+<p>The methods <a href="qphonecallmanager.html#callTypes">callTypes</a>() and <a href="qphonecallmanager.html#services">services</a>() can be used to find the telephony handlers in the system, so that higher-level applications can choose the most appropriate type of call.</p>
+<p>For an example that demonstrates the use of QPhoneCallManager, see <a href="tut-phonecalls.html">Making Phone Calls</a>. Also see the documentation for <a href="qphonecall.html">QPhoneCall</a>.</p>
+<p>See also <a href="qphonecall.html">QPhoneCall</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPhoneCallManager"></a>QPhoneCallManager::QPhoneCallManager ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a new phone call manager and attaches it to <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QPhoneCallManager"></a>QPhoneCallManager::~QPhoneCallManager ()</h3>
+<p>Destroys this phone call manager.</p>
+<h3 class="fn"><a name="callTypes"></a><a href="qstringlist.html">QStringList</a> QPhoneCallManager::callTypes () const</h3>
+<p>Returns a list of all call types that are supported by the system at present. The returned list will contain strings such as <tt>Voice</tt>, <tt>VoIP</tt>, <tt>Data</tt>, etc, indicating the valid call types that can be created with <a href="qphonecallmanager.html#create">create</a>(). For example, the following can be used to determine if <tt>VoIP</tt> calls are possible:</p>
+<pre>    QPhoneCallManager mgr;
+    if (mgr.callTypes().contains(&quot;VoIP&quot;))
+        ...</pre>
+<p>Call types are added to this list whenever new telephony services are registered with the system, and removed when the telephony services are deregistered. The <a href="qphonecallmanager.html#callTypesChanged">callTypesChanged</a>() signal can be used to track changes to the call type list.</p>
+<p>See also <a href="qphonecallmanager.html#create">create</a>(), <a href="qphonecallmanager.html#callTypesChanged">callTypesChanged</a>(), and <a href="qphonecallmanager.html#services">services</a>().</p>
+<h3 class="fn"><a name="callTypes-2"></a><a href="qstringlist.html">QStringList</a> QPhoneCallManager::callTypes ( const <a href="qstring.html">QString</a> &amp; <i>service</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a list of all call types that are supported by <i>service</i>. The returned list will contain strings such as <tt>Voice</tt>, <tt>VoIP</tt>, <tt>Data</tt>, etc, indicating the valid call types that can be created with <a href="qphonecallmanager.html#create">create</a>() when <i>service</i> is supplied as its second parameter.</p>
+<p>For example, the following can be used to determine if the <tt>modem</tt> service can create <tt>Data</tt> calls, irrespective of whether other services can create <tt>Data</tt> calls:</p>
+<pre>    QPhoneCallManager mgr;
+    if (mgr.callTypes(&quot;modem&quot;).contains(&quot;Data&quot;))
+        ...</pre>
+<p>Call types are added to this list when the specified telephony <i>service</i> is registered, and removed when the specified telephony <i>service</i> is deregistered and there are no other services that provide the same call type. The <a href="qphonecallmanager.html#callTypesChanged">callTypesChanged</a>() signal can be used to track changes to the call type list.</p>
+<p>See also <a href="qphonecallmanager.html#create">create</a>(), <a href="qphonecallmanager.html#callTypesChanged">callTypesChanged</a>(), and <a href="qphonecallmanager.html#services">services</a>().</p>
+<h3 class="fn"><a name="callTypesChanged"></a>void QPhoneCallManager::callTypesChanged ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the list of call types that are supported by the system changes, or if the services that implement the call types changes. This is usually an indication that a new telephony handler has been created, or an existing telephony handler has shut down.</p>
+<p>See also <a href="qphonecallmanager.html#callTypes">callTypes</a>() and <a href="qphonecallmanager.html#services">services</a>().</p>
+<h3 class="fn"><a name="calls"></a><a href="qlist.html">QList</a>&lt;<a href="qphonecall.html">QPhoneCall</a>&gt; QPhoneCallManager::calls () const</h3>
+<p>Returns a list of all active calls in the system. Active calls are those that are dialing, incoming, connected, or on hold. Idle and dropped calls are not included in this list.</p>
+<p>New calls will be added to this list whenever a client application creates a call with <a href="qphonecallmanager.html#create">create</a>(), or when an incoming call is detected by the back-end telephony services. The <a href="qphonecallmanager.html#newCall">newCall</a>() signal is emitted when either of these conditions occurs.</p>
+<p>As calls change state, the <a href="qphonecallmanager.html#statesChanged">statesChanged</a>() signal is emitted, providing a list of all calls affected by the state change.</p>
+<p>See also <a href="qphonecallmanager.html#create">create</a>(), <a href="qphonecallmanager.html#newCall">newCall</a>(), and <a href="qphonecallmanager.html#statesChanged">statesChanged</a>().</p>
+<h3 class="fn"><a name="create"></a><a href="qphonecall.html">QPhoneCall</a> QPhoneCallManager::create ( const <a href="qstring.html">QString</a> &amp; <i>type</i> )</h3>
+<p>Creates a call with the specified call <i>type</i>. If there is more than one service that supports the <i>type</i>, this method will choose the first that it finds. Returns a null <a href="qphonecall.html">QPhoneCall</a> if no services support <i>type</i>.</p>
+<p>The <i>type</i> is usually one of <tt>Voice</tt>, <tt>VoIP</tt>, <tt>Data</tt>, <tt>Fax</tt>, <tt>Video</tt>, etc. Use <a href="qphonecallmanager.html#callTypes">callTypes</a>() to get a complete list of all call types that are supported by the system.</p>
+<p>The new call will initially be in the <tt>Idle</tt> state, ready to dial. It will not appear in the <a href="qphonecallmanager.html#calls">calls</a>() list until it is actually dialed.</p>
+<p>See also <a href="qphonecallmanager.html#callTypes">callTypes</a>().</p>
+<h3 class="fn"><a name="create-2"></a><a href="qphonecall.html">QPhoneCall</a> QPhoneCallManager::create ( const <a href="qstring.html">QString</a> &amp; <i>type</i>, const <a href="qstring.html">QString</a> &amp; <i>service</i> )</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Create a call with the specified call <i>type</i> on <i>service</i>. Returns a null <a href="qphonecall.html">QPhoneCall</a> if the combination of <i>type</i> and <i>service</i> is invalid.</p>
+<p>The <i>type</i> is usually one of <tt>Voice</tt>, <tt>VoIP</tt>, <tt>Data</tt>, <tt>Fax</tt>, <tt>Video</tt>, etc. Use <a href="qphonecallmanager.html#callTypes">callTypes</a>() to get a complete list of call types that are supported by the system.</p>
+<p>The <i>service</i> is a telephony service name such as <tt>modem</tt> or <tt>voip</tt>. Use <a href="qphonecallmanager.html#services">services</a>() to get a complete list of service names that are supported by the system.</p>
+<p>The new call will initially be in the &quot;idle&quot; state, ready to dial. It will not appear in the <a href="qphonecallmanager.html#calls">calls</a>() list until it is actually dialed.</p>
+<p>See also <a href="qtelephonyservice.html">QTelephonyService</a>, <a href="qphonecallmanager.html#callTypes">callTypes</a>(), and <a href="qphonecallmanager.html#services">services</a>().</p>
+<h3 class="fn"><a name="fromModemIdentifier"></a><a href="qphonecall.html">QPhoneCall</a> QPhoneCallManager::fromModemIdentifier ( int <i>id</i> ) const</h3>
+<p>Returns the phone call associated with modem identifier <i>id</i>. Returns a null <a href="qphonecall.html">QPhoneCall</a> object if there are no phone calls currently associated with that modem identifier.</p>
+<p>This function is intended for use with GSM-style key sequences such as <tt>1x SEND</tt> and <tt>2x SEND</tt>, which affect a specific call.</p>
+<p>See also <a href="qphonecall.html#modemIdentifier">QPhoneCall::modemIdentifier</a>().</p>
+<h3 class="fn"><a name="newCall"></a>void QPhoneCallManager::newCall ( const <a href="qphonecall.html">QPhoneCall</a> &amp; <i>call</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Provides notification that a new <i>call</i> has been added to the <a href="qphonecallmanager.html#calls">calls</a>() list. New calls are added to the call list whenever a client application creates a call with <a href="qphonecallmanager.html#create">create</a>(), or when an incoming call is detected by the back-end telephony services.</p>
+<p>See also <a href="qphonecallmanager.html#calls">calls</a>(), <a href="qphonecallmanager.html#create">create</a>(), and <a href="qphonecallmanager.html#statesChanged">statesChanged</a>().</p>
+<h3 class="fn"><a name="services"></a><a href="qstringlist.html">QStringList</a> QPhoneCallManager::services () const</h3>
+<p>Returns a list of all services that provide phone call functionality within the system. The returned list will contain strings such as <tt>modem</tt>, <tt>voip</tt>, etc, indicating the name of the associated telephony service.</p>
+<p>See also <a href="qtelephonyservice.html">QTelephonyService</a> and <a href="qphonecallmanager.html#callTypes">callTypes</a>().</p>
+<h3 class="fn"><a name="services-2"></a><a href="qstringlist.html">QStringList</a> QPhoneCallManager::services ( const <a href="qstring.html">QString</a> &amp; <i>type</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a list of all services that provide phone call functionality for calls of <i>type</i> within the system.</p>
+<p>See also <a href="qtelephonyservice.html">QTelephonyService</a> and <a href="qphonecallmanager.html#callTypes">callTypes</a>().</p>
+<h3 class="fn"><a name="statesChanged"></a>void QPhoneCallManager::statesChanged ( const <a href="qlist.html">QList</a>&lt;<a href="qphonecall.html">QPhoneCall</a>&gt; &amp; <i>calls</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when the states within <i>calls</i> change at once during an atomic operation; e.g&#x2e; swapping held and active calls. State changes that affect only a single call will also be reported via this signal.</p>
+<p>This signal will be sent after the individual state changes have been reported via <a href="qphonecallmanager.html#newCall">newCall</a>() and <a href="qphonecall.html#connectStateChanged">QPhoneCall::connectStateChanged</a>().</p>
+<p>See also <a href="qphonecall.html#connectStateChanged">QPhoneCall::connectStateChanged</a>() and <a href="qphonecallmanager.html#newCall">newCall</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

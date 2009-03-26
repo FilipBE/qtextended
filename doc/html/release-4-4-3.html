@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended - 4.4&#x2e;3 Release Notes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended - 4.4&#x2e;3 Release Notes<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#enhancements">Enhancements</a></li>
+<li><a href="#bug-fixes">Bug Fixes</a></li>
+<li><a href="#known-issues">Known Issues</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>The Qt Extended 4.4&#x2e;3 release represents the final Qt Extended release from Nokia. It is a patch release of Qt Extended that is based on Qt 4.4 technology. The main purpose of this release is to provide bug fixes and performance improvements based on both internal testing and customer feedback.</p>
+<p>The <a href="buildsystem/chlog-4-4-3-1.html">build system changes</a> are recorded separately.</p>
+<a name="enhancements"></a>
+<h2>Enhancements</h2>
+<p>none.</p>
+<a name="bug-fixes"></a>
+<h2>Bug Fixes</h2>
+<ol type="1">
+<li><b>Bluetooth</b><ul>
+<li>BUG 231639: In the Bluetooth Settings application, the Supported Services window was difficult to navigate.</li>
+</ul>
+</li>
+<li><b>Build System</b><ul>
+<li>BUG 224317: Qt Extended failed to build for an x86_64 target.</li>
+<li>BUG 234958: When building Qt from source via the <tt>-build-qt</tt> configure option, Qt/Embedded was built instead of Qt/X11.</li>
+<li>BUG 235271: Running <tt>qbuild clean</tt> did not remove generated header files.</li>
+</ul>
+</li>
+<li><b>Code quality</b><ul>
+<li>A number of compilation warnings have been eliminated.</li>
+<li>BUG 234789: Compilation would fail if <tt>-DQTOPIA_ANIMATED_SPLASH</tt> was passed to <tt>configure</tt>.</li>
+</ul>
+</li>
+<li><b>Contacts</b><ul>
+<li>BUG 240097: Contacts could not match phone numbers with extra leading zeroes to a contact. On some networks, phone numbers supplied by Caller ID have extra leading zeroes.</li>
+</ul>
+</li>
+<li><b>Documentation</b><ul>
+<li>BUG 229893,231178,233103,234441: Documentation related to creating and building applications has been updated to describe usage of <tt>qbuild</tt>.</li>
+<li>BUG 236498: More of the example applications have been updated to use QBuild.</li>
+</ul>
+</li>
+<li><b>Input Methods</b>:<ul>
+<li>BUG 235139: The 4.4&#x2e;2 release contained a regression, where the Predictive Keyboard did not correctly switch between uppercase and lowercase panels in autocapitalization mode.</li>
+</ul>
+</li>
+<li><b>Internationalization</b>:<ul>
+<li>BUG 231783: Singleexec builds were missing translations for some plugins and tools.</li>
+</ul>
+</li>
+<li><b>Media Player</b>:<ul>
+<li>BUG 234976: Media Player was unable to play streaming media after opening a .pls file.</li>
+<li>BUG 241264: Media Player did not inform the user if attempting to save a playlist failed.</li>
+</ul>
+</li>
+<li><b>Messaging</b>:<ul>
+<li>BUG 228505,234790: Downloaded messages were stored entirely in RAM before being written to the message store, causing excessive memory usage when downloading large messages.</li>
+<li>BUG 231170: Copy and paste could be used to violate the SMS message size limit.</li>
+<li>BUG 232412: MMS messages containing animated GIF images did not play back correctly.</li>
+<li>BUG 233441: <tt>QMailMessage::setDate()</tt> failed if the current locale was not compatible with 7-bit ASCII.</li>
+<li>BUG 234072: Attempting to send a message to an email address embedded in an SMS message would open the SMS composer instead of the email composer.</li>
+<li>BUG 234074: Attempting to send an SMS message to a contact with numeric characters in the contact name would incorrectly append those numeric characters to the phone number to which the message was sent.</li>
+<li>BUG 235767: In the message viewer, email addresses containing only one period were not shown as &quot;mailto&quot; hyperlinks.</li>
+<li>BUG 236257: The Messages application would sometimes freeze when retrieving the folder structure of a new IMAP account.</li>
+<li>BUG 236276: The Messages application would sometimes freeze when playing MMS video.</li>
+<li>BUG 236494: The Messages application would crash if attempting to play an MMS message containing DRM-protected content for which the rights had expired.</li>
+<li>BUG 236495: While an MMS message was playing, the screen could be dimmed due to default power management behaviour.</li>
+<li>BUG 236508: The messages application would incorrectly attempt to forward Forward-Locked MMS content.</li>
+<li>BUG 241538: Messages did not indicate to the user when connecting to a POP server failed.</li>
+</ul>
+</li>
+<li><b>N810 Device Profile</b><ul>
+<li>BUG 224970: Setting the global volume control to mute changed the audio output volume to minimum (but still audible) instead of zero.</li>
+<li>BUG 225694: SD cards were not always correctly mounted on insertion.</li>
+<li>BUG 225698: Inserting an SD card would cause USB networking to stop functioning.</li>
+<li>BUG 225218: Message boxes were displayed without a title bar.</li>
+</ul>
+</li>
+<li><b>OpenMoko Neo1973/Freerunner Device</b><ul>
+<li>BUG 231959: The message box that confirms clearing of call history could not be dismissed.</li>
+</ul>
+</li>
+<li><b>Pictures</b><ul>
+<li>BUG 244223: If the user attempted to set a large image as the wallpaper, Pictures would crash rather than reporting that the image was too large to fit in memory.</li>
+</ul>
+</li>
+<li><b>Profiles</b><ul>
+<li>BUG 177141: The Profiles application displayed a generic profile icon instead of the assigned icon for each profile.</li>
+<li>BUG 202442: On touchscreen devices, the tap-and-hold menu would open on tap rather tap-and-hold after the first successful tap-and-hold.</li>
+<li>BUG 266666: Video ringtones could not be set because the file selector filtered on audio files instead of video files.</li>
+</ul>
+</li>
+<li><b>Sync Agent</b><ul>
+<li>BUG 230268: Various functions dealing with times and locales were using the wrong locale.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 236512: SIM applications could not play sounds.</li>
+<li>BUG 236662: Activating the Dialer's &quot;All Calls&quot; menu option would cause the Qt Extended server to crash when selecting an item from the resulting list of calls.</li>
+<li>BUG 236779: Qt Extended would crash on startup when a <a href="gprsmonitor.html">GPRSMonitor</a> server task was enabled.</li>
+<li>BUG 238794: If the <tt>media</tt> module was excluded from the build, ringtones could not be played. This release restores the previous behaviour, where a build without the media module supports playing of .wav format ringtones.</li>
+<li>BUG 239864: If using the Crisp theme on a touchscreen device, it was not possible to enter a phone number into the dialer screen.</li>
+</ul>
+</li>
+<li><b>Test Framework</b><ul>
+<li>BUG 209337: It was not previously possible for a system test to expect Qt Extended to be restarted by an application. Restarts can now be handled using a combination of <tt>expectApplicationClose</tt> and <tt>waitForQtopiaStart</tt> calls.</li>
+<li>BUG 209538: Changing input methods using <tt>keyClickHold</tt> in a test function did not work.</li>
+<li>BUG 232557: A <tt>select()</tt> call that caused an application to close resulted in a test failure.</li>
+<li>BUG 234631: Using <tt>keyClickHold</tt> on the homescreen from a test function caused the key to autorepeat instead of activating speed dial.</li>
+</ul>
+</li>
+<li><b>Themes</b><ul>
+<li>BUG 180544: In the Crisp theme, part of the &quot;missed calls&quot; string on the homescreen was cut off.</li>
+</ul>
+</li>
+<li><b>UI</b><ul>
+<li>BUG 212568: Scrolling a smoothlist off the top or bottom of the list with the keypad incorrectly resulted in the highlight moving by two items instead of one.</li>
+<li>BUG 216410: Various time spinboxes did not wrap between minimum and maximum values.</li>
+</ul>
+</li>
+<li><b>Words</b><ul>
+<li>BUG 154966: When multiple languages were available for input, the word search function omitted the name of the (alphabetically) first language rather than the name of the display language.</li>
+</ul>
+</li>
+</ol>
+<a name="known-issues"></a>
+<h2>Known Issues</h2>
+<ol type="1">
+<li><b>GoogleTalk</b><ul>
+<li>BUG 211938: GTalk does not report connection progress and success/failure.</li>
+</ul>
+</li>
+<li><b>Neo1973/Freerunner device</b><ul>
+<li>BUG 224035: The device does not play audio through the headset if the headset is plugged in when the device boots. Audio works correctly after the headset is disconnected and reconnected.</li>
+<li>BUG 231983: Time synchronization from the GSM network does not work.</li>
+</ul>
+</li>
+<li><b>Telephony</b><ul>
+<li>BUG 210972: In the HOME UI, calls are initiated through speakerphone if the handset is not replaced after a previous call.</li>
+</ul>
+</li>
+<li><b>Test Framework</b><ul>
+<li>BUG 216389: Test functions cannot grab snapshot of <a href="qsmoothlist.html">QSmoothList</a> using <a href="qpixmap.html#grabWidget">QPixmap::grabWidget</a>(). This can be worked around by setting <tt>GFX_USE_QT=1</tt> in the environment.</li>
+<li>BUG 226565: TestModem().hangupAll() doesn't disconnect calls.</li>
+</ul>
+</li>
+<li><b>UI</b><ul>
+<li>BUG 183153: Stylesheets are not supported in Qt Extended UI - Qt style sheets are currently not supported for custom <a href="qstyle.html">QStyle</a> subclasses, such as <a href="qphonestyle.html">QPhoneStyle</a>.</li>
+</ul>
+</li>
+</ol>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QBluetoothL2CapServer Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QBluetoothL2CapServer Class Reference<br /><span class="small-subtitle">[<a href="qtbluetoothmodule.html">QtBluetoothModule</a>]</span>
+</h1>
+<p>The QBluetoothL2CapServer class represents an L2CAP server socket. <a href="#details">More...</a></p>
+<pre>    #include &lt;QBluetoothL2CapServer&gt;</pre><p>Inherits <a href="qbluetoothabstractserver.html">QBluetoothAbstractServer</a>.</p>
+<ul>
+<li><a href="qbluetoothl2capserver-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qbluetoothl2capserver.html#QBluetoothL2CapServer">QBluetoothL2CapServer</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qbluetoothl2capserver.html#dtor.QBluetoothL2CapServer">~QBluetoothL2CapServer</a></b> ()</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothl2capserver.html#isAuthenticated">isAuthenticated</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothl2capserver.html#isEncrypted">isEncrypted</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothl2capserver.html#listen">listen</a></b> ( const QBluetoothAddress &amp; <i>local</i>, int <i>psm</i>, int <i>mtu</i> = 672 )</li>
+<li><div class="fn"/>int <b><a href="qbluetoothl2capserver.html#mtu">mtu</a></b> () const</li>
+<li><div class="fn"/>QBluetooth::SecurityOptions <b><a href="qbluetoothl2capserver.html#securityOptions">securityOptions</a></b> () const</li>
+<li><div class="fn"/>QBluetoothAddress <b><a href="qbluetoothl2capserver.html#serverAddress">serverAddress</a></b> () const</li>
+<li><div class="fn"/>int <b><a href="qbluetoothl2capserver.html#serverPsm">serverPsm</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qbluetoothl2capserver.html#setSecurityOptions">setSecurityOptions</a></b> ( QBluetooth::SecurityOptions <i>options</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>10 public functions inherited from <a href="qbluetoothabstractserver.html#public-functions">QBluetoothAbstractServer</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qbluetoothabstractserver.html#signals">QBluetoothAbstractServer</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QBluetoothL2CapServer class represents an L2CAP server socket.</p>
+<p>This class makes it possible to accept incoming L2CAP connections. You can specify the address and the L2CAP PSM to listen on.</p>
+<p>Call <a href="qbluetoothl2capserver.html#listen">listen</a>() to make the server listen for new connections. The <a href="qbluetoothabstractserver.html#newConnection">newConnection</a>() signal will be emmited each time a client connects to the server. The MTU to use should be specified during the <a href="qbluetoothl2capserver.html#listen">listen</a>() call.</p>
+<p>Security options controlling the authentication and encryption of the Bluetooth link on the socket can be specified at any time by calling <a href="qbluetoothl2capserver.html#setSecurityOptions">setSecurityOptions</a>(). Currently this will only affect all future connections, not connections which are active or pending.</p>
+<p>Call <a href="qbluetoothabstractserver.html#nextPendingConnection">nextPendingConnection</a>() to accept the pending client connection.</p>
+<p>When listening for connections, server address and PSM are available by calling <a href="qbluetoothl2capserver.html#serverAddress">serverAddress</a>() and <a href="qbluetoothl2capserver.html#serverPsm">serverPsm</a>().</p>
+<p>Calling <a href="qbluetoothabstractserver.html#close">close</a>() will make the QBluetoothL2CapServer stop listening for connections and delete all pending connections.</p>
+<pre><span class="comment">    // Create a new L2CapServer on PSM 25</span>
+    QBluetoothL2CapServer *server = new QBluetoothL2CapServer;
+    server-&gt;listen(QBluetoothAddress::any, 25);
+
+<span class="comment">    // wait for newConnection() signal</span>
+
+    QBluetoothL2CapSocket *sock =
+        qobject_cast&lt;QBluetoothL2CapSocket *&gt;( sock-&gt;nextPendingConnection() );
+
+    server-&gt;close();</pre>
+<p>See also <a href="qbluetoothl2capsocket.html">QBluetoothL2CapSocket</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QBluetoothL2CapServer"></a>QBluetoothL2CapServer::QBluetoothL2CapServer ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Constructs a new <a href="qbluetoothl2capserver.html">QBluetoothL2CapServer</a> with parent <i>parent</i>. The server is in the UnconnectedState.</p>
+<h3 class="fn"><a name="dtor.QBluetoothL2CapServer"></a>QBluetoothL2CapServer::~QBluetoothL2CapServer ()</h3>
+<p>Destroys the server.</p>
+<h3 class="fn"><a name="isAuthenticated"></a>bool QBluetoothL2CapServer::isAuthenticated () const</h3>
+<p>Returns true if the socket is authenticated.</p>
+<p>See also <a href="qbluetoothl2capserver.html#securityOptions">securityOptions</a>() and <a href="qbluetoothl2capserver.html#isEncrypted">isEncrypted</a>().</p>
+<h3 class="fn"><a name="isEncrypted"></a>bool QBluetoothL2CapServer::isEncrypted () const</h3>
+<p>Returns true if the socket is encrypted.</p>
+<p>See also <a href="qbluetoothl2capserver.html#securityOptions">securityOptions</a>() and <a href="qbluetoothl2capserver.html#isAuthenticated">isAuthenticated</a>().</p>
+<h3 class="fn"><a name="listen"></a>bool QBluetoothL2CapServer::listen ( const <a href="qbluetoothaddress.html">QBluetoothAddress</a> &amp; <i>local</i>, int <i>psm</i>, int <i>mtu</i> = 672 )</h3>
+<p>Tells the server to listen for incoming connections on address <i>local</i> and PSM <i>psm</i>. The <i>mtu</i> parameter holds the MTU to use for the server.</p>
+<p>PSM stands for Port and Service Multiplexer. The PSM value can be any <b>odd</b> value the range of 1-32765. For more information please see Bluetooth Specification Version 2.0 + EDR [vol 4] page 45.</p>
+<p>Returns true if the server successfully started listening; otherwise returns false. If the server was already listening, returns false.</p>
+<p>See also <a href="qbluetoothabstractserver.html#isListening">isListening</a>().</p>
+<h3 class="fn"><a name="mtu"></a>int QBluetoothL2CapServer::mtu () const</h3>
+<p>Returns the MTU that should be used for this server. By default the MTU is set to be 672 bytes. If the socket is not listening, or an error occurred, returns -1.</p>
+<h3 class="fn"><a name="securityOptions"></a><a href="qbluetooth.html#SecurityOption-enum">QBluetooth::SecurityOptions</a> QBluetoothL2CapServer::securityOptions () const</h3>
+<p>Returns the security options currently active for the socket.</p>
+<p>See also <a href="qbluetoothl2capserver.html#setSecurityOptions">setSecurityOptions</a>().</p>
+<h3 class="fn"><a name="serverAddress"></a><a href="qbluetoothaddress.html">QBluetoothAddress</a> QBluetoothL2CapServer::serverAddress () const</h3>
+<p>Returns the address the server is currently listening on. If the server is not listening, returns <a href="qbluetoothaddress.html#invalid-var">QBluetoothAddress::invalid</a>.</p>
+<p>See also <a href="qbluetoothl2capserver.html#serverPsm">serverPsm</a>().</p>
+<h3 class="fn"><a name="serverPsm"></a>int QBluetoothL2CapServer::serverPsm () const</h3>
+<p>Returns the L2CAP PSM the server is currently listening on. If the server is not listening, returns -1.</p>
+<p>See also <a href="qbluetoothl2capserver.html#serverAddress">serverAddress</a>().</p>
+<h3 class="fn"><a name="setSecurityOptions"></a>bool QBluetoothL2CapServer::setSecurityOptions ( <a href="qbluetooth.html#SecurityOption-enum">QBluetooth::SecurityOptions</a> <i>options</i> )</h3>
+<p>Returns true if able to set the security options of the socket to be <i>options</i>; otherwise returns false. Note that under the current Linux implementation only new connections will be affected by the change in security options. Existing and pending connections will not be affected.</p>
+<p>See also <a href="qbluetoothl2capserver.html#securityOptions">securityOptions</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

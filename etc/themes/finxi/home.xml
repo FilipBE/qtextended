@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="home" base="themes/finxi">
+  <group name="background-group">
+    <plugin name="background-plugin"/>
+    <plugin name="homescreen-image-plugin"/>
+  </group>
+  <rect rect="0,13%,0x12pt">
+    <text name="location" size="5" bold="yes" rect="0,0,50%x12pt" align="left,vcenter" color="#ffffff" outline="#000000" transient="yes" active="expr:@/UI/HomeScreen/ShowLocation">
+      expr:" " . @/Telephony/Status/CellLocation
+    </text>
+    <text name="profile" size="5" bold="yes" rect="50%,0,48%x12pt" align="right,vcenter" color="#ffffff" outline="#000000" transient="yes" active="expr:@/UI/HomeScreen/ShowProfile &amp;&amp; !@/UI/Profile/Default">
+      expr:@/UI/Profile/Name . " "
+    </text>
+    </rect>
+    <layout rect="0,20%,0x45pt" align="hcenter">
+	  <rect name="calls" rect="0,0,0x0" transient="yes" active="expr:@/Communications/Calls/MissedCalls > 0" interactive="yes">
+        <layout align="hcenter">
+          <rect rect="0,0,24ptx42pt">
+            <image rect="0,0,24ptx24pt" src="call.svg" scale="yes"/>
+          </rect>
+        </layout>
+        <text name="calls" size="6" rect="0,25pt,0x9pt" align="hcenter" bold="yes" color="#ffffff" outline="#000000" >
+          <tr><trtext>%1 missed</trtext><trarg>@/Communications/Calls/MissedCalls</trarg></tr>
+        </text>
+	  </rect>
+	  <rect name="messages" rect="0,0,0x0" transient="yes" active="expr:@/Communications/Messages/NewMessages > 0 || @/Telephony/Status/SMSMemoryFull > 0" interactive="yes">
+        <layout align="hcenter">
+          <rect rect="0,0,24ptx24pt">
+            <image rect="0,0,24ptx24pt" src="message.svg" scale="yes"/>
+          </rect>
+        </layout>
+        <rect rect="0,25pt,0x18pt">
+          <text rect="0,0,0x9pt" align="hcenter" bold="yes" color="#ffffff" outline="#000000" transient="yes" active="expr:@/Communications/Messages/NewMessages > 0">
+		    <tr><trtext>%1 new</trtext><trarg>@/Communications/Messages/NewMessages</trarg></tr>
+          </text>
+          <text rect="0,0,0x9pt" align="hcenter" bold="yes" color="#ffffff" outline="#000000" transient="yes" active="expr:@/Telephony/Status/SMSMemoryFull > 0 &amp;&amp; @/Communications/Messages/NewMessages == 0">SMS full</text>
+          <text rect="0,50%,0x9pt" align="hcenter,bottom" bold="yes" color="#ffffff" outline="#000000" transient="yes" active="expr:@/Telephony/Status/SMSMemoryFull > 0 &amp;&amp; @/Communications/Messages/NewMessages > 0">(SMS full)</text>
+        </rect>
+	  </rect>
+    </layout>
+    <rect name="infobox" rect="10%,48%,80%x15%" color="Text" brush="Background" alpha="150" transient="yes" active="no">
+      <image name="infobox-image" rect="0,0,40x100%"/>
+      <text name="infobox-text" rect="40,0,-3,-1" size="6" bold="yes" color="Text" align="hcenter,vcenter"/>
+    </rect>
+    <layout rect="0,72%,100%x15%" orientation="horizontal">
+      <rect rect="0,0,0x0">
+        <image name="dialer" rect="10%,0,80%x100%" src="button.svg" onclick="src=buttonp.svg" interactive="yes">
+          <image rect="20%,20%,60%x60%" src="phone.svg" scale="yes"/>
+        </image>
+      </rect>
+      <rect rect="0,0,0x0">
+        <image name="mainmenu" rect="10%,0,80%x100%" src="button.svg" onclick="src=buttonp.svg" interactive="yes">
+          <image rect="20%,20%,60%x60%" src="menu.svg" scale="yes"/>
+        </image>
+      </rect>
+      <rect rect="0,0,0x0">
+        <image name="favorites" rect="10%,0,80%x100%" src="button.svg" onclick="src=buttonp.svg" interactive="yes">
+          <image rect="20%,20%,60%x60%" src=":icon/favorite.svg" scale="yes"/>
+        </image>
+      </rect>
+      <rect rect="0,0,0x0">
+        <image name="lock" rect="10%,0,80%x100%" src="button.svg" onclick="src=buttonp.svg" interactive="yes">
+          <image rect="20%,20%,60%x60%" src="padlock.svg" scale="yes"/>
+        </image>
+      </rect>
+    </layout>
+    <layout name="pinbox" rect="0,0,0,0" orientation="vertical" align="hcenter,vcenter" transient="yes" active="no" keypad="no">
+      <rect name="pinbox" rect="0,0,480x138" brush="#000000">
+	    <image name="pinbox" rect="0,0,40x138"/>
+	    <text name="pinbox" rect="40,0,0x0" size="7" color="Text" align="hcenter,vcenter"/>
+      </rect>
+      <layout name="vertical" rect="0,0,480x376" orientation="vertical" spacing="-1" align="vcenter">
+      <layout name="horizontal" rect="0,0,0x94" orientation="horizontal" spacing="-1" align="hcenter">
+        <group rect="0,0,160x94" name="one" interactive="yes">
+          <image rect="0,0,0,0" name="one_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">1</text>
+        </group>
+        <group rect="0,0,160x94" name="two" interactive="yes">
+          <image rect="0,0,0,0" name="two_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">2</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">ABC</text>
+        </group>
+        <group rect="0,0,160x94" name="three" interactive="yes">
+          <image rect="0,0,0,0" name="three_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">3</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">DEF</text>
+        </group>
+      </layout>
+      <layout rect="0,0,0x94" orientation="horizontal" spacing="-1" align="hcenter" >
+        <group rect="0,0,160x94" name="four" interactive="yes">
+          <image rect="0,0,0,0" name="four_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">4</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">GHI</text>
+        </group>
+        <group rect="0,0,160x94" name="five" interactive="yes">
+          <image rect="0,0,0,0" name="five_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">5</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">JKL</text>
+        </group>
+        <group rect="0,0,160x94" name="six" interactive="yes">
+          <image rect="0,0,0,0" name="six_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">6</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">MNO</text>
+        </group>
+      </layout>
+      <layout rect="0,0,0x94" orientation="horizontal" spacing="-1" align="hcenter" >
+        <group rect="0,0,160x94" name="seven" interactive="yes">
+          <image rect="0,0,0,0" name="seven_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">7</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">PQRS</text>
+        </group>
+        <group rect="0,0,160x94" name="eight" interactive="yes">
+          <image rect="0,0,0,0" name="eight_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">8</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">TUV</text>
+        </group>
+        <group rect="0,0,160x94" name="nine" interactive="yes">
+          <image rect="0,0,0,0" name="nine_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">9</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">WXYZ</text>
+        </group>
+      </layout>
+      <layout rect="0,0,0x94" orientation="horizontal" spacing="-1" align="hcenter" >
+        <group rect="0,0,160x94" name="star" interactive="yes">
+          <image rect="0,0,0,0" name="star_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">*</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">+</text>
+        </group>
+        <group rect="0,0,160x94" name="zero" interactive="yes">
+          <image rect="0,0,0,0" name="zero_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">0</text>
+          <text rect="25,-40,-25,-20" bold="yes" outline="#000000" color="#888888" size="5" align="hcenter,vcenter">_</text>
+        </group>
+        <group rect="0,0,160x94" name="hash" interactive="yes">
+          <image rect="0,0,0,0" name="hash_bg" src="button.svg" onclick="src=buttonp.svg" interactive="yes" scale="yes" />
+          <text rect="45,5,-45,-40" bold="yes" outline="#000000" color="#FFFFFF" size="7" align="hcenter,vcenter">#</text>
+        </group>
+      </layout>
+    </layout>
+  </layout>
+</page>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>SXE - SxeMonitor</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">SXE - SxeMonitor<br /><span class="subtitle"></span>
+</h1>
+<ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#configuration">Configuration</a></li>
+<li><a href="#development-on-desktop-with-qvfb">Development on desktop with qvfb</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>As part of the SXE, a privileged Qt Extended system process known as SxeMonitor monitors security. SxeMonitor runs as a lightweight process that responds to security policy breaches. If an an untrusted application breaches policy the following steps are taken:</p>
+<ul>
+<li>The errant application is terminated.</li>
+<li>The errant application is disabled to prevent restart</li>
+<li>The user is notifed via dialog</li>
+<li>The user is sent a notification via synthetic SMS.</li>
+</ul>
+<p>The Package Manager can be used to re-enable a disabled application.</p>
+<p>Deleting or uninstalling the application automatically may not be desirable as:</p>
+<ul>
+<li>if the application is DRM controlled, removal of the rights object may mean the application cannot be accessed by the user without paying for the DRM controlled package again</li>
+<li>if the user has created content, using the application that content may be inaccessible after uninstalling the application</li>
+<li>given that the program is flawed or malicious the SXE system could ask the user to forward the package for analysis:<ul>
+<li>to protect the user from for example being unfairly billed by a network provider</li>
+<li>to counter further spread or activity of the program.</li>
+</ul>
+</li>
+</ul>
+<p>If suspicous activity is detected but there is difficulty in isolating the errant application, then a lockdown state is initiated which:</p>
+<ul>
+<li>Terminates all untrusted applications</li>
+<li>Disables all untrusted applications</li>
+<li>Notify the user via dialog</li>
+<li>Notify the user via synthetic SMS</li>
+</ul>
+<p>A scenario when this might happen is during a brute force attack to guess the keys of trusted programs, if the number of negative authentications exceed the <i>false authentication rate</i> (currently hardcoded to 5 per minute), then all downloaded applications terminated and disabled.</p>
+<p>Breaches are communicated to the SxeMonitor via a security log. The log serves to decouple the SxeMonitor from the rest of the Qt Extended system so that the integrity of the monitor is maintained even if other parts of Qt Extended are compromised or exploited. The cost of this decoupling is the time to react, as preiviously mentioned it is possible that an errant forked process can die before the SxeMonitor has a chance to identify what program it belonged to, nevertheless malicous programs still will not have access to any sensitive resources.</p>
+<a name="sxe-conf"></a><a name="configuration"></a>
+<h2>Configuration</h2>
+<p>The SxeMonitor can be configured through the Sxe.conf which is located in &lt;qt-extended-root-dir&gt;/devices/etc/default/Trolltech. In the Log Group, the following parameters may be specified</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Parameter</th><th>Purpose</th></tr></thead>
+<tr valign="top" class="odd"><td>Size</td><td>Maximum size of the log file in bytes</td></tr>
+<tr valign="top" class="even"><td>Path</td><td>Path to where the log file is located</td></tr>
+<tr valign="top" class="odd"><td>StampFormat</td><td>Regular expression representing the format of the log stamp for Qt Extended security messages</td></tr>
+<tr valign="top" class="even"><td>LidsStampFormat</td><td>Regular expression representing the format of the log stamp of LIDS related security messages</td></tr>
+</table></p>
+<p>An example Log group entry is shown below:</p>
+<pre>    [Log]
+    Size = 1048576
+    Path = /mnt/documents/.log/sxe.log
+    StampFormat=&quot;^([A-Z][a-z]{2}\\s+\\d{1,2}\\s+\\d{2}:\\d{2}:\\d{2}[^:]*qpe:\\s)(.*)$&quot;
+    LidsStampFormat=&quot;^([A-Z][a-z]{2}\\s+\\d{1,2}\\s+\\d{2}:\\d{2}:\\d{2}[^:]*kernel:\\s)LIDS:.*\\(dev.*\\) pid (\\d*) ppid.*:(.*)$&quot;</pre>
+<p>See also <a href="syscust-sxe.html">SXE - System Integration</a> for instructions to set up the security logging on a device.</p>
+<a name="development-on-desktop-with-qvfb"></a>
+<h2>Development on desktop with qvfb</h2>
+<p>When developing with an SXE-enabled build of Qt Extended on a desktop with qvfb, a security log should to be setup in order to have the SxeMonitor process take action in the event of a policy breach. If the security log is not set up a warning will be displayed. Processes making illegal requests will still be denied but not be killed. If you are unconcerned about this, the warning can be safely ignored.</p>
+<p>To setup the security log, which by default is <tt>/var/log/sxe.log</tt>, log messages of priority local6.err must be redirected to it and it must give read permissions.</p>
+<p>The following steps show how to do the redirection on SuSE10.2 with syslog-ng:</p>
+<ol type="1">
+<li>Edit the syslog-ng.conf file found in /etc/syslog-ng, create a new filter for the local6 facility and err level, under the Filter definitions section<pre>    filter f_sxemon      { facility(local6) and level(err); };</pre>
+<p>and create a new destination and log statement</p>
+<pre>    destination sxelog{ file(&quot;/var/log/sxe.log&quot; group(users) perm(0664)); };
+    log { source(src); filter(f_sxemon); destination(sxelog); };</pre>
+</li>
+<li>To reload the configuration file and ensure the changes will persist after reboot, use the following commands as root.<pre>    /sbin/service syslog restart
+    /sbin/chkconfig syslog --level 345</pre>
+</li>
+<li>To check if the redirection was successful run the following and make sure &quot;arbitrary string&quot; is written into sxe.log<pre>    logger -p local6.err &quot;arbitrary string&quot;</pre>
+</li>
+<li>You may wish to set up a cron job to periodically clear the contents of the specified log file to prevent it from growing too large</li>
+</ol>
+<p>If you wish to specify a log file other than <tt>/var/log/sxe.log</tt>, then edit the <tt>Sxe.conf</tt> file and modify <tt>Path</tt> parameter of the Log group. Ensure that log redirection is applied the specified file.</p>
+<p>Also note that on a desktop environment, the Size and LidsStampFormat parameters of the Log group in Sxe.conf are effectively ignored.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

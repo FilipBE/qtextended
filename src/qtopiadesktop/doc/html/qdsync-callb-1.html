@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- /home/test1/tmp/mksrcpackage_20873/qt-extended-4.4.3/src/qtopiadesktop/doc/src/qdsyncprotocol.qdocpp -->
+<head>
+  <title>CALLB</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">CALLB<br /><span class="subtitle"></span>
+</h1>
+<a name="usage"></a>
+<h3>Usage</h3>
+<pre>    CALLB QPE/System execute(QString) BASE64DATA</pre>
+<a name="description"></a>
+<h3>Description</h3>
+<p>Sent from either the device or desktop. This command causes a QCop message to be delivered. Unlike the <a href="qdsync-call-1.html">CALL</a> command, this command can work with any value that can be sent in a QCop message. The data bytes should be generated like this.</p>
+<pre>    QByteArray data;
+    {
+        QDataStream stream( &amp;data, QIODevice::WriteOnly );
+        stream &lt;&lt; QString(&quot;addressbook&quot;);
+    }
+    QByteArray args = data.toBase64();</pre>
+<p>The device will respond with a <a href="qdsync-200-1.html">200</a> or a <a href="qdsync-500-1.html">500</a> command.</p>
+<p>Note that the QCop message will only be delivered inside the Synchronization application. This is to prevent a security hole (Normal QCop delivery is subject to security checks, based on the application sending the message).</p>
+<p>It is still possible to perform remote delivery of QCop messages but you must create a plugin for Synchronization that intercepts the message you are interested in and then forwards it on. An example of this in the device_updater tool. It includes a Synchronization plugin that lets it send a message to the package manager.</p>
+<p>See also <a href="qdsync-commands.html">qdsync Protocol</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

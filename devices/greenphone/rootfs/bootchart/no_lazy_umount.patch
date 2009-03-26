@@ -1,0 +1,29 @@
+diff -ur bootchart-0.9/script/bootchartd bootchart-0.9_modified/script/bootchartd
+--- bootchart-0.9/script/bootchartd	2005-11-14 03:40:01.000000000 +1000
++++ bootchart-0.9_modified/script/bootchartd	2007-08-17 16:48:52.000000000 +1000
+@@ -38,17 +38,14 @@
+ 	# Make sure only a single instance is running
+ 	[ -f "$BOOTLOG_LOCK" ] && return
+ 	
+-	# Mount the temporary file system for log file storage.  If possible,
+-	# a temporary directory is created.  In most cases though (i.e. during
+-	# boot), a tmpfs is mounted in /mnt.  The mount point is immediately
+-	# released using a lazy umount, so the script must never leave that
+-	# directory.
+-	LOG_DIR="$( mktemp -d /tmp/bootchart.XXXXXX 2>/dev/null )"
+-	if [ -z "$LOG_DIR" ]; then
+-		LOG_DIR="/mnt"
+-		LAZY_UMOUNT="yes"
+-		mount -n -t tmpfs -o size=$TMPFS_SIZE none "$LOG_DIR" >/dev/null 2>&1
+-	fi
++	# Mount the temporary file system for log file storage.
++	# Use hard-coded directory.  The previous approach was to use /mnt
++	# and lazily umount it, but that is not possible with busybox because
++	# doing a lazy umount automatically causes the current shell to cd out
++	# of the umounted filesystem, which in our case means it always gets
++	# immediately umounted.
++	LOG_DIR="/var/tmp/bootchart"
++	mount -n -t tmpfs -o size=$TMPFS_SIZE none "$LOG_DIR" >/dev/null 2>&1
+ 	cd "$LOG_DIR"
+ 	> "$BOOTLOG_LOCK"
+ 	[ -n "$LAZY_UMOUNT" ] && umount -nfl "$LOG_DIR"

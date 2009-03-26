@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Themed Views</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Themed Views<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#themed-views">Themed Views</a></li>
+<ul><li><a href="#naming-elements">Naming Elements</a></li>
+<li><a href="#positioning-elements">Positioning Elements</a></li>
+<ul><li><a href="#units">Units</a></li>
+</ul>
+<li><a href="#showing-hiding-elements">Showing/Hiding Elements</a></li>
+<li><a href="#specifying-colors">Specifying Colors</a></li>
+<li><a href="#alignment">Alignment</a></li>
+<li><a href="#stretching-images">Stretching Images</a></li>
+<li><a href="#interactive-elements">Interactive Elements</a></li>
+<li><a href="#expressions-and-valuespace">Expressions and Valuespace</a></li>
+<li><a href="#templates">Templates</a></li>
+<li><a href="#lists">Lists</a></li>
+</ul>
+</ul>
+<a name="themed-views"></a>
+<h2>Themed Views</h2>
+<p>Themed Views defined by XML files, describe a hierarchical group of visual and formatting elements. They are used by the following:</p>
+<ul>
+<li><tt>Title bar</tt></li>
+<li><tt>Home screen</tt></li>
+<li><tt>Call screen</tt></li>
+<li><tt>Dialer</tt></li>
+<li><tt>Context bar</tt></li>
+<li><tt>Boot charger</tt></li>
+<li><tt>Secondary Home screen</tt> (Optional)</li>
+<li><tt>Secondary Title bar</tt> (Optional)</li>
+</ul>
+<p>to display items such as: status information, text and animations.</p>
+<p>Qt Extended interacts with a themed view using elements such as <i>page</i>, <i>line</i>, <i>alarm</i>, <i>date</i>, <i>button0</i>. Each of these elements has attributes which affect the visual appearance and placement of elements. For a full list of view elements refer to: <a href="themed-view-elements.html">Themed View Elements</a>. Attributes that are common to many elements are known as Common attributes and include:</p>
+<ul>
+<li>Naming Elements</li>
+<li>Positioning Elements</li>
+<li>Showing/Hiding Elements</li>
+<li>Specifying Colors</li>
+<li>Alignment</li>
+<li>Stretching Images</li>
+<li>Interactive Elements.</li>
+</ul>
+<p>The following sections provide detailed descriptions of these elements.</p>
+<a name="naming-elements"></a>
+<h3>Naming Elements</h3>
+<p>The <tt>name</tt> attribute is available for all elements, however, each element within a type must have a unique name as Qt Extended interacts with elements using their <tt>name</tt>. For a list of Qt Extended elements see <a href="theme-knownelem.html">Known Elements</a>.</p>
+<a name="positioning-elements"></a>
+<h3>Positioning Elements</h3>
+<p>The <tt>rect</tt> attribute is available for all elements and positions an element relative to the parent element geometry. It has one of two forms:</p>
+<ol type="1">
+<li><tt>x,y,wxh</tt> - specifies the top, left corner and the width and height.</li>
+<li><tt>x1,y1,x2,y2</tt> - specifies the top, left and bottom, right corners.</li>
+</ol>
+<p>If any of the top or left coordinates are negative, they are relative to the right/bottom of the parent element. If bottom or right coordinates are less than or equal to zero, they are relative to the right/bottom of the parent element. This allows a theme to scale.</p>
+<p>For example, to place a rect element that scales as the view gets wider:</p>
+<pre>    &lt;rect rect=&quot;20,10,-20,50&quot; color=&quot;Highlight&quot; brush=&quot;Highlight&quot;/&gt;</pre>
+<p>This places a rectangle, using the Highlight color, at 20,10 with height of 40 pixels and the y2 coordinate 20 pixels from the parent element's right side.</p>
+<a name="units"></a>
+<h4>Units</h4>
+<p>The theme engine supports different units. By default position and size are specified in pixels but it is possible to use point sizes or proportional positioning.</p>
+<pre>    &lt;rect rect=&quot;10,10,150x12pt&quot;/&gt;</pre>
+<p>This element has a height of 12 points.</p>
+<pre>    &lt;image src=&quot;settings&quot; rect=&quot;0,0,50%x50%&quot;/&gt;</pre>
+<p>This element width and height are half of the width and height of its parent. It will be updated if the size of the parent changes.</p>
+<a name="showing-hiding-elements"></a>
+<h3>Showing/Hiding Elements</h3>
+<p>Attributes to show or hide and elements are available to all elements. The <tt>transient</tt> and <tt>active</tt> attributes control the visibility of an element. Both the <tt>transient</tt> and <tt>active</tt> attributes can have literal values of <tt>yes</tt> or <tt>no</tt>, with the default value for <tt>transient</tt> being <tt>no</tt> and the default value of <tt>active</tt> being yes. The active attribute only has effect when <tt>transient=&quot;yes&quot;</tt>. In addition to a literal value, a boolean expression can also be specified for the value of the <tt>active</tt> attribute. This allows the visibility of a theme element to be controlled by the valuespace.</p>
+<pre>    &lt;rect name=&quot;newmessages&quot; transient=&quot;yes&quot; active=&quot;expr:@/Communications/Messages/NewMessages &gt; 0&quot;/&gt;</pre>
+<p>In the above example the &quot;newmessages&quot; rect element will only be active(visible) when the valuespace key /Communications/Messages/NewMessages returns a value &gt; 0.</p>
+<a name="specifying-colors"></a>
+<h3>Specifying Colors</h3>
+<p>Colors can be specifed by either their hex color code of the form #RRGGBB, by their Qt <a href="qcolorgroup.html">QColorGroup</a> color roles:</p>
+<ul>
+<li><tt>None</tt> - do not paint/blend with any color.</li>
+<li><tt>Background</tt> - general background color.</li>
+<li><tt>Foreground</tt> - general foreground color.</li>
+<li><tt>Base</tt> - used as background color for e.g&#x2e; text entry widgets, usually white or another light color.</li>
+<li><tt>Text</tt> - the foreground color used with <tt>Base</tt>. Usually this is the same as the <tt>Foreground</tt>, in what case it must provide good contrast both with <tt>Background</tt> and <tt>Base</tt>.</li>
+<li><tt>Button</tt> - general button background color, where buttons need a background different from <tt>Background</tt>.</li>
+<li><tt>ButtonText</tt> - a foreground color used with the <tt>Button</tt> color.</li>
+</ul>
+<p>There are some color roles used mostly for 3D bevel and shadow effects:</p>
+<ul>
+<li><tt>Light</tt> - lighter than <tt>Button</tt> color.</li>
+<li><tt>Midlight</tt> - between <tt>Button</tt> and <tt>Light</tt>.</li>
+<li><tt>Dark</tt> - darker than <tt>Button</tt>.</li>
+<li><tt>Mid</tt> - between <tt>Button</tt> and <tt>Dark</tt>.</li>
+<li><tt>Shadow</tt> - a very dark color.</li>
+</ul>
+<p>All of these are normally derived from <tt>Background</tt>, and used in ways that depend on that relationship. For example, buttons depend on it to make the bevels look good.</p>
+<p>Selected (marked) items have two roles:</p>
+<ul>
+<li><tt>Highlight</tt> - a color to indicate a selected or highlighted item.</li>
+<li><tt>HighlightedText</tt> - a text color that contrasts to <tt>Highlight</tt>.</li>
+</ul>
+<p>Finally, there is a special role for text that needs to be drawn where <tt>Text</tt> or <tt>Foreground</tt> would provide bad contrast, such as on pressed push buttons:</p>
+<ul>
+<li><tt>BrightText</tt> - a text color that is very different from <tt>Foreground</tt> and contrasts well with e.g&#x2e; <tt>Dark</tt>.</li>
+</ul>
+<a name="alignment"></a>
+<h3>Alignment</h3>
+<a name="themealignment"></a><p>Some elements can be aligned by specifying:</p>
+<ul>
+<li><tt>left</tt></li>
+<li><tt>hcenter</tt></li>
+<li><tt>right</tt></li>
+<li><tt>top</tt></li>
+<li><tt>vcenter</tt></li>
+<li><tt>bottom</tt></li>
+</ul>
+<p>To specify both horizontal and vertical alignment separate the alignment flags by a comma.</p>
+<a name="stretching-images"></a>
+<h3>Stretching Images</h3>
+<p>Images and masks can be stretched to support themes that scale to different screen sizes. Stretching specifies a portion of the image that can be duplicated to fill the area between the start and end of the stretched image. The stretching can only be performed in one direction.</p>
+<p align="center"><img src="images/stretch_img.png" /></p><p>This illustration shows that the area bewteen point S1 and S2 is duplicated as necessary when the image is drawn. The stretch points are separated by a comma, e.g&#x2e; stretch=&quot;16,48&quot;.</p>
+<a name="interactive-elements"></a>
+<h3>Interactive Elements</h3>
+<p>In order to allow feedback when elements are pressed on touch screen phones the <tt>interactive</tt> attribute can be set to &quot;yes&quot;. This allows alternative attribute values to be defined when the element (and it's children) is clicked.</p>
+<p>For example, the following code changes the graphic and text color when any element in the group is clicked (the group element ensures that clicking on any child affects all children).</p>
+<pre>    &lt;group name=&quot;profile&quot; rect=&quot;0,0,98x14&quot; interactive=&quot;yes&quot; transient=&quot;yes&quot; active=&quot;no&quot;&gt;
+        &lt;image name=&quot;profile&quot; rect=&quot;0,0,98x14&quot; src=&quot;profile&quot; onclick=&quot;src=profile-pressed;color=Highlight&quot;/&gt;
+        &lt;text name=&quot;profile&quot; size=&quot;10&quot; rect=&quot;4,0,90x12&quot; align=&quot;hcenter&quot; onclick=&quot;color=HighlightedText&quot;/&gt;
+    &lt;/group&gt;</pre>
+<p>It is also possible to send a QCop message in the &quot;onclick&quot; attribute.</p>
+<p>The syntax is:</p>
+<pre>    message=&lt;Service Path&gt;,&lt;Service name&gt;[,&lt;Service parameters&gt;]</pre>
+<p>where &lt;Service parameters&gt; is optional.</p>
+<pre>    &lt;image rect=&quot;0,0,98x14&quot; src=&quot;vibrate&quot; onclick=&quot;message=QPE/System,toggleVibrate()&quot;/&gt;</pre>
+<a name="expressions-and-valuespace"></a>
+<h3>Expressions and Valuespace</h3>
+<a name="themeexpressions"></a><p>Some items can make use of expressions using <a href="qexpressionevaluator.html">QExpressionEvaluator</a>, which ultimately means they can use the Qt Extended valuespace as input.</p>
+<p>Expressions may be specified for the values of items themselves (eg. &lt;element&gt;expr:2+2&lt;/element&gt;) or for values of the item's attributes (eg. &lt;element attr=&quot;expr:2+2&quot;/&gt;). The 'expr:' indicates that the string is an expression and not a literal value. Everything after 'expr:' is assumed to be the expression data and is passed as-is to <a href="qexpressionevaluator.html#setExpression">QExpressionEvaluator::setExpression</a>(). You should consult the <a href="qexpressionevaluator.html">QExpressionEvaluator</a> documentation to determine what you may legally pass.</p>
+<p>Only certain items and attributes support expressions. Expressions are currently supported for:</p>
+<ul>
+<li><a href="#showing-hiding-elements">an element's active state</a></li>
+<li><a href="themed-view-elements.html#themetextelement">a text element's content</a></li>
+<li><a href="themed-view-elements.html#themelevelelement">a level element's value</a></li>
+<li><a href="themed-view-elements.html#themestatuselement">a status element's state</a></li>
+<li><a href="themed-view-elements.html#themeanimelement">an anim element's play state</a></li>
+<li><a href="themed-view-elements.html#themeimageelement">an image element's image file</a></li>
+</ul>
+<p>Base valuespace paths for expressions can be specified using the <tt>vspath</tt> attribute. Whenever an expression is specified, any valuespace keys it contains will be considered relative to the item's base valuespace path. An item's base valuespace path is the sum of its own and its parents' <tt>vspath</tt> attributes. For example:</p>
+<pre>    &lt;rect vspath=&quot;/Level1&quot;&gt;
+        &lt;rect vspath=&quot;/Level2&quot;&gt;
+            &lt;rect vspath=&quot;/Level3&quot;&gt;
+                &lt;text&gt;expr:@Text&lt;/text&gt; &lt;-- @Text expands to /Level1/Level2/Level3/Text
+            &lt;/rect&gt;
+        &lt;/rect&gt;
+    &lt;/rect&gt;</pre>
+<a name="templates"></a>
+<h3>Templates</h3>
+<a name="templates"></a><p>Templates allow an abstract 'visual look' to be declared in theme XML and then factorized and drawn to a custom user interface component.</p>
+<p>Consider an example where we would like to theme the look of button. We can use templates to define the look of the button and then draw an instance of that look to the button.</p>
+<p>First we define the template in Theme XML.</p>
+<pre>    &lt;page vspath=&quot;/UIComponents&quot;&gt;
+        &lt;template name=&quot;buttonnormal&quot;&gt;
+            &lt;image rect=&quot;0,0,0,0&quot; src=&quot;buttonnormalbg&quot;/&gt;
+            &lt;text rect=&quot;0,0,0,0&quot; align=&quot;hcenter,vcenter&quot;&gt;expr:@NormalText&lt;/text&gt;
+        &lt;/template&gt;
+        &lt;template name=&quot;buttonclicked&quot;&gt;
+            &lt;image rect=&quot;0,0,0,0&quot; src=&quot;buttonclickedbg&quot;/&gt;
+            &lt;text rect=&quot;0,0,0,0&quot; align=&quot;hcenter,vcenter&quot;&gt;expr:@PressedText&lt;/text&gt;
+        &lt;/template&gt;
+    &lt;/page&gt;</pre>
+<p>Then assuming the theme XML has been loaded into a <a href="themedview.html">ThemedView</a>, we create a instance of the template and use it to draw our button.</p>
+<pre>    class ThemedButton : public QPushButton
+    {
+    private:
+        ThemedView* view; <span class="comment">// contains the loaded theme</span>
+        bool buttonPressed; <span class="comment">// contains a flag indicating whether the button is currently pressed or not</span>
+    protected:
+        void paintEvent(QPaintEvent* e)
+        {
+            <span class="comment">// find our template</span>
+            QString templateName = buttonPressed ? &quot;buttonnormal&quot; : &quot;buttonclicked&quot;;
+            ThemeTemplateItem* template = (ThemeTemplateItem*)view-&gt;findItem(templateName, ThemedView::Template);
+            Q_ASSERT(template != 0);
+
+            <span class="comment">// create an instance of the template</span>
+            ThemeTemplateInstanceItem* instance = template-&gt;createInstance(QString::number( (int)this )); <span class="comment">// pass a uid to createInstace, used as value for vspath</span>
+            <span class="comment">// paint the template instance to this widget</span>
+            QPainter p(this);
+            view-&gt;paint(&amp;p, e-&gt;rect(), instance);
+
+            <span class="comment">// cleaup</span>
+            delete instance;
+        }
+    };</pre>
+<p>The createInstance() line needs further explanation. The <a href="themetemplateitem.html#createInstance">ThemeTemplateItem::createInstance</a>() takes a unique identifier which is used as the vspath value for the template instance. This means each template has its own unique value space path for expressions to operate on. In this case the base valuespace path will be &quot;/UIComponents/&lt;uid&gt;/&quot; and so the text items in the template will refer to &quot;/UIComponents/&lt;uid&gt;/NormalText&quot; and &quot;/UIComponents/&lt;uid&gt;/PressedText&quot; where uid is in this case the this pointer of the class converted to a string.</p>
+<a name="lists"></a>
+<h3>Lists</h3>
+<p>Themed Views have the ability to display themed lists using <a href="qlistview.html">QListView</a>, theme expressions, templates and the Qt model/view. See the documentation of <a href="themelistmodel.html">ThemeListModel</a> for more details.</p>
+<p>See also <a href="themed-view-elements.html#themetemplateelement">themetemplateelement</a> and <a href="themetemplateitem.html">ThemeTemplateItem</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

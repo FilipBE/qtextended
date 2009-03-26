@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Running Qt Extended</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Running Qt Extended<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#prefix-vs-image">Prefix vs Image</a></li>
+<ul><li><a href="#environment-settings-to-run-qt-extended">Environment Settings to Run Qt Extended</a></li>
+</ul>
+<li><a href="#running-qt-extended-on-the-desktop-machine">Running Qt Extended on the Desktop Machine</a></li>
+<li><a href="#running-qt-extended-on-an-embedded-device">Running Qt Extended on an Embedded Device</a></li>
+<ul><li><a href="#using-an-nfs-mount-partition">Using an NFS Mount Partition</a></li>
+<ul><li><a href="#step-1-setting-up-the-device">Step 1: Setting up the Device</a></li>
+<li><a href="#step-2-exporting-the-qt-extended-image-directory-to-the-device">Step 2: Exporting the Qt Extended Image Directory to the Device</a></li>
+<li><a href="#step-3-connecting-to-the-device">Step 3: Connecting to the Device</a></li>
+</ul>
+<li><a href="#using-a-binary-flashed-onto-the-device">Using a Binary Flashed onto the Device</a></li>
+</ul>
+<li><a href="#touchscreen-phone-calibration">Touchscreen Phone Calibration</a></li>
+<li><a href="#connecting-qt-extended-to-the-phone-device">Connecting Qt Extended to the Phone Device</a></li>
+<ul><li><a href="#using-a-phone-simulator">Using a Phone Simulator</a></li>
+<li><a href="#using-a-phone-device">Using a Phone Device</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>This document describes the commands required to run Qt Extended. It is assumed that the Qt Extended binaries have been installed using either:</p>
+<ul>
+<li>an SDK package</li>
+<li>or have been built using a source package according to the <a href="building-guide.html">Build Instructions</a>.</li>
+</ul>
+<p>Qt Extended can be run connected to either the Qt Virtual Framebuffer(QVFb) on a desktop or a real framebuffer on an embedded device. Running Qt Extended connected to the QVFb is ideal for developing code, debugging and demonstrating a product. However Qt Extended will need to be run on the embedded device to provide a clearer indication of performance and how well the embedded device's hardware interacts with Qt Extended.</p>
+<p>Running Qt Extended on an embedded device requires different binaries from those used to run Qt Extended on the desktop. Creating binaries for an embedded device is not difficult and is done using a cross-compiler. This is handled in the <a href="integration-guide.html#how-to-build-qt-extended">Detailed Build Instructions</a> section of the reference documentation. If you have installed an SDK package then you will find pre-built binaries for an embedded device in specific sub-directories, for instance /opt/Qtopia/SDK/&lt;version&gt;/greenphone. In an SDK package these binaries cannot be rebuilt. For a Qt Extended source package the binaries can be built in any configuration required.</p>
+<p>If you only want to run Qt Extended on your desktop machine at this time, then the device-specific binaries are irrelevant. If you do want to run Qt Extended on a device then it is assumed that the binaries for that specific type of device are available.</p>
+<p>If this is your first encounter with Qt Extended and/or cross-compiling then it might be best to start with experimenting on the desktop and when you are comfortable with that, start running Qt Extended on a device.</p>
+<a name="prefix-vs-image"></a>
+<h2>Prefix vs Image</h2>
+<p>Qt Extended installs into the <tt>image</tt> directory but it expects to be run from the <tt>prefix</tt> directory. If you are unfamiliar with how these locations are handled, please see <a href="buildsystem/over-image-prefix-and-sdk-location-1.html">Image, prefix and SDK location</a>.</p>
+<p>If you are building against the Greenphone SDK, the <tt>image</tt> is located at <tt>/opt/Qtopia/SDK/&lt;version&gt;/&lt;device&gt;/image</tt>. Note that <tt>device</tt> is either <tt>x86</tt> or <tt>greenphone</tt>.</p>
+<p>If the <tt>prefix</tt> is not the same as the <tt>image</tt>, you will need to move your files before you can run them. Qt Extended cannot run from a directory other than the <tt>prefix</tt>.</p>
+<a name="environment-settings-to-run-qt-extended"></a>
+<h3>Environment Settings to Run Qt Extended</h3>
+<p>There are no specific environment variables required to run Qt Extended, however there are some that can be set to control the Qt Extended feature set.</p>
+<p>If you specified <tt>-no-rpath</tt> you will need to set LD_LIBRARY_PATH so that the libraries can be found.</p>
+<p>Qt Extended does not require <tt>PATH</tt> to be set but third party applications may expect it to include <tt>&lt;prefix&gt;/bin</tt>.</p>
+<p>You may wish to set some environment variables to configure <a href="qt-embedded-envvars.html">Qt for Embedded Linux</a>. You may also need to set <a href="integration-guide.html#modem-integration">QTOPIA_PHONE_DEVICE</a>. See <a href="integration-guide.html#qt-extended-environment-variables">Qt Extended Environment Variables</a> for details on how to set environment variables.</p>
+<a name="running-qt-extended-on-the-desktop-machine"></a>
+<h2>Running Qt Extended on the Desktop Machine</h2>
+<p>To run Qt Extended on the desktop a <tt>runqtopia</tt> script is provided. The exact location of the script depends on the package:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>package</th><th>location</th></tr></thead>
+<tr valign="top" class="odd"><td>SDK package</td><td>/opt/Qtopia/SDK/scripts/runqtopia</td></tr>
+<tr valign="top" class="even"><td>Source package</td><td>&lt;qtextended-root-dir&gt;/bin/runqtopia</td></tr>
+</table></p>
+<p>where <tt>&lt;qtextended-root-dir&gt;</tt> is the install location of the source package.</p>
+<p>The <i>runqtopia</i> script is designed to ease the burden of running multiple Qt Extended versions on a single machine. It launches QVFb and ensures that Qt Extended can talk to it by setting <tt>QWS_DISPLAY</tt>. It also changes the value of HOME since running multiple Qt Extended versions with the same HOME directory can cause problems.</p>
+<p>To quit Qt Extended and close all Qt Extended applications close the virtual framebuffer.</p>
+<p>QVFb is run using a skin to make it feel more like a real device. A skin is simply a set of XML files that define the look and feel of QVFb. You may use a different skin, or create your own to replicate your target device. If you are not familiar with QVFb please refer to: <a href="qvfb.html">Qt Extended QVFb</a> before continuing.</p>
+<p>In practice the <tt>runqtopia</tt> script can be used in all cases to conveniently start Qt Extended. In cases where the script does not perform as expected, it is is advisable to take the script as the starting point and modify the procedure to meet your specific requirements.</p>
+<p>For further information and a description of environment variables used by the script, use the command:</p>
+<pre>    runqtopia -help</pre>
+<p>For your convenience the options are reproduced <a href="buildsystem/over-runqtopia-options-1.html">here</a>.</p>
+<p><b>Note:</b></p>
+<ul>
+<li>The <b>$LANG</b> environment variable <b>must end in .utf8</b> as only UTF8 locales are supported.</li>
+<li>To connect to a modem device instead of the simulator, modify the <a href="custom-h.html#QTOPIA_PHONE_DEVICE">QTOPIA_PHONE_DEVICE</a> variable and <b>DO NOT</b> start <tt>phonesim</tt>. If the <tt>runqtopia</tt> script is used, it will automatically skip the phone simulator unless this variable is set to <tt>sim:localhost</tt>. This subject is discussed in more detail in one of the next sections.</li>
+</ul>
+<a name="running-qt-extended-on-an-embedded-device"></a>
+<h2>Running Qt Extended on an Embedded Device</h2>
+<p>This section describes the procedure to run Qt Extended on a device and is the same for all Qt Extended builds.</p>
+<p><b>Note:</b> The <b>$<a href="qt-embedded-envvars.html">QWS_DISPLAY</a></b> environment variable must specify a value for <b>mmWidth</b> and <b>mmHeight</b> so that the screen DPI can be correctly calculated.</p>
+<p>Qt Extended can made available into the device in the following ways:</p>
+<ul>
+<li><a href="#using-an-nfs-mount-partition">Using an NFS Mount Partition</a></li>
+<li><a href="#using-a-binary-flashed-onto-the-device">Using a Binary Flashed onto the Device</a></li>
+</ul>
+<a name="using-an-nfs-mount-partition"></a>
+<h3>Using an NFS Mount Partition</h3>
+<p>This section describes how to run Qt Extended on a device using an NFS mount partition.</p>
+<p>To use an NFS mount partition your device requires a network connection with the desktop machine and accesses Qt Extended binaries on the desktop machine. The binaries must be cross-compiled for the device-type (e.g&#x2e; ARM) and you control the start/stop of Qt Extended through a terminal connection to the device.</p>
+<p>This approach is ideal for some debugging and testing on a real device. The binaries can be quickly modified and re-built and the application under test can be restarted almost instantly. It provides an efficient work process when compared with the delays introduced by building packages and the usually very slow upload and flash process required to run Qt Extended from a standalone device. Performance debugging should not be made using this technique, as the lag in network operations will hinder performace.</p>
+<a name="step-1-setting-up-the-device"></a>
+<h4>Step 1: Setting up the Device</h4>
+<p>To setup the device, use command line tools (or whatever is available on the device) to setup the network configuration and use <i>ifconfig</i> to determine the IP address. <b>Note:</b> Network settings in Qt Extended can be used, however, you would need to exit that Qt Extended in order to run over the network.</p>
+<a name="step-2-exporting-the-qt-extended-image-directory-to-the-device"></a>
+<h4>Step 2: Exporting the Qt Extended Image Directory to the Device</h4>
+<p>To export the Qt Extended image directory to the device, execute the following commands on the desktop machine:</p>
+<ol type="1">
+<li>First verify that NFS is running:<pre>     ps aux | grep nfs</pre>
+<p>Output will be something like this:</p>
+<pre>    tester@desk:~&gt; ps aux | grep nfs
+    root     10661  0.0  0.0     0    0 ?        SW   16:20   0:00 [nfsd]
+    root     10662  0.0  0.0     0    0 ?        SW   16:20   0:00 [nfsd]
+    tester     10554  0.0  0.1  3540  564 pts/8    S    16:12   0:00 grep nfs</pre>
+<p>If you only get the bottom line, then NFS is NOT running and needs to be started.</p>
+<p>To start NFS use <tt>/etc/init.d/nfsserver</tt> start (or similar command) as root.</p>
+</li>
+<li>indicate to NFS to export a directory by editing the <tt>/etc/exports</tt> file (as root) and adding the following line:<pre>         /path/to/image/ *(ro)</pre>
+<p>This exports the <tt>/path/to/image</tt> directory (and all subdirectories), and gives read-only access from any computer. In this procedure it is assumed this is the directory you want to export.</p>
+</li>
+<li>indicate to NFS (again as root) that the configuration has changed using:<pre>         exportfs -a</pre>
+<p>The Qt Extended binaries in <tt>/path/to/image/Qtopia/bin</tt> are now accessible from the network.</p>
+</li>
+</ol>
+<a name="step-3-connecting-to-the-device"></a>
+<h4>Step 3: Connecting to the Device</h4>
+<ol type="1">
+<li>login to the connected device via telnet or ssh (using the IP address displayed in the current tab)</li>
+<li>enter your password as root and create the directory on the device that links to the desktop file system using the following command:<pre>         mkdir -p /opt/Qtopia</pre>
+</li>
+<li>mount/assign the file system to the device by mounting the created folder using the following command:<pre>        mount hostip:&lt;path to Qt Extended image&gt; -orsize=8192,wsize=8192,ro,nolock,tcp /opt/Qtopia</pre>
+</li>
+<li>You should now be able to fill <i>&lt;path to Qt Extended image&gt;</i> on your desktop machine (named <i>hostip</i>) with files that are accessible from the device.</li>
+</ol>
+<a name="using-a-binary-flashed-onto-the-device"></a>
+<h3>Using a Binary Flashed onto the Device</h3>
+<p>This is the ultimate goal and is mentioned here for completeness. However, this option is device specific and not within the scope of this introduction.</p>
+<p>As a general rule Qt Extended (or any other application) can be flashed onto a device using a CF or SD card or can be uploaded onto the device using a serial connection. Usually this means the image (for example, <i>&lt;path to Qt Extended image&gt;</i>) must first be packed into a special file such as <tt>initrd.bin</tt>. This file is uploaded and flashed into the device flash memory. The correct procedure is entirely dependent on the device used and cannot be described here. Please refer to the device manufacturers documentation for details of installing to the device.</p>
+<p>Once the software is installed on the device the general rule is to reboot the device and the Linux boot script will ensure that Qt Extended is started automatically. If this doesn't work it is a system integration task to modify the relevant boot scripts.</p>
+<p>From a Qt Extended perspective, running Qt Extended on a device means: power on the device and off you go!</p>
+<p>For more information about system integration refer to <a href="syscust-index.html">System Customization</a>.</p>
+<a name="touchscreen-phone-calibration"></a>
+<h2>Touchscreen Phone Calibration</h2>
+<p>When building Qt Extended for a touchscreen device, the touchscreen must be calibrated manually as <i>Calibration</i> is not run automatically. With Qt Extended running, enter the following command to start calibration:</p>
+<pre>          qcop service send Launcher &quot;execute(QString)&quot; &quot;calibrate&quot;</pre>
+<p>This outputs calibration information to the <tt>/etc/pointercal</tt> file.</p>
+<p>See also: <a href="syscust-index.html">System Customization</a>.</p>
+<a name="connecting-qt-extended-to-the-phone-device"></a>
+<h2>Connecting Qt Extended to the Phone Device</h2>
+<p>Qt Extended provides the GUI software that runs on a mobile phone. To make a <i>real</i> phone call the electronics need to connect to a phone network. These electronics are assumed to be in the phone device itself. This section describes how the Qt Extended Phone software can be connected to the phone device hardware.</p>
+<a name="using-a-phone-simulator"></a>
+<h3>Using a Phone Simulator</h3>
+<p>The phone simulator is an internal tool used to test part of the Qt Extended Phone functionality. It simulates part of the modem functionality and is the first step in debugging software. The simulator has been included in the package because it is well suited to illustrating the capabilities of Qt Extended. Please be advised however that the phone simulator is an unsupported tool.</p>
+<p>Connect Qt Extended to the simulator using the following command:</p>
+<pre>         export QTOPIA_PHONE_DEVICE=sim:localhost</pre>
+<p>This must be set before either Qt Extended or the simulator are started. If the <tt>runqtopia</tt> script is used, the default value for the environment variable <tt>QTOPIA_PHONE_DEVICE</tt> is <tt>sim:localhost</tt>. It is possible to run Qt Extended on one machine (embedded device) and the phone simulator on another machine. To do this replace <i>localhost</i> with the name of the machine on which the <tt>phonesim</tt> is running.</p>
+<p><b>Note:</b> The phone simulator can be build for either the development host or the target.</p>
+<p>Further phone simulator information is available in the <a href="tools-list.html">Tools section</a> of the reference documentation.</p>
+<a name="using-a-phone-device"></a>
+<h3>Using a Phone Device</h3>
+<p>Qt Extended can be connected to a real phone device using a serial connection. Please be advised that the phone device must support the standard AT commands. To connect use the following command:</p>
+<pre>         export QTOPIA_PHONE_DEVICE=/dev/ttyS1:115200
+         export QTOPIA_PHONE_VENDOR=wavecom</pre>
+<p>where:</p>
+<ul>
+<li>ttyS1 = the serial port</li>
+<li>115200 = the baud rate</li>
+<li>wavecom = the name of the modem plugin to use</li>
+</ul>
+<p>When using Qt Extended connect to a modem the environment variables <tt>QTOPIA_PHONE_DEVICE</tt> and <tt>QTOPIA_PHONE_VENDOR</tt> must be set before Qt Extended is started. Entering a baud rate after the serial port name is optional and depends on the modem being used. It is not necessary to start the <tt>phonesim</tt> application.</p>
+<p>If you wish to start Qt Extended with multiplexing disabled then use the following command before starting Qt Extended:</p>
+<pre>         export QTOPIA_PHONE_MUX=no</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

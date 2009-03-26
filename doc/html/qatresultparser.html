@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAtResultParser Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAtResultParser Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QAtResultParser class provides support for parsing the response to AT modem commands and unsolicited notifications. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAtResultParser&gt;</pre><ul>
+<li><a href="qatresultparser-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qatresultparser-node.html">Node</a></b></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qatresultparser.html#QAtResultParser">QAtResultParser</a></b> ( const QAtResult &amp; <i>result</i> )</li>
+<li><div class="fn"/><b><a href="qatresultparser.html#QAtResultParser-2">QAtResultParser</a></b> ( const QString &amp; <i>notification</i> )</li>
+<li><div class="fn"/><b><a href="qatresultparser.html#dtor.QAtResultParser">~QAtResultParser</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qatresultparser.html#line">line</a></b> ()</li>
+<li><div class="fn"/>QStringList <b><a href="qatresultparser.html#lines">lines</a></b> ( const QString &amp; <i>prefix</i> )</li>
+<li><div class="fn"/>bool <b><a href="qatresultparser.html#next">next</a></b> ( const QString &amp; <i>prefix</i> )</li>
+<li><div class="fn"/>QList&lt;QAtResultParser::Node&gt; <b><a href="qatresultparser.html#readList">readList</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qatresultparser.html#readNextLine">readNextLine</a></b> ()</li>
+<li><div class="fn"/>uint <b><a href="qatresultparser.html#readNumeric">readNumeric</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qatresultparser.html#readString">readString</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qatresultparser.html#reset">reset</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qatresultparser.html#skip">skip</a></b> ()</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAtResultParser class provides support for parsing the response to AT modem commands and unsolicited notifications.</p>
+<p>The following example demonstrates how to parse the response to a <tt>AT+CPOL</tt> (preferred operator list) query:</p>
+<pre>    QAtResultParser parser( result );
+    while ( parser.next( &quot;+CPOL:&quot; ) ) {
+        uint index = parser.readNumeric();
+        uint format = parser.readNumeric();
+        QString name;
+        if ( format == 2 )  <span class="comment">// Numeric format.</span>
+            name = QString::number( parser.readNumeric() );
+        else                <span class="comment">// String format.</span>
+            name = parser.readString();
+    }</pre>
+<p>See also <a href="qatresult.html">QAtResult</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAtResultParser"></a>QAtResultParser::QAtResultParser ( const <a href="qatresult.html">QAtResult</a> &amp; <i>result</i> )</h3>
+<p>Construct an AT modem result parser to parse the content of <i>result</i>. The caller will typically follow this with a call to <a href="qatresultparser.html#next">next</a>() to position the parser on the first line of relevant result data.</p>
+<h3 class="fn"><a name="QAtResultParser-2"></a>QAtResultParser::QAtResultParser ( const <a href="qstring.html">QString</a> &amp; <i>notification</i> )</h3>
+<p>Construct an AT modem result parser and initialize it to parse the specified unsolicited <i>notification</i>. Notifications are expected to have the format <tt>NAME: VALUE</tt>. The <a href="qatresultparser.html#next">next</a>() function will be called internally to position the parser at <tt>VALUE</tt>.</p>
+<h3 class="fn"><a name="dtor.QAtResultParser"></a>QAtResultParser::~QAtResultParser ()</h3>
+<p>Destruct this AT modem result parser.</p>
+<h3 class="fn"><a name="line"></a><a href="qstring.html">QString</a> QAtResultParser::line ()</h3>
+<p>Returns the full content of the line that <a href="qatresultparser.html#next">next</a>() positioned us on. The line's prefix is not included in the return value.</p>
+<p>See also <a href="qatresultparser.html#next">next</a>(), <a href="qatresultparser.html#readNumeric">readNumeric</a>(), and <a href="qatresultparser.html#readString">readString</a>().</p>
+<h3 class="fn"><a name="lines"></a><a href="qstringlist.html">QStringList</a> QAtResultParser::lines ( const <a href="qstring.html">QString</a> &amp; <i>prefix</i> )</h3>
+<p>Returns the content of all lines that begin with <i>prefix</i> starting at the current position.</p>
+<p>See also <a href="qatresultparser.html#next">next</a>().</p>
+<h3 class="fn"><a name="next"></a>bool QAtResultParser::next ( const <a href="qstring.html">QString</a> &amp; <i>prefix</i> )</h3>
+<p>Position this AT modem result parser on the next line that begins with <i>prefix</i>. Returns true on success; otherwise returns false.</p>
+<p>See also <a href="qatresultparser.html#line">line</a>(), <a href="qatresultparser.html#lines">lines</a>(), <a href="qatresultparser.html#readNumeric">readNumeric</a>(), and <a href="qatresultparser.html#readString">readString</a>().</p>
+<h3 class="fn"><a name="readList"></a><a href="qlist.html">QList</a>&lt;<a href="qatresultparser-node.html">QAtResultParser::Node</a>&gt; QAtResultParser::readList ()</h3>
+<p>Read a list of values surrounded by parentheses. This is for complex command results that cannot be parsed with <a href="qatresultparser.html#readNumeric">readNumeric</a>() and <a href="qatresultparser.html#readString">readString</a>().</p>
+<h3 class="fn"><a name="readNextLine"></a><a href="qstring.html">QString</a> QAtResultParser::readNextLine ()</h3>
+<p>Read the next line of input as literal text, without looking for a prefix. This is for results from commands such as <tt>AT+CMGL</tt> which place the PDU on a line of its own.</p>
+<h3 class="fn"><a name="readNumeric"></a><a href="qtglobal.html#uint-typedef">uint</a> QAtResultParser::readNumeric ()</h3>
+<p>Read a numeric value from the current line.</p>
+<p>See also <a href="qatresultparser.html#readString">readString</a>() and <a href="qatresultparser.html#skip">skip</a>().</p>
+<h3 class="fn"><a name="readString"></a><a href="qstring.html">QString</a> QAtResultParser::readString ()</h3>
+<p>Read a string from the current line.</p>
+<p>See also <a href="qatresultparser.html#readNumeric">readNumeric</a>() and <a href="qatresultparser.html#skip">skip</a>().</p>
+<h3 class="fn"><a name="reset"></a>void QAtResultParser::reset ()</h3>
+<p>Reset this AT modem result parser to the beginning of the content.</p>
+<h3 class="fn"><a name="skip"></a>void QAtResultParser::skip ()</h3>
+<p>Skip the contents of a comma-separated field in the current line.</p>
+<p>See also <a href="qatresultparser.html#readNumeric">readNumeric</a>() and <a href="qatresultparser.html#readString">readString</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

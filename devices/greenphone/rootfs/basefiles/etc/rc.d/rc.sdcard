@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# umount -a -r hangs if the SD card is mounted
+if grep '/dev/mmca' /proc/mounts >/dev/null; then
+    for mnt in $(grep '/dev/mmca' /proc/mounts | cut -d ' ' -f 2); do
+        /usr/bin/fuser -m $mnt
+        umount $mnt
+    done
+fi
+

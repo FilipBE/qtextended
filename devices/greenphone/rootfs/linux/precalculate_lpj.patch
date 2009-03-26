@@ -1,0 +1,46 @@
+--- kernel/init/main.c	Thu Oct  2 04:31:22 2008
++++ kernel/init/main.c	Thu Oct  2 04:31:22 2008
+@@ -162,41 +162,9 @@
+ 
+ void __init calibrate_delay(void)
+ {
+-	unsigned long ticks, loopbit;
+-	int lps_precision = LPS_PREC;
++	loops_per_jiffy = 1556450;
+ 
+-	loops_per_jiffy = (1<<12);
+-
+-	printk("Calibrating delay loop... ");
+-	while (loops_per_jiffy <<= 1) {
+-		/* wait for "start of" clock tick */
+-		ticks = jiffies;
+-		while (ticks == jiffies)
+-			/* nothing */;
+-		/* Go .. */
+-		ticks = jiffies;
+-		__delay(loops_per_jiffy);
+-		ticks = jiffies - ticks;
+-		if (ticks)
+-			break;
+-	}
+-
+-/* Do a binary approximation to get loops_per_jiffy set to equal one clock
+-   (up to lps_precision bits) */
+-	loops_per_jiffy >>= 1;
+-	loopbit = loops_per_jiffy;
+-	while ( lps_precision-- && (loopbit >>= 1) ) {
+-		loops_per_jiffy |= loopbit;
+-		ticks = jiffies;
+-		while (ticks == jiffies);
+-		ticks = jiffies;
+-		__delay(loops_per_jiffy);
+-		if (jiffies != ticks)	/* longer than 1 tick */
+-			loops_per_jiffy &= ~loopbit;
+-	}
+-
+-/* Round the value and print it */	
+-	printk("%lu.%02lu BogoMIPS\n",
++	printk("%lu.%02lu BogoMIPS (precalculated)\n",
+ 		loops_per_jiffy/(500000/HZ),
+ 		(loops_per_jiffy/(5000/HZ)) % 100);
+ }

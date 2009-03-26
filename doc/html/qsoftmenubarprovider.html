@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSoftMenuBarProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSoftMenuBarProvider Class Reference<br /><span class="small-subtitle">[<a href="qtuimodule.html">QtUiModule</a>]</span>
+</h1>
+<p>The QSoftMenuBarProvider class provides the backend for the <a href="qsoftmenubar.html">QSoftMenuBar</a> API. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSoftMenuBarProvider&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="qsoftmenubarprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qsoftmenubarprovider-menubutton.html">MenuButton</a></b></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsoftmenubarprovider.html#QSoftMenuBarProvider">QSoftMenuBarProvider</a></b> ( QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qsoftmenubarprovider.html#dtor.QSoftMenuBarProvider">~QSoftMenuBarProvider</a></b> ()</li>
+<li><div class="fn"/>MenuButton <b><a href="qsoftmenubarprovider.html#key">key</a></b> ( int <i>index</i> ) const</li>
+<li><div class="fn"/>int <b><a href="qsoftmenubarprovider.html#keyCount">keyCount</a></b> () const</li>
+<li><div class="fn"/>QList&lt;MenuButton&gt; <b><a href="qsoftmenubarprovider.html#keys">keys</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qsoftmenubarprovider.html#keyChanged">keyChanged</a></b> ( const QSoftMenuBarProvider::MenuButton &amp; <i>button</i> )</li>
+<li><div class="fn"/>void <b><a href="qsoftmenubarprovider.html#keyChanged-2">keyChanged</a></b> ( int <i>key</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSoftMenuBarProvider class provides the backend for the <a href="qsoftmenubar.html">QSoftMenuBar</a> API.</p>
+<p>The <a href="qsoftmenubar.html">QSoftMenuBar</a> class allows applications to control a context specific soft key bar. The QSoftMenuBarProvider manages the state of the soft bar on behalf of a specific UI implementation.</p>
+<p>Internally the <a href="qsoftmenubar.html">QSoftMenuBar</a> class sends QCop messages to communicate with the QSoftMenuBarProvider instance. The &quot;context specific&quot; aspects of the bar are managed in the <a href="qsoftmenubar.html">QSoftMenuBar</a> instance and messages are only sent when the bar UI needs to update. Three QCop messages are used on the <tt>QPE/QSoftMenuBar</tt> channel.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Message</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>setLabelText(int,int,QString)</tt></td><td><i>setLabelText(int winId, int key, <a href="qstring.html">QString</a> text)</i><p>Sets the button bound to <i>key</i> to <i>text</i>. <i>winId</i> is the integer identifier of the active window from the application's perspective. This is to resolve the race condition where application <tt>A</tt> sends an update, application <tt>B</tt> becomes active and sends its update but the provider receives application <tt>A</tt>'s update after application <tt>B</tt>'s incorrectly applying it. The label will only be updated if <i>winId</i> is equal to the currently active windows id.</p>
+</td></tr>
+<tr valign="top" class="even"><td><tt>setLabelPixmap(int,int,QString)</tt></td><td><i>setLabelPixmap(int winId, int key, <a href="qstring.html">QString</a> pixmapName)</i><p>Sets the button for <i>key</i> to display the given <i>pixmapName</i>. <i>winId</i> is used to resolve the race condition outlined above. The pixmap returned from <a href="qsoftmenubarprovider-menubutton.html#pixmap">MenuButton::pixmap</a>() will be resolved as <tt>&quot;:icon/&quot; + pixmapName</tt>.</p>
+</td></tr>
+<tr valign="top" class="odd"><td><tt>clearLabel(int,int)</tt></td><td><i>clearLabel(int winId, int key)</i><p>Clears the button for <i>key</i>. The button text will be set to a null string, and the image a null image. <i>winId</i> is used to resolve the race condition outlined above.</p>
+</td></tr>
+</table></p>
+<p>The soft keys available on a device are configured in the <tt>SoftKeys</tt> group of the <tt>defaultbuttons.conf</tt> configuration file. For example, the following snippet configures three softkeys - <tt>Context1</tt>, <tt>Select</tt> and <tt>Back</tt>.</p>
+<pre>    [SoftKeys]
+    Count=3
+    Key0=Context1
+    Key1=Select
+    Key2=Back</pre>
+<p>Valid key entries are those understood by the <a href="qkeysequence.html">QKeySequence</a> class. The QSoftMenuBarProvider class will only respond to keys configured in this way.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSoftMenuBarProvider"></a>QSoftMenuBarProvider::QSoftMenuBarProvider ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Create a new <a href="qsoftmenubarprovider.html">QSoftMenuBarProvider</a> instance, with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="dtor.QSoftMenuBarProvider"></a>QSoftMenuBarProvider::~QSoftMenuBarProvider ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qsoftmenubarprovider.html">QSoftMenuBarProvider</a> instance.</p>
+<h3 class="fn"><a name="key"></a><a href="qsoftmenubarprovider-menubutton.html">MenuButton</a> QSoftMenuBarProvider::key ( int <i>index</i> ) const</h3>
+<p>Returns a key description for the <i>index</i> 'th key. <i>index</i> must be less than <a href="qsoftmenubarprovider.html#keyCount">keyCount</a>().</p>
+<h3 class="fn"><a name="keyChanged"></a>void QSoftMenuBarProvider::keyChanged ( const <a href="qsoftmenubarprovider-menubutton.html">QSoftMenuBarProvider::MenuButton</a> &amp; <i>button</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever the text or image for <i>button</i> has changed.</p>
+<h3 class="fn"><a name="keyChanged-2"></a>void QSoftMenuBarProvider::keyChanged ( int <i>key</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Emitted when the text or image mapped to the <a href="qt.html#Key-enum">Qt::Key</a> <i>key</i> has changed.</p>
+<h3 class="fn"><a name="keyCount"></a>int QSoftMenuBarProvider::keyCount () const</h3>
+<p>Returns the number of configured keys.</p>
+<h3 class="fn"><a name="keys"></a><a href="qlist.html">QList</a>&lt;<a href="qsoftmenubarprovider-menubutton.html">MenuButton</a>&gt; QSoftMenuBarProvider::keys () const</h3>
+<p>Returns a list of key descriptions for all configured keys.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

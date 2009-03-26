@@ -1,0 +1,156 @@
+exists($$QPEDIR/src/build/trace_on):message(config.prf)
+# Setup config
+
+# Load the configure-generated file
+exists($$QPEDIR/src/config.pri):include($$QPEDIR/src/config.pri)
+else:error(Missing $$fixpath($$QPEDIR/src/config.pri). Please configure Qtopia.)
+!isEmpty(QTOPIA_EDITION) {
+    # Load the edition-specific config file
+    exists($$QTOPIA_DEPOT_PATH/editions/$$QTOPIA_EDITION/config.pri):include($$QTOPIA_DEPOT_PATH/editions/$$QTOPIA_EDITION/config.pri)
+    else:error(Missing $$fixpath($$QTOPIA_DEPOT_PATH/editions/$$QTOPIA_EDITION/config.pri))
+}
+# Load a device-specific config file (if it exists)
+!isEmpty(DEVICE_CONFIG_PATH):exists($$DEVICE_CONFIG_PATH/config.pri):include($$DEVICE_CONFIG_PATH/config.pri)
+
+QTDIR=$$(QTDIR)
+QT_DEPOT_PATH=$$QTE_DEPOT_PATH
+
+# qmake should load this automatically...
+exists($$QTDIR/.qmake.cache):include($$QTDIR/.qmake.cache)
+else:error(Missing $$fixpath($$QTDIR/.qmake.cache). Please configure Qt.)
+
+# Extract the QT_CONFIG variables into QTE_CONFIG and DQT_CONFIG
+# Global scope protected by a function call
+defineTest(readqtconfig) {
+    QT_CONFIG=
+    exists($$DQTDIR/mkspecs/qconfig.pri):include($$DQTDIR/mkspecs/qconfig.pri)
+    DQT_CONFIG=$$QT_CONFIG
+    export(DQT_CONFIG)
+
+    QT_CONFIG=
+    exists($$QTEDIR/mkspecs/qconfig.pri):include($$QTEDIR/mkspecs/qconfig.pri)
+    QTE_CONFIG=$$QT_CONFIG
+    export(QTE_CONFIG)
+}
+
+readqtconfig()
+
+# We need this later to help ensure the correct Qt libs are used
+CONFIG(debug,debug|release):QT_DEBUG_LIBS=1
+else:QT_DEBUG_LIBS=0
+
+# Assume we're using Qt (unless the project says otherwise)
+CONFIG*=qt
+# Basic Qt modules
+QT=core gui network xml sql
+!equals(DQT_MINOR_VERSION,1):QT+=svg
+# FIXME compat code should be removed
+DEFINES+=QPE_NO_COMPAT
+
+# Deal with qmake behaviors
+contains(QMAKE_BEHAVIORS,keep_quotes) {
+    LITERAL_QUOTE="
+    LITERAL_ESCAPED_QUOTE=\"
+    LITERAL_SQUOTE='
+    LITERAL_BACKSLASH=\\
+
+} else {
+    LITERAL_QUOTE=\"
+    LITERAL_ESCAPED_QUOTE=\\\"
+    LITERAL_SQUOTE=\'
+    LITERAL_BACKSLASH=\\\
+
+}
+
+# Platform/make stuff
+win32 {
+    QBS_BIN=$$QPEDIR/bin
+    COMMAND_HEADER=@
+    COMMAND_SEP=&&
+    PATH_SEP=;
+    MAKE=$$fixpath($$QBS_BIN/winmake)
+    DUMMY_COMMAND=echo >nul
+    PRINTDOT=@$$fixpath($$QBS_BIN/printdot) >&2
+    ENV=$$fixpath($$QBS_BIN/runwithvars)
+} else {
+    QBS_BIN=$$QPEDIR/src/build/bin
+    COMMAND_HEADER=@[ -z $$LITERAL_QUOTE\$$VERBOSE_SHELL$$LITERAL_QUOTE ] || set -x;
+    COMMAND_SEP=;
+    PATH_SEP=:
+    MAKE=$(MAKE)
+    DUMMY_COMMAND=true
+    PRINTDOT=@echo -n . >&2
+    ENV=env
+}
+LINE_SEP=$$esc(\n\t)$$COMMAND_HEADER
+LINE_SEP_VERBOSE=$$esc(\n\t)
+
+# Static config
+CONFIG+=warn_on
+STRING_LANGUAGE=en_US
+MOC_DIR=.moc/$$RELEASE_BIN_TYPE
+OBJECTS_DIR=.obj/$$RELEASE_BIN_TYPE
+UI_HEADERS_DIR=.ui/$$RELEASE_BIN_TYPE
+CONFIG-=depend_prl
+CONFIG+=link_prl create_prl no_install_prl no_mocdepend
+!isEmpty(DEVICE_CONFIG_PATH):INCLUDEPATH+=$$DEVICE_CONFIG_PATH/include
+!depotProject:INCLUDEPATH+=$$QPEDIR/include
+LIBS=-L$$QPEDIR/lib $$LIBS
+!isEmpty(DEVICE_CONFIG_PATH):LIBS=-L$$DEVICE_CONFIG_PATH/lib $$LIBS
+CONFIG+=common depends installs
+TARGET=$$tail($$OUT_PWD)
+DEFINES+=BUILDER=$$LITERAL_ESCAPED_QUOTE$$BUILDER$$LITERAL_ESCAPED_QUOTE
+!isEmpty(QT_CHANGE):DEFINES+=QT_CHANGE=$$LITERAL_ESCAPED_QUOTE$$QT_CHANGE$$LITERAL_ESCAPED_QUOTE
+!isEmpty(QTOPIA_CHANGE):DEFINES+=QTOPIA_CHANGE=$$LITERAL_ESCAPED_QUOTE$$QTOPIA_CHANGE$$LITERAL_ESCAPED_QUOTE
+
+# The location of packages
+depotProject:PKG_PATH=$$QPEDIR/pkg
+else:PKG_PATH=$$PROJECT_ROOT/pkg
+
+self=$$tail($$OUT_PWD).pro
+
+equals(LAUNCH_METHOD,normal):CONFIG+=no_singleexec
+
+# Use Qtopia's projects.pri if projects.pri is not in your project root
+exists($$PROJECT_ROOT/projects.pri):include($$PROJECT_ROOT/projects.pri)
+else:include($$QTOPIA_PROJECT_ROOT/projects.pri)
+
+isEmpty(QMAKE_CFLAGS_WARN_OFF):QMAKE_CFLAGS_WARN_OFF=-w
+isEmpty(QMAKE_CXXFLAGS_WARN_OFF):QMAKE_CXXFLAGS_WARN_OFF=-w
+
+depotProject {
+    containsre($$QTOPIA_ID,^3rdparty) {
+        # Disable warnings for third-party code.
+        CONFIG+=warn_off
+    } else {
+        # If enabled, make warnings into errors. This helps us pick up
+        # warnings, useful due to our "no warnings in our code" policy.
+        enable_werror {
+            QMAKE_CFLAGS+=-Werror
+            QMAKE_CXXFLAGS+=-Werror
+        }
+        # This enables all of the strict warning flags your compiler supports (as tested by configure)
+        enable_strict_flags {
+            QMAKE_CXXFLAGS+=$$QTOPIA_STRICT_FLAGS
+        }
+    }
+}
+
+# Make sure the current root is searched first
+PROJECT_ROOTS-=$$P_ROOT
+# Depot projects need to be converted
+depotProject:PROJECT_ROOTS=$$P_ROOT $$PROJECT_ROOTS
+
+# From now on, it's all relative to the source tree, not the build tree
+TMP_PROJECT_ROOTS=$$PROJECT_ROOTS
+PROJECT_ROOTS=
+for(it,TMP_PROJECT_ROOTS) {
+    it~=s,$$QPEDIR,$$QTOPIA_DEPOT_PATH,q
+    PROJECT_ROOTS+=$$it
+}
+
+# Non-depot projects don't need to be converted
+!depotProject:PROJECT_ROOTS=$$PROJECT_ROOT $$PROJECT_ROOTS
+
+# Setup the global project keywords
+load(keywords)

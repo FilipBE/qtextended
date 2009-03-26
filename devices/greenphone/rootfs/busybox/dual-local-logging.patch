@@ -1,0 +1,34 @@
+diff -ur busybox-1.2.1/sysklog/syslogd.c busybox-1.2.1-greenphone/sysklogd/syslogd.c
+--- busybox-1.2.1/sysklogd/syslogd.c		2006-07-01 08:42:04.000000000 +1000
++++ busbox-1.2.1-greenphone/sysklogd/syslogd.c	2006-11-21 10:42:40.000000000 +1000
+@@ -286,6 +286,7 @@
+ static void message(char *fmt, ...) __attribute__ ((format(printf, 1, 2)));
+ static void message(char *fmt, ...)
+ {
++        int logged = FALSE;
+ 	int fd;
+ 	struct flock fl;
+ 	va_list arguments;
+@@ -303,7 +304,8 @@
+ 		va_end(arguments);
+ 		circ_message(b);
+ 
+-	} else
++                logged = TRUE;
++	}
+ #endif
+ 	if ((fd = device_open(logFilePath,
+ 					O_WRONLY | O_CREAT | O_NOCTTY | O_APPEND |
+@@ -346,7 +348,11 @@
+ 		fl.l_type = F_UNLCK;
+ 		fcntl(fd, F_SETLKW, &fl);
+ 		close(fd);
+-	} else {
++
++                logged = TRUE;
++	}
++        
++        if (logged == FALSE) {
+ 		/* Always send console messages to /dev/console so people will see them. */
+ 		if ((fd = device_open(_PATH_CONSOLE,
+ 						 O_WRONLY | O_NOCTTY | O_NONBLOCK)) >= 0) {

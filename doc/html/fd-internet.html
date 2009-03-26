@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Communications: Internet</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Communications: Internet<br><small>Functional Description</small></h1><p><p />
+<p />
+Qt Extended provides an Internet Settings application to allow the user to configure network connections for a device. The user can have several Internet connections at the same time with the Internet application allowing the user to change the routing table to use of the data connections efficiently. Support is provided for EDGE (Enhanced Data-Rates for GSM Evolution) which is based on existing GSM networks and improves the available data rates, by improving the modulation/coding schemes. Both Wireless IP (WLAN) and <a href="fd-GPRS.html">GPRS</a> are supported using the Qt Extended plug-in architecture. 
+<p />
+WLAN is provided by a network plug-in that detects PCMCIA WLAN/LAN cards automatically and allows the configuration of a wide range of settings for network cards. IP Settings such as IP address, DNS server, and DHCP support can be configured together with proxy settings for each WLAN connection. 
+<p />
+<p />
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-640">Internet Settings</a>
+<li><a href="#QTOPIA-643">Miscellaneous Internet Features</a>
+<li><a href="#QTOPIA-642">Network session management</a>
+<li><a href="#QTOPIA-641">Support for Routing</a>
+</ul><h3><a name=QTOPIA-640>Internet Settings</a></h3>
+<p>The Internet settings application allows the user to configure the following items:
+
+<ul>
+	<li>start and stop existing network interfaces</li>
+	<li>add, edit and delete network configurations</li>
+	<li>add, edit and delete WAP/MMS accounts</li>
+	<li>access to network specific functionality (e.g. WLAN scanner)</li>
+	<li>add, edit and delete VPN connections</li>
+</ul>
+<h3><a name=QTOPIA-643>Miscellaneous Internet Features</a></h3>
+<p><ol>
+	<li><b>API for WAP details</b> - Applications which are interested in WAP details can use a convenience class in order to read the WAP configuration files.</li>
+	<li><b>Network monitoring</b> - Qt Extended distinguishes the following two types of monitoring:
+	<ul>
+		<li><em>Interface monitoring</em> - This method allows clients to monitor the state of a network interfaces. Qt Extended itself uses this to change the network traffic routing when e.g. a WLAN interface disappears but a GPRS connection is still present. This enables uninterrupted network access for the user.</li>
+		<li><em>Connection monitoring</em> -  In some cases it is required to distinguish the network peer. An example would be a WLAN device. Qt Extended can determine whether the office network and/or the home network are within reach of the device. In general Qt Extended's connection monitoring provides a finer resolution when monitoring network activity.</li>
+	</ul>
+	</li>
+</ol>
+<h3><a name=QTOPIA-642>Network session management</a></h3>
+<p>The Qt Extended network server provides a session manager. This is used to ensure that a network interface is shutdown when there is no need for it. If an application starts a network interface the interface will remain active for the life time of the application. This means that network interfaces are stopped if an application crashes or quits. If two applications were to request the same interface the interface will stay active until the last application closes.
+
+<p>To cater for more flexibility the network server can extend the session life time beyond the life time of a single application. By default every interface which has been started manually through the internet application or via the network servers autostart feature has an extended life time. Such a session will remain active until it is turned off by the user or the interface times out (e.g. timeout on pppd sessions).</p>
+<h3><a name=QTOPIA-641>Support for Routing</a></h3>
+<p>The user can have several Internet connections at the same time. A use case may be a user who is browsing on the Internet via GPRS and enters a public WLAN zone. The Internet application allows the user to change the routing table so that he can make maximum use (e.g. choose fastest or cheapest medium) of its data connections.
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

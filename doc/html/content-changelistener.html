@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Listening for Content Changes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Listening for Content Changes<br /><span class="subtitle"></span>
+</h1>
+<p>Files:</p>
+<ul>
+<li><a href="content-changelistener-changelistener-cpp.html">content/changelistener/changelistener.cpp</a></li>
+<li><a href="content-changelistener-changelistener-h.html">content/changelistener/changelistener.h</a></li>
+<li><a href="content-changelistener-main-cpp.html">content/changelistener/main.cpp</a></li>
+<li><a href="content-changelistener-qbuild-pro.html">content/changelistener/qbuild.pro</a></li>
+</ul>
+<p>The Change Listener Tutorial demonstrates using the <a href="qcontentset.html#changed">changed()</a> signal of <a href="qcontentset.html">QContentSet</a> to listen for newly added content. It also demonstrates creating a <a href="qcontent.html">QContent</a> for a non-user document, and using categories to identify content.</p>
+<p align="center"><img src="images/tut-contentchange.png" /></p><p>The Change Listener application displays a slide show of images that updates every three seconds. At three second intervals the application creates a new <a href="qcontent.html">QContent</a> for one of its images and commits it to the document system, and then uninstalls the previous one. Images are displayed when a <a href="qcontentset.html#changed">QContentSet::changed</a>() signal is received indicating that the new <a href="qcontent.html">QContent</a> has been added. A category is used to identify the image displayed as one created by the application.</p>
+<a name="changelistener-class-definition"></a>
+<h2>ChangeListener Class Definition</h2>
+<pre>    class ChangeListener : public QLabel
+    {
+        Q_OBJECT
+
+    public:
+        ChangeListener( QWidget *parent = 0, Qt::WindowFlags flags = 0 );
+        ~ChangeListener();
+
+    private slots:
+        void timeout();
+        void changed( const QContentIdList &amp;contentIds, QContent::ChangeType type );
+
+    private:
+        int nextIndex;
+        QContentId lastContentId;
+        QString categoryId;
+        QFileInfoList imageFiles;
+    };</pre>
+<p>The ChangeListener class is composed of a single widget; a <a href="qlabel.html">QLabel</a> used to display the images, so for convenience we'll inherit a <a href="qlabel.html">QLabel</a> rather than embed one in a <a href="qwidget.html">QWidget</a>.</p>
+<p>There are two private slots; a <tt>timeout()</tt> slot which is called each time the timer expires, and a <tt>changed()</tt> slot which is called when changes to the document system are made.</p>
+<a name="changelistener-class-implementation"></a>
+<h2>ChangeListener Class Implementation</h2>
+<p>In the constructor we first initialize the <a href="qlabel.html">QLabel</a> so it scales images to fit its dimensions, and so it has a context menu bar. The context menu will only have the help entry which is automatically added so there's no need to do more than initialize the menu.</p>
+<pre>    ChangeListener::ChangeListener( QWidget *parent, Qt::WindowFlags flags )
+        : QLabel( parent, flags )
+        , nextIndex( 0 )
+        , lastContentId( QContent::InvalidId )
+    {
+        setScaledContents( true );
+
+         QSoftMenuBar::menuFor( this );</pre>
+<p>Next we'll construct a list of the images we're going to display, we use resource paths here so we don't have to worry about where the application is installed. <a href="qfileinfo.html#absoluteFilePath">QFileInfo::absoluteFilePath</a>() will resolve to the actual file path so we won't actually be using the resource path when installing to the document system.</p>
+<pre>        imageFiles.append( QFileInfo( &quot;:image/Bubble.png&quot; ) );
+        imageFiles.append( QFileInfo( &quot;:image/Clouds.png&quot; ) );
+        imageFiles.append( QFileInfo( &quot;:image/Splatters.png&quot; ) );
+        imageFiles.append( QFileInfo( &quot;:image/Water.png&quot; ) );</pre>
+<p>When we install content we'll assign it a category, before we can do that we need to ensure the category exists. We'll name our category <tt>Change Listener</tt> and put it in the <tt>Examples</tt> scope and we'll let <a href="qcategorymanager.html">QCategoryManager</a> assign it an ID. We could alternatively make this a system category and assign our own ID, in which case we'd use <a href="qcategorymanager.html#ensureSystemCategory">QCategoryManager::ensureSystemCategory</a>() here.</p>
+<pre>        QCategoryManager categoryManager( &quot;Examples&quot; );
+
+        categoryId = categoryManager.idForLabel( &quot;Change Listener&quot; );
+
+        if( categoryId.isEmpty() )
+            categoryId = categoryManager.add( &quot;Change Listener&quot; );</pre>
+<p>Now we'll construct the <a href="qcontentset.html">QContentSet</a> we'll use to listen for newly added content and connect to its <a href="qcontentset.html#changed">changed()</a> signal. We filter it on our <tt>Change Listener</tt> category so it only contains content we added in this application. The <a href="qcontentset.html">QContentSet</a> should be empty at this point, if it's not then the application did not exit cleanly when it was last run and we'll need to uninstall the images it failed to clean up.</p>
+<pre>        QContentSet *contentSet = new QContentSet( QContentFilter::category( categoryId ), this );
+
+        connect( contentSet, SIGNAL(changed(QContentIdList,QContent::ChangeType)),
+                this, SLOT(changed(QContentIdList,QContent::ChangeType)) );
+
+        for ( int i = 0; i &lt; contentSet-&gt;count(); i++ ) {
+            QContent::uninstall( contentSet-&gt;contentId( i ) );
+        }</pre>
+<p>Finally we'll construct a <a href="qtimer.html">QTimer</a> and set it trigger the <tt>timeout()</tt> slot every 3 seconds.</p>
+<pre>        QTimer *timer = new QTimer( this );
+
+        connect( timer, SIGNAL(timeout()), this, SLOT(timeout()) );
+
+        timer-&gt;start( 3000 );
+    }</pre>
+<p>The <tt>ChangeListener</tt> destructor simply uninstalls the last image installed to the document system so no content records for the images are persisted after exiting the application.</p>
+<pre>    ChangeListener::~ChangeListener()
+    {
+        if( lastContentId != QContent::InvalidId )
+            QContent::uninstall( lastContentId );
+    }</pre>
+<p>The <tt>timeout()</tt> slot periodically creates a new <a href="qcontent.html">QContent</a> for an image and commits it to the document system. We get the name, and the absolute file path from the <a href="qfileinfo.html">QFileInfo</a>, and all of the images are of the <tt>image/png</tt> type. We assign the <a href="qcontent.html#Role-enum">QContent::Data</a> role instead of the usual <a href="qcontent.html#Role-enum">QContent::Document</a> so that the images don't appear in any of the document selectors, and assign the <tt>Change Listener</tt> category to identify it later.</p>
+<pre>    void ChangeListener::timeout()
+    {
+        QFileInfo fileInfo = imageFiles.at( nextIndex );
+
+        QContent image;
+        image.setName( fileInfo.baseName() );
+        image.setFile( fileInfo.absoluteFilePath() );
+        image.setType( &quot;image/png&quot; );
+        image.setRole( QContent::Data );
+        image.setCategories( QStringList( categoryId ) );</pre>
+<p>If the image <a href="qcontent.html">QContent</a> is successfully committed we'll uninstall the <a href="qcontent.html">QContent</a> for the previous image, and record the ID of the current image.</p>
+<pre>        if ( image.commit() ) {
+            if ( lastContentId != QContent::InvalidId ) {
+                QContent::uninstall( lastContentId );
+            }
+            lastContentId = image.id();
+        } else {
+            qWarning(&quot;Could not commit the new content object!! Document generator exits.&quot;);
+        }
+
+        nextIndex = (nextIndex + 1) % imageFiles.count();
+    }</pre>
+<p>The <tt>changed()</tt> slot is called whenever a change is made to content in the document system. Here we use it to identify when a <a href="qcontent.html">QContent</a> in the <tt>Change Listener</tt> category has been added.</p>
+<pre>    void ChangeListener::changed(const QContentIdList &amp;idList,QContent::ChangeType changeType)
+    {
+        if ( changeType == QContent::Added ) {
+            foreach ( QContentId id, idList ) {
+                QContent content( id );
+                if ( content.isValid() &amp;&amp; content.categories().contains( categoryId ) ) {</pre>
+<p>Once a new <a href="qcontent.html">QContent</a> has been identified we want to set its name as the window title and display the image in the body of the window. To display the image we open the <a href="qcontent.html">QContent</a> in read-only mode using <a href="qcontent.html#open">QContent::open</a>() and load the data from the returned <a href="qiodevice.html">QIODevice</a> into the image. The caller takes ownership of the <a href="qiodevice.html">QIODevice</a> returned by <a href="qcontent.html#open">QContent::open</a>() so we'll need to delete it once we've closed it.</p>
+<pre>                    setWindowTitle( content.name() );
+                    QIODevice *ioDevice = content.open( QIODevice::ReadOnly );
+                    if ( ioDevice ) {
+                        QImage image;
+                        image.load( ioDevice,&quot;PNG&quot; );
+                        setPixmap( QPixmap::fromImage( image ) );
+
+                        ioDevice-&gt;close();
+                        delete ioDevice;</pre>
+<p>We only expect a single <a href="qcontent.html">QContent</a> in a notfication so once we've handled one we can abort checking the rest of the content IDs.</p>
+<pre>                    break;
+                }
+            }
+        }
+    }</pre>
+<a name="building-the-change-listener-application"></a>
+<h2>Building the Change Listener application.</h2>
+<p>To install and run the Change Listener application, carry out the following steps.</p>
+<ol type="1">
+<li>Create a new directory (e.g&#x2e; $HOME/src/changelistener) and copy all the example files to that directory.<pre>    mkdir $HOME/src/changelistener
+    cd $HOME/src/changelistener
+    cp -r &lt;Qt-Extended-source-directory&gt;/examples/content/changelistener/* .
+    chmod +w *</pre>
+</li>
+<li>Build the new application.<pre>    export QPEDIR=&lt;Qt-Extended-build-directory&gt;
+    $QPEDIR/bin/qbuild
+    $QPEDIR/bin/qbuild image</pre>
+</li>
+<li>Run Qt Extended.<pre>    $QPEDIR/bin/runqtopia</pre>
+</li>
+<li>Go into the list of Applications and scroll down until you find the <tt>Change Listener</tt> application.</li>
+</ol>
+<p>When you run the Change Listener application, you should see a blank screen which updates with a new picture display every three seconds.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

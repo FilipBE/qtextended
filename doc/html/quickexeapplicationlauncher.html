@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QuickExeApplicationLauncher Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QuickExeApplicationLauncher Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QuickExeApplicationLauncher class supports launching quicklaunched Qt Extended applications. <a href="#details">More...</a></p>
+<pre>    #include &lt;QuickExeApplicationLauncher&gt;</pre><p>Inherits <a href="exeapplicationlauncher.html">ExeApplicationLauncher</a>.</p>
+<ul>
+<li><a href="quickexeapplicationlauncher-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="quickexeapplicationlauncher.html#QuickExeApplicationLauncher">QuickExeApplicationLauncher</a></b> ()</li>
+<li><div class="fn"/>virtual <b><a href="quickexeapplicationlauncher.html#dtor.QuickExeApplicationLauncher">~QuickExeApplicationLauncher</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>5 public functions inherited from <a href="applicationtypelauncher.html#public-functions">ApplicationTypeLauncher</a></li>
+<li><div class="fn"/>1 public function inherited from <a href="applicationipcrouter-routedestination.html#public-functions">ApplicationIpcRouter::RouteDestination</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>3 signals inherited from <a href="applicationtypelauncher.html#signals">ApplicationTypeLauncher</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected functions inherited from <a href="exeapplicationlauncher.html#protected-functions">ExeApplicationLauncher</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QuickExeApplicationLauncher class supports launching quicklaunched Qt Extended applications.</p>
+<p>The QuickExeApplicationLauncher provides a Qt Extended Server Task. Qt Extended Server Tasks are documented in full in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class documentation.</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td>Task Name</td><td>QuickExeApplicationLauncher</td></tr>
+<tr valign="top" class="even"><td>Interfaces</td><td><a href="applicationtypelauncher.html">ApplicationTypeLauncher</a>, <a href="systemshutdownhandler.html">SystemShutdownHandler</a></td></tr>
+<tr valign="top" class="odd"><td>Services</td><td>None</td></tr>
+</table></p>
+<p>The QuickExeApplicationLauncher class provides the <a href="applicationtypelauncher.html">ApplicationTypeLauncher</a> implementation that works with the <tt>quicklauncher</tt> executable to accelerate application launching.</p>
+<p>When Qt Extended applications start, there are many non-application-specific tasks they must perform during startup. For example, every Qt Extended application dynamically links against the Qt Extended libraries and instantiates a <a href="qtopiaapplication.html">QtopiaApplication</a> instance. These tasks are independent of any specifics regarding the application.</p>
+<p>The Quicklauncher process attempts to minimize the inefficiencies of these predictable tasks by performing them before any specific application is launched. The system consists of two main parts - the <tt>quicklauncher</tt> binary and the application launcher interface provided by this class.</p>
+<p>When the QuickExeApplicationLauncher is first instantiated, it spawns a copy of the <tt>quicklauncher</tt> executable. The <tt>quicklauncher</tt> executable, like every other Qt Extended application, links against the Qt Extended libraries, instantiates a <a href="qtopiaapplication.html">QtopiaApplication</a> instance and other performs all the other common, non-application-specific tasks. Once these tasks are completed, however, the <tt>quicklauncher</tt> stub enters an idle loop awaiting instruction from the QuickExeApplicationLauncher.</p>
+<p>When the user attempts to launch an application with the <tt>quicklauncher</tt> running, the QuickExeApplicationLauncher class checks to see whether the application was compiled to support Quicklaunching. An application that supports Quicklaunching is compiled as a shared library, not an executable. This shared library has a well known entry point that can be called to run application specific code. The build system documentation contains more information on compiling an application to support Quicklaunching.</p>
+<p>If the application does support Quicklaunching, a message is sent to the idle <tt>quicklauncher</tt> instance. This instance then loads the application shared library and immediately begins executing application specific code, bypassing the non-application-specific portions that it executed earlier in anticipation of an application launch.</p>
+<p>Once a <tt>quicklauncher</tt> instance has transformed itself into a running application, the QuickExeApplicationLauncher class starts another. When the system shuts down, the QuickExeApplicationLauncher will ensure that the running <tt>quicklauncher</tt> instance is stopped.</p>
+<p>Both the QuickExeApplicationLauncher and the <tt>quicklauncher</tt> itself search the paths returned by the <a href="qtopia.html#installPaths">Qtopia::installPaths</a>() method for the <tt>plugins/application/lib&lt;application name&gt;.so</tt> application plugin.</p>
+<p><i>Note:</i> <tt>quicklauncher</tt> itself does not correctly search the install paths for applications. This functionality is planned for a future Qt Extended version.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QuickExeApplicationLauncher"></a>QuickExeApplicationLauncher::QuickExeApplicationLauncher ()</h3>
+<p>Constructs a new <a href="quickexeapplicationlauncher.html">QuickExeApplicationLauncher</a> instance.</p>
+<h3 class="fn"><a name="dtor.QuickExeApplicationLauncher"></a>QuickExeApplicationLauncher::~QuickExeApplicationLauncher ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="quickexeapplicationlauncher.html">QuickExeApplicationLauncher</a> instance.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

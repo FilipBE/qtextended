@@ -1,0 +1,57 @@
+#!/bin/sh
+
+case $1 in
+    boot)
+        # redirect all output to /dev/null
+        exec 1>/dev/null 2>&1
+        action=$(cat /etc/gadget 2>/dev/null)
+        if [ -z "$action" ]; then
+            action=ether
+        fi
+        exec $0 $action
+        ;;
+    stop)
+        echo stop >/etc/gadget
+        exec $0 unload
+        ;;
+    unload)
+        rmmod bvd_bi
+        rmmod net_fd
+        rmmod g_file_storage
+        rmmod serial_fd
+        ;;
+    ether)
+        echo ether >/etc/gadget
+        grep usbdcore /proc/modules || insmod usbdcore
+
+        REMOTEMAC=$(/usr/bin/tat remotemac | tr -d :)
+        insmod net_fd.o remote_mac_address=$REMOTEMAC
+        insmod bvd_bi
+        ;;
+    serial)
+        echo serial >/etc/gadget
+        grep usbdcore /proc/modules || insmod usbdcore
+        insmod serial_fd vendor_id=0x6666 product_id=0x0001
+        insmod bvd_bi
+        ;;
+    winserial)
+        echo winserial >/etc/gadget
+        grep usbdcore /proc/modules || insmod usbdcore
+        insmod serial_fd vendor_id=0x8086 product_id=0x07d3
+        insmod bvd_bi
+        ;;
+    storage)
+        echo storage >/etc/gadget
+        if grep /dev/tffsd /proc/mounts; then
+            umount /dev/tffsd
+        fi
+        grep usbdcore /proc/modules || insmod usbdcore
+        insmod g_file_storage file=/dev/tffsd
+        insmod bvd_bi
+        ;;
+    *)
+        echo "$0 {unload|ether|serial|storage}"
+        exit 1;
+        ;;
+esac
+

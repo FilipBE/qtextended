@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QAbstractServerInterface Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QAbstractServerInterface Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QAbstractServerInterface class allows the Qt Extended Server UI to be replaced. <a href="#details">More...</a></p>
+<pre>    #include &lt;QAbstractServerInterface&gt;</pre><p>Inherits <a href="qwidget.html">QWidget</a>.</p>
+<p>Inherited by <a href="phonelauncher.html">PhoneLauncher</a> and <a href="platformserverinterface.html">PlatformServerInterface</a>.</p>
+<ul>
+<li><a href="qabstractserverinterface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qabstractserverinterface.html#QAbstractServerInterface">QAbstractServerInterface</a></b> ( QWidget * <i>parent</i> = 0, Qt::WFlags <i>flags</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>206 public functions inherited from <a href="qwidget.html#public-functions">QWidget</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+<li><div class="fn"/>14 public functions inherited from <a href="qpaintdevice.html#public-functions">QPaintDevice</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>57 properties inherited from <a href="qwidget.html#properties">QWidget</a></li>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>19 public slots inherited from <a href="qwidget.html#public-slots">QWidget</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qwidget.html#signals">QWidget</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qwidget.html#static-public-members">QWidget</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>38 protected functions inherited from <a href="qwidget.html#protected-functions">QWidget</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>1 protected function inherited from <a href="qpaintdevice.html#protected-functions">QPaintDevice</a></li>
+<li><div class="fn"/>1 protected slot inherited from <a href="qwidget.html#protected-slots">QWidget</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+<li><div class="fn"/>1 protected type inherited from <a href="qpaintdevice.html#protected-variables">QPaintDevice</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QAbstractServerInterface class allows the Qt Extended Server UI to be replaced.</p>
+<p>While it is usually easier to customize one of the existing Qt Extended server interfaces, when building a product on top of the Qt Extended system, it is sometimes desirable to replace the entire Qt Extended server user interface. Qt Extended supports replacing the server user interface through the QAbstractServerInterface class.</p>
+<p>The Qt Extended server user interface is reponsible for direct interaction with the user. Core system services, such as telephony and application launching, are handled independently within the system and are not affected by replacing the UI. Likewise, Qt Extended APIs that require a server-side UI component, such as <a href="qsoftmenubar.html">QSoftMenuBar</a>, also include server side APIs, <a href="qsoftmenubarprovider.html">QSoftMenuBarProvider</a> in the case of <a href="qsoftmenubar.html">QSoftMenuBar</a>, which allows their functionality to be maintained or adapted to the new UI model. In this way, it is relatively simple to replace the server's visual interface while maintaining a functioning and featureful Qt Extended platform.</p>
+<p>Replacing the entire server user interface consists of three steps:</p>
+<ol type="1">
+<li>Implement a QAbstractServerInterface derived class that provides the user interface.<p>The Qt Extended server itself provides no UI outside of this implementation (with the exception of some dialogs, all of which can be disabled through the StandardDialogs class) and so the implementation must provide all aspects of the user interface.</p>
+<p>Some helpful widget and backend classes are provided that make implementing a server UI easier. The documentation for these classes can be perused in the <a href="qtopiaserver.html">QtopiaServer</a> group.</p>
+</li>
+<li>Mark the QAbstractServerInterface implementation as a replacable widget using the <a href="qtopiaserverapplication.html#QTOPIA_REPLACE_WIDGET">QTOPIA_REPLACE_WIDGET</a>() or <a href="qtopiaserverapplication.html#QTOPIA_REPLACE_WIDGET_OVERRIDE">QTOPIA_REPLACE_WIDGET_OVERRIDE</a>() macros.<p>For example, if creating a new UI implementation class named TestServerInterface, the following stub code may be appropriate:</p>
+<pre><span class="comment">    // testserverinterface.h</span>
+    class TestServerInterface : public QAbstractServerInterface
+    {
+    Q_OBJECT
+    public:
+        TestServerInterface(QWidget *parent = 0, Qt::WFlags flags = 0);
+        <span class="comment">// ... declaration ...</span>
+    };
+
+<span class="comment">    // testserverinterface.cpp</span>
+
+<span class="comment">    // ... definition ...</span>
+
+    QTOPIA_REPLACE_WIDGET(QAbstractServerInterface, TestServerInterface);</pre>
+<p>Note that QAbstractServerInterface derived type, like all that use the widget replacement mechanism, must have a standard <tt>(QWidget *, Qt::WFlags)</tt> constructor.</p>
+</li>
+<li>Set the custom implementation as the in-use server interface.<p>During startup, the Qt Extended Server uses the standard <a href="qtopiaserverapplication.html#qtopiaWidget">qtopiaWidget</a>() method to acquire a server interface instance. As such, all the mechanisms available for configuring server widgets also work in configuring the server interface. In summary,</p>
+<ol type="1">
+<li>Explicitly specify the new server interface in the <tt>Mapping/ServerInterface</tt> key of the <tt>Trolltech/ServerWidgets</tt> configuration file.</li>
+<li>Specify the default in the <tt>Trolltech/ServerWidgets</tt> file such that it will select your implementation.</li>
+<li>Remove all other implementations of QAbstractServerInterface from the build.</li>
+<li>Use <a href="qtopiaserverapplication.html#QTOPIA_REPLACE_WIDGET_OVERRIDE">QTOPIA_REPLACE_WIDGET_OVERRIDE</a>() to ensure that the correct implementation is always selected.</li>
+</ol>
+</li>
+</ol>
+<p>The server interface is constructed after all other Qt Extended Server tasks. The server constructs it as a toplevel, frameless widget which ignores close events. If during startup an appropriate QAbstractServerInterface implementation cannot be found, the system will run without a primary user interface.</p>
+<p>For more details can be found in the <a href="qtopiaserverapplication.html#qt-extended-server-widgets">server widget documentation</a>.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QAbstractServerInterface"></a>QAbstractServerInterface::QAbstractServerInterface ( <a href="qwidget.html">QWidget</a> * <i>parent</i> = 0, <a href="qt.html#WFlags-typedef">Qt::WFlags</a> <i>flags</i> = 0 )</h3>
+<p>Construct a new <a href="qabstractserverinterface.html">QAbstractServerInterface</a> with the specified <i>parent</i> and widget <i>flags</i>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

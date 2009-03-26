@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Rotation</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Rotation<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#example">Example</a></li>
+</ul>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qt Extended provides support for dynamic screen rotation. This means Qt Extended can be oriented 90, 180, and 270 degrees from the default aspect.</p>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>To use dynamic rotation you need to configure Qt Extended with:</p>
+<pre>    -dynamic-rotation</pre>
+<p>which enables the Transformed screen driver plugin and turns on the QT_QWS_DYNAMIC_TRANSFORMATION define.</p>
+<p>The transformed driver needs to be enabled by setting the <a href="qt-embedded-envvars.html">QWS_DISPLAY</a> variable in the defautbuttons.conf file to the &quot;Transformed&quot; driver, as such:</p>
+<pre>    [Environment]
+     QWS_DISPLAY=Transformed:mmWidth43:mmHeight58:Rot0:0</pre>
+<p>or as an environmental variable in the Qt Extended startup script:</p>
+<pre>    export QWS_DISPLAY=Transformed:mmWidth43:mmHeight58:Rot0:0</pre>
+<p>QVFb can be used to display dynamic rotation, and can be rotated itself to help faciliate development of rotated applications.</p>
+<p>To rotate the QVfb application (thus rotating the phone skin), right click anywhere on the QVFb skin, select &quot;View&quot;, then select one of the following rotation entries: No, 90, 180, or 270 rotation. It is then easier to see the Qt Extended in rotated mode.</p>
+<a name="example"></a>
+<h3>Example</h3>
+<p>The Rotation settings application is an example of user based rotation.</p>
+<p>A device integrator could also want to automatically rotate the screen depending on which way the user holds the device, if the device has motion sensors.</p>
+<p>To rotate the screen 270 degrees clockwise, send a request to the RotationManager:</p>
+<pre>       QtopiaServiceRequest svreq(&quot;RotationManager&quot;, &quot;setCurrentRotation(int)&quot;);
+       svreq &lt;&lt; 270;
+       svreq.send();</pre>
+<p>To set the display back to the default orientation:</p>
+<pre>       QtopiaServiceRequest svreq(&quot;RotationManager&quot;, &quot;defaultRotation()&quot;);
+       svreq.send();</pre>
+<p>Applications that need to access the current and default screen orientation values may use a <a href="qvaluespaceitem.html">QValueSpaceItem</a> defined in the RotationManager.</p>
+<pre>        QValueSpaceItem *currentRotation = new QValueSpaceItem(&quot;/UI/Rotation/Current&quot;);
+        int currentRot = currentRotation-&gt;value().toUInt();
+
+        QValueSpaceItem *defaultRotation = new QValueSpaceItem(&quot;/UI/Rotation/Default&quot;);
+        int defaultRot = defaultRotation-&gt;value().toUInt();</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

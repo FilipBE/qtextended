@@ -1,0 +1,350 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use File::Basename;
+use lib ( dirname($0) );
+use Qtopia::Paths;
+use Qtopia::Vars;
+use Qtopia::Opt;
+use Qtopia::File;
+use File::Path;
+
+use constant DEBUG => 0;
+
+Qtopia::Paths::get_paths();
+
+# Windows depot builds use the perl scripts directly rather than the compiled code
+if ( $isWindows ) {
+    check_script($0, "$depotpath/src/build/bin", $ARGV[0]);
+}
+
+my $write_depotpath = $depotpath;
+
+if ( @ARGV && $ARGV[0] eq "-sdk" ) {
+    shift(@ARGV);
+    $QPEDIR = shift(@ARGV);
+    $depotpath = $QPEDIR;
+}
+
+Qtopia::Opt::read_config_cache();
+
+
+my $small = 0;
+if ( @ARGV && $ARGV[0] eq "tests" ) {
+    $small = 1;
+}
+
+# Version stuff
+my ( $qtopiaMajorVersion, $qtopiaMinorVersion, $qtopiaRevVersion ) = ( opt("version", "qtopia") =~ /(\d+)\.(\d+)\.(\d+)/ );
+my ( $qtMajorVersion, $qtMinorVersion, $qtRevVersion ) = ( opt("version", "qt") =~ /(\d+)\.(\d+)\.(\d+)/ );
+my ( $hostqtMajorVersion, $hostqtMinorVersion, $hostqtRevVersion ) = ( opt("version", "hostqt") =~ /(\d+)\.(\d+)\.(\d+)/ );
+
+#
+# Stuff for config.pri (that is not static) goes here
+# Stuff that does not directly depend on configure switches
+# should go in src/build/config.prf
+#
+
+my $config_file;
+my $config_path;
+my $rpath = "QMAKE_RPATH";
+if ( opt("qbuild") ) {
+    $config_path = "$SDKROOT/configs";
+    $config_file = fixpath("$config_path/default.pri");
+    mkpath($config_path);
+    open CONFIG_PRI,">$config_file" or die "Can't write $config_file";
+    $rpath = "MKSPEC.RPATH";
+} else {
+    open CONFIG_PRI,">$QPEDIR/src/config.pri" or die "Can't write ".fixpath("$QPEDIR/src/config.pri");
+}
+if ( !opt("qbuild") ) {
+    print CONFIG_PRI "QTOPIA_DEPOT_PATH=$write_depotpath\n";
+}
+my $release = opt("release")?"release":"debug";
+my $shared = opt("singleexec")?"static":"shared";
+print CONFIG_PRI "CONFIG+=$release\n";
+
+# Compiler options (target)
+{
+    my $ref = opt("extraIncPaths");
+    if ( @$ref ) {
+        print CONFIG_PRI "TARGET_INCLUDEPATH+=";
+        for my $nextIncPath ( @$ref ) {
+            print CONFIG_PRI fixpath("$nextIncPath ");
+        }
+        print CONFIG_PRI "\n";
+    }
+    my $libpathref = opt("extraLibPaths");
+    my $libref = opt("extraLibs");
+    my $rpathref = opt("extraRPaths");
+    if ( @$libpathref || @$libref || @$rpathref ) {
+        print CONFIG_PRI "TARGET_LIBS+=";
+        for my $nextLibPath ( @$libpathref ) {
+            print CONFIG_PRI "-L".fixpath($nextLibPath)." ";
+        }
+        for my $nextLib ( @$libref ) {
+            print CONFIG_PRI "-l$nextLib ";
+        }
+        if ( @$rpathref ) {
+            print CONFIG_PRI "\n!isEmpty($rpath):TARGET_LIBS+=";
+            for my $nextRPath ( @$rpathref ) {
+                print CONFIG_PRI "\$\${$rpath}".fixpath($nextRPath)." ";
+            }
+        }
+        print CONFIG_PRI "\n";
+    }
+    my $defref = opt("extraDefines");
+    if ( @$defref ) {
+        print CONFIG_PRI "TARGET_DEFINES+=";
+        for my $nextDefine ( @$defref ) {
+            print CONFIG_PRI "$nextDefine ";
+        }
+        print CONFIG_PRI "\n";
+    }
+}
+# Compiler options (host)
+{
+    my $ref = opt("host_extraIncPaths");
+    if ( @$ref ) {
+        print CONFIG_PRI "HOST_INCLUDEPATH+=";
+        for my $nextIncPath ( @$ref ) {
+            print CONFIG_PRI fixpath("$nextIncPath ");
+        }
+        print CONFIG_PRI "\n";
+    }
+    my $libpathref = opt("host_extraLibPaths");
+    my $libref = opt("host_extraLibs");
+    my $rpathref = opt("host_extraRPaths");
+    if ( @$libpathref || @$libref || @$rpathref ) {
+        print CONFIG_PRI "HOST_LIBS+=";
+        for my $nextLibPath ( @$libpathref ) {
+            print CONFIG_PRI "-L".fixpath($nextLibPath)." ";
+        }
+        for my $nextLib ( @$libref ) {
+            print CONFIG_PRI "-l$nextLib ";
+        }
+        if ( @$rpathref ) {
+            print CONFIG_PRI "\n!isEmpty($rpath):HOST_LIBS+=";
+            for my $nextRPath ( @$rpathref ) {
+                print CONFIG_PRI "\$\${$rpath}".fixpath($nextRPath)." ";
+            }
+        }
+        print CONFIG_PRI "\n";
+    }
+    if ( @$rpathref ) {
+        print CONFIG_PRI "\n!isEmpty($rpath):LIBS+=";
+        for my $nextRPath ( @$rpathref ) {
+            print CONFIG_PRI "\$\${$rpath}".fixpath($nextRPath)." ";
+        }
+        print CONFIG_PRI "\n";
+    }
+}
+if ( !opt("qbuild") ) {
+    # TURN OFF ANY ADDITIONAL RPATHS
+    print CONFIG_PRI "QTOPIA_RPATH=\$\$QMAKE_RPATH\n";
+    print CONFIG_PRI "QMAKE_RPATH=\n";
+}
+my $defref = opt("extraDefines");
+if ( @$defref ) {
+    print CONFIG_PRI "DEFINES+=";
+    for my $nextDefine ( @$defref ) {
+        print CONFIG_PRI "$nextDefine ";
+    }
+    print CONFIG_PRI "\n";
+}
+
+# Turn off debug_and_release because it breaks too much stuff
+print CONFIG_PRI "CONFIG-=debug_and_release\n";
+
+my @opt_keys = @Qtopia::Opt::ordered_optvar_keys;
+# Skip all the Qtopia stuff, we're only concerned with testing the compiler
+if ( $small ) {
+    if ( opt("qbuild") ) {
+        @opt_keys = ( "platform", "xplatform", "qtopia_ui" );
+    } else {
+        close CONFIG_PRI;
+        exit 0;
+    }
+} else {
+    print CONFIG_PRI "RELEASE_BIN_TYPE=$release-$shared\n";
+    if ( configopt("free") ) {
+        print CONFIG_PRI "CONFIG+=free_package\n";
+    }
+    print CONFIG_PRI "QPE_VERSION=".opt("version", "qtopia")."\n";
+    if ( configopt("depot") ) {
+        print CONFIG_PRI "CONFIG+=qtopia_depot\n";
+    }
+}
+
+# print "config_pri" sections from the Qtopia::Opt system
+print CONFIG_PRI "\n# BEGIN config_pri stuff from the Qtopia::Opt system\n";
+for my $optname ( @opt_keys ) {
+    DEBUG and print "Processing $optname\n";
+    my $optref = $Qtopia::Opt::optvar_storage{$optname};
+    # ignore items without a "config_pri" section
+    next if ( !defined($optref->{"config_pri"}) );
+    DEBUG and print "has a config_pri section\n";
+    # ignore invisible items
+    next if ( defined($optref->{"visible"}) && !Qtopia::Opt::_resolve_to_scalar($optref->{"visible"}) );
+    DEBUG and print "visible\n";
+    
+    my @config_pri = Qtopia::Opt::_resolve_to_array($optref->{"config_pri"});
+    my $value = Qtopia::Opt::_resolve_to_scalar($optref->{"value"});
+    for ( @config_pri ) {
+        my $flags = "";
+        if ( s/^\(([^\)]+)\)// ) {
+            $flags = $1;
+        }
+        # lines with a % are always printed
+        if ( /\%/ ) {
+            DEBUG and print "line: $_\n";
+            while ( /\%{([a-zA-Z_]+)}/ ) {
+                DEBUG and print "mapped %{$1} to ";
+                if ( $optref->{$1} ) {
+                    my $val = Qtopia::Opt::_resolve_to_scalar($optref->{$1});
+                    DEBUG and print "$val\n";
+                    s/\%{([a-zA-Z_]+)}/$val/;
+                } else {
+                    DEBUG and print "(null)\n";
+                    s/\%{([a-zA-Z_]+)}//;
+                }
+            }
+            if ( /\%/ ) {
+                DEBUG and print "mapped % to ";
+                if ( $value ) {
+                    DEBUG and print "$value\n";
+                    s/\%/$value/;
+                } else {
+                    DEBUG and print "(null)\n";
+                    s/\%//;
+                }
+            }
+            print CONFIG_PRI "$_\n";
+        } else {
+            if ( $flags eq "!" ) {
+                if ( !$value ) {
+                    DEBUG and print "line: $_\n";
+                    print CONFIG_PRI "$_\n";
+                }
+            } else {
+                if ( $value ) {
+                    DEBUG and print "line: $_\n";
+                    print CONFIG_PRI "$_\n";
+                }
+            }
+        }
+    }
+}
+print CONFIG_PRI "# END config_pri stuff from the Qtopia::Opt system\n\n";
+
+if ( !$small ) {
+
+# Qtopia configs
+if (opt("qtopia_ui")) {
+    print CONFIG_PRI "CONFIG+=build_qtopia\n";
+    if ( !opt("qbuild") ) {
+        print CONFIG_PRI "CONFIG+=warn_on\n";
+    }
+}
+
+# Qt config (the build system doesn't assume we use the same Qt due to legacy code)
+print CONFIG_PRI "\n";
+# FIXME this value is used when building sqlite
+print CONFIG_PRI "QTEDIR=$QTEDIR\n";
+if ( !opt("qbuild") ) {
+print CONFIG_PRI "QTE_DEPOT_PATH=$qt_depot_path\n";
+}
+print CONFIG_PRI "QTE_VERSION=".opt("version", "qt")."\n";
+print CONFIG_PRI "QTE_MAJOR_VERSION=$qtMajorVersion\n";
+print CONFIG_PRI "QTE_MINOR_VERSION=$qtMinorVersion\n";
+print CONFIG_PRI "QTE_REVISION_VERSION=$qtRevVersion\n";
+
+if ( !opt("qbuild") ) {
+print CONFIG_PRI "DQTDIR=$DQTDIR\n";
+print CONFIG_PRI "DQT_DEPOT_PATH=$qt_depot_path\n";
+}
+print CONFIG_PRI "DQT_VERSION=".opt("version", "qt")."\n";
+print CONFIG_PRI "DQT_MAJOR_VERSION=$qtMajorVersion\n";
+print CONFIG_PRI "DQT_MINOR_VERSION=$qtMinorVersion\n";
+print CONFIG_PRI "DQT_REVISION_VERSION=$qtRevVersion\n";
+
+print CONFIG_PRI "HOST_QT=$HOST_QT\n";
+print CONFIG_PRI "HOST_QT_LIBS=$HOST_QT_LIBS\n";
+print CONFIG_PRI "HOST_QT_BINS=$HOST_QT_BINS\n";
+print CONFIG_PRI "HOST_QT_VERSION=".opt("version", "hostqt")."\n";
+print CONFIG_PRI "HOST_QT_MAJOR_VERSION=$hostqtMajorVersion\n";
+print CONFIG_PRI "HOST_QT_MINOR_VERSION=$hostqtMinorVersion\n";
+print CONFIG_PRI "HOST_QT_REVISION_VERSION=$hostqtRevVersion\n";
+
+# Windows configs
+if ( $isWindows ) {
+    print CONFIG_PRI "DEFINES+=QT_DLL\n";
+}
+
+my $extraBuildPathsRef = opt("extraBuildPaths");
+if ( @$extraBuildPathsRef ) {
+    print CONFIG_PRI "EXTRA_SUBDIRS=".join(" ", @$extraBuildPathsRef)."\n";
+}
+
+if ( !opt("qbuild") ) {
+    print CONFIG_PRI "QTOPIA_PROJECT_ROOT=".fixpath("$write_depotpath/src")."\n";
+    print CONFIG_PRI "QTOPIADESKTOP_PROJECT_ROOT=".fixpath("$write_depotpath/src/qtopiadesktop")."\n";
+    my $projectRootsRef = opt("extraBuildPaths", "projectRoots");
+    if ( $projectRootsRef && @$projectRootsRef ) {
+        print CONFIG_PRI "PROJECT_ROOTS=".join(" ", @$projectRootsRef)."\n";
+    }
+}
+
+###
+### Regular stuff for config.pri goes ABOVE THIS LINE!
+###
+
+#if ( !opt("qbuild") ) {
+    # Extra "config.pri"-time variables can be defined on the commandline
+    my $cfgref = opt("config");
+    if ( @$cfgref ) {
+        print CONFIG_PRI "\n# START User-specified directives\n";
+        for ( @$cfgref ) {
+            chomp;
+            print CONFIG_PRI "$_\n";
+        }
+        print CONFIG_PRI "# END User-specified directives\n";
+    }
+#}
+
+if ( opt("qbuild") ) {
+    open IN, "$depotpath/ui/".opt("qtopia_ui")."/config.pri" or die "Can't read $depotpath/ui/".opt("qtopia_ui")."/config.pri";
+    my @edition = <IN>;
+    close IN;
+    print CONFIG_PRI "file=\$\$path(/ui/".opt("qtopia_ui")."/config.pri)\n";
+    print CONFIG_PRI "!isEmpty(\$\$file):exists(\$\$file):include(\$\$file)\n";
+    print CONFIG_PRI "else {\n";
+    print CONFIG_PRI @edition;
+    print CONFIG_PRI "}\n";
+    if ( opt("device") ) {
+        my @device;
+        if ( open IN, opt("device", "config_path")."/config.pri" ) {
+            @device = <IN>;
+            close IN;
+        }
+        print CONFIG_PRI "file=".opt("device", "config_path")."/config.pri)\n";
+        print CONFIG_PRI "!isEmpty(\$\$file):exists(\$\$file):include(\$\$file)\n";
+        print CONFIG_PRI "else {\n";
+        print CONFIG_PRI @device;
+        print CONFIG_PRI "}\n";
+    }
+}
+
+}
+
+close CONFIG_PRI;
+if ( opt("qbuild") ) {
+    #symlink_file("$config_file", "$config_path/current.pri");
+    if ( -e "$config_path/current.pri" ) {
+        unlink "$config_path/current.pri";
+    }
+    system("ln", "-s", basename($config_file), "$config_path/current.pri");
+}
+exit 0;
+

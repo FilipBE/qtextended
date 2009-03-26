@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Tutorial: Screen Themes</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Tutorial: Screen Themes<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#home-screen">Home Screen</a></li>
+<ul><li><a href="#example-without-pin-entry-pad">Example without PIN Entry Pad</a></li>
+<li><a href="#example-with-pin-entry-pad">Example with PIN Entry Pad</a></li>
+</ul>
+<li><a href="#call-screen">Call Screen</a></li>
+</ul>
+<a name="tuthomescreen"></a><a name="home-screen"></a>
+<h2>Home Screen</h2>
+<p>The following code defines the <tt>Home Screen</tt> for the Qt Extended theme both with and without PIN entry pad functionality.</p>
+<p>The Qt Extended theme displays the status indicators in the title bar when the home screen is visible, so it is not necessary to define them in the home screen.</p>
+<a name="example-without-pin-entry-pad"></a>
+<h3>Example without PIN Entry Pad</h3>
+<pre>    &lt;page name=&quot;home&quot; base=&quot;themes/qtopia&quot;&gt;
+        &lt;group name=&quot;background&quot;&gt;
+            &lt;image name=&quot;background&quot; rect=&quot;0,-235,0,0&quot; src=&quot;background&quot; color=&quot;Highlight&quot; tile=&quot;yes&quot;/&gt;
+            &lt;plug-in name=&quot;bgplug-in&quot;/&gt;
+        &lt;/group&gt;
+        &lt;rect rect=&quot;0,21,0x21&quot; brush=&quot;#eeeeee&quot; alpha=&quot;192&quot;&gt;
+            &lt;text name=&quot;operator&quot; size=&quot;14&quot; align=&quot;vcenter&quot; bold=&quot;yes&quot; outline=&quot;#eeeeee&quot;/&gt;
+        &lt;/rect&gt;
+        &lt;text name=&quot;time&quot; rect=&quot;-48,21,45x21&quot; align=&quot;right,vcenter&quot; size=&quot;14&quot; bold=&quot;yes&quot; outline=&quot;#eeeeee&quot;/&gt;
+        &lt;layout rect=&quot;0,45,0x90&quot; align=&quot;hcenter&quot;&gt;
+            &lt;rect name=&quot;calls&quot; rect=&quot;0,0,78x0&quot; color=&quot;None&quot; brush=&quot;None&quot; transient=&quot;yes&quot; active=&quot;no&quot;&gt;
+                &lt;image rect=&quot;18,1,46x46&quot; src=&quot;call&quot; scale=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;calls&quot; size=&quot;12&quot; rect=&quot;6,43,70x35&quot; align=&quot;hcenter&quot; format=&quot;RichText&quot; outline=&quot;#eeeeee&quot;/&gt;
+            &lt;/rect&gt;
+            &lt;rect name=&quot;messages&quot; rect=&quot;0,0,78x0&quot; color=&quot;None&quot; brush=&quot;None&quot; transient=&quot;yes&quot; active=&quot;no&quot;&gt;
+                &lt;image rect=&quot;19,4,38x38&quot; src=&quot;message&quot; scale=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;messages&quot; size=&quot;12&quot; rect=&quot;6,43,70x35&quot; align=&quot;hcenter&quot; format=&quot;RichText&quot; outline=&quot;#eeeeee&quot;/&gt;
+            &lt;/rect&gt;
+        &lt;/layout&gt;
+        &lt;image name=&quot;dialer&quot; rect=&quot;58,123,-57,-33&quot; src=&quot;default/dialerbutton&quot; onclick=&quot;src=default/dialerbuttonp;color=Highlight&quot; interactive=&quot;yes&quot; keypad=&quot;no&quot; scale=&quot;yes&quot;/&gt;
+        &lt;text name=&quot;profile&quot; size=&quot;12&quot; rect=&quot;-80,-36,78x14&quot; color=&quot;#000000&quot; align=&quot;right&quot; outline=&quot;#eeeeee&quot; transient=&quot;yes&quot; active=&quot;no&quot;/&gt;
+        &lt;rect name=&quot;infobox&quot; rect=&quot;0,-70,0x50&quot; color=&quot;#72715a&quot; brush=&quot;Base&quot; alpha=&quot;208&quot; transient=&quot;yes&quot; active=&quot;no&quot;&gt;
+            &lt;image name=&quot;infobox&quot; rect=&quot;0,0,40x40&quot;/&gt;
+            &lt;text name=&quot;infobox&quot; rect=&quot;40,0,-3,50&quot; size=&quot;12&quot; color=&quot;Text&quot; align=&quot;hcenter,vcenter&quot;/&gt;
+        &lt;/rect&gt;
+    &lt;/page&gt;</pre>
+<p>The background <i>group</i> specifies both a default background image and also allows a plug-in to be used to display the background. The background plug-in built into Qt Extended displays the user-selected background image.</p>
+<p>The calls and messages notifications are declared transient so that they will not appear unless there is actually missed calls or new messages. This leaves as little clutter as possible on the home screen, which in turn leaves more of the user's chosen background image visible.</p>
+<a name="example-with-pin-entry-pad"></a>
+<h3>Example with PIN Entry Pad</h3>
+<pre>        &lt;layout name=&quot;pinbox&quot; rect=&quot;0,21,0,0&quot; orientation=&quot;vertical&quot; transient=&quot;yes&quot; active=&quot;no&quot;&gt;
+            &lt;rect name=&quot;pinbox&quot; rect=&quot;0,0,0,40&quot; color=&quot;#72715a&quot; brush=&quot;Base&quot;&gt;
+                &lt;image name=&quot;pinbox&quot; rect=&quot;0,0,40x40&quot;/&gt;
+                &lt;text name=&quot;pinbox&quot; rect=&quot;40,0,-3,50&quot; size=&quot;12&quot; color=&quot;Text&quot; align=&quot;hcenter,vcenter&quot;/&gt;
+            &lt;/rect&gt;
+            &lt;layout name=&quot;vertical&quot; rect=&quot;22,0,132x132&quot; orientation=&quot;vertical&quot; spacing=&quot;-1&quot; align=&quot;hcenter&quot;&gt;
+                &lt;layout name=&quot;horizontal&quot; rect=&quot;0,0,0x33&quot; orientation=&quot;horizontal&quot; spacing=&quot;-1&quot; align=&quot;hcenter&quot;&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;one&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;one_bg&quot; src=&quot;default/r1&quot; onclick=&quot;src=default/r1p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;one_fg&quot; src=&quot;default/1&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;two&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;two_bg&quot; src=&quot;default/r1&quot; onclick=&quot;src=default/r1p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;two_fg&quot; src=&quot;default/2&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;three&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;three_bg&quot; src=&quot;default/r1&quot; onclick=&quot;src=default/r1p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;three_fg&quot; src=&quot;default/3&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                &lt;/layout&gt;
+                &lt;layout rect=&quot;0,0,0x33&quot; orientation=&quot;horizontal&quot; spacing=&quot;-1&quot; align=&quot;hcenter&quot;&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;four&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;four_bg&quot; src=&quot;default/r2&quot; onclick=&quot;src=default/r2p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;four_fg&quot; src=&quot;default/4&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;five&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;five_bg&quot; src=&quot;default/r2&quot; onclick=&quot;src=default/r2p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;five_fg&quot; src=&quot;default/5&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;six&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;six_bg&quot; src=&quot;default/r2&quot; onclick=&quot;src=default/r2p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;six_fg&quot; src=&quot;default/6&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                &lt;/layout&gt;
+                &lt;layout rect=&quot;0,0,0x33&quot; orientation=&quot;horizontal&quot; spacing=&quot;-1&quot; align=&quot;hcenter&quot;&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;seven&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;seven_bg&quot; src=&quot;default/r3&quot; onclick=&quot;src=default/r3p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;seven_fg&quot; src=&quot;default/7&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;eight&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;eight_bg&quot; src=&quot;default/r3&quot; onclick=&quot;src=default/r3p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;eight_fg&quot; src=&quot;default/8&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;nine&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;nine_bg&quot; src=&quot;default/r3&quot; onclick=&quot;src=default/r3p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;nine_fg&quot; src=&quot;default/9&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                &lt;/layout&gt;
+                &lt;layout rect=&quot;0,0,0x33&quot; orientation=&quot;horizontal&quot; spacing=&quot;-1&quot; align=&quot;hcenter&quot;&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;star&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;star_bg&quot; src=&quot;default/r4&quot; onclick=&quot;src=default/r4p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;star_fg&quot; src=&quot;default/star&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;zero&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;zero_bg&quot; src=&quot;default/r4&quot; onclick=&quot;src=default/r4p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;zero_fg&quot; src=&quot;default/0&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                    &lt;group rect=&quot;0,0,44x33&quot; name=&quot;hash&quot; interactive=&quot;yes&quot;&gt;
+                        &lt;image rect=&quot;0,0,0,0&quot; name=&quot;hash_bg&quot; src=&quot;default/r4&quot; onclick=&quot;src=default/r4p&quot; scale=&quot;yes&quot; /&gt;
+                        &lt;image rect=&quot;5,6,-5,-5&quot; name=&quot;hash_fg&quot; src=&quot;default/hash&quot; scale=&quot;yes&quot;/&gt;
+                    &lt;/group&gt;
+                &lt;/layout&gt;
+            &lt;/layout&gt;
+        &lt;/layout&gt;</pre>
+<a name="tutcallscreen"></a><a name="call-screen"></a>
+<h2>Call Screen</h2>
+<p>The following code defines the Call screen for the Qt Extended theme:</p>
+<pre>    &lt;page name=&quot;callscreen&quot; base=&quot;themes/default&quot;&gt;
+        &lt;rect color=&quot;None&quot; brush=&quot;Background&quot;/&gt;
+        &lt;image name=&quot;background&quot; src=&quot;callscreen_bg&quot; tile=&quot;yes&quot; color=&quot;Background&quot;/&gt;
+        &lt;input name=&quot;callscreen&quot; rect=&quot;0,0,0x32768&quot; separator=&quot;1&quot;&gt;
+            &lt;listitem name=&quot;active&quot; rect=&quot;0,0,0,32&quot;&gt;
+                &lt;image name=&quot;active_bg&quot; rect=&quot;0,0,0,0&quot; tile=&quot;yes&quot; src=&quot;callitem_bg&quot;  color=&quot;#50D914&quot;/&gt;
+                &lt;status name=&quot;conference&quot; rect=&quot;0,0,16x16&quot; imageon=&quot;conference&quot;/&gt;
+                &lt;text name=&quot;identifier&quot; rect=&quot;16,0,0,0&quot; bold=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;status&quot; rect=&quot;16,13,0,0&quot;/&gt;
+                &lt;image name=&quot;contact&quot; rect=&quot;-24,0,24x30&quot; scale=&quot;yes&quot;/&gt;
+            &lt;/listitem&gt;
+            &lt;listitem name=&quot;incoming&quot; rect=&quot;0,0,0,32&quot; &gt;
+                &lt;image name=&quot;incoming_bg&quot; rect=&quot;0,0,0,0&quot; tile=&quot;yes&quot; src=&quot;callitem_bg&quot;  color=&quot;Base&quot; /&gt;
+                &lt;text name=&quot;identifier&quot; rect=&quot;16,0,0,0&quot; bold=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;status&quot; rect=&quot;16,13,0,0&quot;/&gt;
+                &lt;image name=&quot;contact&quot; rect=&quot;-24,0,24x30&quot;/&gt;
+            &lt;/listitem&gt;
+            &lt;listitem name=&quot;outgoing&quot; rect=&quot;0,0,0,32&quot;&gt;
+                &lt;image name=&quot;outgoing_bg&quot; rect=&quot;0,0,0,0&quot; tile=&quot;yes&quot; src=&quot;callitem_bg&quot;  color=&quot;Background&quot; /&gt;
+                &lt;text name=&quot;identifier&quot; rect=&quot;16,0,0,0&quot; bold=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;status&quot; rect=&quot;16,13,0,0&quot;/&gt;
+                &lt;image name=&quot;contact&quot; rect=&quot;-24,0,24x30&quot;/&gt;
+            &lt;/listitem&gt;
+            &lt;listitem name=&quot;onhold&quot; rect=&quot;0,0,0,32&quot;&gt;
+                &lt;image name=&quot;onhold_bg&quot; rect=&quot;0,0,0,0&quot; tile=&quot;yes&quot; src=&quot;callitem_bg&quot;  color=&quot;#A3A10E&quot; /&gt;
+                &lt;status name=&quot;conference&quot; rect=&quot;0,0,16x16&quot; imageon=&quot;conference&quot;/&gt;
+                &lt;text name=&quot;identifier&quot; rect=&quot;16,0,0,0&quot; bold=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;status&quot; rect=&quot;16,13,0,0&quot;/&gt;
+                &lt;image name=&quot;contact&quot; rect=&quot;-24,0,24x30&quot;/&gt;
+            &lt;/listitem&gt;
+            &lt;listitem name=&quot;dropped&quot; rect=&quot;0,0,0,32&quot;&gt;
+                &lt;image name=&quot;dropped_bg&quot; rect=&quot;0,0,0,0&quot; tile=&quot;yes&quot; src=&quot;callitem_bg&quot;  color=&quot;#AA2222&quot; /&gt;
+                &lt;text name=&quot;identifier&quot; rect=&quot;16,0,0,0&quot; bold=&quot;yes&quot;/&gt;
+                &lt;text name=&quot;status&quot; rect=&quot;16,13,0,0&quot;/&gt;
+                &lt;image name=&quot;contact&quot; rect=&quot;-24,0,24x30&quot;/&gt;
+            &lt;/listitem&gt;
+            &lt;listitem name=&quot;selected&quot; rect=&quot;0,0,0,32&quot;&gt;
+                &lt;image name=&quot;selected_bg&quot; rect=&quot;0,0,0,0&quot; tile=&quot;yes&quot; src=&quot;callitem_bg&quot;  color=&quot;Highlight&quot; /&gt;
+                &lt;status name=&quot;conference&quot; rect=&quot;0,0,16x16&quot; imageon=&quot;conference&quot;/&gt;
+                &lt;text name=&quot;identifier&quot; rect=&quot;16,0,0,0&quot; bold=&quot;yes&quot; color=&quot;HighlightedText&quot;/&gt;
+                &lt;text name=&quot;status&quot; rect=&quot;16,13,0,0&quot; color=&quot;HighlightedText&quot;/&gt;
+                &lt;image name=&quot;contact&quot; rect=&quot;-24,0,24x30&quot;/&gt;
+            &lt;/listitem&gt;
+        &lt;/input&gt;
+        &lt;input name=&quot;callscreennumber&quot; rect=&quot;0,0,0x32768&quot; bold=&quot;yes&quot; color=&quot;Text&quot; size=&quot;14&quot;/&gt;
+    &lt;/page&gt;</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

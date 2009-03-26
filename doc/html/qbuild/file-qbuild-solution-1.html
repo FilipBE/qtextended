@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>qbuild.solution</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a>&nbsp;&middot; <a href="reference.html"><font color="#004faf">Reference</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">qbuild.solution<br /><span class="subtitle"></span>
+</h1>
+<p><tt>qbuild.solution</tt> is a QSettings-readable ini file. There are two useful pieces of information in this file.</p>
+<ul>
+<li>The <tt>BuildPath</tt> key contains the location of the build hierarchy. If the first character is a $ the rest of the string is taken as an environment variable.</li>
+<li>The <tt>FilePaths</tt> array contains an ordered list of project paths to map. Each entry in the array must further contain a <tt>FilePath</tt> key and an optional <tt>ProjectLocation</tt> key. The <tt>FilePath</tt> points to a directory to map into the project filesystem, and the <tt>ProjectLocation</tt> the point in the filesystem to map it. If <tt>ProjectLocation</tt> is omitted, it defaults to the root of the project.</li>
+</ul>
+<p>Any relative paths in a qbuild.solution file are resolved relative to the location of the containing qbuild.solution file.</p>
+<p>The <tt>extensions</tt> directory under the path containing the qbuild executable is always mapped into the <tt>extensions</tt> path of the solution to provide the default extensions.</p>
+<p>Here is an example solution file.</p>
+<pre>    [Solution]
+    [Solution\FilePaths]
+    size=1
+    1\FilePath=/home/user/src/myproject</pre>
+<p>Here is a solution file that relies on an environment variable to locate the build tree.</p>
+<pre>    [Solution]
+    BuildPath=$QPEDIR
+    [Solution\FilePaths]
+    size=1
+    1\FilePath=/home/user/src/myproject</pre>
+<p>See also <a href="files.html">Files</a>, <a href="over-solution-filesystem-1.html">Solution Filesystem</a>, and <a href="solutiondescriptor.html">SolutionDescriptor</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended  - QBuild Maintainer Guide</div></td>
+</tr></table></div></address></body>
+</html>

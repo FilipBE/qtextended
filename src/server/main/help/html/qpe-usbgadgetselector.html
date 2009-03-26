@@ -1,0 +1,41 @@
+<html>
+<head><title>USB Connection Mode</title></head>
+<body>
+<!--#if expr="$USERGUIDE"-->
+   <h2>USB Connection Mode</h2>
+<!--#endif-->
+<!--#include file="device-name.html"-->
+<p>The <b>USB Connection Mode</b> window allows you to choose how your <!--#echo var="device-name"--> communicates with a computer over the USB interface.</p>
+
+<p>By default the <b>USB Connection Mode</b> window is displayed when you connect your <!--#echo var="device-name"--> to a computer via a USB cable.  If the <b>Don't ask again</b> item in the <img src=":icon/options"><b>Options</b> menu is checked the <b>USB Connection Mode</b> window will not be displayed.  Instead the highlighted connection mode will be activated immediately.</p>
+
+<p>To select the connection mode to activate:</p>
+<ul>
+<!--#if expr="$TOUCH"-->
+<li>Tap the desired connection mode to select it.</li>
+<li>Tap <img src=":icon/i18n/back"> <b>Back</b> to activate the selected connection mode.<li>
+<!--#endif-->
+<!--#if expr="$KEYPAD"-->
+<li>Use <img src=":image/help/dpad"> to highlight the desired connection mode.</li>
+<li>Press <img src=":icon/select"> to select the connection mode.</li>
+<li>Press <img src=":icon/i18n/back"> <b>Back</b> to activate the selected connection mode.<li>
+<!--#endif-->
+</ul>
+
+<p>For more information on the available connection modes, choose one of the following topics:</p>
+
+<ul>
+<!--#include file="valuespace.html"-->
+<!--#if expr="$usbgadget-ethernet"-->
+<!--#exec cmd="qpe-list-help-pages usbgadget-ethernet-*.html"-->
+<!--#endif-->
+<!--#if expr="$usbgadget-serial"-->
+<!--#exec cmd="qpe-list-help-pages usbgadget-serial-*.html"-->
+<!--#endif-->
+<!--#if expr="$usbgadget-storage"-->
+<!--#exec cmd="qpe-list-help-pages usbgadget-storage-*.html"-->
+<!--#endif-->
+</ul>
+
+</body>
+</html>

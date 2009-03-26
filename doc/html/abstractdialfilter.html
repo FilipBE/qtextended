@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>AbstractDialFilter Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">AbstractDialFilter Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The AbstractDialFilter class provides an interface for dial sequence filters. <a href="#details">More...</a></p>
+<pre>    #include &lt;AbstractDialFilter&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="gsmdialfilter.html">GSMDialFilter</a>.</p>
+<ul>
+<li><a href="abstractdialfilter-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="abstractdialfilter.html#Action-enum">Action</a></b> { Reject, Continue, DialIfNoMoreDigits, Dialtone, DialImmediately, ActionTaken }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual AbstractDialFilter::Action <b><a href="abstractdialfilter.html#filterInput">filterInput</a></b> ( const QString &amp; <i>input</i>, bool <i>sendPressed</i> = false, bool <i>takeNoAction</i> = false ) = 0</li>
+<li><div class="fn"/>virtual QByteArray <b><a href="abstractdialfilter.html#type">type</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>AbstractDialFilter * <b><a href="abstractdialfilter.html#defaultFilter">defaultFilter</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The AbstractDialFilter class provides an interface for dial sequence filters.</p>
+<p>Dial filter allow the preprocessing of dial sequences. A GSM/3G device may use a filter to process key commands based on e.g&#x2e; 3GPP TS 22.030 whereas a normal land line phone may need to play a dialtone for an outside line.</p>
+<p>Dial related user interfaces should use <a href="abstractdialfilter.html#defaultFilter">defaultFilter</a>() to access the filter. The default filter can be initialised by setting the <tt>DialFilter/Default</tt> key in the <tt>Trolltech/Phone</tt> configuration file. If this setting is missing <a href="abstractdialfilter.html#defaultFilter">defaultFilter</a>() will return 0.</p>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<p>See also <a href="gsmdialfilter.html">GSMDialFilter</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Action-enum"></a>enum AbstractDialFilter::Action</h3>
+<p>This enum returns the type of action taken as a result of the filter matching.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>AbstractDialFilter::Reject</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">Reject the call because it has been blocked.</td></tr>
+<tr><td valign="top"><tt>AbstractDialFilter::Continue</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">Continue the dial sequence.</td></tr>
+<tr><td valign="top"><tt>AbstractDialFilter::DialIfNoMoreDigits</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">The number should be dialed if the user does not type any more digits within a reasonable timeout period.</td></tr>
+<tr><td valign="top"><tt>AbstractDialFilter::Dialtone</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">Generate a dialtone for an outside line.</td></tr>
+<tr><td valign="top"><tt>AbstractDialFilter::DialImmediately</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">Immediately dial the number</td></tr>
+<tr><td valign="top"><tt>AbstractDialFilter::ActionTaken</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">The filter has taken action and does not require any action by the calling party anymore.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="defaultFilter"></a>AbstractDialFilter * AbstractDialFilter::defaultFilter ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the default dial filter or 0 if none is set. filteringRequired() should be tested before using the returned filter.</p>
+<h3 class="fn"><a name="filterInput"></a><a href="abstractdialfilter.html#Action-enum">AbstractDialFilter::Action</a> AbstractDialFilter::filterInput ( const <a href="qstring.html">QString</a> &amp; <i>input</i>, bool <i>sendPressed</i> = false, bool <i>takeNoAction</i> = false )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>The function returns the result of filtering the given <i>input</i>. <i>sendPressed</i> indicates whether <i>input</i> was followed by the <tt>SEND</tt> function. Usually the <tt>SEND</tt> function is represented by the call button on the keypad.</p>
+<p>Some dial strings can trigger immediate actions by the dial filter. Usually such a call would return <a href="abstractdialfilter.html#Action-enum">AbstractDialFilter::ActionTaken</a>. If <i>takeNoAction</i> is <tt>true</tt> the filter will not perform those immediate actions. This may be necessary if the caller intends to just test whether an action would be performed by the filter. <i>sendPressed</i> is ignored if <i>takeNoAction</i> is <tt>true</tt>.</p>
+<h3 class="fn"><a name="type"></a><a href="qbytearray.html">QByteArray</a> AbstractDialFilter::type () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the filter type.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

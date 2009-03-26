@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>&lt;qtopiadesktoplog.h&gt; - &lt;qtopiadesktoplog.h&gt;</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">&lt;qtopiadesktoplog.h&gt; - &lt;qtopiadesktoplog.h&gt;<br /><span class="subtitle"></span>
+</h1>
+<p>The &lt;qtopiadesktoplog.h&gt; header contains the category definitions used in Qt Extended Sync Agent. <a href="#details">More...</a></p>
+<ul>
+</ul>
+<a name="Functions"></a>
+<h3>Functions</h3>
+<ul>
+<li><div class="fn"/>bool <b><a href="qtopiadesktoplog-h.html#qtopiadesktopLogEnabled">qtopiadesktopLogEnabled</a></b> ( const char * <i>category</i> )</li>
+</ul>
+<a name="Macros"></a>
+<h3>Macros</h3>
+<ul>
+<li><div class="fn"/><b><a href="qtopiadesktoplog-h.html#QDLOG_OPTION">QDLOG_OPTION</a></b> (  <i>CATEGORY</i> )</li>
+</ul>
+<p>The &lt;qtopiadesktoplog.h&gt; header contains the category definitions used in Qt Extended Sync Agent.</p>
+<pre>    QD_LOG_OPTION(QDA)       <span class="comment">// This is reserved for QtopiaDesktopApplication</span>
+    QD_LOG_OPTION(PM)        <span class="comment">// Plugin Manager logging</span>
+    QD_LOG_OPTION(I18N)      <span class="comment">// I18n-related stuff</span>
+    QD_LOG_OPTION(UI)        <span class="comment">// General UI-related stuff</span>
+    QD_LOG_OPTION(UI_tray)   <span class="comment">// System Tray</span>
+
+<span class="comment">    // &quot;Generic&quot; plugin LOG (by class)</span>
+    QD_LOG_OPTION(QDApp)
+    QD_LOG_OPTION(QDLink)
+    QD_LOG_OPTION(QDCon)
+    QD_LOG_OPTION(QDDev)
+    QD_LOG_OPTION(QDSync)</pre>
+<p>See also <a href="qlog-h.html">&lt;qlog.h&gt;</a>.</p>
+<hr />
+<h2>Function Documentation</h2>
+<h3 class="fn"><a name="qtopiadesktopLogEnabled"></a>bool qtopiadesktopLogEnabled ( const char * <i>category</i> )</h3>
+<p>This function returns true if <i>category</i> has been enabled.</p>
+<pre>    Q_GLOBAL_STATIC_WITH_ARGS(DesktopSettings, logSettings, (&quot;Log&quot;));
+    Q_GLOBAL_STATIC(QList&lt;char*&gt;, logCache);
+
+    void qtopiadesktopLogSemiVolatile(char *mem)
+    {
+        QList&lt;char*&gt; &amp;list(*logCache());
+        if (!list.contains(mem))
+            list.append(mem);
+    }
+
+    bool qtopiadesktopLogEnabled( const char *_category )
+    {
+        if (_category == 0) {
+            logSettings()-&gt;sync();
+            foreach (char *mem, *logCache())
+                (*mem) = 0;
+            return false;</pre>
+<hr />
+<h2>Macro Documentation</h2>
+<h3 class="fn"><a name="QDLOG_OPTION"></a>QDLOG_OPTION (  <i>CATEGORY</i> )</h3>
+<p>Register a category for conditional logging. This enables <a href="foo/../../debug-qtextended.html">qLog</a>(<i>CATEGORY</i>) but the log messages are not displayed unless <i>CATEGORY</i> is enabled. This macro uses the <a href="qtopiadesktoplog-h.html#qtopiadesktopLogEnabled">qtopiadesktopLogEnabled</a>() function to check if <i>CATEGORY</i> is enabled.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

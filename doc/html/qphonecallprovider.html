@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QPhoneCallProvider Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QPhoneCallProvider Class Reference<br /><span class="small-subtitle">[<a href="qttelephonymodule.html">QtTelephonyModule</a>]</span>
+</h1>
+<p>The QPhoneCallProvider class implements a mechanism for phone call providers to hook into the telephony system. <a href="#details">More...</a></p>
+<pre>    #include &lt;QPhoneCallProvider&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<p>Inherited by <a href="qmodemcallprovider.html">QModemCallProvider</a>.</p>
+<ul>
+<li><a href="qphonecallprovider-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qphonecallprovider.html#QPhoneCallProvider">QPhoneCallProvider</a></b> ( const QString &amp; <i>service</i>, QObject * <i>parent</i> )</li>
+<li><div class="fn"/><b><a href="qphonecallprovider.html#dtor.QPhoneCallProvider">~QPhoneCallProvider</a></b> ()</li>
+<li><div class="fn"/>void <b><a href="qphonecallprovider.html#beginStateTransaction">beginStateTransaction</a></b> ()</li>
+<li><div class="fn"/>QList&lt;QPhoneCallImpl *&gt; <b><a href="qphonecallprovider.html#calls">calls</a></b> () const</li>
+<li><div class="fn"/>void <b><a href="qphonecallprovider.html#endStateTransaction">endStateTransaction</a></b> ()</li>
+<li><div class="fn"/>QPhoneCallImpl * <b><a href="qphonecallprovider.html#findCall">findCall</a></b> ( const QString &amp; <i>identifier</i> ) const</li>
+<li><div class="fn"/>QString <b><a href="qphonecallprovider.html#service">service</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qphonecallprovider.html#callStatesChanged">callStatesChanged</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="protected-functions"></a>
+<h3>Protected Functions</h3>
+<ul>
+<li><div class="fn"/>virtual QPhoneCallImpl * <b><a href="qphonecallprovider.html#create">create</a></b> ( const QString &amp; <i>identifier</i>, const QString &amp; <i>callType</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qphonecallprovider.html#deregisterCall">deregisterCall</a></b> ( QPhoneCallImpl * <i>call</i> )</li>
+<li><div class="fn"/>virtual void <b><a href="qphonecallprovider.html#registerCall">registerCall</a></b> ( QPhoneCallImpl * <i>call</i> )</li>
+<li><div class="fn"/>void <b><a href="qphonecallprovider.html#setCallTypes">setCallTypes</a></b> ( const QStringList &amp; <i>types</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QPhoneCallProvider class implements a mechanism for phone call providers to hook into the telephony system.</p>
+<p>Phone call providers (e.g&#x2e; GSM and VoIP) inherit from the QPhoneCallProvider class and override the <a href="qphonecallprovider.html#create">create</a>() method. They also separately inherit their own call implementation class from <a href="qphonecallimpl.html">QPhoneCallImpl</a>.</p>
+<p>Subclasses should call <a href="qphonecallprovider.html#setCallTypes">setCallTypes</a>() within their constructor to indicate the call types that they can handle.</p>
+<p>The QPhoneCallProvider class provides the infrastructure to receive requests from client applications and dispatch them to the appropriate methods on <a href="qphonecallimpl.html">QPhoneCallImpl</a>. As the calls change state, the state information is sent back to the client applications.</p>
+<p>Client applications should use <a href="qphonecallmanager.html">QPhoneCallManager</a> and <a href="qphonecall.html">QPhoneCall</a> to manage phone calls. Only the server-side providers need to use QPhoneCallProvider and <a href="qphonecallimpl.html">QPhoneCallImpl</a>.</p>
+<p>For AT-based modems, phone call providers should consider using <a href="qmodemcallprovider.html">QModemCallProvider</a> instead of QPhoneCallProvider.</p>
+<p>See also <a href="qphonecallimpl.html">QPhoneCallImpl</a>, <a href="qphonecallmanager.html">QPhoneCallManager</a>, <a href="qphonecall.html">QPhoneCall</a>, and <a href="qmodemcallprovider.html">QModemCallProvider</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QPhoneCallProvider"></a>QPhoneCallProvider::QPhoneCallProvider ( const <a href="qstring.html">QString</a> &amp; <i>service</i>, <a href="qobject.html">QObject</a> * <i>parent</i> )</h3>
+<p>Constructs a new phone call provider for <i>service</i> and attaches it to <i>parent</i>.</p>
+<p>In a subclass, the constructor will typically contain a call to <a href="qphonecallprovider.html#setCallTypes">setCallTypes</a>() to advertise the list of call types that the provider supports. The list is advertised in the Qt Extended value space and can be queried by client applications using <a href="qphonecallmanager.html#callTypes">QPhoneCallManager::callTypes</a>().</p>
+<p>The following example demonstrates the recommended contents for the constructor in a subclass of QPhoneCallProvider():</p>
+<pre>    VoIPCallProvider::VoIPCallProvider( QTelephonyService *service )
+        : QPhoneCallProvider( service-&gt;service(), service )
+    {
+        setCallTypes( QStringList( &quot;VoIP&quot; ) );
+    }</pre>
+<p>See also <a href="qphonecallprovider.html#setCallTypes">setCallTypes</a>().</p>
+<h3 class="fn"><a name="dtor.QPhoneCallProvider"></a>QPhoneCallProvider::~QPhoneCallProvider ()</h3>
+<p>Destroys this phone call provider and all calls associated with it.</p>
+<h3 class="fn"><a name="beginStateTransaction"></a>void QPhoneCallProvider::beginStateTransaction ()</h3>
+<p>Begins a state change transaction. Calls to <a href="qphonecallimpl.html#setState">QPhoneCallImpl::setState</a>() will be queued. The notification of the state change will not be sent to client applications until <a href="qphonecallprovider.html#endStateTransaction">endStateTransaction</a>() is called. This is typically used to update several calls at once; for example when swapping active and held calls.</p>
+<p>If beginStateTransaction() is called multiple times before <a href="qphonecallprovider.html#endStateTransaction">endStateTransaction</a>(), then the notifications will be sent once the same number of <a href="qphonecallprovider.html#endStateTransaction">endStateTransaction</a>() calls have been made.</p>
+<p>See also <a href="qphonecallprovider.html#endStateTransaction">endStateTransaction</a>() and <a href="qphonecallimpl.html#setState">QPhoneCallImpl::setState</a>().</p>
+<h3 class="fn"><a name="callStatesChanged"></a>void QPhoneCallProvider::callStatesChanged ()&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Signal that is emitted when one or more calls within this provider have changed state.</p>
+<p>See also <a href="qphonecallimpl.html#stateChanged">QPhoneCallImpl::stateChanged</a>().</p>
+<h3 class="fn"><a name="calls"></a><a href="qlist.html">QList</a>&lt;<a href="qphonecallimpl.html">QPhoneCallImpl</a> *&gt; QPhoneCallProvider::calls () const</h3>
+<p>Returns the list of all phone calls associated with this provider.</p>
+<p>See also <a href="qphonecallprovider.html#create">create</a>() and <a href="qphonecallprovider.html#findCall">findCall</a>().</p>
+<h3 class="fn"><a name="create"></a><a href="qphonecallimpl.html">QPhoneCallImpl</a> * QPhoneCallProvider::create ( const <a href="qstring.html">QString</a> &amp; <i>identifier</i>, const <a href="qstring.html">QString</a> &amp; <i>callType</i> )&nbsp;&nbsp;<tt> [pure virtual protected]</tt></h3>
+<p>Creates a new phone call implementation object for a call of type <i>callType</i>, and assigns it the specified <i>identifier</i>. The object constructed will be of a subtype of <a href="qphonecallimpl.html">QPhoneCallImpl</a>. The typical implementation in the subclass is as follows:</p>
+<pre>    return new QMyPhoneCallImpl( this, identifier, callType );</pre>
+<p>This function is called when a dial request is received from a client application. It will be followed by a call to <a href="qphonecallimpl.html#dial">QPhoneCallImpl::dial</a>().</p>
+<p>For incoming calls, the provider implementation should construct a <a href="qphonecallimpl.html">QPhoneCallImpl</a> object directly, with an empty identifier as the argument.</p>
+<p>Providers should not delete call implementation objects themselves. The objects will be automatically deleted when the call transitions into an end state (<tt>HangupLocal</tt>, <tt>HangupRemote</tt>, <tt>Missed</tt>, etc).</p>
+<h3 class="fn"><a name="deregisterCall"></a>void QPhoneCallProvider::deregisterCall ( <a href="qphonecallimpl.html">QPhoneCallImpl</a> * <i>call</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Called when <i>call</i> is deregistered from this provider. This function is called automatically by the destructor for <a href="qphonecallimpl.html">QPhoneCallImpl</a>.</p>
+<p>See also <a href="qphonecallprovider.html#registerCall">registerCall</a>().</p>
+<h3 class="fn"><a name="endStateTransaction"></a>void QPhoneCallProvider::endStateTransaction ()</h3>
+<p>Ends a state change transaction and transmits any queued notifications.</p>
+<p>See also <a href="qphonecallprovider.html#beginStateTransaction">beginStateTransaction</a>() and <a href="qphonecallimpl.html#setState">QPhoneCallImpl::setState</a>().</p>
+<h3 class="fn"><a name="findCall"></a><a href="qphonecallimpl.html">QPhoneCallImpl</a> * QPhoneCallProvider::findCall ( const <a href="qstring.html">QString</a> &amp; <i>identifier</i> ) const</h3>
+<p>Returns a call with a specific <i>identifier</i>. Returns null if there is no such call.</p>
+<p>See also <a href="qphonecallprovider.html#calls">calls</a>().</p>
+<h3 class="fn"><a name="registerCall"></a>void QPhoneCallProvider::registerCall ( <a href="qphonecallimpl.html">QPhoneCallImpl</a> * <i>call</i> )&nbsp;&nbsp;<tt> [virtual protected]</tt></h3>
+<p>Called when <i>call</i> is first registered with this provider. This function is called automatically by the constructor for <a href="qphonecallimpl.html">QPhoneCallImpl</a>.</p>
+<p>See also <a href="qphonecallprovider.html#deregisterCall">deregisterCall</a>().</p>
+<h3 class="fn"><a name="service"></a><a href="qstring.html">QString</a> QPhoneCallProvider::service () const</h3>
+<p>Returns the name of the service that this provider is associated with.</p>
+<h3 class="fn"><a name="setCallTypes"></a>void QPhoneCallProvider::setCallTypes ( const <a href="qstringlist.html">QStringList</a> &amp; <i>types</i> )&nbsp;&nbsp;<tt> [protected]</tt></h3>
+<p>Sets the list of supported call <i>types</i> for this provider. The list is advertised in the Qt Extended value space, and can be queried by client applications using <a href="qphonecallmanager.html#callTypes">QPhoneCallManager::callTypes</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

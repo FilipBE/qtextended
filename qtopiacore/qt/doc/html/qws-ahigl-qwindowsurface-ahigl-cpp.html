@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt 4.4: qwindowsurface_ahigl.cpp Example File (qws/ahigl/qwindowsurface_ahigl.cpp)</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><a href="http://www.trolltech.com/products/qt"><img src="images/qt-logo.png" align="left" border="0" /></a></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="mainclasses.html"><font color="#004faf">Main&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped&nbsp;Classes</font></a>&nbsp;&middot; <a href="modules.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="top" width="230"></td></tr></table><h1 class="title">qwindowsurface_ahigl.cpp Example File<br /><span class="small-subtitle">qws/ahigl/qwindowsurface_ahigl.cpp</span>
+</h1>
+<pre><span class="comment"> /****************************************************************************
+ **
+ ** Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies).
+ ** Contact: Qt Software Information (qt-info@nokia.com)
+ **
+ ** This file is part of the example classes of the Qt Toolkit.
+ **
+ ** Commercial Usage
+ ** Licensees holding valid Qt Commercial licenses may use this file in
+ ** accordance with the Qt Commercial License Agreement provided with the
+ ** Software or, alternatively, in accordance with the terms contained in
+ ** a written agreement between you and Nokia.
+ **
+ **
+ ** GNU General Public License Usage
+ ** Alternatively, this file may be used under the terms of the GNU
+ ** General Public License versions 2.0 or 3.0 as published by the Free
+ ** Software Foundation and appearing in the file LICENSE.GPL included in
+ ** the packaging of this file.  Please review the following information
+ ** to ensure GNU General Public Licensing requirements will be met:
+ ** http://www.fsf.org/licensing/licenses/info/GPLv2.html and
+ ** http://www.gnu.org/copyleft/gpl.html.  In addition, as a special
+ ** exception, Nokia gives you certain additional rights. These rights
+ ** are described in the Nokia Qt GPL Exception version 1.3, included in
+ ** the file GPL_EXCEPTION.txt in this package.
+ **
+ ** Qt for Windows(R) Licensees
+ ** As a special exception, Nokia, as the sole copyright holder for Qt
+ ** Designer, grants users of the Qt/Eclipse Integration plug-in the
+ ** right for the Qt/Eclipse Integration to link to functionality
+ ** provided by Qt Designer and its related libraries.
+ **
+ ** If you are unsure which license is appropriate for your use, please
+ ** contact the sales department at qt-sales@nokia.com.
+ **
+ ****************************************************************************/</span>
+
+ #include &quot;qwindowsurface_ahigl_p.h&quot;
+ #include &quot;qscreenahigl_qws.h&quot;
+
+ #include &lt;qwsdisplay_qws.h&gt;
+ #include &lt;QtGui/QPaintDevice&gt;
+ #include &lt;QtGui/QWidget&gt;
+ #include &lt;QtOpenGL/private/qglpaintdevice_qws_p.h&gt;
+ #include &lt;QtOpenGL/private/qgl_p.h&gt;
+ #include &lt;GLES/gl.h&gt;
+
+<span class="comment"> /*!
+   \class QAhiGLWindowSurfacePrivate
+   \internal
+
+   \brief The QAhiGLWindowSurfacePrivate class is the private implementation
+   class for class QAhiGLWindowSurface.
+
+   This class contains only state variables.
+   */</span>
+ class QAhiGLWindowSurfacePrivate
+ {
+ public:
+     QAhiGLWindowSurfacePrivate(EGLDisplay eglDisplay,
+                                EGLSurface eglSurface,
+                                EGLContext eglContext);
+
+     QPaintDevice *device;
+
+     int textureWidth;
+     int textureHeight;
+
+     GLuint texture;
+     GLuint frameBufferObject;
+     GLuint depthbuf;
+
+     EGLDisplay display;
+     EGLSurface surface;
+     EGLContext context;
+ };
+
+<span class="comment"> /*!
+   The construct just sets statwe variables using the ones
+   provided.
+  */</span>
+ QAhiGLWindowSurfacePrivate::QAhiGLWindowSurfacePrivate(EGLDisplay eglDisplay,
+                                                        EGLSurface eglSurface,
+                                                        EGLContext eglContext)
+     : texture(0), frameBufferObject(0), depthbuf(0), display(eglDisplay),
+       surface(eglSurface), context(eglContext)
+ {
+ }
+
+ inline static int nextPowerOfTwo(uint v)
+ {
+     v--;
+     v |= v &gt;&gt; 1;
+     v |= v &gt;&gt; 2;
+     v |= v &gt;&gt; 4;
+     v |= v &gt;&gt; 8;
+     v |= v &gt;&gt; 16;
+     ++v;
+     return v;
+ }
+
+<span class="comment"> /*!
+     \class QAhiGLWindowSurface
+     \preliminary
+     \internal
+
+     \brief The QAhiGLWindowSurface class provides the drawing area
+     for top-level windows using OpenGL for drawing on an ATI handheld
+     device.
+
+     In \l{Qt for Embedded Linux}, the default behavior for each client is to
+     render widgets into an area of memory. The server then displays
+     the contents of that memory on the screen. For ATI handheld
+     devices using OpenGL, QAhiGLWindowSurface is the window surface
+     class that allocates and manages the memory areas in the clients
+     and the server.
+
+     When a screen update is required, the server runs through all the
+     top-level windows that intersect with the region being updated,
+     ensuring that the clients have updated their window surfaces. Then
+     the server uses the screen driver to copy the contents of the
+     affected window surfaces into its composition and then display the
+     composition on the screen.
+
+     \tableofcontents
+
+     \section1 Pure Virtual Functions
+
+     There are two window surface instances for each top-level window.
+     One is used by the application when drawing a window, and the
+     other is used by the server application to make its copy for
+     building a window composition to send to the screen.
+
+     The key() function is implemented to uniquely identify this window
+     surface class as &quot;ahigl&quot;, and the isValid() function is
+     implemented to determine whether the associated window is still
+     acceptable for representation by this window surface class.  It
+     must either be a window using an \l {QGLWidget} {OpenGL widget},
+     or it must be a window whose frame is no bigger than 256 x 256.
+
+     The setGeometry() function is implemented to change the geometry
+     of the frame buffer whenever the geometry of the associated
+     top-level window changes. The image() function is called by the
+     window system when building window compositions to return an image
+     of the top-level window.
+
+     The paintDevice() function is implemented to return the appropriate
+     paint device.
+
+     \section1 Virtual Functions
+
+     When painting onto the surface, the window system will always call
+     the beginPaint() function before any painting operations are
+     performed. It ensures that the correct frame buffer will be used
+     by the OpenGL library for painting operations. Likewise, the
+     endPaint() function is automatically called when the painting is
+     done, but it isn't implemented for this example.
+ */</span>
+
+<span class="comment"> /*!
+   This is the client side constructor.
+  */</span>
+ QAhiGLWindowSurface::QAhiGLWindowSurface(QWidget *widget,
+                                          EGLDisplay eglDisplay,
+                                          EGLSurface eglSurface,
+                                          EGLContext eglContext)
+     : QWSGLWindowSurface(widget)
+ {
+     d_ptr = new QAhiGLWindowSurfacePrivate(eglDisplay, eglSurface, eglContext);
+     d_ptr-&gt;device = new QWSGLPaintDevice(widget);
+
+     setSurfaceFlags(QWSWindowSurface::Buffered);
+ }
+
+<span class="comment"> /*!
+   This is the server side constructor.
+  */</span>
+ QAhiGLWindowSurface::QAhiGLWindowSurface(EGLDisplay eglDisplay,
+                                          EGLSurface eglSurface,
+                                          EGLContext eglContext)
+ {
+     d_ptr = new QAhiGLWindowSurfacePrivate(eglDisplay, eglSurface, eglContext);
+     setSurfaceFlags(QWSWindowSurface::Buffered);
+ }
+
+<span class="comment"> /*!
+   The destructor deletes the OpenGL structures held by the
+   private implementation class, and then it deletes the
+   private implementation class.
+  */</span>
+ QAhiGLWindowSurface::~QAhiGLWindowSurface()
+ {
+     if (d_ptr-&gt;texture)
+         glDeleteTextures(1, &amp;d_ptr-&gt;texture);
+     if (d_ptr-&gt;depthbuf)
+         glDeleteRenderbuffersOES(1, &amp;d_ptr-&gt;depthbuf);
+     if (d_ptr-&gt;frameBufferObject)
+         glDeleteFramebuffersOES(1, &amp;d_ptr-&gt;frameBufferObject);
+
+     delete d_ptr;
+ }
+
+<span class="comment"> /*!
+   This function changes the geometry of the frame buffer
+   to the geometry in \a rect. It is called whenever the
+   geometry of the associated top-level window changes. It
+   also rebuilds the window surface's texture and binds
+   the OpenGL identifier to the texture for use by the
+   OpenGL library.
+  */</span>
+ void QAhiGLWindowSurface::setGeometry(const QRect &amp;rect)
+ {
+     QSize size = rect.size();
+
+     const QWidget *w = window();
+     if (w &amp;&amp; !w-&gt;mask().isEmpty()) {
+         const QRegion region = w-&gt;mask()
+                                &amp; rect.translated(-w-&gt;geometry().topLeft());
+         size = region.boundingRect().size();
+     }
+
+     if (geometry().size() != size) {
+
+         <span class="comment">// Driver specific limitations:</span>
+         <span class="comment">//   FBO maximimum size of 256x256</span>
+         <span class="comment">//   Depth buffer required</span>
+
+         d_ptr-&gt;textureWidth = qMin(256, nextPowerOfTwo(size.width()));
+         d_ptr-&gt;textureHeight = qMin(256, nextPowerOfTwo(size.height()));
+
+         glGenTextures(1, &amp;d_ptr-&gt;texture);
+         glBindTexture(GL_TEXTURE_2D, d_ptr-&gt;texture);
+
+         glTexParameterx(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+         glTexParameterx(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+         glTexParameterx(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+         glTexParameterx(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+         const int bufSize = d_ptr-&gt;textureWidth * d_ptr-&gt;textureHeight * 2;
+         GLshort buf[bufSize];
+         memset(buf, 0, sizeof(GLshort) * bufSize);
+
+         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, d_ptr-&gt;textureWidth,
+                      d_ptr-&gt;textureHeight, 0,
+                      GL_RGBA, GL_UNSIGNED_BYTE, buf);
+
+         glGenRenderbuffersOES(1, &amp;d_ptr-&gt;depthbuf);
+         glBindRenderbufferOES(GL_RENDERBUFFER_EXT, d_ptr-&gt;depthbuf);
+         glRenderbufferStorageOES(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16,
+                                  d_ptr-&gt;textureWidth, d_ptr-&gt;textureHeight);
+
+         glGenFramebuffersOES(1, &amp;d_ptr-&gt;frameBufferObject);
+         glBindFramebufferOES(GL_FRAMEBUFFER_EXT, d_ptr-&gt;frameBufferObject);
+
+         glFramebufferTexture2DOES(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
+                                   GL_TEXTURE_2D, d_ptr-&gt;texture, 0);
+         glFramebufferRenderbufferOES(GL_FRAMEBUFFER_EXT,
+                                      GL_DEPTH_ATTACHMENT_EXT,
+                                      GL_RENDERBUFFER_EXT, d_ptr-&gt;depthbuf);
+         glBindFramebufferOES(GL_FRAMEBUFFER_EXT, 0);
+     }
+
+     QWSGLWindowSurface::setGeometry(rect);
+ }
+
+<span class="comment"> /*!
+   Returns the window  surface's texture as a QByteArray.
+  */</span>
+ QByteArray QAhiGLWindowSurface::permanentState() const
+ {
+     QByteArray array;
+     array.resize(sizeof(GLuint));
+
+     char *ptr = array.data();
+     reinterpret_cast&lt;GLuint*&gt;(ptr)[0] = textureId();
+     return array;
+ }
+
+<span class="comment"> /*!
+   Sets the window surface's texture to \a data.
+  */</span>
+ void QAhiGLWindowSurface::setPermanentState(const QByteArray &amp;data)
+ {
+     const char *ptr = data.constData();
+     d_ptr-&gt;texture = reinterpret_cast&lt;const GLuint*&gt;(ptr)[0];
+ }
+
+<span class="comment"> /*!
+   Returns the paint device being used for this window surface.
+  */</span>
+ QPaintDevice *QAhiGLWindowSurface::paintDevice()
+ {
+     return d_ptr-&gt;device;
+ }
+
+<span class="comment"> /*!
+   Returns the window surface's texture.
+  */</span>
+ GLuint QAhiGLWindowSurface::textureId() const
+ {
+     return d_ptr-&gt;texture;
+ }
+
+<span class="comment"> /*!
+   The \l {QWSServer} {window system} always calls this function
+   before any painting operations begin for this window surface.
+   It ensures that the correct frame buffer will be used by the
+   OpenGL library for painting operations.
+  */</span>
+ void QAhiGLWindowSurface::beginPaint(const QRegion &amp;region)
+ {
+     QWSGLWindowSurface::beginPaint(region);
+
+     if (d_ptr-&gt;frameBufferObject)
+         glBindFramebufferOES(GL_FRAMEBUFFER_EXT, d_ptr-&gt;frameBufferObject);
+ }
+
+<span class="comment"> /*!
+   This function returns true if the window associated with
+   this window surface can still rendered using this window
+   surface class. Either the window's top-level widget must
+   be an \l {QGLWidget} {OpenGL widget}, or the window's
+   frame must be no bigger than 256 x 256.
+  */</span>
+ bool QAhiGLWindowSurface::isValid() const
+ {
+     if (!qobject_cast&lt;QGLWidget*&gt;(window())) {
+         const QRect r = window()-&gt;frameGeometry();
+         if (r.width() &gt; 256 || r.height() &gt; 256)
+             return false;
+     }
+     return true;
+ }</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td width="30%" align="left">Copyright &copy; 2008 Nokia</td>
+<td width="40%" align="center"><a href="trademarks.html">Trademarks</a></td>
+<td width="30%" align="right"><div align="right">Qt 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="contextbar" base="themes/home_wvga">
+    <image src="bkgnd_base-grad" name="bkgnd_base-grad" scale="yes" />
+    
+    <layout orientation="vertical" align="center">
+        <!-- Home button -->
+        <exclusive>
+            <group name="home-group" interactive="yes" onclick="message=QPE/System,showHomeScreen()">
+                <image name="home" src="launcher_btn" scale="yes" onclick="src=launcher_btn_pressed" interactive="yes" color="#7f4d3c">
+                    <image rect="22.5%,22%,50%x50%" src="home.svg" interactive="yes"/>
+                </image>
+            </group>
+            <group interactive="yes" onclick="message=QPE/System,showPhoneLauncher()" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'HomeScreen'">
+                <image src="launcher_btn" scale="yes" onclick="src=launcher_btn_pressed" interactive="yes" color="#7f4d3c">
+                    <image rect="22.5%,22%,50%x50%" src="launch_launcher.svg" interactive="yes"/>
+                </image>
+            </group>
+        </exclusive>
+        
+        <!-- Call Button -->
+        <exclusive>
+            <image src="launcher_btn" scale="yes" interactive="yes" onclick="src=launcher_btn_pressed"/>
+            <group active="expr:@/Communications/Calls/LastDialedCall != false" interactive="yes" onclick="message=Dialer,redial()">
+                <image src="launcher_btn" scale="yes" interactive="yes" onclick="src=launcher_btn_pressed" color="#007e00">
+                    <image rect="22%,20%,50%x20%" src="redial.svg"/>
+                    <text rect="0,50%,100%x75%" align="hcenter" bold="yes" size="5" color="#ffffff">Redial</text>
+                </image>
+            </group>
+            <group active="expr:@/Communications/Calls/Primary/Identifier != false" interactive="yes" onclick="message=QPE/System,showCallScreen()">
+                <image interactive="yes" scale="yes" src="launcher_btn" onclick="src=launcher_btn_pressed" color="#007e00">
+                    <text rect="4,9,40x18" align="hcenter" bold="yes" size="5" color="#FFFFFF">Call</text>
+                    <text rect="4,24,40x18" align="hcenter" bold="yes" size="5" color="#FFFFFF">
+                        expr:@/Communications/Calls/Primary/Duration
+                    </text>
+                </image>
+            </group>
+            <!-- PhotoGallery: Image Viewer: Rotate Anticlockwise -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'photogallery' &amp;&amp; @/PhotoGallery/View == 4" onclick="message=PhotoGallery,imageViewRotateACW()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                    <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">rotate</text>
+                </image>
+            </group>
+        </exclusive>
+        
+        <!-- Button 3 -->
+        <exclusive>
+            <!-- Main - Phone mode -->
+            <exclusive>
+                <group interactive="yes" onclick="message=QPE/System,setPhoneMode()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#006492">
+                        <image src="launch_phone" rect="20%,18%,55%x55%"/>
+                    </image>
+                </group>
+                <group name="callhistory" active="expr:@/Communications/Calls/MissedCalls > 0" interactive="yes" transient="yes" onclick="message=QPE/System,setPhoneMode()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#B50F23">
+                        <image src="launch_phone" rect="15%,13%,55%x55%" scale="yes"/>
+                        <text rect="50%,40%,35%x40%" bold="yes" color="#FFFFFF" size="12">
+                            expr:@/Communications/Calls/MissedCalls
+                        </text>
+                    </image>
+                </group>
+            </exclusive>
+            <!-- Phone - Call History -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'HomeScreen_Phone' || @/UI/ActiveWindow/ProcessName == 'callhistory' || @/UI/ActiveWindow/ProcessName == 'qtmail' || @/UI/ActiveWindow/ProcessName == 'addressbook' || @/UI/ActiveWindow/ProcessName == 'Dialer'">
+                <group name="callhistory" interactive="yes" onclick="message=CallHistory,showCallHistory()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#006492">
+                        <image src="launch_history" rect="20%,18%,55%x55%"/>
+                    </image>
+                </group>
+                <group name="callhistory" active="expr:@/Communications/Calls/MissedCalls > 0" interactive="yes" transient="yes"  onclick="message=CallHistory,showMissedCalls()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#B50F23">
+                        <text rect="18%,10%,35%x40%" bold="yes" color="#FFFFFF" size="12">
+                            expr:@/Communications/Calls/MissedCalls
+                        </text>
+                        <image src="launch_history" rect="40%,37%,40%x40%" scale="yes"/>
+                    </image>
+                </group>
+            </group>
+            <!-- MusicPlayer - Songs -->
+            <group interactive="yes" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'musicplayer'" onclick="message=MusicPlayer,showGenre()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#631E8D">
+                    <image src="launch_songs.svg" rect="16%,12%,70%x45%"/>
+                    <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">genre</text>
+                </image>
+            </group>
+            <!-- PhotoGallery -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'photogallery'">
+                <group>
+                    <image src="launcher_btn" interactive="no" scale="yes"/>
+                </group>
+                <!-- Album Selector: Sort by name (enabled) -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 0" onclick="message=PhotoGallery,sortAlbumsByName()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,8%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">sort</text>
+                        <text rect="12%,33%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">by</text>
+                        <text rect="12%,58%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">name</text>
+                    </image>
+                </group>
+                <!-- Album Selector: Sort by name (disabled) -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 1">
+                    <image src="launcher_btn_pressed" interactive="no" scale="yes">
+                        <text rect="12%,8%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">sort</text>
+                        <text rect="12%,33%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">by</text>
+                        <text rect="12%,58%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">name</text>
+                    </image>
+                </group>
+                <!-- Flow View: Rotate Anticlockwise -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 3" onclick="message=PhotoGallery,imageSelectorRotateACW()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">rotate</text>
+                    </image>
+                </group>
+                <!-- Image Viewer: Rotate Clockwise -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 4" onclick="message=PhotoGallery,imageViewRotateCW()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">rotate</text>
+                    </image>
+                </group>
+            </group>
+        </exclusive>
+        
+        <!-- Button 4 -->
+        <exclusive>
+            <!-- Main - Music -->
+            <group name="music-group" interactive="yes" onclick="message=QPE/Application/musicplayer,raise()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#006492">
+                    <image src="launch_music" rect="22%,18%,55%x55%"/>
+                </image>
+            </group>
+            <!-- Phone - Dialer -->
+            <group name="dialer-group" interactive="yes" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'HomeScreen_Phone' || @/UI/ActiveWindow/ProcessName == 'callhistory' || @/UI/ActiveWindow/ProcessName == 'qtmail' || @/UI/ActiveWindow/ProcessName == 'addressbook' || @/UI/ActiveWindow/ProcessName == 'Dialer'" onclick="message=Dialer,showDialer()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#006492">
+                    <image name="launch_dial" src="launch_dial" rect="21%,20%,55%x55%" interactive="yes"/>
+                </image>
+            </group>
+            <!-- MusicPlayer - Albums -->
+            <group interactive="yes" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'musicplayer'" onclick="message=MusicPlayer,showAlbums()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#631E8D">
+                    <image src="launch_albums.svg" rect="25%,12%,45%x45%"/>
+                    <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">albums</text>
+                </image>
+            </group>
+            <!-- PhotoGallery -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'photogallery'">
+                <group>
+                    <image src="launcher_btn" interactive="no" scale="yes"/>
+                </group>
+                <!-- Album selector: Sort by date (disabled) -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 0">
+                    <image src="launcher_btn_pressed" interactive="no" scale="yes">
+                        <text rect="12%,8%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">sort</text>
+                        <text rect="12%,33%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">by</text>
+                        <text rect="12%,58%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">date</text>
+                    </image>
+                </group>
+                <!-- Album Selector: Sort by date (enabled) -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 1" onclick="message=PhotoGallery,sortAlbumsByDate()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,8%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">sort</text>
+                        <text rect="12%,33%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">by</text>
+                        <text rect="12%,58%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">date</text>
+                    </image>
+                </group>
+                <!-- Flow View: Rotate Clockwise -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 3" onclick="message=PhotoGallery,imageSelectorRotateCW()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">rotate</text>
+                    </image>
+                </group>
+                <!-- Image Viewer: Add to favourites -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 4" onclick="message=PhotoGallery,imageViewAddToFavorites()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,8%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">add</text>
+                        <text rect="12%,33%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">to</text>
+                        <text rect="12%,58%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">faves</text>
+                    </image>
+                </group>
+            </group>
+        </exclusive>
+        
+        <!-- Button 5 -->
+        <exclusive>
+            <!-- Main - Videos -->
+            <group name="contacts-group" interactive="yes" onclick="message=MediaPlayer,showVideo()">
+                <image src="launcher_btn" color="#006492" scale="yes" interactive="yes" onclick="src=launcher_btn_pressed">
+                    <image src="launch_video" rect="22%,18%,55%x55%"/>
+                </image>
+            </group>
+            <!-- Phone - Contacts -->
+            <group name="contacts-group" interactive="yes" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'HomeScreen_Phone' || @/UI/ActiveWindow/ProcessName == 'callhistory' || @/UI/ActiveWindow/ProcessName == 'qtmail' || @/UI/ActiveWindow/ProcessName == 'addressbook' || @/UI/ActiveWindow/ProcessName == 'Dialer'" onclick="message=Contacts,showContacts()">
+                <image src="launcher_btn" color="#006492" scale="yes" interactive="yes" onclick="src=launcher_btn_pressed">
+                    <image name="launch_contacts" src="launch_contacts" rect="31%,18%,37%x55%" interactive="yes"/>
+                </image>
+            </group>
+            <!-- MusicPlayer - Artists -->
+            <group interactive="yes" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'musicplayer'" onclick="message=MusicPlayer,showArtists()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#631E8D">
+                    <image src="launch_artists.svg" rect="20%,12%,55%x40%"/>
+                    <text rect="12%,55%,78%x30%" align="hcenter" color="#FFFFFF" size="5" bold="yes">artists</text>
+                </image>
+            </group>
+            <!-- PhotoGallery -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'photogallery'">
+                <group>
+                    <image src="launcher_btn" interactive="no" scale="yes"/>
+                </group>
+                <!-- Slide Show -->
+                <group transient="yes" active="expr:@/PhotoGallery/View == 2 || @/PhotoGallery/View == 3 || @/PhotoGallery/View == 4" onclick="message=PhotoGallery,imageSelectorSlideShow()">
+                    <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="12%,8%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">play</text>
+                        <text rect="12%,33%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">slide</text>
+                        <text rect="12%,58%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">show</text>
+                    </image>
+                </group>
+            </group>
+        </exclusive>
+        
+        <!-- Button 6 -->
+        <exclusive>
+            <!-- Main - Photos -->
+            <group name="inbox-group" interactive="yes" onclick="message=QPE/Application/photogallery,raise()">
+                <image src="launcher_btn" color="#006492" scale="yes" interactive="yes" onclick="src=launcher_btn_pressed">
+                    <image src="launch_photos" rect="22%,18%,55%x55%"/>
+                </image>
+            </group>
+            <!-- Phone - Messages -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'HomeScreen_Phone' || @/UI/ActiveWindow/ProcessName == 'callhistory' || @/UI/ActiveWindow/ProcessName == 'qtmail' || @/UI/ActiveWindow/ProcessName == 'addressbook' || @/UI/ActiveWindow/ProcessName == 'Dialer'">
+                <group name="inbox-group" interactive="yes" onclick="message=Messages,viewMessages()">
+                    <image src="launcher_btn" color="#006492" scale="yes" interactive="yes" onclick="src=launcher_btn_pressed">
+                        <image name="launch_messages" src="launch_messages" rect="22%,25%,55%x40%" interactive="yes" />
+                    </image>
+                </group>
+                <group name="inbox-group" active="expr:@/Communications/Messages/NewMessages > 0" interactive="yes" onclick="message=Messages,viewMessages()" transient="yes">
+                    <image src="launcher_btn" color="#B50F23" scale="yes" onclick="src=launcher_btn_pressed">
+                        <text rect="18%,10%,35%x40%" bold="yes" color="#FFFFFF" size="12">
+                            expr:@/Communications/Messages/NewMessages
+                        </text>
+                        <image name="launch_messages" src="launch_messages" rect="37%,45%,45%x30%" interactive="yes" />
+                    </image>
+                </group>
+            </group>
+            <!-- MusicPlayer - Playlists -->
+            <group interactive="yes" transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'musicplayer'" onclick="message=MusicPlayer,showPlaylists()">
+                <image src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#631E8D">
+                    <text rect="12%,20%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">Play</text>
+                    <text rect="12%,45%,78%x25%" align="hcenter" color="#FFFFFF" size="5" bold="yes">lists</text>
+                </image>
+            </group>
+            <!-- PhotoGallery -->
+            <group transient="yes" active="expr:@/UI/ActiveWindow/ProcessName == 'photogallery'">
+                <image src="launcher_btn" interactive="no" scale="yes"/>
+            </group>
+        </exclusive>
+        
+        <!-- Options Menu -->
+        <group name="menu-group">
+            <image name="menu" src="launcher_btn" interactive="yes" scale="yes" onclick="src=launcher_btn_pressed" color="#7f4d3c">
+                <text rect="0,10%,100%x75%" color="#FFFFFF" align="vcenter,hcenter" bold="yes" size="6">more</text>
+            </image>
+        </group>
+        
+    </layout>
+    
+</page>

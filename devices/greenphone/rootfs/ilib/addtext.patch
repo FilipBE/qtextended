@@ -1,0 +1,323 @@
+diff -Nur diff/Ilib-1.1.9/addtext/addtext.c Ilib-1.1.9/addtext/addtext.c
+--- diff/Ilib-1.1.9/addtext/addtext.c	1970-01-01 10:00:00.000000000 +1000
++++ Ilib-1.1.9/addtext/addtext.c	2007-06-08 13:43:14.000000000 +1000
+@@ -0,0 +1,198 @@
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <signal.h>
++
++#include <sys/time.h>
++
++#include <Ilib.h>
++
++// An embedded font
++#include "helvR24.h"
++
++int done;
++
++void signalHandler(int signum)
++{
++    if (signum == SIGINT || signum == SIGTERM)
++        done = 1;
++}
++
++int main ( int argc, char *argv[] )
++{
++    IImage image;
++    IFont font;
++    IError ret;
++    IGC gc;
++    IColor textcolor, progcolor;
++    char *text;
++    unsigned int text_width, text_height;
++    int x, y, argvIndex;
++    int center;
++
++    FILE *input = stdin;
++    IFileFormat inputFormat = IFORMAT_GIF;
++    FILE *output = NULL;
++    IFileFormat outputFormat = IFORMAT_LFB;
++
++    // Initialize the graphics context
++    gc = ICreateGC();
++    IAllocNamedColor( "black", &textcolor );
++
++    argvIndex = 1;
++
++    if ( argc >= argvIndex+2 &&
++         argv[argvIndex][0] == 'i' && argv[argvIndex][1] == '\0' ) {
++        // open input file
++        input = fopen(argv[argvIndex+1], "r");
++        
++        IFileType(argv[argvIndex+1], &inputFormat);
++
++        argvIndex += 2;
++    }
++
++    // Read image from input
++    if ( ( ret = IReadImageFile(input, inputFormat, IOPTION_NONE, &image ) ) ) {
++        fprintf( stderr, "Error reading image: %s\n", IErrorString( ret ) );
++        return 1;
++    }
++
++    if (argc >= argvIndex+2 &&
++        argv[argvIndex][0] == 'o' && argv[argvIndex][1] == '\0' ) {
++        // open output file
++        output = fopen(argv[argvIndex+1], "w+");
++
++        IFileType(argv[argvIndex+1], &outputFormat);
++
++        argvIndex += 2;
++    }
++
++    if (output == NULL) {
++        // open /dev/fb for output
++        output = fopen("/dev/fb", "r+");
++
++        outputFormat = IFORMAT_LFB;
++    }
++
++    if (argc > argvIndex) {
++        // animated files only need to animate part of the image
++        // flatten these images so we can add text
++        IFlattenImage(image, gc);
++    }
++
++    if ( argc >= argvIndex+2 &&
++         argv[argvIndex][0] == 'p' && argv[argvIndex][1] == '\0' ) {
++        // add progress bar to images
++
++        int progress;
++        int p;
++
++        progress = atoi(argv[argvIndex+1]);
++        if ( progress > 10 )
++            progress = 10;
++        argvIndex += 2;
++
++        IAllocNamedColor( "blue", &progcolor );
++        ISetForeground( gc, progcolor );
++
++        for ( p = 0; p < progress; p++ ) {
++            IImage frame = image;
++            while (frame != NULL) {
++                ret = IFillRectangle( frame , gc, 11 + (p * 22), 243, 19, 19 );
++                INextFrame(frame, &frame);
++            }
++        }
++    }
++
++    // Load the embedded font
++    if ( ( ret = ILoadFontFromData( "helvR24", helvR24_font, &font ) ) ) {
++        fprintf( stderr, "Error (%s) loading font: %s\n", IErrorString( ret ), "helvR24" );
++        return 1;
++    }
++
++    ISetFont( gc, font );
++    ISetForeground( gc, textcolor );
++    center = 1;
++    if ( argc >= argvIndex+1 &&
++         argv[argvIndex][0] == 'l' && argv[argvIndex][1] == '\0' ) {
++        // center text
++        center = 0;
++        x = 10;
++        argvIndex++;
++        ret = ITextDimensions( gc, font, "X", 1, &text_width, &text_height );
++    }
++    y = 0;
++
++    for ( ; argvIndex < argc; argvIndex++ ) {
++        // add text
++        int tmp;
++        text = argv[argvIndex];
++        tmp = atoi(text);
++        if ( tmp != 0 ) {
++            y = tmp;
++            text = argv[++argvIndex];
++        } else if ( y != 0 ) {
++            y += text_height * 1.5;
++        }
++
++        if ( center ) {
++            // Determine where to draw the text
++            ret = ITextDimensions( gc, font, text, strlen(text), &text_width, &text_height );
++            x = ( 240 - text_width ) / 2; // center the text
++        }
++
++        // Draw the text
++        IImage frame = image;
++        while (frame != NULL) {
++            IDrawString( frame, gc, x, y, text, strlen(text) );
++            INextFrame(frame, &frame);
++        }
++    }
++
++    // Write the image to stdout in GIF format
++    //IWriteImageFile( stdout, image, IFORMAT_GIF, IOPTION_NONE );
++
++    // Write the image to stdout in Linux FB 16bit rgba = 5/11,6/5,5/0,0/0 format
++    IImage frame;
++    INextFrame(image, &frame);
++    if (frame == NULL) {
++        IWriteImageFile(output, image, outputFormat, IOPTION_NONE);
++        fflush(output);
++    } else {
++        frame = image;
++        done = 0;
++        signal(SIGINT, signalHandler);
++        signal(SIGTERM, signalHandler);
++
++        struct timeval then;
++        struct timeval now;
++        unsigned int delay = 0;
++        while (!done || frame != image) {
++            if (delay > 0) {
++                gettimeofday(&now, NULL);
++
++                usleep(delay - (1000000*(now.tv_sec - then.tv_sec) + now.tv_usec - then.tv_usec));
++            }
++
++            IWriteImageFile(output, frame, outputFormat, IOPTION_NONE);
++            gettimeofday(&then, NULL);
++
++            delay = IFrameDelay(frame);
++
++            INextFrame(frame, &frame);
++            if (frame == NULL)
++                frame = image;
++        }
++    }
++
++    if (input != stdin)
++        fclose(input);
++
++    if (output != NULL)
++        fclose(output);
++
++    return 0;
++}
++
++
+diff -Nur diff/Ilib-1.1.9/addtext/Makefile Ilib-1.1.9/addtext/Makefile
+--- diff/Ilib-1.1.9/addtext/Makefile	1970-01-01 10:00:00.000000000 +1000
++++ Ilib-1.1.9/addtext/Makefile	2007-03-22 07:59:07.000000000 +1000
+@@ -0,0 +1,105 @@
++
++# __ILIB_SITE_SETTINGS__
++# -- Do not edit these parameters here.
++# -- Edit the toplevel makefile and then 'make makefiles'
++CC              = cc
++CFLAGS          = -g -Wall -DHAVE_GIFLIB -DHAVE_PNGLIB -DHAVE_JPEGLIB -I/usr/local/include -I/usr/local/include/giflib
++RANLIB          = ranlib
++STATIC          = yes
++DYNAMIC         = yes
++LIBS            = -L/usr/local/lib -lgif -lpng -ljpeg 
++MAJVERSION      = 1
++MINVERSION      = 1
++PATCHLEVEL      = 8
++VERSION         = 1.1.8
++SOVERSION       = 1.1
++# Install locations
++PREFIX          = /usr/local
++BINDIR          = /usr/local/bin
++LIBDIR          = /usr/local/lib
++MANDIR          = /usr/local/man
++DOCDIR          = /usr/local/share/Ilib
++DATDIR          = /usr/local/share/Ilib
++FNTDIR          = /usr/local/share/Ilib/bdf
++# Install commands
++INSTALL         = install
++INSTALL_PROGRAM = install -s -o bin  -g bin -m 00751
++INSTALL_DOC     = install -o bin -g bin -m 00644
++INSTALL_DATA    = install -o bin -g bin -m 00644
++INSTALL_FONT    = install -o bin -g bin -m 00644
++INSTALL_SCRIPT  = install -o bin -g bin -m 00755
++# __END_ILIB_SITE_SETTINGS__
++
++INCLIB		= -L../lib -lIlib
++ILIB		= ../lib/libIlib.a
++SILIB		= ../lib/libIlib.so.${SOVERSION}
++INCLUDES	= -I../lib
++
++all: addtext
++
++addtext: addtext.o
++
++.c.o:
++	$(CC) $(CFLAGS) $(INCLUDES) -c $*.c -o $@
++
++static: ${ILIB} addtext.o
++	$(CC) addtext.o ${INCLIB} ${LIBS} -o addtext
++
++dynamic: ${SILIB} addtext.o
++	$(CC) addtext.o ${INCLIB} ${LIBS} -o addtext
++
++helvR24.h: ../fonts/helvR24.bdf ../clients/ifont2h/ifont2h
++	../clients/ifont2h/ifont2h ../fonts/helvR24.bdf > $@
++
++addtext: helvR24.h addtext.o
++	@if [ "${DYNAMIC}." = "yes." ]; then \
++	  make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "RANLIB=$(RANLIB)" \
++		"STATIC=${STATIC}" "DYNAMIC=${DYNAMIC}" \
++		"SOVERSION=${SOVERSION}" dynamic; \
++	else \
++	  make "CC=$(CC)" "CFLAGS=$(CFLAGS)" "RANLIB=$(RANLIB)" \
++		"STATIC=${STATIC}" "DYNAMIC=${DYNAMIC}" \
++		"SOVERSION=${SOVERSION}" static; \
++	fi
++
++install:
++	@echo "Install not done from `pwd`"
++
++clean:
++	@echo "Cleaning in `pwd`"
++	rm -f *.o addtext *core
++
++makefiles: makefile
++
++makefile:
++	@echo "Updating `pwd`/Makefile"; \
++	if [ "$(SITE_DEF_FILE)." = "." ]; then \
++		echo "You must run 'make makefiles' from the toplevel Makefile."; \
++		exit 1; \
++	fi; \
++	sed -n '1,/^# __ILIB_SITE_SETTINGS__/ p' Makefile > Makefile.new; \
++	cat $(SITE_DEF_FILE) >> Makefile.new; \
++	sed -n '/^# __END_ILIB_SITE_SETTINGS__/,/^# START DEPENDENCIES/ p' Makefile >> Makefile.new; \
++	$(CC) $(INCLUDES) -M *.c >> Makefile.new; \
++	mv Makefile Makefile.bak; \
++	mv Makefile.new Makefile
++
++
++# START DEPENDENCIES
++addtext.o: addtext.c /usr/include/stdio.h /usr/include/features.h \
++  /usr/include/sys/cdefs.h /usr/include/gnu/stubs.h \
++  /usr/lib/gcc-lib/i586-suse-linux/3.3.5/include/stddef.h \
++  /usr/include/bits/types.h /usr/include/bits/wordsize.h \
++  /usr/include/bits/typesizes.h /usr/include/libio.h \
++  /usr/include/_G_config.h /usr/include/wchar.h /usr/include/bits/wchar.h \
++  /usr/include/gconv.h \
++  /usr/lib/gcc-lib/i586-suse-linux/3.3.5/include/stdarg.h \
++  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
++  /usr/include/stdlib.h /usr/include/sys/types.h /usr/include/time.h \
++  /usr/include/endian.h /usr/include/bits/endian.h \
++  /usr/include/sys/select.h /usr/include/bits/select.h \
++  /usr/include/bits/sigset.h /usr/include/bits/time.h \
++  /usr/include/sys/sysmacros.h /usr/include/bits/pthreadtypes.h \
++  /usr/include/bits/sched.h /usr/include/alloca.h /usr/include/ctype.h \
++  ../lib/Ilib.h \
++  helvR24.h
+diff -Nur diff/Ilib-1.1.9/Makefile Ilib-1.1.9/Makefile
+--- diff/Ilib-1.1.9/Makefile	2004-10-26 07:30:46.000000000 +1000
++++ Ilib-1.1.9/Makefile	2007-03-22 07:59:00.000000000 +1000
+@@ -88,7 +95,7 @@
+ # No need to edit anything beyond here
+ DIST = Ilib-${VERSION}
+ 
+-SUBDIRS = include lib clients examples fonts
++SUBDIRS = include lib clients examples fonts addtext
+ 
+ all:	build
+ 

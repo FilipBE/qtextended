@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<page xmlns="http://www.trolltech.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.trolltech.com themedview.xsd" name="secondaryhome" base="themes/home_wvga">
+    <image name="background" rect="0,0,0,0" src="background" tile="yes"/>
+    <text name="time" rect="0,25%,0x30pt" align="hcenter,vcenter" size="20" bold="yes" outline="#eeeeee">
+        expr:@/UI/DisplayTime/Time
+    </text>
+    <exclusive>
+        <text name="date" rect="0,60%,0x14pt" size="10" align="hcenter,vcenter" bold="yes" outline="#eeeeee">
+            expr:@/UI/DisplayTime/Date
+        </text>
+        <group rect="0,50%,0x26" transient="yes" active="expr:@/Communications/Calls/MissedCalls > 0 || @/Communications/Messages/NewMessages > 0">
+            <rect name="calls" rect="0,0,50%x0" color="None" brush="None" transient="yes" active="expr:@/Communications/Calls/MissedCalls > 0">
+                <image rect="0,0,26x26" src="call" scale="yes"/>
+                <text name="calls" size="9" rect="28,1,-1,-1" bold="yes" align="left,vcenter" outline="#eeeeee">
+                    expr:@/Communications/Calls/MissedCalls
+                </text>
+            </rect>
+            <rect name="messages" rect="50%,0,50%x0" color="None" brush="None" transient="yes" active="expr:@/Communications/Messages/NewMessages > 0">
+                <text name="messages" size="9" rect="0,1,-28,-1" bold="yes" align="right,vcenter" outline="#eeeeee">
+                    expr:@/Communications/Messages/NewMessages
+                </text>
+                <image rect="-26,0,26x26" src="message" scale="yes"/>
+            </rect>
+        </group>
+    </exclusive>
+</page>

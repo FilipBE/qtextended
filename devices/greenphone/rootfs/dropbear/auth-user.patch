@@ -1,0 +1,62 @@
+diff -Nur t/dropbear-0.48.1/runopts.h dropbear-0.48.1/runopts.h
+--- t/dropbear-0.48.1/runopts.h	2006-03-12 14:52:51.000000000 +1000
++++ dropbear-0.48.1/runopts.h	2007-07-27 13:18:20.000000000 +1000
+@@ -73,6 +73,7 @@
+ 
+ 	int noauthpass;
+ 	int norootpass;
++    int authuser;
+ 
+ #ifdef ENABLE_SVR_REMOTETCPFWD
+ 	int noremotetcp;
+diff -Nur t/dropbear-0.48.1/svr-auth.c dropbear-0.48.1/svr-auth.c
+--- t/dropbear-0.48.1/svr-auth.c	2006-03-12 14:52:52.000000000 +1000
++++ dropbear-0.48.1/svr-auth.c	2007-07-27 13:29:39.000000000 +1000
+@@ -141,6 +141,18 @@
+ 		goto out;
+ 	}
+ 
++    /* authenticate via username only */
++    /*
++       WARNING: This is insecure. It bypasses the authentication check in
++       the server.  The client will still send valid credentials, ie the
++       public key or the password.  The client ssh may still ask the user
++       to enter a password.
++    */
++    if (svr_opts.authuser) {
++		send_msg_userauth_success();
++        goto out;
++    }
++
+ #ifdef ENABLE_SVR_PASSWORD_AUTH
+ 	if (!svr_opts.noauthpass &&
+ 			!(svr_opts.norootpass && ses.authstate.pw->pw_uid == 0) ) {
+diff -Nur t/dropbear-0.48.1/svr-runopts.c dropbear-0.48.1/svr-runopts.c
+--- t/dropbear-0.48.1/svr-runopts.c	2006-03-12 14:52:52.000000000 +1000
++++ dropbear-0.48.1/svr-runopts.c	2007-07-27 13:25:52.000000000 +1000
+@@ -63,6 +63,7 @@
+ 					"-s		Disable password logins\n"
+ 					"-g		Disable password logins for root\n"
+ #endif
++                    "-u		Authenticate username only (insecure)\n"
+ #ifdef ENABLE_SVR_LOCALTCPFWD
+ 					"-j		Disable local port forwarding\n"
+ #endif
+@@ -102,6 +103,7 @@
+ 	svr_opts.norootlogin = 0;
+ 	svr_opts.noauthpass = 0;
+ 	svr_opts.norootpass = 0;
++    svr_opts.authuser = 0;  // insecure, if 1
+ 	svr_opts.inetdmode = 0;
+ 	svr_opts.portcount = 0;
+ 	svr_opts.hostkey = NULL;
+@@ -202,6 +204,9 @@
+ 					svr_opts.norootpass = 1;
+ 					break;
+ #endif
++				case 'u':
++					svr_opts.authuser = 1;  // insecure
++					break;
+ 				case 'h':
+ 					printhelp(argv[0]);
+ 					exit(EXIT_FAILURE);

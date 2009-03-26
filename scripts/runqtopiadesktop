@@ -1,0 +1,45 @@
+#!/bin/sh
+# get the paths
+if [ -f "$(dirname $0)/../src/qtopiadesktop/build/bin/getpaths.sh" ]; then . "$(dirname $0)/../src/qtopiadesktop/build/bin/getpaths.sh"; else echo "Could not find getpaths.sh"; exit 1; fi
+
+# This script is no longer capable of running Qtopia 1.x or 2.x. Please use the runqpe scripts in those packages.
+
+# Don't do this check on the Mac
+if [ ! -d "$QPEDIR/Qtopia Sync Agent.app" ]; then
+    PREFIX="$(grep '^opt\.dprefix\.value=' $QPEDIR/config.cache | sed 's/^opt\.dprefix\.value=//')"
+fi
+
+for dir in "$QPEDIR/Qtopia Sync Agent.app" "$PREFIX/qtopiadesktop"
+do
+    if [ -d "$dir" ]; then
+	QDESKTOP="$dir"
+	break
+    fi
+done
+if [ -z "$QDESKTOP" ]; then
+    echo "Please set QPEDIR so I can find Qtopia Sync Agent!" >&2
+    exit 1
+fi
+
+for file in "$QDESKTOP/Contents/MacOS/qtopiadesktop" "$PREFIX/bin/qtopiasyncagent" "$PREFIX/bin/qtopiadesktop" "$QDESKTOP/bin/qtopiadesktop"
+do
+    if [ -x "$file" ]; then
+	qtopiadesktop="$file"
+	break
+    fi
+done
+if [ -z "$qtopiadesktop" ]; then
+    echo "Qtopia Sync Agent binary is missing!" >&2
+    exit 1
+fi
+
+if [ ! -z "$QPEHOME" ]; then
+    export HOME=$QPEHOME
+fi
+
+# make sure libraries can be found
+export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH=$PREFIX/lib:$DYLD_LIBRARY_PATH
+
+exec "$qtopiadesktop" --debug --nofork "$@"
+

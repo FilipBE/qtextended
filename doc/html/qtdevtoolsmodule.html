@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Development Tools Module</title>
+  <link rel="prev" href="qtuimodule.html" />
+  <link rel="contents" href="modules-index.html" />
+  <link rel="next" href="qtuitestmodule.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtuimodule.html">Qt UI Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtuitestmodule.html">QtUiTest Module</a>]
+</p>
+<h1 class="title">Qt Development Tools Module<br /><span class="subtitle"></span>
+</h1>
+<a name="qtdevtoolsmodule"></a><p>The Qt Extended Development Tools module contains applications which simplify the design and implementation process when developing software with Qt Extended. This module is based on the <a href="qtbasemodule.html">Base module</a>.</p>
+<p>The following configure line can be used to build the Base and DevTools module only:</p>
+<pre>    ./configure -modules devtools -device xyz</pre>
+<p>Note that not specifying a device profile would result in the reference device being build.</p>
+<a name="feature-description"></a>
+<h2>Feature description</h2>
+<p>This module's software components are not intended for final consumer device builds. It provides development and debugging tools such as convenient access to log facilities, ValueSpace browsing or the Modem Simulator.</p>
+<p><table width="80%" align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Feature</th><th>Details</th></tr></thead>
+<tr valign="top" class="odd"><td>Logging application</td><td>The logging application allows enabling and disabling of logging streams and can display current log output.</td></tr>
+<tr valign="top" class="even"><td>Out-of-Memory instrumentation</td><td>This component allows the simulation of out-of-memory simulations and thus tests the device behavior under such conditions. The <a href="testmemorymonitor.html">TestMemoryMonitor</a> server task provides the implementation.</td></tr>
+<tr valign="top" class="odd"><td>Phone/Modem Simulator</td><td>The <a href="modem-simulator.html">Modem Simulator</a> allows testing of telephony applications without the need to have an actual AT modem. The simulator listens for AT commands and provides responses defined by an XML description.</td></tr>
+<tr valign="top" class="even"><td>Service management</td><td>In cases where only one application should provide a <a href="services.html">service</a> yet multiple applications are installed which provide the service, the &quot;Application Services&quot; settings application can be used to select which application should be used as service provider.</td></tr>
+<tr valign="top" class="odd"><td>ValueSpace explorer</td><td>The <a href="vsexplorer.html">vsexplorer</a> tool can diagnose issues with the <a href="qtopiavaluespace.html">Value Space</a>. It inspects the contents of the value space on a device, enables temporary modifications and to watch for changes.</td></tr>
+</table></p>
+<a name="software-components"></a>
+<h2>Software components</h2>
+<p>The Development Tools module includes the following software components:</p>
+<ul>
+<li>AppServices application</li>
+<li>Logging application</li>
+<li>Out-of-memory test components (server components)</li>
+<li><tt>tools/phonesim</tt> - Phone simulator (depends on <a href="qtcellmodule.html">Cell</a> module)</li>
+<li><tt>tools/vsexplorer</tt> - vsexplorer application</li>
+</ul>
+<p>The exact list of components included in this module can be found in <tt>$QPEDIR/src/module_devtools.pri</tt>.</p>
+<p>The <a href="tp-module-devtools.html">test plan</a> for the DevTools module summarizes the Quality Assurance procedures for this module. The results of these test are available <a href="qt-extended-test-results.html">here</a>.</p>
+<p>The following table contains all classes and services which are part of this module:</p>
+<p><table width="100%" class="annotated" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><th><a href="lowmemorytask.html">LowMemoryTask</a></th><td>Responds to low memory situations by closing applications</td></tr>
+<tr valign="top" class="even"><th><a href="memorymonitor.html">MemoryMonitor</a></th><td>Interface determines the available amount of available memory</td></tr>
+<tr valign="top" class="odd"><th><a href="oommanager.html">OomManager</a></th><td>Manages low and out of memory situations</td></tr>
+<tr valign="top" class="even"><th><a href="testmemorymonitor.html">TestMemoryMonitor</a></th><td>Instrumented implementation of MemoryMonitor for testing</td></tr>
+</table></p>
+<p>
+[Previous: <a href="qtuimodule.html">Qt UI Module</a>]
+[<a href="modules-index.html">Qt Extended Modules</a>]
+[Next: <a href="qtuitestmodule.html">QtUiTest Module</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

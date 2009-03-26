@@ -1,0 +1,19 @@
+#!/bin/sh
+uname -a 2>&1 | grep ' arm ' >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    # In scratchbox
+    USE_TB=0
+    export IN_SCRATCHBOX=1
+else
+    # Not in scratchbox
+    TOOLCHAIN=/scratchbox/compilers/cs2005q3.2-glibc2.5-arm
+
+    USE_TB=1
+    TB_CC_PREFIX=arm-linux-
+    TB_CC_VER=auto
+    TB_SYS=arm11:nxx
+    TB_STRIP_ARGS="-pipe"
+    unset LD_PRELOAD
+    export PKG_CONFIG_PREFIX=$TOOLCHAIN/arm-none-linux-gnueabi
+fi
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PREFIX/lib/pkgconfig

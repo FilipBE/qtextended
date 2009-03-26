@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>&lt;qlog.h&gt; - &lt;qlog.h&gt;</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="../index.html"><font color="#004faf">Qt Extended Home</font></a>&nbsp;&middot; <a href="index.html"><font color="#004faf">Index</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">Classes</font></a>&nbsp;&middot; <a href="headers.html"><font color="#004faf">Headers</font></a>&nbsp;&middot; <a href="overviews.html"><font color="#004faf">Overviews</font></a> </td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">&lt;qlog.h&gt; - &lt;qlog.h&gt;<br /><span class="subtitle"></span>
+</h1>
+<p>The &lt;qlog.h&gt; header enables categorized logging. <a href="#details">More...</a></p>
+<ul>
+</ul>
+<a name="Macros"></a>
+<h3>Macros</h3>
+<ul>
+<li><div class="fn"/><b><a href="qlog-h.html#QLOG_ENABLE">QLOG_ENABLE</a></b> (  <i>CATEGORY</i> )</li>
+<li><div class="fn"/><b><a href="qlog-h.html#QLOG_OPTION">QLOG_OPTION</a></b> (  <i>CATEGORY</i>,  <i>FUNCTION</i> )</li>
+<li><div class="fn"/><b><a href="qlog-h.html#QLOG_UNCATEGORIZED">QLOG_UNCATEGORIZED</a></b> ()</li>
+<li><div class="fn"/><b><a href="qlog-h.html#qLog">qLog</a></b> (  <i>CATEGORY</i> )</li>
+<li><div class="fn"/><b><a href="qlog-h.html#qLog-2">qLog</a></b> ()</li>
+</ul>
+<p>The &lt;qlog.h&gt; header enables categorized logging.</p>
+<p>See also <a href="qtopiadesktoplog-h.html">&lt;qtopiadesktoplog.h&gt;</a>.</p>
+<hr />
+<h2>Macro Documentation</h2>
+<h3 class="fn"><a name="QLOG_ENABLE"></a>QLOG_ENABLE (  <i>CATEGORY</i> )</h3>
+<p>Register a category for unconditional logging. This enables <a href="foo/../../debug-qtextended.html">qLog</a>(<i>CATEGORY</i>).</p>
+<h3 class="fn"><a name="QLOG_OPTION"></a>QLOG_OPTION (  <i>CATEGORY</i>,  <i>FUNCTION</i> )</h3>
+<p>Register a category for conditional logging. This enables <a href="foo/../../debug-qtextended.html">qLog</a>(<i>CATEGORY</i>) but the log messages are not displayed unless <i>CATEGORY</i> is enabled (as determined by <i>FUNCTION</i>.</p>
+<p>It is typical to avoid using this macro directly, instead relying on a wrapper define.</p>
+<pre>    bool myCheckFunction( const char *category );
+    #define MYLOG_OPTION(CATEGORY) QLOG_OPTION(CATEGORY,myCheckFunction(#CATEGORY))</pre>
+<h3 class="fn"><a name="QLOG_UNCATEGORIZED"></a>QLOG_UNCATEGORIZED ()</h3>
+<p>Enable the <a href="qlog-h.html#qLog">qLog</a>() macro.</p>
+<h3 class="fn"><a name="qLog"></a>qLog (  <i>CATEGORY</i> )</h3>
+<p>Perform categorized logging against <i>CATEGORY</i>. Note that <i>CATEGORY</i> should have been defined using QLOG_ENABLE, QLOG_OPTION or QLOG_OPTION_VOLATILE.</p>
+<h3 class="fn"><a name="qLog-2"></a>qLog ()</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Perform uncategorized logging. Note that the QLOG_UNCATEGORIZED macro must have been used to enable this.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="right"><div align="right">Qt Extended Sync Agent Documentation</div></td>
+</tr></table></div></address></body>
+</html>

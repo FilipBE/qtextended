@@ -1,0 +1,199 @@
+#!/usr/bin/perl
+
+# usage
+#
+# ls <files to process> | commonbuilder common
+#
+# for each file in <files to process> will read in, and work out the global
+# frequency for each word found.  Writes out to common the prefered word in
+# each case there would have been a conflict.
+#
+# flags are -verbose or -v
+#
+
+sub phonekeys
+{
+	my $w = @_[0];
+	$w =~ s/[2abc]/2/ig;
+	$w =~ s/[3def]/3/ig;
+	$w =~ s/[4ghi]/4/ig;
+	$w =~ s/[5jkl]/5/ig;
+	$w =~ s/[6mno]/6/ig;
+	$w =~ s/[7pqrs]/7/ig;
+	$w =~ s/[8tuv]/8/ig;
+	$w =~ s/[9wxyz]/9/ig;
+	return $w;
+}
+
+sub usage
+{
+print 
+"
+usage is $0 [-v|--verbose] [-d|--dictionary <dict>] <ouput>
+
+    files to be read should be piped to stdin
+    <dict> is the dictionary of words to restrict output to.
+    <ouput> is the file to write the list of resolving words (the highest frequency word for thoses words that have a conflict.
+";
+    exit -1;
+}
+
+# read in arguments
+while ($arg = shift) {
+    if ($arg =~ /^-v$/ or $arg =~ /^--verbose/) {
+	$verbose = 1;
+    } elsif ($arg =~ /^-d$/ or $arg =~ /^--dictionary/) {
+	$dictionary = shift;
+    } elsif ($arg =~ /^-/) {
+	print "\nUnknown argument $arg\n";
+	usage();
+    } else {
+	if (defined $outfile) {
+	    print "\nUnknown argument $arg\n";
+	    usage();
+	}
+	$outfile = $arg;
+    }
+}
+
+unless (defined($outfile)) {
+    print "\noutput file not defined\n";
+    usage();
+}
+unless (defined($dictionary)) {
+    print "\ndictionary file not defined\n";
+    usage();
+}
+
+%dict;
+open(DICT, "<$dictionary");
+
+$dcount = 0;
+while(<DICT>){
+    chomp;
+    $dict{$_} = 1;
+    $dcount++;
+}
+
+# for each file to process, use to build up a list.
+# basically make a hash freq that maps word to how many
+# times the word occured in all read text.
+for $file ( <STDIN> ) {
+    print "Reading in $file\n";
+    open FILE, $file =~ /\.gz$/ ? "zcat $file |" : "$file";
+    #print "$file\n";
+    while (<FILE>) {
+	tr/a-zA-Z/ /cs;
+	for $w ( split " ", $_ ) {
+	    if (length($w) > 1) {
+		if (defined($dict{$w})) {
+		    $freq{$w}++;
+		} elsif (defined($dict{lc($w)})) {
+		    $freq{lc($w)}++;
+		} else {
+		    $nondictfreq{$w}++;
+		    $nondictcount++;
+		}
+		$totalcount++;
+	    }
+	}
+    }
+}
+
+# build patterns, e.g. get the list of unique patterns.
+
+$n=0;
+for $item ( keys %freq ) {
+	$word{$item}++;
+	push @{$patt{phonekeys $item}}, $item;
+	$n++;
+}
+
+$resolved = 0;
+open(COMMON, ">$outfile");
+for $p ( keys %patt ) {
+    if($verbose) {
+	print "checking pattern $p\n";
+    }
+    @w = @{$patt{$p}} = sort { $freq{$b} <=> $freq{$a} } @{$patt{$p}};
+    @l = @{$patt{$p}} = sort { $b le $a } @{$patt{$p}};
+
+    # continue if there are no conflicting words.
+    if ($#w==0) {
+	if($verbose) {
+	    print "no conflict for $w[0]\n";
+	}
+	$rightpattern += $freq{$w[0]};
+	$laxpattern += $freq{$w[0]};
+	$totalpattern += $freq{$w[0]};
+	next;
+    }
+
+    # try to resolve conflict, find highest frequency word.	
+    undef $found;
+    $highest = 0;
+    $totalpattern;
+    foreach $key (@w) {
+	$totalpattern += $freq{$key};
+	if ($freq{$key} > $highest) {
+	    $highest = $freq{$key};
+	    $found = $key;
+	}
+    }
+    if (defined $found) {
+	$rightpattern += $freq{$found};
+	$laxpattern += $freq{$l[0]};
+	if ($verbose) {
+	    print "$found chosen over (";
+	    foreach $item (@w) {
+		print " $item";
+	    }
+	    print " )\n";
+	    print "$l[0] would be used if alphabetical\n";
+	}
+	$resolved++;
+	# print found word to output
+	print COMMON "$found\n";
+    } elsif ($verbose) {
+	print "unresolved conflict for";
+	foreach $key (@w) {
+	    print " $key";
+	}
+	print "\n";
+    }
+}
+close COMMON;
+
+#statistics
+print "Total word count: $totalcount\n";
+$distcount = keys( %freq ) + keys( %nondictfreq );
+print "Distinct word count: $distcount\n";
+
+print "\ndictionary size ". keys( %dict ) ."\n";
+print "Total words not in dictionary $nondictcount\n";
+print "Distinct word not in dictionary count: " . keys( %nondictfreq ) . "\n";
+
+print "\nHighest frequency words not in dictionary:\n";
+
+while($highcount < 5) {
+    $highcount++;
+    undef $found;
+    $highest = 0;
+    foreach $key (keys %nondictfreq) {
+	if ($nondictfreq{$key} > $highest) {
+	    $found = $key;
+	    $highest = $nondictfreq{$key};
+	}
+    }
+    if (defined($found)) {
+	print "$found : $nondictfreq{$found}\n";
+	undef $nondictfreq{$found}
+    }
+}
+
+$rp = ($rightpattern * 100) / $totalpattern;
+$lp = ($laxpattern * 100) / $totalpattern;
+
+
+print "\nWould be right $rightpattern times in $totalpattern words, $rp%\n";
+print "if had picked first in dictionary would be $lp%\n";

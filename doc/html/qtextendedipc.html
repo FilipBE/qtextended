@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Qt Extended IPC Layer</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Qt Extended IPC Layer<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#qtopiaipcadaptor">QtopiaIpcAdaptor</a></li>
+<ul><li><a href="#overview">Overview</a></li>
+<li><a href="#serialization-system">Serialization System</a></li>
+<ul><li><a href="#enumerations">Enumerations</a></li>
+<li><a href="#custom-classes">Custom Classes</a></li>
+</ul>
+</ul>
+<li><a href="#migrating-legacy-qt-extended-applications">Migrating Legacy Qt Extended Applications</a></li>
+<li><a href="#the-application-channel">The Application Channel</a></li>
+<li><a href="#command-line-access-to-qt-extended-ipc-system">Command-line access to Qt Extended IPC System</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>Qtopia 4.2 introduced a new inter-process communication (IPC) API aimed to make it extremely easy to send and receive messages between applications. It is designed to be used in several ways, and features an intelligent data serialization infrastructure based on the Qt meta-type system. This enables the user to easily send messages across applications that can contain custom types. The user only has to implement serialization and deserialization functions and register the custom type with the API.</p>
+<p>The Qt Extended IPC API is based on the notion of channels and messages. Messages can be used by by an application to notify another application to take some action. Messages can have arguments associated with them. In essence, a message can be thought of as a remote method call. A message consists of a function identifier followed by a list of types in parantheses. There is no whitespace in the message name.</p>
+<p>Channels are unique string based identifiers which are used to logically group a set of messages together. Effectively, a set of messages on a particular channel defines an interface. By convention all channels within Qt Extended start with &quot;QPE/&quot;.</p>
+<p>The Qt Extended IPC system uses the event-processing loop. If you create a message it will not be sent until the next the event loop is entered.</p>
+<p>Qt Extended IPC system consists of three major classes. The <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> is the preferred way to interface with the system. In addition, <a href="qtopiachannel.html">QtopiaChannel</a> and <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a> classes are provided to ease the transition between the Qt Extended <a href="qcopchannel.html">QCopChannel</a> based systems and the new API.</p>
+<a name="qtopiaipcadaptor"></a>
+<h2>QtopiaIpcAdaptor</h2>
+<a name="overview"></a>
+<h3>Overview</h3>
+<p>Qt Extended IPC API is exposed to the user through the <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> class. <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> can be used in two ways: direct access and an inheritance based approach.</p>
+<p>To use <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> directly, we first construct a new object by providing a channel as so:</p>
+<pre>    QtopiaIpcAdaptor *adaptor = new QtopiaIpcAdaptor(&quot;QPE/CannonExample&quot;);</pre>
+<p>The newly created <i>adaptor</i> object can now be used to send messages to remote applications, or to receive messages. To send messages use the <tt>send</tt> method calls:</p>
+<pre><span class="comment">    // First we aim the cannon</span>
+    QtopiaIpcSendEnvelope envelope = adaptor-&gt;send(MESSAGE(aimCannon(int,int)));
+    envelope &lt;&lt; direction &lt;&lt; elevation;
+
+<span class="comment">    // Alternatively if there are less than 3 arguments we can use send directly</span>
+    adaptor-&gt;send(MESSAGE(shootCannon(int)), cannonPower);</pre>
+<p>Another application is responsible for actually aiming and shooting the cannon. Let us suppose that the cannon application can reply with two types of messages, a hit or a miss. E.g&#x2e; the remote application will send a <i>missed()</i> or <i>hit()</i> message. We can listen for such messages in the following manner:</p>
+<pre>    class CannonListener : public QObject
+    {
+        Q_OBJECT
+
+    public slots:
+        void missed();
+        void hit();
+    };
+
+    ...
+
+    CannonListener *listener = new CannonListener;
+    QtopiaIpcAdaptor *adaptor = new QtopiaIpcAdaptor(&quot;QPE/CannonExample&quot;);
+    QtopiaIpcAdaptor::connect(adaptor, MESSAGE(missed()), listener, SLOT(missed()));
+    QtopiaIpcAdaptor::connect(adaptor, MESSAGE(hit()), listener, SLOT(hit()));</pre>
+<p>We can also use QtopiaIpcAdaptor::connect to enable an object's signals to be sent over a channel automatically. For instance, we can rewrite the above example like this:</p>
+<pre>    class CannonController : public QObject
+    {
+        Q_OBJECT
+
+    public slots:
+        void missed();
+        void hit();
+
+    signals:
+        void aimCannon(int dir, int elev);
+        void shootCannon(int power);
+    };
+
+    ...
+
+    CannonController *control = new CannonController;
+    QtopiaIpcAdaptor *adaptor = new QtopiaIpcAdaptor(&quot;QPE/CannonExample&quot;);
+
+<span class="comment">    // Hookup remote messages to our object</span>
+    QtopiaIpcAdaptor::connect(adaptor, MESSAGE(missed()), control, SLOT(missed()));
+    QtopiaIpcAdaptor::connect(adaptor, MESSAGE(hit()), control, SLOT(hit()));
+
+<span class="comment">    // Send our signals to the remote object</span>
+    QtopiaIpcAdaptor::connect(control, SIGNAL(aimCannon(int,int)), adaptor, MESSAGE(aimCannon(int,int)));
+    QtopiaIpcAdaptor::connect(control, SIGNAL(shootCannon(int)), adaptor, MESSAGE(shootCannon(int)));</pre>
+<p>We should now recognize that for non-trivial interactions the last example is a quite common use case. It is thus desirable to avoid using QtopiaIpcAdaptor::connect for each connection, which can be quite error prone. <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> provides an alternate interaction technique based on inheritance. Instead of creating another class and using QtopiaIpcAdaptor::connect, we inherit directly from <a href="qtopiaipcadaptor.html">QtopiaIpcAdaptor</a> and use the publish or publishAll methods to automatically publish all signals and slots on the channel. E.g&#x2e;:</p>
+<pre>        class CannonController : public QtopiaIpcAdaptor
+        {
+            Q_OBJECT
+
+        public:
+            CannonController(QObject *parent = 0);
+            void shoot();
+
+        public slots:
+            void missed();
+            void hit();
+
+        signals:
+            void aimCannon(int dir, int elev);
+            void shootCannon(int power);
+        };
+
+        CannonController::CannonController(QObject *parent)
+            : QtopiaIpcAdaptor(&quot;QPE/CannonExample&quot;, parent)
+        {
+            publishAll(QtopiaIpcAdaptor::SignalsAndSlots);
+        }
+
+        void CannonController::missed()
+        {
+            qDebug() &lt;&lt; &quot;Cannon missed!&quot;;
+        }
+
+        void CannonController::hit()
+        {
+            qDebug() &lt;&lt; &quot;Cannon HIT!&quot;;
+        }
+
+        void CannonController::shoot()
+        {
+            emit aimCannon(0, 45);
+            emit shootCannon(100);
+        }
+
+    ...
+
+        CannonController *control = new CannonController;
+        control-&gt;shoot();</pre>
+<a name="serialization-system"></a>
+<h3>Serialization System</h3>
+<a name="enumerations"></a>
+<h4>Enumerations</h4>
+<p>To make the example complete, we show how to extend our example with custom data types. First let us suppose that we'd like to use a custom ammunition type. We define a new enumeration named appropriately <i>AmmunitionType</i>. In order to exchange these enumerations, we must first register it with the meta-type system. This is accomplished by using the <i>Q_DECLARE_USER_METATYPE_ENUM</i> macro. This macro must be used in the header file where the enumeration is defined. Additionally we must use the <i>Q_IMPLEMENT_USER_METATYPE_ENUM</i> macro to implement the necessary serialization and deserialization functions.</p>
+<pre>        <span class="comment">// Header</span>
+        class CannonController : public QtopiaIpcAdaptor
+        {
+            Q_OBJECT
+
+        public:
+            enum AmmunitionType { Explosive = 0, ArmorPiercing, Napalm }
+
+            CannonController(QObject *parent = 0);
+            void shoot();
+
+        public slots:
+            void missed();
+            void hit();
+
+        signals:
+            void aimCannon(int dir, int elev);
+            void shootCannon(int power);
+            void setAmmunitionType(AmmunitionType type);
+        };
+
+        Q_DECLARE_USER_METATYPE_ENUM(CannonController::AmmunitionType)
+
+    ...
+
+        <span class="comment">// Implementation:</span>
+
+        Q_IMPLEMENT_USER_METATYPE_ENUM(CannonController::AmmunitionType)</pre>
+<a name="custom-classes"></a>
+<h4>Custom Classes</h4>
+<p>In order to shoot our cannon we now need to send three messages to the remote application. For such a complex and mission critical system we should really send only one message for efficiency purposes. We define a new class that encapsulates the entire shoot order:</p>
+<pre>        class CannonFireOrders
+        {
+        public:
+            enum AmmunitionType { Explosive = 0, ArmorPiercing, Napalm }
+            CannonFireOrders( AmmunitionType type, int direction, int elevation, int power);
+
+            int direction() const;
+            int elevation() const;
+            int power() const;
+            AmmunitionType type() const;
+
+        private:
+            int m_dir;
+            int m_elev;
+            int m_power;
+            AmmunitionType m_type;
+        };
+
+        Q_DECLARE_USER_METATYPE_ENUM(CannonFireOrders::AmmunitionType)
+        Q_DECLARE_USER_METATYPE(CannonFireOrders)</pre>
+<p>We also modify the <i>CannonController</i> class in the following manner:</p>
+<pre>        class CannonController : public QtopiaIpcAdaptor
+        {
+            Q_OBJECT
+
+        public:
+            CannonController(QObject *parent = 0);
+            void shoot();
+
+        public slots:
+            void missed();
+            void hit();
+
+        signals:
+            void shootCannon(const CannonFireOrders &amp;orders);
+        };</pre>
+<p>The only thing missing is a way to tell the Qt Extended IPC API how to serialize the CannonFireOrders class so it can be shipped to a remote applications, and how the other side would deserialize the information and create a CannonFireOrders. To accomplish this, we must define two new methods in the CannonFireOrders class:</p>
+<pre>        class CannonFireOrders
+    {
+        public:
+
+        ....
+
+        template &lt;typename Stream&gt; void serialize(Stream &amp;stream) const;
+        template &lt;typename Stream&gt; void deserialize(Stream &amp;stream);
+        ...
+    };</pre>
+<p>And in the implementation file we implement both methods. It is important to note this fact, as usually templates are defined in the header files!</p>
+<pre>        Q_IMPLEMENT_USER_METATYPE_ENUM(CannonFireOrders::AmmunitionType)
+        Q_IMPLEMENT_USER_METATYPE(CannonFireOrders)
+
+        ....
+
+        template &lt;typename Stream&gt; void CannonFireOrders::serialize(Stream &amp;s) const
+        {
+            s &lt;&lt; m_dir;
+            s &lt;&lt; m_elev;
+            s &lt;&lt; m_power;
+            s &lt;&lt; m_type;
+        }
+
+        template &lt;typename Stream&gt; void CannonFireOrders::deserialize(Stream &amp;s)
+        {
+            s &gt;&gt; m_dir;
+            s &gt;&gt; m_elev;
+            s &gt;&gt; m_power;
+            s &gt;&gt; m_type;
+        }</pre>
+<p>We can now successfully use custom classes across applications! Please note that both applications must link in the implementation of the custom class.</p>
+<a name="migrating-legacy-qt-extended-applications"></a>
+<h2>Migrating Legacy Qt Extended Applications</h2>
+<p>Developers are encouraged to use the new QtopiaIpcAdapter API. It is extremely powerful and can easily support custom classes. However, to support legacy applications and make it easier to port such applications to the new IPC system, Qt Extended introduces two new classes. <a href="qtopiachannel.html">QtopiaChannel</a> and <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>. Both of these classes work exactly as their QCop counterparts.</p>
+<a name="the-application-channel"></a>
+<h2>The Application Channel</h2>
+<p>Each application listens on a channel called <b>QPE/Application/<i>appname</i></b> , where <b><i>appname</i></b> is the executable name (the application identifier). Standard messages on this channel are:</p>
+<p><b>QPE/Application/<i>appname</i></b></p>
+<ul>
+<li>setDocument(<a href="qstring.html">QString</a>) -- Internal. Causes the setDocument(const <a href="qstring.html">QString</a>&amp;) slot of <a href="docwidget.html">the main document widget</a> be called.</li>
+<li>nextView() -- Applications connected to hardware buttons will receive this message if they are already visible.</li>
+<li>raise() -- Internal. Causes the the main document widget and the current modal widget to be raised.</li>
+<li><a href="qtopiadesktop/qdsync-quit-1.html">quit</a>() -- Internal. Terminates the application.</li>
+<li>quitIfInvisible() -- Internal. Terminates the application if it is not shown.</li>
+</ul>
+<p>The <b>QPE/Application/<i>appname</i></b> channel has a special property: when messages are sent to these channels via <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a>, the message is delivered even if the application is not yet running (the application is run and the message is then sent).</p>
+<a name="command-line-access-to-qt-extended-ipc-system"></a>
+<h2>Command-line access to Qt Extended IPC System</h2>
+<p>The <a href="qcop-tool.html">qcop</a> command-line tool can be used to access the Qt Extended IPC system from shell scripts and for debugging purposes.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

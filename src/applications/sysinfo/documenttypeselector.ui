@@ -1,0 +1,174 @@
+<ui version="4.0" >
+ <class>DocumentTypeSelector</class>
+ <widget class="QScrollArea" name="DocumentTypeSelector" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>371</width>
+    <height>362</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <property name="horizontalScrollBarPolicy" >
+   <enum>Qt::ScrollBarAlwaysOff</enum>
+  </property>
+  <property name="widgetResizable" >
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="scrollAreaWidgetContents" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>367</width>
+     <height>358</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout" >
+    <item>
+     <widget class="QLabel" name="label" >
+      <property name="text" >
+       <string>Cleanup Documents</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="Line" name="line" >
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QFormLayout" name="formLayout" >
+      <property name="fieldGrowthPolicy" >
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <item row="0" column="0" >
+       <widget class="QLabel" name="label_2" >
+        <property name="text" >
+         <string>Larger than</string>
+        </property>
+        <property name="buddy" >
+         <cstring>minimumSize</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QSpinBox" name="minimumSize" >
+        <property name="sizePolicy" >
+         <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="suffix" >
+         <string comment="KiloByte" >kB</string>
+        </property>
+        <property name="maximum" >
+         <number>100000</number>
+        </property>
+        <property name="singleStep" >
+         <number>10</number>
+        </property>
+        <property name="value" >
+         <number>10</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="allLocations" >
+      <property name="title" >
+       <string>Location</string>
+      </property>
+      <property name="checkable" >
+       <bool>true</bool>
+      </property>
+      <property name="checked" >
+       <bool>false</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3" >
+       <item>
+        <widget class="DeviceSelector" name="location" />
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="documentType" >
+      <property name="sizePolicy" >
+       <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title" >
+       <string>Document types</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" >
+       <item>
+        <widget class="QCheckBox" name="allDocuments" >
+         <property name="text" >
+          <string>All</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="audioDocuments" >
+         <property name="text" >
+          <string>Audio</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="imageDocuments" >
+         <property name="text" >
+          <string>Image</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="textDocuments" >
+         <property name="text" >
+          <string>Text</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="videoDocuments" >
+         <property name="text" >
+          <string>Video</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DeviceSelector</class>
+   <extends>QComboBox</extends>
+   <header>deviceselector.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>minimumSize</tabstop>
+  <tabstop>allLocations</tabstop>
+  <tabstop>location</tabstop>
+  <tabstop>allDocuments</tabstop>
+  <tabstop>audioDocuments</tabstop>
+  <tabstop>imageDocuments</tabstop>
+  <tabstop>textDocuments</tabstop>
+  <tabstop>videoDocuments</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

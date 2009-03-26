@@ -1,0 +1,40 @@
+# Install prefixes
+
+# Qtopia Defaults
+bindir=/bin
+libdir=/lib
+plugdir=/plugins
+resdir=/
+
+# Qtopia Sync Agent overrides
+part_of_qtopiadesktop {
+    win32 {
+        bindir=/
+        libdir=/
+        plugdir=/plugins
+        resdir=/
+    }
+    unix:!mac {
+        bindir=/bin
+        libdir=/lib
+        plugdir=/qtopiadesktop/plugins
+        resdir=/qtopiadesktop
+    }
+    mac {
+        bindir=/Resources
+        libdir=/Frameworks
+        plugdir=/Resources/plugins
+        resdir=/Resources
+    }
+}
+
+bindir=$$fixpath($$bindir)
+libdir=$$fixpath($$libdir)
+plugdir=$$fixpath($$plugdir)
+resdir=$$fixpath($$resdir)
+
+export(bindir)
+export(libdir)
+export(plugdir)
+export(resdir)
+

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>StartupApplications Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">StartupApplications Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The StartupApplications class launches applications preemptively at startup. <a href="#details">More...</a></p>
+<pre>    #include &lt;StartupApplications&gt;</pre><p>Inherits <a href="qobject.html">QObject</a>.</p>
+<ul>
+<li><a href="startupapplications-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="startupapplications.html#StartupApplications">StartupApplications</a></b> ( QObject * <i>parent</i> = 0 )</li>
+</ul>
+<ul>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="startupapplications.html#preloadCrashed">preloadCrashed</a></b> ( const QString &amp; <i>application</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The StartupApplications class launches applications preemptively at startup.</p>
+<p>The StartupApplications provides a Qt Extended Server Task. Qt Extended Server Tasks are documented in full in the <a href="qtopiaserverapplication.html">QtopiaServerApplication</a> class documentation.</p>
+<p>Qt Extended provides support for preloading GUI applications, and for launching background daemon-type applications during startup. The StartupApplications class provides this functionality.</p>
+<a name="preloaded-applications"></a>
+<h3>Preloaded Applications</h3>
+<p>Preloaded applications are started immediately after Qt Extended starts, but in a hidden state. Preloading an application ensures that it is available for almost instantaneouse &quot;startup&quot; whenever the user accesses it. However, as preloaded applications continue to run indefinately, they consume system resources such as RAM and scheduler time even when not actively in use. Only applications used very frequently should be preloaded.</p>
+<p>An application can be preloaded by adding it to the <tt>AppLoading\PreloadApps</tt> item list in the <tt>Trolltech/Launcher</tt> configuration file. The following example shows both the <tt>addressbook</tt> and <tt>qtmail</tt> applications set to preload.</p>
+<pre>    [AppLoading]
+    PreloadApps=addressbook,qtmail</pre>
+<a name="background-applications"></a>
+<h3>Background Applications</h3>
+<p>Background applications allow simple QCop messages to be sent to an application during startup, whenever it terminates or at system shutdown. Background applications allow Qt Extended to launch and control simple daemon-style servers.</p>
+<a name="daemon-configuration"></a>
+<h4>Daemon configuration</h4>
+<p>The configuration files for background applications can be found in the following path positions:</p>
+<ol type="1">
+<li><tt>$HOME/Applications/daemons</tt></li>
+<li><tt>$QPE_IMAGE/etc/daemons</tt></li>
+<li><tt>$QTOPIA_PATH/etc/daemons</tt></li>
+</ol>
+<p>If the same background application is configured by more than one configuration file the above directory order determines the priority. This allows the user to override the system behavior.</p>
+<p>The configuration file has the following form:</p>
+<pre>    [DaemonParameter]
+    ApplicationName=&lt;Application Name&gt;
+    ServiceName=&lt;Service Name&gt;
+    TaskGroup=&lt;Qt Extended Task Group&gt;
+    Silent=&lt;true/false&gt;
+    StartupMessage=&lt;Message&gt;
+    RestartMessage=&lt;Message&gt;
+    ShutdownMessage=&lt;Message&gt;</pre>
+<p>Each option maps to the following functionality:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Option</th><th>Description</th></tr></thead>
+<tr valign="top" class="odd"><td><tt>ApplicationName</tt></td><td>The name of the application to send the QCop messages to.</td></tr>
+<tr valign="top" class="even"><td><tt>ServiceName</tt></td><td>A name of a service to send QCop messages to. The default provider of the service will be used. If both <tt>ApplicationName</tt> and <tt>ServiceName</tt> are specified, the <tt>ServiceName</tt> option is ignored.</td></tr>
+<tr valign="top" class="odd"><td><tt>TaskGroup</tt></td><td>The name of the group to which the background application belogs. Group names allow a collection of applications to be started together at startup by inserting the group name into the <tt>Tasks.cfg</tt> Qt Extended startup file. Task groups are not optional.</td></tr>
+<tr valign="top" class="even"><td><tt>Silent</tt></td><td>If true, warning messages about this application will be suppressed. For example, if the application or service cannot be found a <a href="qtglobal.html#qWarning">qWarning</a>() will only appear if <tt>Silent</tt> is false or omitted.</td></tr>
+<tr valign="top" class="odd"><td><tt>StartupMessage</tt></td><td>A message to send when the application is started. A common value for <tt>StartupMessage</tt> is <tt>raise</tt>.</td></tr>
+<tr valign="top" class="even"><td><tt>RestartMessage</tt></td><td>A message to send to restart the application when it terminates. This message is optional and will only be sent if the application had previously been started with <tt>StartupMessage</tt>.</td></tr>
+<tr valign="top" class="odd"><td><tt>ShutdownMessage</tt></td><td>A message to send at system shutdown. This message is optional and will only be sent if the application had previously been started with <tt>StartupMessage</tt>. Following this message, the application is expected to exit within 5 seconds.</td></tr>
+</table></p>
+<p>Here is a concrete example, specifying that the MessageServer application should be started with the 'startup' application group, and should be restarted if it terminates:</p>
+<pre>    [DaemonParameter]
+    ApplicationName=messageserver
+    TaskGroup=startup
+    StartupMessage=raise()
+    RestartMessage=raise()</pre>
+<p>This class is part of the Qt Extended server and cannot be used by other Qt Extended applications.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="StartupApplications"></a>StartupApplications::StartupApplications ( <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Create the <a href="startupapplications.html">StartupApplications</a> class with the specified <i>parent</i>.</p>
+<h3 class="fn"><a name="preloadCrashed"></a>void StartupApplications::preloadCrashed ( const <a href="qstring.html">QString</a> &amp; <i>application</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>Emitted whenever a preloaded <i>application</i> crashes. A crashing preloaded application will be automatically removed from the preloaded application list.</p>
+<p>The PreloadApplication class filter crashes, using the <a href="applicationterminationhandler.html">ApplicationTerminationHandler</a> interface.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

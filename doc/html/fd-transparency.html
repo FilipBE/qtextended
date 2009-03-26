@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>User Interface: Transparency</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">User Interface: Transparency<br><small>Functional Description</small></h1><p>Qt 4 supports transparency between widgets. Qt Extended uses this to allow a background image to be seen behind the user interface controls.
+<p />
+<h2>Features</h2>
+<ul><li><a href="#QTOPIA-1762">Background Selection</a>
+<li><a href="#QTOPIA-1763">Background Tinting</a>
+<li><a href="#QTOPIA-1765">Shadow Effect</a>
+<li><a href="#QTOPIA-1761">Theme Background Specification</a>
+<li><a href="#QTOPIA-1764">Transparent Colors</a>
+</ul><h3><a name=QTOPIA-1762>Background Selection</a></h3>
+<p>Themes can allow the background displayed to be selected by the user by including the background plug-in as part of the background element, for example:
+
+<div class="code"><div class="codeContent">
+<pre class="code-xml"><span class="code-tag">&lt;group name=<span class="code-quote">"background"</span>&gt;</span>
+        <span class="code-tag">&lt;image name=<span class="code-quote">"background"</span> rect=<span class="code-quote">"0,0,0,0"</span> src=<span class="code-quote">"background"</span> color=<span class="code-quote">"Highlight"</span> tile=<span class="code-quote">"yes"</span>/&gt;</span>
+        <span class="code-tag">&lt;plugin name=<span class="code-quote">"bgplugin"</span>/&gt;</span>
+<span class="code-tag">&lt;/group&gt;</span></pre>
+</div></div>
+
+<p>This allows the background to be specified by the Appearance settings application.  If no background is specified by the user then the background is specified entirely by the theme.  Since the theme elements are rendered in order specified in the theme, it is possible to add watermarks over the user's selected background to maintain branding.</p>
+<h3><a name=QTOPIA-1763>Background Tinting</a></h3>
+<p>When the background is displayed outside the homescreen it is tinted with the window color to ensure all text is visible regardless of how dark the background is.
+<h3><a name=QTOPIA-1765>Shadow Effect</a></h3>
+<p>Pop-up windows, for example menus and comboboxes, are displayed with a transparent shadow to provide the illusion of depth.
+<h3><a name=QTOPIA-1761>Theme Background Specification</a></h3>
+<p>The background is specified by the <b>background</b> element in the homescreen theme definition.
+<h3><a name=QTOPIA-1764>Transparent Colors</a></h3>
+<p>Qt Extended Core supports transparent colors and brushes.  This allows widgets and custom painters to blend with the background and present a more polished appearance.
+
+<p>Qt Extended's standard color schemes assign some transparency to most standard palette colors so that the background is visible even when the programmer paints over it.  This does place some responsibility with the developer when painting to ensure that the correct effect is achieved.  In particular it is important not to "overdraw" some areas, since the overlapping region will appear darker than desired making the background less visible.</p>
+<hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div>

@@ -1,0 +1,48 @@
+#!/bin/sh
+
+echo $QPEDIR
+
+if [ -z "$QPEDIR" -a -d $PWD/src/tools/qt/qvfb ];then
+    QPEDIR=$PWD
+fi
+
+
+PREFIX=$QPEDIR/image
+echo $PREFIX
+
+# make sure binaries and libraries can be found (not reqired for Qtopia!)
+export PATH=$PREFIX/bin:$PATH
+export LD_LIBRARY_PATH=$PREFIX/lib
+
+# set an alternate value for HOME (to keep different Qtopia versions' files separate)
+if [ ! -z "$QPEHOME" ]; then
+    export HOME=$QPEHOME
+fi
+
+# If you want to force all SXE tests to be logged but to succeed (eg. when creating new policies)
+# you must configure Qtopia with the -sxe-discovery switch and then set SXE_DISCOVERY_MODE to 1.
+#export SXE_DISCOVERY_MODE=1
+
+cd $PREFIX
+
+ulimit -Sd 100000          # max data size of a program is 100 MB
+ulimit -Ss 4000            # max stack size of a program is 4 MB
+ulimit -Sm 100000          # max resident set size is 100 MB
+
+if [ "$1" = "-exec" ]; then
+    shift
+    echo exec $@
+    exec $@
+elif [ "$1" = "-gdb" ]; then
+    gdb qpe
+elif [ "$1" = "-profile" ]; then
+    LD_PRELOAD=$PREFIX/lib/gprof-helper.so qpe
+elif [ "$1" = "-callgrind" ]; then
+    callgrind qpe
+elif [ "$1" = "-valgrind" ]; then
+    valgrind --tool=memcheck qpe
+elif [ "$1" = "-strace" ]; then
+    strace qpe
+else
+    exec qpe "$@"
+fi

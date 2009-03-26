@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Hardware Configuration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">Hardware Configuration<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#introduction">Introduction</a></li>
+<li><a href="#device-specific-code">Device-specific Code</a></li>
+<li><a href="#removable-media-and-devices">Removable Media and Devices</a></li>
+</ul>
+<a name="introduction"></a>
+<h2>Introduction</h2>
+<p>When planning to customize and install Qt Extended on a specific device there are a number of factors that must be taken into consideration:</p>
+<ul>
+<li>If the device has a touch screen, Qt Extended calibration must be enabled.</li>
+<li>If the device runs off batteries, Qt Extended may be required to call APM functions for power saving. See the Power Management section below for more details.</li>
+<li>If the device has special hardware buttons, they may need to be mapped to applications and have associated images displayed in the user interface.</li>
+<li>If the device has a buzzer for alarms and other beeps, Qt Extended will need to know how to use this hardware and enable it for the associated events.</li>
+<li>If the device has an LCD screen with a back or front light, Qt Extended will need to know how to adjust its brightness.</li>
+<li>If the device has any special LEDs to indicate status to the user, Qt Extended will need to know how to set the LEDs.</li>
+<li>If the device has or supports phone hardware, a serial device that supports GSM AT-commands should be provided, so that Qt Extended can use it.</li>
+<li>If the device supports sound, the sound volume should be locked to the maximum intended volume.</li>
+<li>If the device supports removable media or PCMCIA cards, notifications must be sent to Qt Extended when these are inserted or removed.</li>
+</ul>
+<p>All the changes required to add these device specific customizations are centralized in Qt Extended and involve a small number of files (described below). This document should make it easy for OEMs and system integrators to understand how to make Qt Extended aware of any special hardware that a device might have.</p>
+<a name="devicespecific"></a><a name="device-specific-code"></a>
+<h2>Device-specific Code</h2>
+<p>Device-specific code is implemented in <a href="buildsystem/over-device-profiles-1.html">custom.h/custom.cpp</a>.</p>
+<p>Since these files are tied to a device it is useful to have them in the device profile. If these files are not present configure will look in the traditional location, <tt>&lt;source&gt;/src/libraries/qtopia/custom-&lt;xplatform&gt;.(h|cpp)</tt>. See <a href="custom-h.html">&lt;custom.h&gt;</a> for more information about these files.</p>
+<p>Device profiles can implement their own <tt>custom.(h|cpp)</tt> files, which will override the <tt>&lt;source&gt;/src/libraries/qtopia/custom-&lt;xplatform&gt;.(h|cpp)</tt> and <tt>custom.(h|cpp)</tt> files in Qt Extended.</p>
+<p>For reference implementations of these files, the existing files found in <tt>&lt;source&gt;/devices/greenphone/custom.*</tt> may be of assistance.</p>
+<a name="removable-media-and-devices"></a>
+<h2>Removable Media and Devices</h2>
+<p>Qt Extended supports both removable media, such as SD cards, and removable hotplug devices, such as PCMCIA network cards. However, as there is no standard way in Linux for Qt Extended to detect when these devices or media are inserted or removed, it is the system integrators responsibility to detect whenever the attached PCMCIA devices or mounted filesystems change notify Qt Extended appropriately.</p>
+<p>Integrators notify Qt Extended by sending QCop messages. QCop messages may be sent from C++ code using the <a href="qtopiaipcenvelope.html">QtopiaIpcEnvelope</a> class, or from system shell scripts using the <tt>qcop</tt> command line tool.</p>
+<p>The following table describes the events and the QCop messages that should be sent:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<thead><tr valign="top" class="qt-style"><th>Event</th><th>Message</th></tr></thead>
+<tr valign="top" class="odd"><td>Removable media added or removed</td><td>A <tt>mtabChanged()</tt> message must be sent to the <tt>QPE/Card</tt> channel <i>after</i> the media has been mounted or unmounted.<p>To do this from the command line or a script, the following QCop command would suffice:</p>
+<pre>    qcop send QPE/Card &quot;mtabChanged()&quot;</pre>
+</td></tr>
+<tr valign="top" class="even"><td>Removable PCMCIA device added or removed</td><td>A <tt>stabChanged()</tt> message must be sent to the <tt>QPE/Card</tt> channel. The <a href="stabmonitor.html">StabMonitor</a> server task provides a default implementation by monitoring certain files on the file system.<p>To do this from the command line or a script, the following QCop command would suffice:</p>
+<pre>    qcop send QPE/Card &quot;stabChanged()&quot;</pre>
+</td></tr>
+</table></p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

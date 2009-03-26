@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMediaRtpAudioStream Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMediaRtpAudioStream Class Reference<br /><span class="small-subtitle">[<a href="qtmediamodule.html">QtMediaModule</a>]</span>
+</h1>
+<p>The QMediaRtpAudioStream class manages a single audio stream in an RTP session. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMediaRtpAudioStream&gt;</pre><p>Inherits <a href="qmediartpstream.html">QMediaRtpStream</a>.</p>
+<ul>
+<li><a href="qmediartpaudiostream-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>enum <b><a href="qmediartpaudiostream.html#DtmfTone-enum">DtmfTone</a></b> { Dtmf_0, Dtmf_1, Dtmf_2, Dtmf_3, ..., Dtmf_D }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmediartpaudiostream.html#QMediaRtpAudioStream">QMediaRtpAudioStream</a></b> ( Direction <i>direction</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/><b><a href="qmediartpaudiostream.html#dtor.QMediaRtpAudioStream">~QMediaRtpAudioStream</a></b> ()</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpaudiostream.html#setTelephonyEventPayload">setTelephonyEventPayload</a></b> ( const QMediaRtpPayload &amp; <i>payload</i> ) = 0</li>
+<li><div class="fn"/>virtual QMediaRtpPayload <b><a href="qmediartpaudiostream.html#telephonyEventPayload">telephonyEventPayload</a></b> () const = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>15 public functions inherited from <a href="qmediartpstream.html#public-functions">QMediaRtpStream</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="public-slots"></a>
+<h3>Public Slots</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qmediartpaudiostream.html#startTelephonyEvent">startTelephonyEvent</a></b> ( int <i>event</i>, int <i>volume</i> ) = 0</li>
+<li><div class="fn"/>virtual void <b><a href="qmediartpaudiostream.html#stopTelephonyEvent">stopTelephonyEvent</a></b> () = 0</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 public slots inherited from <a href="qmediartpstream.html#public-slots">QMediaRtpStream</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>9 signals inherited from <a href="qmediartpstream.html#signals">QMediaRtpStream</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+<li><div class="fn"/>9 protected functions inherited from <a href="qmediartpstream.html#protected-functions">QMediaRtpStream</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMediaRtpAudioStream class manages a single audio stream in an RTP session.</p>
+<p>DTMF events may be sent over an audio stream as either tones added to the audio signal, or as separate RTP packets. To send DTMF events as RTP packets a valid payload with the encoding name <tt>telephone-event</tt> must be set with <a href="qmediartpaudiostream.html#setTelephonyEventPayload">setTelephonyEventPayload</a>(). If no such payload is set the DTMF tones will be added to the audio stream instead. If a stream supports DTMF RTP packets then a <tt>telephone-event</tt> payload will be included in the list supported audio payloads given by the <a href="qmediartpsession.html">QMediaRtpSession</a> that created it.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="DtmfTone-enum"></a>enum QMediaRtpAudioStream::DtmfTone</h3>
+<p>The event codes for DTMF tones.</p>
+<p><table border="1" cellpadding="2" cellspacing="1" width="40%">
+<tr><th width="60%">Constant</th><th width="40%">Value</th></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_0</tt></td><td align="center" valign="top"><tt>0</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_1</tt></td><td align="center" valign="top"><tt>1</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_2</tt></td><td align="center" valign="top"><tt>2</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_3</tt></td><td align="center" valign="top"><tt>3</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_4</tt></td><td align="center" valign="top"><tt>4</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_5</tt></td><td align="center" valign="top"><tt>5</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_6</tt></td><td align="center" valign="top"><tt>6</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_7</tt></td><td align="center" valign="top"><tt>7</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_8</tt></td><td align="center" valign="top"><tt>8</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_9</tt></td><td align="center" valign="top"><tt>9</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_Star</tt></td><td align="center" valign="top"><tt>10</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_Pound</tt></td><td align="center" valign="top"><tt>11</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_A</tt></td><td align="center" valign="top"><tt>12</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_B</tt></td><td align="center" valign="top"><tt>13</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_C</tt></td><td align="center" valign="top"><tt>14</tt></td></tr>
+<tr><td valign="top"><tt>QMediaRtpAudioStream::Dtmf_D</tt></td><td align="center" valign="top"><tt>15</tt></td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMediaRtpAudioStream"></a>QMediaRtpAudioStream::QMediaRtpAudioStream ( <a href="qmediartpstream.html#Direction-enum">Direction</a> <i>direction</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Contructs a new RTP audio stream with the given <i>parent</i> which sends and/or receives data according to <i>direction</i>.</p>
+<h3 class="fn"><a name="dtor.QMediaRtpAudioStream"></a>QMediaRtpAudioStream::~QMediaRtpAudioStream ()</h3>
+<p>Destroys an RTP audio stream.</p>
+<h3 class="fn"><a name="setTelephonyEventPayload"></a>void QMediaRtpAudioStream::setTelephonyEventPayload ( const <a href="qmediartppayload.html">QMediaRtpPayload</a> &amp; <i>payload</i> )&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Sets the <i>payload</i> to be used for sending telephony events.</p>
+<p>Returns true if the payload was successfully changed and false otherwise.</p>
+<p>See also <a href="qmediartpaudiostream.html#telephonyEventPayload">telephonyEventPayload</a>().</p>
+<h3 class="fn"><a name="startTelephonyEvent"></a>void QMediaRtpAudioStream::startTelephonyEvent ( int <i>event</i>, int <i>volume</i> )&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Starts sending a telephony <i>event</i> at the given <i>volume</i> on a stream.</p>
+<p>Note: Telephony events can only be sent on Audio streams.</p>
+<p>See also <a href="qmediartpaudiostream.html#stopTelephonyEvent">stopTelephonyEvent</a>().</p>
+<h3 class="fn"><a name="stopTelephonyEvent"></a>void QMediaRtpAudioStream::stopTelephonyEvent ()&nbsp;&nbsp;<tt> [pure virtual slot]</tt></h3>
+<p>Stops sending a telephony event.</p>
+<p>See also <a href="qmediartpaudiostream.html#startTelephonyEvent">startTelephonyEvent</a>().</p>
+<h3 class="fn"><a name="telephonyEventPayload"></a><a href="qmediartppayload.html">QMediaRtpPayload</a> QMediaRtpAudioStream::telephonyEventPayload () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the payload used for sending telephony events.</p>
+<p>See also <a href="qmediartpaudiostream.html#setTelephonyEventPayload">setTelephonyEventPayload</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

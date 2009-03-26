@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QSmoothListWidgetItem Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QSmoothListWidgetItem Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QSmoothListWidgetItem class provides an item for use with the <a href="qsmoothlistwidget.html">QSmoothListWidget</a> item view class. <a href="#details">More...</a></p>
+<pre>    #include &lt;QSmoothListWidgetItem&gt;</pre><p>Inherits <a href="qstandarditem.html">QStandardItem</a>.</p>
+<ul>
+<li><a href="qsmoothlistwidgetitem-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qsmoothlistwidgetitem.html#QSmoothListWidgetItem">QSmoothListWidgetItem</a></b> ( QSmoothListWidget * <i>parent</i> = 0, int <i>type</i> = Type )</li>
+<li><div class="fn"/><b><a href="qsmoothlistwidgetitem.html#QSmoothListWidgetItem-2">QSmoothListWidgetItem</a></b> ( const QString &amp; <i>text</i>, QSmoothListWidget * <i>parent</i> = 0, int <i>type</i> = Type )</li>
+<li><div class="fn"/><b><a href="qsmoothlistwidgetitem.html#QSmoothListWidgetItem-3">QSmoothListWidgetItem</a></b> ( const QIcon &amp; <i>icon</i>, const QString &amp; <i>text</i>, QSmoothListWidget * <i>parent</i> = 0, int <i>type</i> = Type )</li>
+<li><div class="fn"/>virtual void <b><a href="qsmoothlistwidgetitem.html#setData">setData</a></b> ( int <i>role</i>, const QVariant &amp; <i>value</i> )</li>
+<li><div class="fn"/>QSmoothListWidget * <b><a href="qsmoothlistwidgetitem.html#smoothListWidget">smoothListWidget</a></b> () const</li>
+<li><div class="fn"/>virtual int <b><a href="qsmoothlistwidgetitem.html#type">type</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>80 public functions inherited from <a href="qstandarditem.html#public-functions">QStandardItem</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>2 protected functions inherited from <a href="qstandarditem.html#protected-functions">QStandardItem</a></li>
+<li><div class="fn"/>1 protected type inherited from <a href="qstandarditem.html#protected-variables">QStandardItem</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QSmoothListWidgetItem class provides an item for use with the <a href="qsmoothlistwidget.html">QSmoothListWidget</a> item view class.</p>
+<p>QSmoothListWidgetItem is used to represent items in a list provided by the <a href="qsmoothlistwidget.html">QSmoothListWidget</a> class. Each item can hold several pieces of information, and will display these appropriately.</p>
+<p>The item view convenience classes use a classic item-based interface rather than a pure model/view approach. For a more flexible list view widget, consider using the <a href="qsmoothlist.html">QSmoothList</a> class with a standard model.</p>
+<p>List items can be automatically inserted into a list when they are constructed by specifying the list widget:</p>
+<p>They can also be created without a parent widget, and later inserted into a list (see <a href="qsmoothlistwidget.html#insertItem">QSmoothListWidget::insertItem</a>()).</p>
+<p>QSmoothListWidgetItem is designed to be a drop-in replacement for simple uses of QSmoothListWidgetItem, when you are using a <a href="qsmoothlistwidget.html">QSmoothListWidget</a> instead of a <a href="qsmoothlistwidget.html">QSmoothListWidget</a>. QSmoothListWidgetItem does behave slightly differently though, most notably in that it cannot be hidden.</p>
+<p>List items are typically used to display <a href="qstandarditem.html#text">text</a>() and an <a href="qstandarditem.html#icon">icon</a>(). These are set with the <a href="qstandarditem.html#setText">setText</a>() and <a href="qstandarditem.html#setIcon">setIcon</a>() functions. The appearance of the text can be customized with <a href="qstandarditem.html#setFont">setFont</a>(), <a href="qstandarditem.html#setForeground">setForeground</a>(), and <a href="qstandarditem.html#setBackground">setBackground</a>(). Text in list items can be aligned using the <a href="qstandarditem.html#setTextAlignment">setTextAlignment</a>() function.</p>
+<p>By default, items are enabled, selectable, and checkable. Each item's flags can be changed by calling <a href="qstandarditem.html#setFlags">setFlags</a>() with the appropriate value (see <a href="qt.html#ItemFlags-typedef">Qt::ItemFlags</a>). Checkable items can be checked, unchecked and partially checked with the <a href="qstandarditem.html#setCheckState">setCheckState</a>() function. The corresponding <a href="qstandarditem.html#checkState">checkState</a>() function indicates what check state the item currently has.</p>
+<p>See also <a href="qlistwidgetitem.html">QListWidgetItem</a>, <a href="qsmoothlistwidget.html">QSmoothListWidget</a>, and <a href="qsmoothlist.html">QSmoothList</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QSmoothListWidgetItem"></a>QSmoothListWidgetItem::QSmoothListWidgetItem ( <a href="qsmoothlistwidget.html">QSmoothListWidget</a> * <i>parent</i> = 0, int <i>type</i> = Type )</h3>
+<p>Constructs an empty smooth list widget item of the specified <i>type</i> with the given <i>parent</i>. If the parent is not specified, the item will need to be inserted into a smooth list widget with <a href="qsmoothlistwidget.html#insertItem">QSmoothListWidget::insertItem</a>().</p>
+<p>See also <a href="qsmoothlistwidgetitem.html#type">type</a>().</p>
+<h3 class="fn"><a name="QSmoothListWidgetItem-2"></a>QSmoothListWidgetItem::QSmoothListWidgetItem ( const <a href="qstring.html">QString</a> &amp; <i>text</i>, <a href="qsmoothlistwidget.html">QSmoothListWidget</a> * <i>parent</i> = 0, int <i>type</i> = Type )</h3>
+<p>Constructs an empty smooth list widget item of the specified <i>type</i> with the given <i>text</i> and <i>parent</i>. If the parent is not specified, the item will need to be inserted into a smooth list widget with <a href="qsmoothlistwidget.html#insertItem">QSmoothListWidget::insertItem</a>().</p>
+<p>See also <a href="qsmoothlistwidgetitem.html#type">type</a>().</p>
+<h3 class="fn"><a name="QSmoothListWidgetItem-3"></a>QSmoothListWidgetItem::QSmoothListWidgetItem ( const <a href="qicon.html">QIcon</a> &amp; <i>icon</i>, const <a href="qstring.html">QString</a> &amp; <i>text</i>, <a href="qsmoothlistwidget.html">QSmoothListWidget</a> * <i>parent</i> = 0, int <i>type</i> = Type )</h3>
+<p>Constructs an empty smooth list widget item of the specified <i>type</i> with the given <i>icon</i>, <i>text</i> and <i>parent</i>. If the parent is not specified, the item will need to be inserted into a smooth list widget with <a href="qsmoothlistwidget.html#insertItem">QSmoothListWidget::insertItem</a>().</p>
+<p>See also <a href="qsmoothlistwidgetitem.html#type">type</a>().</p>
+<h3 class="fn"><a name="setData"></a>void QSmoothListWidgetItem::setData ( int <i>role</i>, const <a href="qvariant.html">QVariant</a> &amp; <i>value</i> )&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Sets the item's data for the given <i>role</i> to the specified <i>value</i>.</p>
+<p>Same as <a href="qstandarditem.html#setData">QStandardItem::setData</a>() but with the parameters reversed.</p>
+<p>Included for compatibilty with <a href="qlistwidgetitem.html">QListWidgetItem</a>.</p>
+<h3 class="fn"><a name="smoothListWidget"></a><a href="qsmoothlistwidget.html">QSmoothListWidget</a> * QSmoothListWidgetItem::smoothListWidget () const</h3>
+<p>Returns the smooth list widget that contains the item.</p>
+<h3 class="fn"><a name="type"></a>int QSmoothListWidgetItem::type () const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the type passed to the <a href="qsmoothlistwidgetitem.html">QSmoothListWidgetItem</a> constructor.</p>
+<p>Reimplemented from <a href="qstandarditem.html#type">QStandardItem</a>.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

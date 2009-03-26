@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QMailAddress Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QMailAddress Class Reference<br /><span class="small-subtitle">[<a href="qtmessagingmodule.html">QtMessagingModule</a>, <a href="qtpimmodule.html">QtPimModule</a>]</span>
+</h1>
+<p>The QMailAddress class provides an interface for manipulating message address strings. <a href="#details">More...</a></p>
+<pre>    #include &lt;QMailAddress&gt;</pre><ul>
+<li><a href="qmailaddress-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qmailaddress.html#QMailAddress">QMailAddress</a></b> ()</li>
+<li><div class="fn"/><b><a href="qmailaddress.html#QMailAddress-2">QMailAddress</a></b> ( const QString &amp; <i>addressText</i> )</li>
+<li><div class="fn"/><b><a href="qmailaddress.html#QMailAddress-3">QMailAddress</a></b> ( const QString &amp; <i>name</i>, const QString &amp; <i>address</i> )</li>
+<li><div class="fn"/><b><a href="qmailaddress.html#dtor.QMailAddress">~QMailAddress</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#address">address</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#displayName">displayName</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#displayName-2">displayName</a></b> ( QContactModel &amp; <i>fromModel</i> ) const</li>
+<li><div class="fn"/>QList&lt;QMailAddress&gt; <b><a href="qmailaddress.html#groupMembers">groupMembers</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmailaddress.html#isChatAddress">isChatAddress</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmailaddress.html#isEmailAddress">isEmailAddress</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmailaddress.html#isGroup">isGroup</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmailaddress.html#isNull">isNull</a></b> () const</li>
+<li><div class="fn"/>bool <b><a href="qmailaddress.html#isPhoneNumber">isPhoneNumber</a></b> () const</li>
+<li><div class="fn"/>QContact <b><a href="qmailaddress.html#matchContact">matchContact</a></b> () const</li>
+<li><div class="fn"/>QContact <b><a href="qmailaddress.html#matchContact-2">matchContact</a></b> ( QContactModel &amp; <i>fromModel</i> ) const</li>
+<li><div class="fn"/>bool <b><a href="qmailaddress.html#matchesExistingContact">matchesExistingContact</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#name">name</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#toString">toString</a></b> () const</li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QList&lt;QMailAddress&gt; <b><a href="qmailaddress.html#fromStringList">fromStringList</a></b> ( const QString &amp; <i>list</i> )</li>
+<li><div class="fn"/>QList&lt;QMailAddress&gt; <b><a href="qmailaddress.html#fromStringList-2">fromStringList</a></b> ( const QStringList &amp; <i>list</i> )</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#removeComments">removeComments</a></b> ( const QString &amp; <i>input</i> )</li>
+<li><div class="fn"/>QString <b><a href="qmailaddress.html#removeWhitespace">removeWhitespace</a></b> ( const QString &amp; <i>input</i> )</li>
+<li><div class="fn"/>QStringList <b><a href="qmailaddress.html#toStringList">toStringList</a></b> ( const QList&lt;QMailAddress&gt; &amp; <i>list</i> )</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QMailAddress class provides an interface for manipulating message address strings.</p>
+<p>QMailAddress provides functions for splitting the address strings of messages into name and address components, and for combining the individual components into correctly formatted address strings. QMailAddress can be used to manipulate the address elements exposed by the <a href="qmailmessage.html">QMailMessage</a> class.</p>
+<p>Address strings are expected to use the format &quot;name_part '&lt;'address_part'&gt;'&quot;, where <i>name_part</i> describes a message sender or recipient and <i>address_part</i> defines the address at which they can be contacted. The address component is not validated, so it can contain an email address, phone number, or any other type of textual address representation.</p>
+<p>See also <a href="qmailmessage.html">QMailMessage</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QMailAddress"></a>QMailAddress::QMailAddress ()</h3>
+<p>Constructs an empty <a href="qmailaddress.html">QMailAddress</a> object.</p>
+<h3 class="fn"><a name="QMailAddress-2"></a>QMailAddress::QMailAddress ( const <a href="qstring.html">QString</a> &amp; <i>addressText</i> )</h3>
+<p>Constructs a <a href="qmailaddress.html">QMailAddress</a> object, extracting the name and address components from <i>addressText</i>.</p>
+<p>If <i>addressText</i> cannot be separated into name and address components, both <a href="qmailaddress.html#name">name</a>() and <a href="qmailaddress.html#address">address</a>() will return the entirety of <i>addressText</i>.</p>
+<p>See also <a href="qmailaddress.html#name">name</a>() and <a href="qmailaddress.html#address">address</a>().</p>
+<h3 class="fn"><a name="QMailAddress-3"></a>QMailAddress::QMailAddress ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, const <a href="qstring.html">QString</a> &amp; <i>address</i> )</h3>
+<p>Constructs a <a href="qmailaddress.html">QMailAddress</a> object with the given <i>name</i> and <i>address</i>.</p>
+<h3 class="fn"><a name="dtor.QMailAddress"></a>QMailAddress::~QMailAddress ()</h3>
+<p>Destroys a <a href="qmailaddress.html">QMailAddress</a> object.</p>
+<h3 class="fn"><a name="address"></a><a href="qstring.html">QString</a> QMailAddress::address () const</h3>
+<p>Returns the address component of a mail address string.</p>
+<h3 class="fn"><a name="displayName"></a><a href="qstring.html">QString</a> QMailAddress::displayName () const</h3>
+<p>Returns a name to represent the address. If the address matches that of a stored Contact then the display name will be the contact's label. If no matching Contact is found, the name component of the address will be returned.</p>
+<p>See also <a href="qmailaddress.html#matchContact">matchContact</a>().</p>
+<h3 class="fn"><a name="displayName-2"></a><a href="qstring.html">QString</a> QMailAddress::displayName ( <a href="qcontactmodel.html">QContactModel</a> &amp; <i>fromModel</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a name to represent the address by querying the existing <a href="qcontactmodel.html">QContactModel</a> <i>fromModel</i>. If the address matches that of a stored Contact then the display name will be the contact's label. If no matching Contact is found, the name component of the address will be returned.</p>
+<p>See also <a href="qmailaddress.html#matchContact">matchContact</a>().</p>
+<h3 class="fn"><a name="fromStringList"></a><a href="qlist.html">QList</a>&lt;QMailAddress&gt; QMailAddress::fromStringList ( const <a href="qstring.html">QString</a> &amp; <i>list</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a list containing a <a href="qmailaddress.html">QMailAddress</a> object constructed from each comma-separated address in <i>list</i>.</p>
+<h3 class="fn"><a name="fromStringList-2"></a><a href="qlist.html">QList</a>&lt;QMailAddress&gt; QMailAddress::fromStringList ( const <a href="qstringlist.html">QStringList</a> &amp; <i>list</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a list containing a <a href="qmailaddress.html">QMailAddress</a> object constructed from each address string in <i>list</i>.</p>
+<h3 class="fn"><a name="groupMembers"></a><a href="qlist.html">QList</a>&lt;QMailAddress&gt; QMailAddress::groupMembers () const</h3>
+<p>Returns a list containing the individual addresses that comprise the address group. If the address is not a group address, an empty list is returned.</p>
+<p>See also <a href="qmailaddress.html#isGroup">isGroup</a>().</p>
+<h3 class="fn"><a name="isChatAddress"></a>bool QMailAddress::isChatAddress () const</h3>
+<p>Returns true if the address component has the form of an instant message address; otherwise returns false.</p>
+<p>See also <a href="qmailaddress.html#isEmailAddress">isEmailAddress</a>(), <a href="qmailaddress.html#isPhoneNumber">isPhoneNumber</a>(), and <a href="qmailaddress.html#matchContact">matchContact</a>().</p>
+<h3 class="fn"><a name="isEmailAddress"></a>bool QMailAddress::isEmailAddress () const</h3>
+<p>Returns true if the address component has the form of an email address; otherwise returns false.</p>
+<p>See also <a href="qmailaddress.html#isPhoneNumber">isPhoneNumber</a>(), <a href="qmailaddress.html#isChatAddress">isChatAddress</a>(), and <a href="qmailaddress.html#matchContact">matchContact</a>().</p>
+<h3 class="fn"><a name="isGroup"></a>bool QMailAddress::isGroup () const</h3>
+<p>Returns true if the address is that of a group.</p>
+<h3 class="fn"><a name="isNull"></a>bool QMailAddress::isNull () const</h3>
+<p>Returns true if the address object has not been initialized.</p>
+<h3 class="fn"><a name="isPhoneNumber"></a>bool QMailAddress::isPhoneNumber () const</h3>
+<p>Returns true if the address component has the form of a phone number; otherwise returns false.</p>
+<p>See also <a href="qmailaddress.html#isEmailAddress">isEmailAddress</a>(), <a href="qmailaddress.html#isChatAddress">isChatAddress</a>(), and <a href="qmailaddress.html#matchContact">matchContact</a>().</p>
+<h3 class="fn"><a name="matchContact"></a><a href="qcontact.html">QContact</a> QMailAddress::matchContact () const</h3>
+<p>Find the stored Contact whose email address or phone number matches the address component of the address text. If no matching contact is found, an empty Contact is returned.</p>
+<p>See also <a href="qmailaddress.html#displayName">displayName</a>(), <a href="qmailaddress.html#matchesExistingContact">matchesExistingContact</a>(), <a href="qcontactmodel.html#matchPhoneNumber">QContactModel::matchPhoneNumber</a>(), and <a href="qcontactmodel.html#matchEmailAddress">QContactModel::matchEmailAddress</a>().</p>
+<h3 class="fn"><a name="matchContact-2"></a><a href="qcontact.html">QContact</a> QMailAddress::matchContact ( <a href="qcontactmodel.html">QContactModel</a> &amp; <i>fromModel</i> ) const</h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Find the stored Contact whose email address or phone number matches the address component of the address text within the existing <a href="qcontactmodel.html">QContactModel</a> <i>fromModel</i>. If no matching contact is found, a null Contact is returned.</p>
+<p>See also <a href="qmailaddress.html#displayName">displayName</a>(), <a href="qcontactmodel.html#matchPhoneNumber">QContactModel::matchPhoneNumber</a>(), and <a href="qcontactmodel.html#matchEmailAddress">QContactModel::matchEmailAddress</a>().</p>
+<h3 class="fn"><a name="matchesExistingContact"></a>bool QMailAddress::matchesExistingContact () const</h3>
+<p>Returns true if there exists a stored Contact whose email address or phone number matches the address component of the address text; otherwise returns false.</p>
+<p>See also <a href="qmailaddress.html#matchContact">matchContact</a>().</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> QMailAddress::name () const</h3>
+<p>Returns the name component of a mail address string.</p>
+<h3 class="fn"><a name="removeComments"></a><a href="qstring.html">QString</a> QMailAddress::removeComments ( const <a href="qstring.html">QString</a> &amp; <i>input</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the content of <i>input</i> with any comment sections removed. Any subsequent leading or trailing whitespace is then also removed.</p>
+<h3 class="fn"><a name="removeWhitespace"></a><a href="qstring.html">QString</a> QMailAddress::removeWhitespace ( const <a href="qstring.html">QString</a> &amp; <i>input</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns the content of <i>input</i> with any whitespace characters removed. Whitespace within quotes or comment sections is preserved.</p>
+<h3 class="fn"><a name="toString"></a><a href="qstring.html">QString</a> QMailAddress::toString () const</h3>
+<p>Returns a string containing the name and address in a standardised format.</p>
+<h3 class="fn"><a name="toStringList"></a><a href="qstringlist.html">QStringList</a> QMailAddress::toStringList ( const <a href="qlist.html">QList</a>&lt;QMailAddress&gt; &amp; <i>list</i> )&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>Returns a string list containing the result of calling <a href="qmailaddress.html#toString">toString</a>() on each address in <i>list</i>.</p>
+<p>See also <a href="qmailaddress.html#toString">toString</a>().</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

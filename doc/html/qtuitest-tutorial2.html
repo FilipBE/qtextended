@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Chapter 2: Input, Output and Widget Navigation</title>
+  <link rel="prev" href="qtuitest-tutorial1.html" />
+  <link rel="contents" href="qtuitest-tutorial.html" />
+  <link rel="next" href="qtuitest-tutorial3.html" />
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><p>
+[Previous: <a href="qtuitest-tutorial1.html">Chapter 1</a>]
+[<a href="qtuitest-tutorial.html">Contents</a>]
+[Next: <a href="qtuitest-tutorial3.html">Chapter 3</a>]
+</p>
+<h1 class="title">Chapter 2: Input, Output and Widget Navigation<br /><span class="subtitle"></span>
+</h1>
+<p>System tests generally consist of a series of actions and verification that the expected behaviour took place. When testing a Qt Extended application, this usually takes the form of simulating the input of specific text and verifying that the application subsequently displays the correct text. Testing necessarily includes navigating through forms and menus, activating buttons and comboboxes, and similar tasks. <a href="qtuitest.html">QtUiTest</a> makes this very easy by supplying simple yet powerful navigation and input/output methods.</p>
+<a name="basic-input"></a>
+<h2>Basic Input</h2>
+<p>Using QtUitest, it is possible to simulate individual keyclicks, perhaps the most simple form of user interaction that can be simulated.</p>
+<pre>    mytestcase = {
+        mytestfunction: function() {
+            keyClick(Qt.Key_A);
+            keyClick(Qt.Key_B);
+            keyClick(Qt.Key_C);
+        }
+    }</pre>
+<p>In the above example, the calls to <a href="qsystemtest.html#keyClick">keyClick()</a> simulate a few individual key clicks, exactly as if the user had physically pressed keys on the device.</p>
+<p>However, there are several disadvantages to this approach. Firstly, it is extremely verbose. Secondly, it means that the test will only work on a keypad device. To avoid these problems, the <a href="qsystemtest.html#enter">enter()</a> function is provided:</p>
+<pre>    mytestcase = {
+        mytestfunction: function() {
+            enter(&quot;abc&quot;);
+        }
+    }</pre>
+<p>On a keypad device, the above example has the same affect as the previous example, but is more concise. However, this test now has the additional advantage that it can work on a touchscreen device, as <a href="qsystemtest.html#enter">enter()</a> knows how to simulate the necessary touchscreen events to input the given text.</p>
+<a name="input-into-specific-widgets"></a>
+<h2>Input Into Specific Widgets</h2>
+<p>In both of the examples above, input would be delivered to whichever widget is currently focused. In practice, what we often wish to do is enter text into a series of widgets displayed to the user.</p>
+<p>For example, consider the following screen for entering the details of a new contact.</p>
+<p align="center"><img src="images/fields_example.png" /></p><p>It would be possible to enter text in each field on this screen by using <tt>enter()</tt> and <tt>keyClick(Qt.Key_Down)</tt>. However, the test would easily break if the order of fields were changed, or if fields were added or removed, and the test would not work on a touchscreen device.</p>
+<p>To solve this problem, <tt>enter()</tt> (and many other functions in <a href="qtuitest.html">QtUiTest</a>) take an optional <i>Query Path</i> parameter, which specifies which widget to operate on. The most common usage of query paths takes the form &quot;LabelText&quot;, which refers to any widget which can receive input and is named or labeled &quot;LabelText&quot;.</p>
+<p>Entering text into a few fields on the screen featured above is achieved by the following example:</p>
+<pre>    mytestfunction: function() {
+        enter(&quot;Yoyo Corporation&quot;, &quot;Company&quot;);
+        enter(&quot;Yoyo Engineer&quot;, &quot;Title&quot;);
+        enter(&quot;x51 YOYO&quot;, &quot;Phone&quot;);
+    }</pre>
+<p>In the above example, if any of the specified fields are moved, the test will continue to work as expected. If any of the specified fields are removed, renamed, or no longer visible, the test will fail with a message indicating it cannot find the specified field.</p>
+<a name="selecting-items-from-lists-and-menus-and-activating-buttons"></a>
+<h2>Selecting Items from Lists and Menus, and Activating Buttons</h2>
+<p>Often, a user will be presented with a list of items or a context menu. <a href="qtuitest.html">QtUiTest</a> provides a simple way to navigate to and select items in any list- or menu-like widget. The <a href="qsystemtest.html#select">select()</a> function will select an item from a list, combo box, menu or tab widget by looking at the display text for each item. It can also be used to activate a button with the given text.</p>
+<pre>    mytestfunction: function() {
+        <span class="comment">// Select &quot;Show contacts&quot; from the options (context) menu.</span>
+        select(&quot;Show contacts&quot;, optionsMenu());
+
+        <span class="comment">// Select &quot;Bob&quot; in the currently shown list.</span>
+        select(&quot;Bob&quot;);
+
+        <span class="comment">// Activate the &quot;Edit&quot; button to edit Bob's details.</span>
+        select(&quot;Edit&quot;);
+
+        <span class="comment">// Fill in the &quot;Gender&quot; field (a combo box) for Bob.</span>
+        select(&quot;Male&quot;, &quot;Gender&quot;);
+    }</pre>
+<p>select() allows a test to be reused by keypad and touchscreen devices. For instance, consider select(&quot;Edit&quot;) from the above example. On a touchscreen device, this will simply result in a click being simulated at the co-ordinates of the Edit button. On a keypad device, keyclicks will be simulated to navigate to and activate the Edit button.</p>
+<a name="output"></a>
+<h2>Output</h2>
+<p>Built-in Qt and Qt Extended widgets can be queried for their currently displayed text. The <a href="qsystemtest.html#getText">getText()</a> function is the most common way of doing this.</p>
+<pre>    mytestfunction: function() {
+        enter(&quot;Yoyo Corporation&quot;, &quot;Company&quot;);
+        compare( getText(&quot;Company&quot;), &quot;Yoyo Corporation&quot; );
+    }</pre>
+<p>The above example simply enters &quot;Yoyo Corporation&quot; into the &quot;Company&quot; field, then verifies that the field actually contains the text &quot;Yoyo Corporation&quot;. Note that it is not necessary to explicitly call compare immediately after the enter command: it would have failed if the enter text had failed.</p>
+<p>The next chapter explains how to make use of data driven testing.</p>
+<p>
+[Previous: <a href="qtuitest-tutorial1.html">Chapter 1</a>]
+[<a href="qtuitest-tutorial.html">Contents</a>]
+[Next: <a href="qtuitest-tutorial3.html">Chapter 3</a>]
+</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>GSM Modem Integration</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">GSM Modem Integration<br /><span class="subtitle"></span>
+</h1>
+<a name="top"></a><ul><li><a href="#gsm-modem-integration">GSM Modem Integration</a></li>
+<li><a href="#outline-of-a-modem-vendor-plugin">Outline of a Modem Vendor Plugin</a></li>
+<li><a href="#modem-porting-sequence">Modem Porting Sequence</a></li>
+<li><a href="#modem-emulator">Modem Emulator</a></li>
+</ul>
+<a name="gsm-modem-integration"></a><a name="gsm-modem-integration"></a>
+<h2>GSM Modem Integration</h2>
+<p>The implementation of the 3GPP AT command specifications (3GPP TS 27.007 and 3GPP TS 27.005) varies between modems, with most modems supporting proprietary AT commands for special features.</p>
+<p>Qt Extended supports vendor-specific modem commands through the use of plug-ins to the <a href="telephony-modem.html">Qt Extended Phone Modem Library</a>. The vendor-specific code is placed in the device-specific directory <tt>devices/DEVNAME/src/plugins/phonevendors/DEVNAME</tt>, where <tt>DEVNAME</tt> is the manufacturer's name for the device.</p>
+<p>Qt Extended will load every vendor plug-in that is installed and query each one to see which is capable of handling the modem. The <tt>QTOPIA_PHONE_VENDOR</tt> macro in <tt>custom.h</tt> can be used to force Qt Extended to load only that plug-in, ignoring any others that may be present in the system. For example, setting <tt>QTOPIA_PHONE_VENDOR</tt> to <tt>wavecom</tt> will instruct Qt Extended to load <tt>libwavecomvendor.so</tt> to provide vendor-specific AT commands. The <tt>QTOPIA_PHONE_VENDOR</tt> value can also be set as an environment variable.</p>
+<p>3GPP TS 07.10 multiplexing can also be a source of problems when supporting a new modem. During initial testing it can be disabled by setting the <tt>QTOPIA_PHONE_MUX</tt> environment variable to <tt>no</tt>. Qt Extended will still function, but you will be unable to make GPRS calls without multiplexing support.</p>
+<p>If your modem does not support 3GPP TS 07.10 multiplexing, or you need to modify the 3GPP TS 07.10 parameters, it will be necessary to write a multiplexer plug-in. See <a href="tut-multiplexing.html">Writing a Multiplexer Plug-in</a> for more information on how to do this.</p>
+<a name="outline-of-a-modem-vendor-plugin"></a>
+<h2>Outline of a Modem Vendor Plugin</h2>
+<p>There are two sample implementations under <tt>src/plugins/phonevendors/ericsson</tt> and <tt>src/plugins/phonevendors/wavecom</tt>. This section reviews the major components of the wavecom plugin to demonstrate how to write such a plug-in.</p>
+<p>The plug-in inherits from the <a href="qmodemserviceplugin.html">QModemServicePlugin</a> class, which provides modem detection and service creation functions.</p>
+<pre>    #include &lt;qmodemserviceplugin.h&gt;
+
+    class WavecomPluginImpl : public QModemServicePlugin
+    {
+        Q_OBJECT
+    public:
+        WavecomPluginImpl();
+        virtual ~WavecomPluginImpl();
+
+        bool supports( const QString&amp; manufacturer );
+        QModemService *create( const QString&amp; service,
+                               QSerialIODeviceMultiplexer *mux,
+                               QObject *parent );
+    };</pre>
+<p>The plug-in declares two functions, <tt>supports()</tt> and <tt>create()</tt>, which should be implemented as follows:</p>
+<pre>    QTOPIA_EXPORT_PLUGIN( WavecomPluginImpl )
+
+    WavecomPluginImpl::WavecomPluginImpl() {}
+    WavecomPluginImpl::~WavecomPluginImpl() {}
+
+    bool WavecomPluginImpl::supports( const QString&amp; manufacturer )
+    {
+        return manufacturer.contains( &quot;WAVECOM&quot; );
+    }
+
+    QModemService *WavecomPluginImpl::create
+        ( const QString&amp; service, QSerialIODeviceMultiplexer *mux, QObject *parent )
+    {
+        return new WavecomModemService( service, mux, parent );
+    }</pre>
+<p>The <tt>supports()</tt> function checks the manufacturer string from the <tt>AT+CGMI</tt> command against the expected value. The first plug-in that returns true from <tt>supports()</tt> will used.</p>
+<p>The <tt>create()</tt> function creates a <a href="qmodemservice.html">QModemService</a> instance to handle the modem specifics. It is passed the name of the service (usually <tt>modem</tt>), the multiplexing object that is used to communicate with the modem, and the parent <a href="qobject.html">QObject</a> to attach the modem service to.</p>
+<p>The modem service implementation inherits from <a href="qmodemservice.html">QModemService</a> and should override <tt>initialize()</tt> to create the vendor-specific functionality handlers:</p>
+<pre>    #include &lt;qmodemservice.h&gt;
+    class WavecomModemService : public QModemService
+    {
+        Q_OBJECT
+    public:
+        WavecomModemService
+            ( const QString&amp; service, QSerialIODeviceMultiplexer *mux,
+              QObject *parent = 0 );
+        ~WavecomModemService();
+
+        void initialize();
+        ...
+    };
+
+    WavecomModemService::WavecomModemService
+            ( const QString&amp; service, QSerialIODeviceMultiplexer *mux,
+              QObject *parent )
+        : QModemService( service, mux, parent )
+    {
+        ...
+    }
+
+    WavecomModemService::~WavecomModemService() {}
+
+    void WavecomModemService::initialize()
+    {
+        <span class="comment">// Create our Wavecom-specific overrides for the service interfaces.</span>
+        if ( !supports&lt;QSimInfo&gt;() )
+            addInterface( new WavecomSimInfo( this ) );
+
+        if ( !supports&lt;QSimToolkit&gt;() )
+            addInterface( new WavecomSimToolkit( this ) );
+
+        if ( !supports&lt;QPhoneBook&gt;() )
+            addInterface( new WavecomPhoneBook( this ) );
+
+        if ( !supports&lt;QPhoneRfFunctionality&gt;() )
+            addInterface( new WavecomRfFunctionality( this ) );
+
+        if ( !supports&lt;QTelephonyConfiguration&gt;() )
+            addInterface( new WavecomConfiguration( this ) );
+
+        if ( !callProvider() )
+            setCallProvider( new WavecomCallProvider( this ) );
+
+        <span class="comment">// Call QModemService to create other interfaces that we didn't override.</span>
+        QModemService::initialize();
+    }</pre>
+<p>Modem services within Qt Extended are split up into several handlers, one for each functionality area (phone calls, network registration, SMS, SIM toolkit, phone books, etc).</p>
+<p>The <a href="qmodemservice.html">QModemService</a> class creates default implementations based on the 3GPP TS 27.007 and 3GPP TS 27.005 specifications. The modem vendor plug-in overrides those handlers that are different from the standard, and only those that are different. When <a href="qabstractipcinterfacegroup.html#initialize">QModemService::initialize</a>() is called, the missing handlers will be created automatically.</p>
+<p>The handlers mentioned above inherit from the following standard classes:</p>
+<p><table align="center" cellpadding="2" cellspacing="1" border="0">
+<tr valign="top" class="odd"><td><tt>WavecomSimInfo</tt></td><td><a href="qmodemsiminfo.html">QModemSimInfo</a></td></tr>
+<tr valign="top" class="even"><td><tt>WavecomSimToolkit</tt></td><td><a href="qmodemsimtoolkit.html">QModemSimToolkit</a></td></tr>
+<tr valign="top" class="odd"><td><tt>WavecomPhoneBook</tt></td><td><a href="qmodemphonebook.html">QModemPhoneBook</a></td></tr>
+<tr valign="top" class="even"><td><tt>WavecomRfFunctionality</tt></td><td><a href="qmodemrffunctionality.html">QModemRfFunctionality</a></td></tr>
+<tr valign="top" class="odd"><td><tt>WavecomConfiguration</tt></td><td><a href="qmodemconfiguration.html">QModemConfiguration</a></td></tr>
+<tr valign="top" class="even"><td><tt>WavecomCallProvider</tt></td><td><a href="qmodemcallprovider.html">QModemCallProvider</a></td></tr>
+</table></p>
+<p>A complete list of classes for accessing AT-based modems can be found on the <a href="telephony-modem.html">Modem Classes</a> page.</p>
+<a name="modem-porting-sequence"></a>
+<h2>Modem Porting Sequence</h2>
+<p>To support a modem the following sequence may be used as a guide:</p>
+<ol type="1">
+<li>Check the <a href="atcommands.html">AT Commands</a> that Qt Extended requires and determine which ones your modem supports.</li>
+<li>Determine the appropriate alternative AT commands suited to your modem and write the vendor-specific plug-in to issue these commands.</li>
+<li>Run Qt Extended with the <tt>QTOPIA_PHONE_MUX</tt> environment variable set to <tt>no</tt> and with the <tt>AtChat</tt> and <tt>Modem</tt> <a href="debug-qtextended.html#qlog-categorized-logging">logging categories</a> enabled.</li>
+<li>Check the error/message log for commands that are reported as being in error.</li>
+<li>Using the error log, modify the plug-in and/or the phone library so that the modem-supported AT command parameters are used.</li>
+<li>Repeat from the second step until phone calls are possible and SIM details are being read.</li>
+<li>Write a multiplexer plug-in if your modem does not support 3GPP TS 07.10, or the 07.10 parameters need to be adjusted.</li>
+<li>Enable multiplexing by setting the <tt>QTOPIA_PHONE_MUX</tt> environment variable to <tt>yes</tt>.</li>
+<li>Re-test Qt Extended, especially the GPRS features, until the multiplexer is functioning correctly. Verbose multiplexer debugging can be enabled with the <tt>Mux</tt> logging category.</li>
+</ol>
+<a name="modem-emulator"></a><a name="modem-emulator"></a>
+<h2>Modem Emulator</h2>
+<p>Most modern phones have an external serial interface, which is used to connect to a computer for the purposes of data calls, FAX transmissions, or synchronization with desktop applications. The <a href="modem-emulator.html">Modem Emulator</a> assists with supporting such interfaces.</p>
+<p>To enable the modem emulator to use an external serial interface, the <tt>Phone.conf</tt> file should be placed under the <tt>etc/default/Trolltech</tt> directory on the vendor system, with contents such as the following:</p>
+<pre>    [SerialDevices]
+    ExternalAccessDevice=/dev/ttyS1:115200</pre>
+<p>where <tt>/dev/ttyS1</tt> should be replaced with the name of the serial device to listen to, and <tt>115200</tt> should be replaced with the desired baud rate.</p>
+<p>If this option is configured, the modem emulator will be launched automatically once the phone server has been initialized. If this option is not configured, then the modem emulator will only be launched when other components in the system request it (for example, Bluetooth hands-free kits).</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

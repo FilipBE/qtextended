@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QIrRemoteDevice Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QIrRemoteDevice Class Reference</h1>
+<p>The QIrRemoteDevice class represents a remote infrared device. <a href="#details">More...</a></p>
+<pre>    #include &lt;QIrRemoteDevice&gt;</pre><ul>
+<li><a href="qirremotedevice-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qirremotedevice.html#QIrRemoteDevice">QIrRemoteDevice</a></b> ( const QString &amp; <i>name</i>, QIr::DeviceClasses &amp; <i>devClasses</i>, uint <i>addr</i> )</li>
+<li><div class="fn"/><b><a href="qirremotedevice.html#QIrRemoteDevice-2">QIrRemoteDevice</a></b> ( const QIrRemoteDevice &amp; <i>dev</i> )</li>
+<li><div class="fn"/><b><a href="qirremotedevice.html#dtor.QIrRemoteDevice">~QIrRemoteDevice</a></b> ()</li>
+<li><div class="fn"/>uint <b><a href="qirremotedevice.html#address">address</a></b> () const</li>
+<li><div class="fn"/>QIr::DeviceClasses <b><a href="qirremotedevice.html#deviceClasses">deviceClasses</a></b> () const</li>
+<li><div class="fn"/>QString <b><a href="qirremotedevice.html#name">name</a></b> () const</li>
+<li><div class="fn"/>QIrRemoteDevice &amp; <b><a href="qirremotedevice.html#operator-eq">operator=</a></b> ( const QIrRemoteDevice &amp; <i>other</i> )</li>
+<li><div class="fn"/>bool <b><a href="qirremotedevice.html#operator-eq-eq">operator==</a></b> ( const QIrRemoteDevice &amp; <i>other</i> ) const</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QIrRemoteDevice class represents a remote infrared device.</p>
+<p>QIrRemoteDevice holds information about a remote Infrared device. Only basic information is provided, namely the name of the remote device, its major device classes and the negotiated address.</p>
+<p>See also <a href="qirlocaldevice.html">QIrLocalDevice</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QIrRemoteDevice"></a>QIrRemoteDevice::QIrRemoteDevice ( const <a href="qstring.html">QString</a> &amp; <i>name</i>, <a href="qir.html#DeviceClass-enum">QIr::DeviceClasses</a> &amp; <i>devClasses</i>, <a href="qtglobal.html#uint-typedef">uint</a> <i>addr</i> )</h3>
+<p>Constructs a <a href="qirremotedevice.html">QIrRemoteDevice</a> with <i>name</i> as the name, <i>devClasses</i> as the major device classes supported by by this device and address given by <i>addr</i>.</p>
+<p>See also <a href="qirremotedevice.html#name">name</a>(), <a href="qirremotedevice.html#deviceClasses">deviceClasses</a>(), and <a href="qirremotedevice.html#address">address</a>().</p>
+<h3 class="fn"><a name="QIrRemoteDevice-2"></a>QIrRemoteDevice::QIrRemoteDevice ( const QIrRemoteDevice &amp; <i>dev</i> )</h3>
+<p>Copy constructor. Constructs the current object from the attributes of <i>dev</i>.</p>
+<h3 class="fn"><a name="dtor.QIrRemoteDevice"></a>QIrRemoteDevice::~QIrRemoteDevice ()</h3>
+<p>Destroys the device object.</p>
+<h3 class="fn"><a name="address"></a><a href="qtglobal.html#uint-typedef">uint</a> QIrRemoteDevice::address () const</h3>
+<p>Returns the address of the remote device.</p>
+<p><b>Warning:</b> This is a 32 bit integer, and due to the nature of the IrDA protocol this number should be considered highly dynamic. To refresh the number, a new discovery must be performed. It is not recommended to try and reuse the address for extended periods of time.</p>
+<p>See also <a href="qirlocaldevice.html">QIrLocalDevice</a> and <a href="qirremotedevice.html#name">name</a>().</p>
+<h3 class="fn"><a name="deviceClasses"></a><a href="qir.html#DeviceClass-enum">QIr::DeviceClasses</a> QIrRemoteDevice::deviceClasses () const</h3>
+<p>Returns the major device classes supported by the remote device.</p>
+<p>See also <a href="qirremotedevice.html#name">name</a>().</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> QIrRemoteDevice::name () const</h3>
+<p>Returns the name of the remote device.</p>
+<p>See also <a href="qirremotedevice.html#address">address</a>() and <a href="qirremotedevice.html#deviceClasses">deviceClasses</a>().</p>
+<h3 class="fn"><a name="operator-eq"></a>QIrRemoteDevice &amp; QIrRemoteDevice::operator= ( const QIrRemoteDevice &amp; <i>other</i> )</h3>
+<p>Assignment operator. Assigns the contents of <i>other</i> to the contents of the current object.</p>
+<h3 class="fn"><a name="operator-eq-eq"></a>bool QIrRemoteDevice::operator== ( const QIrRemoteDevice &amp; <i>other</i> ) const</h3>
+<p>Comparison operator. Compares the contents of <i>other</i> to the contents of the current object. Returns true if the contents are equal.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

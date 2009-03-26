@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QHardwareManager Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QHardwareManager Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QHardwareManager class finds available hardware abstraction providers for a given interface. <a href="#details">More...</a></p>
+<pre>    #include &lt;QHardwareManager&gt;</pre><p>Inherits <a href="qabstractipcinterfacegroupmanager.html">QAbstractIpcInterfaceGroupManager</a>.</p>
+<ul>
+<li><a href="qhardwaremanager-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/><b><a href="qhardwaremanager.html#QHardwareManager">QHardwareManager</a></b> ( const QString &amp; <i>interface</i>, QObject * <i>parent</i> = 0 )</li>
+<li><div class="fn"/>virtual <b><a href="qhardwaremanager.html#dtor.QHardwareManager">~QHardwareManager</a></b> ()</li>
+<li><div class="fn"/>QString <b><a href="qhardwaremanager.html#interface">interface</a></b> () const</li>
+<li><div class="fn"/>QStringList <b><a href="qhardwaremanager.html#providers">providers</a></b> () const</li>
+</ul>
+<ul>
+<li><div class="fn"/>5 public functions inherited from <a href="qabstractipcinterfacegroupmanager.html#public-functions">QAbstractIpcInterfaceGroupManager</a></li>
+<li><div class="fn"/>29 public functions inherited from <a href="qobject.html#public-functions">QObject</a></li>
+</ul>
+<a name="signals"></a>
+<h3>Signals</h3>
+<ul>
+<li><div class="fn"/>void <b><a href="qhardwaremanager.html#providerAdded">providerAdded</a></b> ( const QString &amp; <i>id</i> )</li>
+<li><div class="fn"/>void <b><a href="qhardwaremanager.html#providerRemoved">providerRemoved</a></b> ( const QString &amp; <i>id</i> )</li>
+</ul>
+<ul>
+<li><div class="fn"/>3 signals inherited from <a href="qabstractipcinterfacegroupmanager.html#signals">QAbstractIpcInterfaceGroupManager</a></li>
+<li><div class="fn"/>1 signal inherited from <a href="qobject.html#signals">QObject</a></li>
+</ul>
+<a name="static-public-members"></a>
+<h3>Static Public Members</h3>
+<ul>
+<li><div class="fn"/>QStringList <b><a href="qhardwaremanager.html#providers-2">providers</a></b> ()</li>
+</ul>
+<ul>
+<li><div class="fn"/>4 static public members inherited from <a href="qobject.html#static-public-members">QObject</a></li>
+</ul>
+<h3>Additional Inherited Members</h3>
+<ul>
+<li><div class="fn"/>1 property inherited from <a href="qobject.html#properties">QObject</a></li>
+<li><div class="fn"/>1 public slot inherited from <a href="qobject.html#public-slots">QObject</a></li>
+<li><div class="fn"/>1 public type inherited from <a href="qobject.html#public-variables">QObject</a></li>
+<li><div class="fn"/>7 protected functions inherited from <a href="qobject.html#protected-functions">QObject</a></li>
+<li><div class="fn"/>2 protected variables inherited from <a href="qobject.html#protected-variables">QObject</a></li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QHardwareManager class finds available hardware abstraction providers for a given interface.</p>
+<p>QHardwareManager is part of the <a href="syscust-accessories.html">Qt Extended Hardware Abstraction</a>, which provides information about the available hardware devices.</p>
+<p>A QHardwareMonitor can be used to monitor the availability of a given type of hardware, providing a list of providers through <a href="qhardwaremanager.html#providers">providers</a>() and emitting signals <a href="qhardwaremanager.html#providerAdded">providerAdded</a>() and <a href="qhardwaremanager.html#providerRemoved">providerRemoved</a>() when that list changes. The type of hardware monitored is given as a parameter to constructing the QHardwareMonitor.</p>
+<p>The following example responds whenever a new <a href="qsignalsource.html">QSignalSource</a> becomes available:</p>
+<pre>    QHardwareManager* manager = new QHardwareManager( &quot;QSignalSource&quot; );
+    connect( manager, SIGNAL(providerAdded(QString)),
+        this, SLOT(newBatteryAdded(QString)));</pre>
+<p>The types of a hardware abstraction is the name of the abstraction classes which implement the interface to the device. Any class that is subclassing <a href="qhardwareinterface.html">QHardwareInterface</a> is considered to be a Qt Extended hardware abstraction.</p>
+<p>See also <a href="qhardwareinterface.html">QHardwareInterface</a>, <a href="qpowersource.html">QPowerSource</a>, <a href="qsignalsource.html">QSignalSource</a>, and <a href="qvibrateaccessory.html">QVibrateAccessory</a>.</p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="QHardwareManager"></a>QHardwareManager::QHardwareManager ( const <a href="qstring.html">QString</a> &amp; <i>interface</i>, <a href="qobject.html">QObject</a> * <i>parent</i> = 0 )</h3>
+<p>Creates a <a href="qhardwaremanager.html">QHardwareManager</a> object and attaches it to <i>parent</i>. <i>interface</i> is the name of the hardware interface that this object is monitoring.</p>
+<p>The following code assumes that Qt Extended is running on a device that has a modem as power source (for more details see <a href="qpowerstatus.html">QPowerStatus</a> and <a href="qpowersource.html">QPowerSource</a>).</p>
+<pre>    QHardwareManager manager( &quot;QPowerSource&quot; );
+    QStringList providers = manager.providers();
+
+<span class="comment">    //Qt Extended always has a virtual power source with id DefaultBattery</span>
+    providers.contains( &quot;DefaultBattery&quot; ); <span class="comment">//always true</span>
+    providers.contains( &quot;modem&quot; ); <span class="comment">//true</span></pre>
+<p>Another way to achieve the same as the above example would be:</p>
+<pre>    QStringList providers = QHardwareManager::providers&lt;QPowerSource&gt;();
+    providers.contains( &quot;DefaultBattery&quot; ); <span class="comment">//always true</span>
+    providers.contains( &quot;modem&quot; ); <span class="comment">//true</span></pre>
+<h3 class="fn"><a name="dtor.QHardwareManager"></a>QHardwareManager::~QHardwareManager ()&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Destroys the <a href="qhardwaremanager.html">QHardwareManager</a> object.</p>
+<h3 class="fn"><a name="interface"></a><a href="qstring.html">QString</a> QHardwareManager::interface () const</h3>
+<p>Returns the interface that this object is monitoring.</p>
+<h3 class="fn"><a name="providerAdded"></a>void QHardwareManager::providerAdded ( const <a href="qstring.html">QString</a> &amp; <i>id</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when provider <i>id</i> is added.</p>
+<h3 class="fn"><a name="providerRemoved"></a>void QHardwareManager::providerRemoved ( const <a href="qstring.html">QString</a> &amp; <i>id</i> )&nbsp;&nbsp;<tt> [signal]</tt></h3>
+<p>This signal is emitted when provider <i>id</i> is removed.</p>
+<h3 class="fn"><a name="providers"></a><a href="qstringlist.html">QStringList</a> QHardwareManager::providers () const</h3>
+<p>Returns a list of providers that support the interface that this object was initialized with.</p>
+<h3 class="fn"><a name="providers-2"></a><a href="qstringlist.html">QStringList</a> QHardwareManager::providers ()&nbsp;&nbsp;<tt> [static]</tt></h3>
+<p>This is an overloaded member function, provided for convenience.</p>
+<p>Returns a list of providers which support the given interface of type <tt>T</tt>. The following example demonstrates how to get the list of providers that supports the <a href="qpowersource.html">QPowerSource</a> interface.</p>
+<pre>    QStringList providers = QHardwareManager::providers&lt;QPowerSource&gt;();</pre>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>

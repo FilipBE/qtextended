@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>QWindowDecorationInterface Class Reference</title>
+  <link href="classic.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top" width="32"><img src="images/qtlogo.png" align="left" border="0" /></td>
+<td width="1">&nbsp;&nbsp;</td><td class="postheader" valign="center"><a href="index.html"><font color="#004faf">Home</font></a>&nbsp;&middot; <a href="namespaces.html"><font color="#004faf">All&nbsp;Namespaces</font></a>&nbsp;&middot; <a href="classes.html"><font color="#004faf">All&nbsp;Classes</font></a>&nbsp;&middot; <a href="groups.html"><font color="#004faf">Grouped Classes</font></a>&nbsp;&middot; <a href="modules-index.html"><font color="#004faf">Modules</font></a>&nbsp;&middot; <a href="functions.html"><font color="#004faf">Functions</font></a></td>
+<td align="right" valign="center"><img src="images/codeless.png" border="0" alt="codeless banner"></td></tr></table><h1 class="title">QWindowDecorationInterface Class Reference<br /><span class="small-subtitle">[<a href="qtbasemodule.html">QtBaseModule</a>]</span>
+</h1>
+<p>The QWindowDecorationInterface class provides an interface for Qt Extended window decoration styles. <a href="#details">More...</a></p>
+<pre>    #include &lt;QWindowDecorationInterface&gt;</pre><ul>
+<li><a href="qwindowdecorationinterface-members.html">List of all members, including inherited members</a></li>
+</ul>
+<a name="public-types"></a>
+<h3>Public Types</h3>
+<ul>
+<li><div class="fn"/>class <b><a href="qwindowdecorationinterface-windowdata.html">WindowData</a></b></li>
+<li><div class="fn"/>enum <b><a href="qwindowdecorationinterface.html#Area-enum">Area</a></b> { Border, Title, TitleText }</li>
+<li><div class="fn"/>enum <b><a href="qwindowdecorationinterface.html#Button-enum">Button</a></b> { OK, Close, Help, Maximize }</li>
+<li><div class="fn"/>enum <b><a href="qwindowdecorationinterface.html#Metric-enum">Metric</a></b> { TitleHeight, LeftBorder, RightBorder, TopBorder, ..., CornerGrabSize }</li>
+</ul>
+<a name="public-functions"></a>
+<h3>Public Functions</h3>
+<ul>
+<li><div class="fn"/>virtual void <b><a href="qwindowdecorationinterface.html#drawArea">drawArea</a></b> ( Area <i>area</i>, QPainter * <i>p</i>, const WindowData * <i>wd</i> ) const</li>
+<li><div class="fn"/>virtual void <b><a href="qwindowdecorationinterface.html#drawButton">drawButton</a></b> ( Button <i>button</i>, QPainter * <i>painter</i>, const WindowData * <i>wd</i>, int <i>x</i>, int <i>y</i>, int <i>w</i>, int <i>h</i>, QDecoration::DecorationState <i>state</i> ) const</li>
+<li><div class="fn"/>virtual QPixmap <b><a href="qwindowdecorationinterface.html#icon">icon</a></b> () const = 0</li>
+<li><div class="fn"/>virtual QRegion <b><a href="qwindowdecorationinterface.html#mask">mask</a></b> ( const WindowData * <i>wd</i> ) const</li>
+<li><div class="fn"/>virtual int <b><a href="qwindowdecorationinterface.html#metric">metric</a></b> ( Metric <i>metric</i>, const WindowData * <i>wd</i> ) const</li>
+<li><div class="fn"/>virtual QString <b><a href="qwindowdecorationinterface.html#name">name</a></b> () const = 0</li>
+</ul>
+<a name="details"></a>
+<hr />
+<h2>Detailed Description</h2>
+<p>The QWindowDecorationInterface class provides an interface for Qt Extended window decoration styles.</p>
+<p>Window decoration styles may be added to Qt Extended via plug-ins. In order to write a style plug-in you must derive from the QWindowDecorationInterface class and implement the virtual functions.</p>
+<p>The window being decorated is defined by the QWindowDecorationPlugin::WindowData struct:</p>
+<pre>    struct WindowData {
+        const QWidget *window;
+        QRect rect;
+        QPalette palette;
+        QString caption;
+        enum Flags { Maximized=0x01, Dialog=0x02, Active=0x04 };
+        Q_UINT32 flags;
+        Q_UINT32 reserved;
+    };</pre>
+<p>Window decorations are loaded by setting the <tt>Decoration</tt> setting in the <tt>Appearance</tt> group of <tt>Trolltech/qpe</tt>, for example:</p>
+<pre>        [Appearance]
+        Decoration=mydecoration</pre>
+<p>To allow a QWindowDecorationInterface class to be created a plug-in class derived from <a href="qwindowdecorationplugin.html">QWindowDecorationPlugin</a> should be implemented.</p>
+<p>Note that Qt Extended includes a decoration plugin that allows basic <a href="tut-winddectheme.html">theming</a>, and this should be used in preference to custom decoration plugins.</p>
+<p>See also <a href="qwindowdecorationplugin.html">QWindowDecorationPlugin</a>.</p>
+<hr />
+<h2>Member Type Documentation</h2>
+<h3 class="fn"><a name="Area-enum"></a>enum QWindowDecorationInterface::Area</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::Border</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">defines the entire decoration area, excluding the title bar.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::Title</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">defines the area at the top of the window that contains the buttons and captions. It must extend the full width of the window.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::TitleText</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">defines the window caption.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Button-enum"></a>enum QWindowDecorationInterface::Button</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::OK</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">the OK button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::Close</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">the close button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::Help</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">the help button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::Maximize</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">the maximize/restore button.</td></tr>
+</table></p>
+<h3 class="fn"><a name="Metric-enum"></a>enum QWindowDecorationInterface::Metric</h3>
+<p><table border="1" cellpadding="2" cellspacing="1" width="100%">
+<tr><th width="25%">Constant</th><th width="15%">Value</th><th width="60%">Description</th></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::TitleHeight</tt></td><td align="center" valign="top"><tt>0</tt></td><td valign="top">the height of the title.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::LeftBorder</tt></td><td align="center" valign="top"><tt>1</tt></td><td valign="top">the width of the border on the left of the window.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::RightBorder</tt></td><td align="center" valign="top"><tt>2</tt></td><td valign="top">the width of the border on the right of the window.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::TopBorder</tt></td><td align="center" valign="top"><tt>3</tt></td><td valign="top">the width of the border on the top of the window, above the title bar.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::BottomBorder</tt></td><td align="center" valign="top"><tt>4</tt></td><td valign="top">the width of the border on the bottom of the window.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::OKWidth</tt></td><td align="center" valign="top"><tt>5</tt></td><td valign="top">the width of the OK button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::CloseWidth</tt></td><td align="center" valign="top"><tt>6</tt></td><td valign="top">the width of the Close (X) button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::HelpWidth</tt></td><td align="center" valign="top"><tt>7</tt></td><td valign="top">the width of the Help (?) button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::MaximizeWidth</tt></td><td align="center" valign="top"><tt>8</tt></td><td valign="top">the width of the maximize/restore button.</td></tr>
+<tr><td valign="top"><tt>QWindowDecorationInterface::CornerGrabSize</tt></td><td align="center" valign="top"><tt>9</tt></td><td valign="top">the size of the area allowing diagonal resize at each corner of the window.</td></tr>
+</table></p>
+<hr />
+<h2>Member Function Documentation</h2>
+<h3 class="fn"><a name="drawArea"></a>void QWindowDecorationInterface::drawArea ( <a href="qwindowdecorationinterface.html#Area-enum">Area</a> <i>area</i>, <a href="qpainter.html">QPainter</a> * <i>p</i>, const <a href="qwindowdecorationinterface-windowdata.html">WindowData</a> * <i>wd</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Draw the specified <i>area</i> using <a href="qpainter.html">QPainter</a> <i>p</i> for the window defined by <i>wd</i>.</p>
+<h3 class="fn"><a name="drawButton"></a>void QWindowDecorationInterface::drawButton ( <a href="qwindowdecorationinterface.html#Button-enum">Button</a> <i>button</i>, <a href="qpainter.html">QPainter</a> * <i>painter</i>, const <a href="qwindowdecorationinterface-windowdata.html">WindowData</a> * <i>wd</i>, int <i>x</i>, int <i>y</i>, int <i>w</i>, int <i>h</i>, <a href="qdecoration.html#DecorationState-enum">QDecoration::DecorationState</a> <i>state</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Draw <i>button</i> with <a href="qpainter.html">QPainter</a> <i>painter</i> for the window defined by <i>wd</i> within the bounds supplied by <i>x</i>, <i>y</i>, <i>w</i>, <i>h</i> in the specified <i>state</i>.</p>
+<h3 class="fn"><a name="icon"></a><a href="qpixmap.html">QPixmap</a> QWindowDecorationInterface::icon () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the icon of the decoration. This may be displayed in the appearance settings dialog.</p>
+<h3 class="fn"><a name="mask"></a><a href="qregion.html">QRegion</a> QWindowDecorationInterface::mask ( const <a href="qwindowdecorationinterface-windowdata.html">WindowData</a> * <i>wd</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the mask of the decoration including all borders and the title for the window defined by <i>wd</i> as a <a href="qregion.html">QRegion</a>. The window decorations do not necessarily need to be rectangular, however the title bar must be rectangular and must be the width of the window. This ensures the title is drawn correctly for maximized windows.</p>
+<h3 class="fn"><a name="metric"></a>int QWindowDecorationInterface::metric ( <a href="qwindowdecorationinterface.html#Metric-enum">Metric</a> <i>metric</i>, const <a href="qwindowdecorationinterface-windowdata.html">WindowData</a> * <i>wd</i> ) const&nbsp;&nbsp;<tt> [virtual]</tt></h3>
+<p>Returns the <i>metric</i> for the window defined by <i>wd</i>.</p>
+<h3 class="fn"><a name="name"></a><a href="qstring.html">QString</a> QWindowDecorationInterface::name () const&nbsp;&nbsp;<tt> [pure virtual]</tt></h3>
+<p>Returns the name of the decoration. This will be displayed in the appearance settings dialog.</p>
+<p /><address><hr /><div align="center">
+<table width="100%" cellspacing="0" border="0"><tr class="address">
+<td align="left">Copyright &copy; 2009 Trolltech</td>
+<td align="center"><a href="trademarks.html">Trademarks</a></td>
+<td align="right"><div align="right">Qt Extended 4.4.3</div></td>
+</tr></table></div></address></body>
+</html>
