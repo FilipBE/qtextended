@@ -1031,7 +1031,6 @@ bool QExifImageHeader::saveToJpeg(QIODevice *device) const
             stream << quint16( 0xFFE1 ); //APP1
             stream << quint16( exif.size() + 2 );
             device->write( exif );
-            stream << quint16( 0xFFE0 ); // APP0
             stream << segmentId;
             stream << segmentLength;
             device->write( remainder );
